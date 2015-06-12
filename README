@@ -2,7 +2,7 @@ Setup for running and / or development environment:
 
 - Install python, pip, and virtualenv
 
-- Instal autoenv
+- Instal autoenv:
 
 OSX
 $ brew install autoenv
@@ -17,8 +17,6 @@ $ echo 'source ~/.autoenv/activate.sh' >> ~/.bashrc
 - Create virtual environment (this will be called by autoenv from .env):
 $ virtualenv venv
 
-- Install dependencies:
+- Install dependencies, run project setup:
 $ pip install -r requirements.txt 
-
-- Run project setup:
 $ ./scripts/setup.sh
