@@ -13,3 +13,5 @@ selenium>=2.46.0
 static3>=0.6.1
 MySQL-python>=1.2.5
 django-allauth>=0.13.0
+django-bootstrap3>=5.4.0
+django-bootstrap-form>=3.2
