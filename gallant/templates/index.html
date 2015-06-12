@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <section class="content-1">
+        <div class="holder v-center">
+            <div>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-6 col-md-8">
+                            <p class="main">
+                                Lorem ipsum, dolor sit amet consectetur adipiscing elit.
+                            </p>
+
+                            <p class="sub-main">
+                                Lorem ipsum, dolor sit amet consectetur adipiscing elit.
+                            </p>
+
+                        </div>
+
+                        <div class="col-xs-12 col-sm-6 col-md-4">
+
+
+                            {% if user.is_authenticated %}
+                                <li><a href="{% url 'account_email' %}">Change E-mail</a></li>
+                                <li><a href="{% url 'account_logout' %}">Sign Out</a></li>
+                            {% else %}
+                                <li><a href="{% url 'account_login' %}">Sign In</a></li>
+                                <li><a href="{% url 'account_signup' %}">Sign Up</a></li>
+                            {% endif %}
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
