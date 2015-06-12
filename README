@@ -19,3 +19,6 @@ $ virtualenv venv
 
 - Install dependencies:
 $ pip install -r requirements.txt 
+
+- Run project setup:
+$ ./scripts/setup.sh
