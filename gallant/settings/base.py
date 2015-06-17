@@ -42,7 +42,7 @@ INSTALLED_APPS = (
     'allauth',
     'allauth.account',
     'bootstrapform',
-    'bootstrap3',
+    'custom_user',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -57,6 +57,8 @@ MIDDLEWARE_CLASSES = (
 )
 
 ROOT_URLCONF = 'gallant.urls'
+SITE_ID = 1
+LOGIN_REDIRECT_URL = '/'
 
 TEMPLATES = [
     {
@@ -112,3 +114,11 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(os.path.dirname(BASE_DIR), "static"),
 )
+
+# allauth disable usernames, use email instead
+AUTH_USER_MODEL = 'custom_user.EmailUser'
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_AUTHENTICATION_METHOD = 'email'

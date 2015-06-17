@@ -45,7 +45,7 @@
                     <nav class="navbar col-sm-12" role="navigation">
                         <div class="navbar-header">
                             <button type="button" class="navbar-toggle"></button>
-                            <a class="brand" href="{{ HTTP_HOST }}">Gallant</a>
+                            <a class="brand" href="/">Gallant</a>
                         </div>
 
                         <div class="collapse navbar-collapse">
@@ -53,6 +53,7 @@
                                 <li><a href="">Features</a></li>
                                 <li><a href="">Pricing</a></li>
                                 <li><a href="">Contact</a></li>
+                                <li><a href="{% url 'account_logout' %}">Sign Out</a></li>
                             </ul>
                         </div>
                     </nav>

@@ -14,22 +14,26 @@
                     Lorem ipsum, dolor sit amet consectetur adipiscing elit.
                 </p>
 
+                {% if user.is_authenticated == False %}
                 <a href="{% url 'account_signup' %}" type="button" class="btn btn-default giant">
                     Sign Up Now!
                 </a>
+                {% endif %}
 
             </div>
 
+            {% if user.is_authenticated == False %}
             <div class="col-xs-12 col-sm-6 col-md-4">
                 <form class="form" method="POST" action="{% url 'account_login' %}">
+                    {% csrf_token %}
                     <div class="login">
                         <div class="row">
                             <div class="col-sm-12">
                                 <div class="login-title">Account Login</div>
                                 <input autofocus="autofocus" class="form-control" placeholder="Email"
-                                       type="email" value="" name="user[email]" id="user_email"/>
+                                       type="email" value="" id="id_login" name="login"/>
                                 <input autocomplete="off" class="form-control" placeholder="Password"
-                                       type="password" name="user[password]" id="user_password"/>
+                                       type="password" id="id_password" name="password"/>
                             </div>
                         </div>
                         <div class="row">
@@ -50,6 +54,7 @@
                     </div>
                 </form>
             </div>
+            {% endif %}
         </div>
     </div>
 {% endblock %}
