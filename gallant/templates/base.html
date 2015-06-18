@@ -53,7 +53,9 @@
                                 <li><a href="">Features</a></li>
                                 <li><a href="">Pricing</a></li>
                                 <li><a href="">Contact</a></li>
-                                <li><a href="{% url 'account_logout' %}">Sign Out</a></li>
+                                {% if user.is_authenticated %}
+                                    <li><a href="{% url 'account_logout' %}">Sign Out</a></li>
+                                {% endif %}
                             </ul>
                         </div>
                     </nav>

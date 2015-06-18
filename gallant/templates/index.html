@@ -15,45 +15,45 @@
                 </p>
 
                 {% if user.is_authenticated == False %}
-                <a href="{% url 'account_signup' %}" type="button" class="btn btn-default giant">
-                    Sign Up Now!
-                </a>
+                    <a href="{% url 'account_signup' %}" type="button" class="btn btn-default giant" name="signup">
+                        Sign Up Now!
+                    </a>
                 {% endif %}
 
             </div>
 
             {% if user.is_authenticated == False %}
-            <div class="col-xs-12 col-sm-6 col-md-4">
-                <form class="form" method="POST" action="{% url 'account_login' %}">
-                    {% csrf_token %}
-                    <div class="login">
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <div class="login-title">Account Login</div>
-                                <input autofocus="autofocus" class="form-control" placeholder="Email"
-                                       type="email" value="" id="id_login" name="login"/>
-                                <input autocomplete="off" class="form-control" placeholder="Password"
-                                       type="password" id="id_password" name="password"/>
+                <div class="col-xs-12 col-sm-6 col-md-4">
+                    <form class="form" method="POST" action="{% url 'account_login' %}">
+                        {% csrf_token %}
+                        <div class="login">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="login-title">Account Login</div>
+                                    <input autofocus="autofocus" class="form-control" placeholder="Email"
+                                           type="email" value="" id="id_login" name="login"/>
+                                    <input autocomplete="off" class="form-control" placeholder="Password"
+                                           type="password" id="id_password" name="password"/>
+                                </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-5">
-                                <button type="submit" class="btn btn-default">
-                                    Login
-                                </button>
-                            </div>
-                            <div class="col-sm-7">
-                                <div class="row">
-                                    <div class="col-sm-12">
-                                        <a class="forgot" href="{% url 'account_reset_password' %}">Forgot your
-                                            password?</a>
+                            <div class="row">
+                                <div class="col-sm-5">
+                                    <button type="submit" class="btn btn-default" name="submit_login">
+                                        Login
+                                    </button>
+                                </div>
+                                <div class="col-sm-7">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <a class="forgot" href="{% url 'account_reset_password' %}">Forgot your
+                                                password?</a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </form>
-            </div>
+                    </form>
+                </div>
             {% endif %}
         </div>
     </div>

@@ -13,13 +13,13 @@ class AdminTest(LiveServerTestCase):
         # open web browser, go to the admin page
         self.browser.get(self.live_server_url + '/admin/')
 
-        email_field = self.browser.find_element_by_css_selector('form input[name="username"]')
-        password_field = self.browser.find_element_by_css_selector('form input[name="password"]')
+        email_field = self.browser.find_element_by_name('username')
+        password_field = self.browser.find_element_by_name('password')
 
         email_field.send_keys('test@test.com')
         password_field.send_keys('test2015')
 
-        submit = self.browser.find_element_by_css_selector('form input[type="submit"]')
+        submit = self.browser.find_element_by_css_selector('form input[value="Log in"]')
         submit.click()
 
     def tearDown(self):
