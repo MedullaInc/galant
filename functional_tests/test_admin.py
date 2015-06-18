@@ -7,9 +7,8 @@ class AdminTest(LiveServerTestCase):
     def setUp(self):
         self.browser = webdriver.PhantomJS()
 
-        # other browsers can be set here, but make sure to add a wait, eg
+        # other browsers can be set here, eg
         # self.browser = webdriver.Firefox()
-        # self.browser.implicitly_wait(3)
 
         # open web browser, go to the admin page
         self.browser.get(self.live_server_url + '/admin/')
