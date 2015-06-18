@@ -43,6 +43,7 @@ INSTALLED_APPS = (
 
     'bootstrapform',
     'custom_user',
+    'gallant',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -116,7 +117,7 @@ STATICFILES_DIRS = (
 )
 
 # allauth disable usernames, use email instead
-AUTH_USER_MODEL = 'custom_user.EmailUser'
+AUTH_USER_MODEL = 'gallant.GallantUser'
 ACCOUNT_USER_MODEL_USERNAME_FIELD = None
 ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_EMAIL_REQUIRED = True
