@@ -1,96 +1,6 @@
 [
   {
     "fields": {
-      "model": "emailaddress",
-      "app_label": "account"
-    },
-    "model": "contenttypes.contenttype",
-    "pk": 1
-  },
-  {
-    "fields": {
-      "model": "emailconfirmation",
-      "app_label": "account"
-    },
-    "model": "contenttypes.contenttype",
-    "pk": 2
-  },
-  {
-    "fields": {
-      "model": "permission",
-      "app_label": "auth"
-    },
-    "model": "contenttypes.contenttype",
-    "pk": 3
-  },
-  {
-    "fields": {
-      "model": "group",
-      "app_label": "auth"
-    },
-    "model": "contenttypes.contenttype",
-    "pk": 4
-  },
-  {
-    "fields": {
-      "model": "logentry",
-      "app_label": "admin"
-    },
-    "model": "contenttypes.contenttype",
-    "pk": 5
-  },
-  {
-    "fields": {
-      "model": "contenttype",
-      "app_label": "contenttypes"
-    },
-    "model": "contenttypes.contenttype",
-    "pk": 6
-  },
-  {
-    "fields": {
-      "model": "site",
-      "app_label": "sites"
-    },
-    "model": "contenttypes.contenttype",
-    "pk": 7
-  },
-  {
-    "fields": {
-      "model": "session",
-      "app_label": "sessions"
-    },
-    "model": "contenttypes.contenttype",
-    "pk": 8
-  },
-  {
-    "fields": {
-      "model": "gallantuser",
-      "app_label": "gallant"
-    },
-    "model": "contenttypes.contenttype",
-    "pk": 9
-  },
-  {
-    "fields": {
-      "domain": "example.com",
-      "name": "example.com"
-    },
-    "model": "sites.site",
-    "pk": 1
-  },
-  {
-    "fields": {
-      "email_address": 1,
-      "key": "ro8qs35zdnbrlf2y26nheeqmnhmfple48azsjzy0e5sj77ejkc6utsrcpctnil2t",
-      "sent": "2015-06-18T18:21:40.921Z",
-      "created": "2015-06-18T18:21:40.292Z"
-    },
-    "model": "account.emailconfirmation",
-    "pk": 1
-  },
-  {
-    "fields": {
       "codename": "add_emailaddress",
       "name": "Can add email address",
       "content_type": 1
@@ -345,16 +255,6 @@
       "date_joined": "2015-06-18T18:21:40.191Z"
     },
     "model": "gallant.gallantuser",
-    "pk": 1
-  },
-  {
-    "fields": {
-      "verified": false,
-      "user": 1,
-      "primary": true,
-      "email": "david.agg@gmail.com"
-    },
-    "model": "account.emailaddress",
     "pk": 1
   }
 ]
