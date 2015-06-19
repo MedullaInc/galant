@@ -1,0 +1,2032 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Translators:
+# cacarrara <caiocarrara@gmail.com>, 2014
+# Fábio C. Barrionuevo da Luz <bnafta@gmail.com>, 2013-2014
+# Rodrigo <rprior@infranology.com.br>, 2013
+# Rodrigo <rprior@infranology.com.br>, 2013-2014
+msgid ""
+msgstr ""
+"Project-Id-Version: django-allauth\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-06-19 08:58-0700\n"
+"PO-Revision-Date: 2014-12-01 01:20+0000\n"
+"Last-Translator: cacarrara <caiocarrara@gmail.com>\n"
+"Language-Team: Portuguese (Brazil) (http://www.transifex.com/projects/p/"
+"django-allauth/language/pt_BR/)\n"
+"Language: pt_BR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: gallant/settings/base.py:18
+msgid "English"
+msgstr ""
+
+#: gallant/settings/base.py:19
+msgid "Spanish"
+msgstr ""
+
+#: gallant/templates/account/email.html:6
+#: gallant/templates/socialaccount/connections.html:34
+msgid "Account"
+msgstr "Conta"
+
+#: gallant/templates/account/email.html:13
+#, fuzzy
+#| msgid "The following e-mail addresses are associated with your account:"
+msgid "The following e-mail addresses are associated to your account:"
+msgstr "Os endereços de e-mail seguintes estão associados com a sua conta:"
+
+#: gallant/templates/account/email.html:22
+msgid "E-mail"
+msgstr "E-mail"
+
+#: gallant/templates/account/email.html:25
+msgid "Status"
+msgstr ""
+
+#: gallant/templates/account/email.html:40
+msgid "Verified"
+msgstr "Verificado"
+
+#: gallant/templates/account/email.html:42
+msgid "Unverified"
+msgstr "Não verificado"
+
+#: gallant/templates/account/email.html:44
+msgid "Primary"
+msgstr "Primário"
+
+#: gallant/templates/account/email.html:52
+msgid "Make Primary"
+msgstr "Definir como primário"
+
+#: gallant/templates/account/email.html:53
+msgid "Re-send Verification"
+msgstr "Re-enviar Verificação"
+
+#: gallant/templates/account/email.html:54
+#: gallant/templates/socialaccount/connections.html:58
+msgid "Remove"
+msgstr "Remover"
+
+#: gallant/templates/account/email.html:61
+msgid "Warning:"
+msgstr "Aviso:"
+
+#: gallant/templates/account/email.html:61
+msgid ""
+"You currently do not have any e-mail address set up. You should really add "
+"an e-mail address so you can receive notifications, reset your password, etc."
+msgstr ""
+"Neste momento não há um endereço de e-mail definido. Você deve adicionar um "
+"endereço de e-mail para que possa receber notificações, redefinir a sua "
+"senha, etc."
+
+#: gallant/templates/account/email.html:66
+msgid "Add E-mail Address"
+msgstr "Adicionar endereço de e-mail"
+
+#: gallant/templates/account/email.html:72
+msgid "Add E-mail"
+msgstr "Adicionar e-mail"
+
+#: gallant/templates/account/email.html:83
+msgid "Do you really want to remove the selected e-mail address?"
+msgstr "Deseja mesmo remover o endereço de e-mail seleccionado?"
+
+#: gallant/templates/account/email_confirm.html:6
+#: gallant/templates/account/email_confirm.html:10
+msgid "Confirm E-mail Address"
+msgstr "Confirmar Endereço de E-mail"
+
+#: gallant/templates/account/email_confirm.html:16
+#, python-format
+msgid ""
+"Please confirm that <a href=\"mailto:%(email)s\">%(email)s</a> is an e-mail "
+"address for user %(user_display)s."
+msgstr ""
+"Por favor confirme que <a href=\"mailto:%(email)s\">%(email)s</a> é um "
+"endereço de e-mail do usuário %(user_display)s."
+
+#: gallant/templates/account/email_confirm.html:20
+msgid "Confirm"
+msgstr "Confirmar"
+
+#: gallant/templates/account/email_confirm.html:27
+#, python-format
+msgid ""
+"This e-mail confirmation link expired or is invalid. Please <a href="
+"\"%(email_url)s\">issue a new e-mail confirmation request</a>."
+msgstr ""
+"Este link de verificação de e-mail expirou ou é inválido. Por favor <a href="
+"\"%(email_url)s\">peça uma nova verificação de e-mail.</a>."
+
+#: gallant/templates/account/login.html:7
+#: gallant/templates/account/login.html:12
+#: gallant/templates/account/login.html:41
+msgid "Sign In"
+msgstr "Entrar"
+
+#: gallant/templates/account/login.html:15
+#, fuzzy, python-format
+#| msgid ""
+#| "Please sign in with one\n"
+#| "of your existing third party accounts. Or, <a href=\"%(signup_url)s"
+#| "\">sign up</a>\n"
+#| "for a %(site_name)s account and sign in below:"
+msgid ""
+"Please sign in with one\n"
+"of your existing third party accounts. Or, <a href=\"%(signup_url)s\">sign "
+"up</a>\n"
+"for a %(site_name)s account and sign in\n"
+"below:"
+msgstr ""
+"Por favor, entre com uma\n"
+"de suas contas externas. Ou, <a href=\"%(signup_url)s\">Cadastre-se</a>\n"
+"em uma nova conta %(site_name)s e entre a seguir:"
+
+#: gallant/templates/account/login.html:26
+#: venv/lib/python2.7/site-packages/django/utils/text.py:248
+msgid "or"
+msgstr "ou"
+
+#: gallant/templates/account/login.html:42
+msgid "Forgot Password?"
+msgstr "Esqueceu a sua senha?"
+
+#: gallant/templates/account/logout.html:5
+#: gallant/templates/account/logout.html:8
+#: gallant/templates/account/logout.html:17 gallant/templates/base.html:56
+msgid "Sign Out"
+msgstr "Sair"
+
+#: gallant/templates/account/logout.html:10
+msgid "Are you sure you want to sign out?"
+msgstr "Você tem certeza que deseja sair?"
+
+#: gallant/templates/account/password_change.html:6
+#: gallant/templates/account/password_change.html:14
+#: gallant/templates/account/password_reset_from_key.html:6
+#: gallant/templates/account/password_reset_from_key.html:9
+#: gallant/templates/account/password_reset_from_key.html:21
+msgid "Change Password"
+msgstr "Alterar senha"
+
+#: gallant/templates/account/password_reset.html:7
+#: gallant/templates/account/password_reset.html:11
+msgid "Password Reset"
+msgstr "Redefinição da senha"
+
+#: gallant/templates/account/password_reset.html:16
+msgid ""
+"Forgotten your password? Enter your e-mail address below, and we'll send you "
+"an e-mail allowing you to reset it."
+msgstr ""
+"Esqueceu a sua senha? Insira o seu endereço de e-mail abaixo, e lhe "
+"enviaremos um e-mail permitindo que a redefina."
+
+#: gallant/templates/account/password_reset.html:22
+msgid "Reset My Password"
+msgstr "Redefinir a minha senha"
+
+#: gallant/templates/account/password_reset.html:26
+msgid "Please contact us if you have any trouble resetting your password."
+msgstr ""
+"Por favor, contacte-nos se tiver qualquer problema para redefinir a sua "
+"senha."
+
+#: gallant/templates/account/password_reset_from_key.html:9
+msgid "Bad Token"
+msgstr "Problema no Token"
+
+#: gallant/templates/account/password_reset_from_key.html:13
+#, python-format
+msgid ""
+"The password reset link was invalid, possibly because it has already been "
+"used.  Please request a <a href=\"%(passwd_reset_url)s\">new password reset</"
+"a>."
+msgstr ""
+"O link para redefinição da senha era inválido, provavelmente por já ter sido "
+"usado. Por favor peça uma <a href=\"%(passwd_reset_url)s\">nova redefinição "
+"da senha</a>."
+
+#: gallant/templates/account/password_reset_from_key.html:25
+msgid "Your password is now changed."
+msgstr "A sua senha foi alterada."
+
+#: gallant/templates/account/password_set.html:6
+#: gallant/templates/account/password_set.html:14
+msgid "Set Password"
+msgstr "Definir senha"
+
+#: gallant/templates/account/signup.html:6
+#: gallant/templates/socialaccount/signup.html:6
+msgid "Signup"
+msgstr "Cadatre-se"
+
+#: gallant/templates/account/signup.html:9
+#: gallant/templates/account/signup.html:20
+#: gallant/templates/socialaccount/signup.html:9
+#: gallant/templates/socialaccount/signup.html:21
+msgid "Sign Up"
+msgstr "Cadastro"
+
+#: gallant/templates/account/signup.html:11
+#, python-format
+msgid ""
+"Already have an account? Then please <a href=\"%(login_url)s\">sign in</a>."
+msgstr "Já tem uma conta? Por favor <a href=\"%(login_url)s\">entre</a>."
+
+#: gallant/templates/base.html:52 gallant/templates/base.html.py:79
+msgid "Features"
+msgstr ""
+
+#: gallant/templates/base.html:53 gallant/templates/base.html.py:80
+msgid "Pricing"
+msgstr ""
+
+#: gallant/templates/base.html:54 gallant/templates/base.html.py:81
+msgid "Contact"
+msgstr ""
+
+#: gallant/templates/base.html:85
+msgid "Facebook"
+msgstr ""
+
+#: gallant/templates/base.html:86
+msgid "Twitter"
+msgstr ""
+
+#: gallant/templates/base.html:87
+msgid "Blog"
+msgstr ""
+
+#: gallant/templates/base.html:91
+msgid "Copyright Gallant"
+msgstr ""
+
+#: gallant/templates/base.html:92
+msgid "Terms & Conditions"
+msgstr ""
+
+#: gallant/templates/base.html:93
+msgid "Privacy Policy"
+msgstr ""
+
+#: gallant/templates/index.html:20
+#, fuzzy
+#| msgid "Sign Up"
+msgid "Sign Up Now!"
+msgstr "Cadastro"
+
+#: gallant/templates/index.html:33
+#, fuzzy
+#| msgid "Account"
+msgid "Account Login"
+msgstr "Conta"
+
+#: gallant/templates/index.html:36
+#: venv/lib/python2.7/site-packages/custom_user/forms.py:22
+#: venv/lib/python2.7/site-packages/custom_user/forms.py:92
+msgid "Password"
+msgstr "Senha"
+
+#: gallant/templates/index.html:43
+#, fuzzy
+#| msgctxt "field label"
+#| msgid "Login"
+msgid "Login"
+msgstr "Login"
+
+#: gallant/templates/index.html:50
+#, fuzzy
+#| msgid "Forgot Password?"
+msgid "Forgot your password?"
+msgstr "Esqueceu a sua senha?"
+
+#: gallant/templates/socialaccount/connections.html:5
+#, fuzzy
+#| msgid "Social Accounts"
+msgid "Connected Accounts"
+msgstr "Contas Sociais"
+
+#: gallant/templates/socialaccount/connections.html:11
+msgid ""
+"You can sign in to your account using any of the following third party "
+"accounts:"
+msgstr "Pode entrar usando uma das seguintes contas externas:"
+
+#: gallant/templates/socialaccount/connections.html:31
+#, fuzzy
+#| msgid "provider"
+msgid "Provider"
+msgstr "provedor"
+
+#: gallant/templates/socialaccount/connections.html:67
+msgid "None!"
+msgstr ""
+
+#: gallant/templates/socialaccount/connections.html:67
+msgid ""
+"You currently have no social network accounts connected to this account."
+msgstr ""
+"No momento não tem nenhuma conta de rede social conectada a esta conta."
+
+#: gallant/templates/socialaccount/connections.html:71
+msgid "Add a 3rd Party Account"
+msgstr "Adicionar uma Conta Externa"
+
+#: gallant/templates/socialaccount/signup.html:11
+#, fuzzy, python-format
+#| msgid ""
+#| "You are about to use your %(provider_name)s account to login to\n"
+#| "%(site_name)s. As a final step, please complete the following form:"
+msgid ""
+"You are about to use your %(provider_name)s account to login to \n"
+"%(site_name)s. As a final step, please complete the following form:"
+msgstr ""
+"Você está prestes a usar sua conta do %(provider_name)s para acessar o\n"
+"%(site_name)s. Como etapa final, por favor preencha o seguinte formulário:"
+
+#: venv/lib/python2.7/site-packages/custom_user/admin.py:16
+msgid "Permissions"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/custom_user/admin.py:18
+msgid "Important dates"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/custom_user/forms.py:17
+msgid "A user with that email already exists."
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/custom_user/forms.py:18
+msgid "The two password fields didn't match."
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/custom_user/forms.py:25
+#, fuzzy
+#| msgid "email confirmation"
+msgid "Password confirmation"
+msgstr "confirmação de e-mail"
+
+#: venv/lib/python2.7/site-packages/custom_user/forms.py:27
+msgid "Enter the same password as above, for verification."
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/custom_user/forms.py:93
+msgid ""
+"Raw passwords are not stored, so there is no way to see this user's "
+"password, but you can change the password using <a href=\"password/\">this "
+"form</a>."
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/custom_user/models.py:80
+msgid "email address"
+msgstr "endereço de e-mail"
+
+#: venv/lib/python2.7/site-packages/custom_user/models.py:83
+msgid "staff status"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/custom_user/models.py:84
+msgid "Designates whether the user can log into this admin site."
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/custom_user/models.py:85
+msgid "active"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/custom_user/models.py:86
+msgid ""
+"Designates whether this user should be treated as active. Unselect this "
+"instead of deleting accounts."
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/custom_user/models.py:88
+msgid "date joined"
+msgstr "data de adesão"
+
+#: venv/lib/python2.7/site-packages/custom_user/models.py:96
+msgid "user"
+msgstr "usuário"
+
+#: venv/lib/python2.7/site-packages/custom_user/models.py:97
+#, fuzzy
+#| msgid "user"
+msgid "users"
+msgstr "usuário"
+
+#: venv/lib/python2.7/site-packages/custom_user/tests.py:229
+#: venv/lib/python2.7/site-packages/custom_user/tests.py:292
+#: venv/lib/python2.7/site-packages/django/core/validators.py:138
+#, fuzzy
+#| msgid "Your account has no verified e-mail address."
+msgid "Enter a valid email address."
+msgstr "A sua conta não tem um endereço de e-mail verificado."
+
+#: venv/lib/python2.7/site-packages/custom_user/tests.py:314
+#: venv/lib/python2.7/site-packages/custom_user/tests.py:319
+#, fuzzy
+#| msgid "Password Reset"
+msgid "No password set."
+msgstr "Redefinição da senha"
+
+#: venv/lib/python2.7/site-packages/custom_user/tests.py:325
+#: venv/lib/python2.7/site-packages/custom_user/tests.py:332
+msgid "Invalid password format or unknown hashing algorithm."
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/contrib/messages/apps.py:7
+msgid "Messages"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/contrib/sitemaps/apps.py:7
+msgid "Site Maps"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/contrib/staticfiles/apps.py:7
+msgid "Static Files"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/contrib/syndication/apps.py:7
+msgid "Syndication"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/contrib/webdesign/apps.py:7
+msgid "Web Design"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/core/validators.py:20
+msgid "Enter a valid value."
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/core/validators.py:87
+#: venv/lib/python2.7/site-packages/django/forms/fields.py:710
+msgid "Enter a valid URL."
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/core/validators.py:133
+msgid "Enter a valid integer."
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/core/validators.py:212
+msgid ""
+"Enter a valid 'slug' consisting of letters, numbers, underscores or hyphens."
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/core/validators.py:217
+#: venv/lib/python2.7/site-packages/django/core/validators.py:236
+msgid "Enter a valid IPv4 address."
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/core/validators.py:222
+#: venv/lib/python2.7/site-packages/django/core/validators.py:237
+msgid "Enter a valid IPv6 address."
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/core/validators.py:232
+#: venv/lib/python2.7/site-packages/django/core/validators.py:235
+msgid "Enter a valid IPv4 or IPv6 address."
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/core/validators.py:260
+#: venv/lib/python2.7/site-packages/django/db/models/fields/__init__.py:1144
+msgid "Enter only digits separated by commas."
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/core/validators.py:269
+#, python-format
+msgid "Ensure this value is %(limit_value)s (it is %(show_value)s)."
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/core/validators.py:295
+#, python-format
+msgid "Ensure this value is less than or equal to %(limit_value)s."
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/core/validators.py:302
+#, python-format
+msgid "Ensure this value is greater than or equal to %(limit_value)s."
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/core/validators.py:311
+#, python-format
+msgid ""
+"Ensure this value has at least %(limit_value)d character (it has "
+"%(show_value)d)."
+msgid_plural ""
+"Ensure this value has at least %(limit_value)d characters (it has "
+"%(show_value)d)."
+msgstr[0] ""
+msgstr[1] ""
+
+#: venv/lib/python2.7/site-packages/django/core/validators.py:322
+#, python-format
+msgid ""
+"Ensure this value has at most %(limit_value)d character (it has "
+"%(show_value)d)."
+msgid_plural ""
+"Ensure this value has at most %(limit_value)d characters (it has "
+"%(show_value)d)."
+msgstr[0] ""
+msgstr[1] ""
+
+#: venv/lib/python2.7/site-packages/django/db/models/base.py:1106
+#: venv/lib/python2.7/site-packages/django/forms/models.py:722
+msgid "and"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/db/models/base.py:1108
+#, python-format
+msgid "%(model_name)s with this %(field_labels)s already exists."
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/db/models/fields/__init__.py:107
+#, python-format
+msgid "Value %(value)r is not a valid choice."
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/db/models/fields/__init__.py:108
+msgid "This field cannot be null."
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/db/models/fields/__init__.py:109
+msgid "This field cannot be blank."
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/db/models/fields/__init__.py:110
+#, python-format
+msgid "%(model_name)s with this %(field_label)s already exists."
+msgstr ""
+
+#. Translators: The 'lookup_type' is one of 'date', 'year' or 'month'.
+#. Eg: "Title must be unique for pub_date year"
+#: venv/lib/python2.7/site-packages/django/db/models/fields/__init__.py:114
+#, python-format
+msgid ""
+"%(field_label)s must be unique for %(date_field_label)s %(lookup_type)s."
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/db/models/fields/__init__.py:132
+#, python-format
+msgid "Field of type: %(field_type)s"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/db/models/fields/__init__.py:922
+#: venv/lib/python2.7/site-packages/django/db/models/fields/__init__.py:1832
+msgid "Integer"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/db/models/fields/__init__.py:926
+#: venv/lib/python2.7/site-packages/django/db/models/fields/__init__.py:1830
+#, python-format
+msgid "'%(value)s' value must be an integer."
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/db/models/fields/__init__.py:1001
+#, python-format
+msgid "'%(value)s' value must be either True or False."
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/db/models/fields/__init__.py:1003
+msgid "Boolean (Either True or False)"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/db/models/fields/__init__.py:1078
+#, python-format
+msgid "String (up to %(max_length)s)"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/db/models/fields/__init__.py:1139
+msgid "Comma-separated integers"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/db/models/fields/__init__.py:1188
+#, python-format
+msgid ""
+"'%(value)s' value has an invalid date format. It must be in YYYY-MM-DD "
+"format."
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/db/models/fields/__init__.py:1190
+#: venv/lib/python2.7/site-packages/django/db/models/fields/__init__.py:1340
+#, python-format
+msgid ""
+"'%(value)s' value has the correct format (YYYY-MM-DD) but it is an invalid "
+"date."
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/db/models/fields/__init__.py:1193
+msgid "Date (without time)"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/db/models/fields/__init__.py:1338
+#, python-format
+msgid ""
+"'%(value)s' value has an invalid format. It must be in YYYY-MM-DD HH:MM[:ss[."
+"uuuuuu]][TZ] format."
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/db/models/fields/__init__.py:1342
+#, python-format
+msgid ""
+"'%(value)s' value has the correct format (YYYY-MM-DD HH:MM[:ss[.uuuuuu]]"
+"[TZ]) but it is an invalid date/time."
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/db/models/fields/__init__.py:1346
+msgid "Date (with time)"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/db/models/fields/__init__.py:1498
+#, python-format
+msgid "'%(value)s' value must be a decimal number."
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/db/models/fields/__init__.py:1500
+msgid "Decimal number"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/db/models/fields/__init__.py:1651
+#, python-format
+msgid ""
+"'%(value)s' value has an invalid format. It must be in [DD] [HH:[MM:]]ss[."
+"uuuuuu] format."
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/db/models/fields/__init__.py:1654
+msgid "Duration"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/db/models/fields/__init__.py:1705
+#, fuzzy
+#| msgid "E-mail address"
+msgid "Email address"
+msgstr "Endereço de e-mail"
+
+#: venv/lib/python2.7/site-packages/django/db/models/fields/__init__.py:1729
+msgid "File path"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/db/models/fields/__init__.py:1796
+#, python-format
+msgid "'%(value)s' value must be a float."
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/db/models/fields/__init__.py:1798
+msgid "Floating point number"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/db/models/fields/__init__.py:1899
+msgid "Big (8 byte) integer"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/db/models/fields/__init__.py:1914
+#, fuzzy
+#| msgid "email address"
+msgid "IPv4 address"
+msgstr "endereço de e-mail"
+
+#: venv/lib/python2.7/site-packages/django/db/models/fields/__init__.py:1950
+#, fuzzy
+#| msgid "email address"
+msgid "IP address"
+msgstr "endereço de e-mail"
+
+#: venv/lib/python2.7/site-packages/django/db/models/fields/__init__.py:2029
+#, python-format
+msgid "'%(value)s' value must be either None, True or False."
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/db/models/fields/__init__.py:2031
+msgid "Boolean (Either True, False or None)"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/db/models/fields/__init__.py:2091
+msgid "Positive integer"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/db/models/fields/__init__.py:2103
+msgid "Positive small integer"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/db/models/fields/__init__.py:2116
+#, python-format
+msgid "Slug (up to %(max_length)s)"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/db/models/fields/__init__.py:2145
+msgid "Small integer"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/db/models/fields/__init__.py:2152
+msgid "Text"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/db/models/fields/__init__.py:2175
+#, python-format
+msgid ""
+"'%(value)s' value has an invalid format. It must be in HH:MM[:ss[.uuuuuu]] "
+"format."
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/db/models/fields/__init__.py:2177
+#, python-format
+msgid ""
+"'%(value)s' value has the correct format (HH:MM[:ss[.uuuuuu]]) but it is an "
+"invalid time."
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/db/models/fields/__init__.py:2180
+msgid "Time"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/db/models/fields/__init__.py:2308
+msgid "URL"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/db/models/fields/__init__.py:2331
+msgid "Raw binary data"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/db/models/fields/__init__.py:2375
+#, python-format
+msgid "'%(value)s' is not a valid UUID."
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/db/models/fields/files.py:239
+msgid "File"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/db/models/fields/files.py:389
+msgid "Image"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/db/models/fields/related.py:1791
+#, python-format
+msgid "%(model)s instance with %(field)s %(value)r does not exist."
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/db/models/fields/related.py:1793
+msgid "Foreign Key (type determined by related field)"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/db/models/fields/related.py:2023
+msgid "One-to-one relationship"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/db/models/fields/related.py:2113
+msgid "Many-to-many relationship"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/forms/fields.py:64
+msgid "This field is required."
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/forms/fields.py:237
+msgid "Enter a whole number."
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/forms/fields.py:280
+#: venv/lib/python2.7/site-packages/django/forms/fields.py:317
+msgid "Enter a number."
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/forms/fields.py:319
+#, python-format
+msgid "Ensure that there are no more than %(max)s digit in total."
+msgid_plural "Ensure that there are no more than %(max)s digits in total."
+msgstr[0] ""
+msgstr[1] ""
+
+#: venv/lib/python2.7/site-packages/django/forms/fields.py:323
+#, python-format
+msgid "Ensure that there are no more than %(max)s decimal place."
+msgid_plural "Ensure that there are no more than %(max)s decimal places."
+msgstr[0] ""
+msgstr[1] ""
+
+#: venv/lib/python2.7/site-packages/django/forms/fields.py:327
+#, python-format
+msgid ""
+"Ensure that there are no more than %(max)s digit before the decimal point."
+msgid_plural ""
+"Ensure that there are no more than %(max)s digits before the decimal point."
+msgstr[0] ""
+msgstr[1] ""
+
+#: venv/lib/python2.7/site-packages/django/forms/fields.py:438
+#: venv/lib/python2.7/site-packages/django/forms/fields.py:1191
+msgid "Enter a valid date."
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/forms/fields.py:462
+#: venv/lib/python2.7/site-packages/django/forms/fields.py:1192
+msgid "Enter a valid time."
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/forms/fields.py:484
+msgid "Enter a valid date/time."
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/forms/fields.py:525
+msgid "Enter a valid duration."
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/forms/fields.py:591
+msgid "No file was submitted. Check the encoding type on the form."
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/forms/fields.py:592
+msgid "No file was submitted."
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/forms/fields.py:593
+msgid "The submitted file is empty."
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/forms/fields.py:595
+#, python-format
+msgid "Ensure this filename has at most %(max)d character (it has %(length)d)."
+msgid_plural ""
+"Ensure this filename has at most %(max)d characters (it has %(length)d)."
+msgstr[0] ""
+msgstr[1] ""
+
+#: venv/lib/python2.7/site-packages/django/forms/fields.py:598
+msgid "Please either submit a file or check the clear checkbox, not both."
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/forms/fields.py:660
+msgid ""
+"Upload a valid image. The file you uploaded was either not an image or a "
+"corrupted image."
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/forms/fields.py:825
+#: venv/lib/python2.7/site-packages/django/forms/fields.py:919
+#: venv/lib/python2.7/site-packages/django/forms/models.py:1233
+#, python-format
+msgid "Select a valid choice. %(value)s is not one of the available choices."
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/forms/fields.py:920
+#: venv/lib/python2.7/site-packages/django/forms/fields.py:1035
+#: venv/lib/python2.7/site-packages/django/forms/models.py:1232
+msgid "Enter a list of values."
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/forms/fields.py:1036
+msgid "Enter a complete value."
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/forms/fields.py:1262
+msgid "Enter a valid UUID."
+msgstr ""
+
+#. Translators: This is the default suffix added to form field labels
+#: venv/lib/python2.7/site-packages/django/forms/forms.py:129
+msgid ":"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/forms/forms.py:214
+#, python-format
+msgid "(Hidden field %(name)s) %(error)s"
+msgstr ""
+
+#. Translators: If found as last label character, these punctuation
+#. characters will prevent the default label_suffix to be appended to the label
+#: venv/lib/python2.7/site-packages/django/forms/forms.py:665
+msgid ":?.!"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/forms/formsets.py:96
+msgid "ManagementForm data is missing or has been tampered with"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/forms/formsets.py:333
+#, python-format
+msgid "Please submit %d or fewer forms."
+msgid_plural "Please submit %d or fewer forms."
+msgstr[0] ""
+msgstr[1] ""
+
+#: venv/lib/python2.7/site-packages/django/forms/formsets.py:340
+#, python-format
+msgid "Please submit %d or more forms."
+msgid_plural "Please submit %d or more forms."
+msgstr[0] ""
+msgstr[1] ""
+
+#: venv/lib/python2.7/site-packages/django/forms/formsets.py:368
+#: venv/lib/python2.7/site-packages/django/forms/formsets.py:370
+msgid "Order"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/forms/formsets.py:372
+msgid "Delete"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/forms/models.py:716
+#, python-format
+msgid "Please correct the duplicate data for %(field)s."
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/forms/models.py:720
+#, python-format
+msgid "Please correct the duplicate data for %(field)s, which must be unique."
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/forms/models.py:726
+#, python-format
+msgid ""
+"Please correct the duplicate data for %(field_name)s which must be unique "
+"for the %(lookup)s in %(date_field)s."
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/forms/models.py:734
+msgid "Please correct the duplicate values below."
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/forms/models.py:1052
+msgid "The inline foreign key did not match the parent instance primary key."
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/forms/models.py:1118
+msgid "Select a valid choice. That choice is not one of the available choices."
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/forms/models.py:1235
+#, python-format
+msgid "\"%(pk)s\" is not a valid value for a primary key."
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/forms/utils.py:165
+#, python-format
+msgid ""
+"%(datetime)s couldn't be interpreted in time zone %(current_timezone)s; it "
+"may be ambiguous or it may not exist."
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/forms/widgets.py:345
+msgid "Currently"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/forms/widgets.py:346
+msgid "Change"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/forms/widgets.py:347
+msgid "Clear"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/forms/widgets.py:555
+msgid "Unknown"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/forms/widgets.py:556
+msgid "Yes"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/forms/widgets.py:557
+#, fuzzy
+#| msgid "Note"
+msgid "No"
+msgstr "Nota"
+
+#: venv/lib/python2.7/site-packages/django/template/defaultfilters.py:860
+msgid "yes,no,maybe"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/template/defaultfilters.py:889
+#: venv/lib/python2.7/site-packages/django/template/defaultfilters.py:901
+#, python-format
+msgid "%(size)d byte"
+msgid_plural "%(size)d bytes"
+msgstr[0] ""
+msgstr[1] ""
+
+#: venv/lib/python2.7/site-packages/django/template/defaultfilters.py:903
+#, python-format
+msgid "%s KB"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/template/defaultfilters.py:905
+#, python-format
+msgid "%s MB"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/template/defaultfilters.py:907
+#, python-format
+msgid "%s GB"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/template/defaultfilters.py:909
+#, python-format
+msgid "%s TB"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/template/defaultfilters.py:911
+#, python-format
+msgid "%s PB"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/utils/dateformat.py:61
+msgid "p.m."
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/utils/dateformat.py:62
+msgid "a.m."
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/utils/dateformat.py:67
+msgid "PM"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/utils/dateformat.py:68
+msgid "AM"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/utils/dateformat.py:151
+msgid "midnight"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/utils/dateformat.py:153
+msgid "noon"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/utils/dates.py:6
+msgid "Monday"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/utils/dates.py:6
+msgid "Tuesday"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/utils/dates.py:6
+msgid "Wednesday"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/utils/dates.py:6
+msgid "Thursday"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/utils/dates.py:6
+msgid "Friday"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/utils/dates.py:7
+msgid "Saturday"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/utils/dates.py:7
+msgid "Sunday"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/utils/dates.py:10
+msgid "Mon"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/utils/dates.py:10
+msgid "Tue"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/utils/dates.py:10
+msgid "Wed"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/utils/dates.py:10
+msgid "Thu"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/utils/dates.py:10
+msgid "Fri"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/utils/dates.py:11
+msgid "Sat"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/utils/dates.py:11
+msgid "Sun"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/utils/dates.py:18
+msgid "January"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/utils/dates.py:18
+msgid "February"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/utils/dates.py:18
+msgid "March"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/utils/dates.py:18
+msgid "April"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/utils/dates.py:18
+msgid "May"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/utils/dates.py:18
+msgid "June"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/utils/dates.py:19
+msgid "July"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/utils/dates.py:19
+msgid "August"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/utils/dates.py:19
+#, fuzzy
+#| msgid "Remember Me"
+msgid "September"
+msgstr "Lembrar-me"
+
+#: venv/lib/python2.7/site-packages/django/utils/dates.py:19
+msgid "October"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/utils/dates.py:19
+msgid "November"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/utils/dates.py:20
+#, fuzzy
+#| msgid "Remember Me"
+msgid "December"
+msgstr "Lembrar-me"
+
+#: venv/lib/python2.7/site-packages/django/utils/dates.py:23
+msgid "jan"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/utils/dates.py:23
+msgid "feb"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/utils/dates.py:23
+#, fuzzy
+#| msgid "primary"
+msgid "mar"
+msgstr "primário"
+
+#: venv/lib/python2.7/site-packages/django/utils/dates.py:23
+msgid "apr"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/utils/dates.py:23
+#, fuzzy
+#| msgid "primary"
+msgid "may"
+msgstr "primário"
+
+#: venv/lib/python2.7/site-packages/django/utils/dates.py:23
+msgid "jun"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/utils/dates.py:24
+msgid "jul"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/utils/dates.py:24
+msgid "aug"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/utils/dates.py:24
+msgid "sep"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/utils/dates.py:24
+msgid "oct"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/utils/dates.py:24
+msgid "nov"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/utils/dates.py:24
+msgid "dec"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/utils/dates.py:31
+msgctxt "abbrev. month"
+msgid "Jan."
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/utils/dates.py:32
+msgctxt "abbrev. month"
+msgid "Feb."
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/utils/dates.py:33
+msgctxt "abbrev. month"
+msgid "March"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/utils/dates.py:34
+msgctxt "abbrev. month"
+msgid "April"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/utils/dates.py:35
+msgctxt "abbrev. month"
+msgid "May"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/utils/dates.py:36
+msgctxt "abbrev. month"
+msgid "June"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/utils/dates.py:37
+msgctxt "abbrev. month"
+msgid "July"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/utils/dates.py:38
+msgctxt "abbrev. month"
+msgid "Aug."
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/utils/dates.py:39
+msgctxt "abbrev. month"
+msgid "Sept."
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/utils/dates.py:40
+msgctxt "abbrev. month"
+msgid "Oct."
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/utils/dates.py:41
+msgctxt "abbrev. month"
+msgid "Nov."
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/utils/dates.py:42
+msgctxt "abbrev. month"
+msgid "Dec."
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/utils/dates.py:45
+msgctxt "alt. month"
+msgid "January"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/utils/dates.py:46
+msgctxt "alt. month"
+msgid "February"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/utils/dates.py:47
+msgctxt "alt. month"
+msgid "March"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/utils/dates.py:48
+msgctxt "alt. month"
+msgid "April"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/utils/dates.py:49
+msgctxt "alt. month"
+msgid "May"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/utils/dates.py:50
+msgctxt "alt. month"
+msgid "June"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/utils/dates.py:51
+msgctxt "alt. month"
+msgid "July"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/utils/dates.py:52
+msgctxt "alt. month"
+msgid "August"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/utils/dates.py:53
+#, fuzzy
+#| msgid "Remember Me"
+msgctxt "alt. month"
+msgid "September"
+msgstr "Lembrar-me"
+
+#: venv/lib/python2.7/site-packages/django/utils/dates.py:54
+msgctxt "alt. month"
+msgid "October"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/utils/dates.py:55
+msgctxt "alt. month"
+msgid "November"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/utils/dates.py:56
+#, fuzzy
+#| msgid "Remember Me"
+msgctxt "alt. month"
+msgid "December"
+msgstr "Lembrar-me"
+
+#: venv/lib/python2.7/site-packages/django/utils/ipv6.py:10
+msgid "This is not a valid IPv6 address."
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/utils/text.py:79
+#, python-format
+msgctxt "String to return when truncating text"
+msgid "%(truncated_text)s..."
+msgstr ""
+
+#. Translators: This string is used as a separator between list elements
+#: venv/lib/python2.7/site-packages/django/utils/text.py:267
+#: venv/lib/python2.7/site-packages/django/utils/timesince.py:58
+msgid ", "
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/utils/timesince.py:10
+#, python-format
+msgid "%d year"
+msgid_plural "%d years"
+msgstr[0] ""
+msgstr[1] ""
+
+#: venv/lib/python2.7/site-packages/django/utils/timesince.py:11
+#, python-format
+msgid "%d month"
+msgid_plural "%d months"
+msgstr[0] ""
+msgstr[1] ""
+
+#: venv/lib/python2.7/site-packages/django/utils/timesince.py:12
+#, python-format
+msgid "%d week"
+msgid_plural "%d weeks"
+msgstr[0] ""
+msgstr[1] ""
+
+#: venv/lib/python2.7/site-packages/django/utils/timesince.py:13
+#, python-format
+msgid "%d day"
+msgid_plural "%d days"
+msgstr[0] ""
+msgstr[1] ""
+
+#: venv/lib/python2.7/site-packages/django/utils/timesince.py:14
+#, python-format
+msgid "%d hour"
+msgid_plural "%d hours"
+msgstr[0] ""
+msgstr[1] ""
+
+#: venv/lib/python2.7/site-packages/django/utils/timesince.py:15
+#, python-format
+msgid "%d minute"
+msgid_plural "%d minutes"
+msgstr[0] ""
+msgstr[1] ""
+
+#: venv/lib/python2.7/site-packages/django/utils/timesince.py:47
+msgid "0 minutes"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/views/csrf.py:107
+msgid "Forbidden"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/views/csrf.py:108
+msgid "CSRF verification failed. Request aborted."
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/views/csrf.py:112
+msgid ""
+"You are seeing this message because this HTTPS site requires a 'Referer "
+"header' to be sent by your Web browser, but none was sent. This header is "
+"required for security reasons, to ensure that your browser is not being "
+"hijacked by third parties."
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/views/csrf.py:117
+msgid ""
+"If you have configured your browser to disable 'Referer' headers, please re-"
+"enable them, at least for this site, or for HTTPS connections, or for 'same-"
+"origin' requests."
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/views/csrf.py:122
+msgid ""
+"You are seeing this message because this site requires a CSRF cookie when "
+"submitting forms. This cookie is required for security reasons, to ensure "
+"that your browser is not being hijacked by third parties."
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/views/csrf.py:127
+msgid ""
+"If you have configured your browser to disable cookies, please re-enable "
+"them, at least for this site, or for 'same-origin' requests."
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/views/csrf.py:132
+msgid "More information is available with DEBUG=True."
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/views/debug.py:583
+msgid "Welcome to Django"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/views/debug.py:584
+msgid "It worked!"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/views/debug.py:585
+msgid "Congratulations on your first Django-powered page."
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/views/debug.py:586
+msgid ""
+"Of course, you haven't actually done any work yet. Next, start your first "
+"app by running <code>python manage.py startapp [app_label]</code>."
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/views/debug.py:588
+msgid ""
+"You're seeing this message because you have <code>DEBUG = True</code> in "
+"your Django settings file and you haven't configured any URLs. Get to work!"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/views/generic/dates.py:48
+msgid "No year specified"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/views/generic/dates.py:104
+msgid "No month specified"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/views/generic/dates.py:163
+msgid "No day specified"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/views/generic/dates.py:219
+msgid "No week specified"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/views/generic/dates.py:378
+#: venv/lib/python2.7/site-packages/django/views/generic/dates.py:406
+#, python-format
+msgid "No %(verbose_name_plural)s available"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/views/generic/dates.py:660
+#, python-format
+msgid ""
+"Future %(verbose_name_plural)s not available because %(class_name)s."
+"allow_future is False."
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/views/generic/dates.py:694
+#, python-format
+msgid "Invalid date string '%(datestr)s' given format '%(format)s'"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/views/generic/detail.py:55
+#, python-format
+msgid "No %(verbose_name)s found matching the query"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/views/generic/list.py:76
+msgid "Page is not 'last', nor can it be converted to an int."
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/views/generic/list.py:81
+#, python-format
+msgid "Invalid page (%(page_number)s): %(message)s"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/views/generic/list.py:172
+#, python-format
+msgid "Empty list and '%(class_name)s.allow_empty' is False."
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/views/static.py:58
+msgid "Directory indexes are not allowed here."
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/views/static.py:60
+#, python-format
+msgid "\"%(path)s\" does not exist"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/django/views/static.py:100
+#, python-format
+msgid "Index of %(directory)s"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:313
+msgid "usage: "
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:821
+msgid ".__call__() not defined"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:1105
+#, python-format
+msgid "unknown parser %r (choices: %s)"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:1146
+#, python-format
+msgid "argument \"-\" with mode %r"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:1349
+#, python-format
+msgid "cannot merge actions - two groups are named %r"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:1387
+msgid "'required' is an invalid argument for positionals"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:1407
+#, python-format
+msgid "invalid option string %r: must start with a character %r"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:1428
+#, python-format
+msgid "dest= is required for options like %r"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:1445
+#, python-format
+msgid "invalid conflict_resolution value: %r"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:1463
+#, python-format
+msgid "conflicting option string(s): %s"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:1526
+msgid "mutually exclusive arguments must be optional"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:1596
+msgid "positional arguments"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:1597
+#, fuzzy
+#| msgid "social accounts"
+msgid "optional arguments"
+msgstr "contas sociais"
+
+#: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:1615
+msgid "show this help message and exit"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:1621
+msgid "show program's version number and exit"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:1653
+msgid "cannot have multiple subparser arguments"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:1705
+#, python-format
+msgid "unrecognized arguments: %s"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:1802
+#, python-format
+msgid "not allowed with argument %s"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:1848
+#: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:1862
+#, python-format
+msgid "ignored explicit argument %r"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:1952
+msgid "too few arguments"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:1959
+#, python-format
+msgid "argument %s is required"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:1973
+#, python-format
+msgid "one of the arguments %s is required"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:2019
+msgid "expected one argument"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:2020
+msgid "expected at most one argument"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:2021
+msgid "expected at least one argument"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:2023
+#, python-format
+msgid "expected %s argument(s)"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:2080
+#, python-format
+msgid "ambiguous option: %s could match %s"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:2142
+#, python-format
+msgid "unexpected option string: %s"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:2243
+#, python-format
+msgid "%r is not callable"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:2259
+#, python-format
+msgid "invalid %s value: %r"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:2269
+#, python-format
+msgid "invalid choice: %r (choose from %s)"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:2362
+#, python-format
+msgid "%s: error: %s\n"
+msgstr ""
+
+#~ msgid "Usernames can only contain letters, digits and @/./+/-/_."
+#~ msgstr "Nomes de usuários podem conter apenas letras, dígitos e @/./+/-/_."
+
+#~ msgid "Username can not be used. Please use other username."
+#~ msgstr "O nome de usuário não pode ser usado. Escolha outro."
+
+#~ msgid "This username is already taken. Please choose another."
+#~ msgstr "Este nome de usuário já está em uso. Por favor escolha outro."
+
+#~ msgid "Accounts"
+#~ msgstr "Contas"
+
+#~ msgid "Password must be a minimum of {0} characters."
+#~ msgstr "A senha deve ter no mínimo {0} caracteres."
+
+#~ msgid "This account is currently inactive."
+#~ msgstr "Esta conta está desativada no momento."
+
+#~ msgid "The e-mail address and/or password you specified are not correct."
+#~ msgstr "O endereço de e-mail e/ou senha especificados não estão corretos."
+
+#~ msgid "The username and/or password you specified are not correct."
+#~ msgstr "O nome de usuário e/ou senha especificados não estão corretos."
+
+#~ msgid "The login and/or password you specified are not correct."
+#~ msgstr "O nome de usuário e/ou senha especificados não estão corretos."
+
+#~ msgid "Username"
+#~ msgstr "Nome de usuário"
+
+#~ msgid "Username or e-mail"
+#~ msgstr "Nome de usuário ou e-mail"
+
+#~ msgid "E-mail (optional)"
+#~ msgstr "E-mail (opcional)"
+
+#~ msgid "A user is already registered with this e-mail address."
+#~ msgstr "Um usuário já foi registado com este endereço de e-mail."
+
+#~ msgid "Password (again)"
+#~ msgstr "Senha (novamente)"
+
+#~ msgid "You must type the same password each time."
+#~ msgstr "A mesma senha deve ser escrita em ambos os campos."
+
+#~ msgid "This e-mail address is already associated with this account."
+#~ msgstr "Este endereço de e-mail já foi associado com esta conta."
+
+#~ msgid "This e-mail address is already associated with another account."
+#~ msgstr "Este endereço de e-mail já foi associado com outra conta."
+
+#~ msgid "Current Password"
+#~ msgstr "senha atual"
+
+#~ msgid "New Password"
+#~ msgstr "Nova Senha"
+
+#~ msgid "New Password (again)"
+#~ msgstr "Nova Senha (novamente)"
+
+#~ msgid "Please type your current password."
+#~ msgstr "Por favor insira a sua senha atual."
+
+#~ msgid "The e-mail address is not assigned to any user account"
+#~ msgstr "O endereço de e-mail não está associado a nenhuma conta de usuário"
+
+#~ msgid "e-mail address"
+#~ msgstr "endereço de e-mail"
+
+#~ msgid "verified"
+#~ msgstr "verificado"
+
+#~ msgid "email addresses"
+#~ msgstr "endereços de e-mail"
+
+#~ msgid "created"
+#~ msgstr "criado"
+
+#~ msgid "sent"
+#~ msgstr "enviado"
+
+#~ msgid "key"
+#~ msgstr "chave"
+
+#~ msgid "email confirmations"
+#~ msgstr "confirmações de e-mail"
+
+#~ msgid "Your account has no password set up."
+#~ msgstr "A sua conta não tem senha definida."
+
+#~ msgid ""
+#~ "An account already exists with this e-mail address. Please sign in to "
+#~ "that account first, then connect your %s account."
+#~ msgstr ""
+#~ "Já existe uma conta com esse endereço de e-mail. Por favor, faça login na "
+#~ "conta existente e, em seguida, conecte com %s."
+
+#~ msgid "name"
+#~ msgstr "nome"
+
+#~ msgid "client id"
+#~ msgstr "id do cliente"
+
+#~ msgid "App ID, or consumer key"
+#~ msgstr "App ID ou chave de consumidor"
+
+#~ msgid "secret key"
+#~ msgstr "Chave secreta"
+
+#~ msgid "API secret, client secret, or consumer secret"
+#~ msgstr "Segredo de API, segredo de cliente ou segredo de consumidor"
+
+#~ msgid "Key"
+#~ msgstr "Chave"
+
+#~ msgid "social application"
+#~ msgstr "aplicativo social"
+
+#~ msgid "social applications"
+#~ msgstr "aplicativos sociais"
+
+#~ msgid "uid"
+#~ msgstr "uid"
+
+#~ msgid "last login"
+#~ msgstr "último acesso"
+
+#~ msgid "extra data"
+#~ msgstr "dados extras"
+
+#~ msgid "social account"
+#~ msgstr "conta social"
+
+#~ msgid "\"oauth_token\" (OAuth1) or access token (OAuth2)"
+#~ msgstr "\"oauth_token\" (OAuth1) ou token de acesso (OAuth2)"
+
+#~ msgid "token secret"
+#~ msgstr "token secreto"
+
+#~ msgid "\"oauth_token_secret\" (OAuth1) or refresh token (OAuth2)"
+#~ msgstr "\"oauth_token_secret\" (OAuth1) ou token de atualização (OAuth2)"
+
+#~ msgid "expires at"
+#~ msgstr "expira em"
+
+#~ msgid "social application token"
+#~ msgstr "token de aplicativo social"
+
+#~ msgid "social application tokens"
+#~ msgstr "tokens de aplicativo social"
+
+#~ msgid "Invalid response while obtaining request token from \"%s\"."
+#~ msgstr "Resposta inválida ao obter token de permissão de \"%s\"."
+
+#~ msgid "Invalid response while obtaining access token from \"%s\"."
+#~ msgstr "Resposta inválida ao obter token de acesso de \"%s\"."
+
+#~ msgid "No request token saved for \"%s\"."
+#~ msgstr "Nenhum token de permissão gravado para \"%s\"."
+
+#~ msgid "No access token saved for \"%s\"."
+#~ msgstr "Nenhum token de acesso gravado para \"%s\"."
+
+#~ msgid "No access to private resources at \"%s\"."
+#~ msgstr "Sem acesso a recursos privados de \"%s\"."
+
+#~ msgid "Account Inactive"
+#~ msgstr "Conta Inativa"
+
+#~ msgid "This account is inactive."
+#~ msgstr "A sua conta está inativa."
+
+#~ msgid "E-mail Addresses"
+#~ msgstr "Endereços de E-mail"
+
+#~ msgid ""
+#~ "You have confirmed that <a href=\"mailto:%(email)s\">%(email)s</a> is an "
+#~ "e-mail address for user %(user_display)s."
+#~ msgstr ""
+#~ "Você confirmou que <a href=\"mailto:%(email)s\">%(email)s</a> é um "
+#~ "endereço de e-mail do usuário %(user_display)s."
+
+#~ msgid ""
+#~ "If you have not created an account yet, then please\n"
+#~ "<a href=\"%(signup_url)s\">sign up</a> first."
+#~ msgstr ""
+#~ "Se você não tiver criado uma conta ainda, então, por favor\n"
+#~ "<a href=\"%(signup_url)s\">Cadastre-se</a> primeiro."
+
+#~ msgid ""
+#~ "We have sent you an e-mail. Please contact us if you do not receive it "
+#~ "within a few minutes."
+#~ msgstr ""
+#~ "Um e-mail foi enviado. Por favor contacte-nos se não o receber nos "
+#~ "próximos minutos."
+
+#~ msgid "change password"
+#~ msgstr "alterar a senha"
+
+#~ msgid "Sign Up Closed"
+#~ msgstr "Novos cadastros suspensos"
+
+#~ msgid "We are sorry, but the sign up is currently closed."
+#~ msgstr "Infelizmente novos cadastros não podem ser feitos no momento."
+
+#~ msgid "Verify Your E-mail Address"
+#~ msgstr "Verifique o seu endereço de e-mail"
+
+#~ msgid ""
+#~ "We have sent an e-mail to you for verification. Follow the link provided "
+#~ "to finalize the signup process. Please contact us if you do not receive "
+#~ "it within a few minutes."
+#~ msgstr ""
+#~ "Enviamos um e-mail para você para verificação. Clique no link fornecido "
+#~ "para finalizar o processo de inscrição. Entre em contato conosco se você "
+#~ "não recebê-lo dentro de alguns minutos."
+
+#~ msgid ""
+#~ "This part of the site requires us to verify that\n"
+#~ "you are who you claim to be. For this purpose, we require that you\n"
+#~ "verify ownership of your e-mail address. "
+#~ msgstr ""
+#~ "Esta parte do site requer que verifiquemos\n"
+#~ "que você é quem diz que é. Para esse fim, pedimos que verifique que\n"
+#~ "é dono do seu endereço de e-mail. "
+
+#~ msgid ""
+#~ "We have sent an e-mail to you for\n"
+#~ "verification. Please click on the link inside this e-mail. Please\n"
+#~ "contact us if you do not receive it within a few minutes."
+#~ msgstr ""
+#~ "Nós enviamos um um e-mail de verificação\n"
+#~ "para você. Por favor clique no link dentro deste e-mail. Contacte-nos\n"
+#~ "se não recebê-lo dentro dos próximos minutos."
+
+#~ msgid ""
+#~ "<strong>Note:</strong> you can still <a href=\"%(email_url)s\">change "
+#~ "your e-mail address</a>."
+#~ msgstr ""
+#~ "<strong>Nota:</strong> você ainda pode <a href=\"%(email_url)s\">alterar "
+#~ "o seu endereço de e-mail</a>."
+
+#~ msgid ""
+#~ "User %(user_display)s at %(site_name)s has given this as an email "
+#~ "address.\n"
+#~ "\n"
+#~ "To confirm this is correct, go to %(activate_url)s\n"
+#~ msgstr ""
+#~ "O usuário %(user_display)s do %(site_name)s informou este endereço de e-"
+#~ "mail.\n"
+#~ "\n"
+#~ "Para confirmar que isso está correto, vá até %(activate_url)s\n"
+
+#~ msgid ""
+#~ "You're receiving this e-mail because you or someone else has requested a "
+#~ "password for your user account at %(site_domain)s.\n"
+#~ "It can be safely ignored if you did not request a password reset. Click "
+#~ "the link below to reset your password."
+#~ msgstr ""
+#~ "Você está recebendo esse e-mail porque você ou alguém tentou requisitar "
+#~ "uma senha para sua conta de usuário em %(site_domain)s.\n"
+#~ "Essa mensagem pode ser ignorada sem preocupações se você mesmo fez a "
+#~ "requisição. Clique no link abaixo para redefinir sua senha. "
+
+#~ msgid "In case you forgot, your username is %(username)s."
+#~ msgstr "Caso tenha esquecido, seu nome de usuário é %(username)s."
+
+#~ msgid "Thanks for using our site!"
+#~ msgstr "Obrigado por utilizar nosso site!"
+
+#~ msgid "Password Reset E-mail"
+#~ msgstr "E-mail de Redefinição de Senha"
+
+#~ msgid "You cannot remove your primary e-mail address (%(email)s)."
+#~ msgstr ""
+#~ "Você não pode remover o seu endereço principal de e-mail (%(email)s)."
+
+#~ msgid "Confirmation e-mail sent to %(email)s."
+#~ msgstr "E-mail de confirmação enviado para %(email)s."
+
+#~ msgid "You have confirmed %(email)s."
+#~ msgstr "Confirmou %(email)s"
+
+#~ msgid "Removed e-mail address %(email)s."
+#~ msgstr "%(email)s endereços de e-mail removidos."
+
+#~ msgid "Successfully signed in as %(name)s."
+#~ msgstr "Login realizado com sucesso como usuário %(name)s."
+
+#~ msgid "You have signed out."
+#~ msgstr "Você saiu do sistema."
+
+#~ msgid "Password successfully changed."
+#~ msgstr "Senha alterada com sucesso."
+
+#~ msgid "Password successfully set."
+#~ msgstr "Senha definida com sucesso."
+
+#~ msgid "Primary e-mail address set."
+#~ msgstr "Endereço primário de e-mail configurado."
+
+#~ msgid "Your primary e-mail address must be verified."
+#~ msgstr "Seu endereço de e-mail principal precisa ser confirmado."
+
+#~ msgid "you are already logged in as %(user_display)s."
+#~ msgstr "você já entrou como %(user_display)s."
+
+#~ msgid "OpenID Sign In"
+#~ msgstr "Entrar com OpenID"
+
+#~ msgid "Social Network Login Failure"
+#~ msgstr "Falha ao Entrar com Rede Social"
+
+#~ msgid ""
+#~ "An error occurred while attempting to login via your social network "
+#~ "account."
+#~ msgstr ""
+#~ "Um erro foi encontrado ao tentar entrar com a sua conta de rede social."
+
+#~ msgid "Account Connections"
+#~ msgstr "Conexões da Conta"
+
+#~ msgid "Login Cancelled"
+#~ msgstr "Entrada Cancelada"
+
+#~ msgid ""
+#~ "You decided to cancel logging in to our site using one of your existing "
+#~ "accounts. If this was a mistake, please proceed to <a href=\"%(login_url)s"
+#~ "\">sign in</a>."
+#~ msgstr ""
+#~ "Você decidiu cancelar a entrada no nosso site usando uma das seguintes "
+#~ "contas. Se isto foi um erro, clique para <a href=\"%(login_url)s"
+#~ "\">entrar</a>."
+
+#~ msgid "The social account has been connected."
+#~ msgstr "A conta social foi conectada."
+
+#~ msgid "The social account is already connected to a different account."
+#~ msgstr "A conta social já está conectada a outra conta."
+
+#~ msgid "The social account has been disconnected."
+#~ msgstr "A conta social foi desconectada."

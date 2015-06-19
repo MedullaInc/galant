@@ -1,0 +1,360 @@
+[
+  {
+    "fields": {
+      "model": "emailaddress",
+      "app_label": "account"
+    },
+    "model": "contenttypes.contenttype",
+    "pk": 1
+  },
+  {
+    "fields": {
+      "model": "emailconfirmation",
+      "app_label": "account"
+    },
+    "model": "contenttypes.contenttype",
+    "pk": 2
+  },
+  {
+    "fields": {
+      "model": "permission",
+      "app_label": "auth"
+    },
+    "model": "contenttypes.contenttype",
+    "pk": 3
+  },
+  {
+    "fields": {
+      "model": "group",
+      "app_label": "auth"
+    },
+    "model": "contenttypes.contenttype",
+    "pk": 4
+  },
+  {
+    "fields": {
+      "model": "logentry",
+      "app_label": "admin"
+    },
+    "model": "contenttypes.contenttype",
+    "pk": 5
+  },
+  {
+    "fields": {
+      "model": "contenttype",
+      "app_label": "contenttypes"
+    },
+    "model": "contenttypes.contenttype",
+    "pk": 6
+  },
+  {
+    "fields": {
+      "model": "site",
+      "app_label": "sites"
+    },
+    "model": "contenttypes.contenttype",
+    "pk": 7
+  },
+  {
+    "fields": {
+      "model": "session",
+      "app_label": "sessions"
+    },
+    "model": "contenttypes.contenttype",
+    "pk": 8
+  },
+  {
+    "fields": {
+      "model": "gallantuser",
+      "app_label": "gallant"
+    },
+    "model": "contenttypes.contenttype",
+    "pk": 9
+  },
+  {
+    "fields": {
+      "domain": "example.com",
+      "name": "example.com"
+    },
+    "model": "sites.site",
+    "pk": 1
+  },
+  {
+    "fields": {
+      "email_address": 1,
+      "key": "ro8qs35zdnbrlf2y26nheeqmnhmfple48azsjzy0e5sj77ejkc6utsrcpctnil2t",
+      "sent": "2015-06-18T18:21:40.921Z",
+      "created": "2015-06-18T18:21:40.292Z"
+    },
+    "model": "account.emailconfirmation",
+    "pk": 1
+  },
+  {
+    "fields": {
+      "codename": "add_emailaddress",
+      "name": "Can add email address",
+      "content_type": 1
+    },
+    "model": "auth.permission",
+    "pk": 1
+  },
+  {
+    "fields": {
+      "codename": "change_emailaddress",
+      "name": "Can change email address",
+      "content_type": 1
+    },
+    "model": "auth.permission",
+    "pk": 2
+  },
+  {
+    "fields": {
+      "codename": "delete_emailaddress",
+      "name": "Can delete email address",
+      "content_type": 1
+    },
+    "model": "auth.permission",
+    "pk": 3
+  },
+  {
+    "fields": {
+      "codename": "add_emailconfirmation",
+      "name": "Can add email confirmation",
+      "content_type": 2
+    },
+    "model": "auth.permission",
+    "pk": 4
+  },
+  {
+    "fields": {
+      "codename": "change_emailconfirmation",
+      "name": "Can change email confirmation",
+      "content_type": 2
+    },
+    "model": "auth.permission",
+    "pk": 5
+  },
+  {
+    "fields": {
+      "codename": "delete_emailconfirmation",
+      "name": "Can delete email confirmation",
+      "content_type": 2
+    },
+    "model": "auth.permission",
+    "pk": 6
+  },
+  {
+    "fields": {
+      "codename": "add_permission",
+      "name": "Can add permission",
+      "content_type": 3
+    },
+    "model": "auth.permission",
+    "pk": 7
+  },
+  {
+    "fields": {
+      "codename": "change_permission",
+      "name": "Can change permission",
+      "content_type": 3
+    },
+    "model": "auth.permission",
+    "pk": 8
+  },
+  {
+    "fields": {
+      "codename": "delete_permission",
+      "name": "Can delete permission",
+      "content_type": 3
+    },
+    "model": "auth.permission",
+    "pk": 9
+  },
+  {
+    "fields": {
+      "codename": "add_group",
+      "name": "Can add group",
+      "content_type": 4
+    },
+    "model": "auth.permission",
+    "pk": 10
+  },
+  {
+    "fields": {
+      "codename": "change_group",
+      "name": "Can change group",
+      "content_type": 4
+    },
+    "model": "auth.permission",
+    "pk": 11
+  },
+  {
+    "fields": {
+      "codename": "delete_group",
+      "name": "Can delete group",
+      "content_type": 4
+    },
+    "model": "auth.permission",
+    "pk": 12
+  },
+  {
+    "fields": {
+      "codename": "add_logentry",
+      "name": "Can add log entry",
+      "content_type": 5
+    },
+    "model": "auth.permission",
+    "pk": 13
+  },
+  {
+    "fields": {
+      "codename": "change_logentry",
+      "name": "Can change log entry",
+      "content_type": 5
+    },
+    "model": "auth.permission",
+    "pk": 14
+  },
+  {
+    "fields": {
+      "codename": "delete_logentry",
+      "name": "Can delete log entry",
+      "content_type": 5
+    },
+    "model": "auth.permission",
+    "pk": 15
+  },
+  {
+    "fields": {
+      "codename": "add_contenttype",
+      "name": "Can add content type",
+      "content_type": 6
+    },
+    "model": "auth.permission",
+    "pk": 16
+  },
+  {
+    "fields": {
+      "codename": "change_contenttype",
+      "name": "Can change content type",
+      "content_type": 6
+    },
+    "model": "auth.permission",
+    "pk": 17
+  },
+  {
+    "fields": {
+      "codename": "delete_contenttype",
+      "name": "Can delete content type",
+      "content_type": 6
+    },
+    "model": "auth.permission",
+    "pk": 18
+  },
+  {
+    "fields": {
+      "codename": "add_site",
+      "name": "Can add site",
+      "content_type": 7
+    },
+    "model": "auth.permission",
+    "pk": 19
+  },
+  {
+    "fields": {
+      "codename": "change_site",
+      "name": "Can change site",
+      "content_type": 7
+    },
+    "model": "auth.permission",
+    "pk": 20
+  },
+  {
+    "fields": {
+      "codename": "delete_site",
+      "name": "Can delete site",
+      "content_type": 7
+    },
+    "model": "auth.permission",
+    "pk": 21
+  },
+  {
+    "fields": {
+      "codename": "add_session",
+      "name": "Can add session",
+      "content_type": 8
+    },
+    "model": "auth.permission",
+    "pk": 22
+  },
+  {
+    "fields": {
+      "codename": "change_session",
+      "name": "Can change session",
+      "content_type": 8
+    },
+    "model": "auth.permission",
+    "pk": 23
+  },
+  {
+    "fields": {
+      "codename": "delete_session",
+      "name": "Can delete session",
+      "content_type": 8
+    },
+    "model": "auth.permission",
+    "pk": 24
+  },
+  {
+    "fields": {
+      "codename": "add_gallantuser",
+      "name": "Can add user",
+      "content_type": 9
+    },
+    "model": "auth.permission",
+    "pk": 25
+  },
+  {
+    "fields": {
+      "codename": "change_gallantuser",
+      "name": "Can change user",
+      "content_type": 9
+    },
+    "model": "auth.permission",
+    "pk": 26
+  },
+  {
+    "fields": {
+      "codename": "delete_gallantuser",
+      "name": "Can delete user",
+      "content_type": 9
+    },
+    "model": "auth.permission",
+    "pk": 27
+  },
+  {
+    "fields": {
+      "is_active": true,
+      "is_superuser": true,
+      "is_staff": true,
+      "last_login": "2015-06-19T16:31:49.358Z",
+      "groups": [],
+      "user_permissions": [],
+      "password": "pbkdf2_sha256$20000$jXfnqqKP5yLs$hktyIlNnoYeIcLq2BO1ZNZwarQUAoqrriJHApnGpryA=",
+      "email": "david.agg@gmail.com",
+      "date_joined": "2015-06-18T18:21:40.191Z"
+    },
+    "model": "gallant.gallantuser",
+    "pk": 1
+  },
+  {
+    "fields": {
+      "verified": false,
+      "user": 1,
+      "primary": true,
+      "email": "david.agg@gmail.com"
+    },
+    "model": "account.emailaddress",
+    "pk": 1
+  }
+]
