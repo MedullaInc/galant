@@ -25,3 +25,4 @@ $ ./scripts/setup.sh
 
 - Install PhantomJS (for OS X download binary and copy to somewhere in PATH, eg /usr/bin)
 
+- For internationalization, run 'python manage.py makemessages'
