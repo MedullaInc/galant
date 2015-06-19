@@ -2,6 +2,10 @@ Setup for running and / or development environment:
 
 - Install python, pip, and virtualenv
 
+- Create virtual environment (this will be activated by autoenv from .env when you cd to the project directory,
+but since you're already there you need to activate it manually):
+$ virtualenv venv
+
 - Instal autoenv:
 
 OSX
@@ -13,11 +17,6 @@ Linux:
 $ git clone git://github.com/kennethreitz/autoenv.git ~/.autoenv
 $ source ~/.autoenv/activate.sh
 $ echo 'source ~/.autoenv/activate.sh' >> ~/.bashrc
-
-- Create virtual environment (this will be activated by autoenv from .env when you cd to the project directory,
-but since you're already there you need to activate it manually):
-$ virtualenv venv
-$ source venv/bin/activate
 
 - Install dependencies, run project setup:
 $ pip install -r requirements.txt 
