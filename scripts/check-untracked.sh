@@ -1,4 +1,4 @@
-files=$(git status -u --porcelain --no-column | grep "^??")
+files=$(git status -u --porcelain --no-column)
 if [ -z "$files" ]; then
   exit 0
 fi
