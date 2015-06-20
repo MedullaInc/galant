@@ -1,8 +1,8 @@
 #!/bin/bash
  
 NAME="gallant"                                    # Name of the application
-DJANGODIR=/home/gallant/gallant/                  # Django project directory
-SOCKFILE=/home/gallant/gallant/gunicorn.sock      # we will communicte using this unix socket
+DJANGODIR=/webapps/gallant/                       # Django project directory
+SOCKFILE=/webapps/gallant/gunicorn.sock           # we will communicte using this unix socket
 USER=gallant                                      # the user to run as
 GROUP=gallant                                     # the group to run as
 NUM_WORKERS=3                                     # how many worker processes should Gunicorn spawn
@@ -28,5 +28,4 @@ exec gunicorn ${DJANGO_WSGI_MODULE}:application \
   --workers $NUM_WORKERS \
   --user=$USER --group=$GROUP \
   --bind=unix:$SOCKFILE \
-  --log-level=debug \
-  --log-file=-
+  --log-file=$RUNDIR/gunicorn.log
