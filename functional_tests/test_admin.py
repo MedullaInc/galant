@@ -8,7 +8,7 @@ class AdminTest(LiveServerTestCase):
         self.browser = webdriver.PhantomJS()
 
         # other browsers can be set here, eg
-        # self.browser = webdriver.Firefox()
+        #self.browser = webdriver.Firefox()
 
         # open web browser, go to the admin page
         self.browser.get(self.live_server_url + '/admin/')

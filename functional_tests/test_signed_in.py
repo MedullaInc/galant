@@ -40,4 +40,8 @@ class SignedInTest(LiveServerTestCase):
         body = self.browser.find_element_by_tag_name('body')
         self.assertIn('Sign Out', body.text)
 
-
+    def test_can_access_briefs(self):
+        # check 'Briefs' h1
+        self.browser.get(self.live_server_url + '/briefs/')
+        h1 = self.browser.find_element_by_tag_name('h1')
+        self.assertIn('Briefs', h1.text)
