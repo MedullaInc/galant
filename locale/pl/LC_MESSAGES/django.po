@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-06-19 08:58-0700\n"
+"POT-Creation-Date: 2015-06-23 15:13-0700\n"
 "PO-Revision-Date: 2014-08-12 00:33+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -15,63 +15,53 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: gallant/settings/base.py:18
-msgid "English"
-msgstr ""
-
-#: gallant/settings/base.py:19
-msgid "Spanish"
-msgstr ""
-
-#: gallant/templates/account/email.html:6
-#: gallant/templates/socialaccount/connections.html:34
+#: templates/account/email.html:6 templates/socialaccount/connections.html:34
 msgid "Account"
 msgstr "Konto"
 
-#: gallant/templates/account/email.html:13
+#: templates/account/email.html:13
 #, fuzzy
 #| msgid "The following e-mail addresses are associated with your account:"
 msgid "The following e-mail addresses are associated to your account:"
 msgstr "Poniższe adresy e-mail są powiązane z Twoim kontem:"
 
-#: gallant/templates/account/email.html:22
+#: templates/account/email.html:22
 msgid "E-mail"
 msgstr "E-mail"
 
-#: gallant/templates/account/email.html:25
+#: templates/account/email.html:25
 msgid "Status"
 msgstr ""
 
-#: gallant/templates/account/email.html:40
+#: templates/account/email.html:40
 msgid "Verified"
 msgstr "Zweryfikowany"
 
-#: gallant/templates/account/email.html:42
+#: templates/account/email.html:42
 msgid "Unverified"
 msgstr "Brak weryfikacji"
 
-#: gallant/templates/account/email.html:44
+#: templates/account/email.html:44
 msgid "Primary"
 msgstr "Podstawowy"
 
-#: gallant/templates/account/email.html:52
+#: templates/account/email.html:52
 msgid "Make Primary"
 msgstr "Uczyń podstawowym"
 
-#: gallant/templates/account/email.html:53
+#: templates/account/email.html:53
 msgid "Re-send Verification"
 msgstr "Prześlij ponownie wiadomość weryfikacyjną"
 
-#: gallant/templates/account/email.html:54
-#: gallant/templates/socialaccount/connections.html:58
+#: templates/account/email.html:54 templates/socialaccount/connections.html:58
 msgid "Remove"
 msgstr "Usuń"
 
-#: gallant/templates/account/email.html:61
+#: templates/account/email.html:61
 msgid "Warning:"
 msgstr "Uwaga:"
 
-#: gallant/templates/account/email.html:61
+#: templates/account/email.html:61
 msgid ""
 "You currently do not have any e-mail address set up. You should really add "
 "an e-mail address so you can receive notifications, reset your password, etc."
@@ -80,24 +70,24 @@ msgstr ""
 "Powinieneś je dodać, aby otrzymywać informacje administracyjne, wiadomości o "
 "zmianie hasła, itd."
 
-#: gallant/templates/account/email.html:66
+#: templates/account/email.html:66
 msgid "Add E-mail Address"
 msgstr "Dodaj adres e-mail"
 
-#: gallant/templates/account/email.html:72
+#: templates/account/email.html:72
 msgid "Add E-mail"
 msgstr "Dodaj e-mail"
 
-#: gallant/templates/account/email.html:83
+#: templates/account/email.html:83
 msgid "Do you really want to remove the selected e-mail address?"
 msgstr "Czy naprawdę chcesz usunąć wybrany adres e-mail?"
 
-#: gallant/templates/account/email_confirm.html:6
-#: gallant/templates/account/email_confirm.html:10
+#: templates/account/email_confirm.html:6
+#: templates/account/email_confirm.html:10
 msgid "Confirm E-mail Address"
 msgstr "Potwierdź adres e-mail"
 
-#: gallant/templates/account/email_confirm.html:16
+#: templates/account/email_confirm.html:16
 #, python-format
 msgid ""
 "Please confirm that <a href=\"mailto:%(email)s\">%(email)s</a> is an e-mail "
@@ -106,11 +96,11 @@ msgstr ""
 "Proszę potwierdź, że adres <a href=\"mailto:%(email)s\">%(email)s</a> jest "
 "adresem e-mail dla użytkownika %(user_display)s."
 
-#: gallant/templates/account/email_confirm.html:20
+#: templates/account/email_confirm.html:20
 msgid "Confirm"
 msgstr "Potwierdź"
 
-#: gallant/templates/account/email_confirm.html:27
+#: templates/account/email_confirm.html:27
 #, python-format
 msgid ""
 "This e-mail confirmation link expired or is invalid. Please <a href="
@@ -119,13 +109,12 @@ msgstr ""
 "Łącze z adresem do zresetowania hasła wygasło lub jest niepoprawne. Musisz "
 "<a href=\"%(email_url)s\">wygenerować nowe łącze dla Twojego adresu. </a>."
 
-#: gallant/templates/account/login.html:7
-#: gallant/templates/account/login.html:12
-#: gallant/templates/account/login.html:41
+#: templates/account/login.html:7 templates/account/login.html.py:12
+#: templates/account/login.html:41
 msgid "Sign In"
 msgstr "Zaloguj"
 
-#: gallant/templates/account/login.html:15
+#: templates/account/login.html:15
 #, fuzzy, python-format
 #| msgid ""
 #| "Please sign in with one\n"
@@ -144,39 +133,38 @@ msgstr ""
 "a> \n"
 "w %(site_name)s i zaloguj poniżej:"
 
-#: gallant/templates/account/login.html:26
+#: templates/account/login.html:26
 #: venv/lib/python2.7/site-packages/django/utils/text.py:248
 msgid "or"
 msgstr "lub"
 
-#: gallant/templates/account/login.html:42
+#: templates/account/login.html:42
 msgid "Forgot Password?"
 msgstr "Zapomniałeś hasła?"
 
-#: gallant/templates/account/logout.html:5
-#: gallant/templates/account/logout.html:8
-#: gallant/templates/account/logout.html:17 gallant/templates/base.html:56
+#: templates/account/logout.html:5 templates/account/logout.html.py:8
+#: templates/account/logout.html:17 templates/base.html:56
 msgid "Sign Out"
 msgstr "Wyloguj się"
 
-#: gallant/templates/account/logout.html:10
+#: templates/account/logout.html:10
 msgid "Are you sure you want to sign out?"
 msgstr "Jesteś pewny, że chcesz się wylogować ?"
 
-#: gallant/templates/account/password_change.html:6
-#: gallant/templates/account/password_change.html:14
-#: gallant/templates/account/password_reset_from_key.html:6
-#: gallant/templates/account/password_reset_from_key.html:9
-#: gallant/templates/account/password_reset_from_key.html:21
+#: templates/account/password_change.html:6
+#: templates/account/password_change.html:14
+#: templates/account/password_reset_from_key.html:6
+#: templates/account/password_reset_from_key.html:9
+#: templates/account/password_reset_from_key.html:21
 msgid "Change Password"
 msgstr "Zmień hasło"
 
-#: gallant/templates/account/password_reset.html:7
-#: gallant/templates/account/password_reset.html:11
+#: templates/account/password_reset.html:7
+#: templates/account/password_reset.html:11
 msgid "Password Reset"
 msgstr "Resetowanie hasła"
 
-#: gallant/templates/account/password_reset.html:16
+#: templates/account/password_reset.html:16
 msgid ""
 "Forgotten your password? Enter your e-mail address below, and we'll send you "
 "an e-mail allowing you to reset it."
@@ -184,20 +172,20 @@ msgstr ""
 "Zapomniałeś swojego hasła? Wpisz swój adres e-mail poniżej, a my wyślemy "
 "Tobie wiadomość, dzięki której dokonasz jego zmiany."
 
-#: gallant/templates/account/password_reset.html:22
+#: templates/account/password_reset.html:22
 msgid "Reset My Password"
 msgstr "Zresetuj moje hasło"
 
-#: gallant/templates/account/password_reset.html:26
+#: templates/account/password_reset.html:26
 msgid "Please contact us if you have any trouble resetting your password."
 msgstr ""
 "Skontaktuj się z nami, jeśli masz problem ze zresetowaniem swojego hasła."
 
-#: gallant/templates/account/password_reset_from_key.html:9
+#: templates/account/password_reset_from_key.html:9
 msgid "Bad Token"
 msgstr "Zły klucz"
 
-#: gallant/templates/account/password_reset_from_key.html:13
+#: templates/account/password_reset_from_key.html:13
 #, python-format
 msgid ""
 "The password reset link was invalid, possibly because it has already been "
@@ -207,107 +195,105 @@ msgstr ""
 "Łącze resetujące hasło jest niepoprawne, prawdopodobnie już go użyłeś.  <a "
 "href=\"%(passwd_reset_url)s\">Zresetuj hasło jeszcze raz.</a>"
 
-#: gallant/templates/account/password_reset_from_key.html:25
+#: templates/account/password_reset_from_key.html:25
 msgid "Your password is now changed."
 msgstr "Twoje hasło zostało zmienione."
 
-#: gallant/templates/account/password_set.html:6
-#: gallant/templates/account/password_set.html:14
+#: templates/account/password_set.html:6
+#: templates/account/password_set.html:14
 msgid "Set Password"
 msgstr "Ustaw hasło"
 
-#: gallant/templates/account/signup.html:6
-#: gallant/templates/socialaccount/signup.html:6
+#: templates/account/signup.html:6 templates/socialaccount/signup.html:6
 msgid "Signup"
 msgstr "Zarejestruj się"
 
-#: gallant/templates/account/signup.html:9
-#: gallant/templates/account/signup.html:20
-#: gallant/templates/socialaccount/signup.html:9
-#: gallant/templates/socialaccount/signup.html:21
+#: templates/account/signup.html:9 templates/account/signup.html.py:20
+#: templates/socialaccount/signup.html:9
+#: templates/socialaccount/signup.html:21
 msgid "Sign Up"
 msgstr "Zarejestuj się"
 
-#: gallant/templates/account/signup.html:11
+#: templates/account/signup.html:11
 #, python-format
 msgid ""
 "Already have an account? Then please <a href=\"%(login_url)s\">sign in</a>."
 msgstr ""
 "Masz już konto? Jeżeli tak, to <a href=\"%(login_url)s\">zaloguj się</a>."
 
-#: gallant/templates/base.html:52 gallant/templates/base.html.py:79
+#: templates/base.html:52 templates/base.html.py:79
 msgid "Features"
 msgstr ""
 
-#: gallant/templates/base.html:53 gallant/templates/base.html.py:80
+#: templates/base.html:53 templates/base.html.py:80
 msgid "Pricing"
 msgstr ""
 
-#: gallant/templates/base.html:54 gallant/templates/base.html.py:81
+#: templates/base.html:54 templates/base.html.py:81
 msgid "Contact"
 msgstr ""
 
-#: gallant/templates/base.html:85
+#: templates/base.html:85
 msgid "Facebook"
 msgstr ""
 
-#: gallant/templates/base.html:86
+#: templates/base.html:86
 msgid "Twitter"
 msgstr ""
 
-#: gallant/templates/base.html:87
+#: templates/base.html:87
 msgid "Blog"
 msgstr ""
 
-#: gallant/templates/base.html:91
+#: templates/base.html:91
 msgid "Copyright Gallant"
 msgstr ""
 
-#: gallant/templates/base.html:92
+#: templates/base.html:92
 msgid "Terms & Conditions"
 msgstr ""
 
-#: gallant/templates/base.html:93
+#: templates/base.html:93
 msgid "Privacy Policy"
 msgstr ""
 
-#: gallant/templates/index.html:20
+#: templates/index.html:19
 #, fuzzy
 #| msgid "Sign Up"
 msgid "Sign Up Now!"
 msgstr "Zarejestuj się"
 
-#: gallant/templates/index.html:33
+#: templates/index.html:32
 #, fuzzy
 #| msgid "Account"
 msgid "Account Login"
 msgstr "Konto"
 
-#: gallant/templates/index.html:36
+#: templates/index.html:35
 #: venv/lib/python2.7/site-packages/custom_user/forms.py:22
 #: venv/lib/python2.7/site-packages/custom_user/forms.py:92
 msgid "Password"
 msgstr "Hasło"
 
-#: gallant/templates/index.html:43
+#: templates/index.html:42
 #, fuzzy
 #| msgctxt "field label"
 #| msgid "Login"
 msgid "Login"
 msgstr "Login"
 
-#: gallant/templates/index.html:50
+#: templates/index.html:49
 #, fuzzy
 #| msgid "Forgot Password?"
 msgid "Forgot your password?"
 msgstr "Zapomniałeś hasła?"
 
-#: gallant/templates/socialaccount/connections.html:5
+#: templates/socialaccount/connections.html:5
 #, fuzzy
 msgid "Connected Accounts"
 msgstr "Konta społecznościowe"
 
-#: gallant/templates/socialaccount/connections.html:11
+#: templates/socialaccount/connections.html:11
 msgid ""
 "You can sign in to your account using any of the following third party "
 "accounts:"
@@ -315,27 +301,27 @@ msgstr ""
 "Możesz zalogować się do swojego konta używając dowolnego z poniższych kont "
 "zewnętrznych:"
 
-#: gallant/templates/socialaccount/connections.html:31
+#: templates/socialaccount/connections.html:31
 #, fuzzy
 #| msgid "provider"
 msgid "Provider"
 msgstr "dostawca usług"
 
-#: gallant/templates/socialaccount/connections.html:67
+#: templates/socialaccount/connections.html:67
 msgid "None!"
 msgstr ""
 
-#: gallant/templates/socialaccount/connections.html:67
+#: templates/socialaccount/connections.html:67
 msgid ""
 "You currently have no social network accounts connected to this account."
 msgstr ""
 "Nie masz obecnie żadnych kont społecznościowych połączonych z tym kontem."
 
-#: gallant/templates/socialaccount/connections.html:71
+#: templates/socialaccount/connections.html:71
 msgid "Add a 3rd Party Account"
 msgstr "Dodaj konto zewnętrzne"
 
-#: gallant/templates/socialaccount/signup.html:11
+#: templates/socialaccount/signup.html:11
 #, fuzzy, python-format
 #| msgid ""
 #| "You are about to use your %(provider_name)s account to login to\n"

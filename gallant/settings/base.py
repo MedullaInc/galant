@@ -45,7 +45,9 @@ INSTALLED_APPS = (
     'bootstrapform',
     'custom_user',
     'selenium',
+    
     'gallant',
+    'briefs',
 )
 
 MIDDLEWARE_CLASSES = (

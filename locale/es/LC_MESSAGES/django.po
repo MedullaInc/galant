@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: django-allauth\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-06-19 12:45-0700\n"
+"POT-Creation-Date: 2015-06-23 15:13-0700\n"
 "PO-Revision-Date: 2014-08-12 00:30+0200\n"
 "Last-Translator: Jannis \n"
 "Language-Team: Spanish (http://www.transifex.com/projects/p/django-allauth/"
@@ -17,14 +17,6 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-
-#: gallant/settings/base.py:109
-msgid "English"
-msgstr ""
-
-#: gallant/settings/base.py:110
-msgid "Spanish"
-msgstr ""
 
 #: templates/account/email.html:6 templates/socialaccount/connections.html:34
 msgid "Account"
@@ -179,8 +171,8 @@ msgid ""
 "Forgotten your password? Enter your e-mail address below, and we'll send you "
 "an e-mail allowing you to reset it."
 msgstr ""
-"¿Has olvidado tu contraseña? Ingresa tu correo electrónico y te enviaremos un "
-"correo que le permitirá restablecerla."
+"¿Has olvidado tu contraseña? Ingresa tu correo electrónico y te enviaremos "
+"un correo que le permitirá restablecerla."
 
 #: templates/account/password_reset.html:22
 msgid "Reset My Password"
@@ -270,12 +262,10 @@ msgid "Privacy Policy"
 msgstr "Política de Privacidad"
 
 #: templates/index.html:19
-#| msgid "Sign Up"
 msgid "Sign Up Now!"
 msgstr "Regístrate!"
 
 #: templates/index.html:32
-#| msgid "Account"
 msgid "Account Login"
 msgstr "Iniciar Sesión"
 
@@ -286,13 +276,10 @@ msgid "Password"
 msgstr "Contraseña"
 
 #: templates/index.html:42
-#| msgctxt "field label"
-#| msgid "Login"
 msgid "Login"
 msgstr "Ingresar"
 
 #: templates/index.html:49
-#| msgid "Forgot Password?"
 msgid "Forgot your password?"
 msgstr "¿Olvidaste tu contraseña?"
 
