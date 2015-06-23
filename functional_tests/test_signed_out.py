@@ -2,6 +2,7 @@
 from django.test import LiveServerTestCase
 from selenium import webdriver
 from django.utils.translation import activate
+from django.core.urlresolvers import reverse
 
 class SignedOutTest(LiveServerTestCase):
     # fixtures = ['functional_tests/fixtures/ft_one_user.json']
@@ -22,7 +23,7 @@ class SignedOutTest(LiveServerTestCase):
         for lang, e_text in [('en', u'Account Login'),
                                 ('es', u'Iniciar Sesión')]:
             activate(lang)
-            self.browser.get(self.live_server_url + '/%s/' % lang)
+            self.browser.get(self.live_server_url + reverse('home'))
             e = self.browser.find_element_by_css_selector(".login-title")
             self.assertEqual(e.text, e_text)
 
@@ -30,6 +31,6 @@ class SignedOutTest(LiveServerTestCase):
         for lang, e_text in [('en', u'Sign Up Now!'),
                                 ('es', u'Regístrate!')]:
             activate(lang)
-            self.browser.get(self.live_server_url + '/%s/' % lang)
+            self.browser.get(self.live_server_url + reverse('home'))
             e = self.browser.find_element_by_name("signup")
             self.assertEqual(e.text, e_text)
