@@ -7,6 +7,7 @@ class SignedInTest(LiveServerTestCase):
     fixtures = ['functional_tests/fixtures/ft_one_user.json']
 
     def setUp(self):
+        activate('en')
         self.browser = webdriver.PhantomJS()
 
         # other browsers can be set here, eg
@@ -44,7 +45,6 @@ class SignedInTest(LiveServerTestCase):
 
     def test_can_access_briefs(self):
         # check 'Briefs' h1
-        activate('en')
         self.browser.get(self.live_server_url + reverse('briefs'))
         h1 = self.browser.find_element_by_tag_name('h1')
         self.assertIn('Briefs', h1.text)
