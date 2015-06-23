@@ -1,8 +1,12 @@
 Setup for running and / or development environment:
 
-- Install python, pip, and virtualenv
+- Requirements: python, pip, virtualenv, python-dev (Ubuntu)
 
-- Instal autoenv:
+- Create virtual environment (this will be activated by autoenv from .env when you cd to the project directory,
+but since you're already there you need to activate it manually):
+$ virtualenv venv
+
+- Optionally instal autoenv:
 
 OSX
 $ brew install autoenv
@@ -14,15 +18,10 @@ $ git clone git://github.com/kennethreitz/autoenv.git ~/.autoenv
 $ source ~/.autoenv/activate.sh
 $ echo 'source ~/.autoenv/activate.sh' >> ~/.bashrc
 
-- Create virtual environment (this will be activated by autoenv from .env when you cd to the project directory,
-but since you're already there you need to activate it manually):
-$ virtualenv venv
-$ source venv/bin/activate
-
 - Install dependencies, run project setup:
 $ pip install -r requirements.txt 
 $ ./scripts/setup.sh
 
-- Install PhantomJS (for OS X download binary and copy to somewhere in PATH, eg /usr/bin)
+- For testing, install PhantomJS (for OS X download binary and copy to somewhere in PATH, eg /usr/bin)
 
-- For internationalization, run 'python manage.py makemessages'
+- For internationalization, install gettext & run 'python manage.py makemessages', 'python manage.py compilemessages'
