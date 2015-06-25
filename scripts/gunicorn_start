@@ -28,4 +28,4 @@ exec gunicorn ${DJANGO_WSGI_MODULE}:application \
   --workers $NUM_WORKERS \
   --user=$USER --group=$GROUP \
   --bind=unix:$SOCKFILE \
-  --log-file=$RUNDIR/gunicorn.log
+  --log-file=$RUNDIR/logs/gunicorn.log
