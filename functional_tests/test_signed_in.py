@@ -7,7 +7,6 @@ class SignedInTest(LiveServerTestCase):
     fixtures = ['functional_tests/fixtures/ft_one_user.json']
 
     def setUp(self):
-        activate('en')
         self.browser = webdriver.PhantomJS()
 
         # other browsers can be set here, eg
