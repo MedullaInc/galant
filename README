@@ -1,6 +1,6 @@
 Setup for running and / or development environment:
 
-- Requirements: python, pip, virtualenv, python-dev (Ubuntu)
+- Requirements: python, pip, virtualenv, python-dev (Ubuntu), MySQL
 
 - Create virtual environment (this will be activated by autoenv from .env when you cd to the project directory,
 but since you're already there you need to activate it manually):
@@ -22,6 +22,34 @@ $ echo 'source ~/.autoenv/activate.sh' >> ~/.bashrc
 $ pip install -r requirements.txt 
 $ ./scripts/setup.sh
 
+- Default dev config is to have MySQL root user with no password, make sure to add "skip-networking" to your my.cnf if
+  you do this. Create new database manually, named according to config (default gallant_dev). If your DB is set up
+  differently, create a different config file and point DJANGO_SETTINGS_MODULE to it.
+
+- Run 'python manage.py makemigrations', 'python manage.py migrate'
+
 - For testing, install PhantomJS (for OS X download binary and copy to somewhere in PATH, eg /usr/bin)
 
-- For internationalization, install gettext & run 'python manage.py makemessages', 'python manage.py compilemessages'
+- For internationalization, install gettext & run 'python manage.py compilemessages'
+
+
+Server Setup:
+- Install ngninx and Supervisor, copy config from scripts/nginx.sites-available.gallant and scripts/supervisord.conf to
+  their respective locations.
+- Install scripts/supervisord.init.d.script to /etc/init.d/supervisord
+- Create django config file in gallant/settings/prod_ec2.py with proper values for DB / hostname, eg:
+    DATABASES = {
+        'default': {
+            'NAME': 'gallant',
+            'ENGINE': 'django.db.backends.mysql',
+            'USER': 'root',
+            'PASSWORD': 'Hfk4WDDjM]4@$:4-',
+            'OPTIONS': {
+              'autocommit': True,
+            },
+        }
+    }
+
+    ALLOWED_HOSTS = ['galant.co',]
+- scripts/gunicorn_start will be run from supervisord with DJANGO_SETTINGS_MODULE=gallant.settings.prod_ec2
+
