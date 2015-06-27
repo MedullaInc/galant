@@ -43,7 +43,7 @@ Server Setup:
             'NAME': 'gallant',
             'ENGINE': 'django.db.backends.mysql',
             'USER': 'root',
-            'PASSWORD': 'Hfk4WDDjM]4@$:4-',
+            'PASSWORD': '[enter password here]',
             'OPTIONS': {
               'autocommit': True,
             },
