@@ -36,3 +36,23 @@ class SectionTest(TestCase):
         section.text = ULText.objects.create(text_dict={'en': '<script>evil</script>'})
 
         self.assertFalse("<script>" in section.render_html())
+
+
+class QuoteTest(TestCase):
+    def test_save_load(self):
+        fixture = AutoFixture(Quote, generate_fk=True)
+        obj = fixture.create(1)[0]
+        new_obj = Quote.objects.get(id=obj.id)
+
+        self.assertEqual(obj.id, new_obj.id)
+
+    def test_versions(self):
+        fixture = AutoFixture(Quote, generate_fk=True)
+        objs = fixture.create(10)
+        base_quote = objs[9]
+        for o in objs[0:9]:
+            o.parent = base_quote
+            o.save()
+
+        self.assertEqual(len(base_quote.versions.all()), 9)
+
