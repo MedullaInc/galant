@@ -16,7 +16,6 @@ class SectionTest(TestCase):
     def test_render_html(self):
         fixture = AutoFixture(Section, generate_fk=True)
         section = fixture.create(1)[0]
-        new_section = Section.objects.get(id=section.id)
 
         self.assertTrue(section.render_html().startswith("<h1>"))
         self.assertTrue("</h1><br>" in section.render_html())
