@@ -24,8 +24,15 @@ class SectionTest(TestCase):
     def test_sub_sections(self):
         fixture = AutoFixture(Section, generate_fk=True)
         sections = fixture.create(10)
-        for i in range(0, 9):
-            sections[i].parent = sections[9]
-            sections[i].save()
+        for s in sections[0:9]:
+            s.parent = sections[9]
+            s.save()
 
         self.assertEqual(len(sections[9].sub_sections.all()), 9)
+
+    def test_safe_html(self):
+        fixture = AutoFixture(Section, generate_fk=True)
+        section = fixture.create(1)[0]
+        section.text = ULText.objects.create(text_dict={'en': '<script>evil</script>'})
+
+        self.assertFalse("<script>" in section.render_html())
