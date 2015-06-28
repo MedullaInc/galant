@@ -23,5 +23,6 @@ urlpatterns = i18n_patterns(
     url(r'^admin/', include(admin.site.urls)),
 
     url(r'^$', TemplateView.as_view(template_name='index.html'), name='home'),
+    url(r'^quotes/$', TemplateView.as_view(template_name='quotes/index.html'), name='quotes'),
     url(r'^briefs/$', 'briefs.views.index', name='briefs'),
 )
