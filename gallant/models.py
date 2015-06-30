@@ -1,10 +1,11 @@
 import inspect
 from custom_user.models import AbstractEmailUser
-from django.db import models
+from django.db.models import *
 from django.conf import settings
 from jsonfield import JSONField
 from autofixture import generators, register, AutoFixture
 from djmoney.models.fields import MoneyField
+from djmoney.forms.widgets import CURRENCY_CHOICES
 from enum import Enum
 
 
@@ -16,7 +17,13 @@ class GallantUser(AbstractEmailUser):
         swappable = 'AUTH_USER_MODEL'
 
 
-class ULText(models.Model):
+class Note(Model):
+    text = TextField(help_text='User comment / note.')
+    created = DateTimeField(auto_now_add=True)
+    created_by = ForeignKey(GallantUser)
+
+
+class ULText(Model):
     """
     User Locale Text, allows users to store translated versions of the same text and display the version that
     matches client's language preferences.
@@ -73,20 +80,20 @@ class ServiceType(ChoiceEnum):
     INTERIOR_DESIGN = 8
 
 
-class Service(models.Model):
+class Service(Model):
     """
     A service to be rendered for a client, will appear on Quotes. When associated with a project / user, it should
     be displayed as a 'deliverable' instead.
     """
-    name = models.ForeignKey(ULText, related_name='name')
-    description = models.ForeignKey(ULText, related_name='description')
+    name = ForeignKey(ULText, related_name='name')
+    description = ForeignKey(ULText, related_name='description')
 
     # currency is chosen based on client preference
     cost = MoneyField(max_digits=10, decimal_places=2, default_currency='USD')
-    quantity = models.IntegerField()
-    type = models.CharField(max_length=2, choices=ServiceType.choices())
+    quantity = IntegerField()
+    type = CharField(max_length=2, choices=ServiceType.choices())
 
-    parent = models.ForeignKey('self', null=True, blank=True, related_name='sub_services')
+    parent = ForeignKey('self', null=True, blank=True, related_name='sub_services')
 
     def get_total_cost(self):
         total = self.cost
@@ -96,3 +103,37 @@ class Service(models.Model):
         return total
 
 
+class ClientType(ChoiceEnum):
+    INDIVIDUAL = 0
+    ORGANIZATION = 1
+
+
+class ClientSize(ChoiceEnum):
+    MICRO = 0
+    SMALL = 1
+    MEDIUM = 2
+    LARGE = 3
+
+
+class ClientStatus(ChoiceEnum):
+    APPROACHED = 0
+    QUOTED = 1
+    BRIEF_SENT = 2
+    PENDING_PAYMENT = 3
+    PENDING_DELIVERABLES = 4
+    SETTLED = 5
+    PAST_DUE = 6
+    CHECK_NOTES = 7
+    BLACKLISTED = 8
+
+
+class Client(Model):
+    name = CharField(max_length=255)
+    type = CharField(max_length=2, choices=ClientType.choices())
+    size = CharField(max_length=2, choices=ClientSize.choices())
+    status = CharField(max_length=2, choices=ClientStatus.choices())
+
+    language = CharField(max_length=5, choices=settings.LANGUAGES)
+    currency = CharField(max_length=3, choices=CURRENCY_CHOICES)
+
+    notes = ManyToManyField(Note)

@@ -1,12 +1,13 @@
 from gallant.models import *
+from django.db.models import *
 from django.utils.html import escape, mark_safe
 
 
 # Text section of Quote
-class Section(models.Model):
-    title = models.ForeignKey(ULText, related_name='title')
-    text = models.ForeignKey(ULText, related_name='text')
-    parent = models.ForeignKey('self', null=True, blank=True, related_name='sub_sections')
+class Section(Model):
+    title = ForeignKey(ULText, related_name='title')
+    text = ForeignKey(ULText, related_name='text')
+    parent = ForeignKey('self', null=True, blank=True, related_name='sub_sections')
 
     def render_html(self, language=None):
         html = '<h1>%s</h1><br>%s' % (escape(self.title.get_text(language)), escape(self.text.get_text(language)))
@@ -14,7 +15,7 @@ class Section(models.Model):
 
 
 class ServiceSection(Section):
-    service = models.ForeignKey(Service)
+    service = ForeignKey(Service)
 
 
 class QuoteStatus(ChoiceEnum):
@@ -27,14 +28,16 @@ class QuoteStatus(ChoiceEnum):
     REJECTED = 6
 
 
-class Quote(models.Model):
-    intro = models.ForeignKey(Section, null=True, related_name='intro')
-    sections = models.ManyToManyField(Section, blank=True)
-    notes = models.ForeignKey(Section, null=True, related_name='notes')
+class Quote(Model):
+    name = CharField(max_length=512, default='New Quote')
+    client = ForeignKey(Client, null=True)
+    intro = ForeignKey(Section, null=True, related_name='intro')
+    sections = ManyToManyField(Section, blank=True)
+    notes = ForeignKey(Section, null=True, related_name='notes')
 
-    status = models.CharField(max_length=2, choices=QuoteStatus.choices(), default=QuoteStatus.DRAFT.value)
-    created = models.DateTimeField(auto_now_add=True)
+    status = CharField(max_length=2, choices=QuoteStatus.choices(), default=QuoteStatus.DRAFT.value)
+    created = DateTimeField(auto_now_add=True)
 
-    token = models.CharField(max_length=64, unique=True, null=True, help_text='For emailing URL')
+    token = CharField(max_length=64, unique=True, null=True, help_text='For emailing URL')
 
-    parent = models.ForeignKey('self', null=True, blank=True, related_name='versions')
+    parent = ForeignKey('self', null=True, blank=True, related_name='versions')
