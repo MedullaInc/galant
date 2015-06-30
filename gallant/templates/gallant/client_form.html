@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% load bootstrap i18n %}
+
+{% block content %}
+    <h2>Add New Client</h2>
+    <form id="add_client_form" class="form" method="post" action="">
+        {% csrf_token %}
+        {{ form|bootstrap }}
+        <div class="form-actions">
+            <button class="btn btn-default" type="submit">{% trans "Add" %}</button>
+        </div>
+    </form>
+{% endblock %}

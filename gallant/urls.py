@@ -17,6 +17,7 @@ from django.conf.urls import include, url
 from django.contrib import admin
 from django.conf.urls.i18n import i18n_patterns
 from django.views.generic.base import TemplateView
+from gallant.views import *
 
 urlpatterns = i18n_patterns(
     url(r'^accounts/', include('allauth.urls')),
@@ -25,4 +26,5 @@ urlpatterns = i18n_patterns(
     url(r'^$', TemplateView.as_view(template_name='index.html'), name='home'),
     url(r'^quotes/$', TemplateView.as_view(template_name='quotes/index.html'), name='quotes'),
     url(r'^briefs/$', 'briefs.views.index', name='briefs'),
+    url(r'^client/add/$', ClientCreate.as_view(), name='add_client'),
 )

@@ -45,3 +45,5 @@ class Quote(Model):
     token = CharField(max_length=64, unique=True, null=True, help_text='For emailing URL')
 
     parent = ForeignKey('self', null=True, blank=True, related_name='versions')
+
+
