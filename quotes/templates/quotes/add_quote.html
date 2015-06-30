@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>Create New Quote</h2>
+    <form id="add_quote_form" class="form" method="post" action="{% url 'account_signup' %}">
+        {% csrf_token %}
+        {{ form|bootstrap }}
+        {% if redirect_field_value %}
+            <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+        {% endif %}
+        <div class="form-actions">
+            <button class="btn btn-default" type="submit">{% trans "Create" %}</button>
+        </div>
+    </form>
+{% endblock %}
