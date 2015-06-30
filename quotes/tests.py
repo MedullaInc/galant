@@ -1,10 +1,10 @@
-from django.test import TestCase
+from django.test import TransactionTestCase
 from quotes.models import *
 from autofixture import AutoFixture
 
 
 # Create your tests here.
-class SectionTest(TestCase):
+class SectionTest(TransactionTestCase):
     def test_save_load(self):
         fixture = AutoFixture(Section, generate_fk=True)
         section = fixture.create(1)[0]
@@ -37,7 +37,7 @@ class SectionTest(TestCase):
         self.assertFalse("<script>" in section.render_html())
 
 
-class QuoteTest(TestCase):
+class QuoteTest(TransactionTestCase):
     def test_save_load(self):
         fixture = AutoFixture(Quote, generate_fk=True)
         obj = fixture.create(1)[0]

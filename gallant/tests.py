@@ -1,10 +1,10 @@
-from django.test import TestCase
+from django.test import TransactionTestCase
 from gallant.models import *
 from autofixture import AutoFixture
 
 
 # Create your tests here.
-class ULTextTest(TestCase):
+class ULTextTest(TransactionTestCase):
     def test_save_load(self):
         json = {'en': 'foobar', 'es': 'barra de foo'}
         obj = ULText.objects.create(text_dict=json)
@@ -21,7 +21,7 @@ class ULTextTest(TestCase):
         self.assertEqual(new_obj.get_text('es'), 'barra de foo')
 
 
-class ServiceTest(TestCase):
+class ServiceTest(TransactionTestCase):
     def test_save_load(self):
         fixture = AutoFixture(Service, generate_fk=True)
         service = fixture.create(1)[0]
@@ -41,3 +41,27 @@ class ServiceTest(TestCase):
 
         self.assertEqual(len(services[9].sub_services.all()), 9)
         self.assertEqual(total_cost, parent.get_total_cost())
+
+
+class ClientTest(TransactionTestCase):
+    def test_many_to_many(self):
+        fixture = AutoFixture(Client, generate_fk=True)
+        obj = fixture.create(1)[0]
+
+        self.assertEqual(len(obj.notes.all()), 0)
+
+        note_fixture = AutoFixture(Note, generate_fk=True)
+        notes = note_fixture.create(10)
+        obj.notes = notes
+        obj.save()
+
+        self.assertEqual(len(obj.notes.all()), 10)
+
+    def test_language_length(self):
+        fixture = AutoFixture(Client, generate_fk=True)
+        obj = fixture.create(1)[0]
+        obj.language = 'zh-hans'
+
+        warnings.filterwarnings('error')
+
+        obj.save()

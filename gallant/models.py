@@ -133,7 +133,7 @@ class Client(Model):
     size = CharField(max_length=2, choices=ClientSize.choices())
     status = CharField(max_length=2, choices=ClientStatus.choices())
 
-    language = CharField(max_length=5, choices=settings.LANGUAGES)
+    language = CharField(max_length=7, choices=settings.LANGUAGES)
     currency = CharField(max_length=3, choices=CURRENCY_CHOICES)
 
     notes = ManyToManyField(Note)
