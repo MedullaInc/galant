@@ -1,5 +1,6 @@
 from gallant.models import *
 from django.db.models import *
+from django.conf import settings
 from django.utils.html import escape, mark_safe
 
 
@@ -34,6 +35,9 @@ class Quote(Model):
     intro = ForeignKey(Section, null=True, related_name='intro')
     sections = ManyToManyField(Section, blank=True)
     notes = ForeignKey(Section, null=True, related_name='notes')
+
+    language = CharField(max_length=7, null=True, choices=settings.LANGUAGES,
+                         help_text='Language of quote, or null for template.')
 
     status = CharField(max_length=2, choices=QuoteStatus.choices(), default=QuoteStatus.DRAFT.value)
     created = DateTimeField(auto_now_add=True)

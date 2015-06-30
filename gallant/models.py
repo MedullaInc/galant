@@ -1,5 +1,6 @@
 import inspect
 from custom_user.models import AbstractEmailUser
+# TODO: from briefs.models import Brief
 from django.db.models import *
 from django.conf import settings
 from jsonfield import JSONField
@@ -87,6 +88,7 @@ class Service(Model):
     """
     name = ForeignKey(ULText, related_name='name')
     description = ForeignKey(ULText, related_name='description')
+    # TODO: brief = ServiceBrief()
 
     # currency is chosen based on client preference
     cost = MoneyField(max_digits=10, decimal_places=2, default_currency='USD')
