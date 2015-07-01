@@ -1,8 +1,13 @@
 from django import forms
+from django.utils.translation import get_language
 from gallant.models import *
 
 
 class ClientForm(forms.ModelForm):
     class Meta:
         model = Client
-        fields = ["name", "type", "size", "status", "language", "currency", "notes"]
+        fields = ['name', 'type', 'size', 'status', 'language', 'currency', 'notes']
+
+    def __init__(self, *args, **kwargs):
+        super(ClientForm, self).__init__(*args, **kwargs)
+        self.initial['language'] = get_language()
