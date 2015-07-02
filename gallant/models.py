@@ -1,7 +1,7 @@
 import inspect
 from custom_user.models import AbstractEmailUser
 # TODO: from briefs.models import Brief
-from django.db.models import *
+from django.db import models as m
 from django.conf import settings
 from jsonfield import JSONField
 from autofixture import generators, register, AutoFixture
@@ -18,13 +18,13 @@ class GallantUser(AbstractEmailUser):
         swappable = 'AUTH_USER_MODEL'
 
 
-class Note(Model):
-    text = TextField(help_text='User comment / note.')
-    created = DateTimeField(auto_now_add=True)
-    created_by = ForeignKey(GallantUser)
+class Note(m.Model):
+    text = m.TextField(help_text='User comment / note.')
+    created = m.DateTimeField(auto_now_add=True)
+    created_by = m.ForeignKey(GallantUser)
 
 
-class ULText(Model):
+class ULText(m.Model):
     """
     User Locale Text, allows users to store translated versions of the same text and display the version that
     matches client's language preferences.
@@ -81,21 +81,21 @@ class ServiceType(ChoiceEnum):
     Interior_Design = 8
 
 
-class Service(Model):
+class Service(m.Model):
     """
     A service to be rendered for a client, will appear on Quotes. When associated with a project / user, it should
     be displayed as a 'deliverable' instead.
     """
-    name = ForeignKey(ULText, related_name='name')
-    description = ForeignKey(ULText, related_name='description')
+    name = m.ForeignKey(ULText, related_name='name')
+    description = m.ForeignKey(ULText, related_name='description')
     # TODO: brief = ServiceBrief()
 
     # currency is chosen based on client preference
     cost = MoneyField(max_digits=10, decimal_places=2, default_currency='USD')
-    quantity = IntegerField()
-    type = CharField(max_length=2, choices=ServiceType.choices())
+    quantity = m.IntegerField()
+    type = m.CharField(max_length=2, choices=ServiceType.choices())
 
-    parent = ForeignKey('self', null=True, blank=True, related_name='sub_services')
+    parent = m.ForeignKey('self', null=True, blank=True, related_name='sub_services')
 
     def get_total_cost(self):
         total = self.cost
@@ -129,13 +129,13 @@ class ClientStatus(ChoiceEnum):
     Blacklisted = 8
 
 
-class Client(Model):
-    name = CharField(max_length=255)
-    type = CharField(max_length=2, choices=ClientType.choices())
-    size = CharField(max_length=2, choices=ClientSize.choices())
-    status = CharField(max_length=2, choices=ClientStatus.choices())
+class Client(m.Model):
+    name = m.CharField(max_length=255)
+    type = m.CharField(max_length=2, choices=ClientType.choices())
+    size = m.CharField(max_length=2, choices=ClientSize.choices())
+    status = m.CharField(max_length=2, choices=ClientStatus.choices())
 
-    language = CharField(max_length=7, choices=settings.LANGUAGES)
-    currency = CharField(max_length=3, choices=CURRENCY_CHOICES, default='USD')
+    language = m.CharField(max_length=7, choices=settings.LANGUAGES)
+    currency = m.CharField(max_length=3, choices=CURRENCY_CHOICES, default='USD')
 
-    notes = ManyToManyField(Note)
+    notes = m.ManyToManyField(Note)
