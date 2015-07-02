@@ -1,5 +1,6 @@
 from django.test import TransactionTestCase
 from quotes import models as q
+from gallant import models as g
 from autofixture import AutoFixture
 
 
@@ -32,7 +33,7 @@ class SectionTest(TransactionTestCase):
     def test_safe_html(self):
         fixture = AutoFixture(q.Section, generate_fk=True)
         section = fixture.create(1)[0]
-        section.text = q.ULText.objects.create(text_dict={'en': '<script>evil</script>'})
+        section.text = g.ULText.objects.create(text_dict={'en': '<script>evil</script>'})
 
         self.assertFalse("<script>" in section.render_html())
 
