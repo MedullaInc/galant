@@ -1,7 +1,6 @@
 from django.test import LiveServerTestCase
 from selenium import webdriver
-from django.utils.translation import activate
-from django.core.urlresolvers import reverse
+from django.core.urlresolvers import reverse, resolve
 
 class SignedInTest(LiveServerTestCase):
     fixtures = ['functional_tests/fixtures/ft_one_user.json']
@@ -54,3 +53,17 @@ class SignedInTest(LiveServerTestCase):
         self.browser.get(self.live_server_url + reverse('quotes'))
         h1 = self.browser.find_element_by_tag_name('h1')
         self.assertIn('Quotes', h1.text)
+
+    def test_add_client(self):
+        b = self.browser
+        b.get(self.live_server_url + reverse('add_client'))
+
+        b.find_element_by_name('name').send_keys('Kanye West')
+        b.find_element_by_xpath("//select[@name='type']/option[@value='0']").click()
+        b.find_element_by_xpath("//select[@name='size']/option[@value='0']").click()
+        b.find_element_by_xpath("//select[@name='status']/option[@value='0']").click()
+        b.find_element_by_xpath("//textarea[@name='notes']").send_keys('asdf')
+
+        b.find_element_by_xpath('//button[@type="submit"]').click()
+        h3 = self.browser.find_element_by_tag_name('h3')
+        self.assertEqual(u'Client', h3.text)
