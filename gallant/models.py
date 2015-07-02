@@ -70,15 +70,15 @@ class ChoiceEnum(Enum):
 
 
 class ServiceType(ChoiceEnum):
-    BRANDING = 0
-    DESIGN = 1
-    ARCHITECTURE = 2
-    ADVERTISING = 3
-    PRODUCTION = 4
-    ILLUSTRATION = 5
-    INDUSTRIAL_DESIGN = 6
-    FASHION_DESIGN = 7
-    INTERIOR_DESIGN = 8
+    Branding = 0
+    Design = 1
+    Architecture = 2
+    Advertising = 3
+    Production = 4
+    Illustration = 5
+    Industrial_Design = 6
+    Fashion_Design = 7
+    Interior_Design = 8
 
 
 class Service(Model):
@@ -106,27 +106,27 @@ class Service(Model):
 
 
 class ClientType(ChoiceEnum):
-    INDIVIDUAL = 0
-    ORGANIZATION = 1
+    Individual = 0
+    Organization = 1
 
 
 class ClientSize(ChoiceEnum):
-    MICRO = 0
-    SMALL = 1
-    MEDIUM = 2
-    LARGE = 3
+    Micro = 0
+    Small = 1
+    Medium = 2
+    Large = 3
 
 
 class ClientStatus(ChoiceEnum):
-    APPROACHED = 0
-    QUOTED = 1
-    BRIEF_SENT = 2
-    PENDING_PAYMENT = 3
-    PENDING_DELIVERABLES = 4
-    SETTLED = 5
-    PAST_DUE = 6
-    CHECK_NOTES = 7
-    BLACKLISTED = 8
+    Approached = 0
+    Quoted = 1
+    Brief_Sent = 2
+    Pending_Payment = 3
+    Pending_Deliverables = 4
+    Settled = 5
+    Past_Due = 6
+    Check_Notes = 7
+    Blacklisted = 8
 
 
 class Client(Model):

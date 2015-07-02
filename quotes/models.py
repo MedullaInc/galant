@@ -20,13 +20,13 @@ class ServiceSection(Section):
 
 
 class QuoteStatus(ChoiceEnum):
-    DRAFT = 0
-    NOT_SENT = 1
-    SENT = 2
-    VIEWED = 3
-    SUPERSEDED = 4  # by a new revision
-    ACCEPTED = 5
-    REJECTED = 6
+    Draft = 0
+    Not_Sent = 1
+    Sent = 2
+    Viewed = 3
+    Superseded = 4  # by a new revision
+    Accepted = 5
+    Rejected = 6
 
 
 class Quote(Model):
@@ -39,7 +39,7 @@ class Quote(Model):
     language = CharField(max_length=7, null=True, choices=settings.LANGUAGES,
                          help_text='Language of quote, or null for template.')
 
-    status = CharField(max_length=2, choices=QuoteStatus.choices(), default=QuoteStatus.DRAFT.value)
+    status = CharField(max_length=2, choices=QuoteStatus.choices(), default=QuoteStatus.Draft.value)
     created = DateTimeField(auto_now_add=True)
 
     token = CharField(max_length=64, unique=True, null=True, help_text='For emailing URL')
