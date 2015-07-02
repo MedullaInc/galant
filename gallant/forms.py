@@ -14,3 +14,7 @@ class ClientForm(forms.ModelForm):
         self.fields['notes'] = forms.CharField(
             widget=forms.Textarea(attrs={'rows': 5}), required=False)
 
+class NoteForm(forms.ModelForm):
+    class Meta():
+        model = Note
+        fields = ['text']

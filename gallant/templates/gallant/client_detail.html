@@ -2,19 +2,23 @@
 {% load bootstrap i18n %}
 
 {% block content %}
-    <h3>Client</h3>
-    <p><b>Name:</b> {{ object.name }}</p>
-    <p><b>Status:</b> {{ object.get_status_display }}</p>
-    <p><b>Type:</b> {{ object.get_type_display }}</p>
-    <p><b>Size:</b> {{ object.get_size_display }}</p>
+    <h3>{% trans "Client" %}</h3>
+    <p><b>{% trans "Name" %}:</b> {{ object.name }}</p>
+    <p><b>{% trans "Status" %}:</b> {{ object.get_status_display }}</p>
+    <p><b>{% trans "Type" %}:</b> {{ object.get_type_display }}</p>
+    <p><b>{% trans "Size" %}:</b> {{ object.get_size_display }}</p>
     <br>
-    <p><b>Language:</b> {{ object.get_language_display }}</p>
-    <p><b>Currency:</b> {{ object.currency }}</p>
+    <p><b>{% trans "Language" %}:</b> {{ object.get_language_display }}</p>
+    <p><b>{% trans "Currency" %}:</b> {{ object.currency }}</p>
 
     <hr>
     <div>
+    <p><b>{% trans "Notes" %}:</b></p>
     {% for item in object.notes.all %}
         {% include "gallant/note.html" %}
     {% endfor %}
+    </div>
+    <div>
+        {% include "gallant/add_note.html" with post_url=note_post_url %}
     </div>
 {% endblock %}

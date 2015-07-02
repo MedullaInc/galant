@@ -28,4 +28,5 @@ urlpatterns = i18n_patterns(
     url(r'^briefs/$', 'briefs.views.index', name='briefs'),
     url(r'^client/add/$', ClientCreate.as_view(), name='add_client'),
     url(r'^client/(?P<pk>[0-9]+)$', ClientDetailView.as_view(), name='client_detail'),
+    url(r'^client/add_note/(?P<client_id>[0-9]+)$', add_client_note, name='add_client_note'),
 )
