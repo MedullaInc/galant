@@ -2,12 +2,12 @@
 {% load bootstrap i18n %}
 
 {% block content %}
-    <h3>Add New Client</h3>
-    <form id="add_client_form" class="form" method="post" action="">
+    <h3>{% trans "Edit Client" %}</h3>
+    <form id="form" class="form" method="post">
         {% csrf_token %}
         {{ form|bootstrap }}
         <div class="form-actions">
-            <button class="btn btn-default" type="submit">{% trans "Add" %}</button>
+            <button class="btn btn-default" type="submit">{% trans "Save" %}</button>
         </div>
     </form>
 {% endblock %}
