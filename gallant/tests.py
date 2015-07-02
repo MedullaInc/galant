@@ -1,6 +1,7 @@
 from django.test import TransactionTestCase
 from gallant import models as g
 from autofixture import AutoFixture
+import warnings
 
 
 # Create your tests here.
