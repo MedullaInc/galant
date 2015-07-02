@@ -11,5 +11,6 @@ class ClientForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(ClientForm, self).__init__(*args, **kwargs)
         self.initial['language'] = get_language()
-        self.fields['notes'] = forms.CharField(widget=forms.Textarea(attrs={'rows': 5}))
+        self.fields['notes'] = forms.CharField(
+            widget=forms.Textarea(attrs={'rows': 5}), required=False)
 
