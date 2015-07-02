@@ -1,11 +1,11 @@
 from django import forms
 from django.utils.translation import get_language
-from gallant.models import *
+from gallant import models as g
 
 
 class ClientForm(forms.ModelForm):
     class Meta():
-        model = Client
+        model = g.Client
         fields = ['name', 'type', 'size', 'status', 'language', 'currency']
 
     def __init__(self, *args, **kwargs):
@@ -16,5 +16,5 @@ class ClientForm(forms.ModelForm):
 
 class NoteForm(forms.ModelForm):
     class Meta():
-        model = Note
+        model = g.Note
         fields = ['text']

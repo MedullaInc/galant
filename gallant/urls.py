@@ -17,7 +17,7 @@ from django.conf.urls import include, url
 from django.contrib import admin
 from django.conf.urls.i18n import i18n_patterns
 from django.views.generic.base import TemplateView
-from gallant.views import *
+from gallant import views
 
 urlpatterns = i18n_patterns(
     url(r'^accounts/', include('allauth.urls')),
@@ -26,8 +26,8 @@ urlpatterns = i18n_patterns(
     url(r'^$', TemplateView.as_view(template_name='index.html'), name='home'),
     url(r'^quotes/$', TemplateView.as_view(template_name='quotes/index.html'), name='quotes'),
     url(r'^briefs/$', 'briefs.views.index', name='briefs'),
-    url(r'^client/add/$', ClientCreate.as_view(), name='add_client'),
-    url(r'^client/edit/(?P<pk>[0-9]+)$', ClientUpdate.as_view(), name='edit_client'),
-    url(r'^client/(?P<pk>[0-9]+)$', ClientDetailView.as_view(), name='client_detail'),
-    url(r'^client/add_note/(?P<client_id>[0-9]+)$', add_client_note, name='add_client_note'),
+    url(r'^client/add/$', views.ClientCreate.as_view(), name='add_client'),
+    url(r'^client/edit/(?P<pk>[0-9]+)$', views.ClientUpdate.as_view(), name='edit_client'),
+    url(r'^client/(?P<pk>[0-9]+)$', views.ClientDetailView.as_view(), name='client_detail'),
+    url(r'^client/add_note/(?P<client_id>[0-9]+)$', views.add_client_note, name='add_client_note'),
 )

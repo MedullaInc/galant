@@ -1,5 +1,5 @@
 from django.test import TransactionTestCase
-from gallant.models import *
+from gallant import models as g
 from autofixture import AutoFixture
 
 
@@ -7,15 +7,15 @@ from autofixture import AutoFixture
 class ULTextTest(TransactionTestCase):
     def test_save_load(self):
         json = {'en': 'foobar', 'es': 'barra de foo'}
-        obj = ULText.objects.create(text_dict=json)
-        new_obj = ULText.objects.get(id=obj.id)
+        obj = g.ULText.objects.create(text_dict=json)
+        new_obj = g.ULText.objects.get(id=obj.id)
 
         self.assertEqual(new_obj.text_dict, json)
 
     def test_text(self):
         json = {'en': 'foobar', 'es': 'barra de foo'}
-        obj = ULText.objects.create(text_dict=json)
-        new_obj = ULText.objects.get(id=obj.id)
+        obj = g.ULText.objects.create(text_dict=json)
+        new_obj = g.ULText.objects.get(id=obj.id)
 
         self.assertEqual(new_obj.get_text(), 'foobar')
         self.assertEqual(new_obj.get_text('es'), 'barra de foo')
@@ -23,14 +23,14 @@ class ULTextTest(TransactionTestCase):
 
 class ServiceTest(TransactionTestCase):
     def test_save_load(self):
-        fixture = AutoFixture(Service, generate_fk=True)
+        fixture = AutoFixture(g.Service, generate_fk=True)
         service = fixture.create(1)[0]
-        new_service = Service.objects.get(id=service.id)
+        new_service = g.Service.objects.get(id=service.id)
 
         self.assertEqual(service.id, new_service.id)
 
     def test_sub_services(self):
-        fixture = AutoFixture(Service, generate_fk=True)
+        fixture = AutoFixture(g.Service, generate_fk=True)
         services = fixture.create(10)
         parent = services[9]
         total_cost = parent.cost
@@ -45,12 +45,12 @@ class ServiceTest(TransactionTestCase):
 
 class ClientTest(TransactionTestCase):
     def test_many_to_many(self):
-        fixture = AutoFixture(Client, generate_fk=True)
+        fixture = AutoFixture(g.Client, generate_fk=True)
         obj = fixture.create(1)[0]
 
         self.assertEqual(len(obj.notes.all()), 0)
 
-        note_fixture = AutoFixture(Note, generate_fk=True)
+        note_fixture = AutoFixture(g.Note, generate_fk=True)
         notes = note_fixture.create(10)
         obj.notes = notes
         obj.save()
@@ -58,7 +58,7 @@ class ClientTest(TransactionTestCase):
         self.assertEqual(len(obj.notes.all()), 10)
 
     def test_language_length(self):
-        fixture = AutoFixture(Client, generate_fk=True)
+        fixture = AutoFixture(g.Client, generate_fk=True)
         obj = fixture.create(1)[0]
         obj.language = 'zh-hans'
 
