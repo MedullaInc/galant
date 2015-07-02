@@ -1,4 +1,5 @@
 from django.views.generic.edit import CreateView
+from django.views.generic.detail import DetailView
 from django.http import HttpResponseRedirect
 from gallant.forms import *
 
@@ -14,3 +15,7 @@ class ClientCreate(CreateView):
         obj.notes.add(note)
         obj.save()
         return HttpResponseRedirect(self.get_success_url())
+
+
+class ClientDetailView(DetailView):
+    model = Client

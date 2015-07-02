@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load bootstrap i18n %}
+
+{% block content %}
+    <h3>Client</h3>
+    <p>Name: {{ object.name }}</p>
+    <p>Status: {{ object.get_status_display }}</p>
+    <p>Type: {{ object.get_type_display }}</p>
+    <p>Size: {{ object.get_size_display }}</p>
+    <br>
+    <p>Language: {{ object.get_language_display }}</p>
+    <p>Currency: {{ object.currency }}</p>
+
+    <hr>
+    <div>
+    {% for item in object.notes.all %}
+        {% include "gallant/note.html" %}
+    {% endfor %}
+    </div>
+{% endblock %}
