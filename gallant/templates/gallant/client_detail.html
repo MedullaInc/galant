@@ -12,13 +12,13 @@
     <p><b>{% trans "Currency" %}:</b> {{ object.currency }}</p>
 
     <hr>
-    <div>
+    <div id="notes">
     <p><b>{% trans "Notes" %}:</b></p>
     {% for item in object.notes.all %}
         {% include "gallant/note.html" %}
     {% endfor %}
-    </div>
-    <div>
-        {% include "gallant/add_note.html" with post_url=note_post_url %}
+        <div>
+            {% include "gallant/add_note.html" %}
+        </div>
     </div>
 {% endblock %}

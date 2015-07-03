@@ -29,6 +29,5 @@ urlpatterns = i18n_patterns(
     # TODO: url(r'^briefs/$', login_required(briefs.views.index), name='briefs'),
     url(r'^client/add/$', login_required(views.ClientCreate.as_view()), name='add_client'),
     url(r'^client/edit/(?P<pk>[0-9]+)$', login_required(views.ClientUpdate.as_view()), name='edit_client'),
-    url(r'^client/(?P<pk>[0-9]+)$', login_required(views.ClientDetailView.as_view()), name='client_detail'),
-    url(r'^client/add_note/(?P<client_id>[0-9]+)$', login_required(views.add_client_note), name='add_client_note'),
+    url(r'^client/(?P<pk>[0-9]+)$', login_required(views.client_detail), name='client_detail'),
 )

@@ -18,3 +18,8 @@ class NoteForm(forms.ModelForm):
     class Meta():
         model = g.Note
         fields = ['text']
+
+    def __init__(self, *args, **kwargs):
+        super(NoteForm, self).__init__(*args, **kwargs)
+        self.fields['text'] = forms.CharField(
+            widget=forms.Textarea(attrs={'rows': 3}))

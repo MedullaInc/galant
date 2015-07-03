@@ -53,8 +53,6 @@ class SignedOutTest(LiveServerTestCase):
             # add singe <pk>-requiring views here:
             if view_name in ['edit_client', 'client_detail']:
                 url = self.live_server_url + reverse(view_name, args=[0])
-            elif view_name == 'add_client_note':
-                url = self.live_server_url + reverse(view_name, kwargs={'client_id': 0})
             else:
                 url = self.live_server_url + reverse(view_name)
 

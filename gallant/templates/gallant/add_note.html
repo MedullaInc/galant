@@ -1,7 +1,8 @@
 {% load i18n %}
 
-<form id="add_note_form" class="form" method="post" action="{{ post_url }}">
+<form id="add_note_form" class="form" method="post">
     {% csrf_token %}
+    {{ form.text.errors }}
     <textarea form ="add_note_form" class="form-control" name="text" rows="3"></textarea>
     <div class="form-actions">
         <button class="btn btn-default" type="submit">{% trans "Add" %}</button>

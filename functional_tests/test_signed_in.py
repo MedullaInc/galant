@@ -60,10 +60,10 @@ class SignedInTest(LiveServerTestCase):
         b.get(self.live_server_url + reverse('add_client'))
 
         b.find_element_by_name('name').send_keys('Kanye West')
-        b.find_element_by_xpath("//select[@name='type']/option[@value='0']").click()
-        b.find_element_by_xpath("//select[@name='size']/option[@value='0']").click()
-        b.find_element_by_xpath("//select[@name='status']/option[@value='0']").click()
-        b.find_element_by_xpath("//textarea[@name='notes']").send_keys('asdf')
+        b.find_element_by_xpath('//select[@name="type"]/option[@value="0"]').click()
+        b.find_element_by_xpath('//select[@name="size"]/option[@value="0"]').click()
+        b.find_element_by_xpath('//select[@name="status"]/option[@value="0"]').click()
+        b.find_element_by_xpath('//textarea[@name="notes"]').send_keys('asdf')
 
         b.find_element_by_xpath('//button[@type="submit"]').click()
         h3 = self.browser.find_element_by_tag_name('h3')
@@ -72,14 +72,30 @@ class SignedInTest(LiveServerTestCase):
     def test_edit_client(self):
         b = self.browser
         b.get(self.live_server_url + reverse('edit_client', args=[1]))
-        b.save_screenshot('tmp.png')
 
         b.find_element_by_name('name').send_keys('PPPPPPP')
-        b.find_element_by_xpath("//select[@name='type']/option[@value='1']").click()
-        b.find_element_by_xpath("//select[@name='size']/option[@value='1']").click()
-        b.find_element_by_xpath("//select[@name='status']/option[@value='3']").click()
-        b.find_element_by_xpath("//textarea[@name='notes']").send_keys('dddd')
+        b.find_element_by_xpath('//select[@name="type"]/option[@value="1"]').click()
+        b.find_element_by_xpath('//select[@name="size"]/option[@value="1"]').click()
+        b.find_element_by_xpath('//select[@name="status"]/option[@value="3"]').click()
+        b.find_element_by_xpath('//textarea[@name="notes"]').send_keys('dddd')
 
         b.find_element_by_xpath('//button[@type="submit"]').click()
         h3 = self.browser.find_element_by_tag_name('h3')
         self.assertEqual(u'Client', h3.text)
+
+    def test_add_client_note(self):
+        b = self.browser
+        b.get(self.live_server_url + reverse('client_detail', args=[1]))
+        test_string = '2351tlgkjqlwekjalfkj'
+
+        b.find_element_by_xpath('//textarea[@name="text"]').send_keys(test_string)
+        b.find_element_by_xpath('//button[@type="submit"]').click()
+
+        self.assertTrue(test_string in b.find_element_by_id('notes').text)
+
+    def test_blank_note_fail(self):
+        b = self.browser
+        b.get(self.live_server_url + reverse('client_detail', args=[1]))
+        b.find_element_by_xpath('//button[@type="submit"]').click()
+
+        self.assertTrue('This field is required.' in b.find_element_by_id('notes').text)

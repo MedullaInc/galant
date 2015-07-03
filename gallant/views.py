@@ -1,7 +1,6 @@
 from django.views.generic.edit import CreateView, UpdateView
-from django.views.generic.detail import DetailView
 from django.http import HttpResponseRedirect
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, render
 from django.core.urlresolvers import reverse
 from gallant import forms
 from gallant import models as g
@@ -36,22 +35,21 @@ class ClientUpdate(UpdateView):
         return HttpResponseRedirect(reverse('client_detail', args=[obj.id]))
 
 
-class ClientDetailView(DetailView):
-    model = g.Client
+def client_detail(request, pk):
+    client = get_object_or_404(g.Client, pk=pk)
 
-    def get_context_data(self, **kwargs):
-        context = super(ClientDetailView, self).get_context_data(**kwargs)
-        context['note_post_url'] = reverse('add_client_note', kwargs={'client_id':self.get_object().id})
-        return context
-
-
-def add_client_note(request, client_id):
     if request.method == 'POST':
         form = forms.NoteForm(request.POST)
         if form.is_valid():
-            client = get_object_or_404(g.Client, pk=client_id)
             user = g.GallantUser.objects.get(id=request.user.id)
             note = g.Note.objects.create(text=form.cleaned_data['text'], created_by=user)
             client.notes.add(note)
             client.save()
             return HttpResponseRedirect(reverse('client_detail', args=[client.id]))
+    else:
+        form = forms.NoteForm() # An unbound form
+
+    return render(request, 'gallant/client_detail.html', {
+        'object': client,
+        'form': form,
+    })
