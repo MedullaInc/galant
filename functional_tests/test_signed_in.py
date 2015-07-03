@@ -3,7 +3,8 @@ from selenium import webdriver
 from django.core.urlresolvers import reverse, resolve
 
 class SignedInTest(LiveServerTestCase):
-    fixtures = ['functional_tests/fixtures/ft_one_user.json']
+    fixtures = ['functional_tests/fixtures/ft_one_user.json',
+                'functional_tests/fixtures/ft_client.json']
 
     def setUp(self):
         self.browser = webdriver.PhantomJS()
@@ -63,6 +64,21 @@ class SignedInTest(LiveServerTestCase):
         b.find_element_by_xpath("//select[@name='size']/option[@value='0']").click()
         b.find_element_by_xpath("//select[@name='status']/option[@value='0']").click()
         b.find_element_by_xpath("//textarea[@name='notes']").send_keys('asdf')
+
+        b.find_element_by_xpath('//button[@type="submit"]').click()
+        h3 = self.browser.find_element_by_tag_name('h3')
+        self.assertEqual(u'Client', h3.text)
+
+    def test_edit_client(self):
+        b = self.browser
+        b.get(self.live_server_url + reverse('edit_client', args=[1]))
+        b.save_screenshot('tmp.png')
+
+        b.find_element_by_name('name').send_keys('PPPPPPP')
+        b.find_element_by_xpath("//select[@name='type']/option[@value='1']").click()
+        b.find_element_by_xpath("//select[@name='size']/option[@value='1']").click()
+        b.find_element_by_xpath("//select[@name='status']/option[@value='3']").click()
+        b.find_element_by_xpath("//textarea[@name='notes']").send_keys('dddd')
 
         b.find_element_by_xpath('//button[@type="submit"]').click()
         h3 = self.browser.find_element_by_tag_name('h3')
