@@ -2,6 +2,7 @@ import subprocess, sys
 import re
 
 REQ_COVERAGE = 90
+print 'Measuring coverage (need %d%%)...' % REQ_COVERAGE
 output = subprocess.check_output("venv/bin/coverage report", shell=True)
 
 for row in output.split('\n'):
@@ -10,6 +11,7 @@ for row in output.split('\n'):
 		continue
 	n = int(m.group(1))
 	if n < REQ_COVERAGE:
-		print 'Insufficient coverage (<%s%%): \n%s' % (REQ_COVERAGE, row)
+		print 'Insufficient coverage: \n%s' % row
 		sys.exit(1)
 
+print 'Pass.'
