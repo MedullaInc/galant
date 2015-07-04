@@ -58,7 +58,9 @@ class ULTextField(JSONField):
             d.update(value)
             return d
         elif isinstance(value, basestring):
-            return {translation.get_language(): value}
+            d = ULTextDict()
+            d.update({translation.get_language(): value})
+            return d
 
         if value is None:
             return value
