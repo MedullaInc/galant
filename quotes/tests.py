@@ -33,7 +33,7 @@ class SectionTest(TransactionTestCase):
     def test_safe_html(self):
         fixture = AutoFixture(q.Section, generate_fk=True)
         section = fixture.create(1)[0]
-        section.text = g.ULText.objects.create(text_dict={'en': '<script>evil</script>'})
+        section.text.set_text('<script>evil</script>')
 
         self.assertFalse("<script>" in section.render_html())
 

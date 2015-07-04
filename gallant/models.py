@@ -3,17 +3,20 @@ from custom_user.models import AbstractEmailUser
 # TODO: from briefs.models import Brief
 from django.db import models as m
 from django.conf import settings
-from jsonfield import JSONField
+from django.utils import translation
+from django import forms
+from django.core.exceptions import FieldError
+from jsonfield import JSONCharField, JSONField
 from autofixture import generators, register, AutoFixture
 from djmoney.models.fields import MoneyField
 from djmoney.forms.widgets import CURRENCY_CHOICES
 from enum import Enum
 
-
 class GallantUser(AbstractEmailUser):
     """
     Custom Gallant user
     """
+
     class Meta(AbstractEmailUser.Meta):
         swappable = 'AUTH_USER_MODEL'
 
@@ -24,46 +27,60 @@ class Note(m.Model):
     created_by = m.ForeignKey(GallantUser)
 
 
-class ULText(m.Model):
-    """
-    User Locale Text, allows users to store translated versions of the same text and display the version that
-    matches client's language preferences.
-    """
-    TEXT_LENGTH_MAX = 60000  # should be enough for ~2 pages in 10 languages
-    text_dict = JSONField(max_length=TEXT_LENGTH_MAX,
-                          help_text='JSON formatted dictionary mapping \
-                          [IETF language code -> translation in that language]')
-
+class ULTextDict(dict):
     def get_text(self, language=None):
         if language is None:
-            language = settings.LANGUAGE_CODE
+            language = translation.get_language()
 
-        if language in self.text_dict:
-            return self.text_dict[language]
+        if language in self:
+            return self[language]
         else:
             return ''
 
+    def set_text(self, text, language=None):
+        if language is None:
+            language = translation.get_language()
 
-class ULTextAutoFixture(AutoFixture):
-    g = generators.StringGenerator()
-    field_values = {
-        'text_dict': {
-            'en': g.get_value(),
-            'es': g.get_value(),
-            g.get_value(): g.get_value(),
-        }
-    }
+        self[language] = text
 
-register(ULText, ULTextAutoFixture)
+
+class ULTextField(JSONField):
+    def formfield(self, **kwargs):
+        field = super(JSONField, self).formfield(**kwargs)
+        field.widget = forms.Textarea(attrs={'rows': 3})
+        field.help_text = ''
+        return field
+
+    def pre_init(self, value, obj):
+        value = super(JSONField, self).pre_init(value, obj)
+        if isinstance(value, dict):
+            d = ULTextDict()
+            d.update(value)
+            return d
+        elif isinstance(value, basestring):
+            return {translation.get_language(): value}
+
+        if value is None:
+            return value
+
+        raise FieldError("ULTextField requires a dictionary.")
+
+
+class ULCharField(ULTextField):
+    def formfield(self, **kwargs):
+        field = super(ULTextField, self).formfield(**kwargs)
+        field.widget = forms.TextInput()
+        field.help_text = ''
+        return field
 
 
 class ChoiceEnum(Enum):
     @classmethod
     def choices(cls):
         # get all members of the class
-        members = inspect.getmembers(cls, lambda m: not(inspect.isroutine(m)))
+        members = inspect.getmembers(cls, lambda m: not (inspect.isroutine(m)))
         # filter down to just properties
-        props = [m for m in members if not(m[0][:2] == '__')]
+        props = [m for m in members if not (m[0][:2] == '__')]
         # format into django choice tuple
         choices = tuple([(str(p[1].value), p[0]) for p in props])
         return choices
@@ -86,8 +103,9 @@ class Service(m.Model):
     A service to be rendered for a client, will appear on Quotes. When associated with a project / user, it should
     be displayed as a 'deliverable' instead.
     """
-    name = m.ForeignKey(ULText, related_name='name')
-    description = m.ForeignKey(ULText, related_name='description')
+    # name = m.ForeignKey(ULText, related_name='name')
+    name = ULCharField()
+    description = ULCharField(null=True)
     # TODO: brief = ServiceBrief()
 
     # currency is chosen based on client preference

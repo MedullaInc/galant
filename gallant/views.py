@@ -53,3 +53,37 @@ def client_detail(request, pk):
         'object': client,
         'form': form,
     })
+
+
+class ServiceCreate(CreateView):
+    form_class = forms.ServiceForm
+    template_name = "gallant/service_form.html"
+
+    def form_valid(self, form):
+        obj = form.save(commit=True)
+        user = g.GallantUser.objects.get(id=self.request.user.id)
+        text = '[Created]\n' + form.cleaned_data['notes']
+        note = g.Note.objects.create(text=text, created_by=user)
+        obj.notes.add(note)
+        obj.save()
+        return HttpResponseRedirect(reverse('service_detail', args=[obj.id]))
+
+
+def service_detail(request, pk):
+    service = get_object_or_404(g.Service, pk=pk)
+
+    if request.method == 'POST':
+        form = forms.NoteForm(request.POST)
+        if form.is_valid():
+            user = g.GallantUser.objects.get(id=request.user.id)
+            note = g.Note.objects.create(text=form.cleaned_data['text'], created_by=user)
+            service.notes.add(note)
+            service.save()
+            return HttpResponseRedirect(reverse('service_detail', args=[service.id]))
+    else:
+        form = forms.NoteForm()
+
+    return render(request, 'gallant/service_detail.html', {
+        'object': service,
+        'form': form,
+    })

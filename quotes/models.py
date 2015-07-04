@@ -6,8 +6,8 @@ from django.utils.html import escape, mark_safe
 
 # Text section of Quote
 class Section(m.Model):
-    title = m.ForeignKey(g.ULText, related_name='title')
-    text = m.ForeignKey(g.ULText, related_name='text')
+    title = g.ULCharField()
+    text = g.ULTextField()
     parent = m.ForeignKey('self', null=True, blank=True, related_name='sub_sections')
 
     def render_html(self, language=None):

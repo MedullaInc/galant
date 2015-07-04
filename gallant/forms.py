@@ -14,6 +14,18 @@ class ClientForm(forms.ModelForm):
         self.fields['notes'] = forms.CharField(
             widget=forms.Textarea(attrs={'rows': 5}), required=False)
 
+
+class ServiceForm(forms.ModelForm):
+    class Meta():
+        model = g.Service
+        fields = ['name', 'description', 'cost', 'quantity', 'type']
+
+    def __init__(self, *args, **kwargs):
+        super(ServiceForm, self).__init__(*args, **kwargs)
+        self.fields['notes'] = forms.CharField(
+            widget=forms.Textarea(attrs={'rows': 5}), required=False)
+
+
 class NoteForm(forms.ModelForm):
     class Meta():
         model = g.Note

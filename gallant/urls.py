@@ -30,4 +30,6 @@ urlpatterns = i18n_patterns(
     url(r'^client/add/$', login_required(views.ClientCreate.as_view()), name='add_client'),
     url(r'^client/edit/(?P<pk>[0-9]+)$', login_required(views.ClientUpdate.as_view()), name='edit_client'),
     url(r'^client/(?P<pk>[0-9]+)$', login_required(views.client_detail), name='client_detail'),
+    url(r'^service/add/$', login_required(views.ServiceCreate.as_view()), name='add_service'),
+    url(r'^service/(?P<pk>[0-9]+)$', login_required(views.service_detail), name='service_detail'),
 )
