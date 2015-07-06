@@ -129,7 +129,7 @@ class Service(m.Model):
     """
     # name = m.ForeignKey(ULText, related_name='name')
     name = ULCharField()
-    description = ULCharField(null=True)
+    description = ULTextField(null=True)
     # TODO: brief = ServiceBrief()
 
     # currency is chosen based on client preference
