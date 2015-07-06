@@ -99,3 +99,28 @@ class SignedInTest(LiveServerTestCase):
         b.find_element_by_xpath('//button[@type="submit"]').click()
 
         self.assertTrue('This field is required.' in b.find_element_by_id('notes').text)
+
+    def test_add_service(self):
+        b = self.browser
+        b.get(self.live_server_url + reverse('add_service'))
+
+        b.find_element_by_name('name').send_keys('Branding')
+        b.find_element_by_name('description').send_keys('asadasdfsd asd fasdf')
+        b.find_element_by_name('cost_0').send_keys('10')
+        b.find_element_by_name('quantity').send_keys('10')
+        b.find_element_by_xpath('//select[@name="type"]/option[@value="0"]').click()
+        b.find_element_by_xpath('//textarea[@name="notes"]').send_keys('asdf')
+
+        b.find_element_by_xpath('//button[@type="submit"]').click()
+        h3 = self.browser.find_element_by_tag_name('h3')
+        self.assertEqual(u'Service', h3.text)
+
+    def test_add_service_note(self):
+        b = self.browser
+        b.get(self.live_server_url + reverse('service_detail', args=[1]))
+        test_string = '2351tlgkjqlwekjalfkj'
+
+        b.find_element_by_xpath('//textarea[@name="text"]').send_keys(test_string)
+        b.find_element_by_xpath('//button[@type="submit"]').click()
+
+        self.assertTrue(test_string in b.find_element_by_id('notes').text)
