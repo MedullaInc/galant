@@ -118,6 +118,22 @@ class SignedInTest(LiveServerTestCase):
 
         self.assertEqual(u'Service', h3.text)
 
+    def test_edit_service(self):
+        b = self.browser
+        b.get(self.live_server_url + reverse('edit_service', args=[1]))
+
+        b.find_element_by_name('name').send_keys('PPPPPPP')
+        b.find_element_by_name('description').send_keys('phpjpjpjpjpjpf')
+        b.find_element_by_name('cost_0').clear()
+        b.find_element_by_name('cost_0').send_keys('99')
+        b.find_element_by_name('quantity').send_keys('88')
+        b.find_element_by_xpath('//select[@name="type"]/option[@value="3"]').click()
+        b.find_element_by_xpath('//textarea[@name="notes"]').send_keys(';;;;;;;;;')
+
+        b.find_element_by_xpath('//button[@type="submit"]').click()
+        h3 = self.browser.find_element_by_tag_name('h3')
+        self.assertEqual(u'Service', h3.text)
+
     def test_add_service_note(self):
         b = self.browser
         b.get(self.live_server_url + reverse('service_detail', args=[1]))

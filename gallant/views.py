@@ -35,6 +35,21 @@ class ClientUpdate(UpdateView):
         return HttpResponseRedirect(reverse('client_detail', args=[obj.id]))
 
 
+class ServiceUpdate(UpdateView):
+    model = g.Service
+    form_class = forms.ServiceForm
+    template_name = "gallant/service_form.html"
+
+    def form_valid(self, form):
+        obj = form.save(commit=True)
+        user = g.GallantUser.objects.get(id=self.request.user.id)
+        text = '[Updated]\n' + form.cleaned_data['notes']
+        note = g.Note.objects.create(text=text, created_by=user)
+        obj.notes.add(note)
+        obj.save()
+        return HttpResponseRedirect(reverse('service_detail', args=[obj.id]))
+
+
 def client_detail(request, pk):
     client = get_object_or_404(g.Client, pk=pk)
 
