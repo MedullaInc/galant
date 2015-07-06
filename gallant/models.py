@@ -60,9 +60,21 @@ def _ultext_to_python(value):
     raise FieldError("ULTextField requires a dictionary.")
 
 
+def _ultext_array_to_python(value):
+    arr = []
+    for v in value:
+        arr.append(_ultext_to_python(v))
+    return arr
+
+
 class ULTextFormField(forms.fields.CharField):
     def to_python(self, value):
         return _ultext_to_python(value)
+
+
+class ULTextArrayFormField(forms.fields.CharField):
+    def to_python(self, value):
+        return _ultext_array_to_python(value)
 
 
 class ULTextField(JSONField):
@@ -77,6 +89,14 @@ class ULTextField(JSONField):
     def pre_init(self, value, obj):
         value = super(JSONField, self).pre_init(value, obj)
         return _ultext_to_python(value)
+
+
+class ULTextArrayField(ULTextField):
+    form_class = ULTextArrayFormField
+
+    def pre_init(self, value, obj):
+        value = super(JSONField, self).pre_init(value, obj)
+        return _ultext_array_to_python(value)
 
 
 class ULCharField(ULTextField):
