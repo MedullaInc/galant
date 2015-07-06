@@ -19,7 +19,6 @@ from django.contrib.auth.decorators import login_required
 from django.conf.urls.i18n import i18n_patterns
 from django.views.generic.base import TemplateView
 from gallant import views
-import briefs
 
 urlpatterns = i18n_patterns(
     url(r'^accounts/', include('allauth.urls')),

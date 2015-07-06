@@ -62,7 +62,7 @@ def client_detail(request, pk):
             client.save()
             return HttpResponseRedirect(reverse('client_detail', args=[client.id]))
     else:
-        form = forms.NoteForm() # An unbound form
+        form = forms.NoteForm()  # An unbound form
 
     return render(request, 'gallant/client_detail.html', {
         'object': client,
