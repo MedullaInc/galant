@@ -64,17 +64,6 @@ class ULTextFormField(forms.fields.CharField):
     def to_python(self, value):
         return _ultext_to_python(value)
 
-    def clean(self, value):
-
-        if not value and not self.required:
-            return None
-
-        # Trap cleaning errors & bubble them up as JSON errors
-        try:
-            return super(ULTextFormField, self).clean(value)
-        except TypeError:
-            raise ValidationError("Invalid text")
-
 
 class ULTextField(JSONField):
     form_class = ULTextFormField
