@@ -138,7 +138,7 @@ class Service(m.Model):
     type = m.CharField(max_length=2, choices=ServiceType.choices())
 
     parent = m.ForeignKey('self', null=True, blank=True, related_name='sub_services')
-    
+
     notes = m.ManyToManyField(Note)
 
     def get_total_cost(self):

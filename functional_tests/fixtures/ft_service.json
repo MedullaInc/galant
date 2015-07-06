@@ -1,0 +1,16 @@
+[
+  {
+    "fields": {
+      "name": "{\"en\":\"asdf\"}",
+      "parent": null,
+      "description": "{\"en\":\"fdsa\"}",
+      "cost": "10.00",
+      "cost_currency": "USD",
+      "type": "3",
+      "notes": [],
+      "quantity": 10
+    },
+    "model": "gallant.service",
+    "pk": 1
+  }
+]

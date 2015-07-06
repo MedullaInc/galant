@@ -1,10 +1,11 @@
 from django.test import LiveServerTestCase
 from selenium import webdriver
-from django.core.urlresolvers import reverse, resolve
+from django.core.urlresolvers import reverse
 
 class SignedInTest(LiveServerTestCase):
     fixtures = ['functional_tests/fixtures/ft_one_user.json',
-                'functional_tests/fixtures/ft_client.json']
+                'functional_tests/fixtures/ft_client.json',
+                'functional_tests/fixtures/ft_service.json']
 
     def setUp(self):
         self.browser = webdriver.PhantomJS()
@@ -106,6 +107,7 @@ class SignedInTest(LiveServerTestCase):
 
         b.find_element_by_name('name').send_keys('Branding')
         b.find_element_by_name('description').send_keys('asadasdfsd asd fasdf')
+        b.find_element_by_name('cost_0').clear()
         b.find_element_by_name('cost_0').send_keys('10')
         b.find_element_by_name('quantity').send_keys('10')
         b.find_element_by_xpath('//select[@name="type"]/option[@value="0"]').click()
@@ -113,6 +115,7 @@ class SignedInTest(LiveServerTestCase):
 
         b.find_element_by_xpath('//button[@type="submit"]').click()
         h3 = self.browser.find_element_by_tag_name('h3')
+
         self.assertEqual(u'Service', h3.text)
 
     def test_add_service_note(self):
