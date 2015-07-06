@@ -7,10 +7,15 @@ from quotes import forms
 
 class QuoteCreate(CreateView):
     form_class = forms.QuoteForm
-    template_name = "quotes/quote_form.html"
+    template_name = "gallant/create_form.html"
 
     def get_success_url(self):
         return reverse('home')
+
+    def render_to_response(self, context, **response_kwargs):
+        context.update({'title': 'Edit Quote'})
+        return super(CreateView, self).render_to_response(context)
+
 
     '''def form_valid(self, form):
         obj = form.save(commit=True)

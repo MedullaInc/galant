@@ -8,7 +8,11 @@ from gallant import models as g
 
 class ClientCreate(CreateView):
     form_class = forms.ClientForm
-    template_name = "gallant/client_form.html"
+    template_name = "gallant/create_form.html"
+
+    def render_to_response(self, context, **response_kwargs):
+        context.update({'title': 'Add Client'})
+        return super(CreateView, self).render_to_response(context)
 
     def form_valid(self, form):
         obj = form.save(commit=True)
@@ -23,7 +27,11 @@ class ClientCreate(CreateView):
 class ClientUpdate(UpdateView):
     model = g.Client
     form_class = forms.ClientForm
-    template_name = "gallant/client_form.html"
+    template_name = "gallant/create_form.html"
+
+    def render_to_response(self, context, **response_kwargs):
+        context.update({'title': 'Update Client'})
+        return super(UpdateView, self).render_to_response(context)
 
     def form_valid(self, form):
         obj = form.save(commit=True)
@@ -38,7 +46,11 @@ class ClientUpdate(UpdateView):
 class ServiceUpdate(UpdateView):
     model = g.Service
     form_class = forms.ServiceForm
-    template_name = "gallant/service_form.html"
+    template_name = "gallant/create_form.html"
+
+    def render_to_response(self, context, **response_kwargs):
+        context.update({'title': 'Update Service'})
+        return super(UpdateView, self).render_to_response(context)
 
     def form_valid(self, form):
         obj = form.save(commit=True)
@@ -72,7 +84,11 @@ def client_detail(request, pk):
 
 class ServiceCreate(CreateView):
     form_class = forms.ServiceForm
-    template_name = "gallant/service_form.html"
+    template_name = "gallant/create_form.html"
+
+    def render_to_response(self, context, **response_kwargs):
+        context.update({'title': 'Add Service'})
+        return super(CreateView, self).render_to_response(context)
 
     def form_valid(self, form):
         obj = form.save(commit=True)
