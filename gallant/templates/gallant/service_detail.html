@@ -3,13 +3,12 @@
 
 {% block content %}
     <h3>{% trans "Service" %}</h3>
-    <p><b>{% trans "Name" %}:</b> {{ object.name }}</p>
+    <p><b>{% trans "Name" %}:</b> {{ object.name.get_text }}</p>
     <p><b>{% trans "Type" %}:</b> {{ object.get_type_display }}</p>
-    <p><b>{% trans "Description" %}:</b> {{ object.description }}</p>
+    <p><b>{% trans "Description" %}:</b> {{ object.description.get_text }}</p>
     <p><b>{% trans "Cost" %}:</b> {{ object.cost }}</p>
     <p><b>{% trans "Quantity" %}:</b> {{ object.quantity }}</p>
     <br>
-    <p><b>{% trans "Type" %}:</b> {{ object.get_language_display }}</p>
 
     <hr>
     <div id="notes">

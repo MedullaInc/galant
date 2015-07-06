@@ -7,7 +7,7 @@ from django.utils import translation
 from django import forms
 from django.core.exceptions import FieldError
 from jsonfield import JSONCharField, JSONField
-from autofixture import generators, register, AutoFixture
+from django.forms.utils import ValidationError
 from djmoney.models.fields import MoneyField
 from djmoney.forms.widgets import CURRENCY_CHOICES
 from enum import Enum
@@ -44,7 +44,42 @@ class ULTextDict(dict):
         self[language] = text
 
 
+def _ultext_to_python(value):
+    if isinstance(value, dict):
+        d = ULTextDict()
+        d.update(value)
+        return d
+    elif isinstance(value, basestring):
+        d = ULTextDict()
+        d.update({translation.get_language(): value})
+        return d
+
+    if value is None:
+        return value
+
+    raise FieldError("ULTextField requires a dictionary.")
+
+
+def _ultext_array_to_python(value):
+    arr = []
+    for v in value:
+        arr.append(_ultext_to_python(v))
+    return arr
+
+
+class ULTextFormField(forms.fields.CharField):
+    def to_python(self, value):
+        return _ultext_to_python(value)
+
+
+class ULTextArrayFormField(forms.fields.CharField):
+    def to_python(self, value):
+        return _ultext_array_to_python(value)
+
+
 class ULTextField(JSONField):
+    form_class = ULTextFormField
+
     def formfield(self, **kwargs):
         field = super(JSONField, self).formfield(**kwargs)
         field.widget = forms.Textarea(attrs={'rows': 3})
@@ -53,19 +88,15 @@ class ULTextField(JSONField):
 
     def pre_init(self, value, obj):
         value = super(JSONField, self).pre_init(value, obj)
-        if isinstance(value, dict):
-            d = ULTextDict()
-            d.update(value)
-            return d
-        elif isinstance(value, basestring):
-            d = ULTextDict()
-            d.update({translation.get_language(): value})
-            return d
+        return _ultext_to_python(value)
 
-        if value is None:
-            return value
 
-        raise FieldError("ULTextField requires a dictionary.")
+class ULTextArrayField(ULTextField):
+    form_class = ULTextArrayFormField
+
+    def pre_init(self, value, obj):
+        value = super(JSONField, self).pre_init(value, obj)
+        return _ultext_array_to_python(value)
 
 
 class ULCharField(ULTextField):
@@ -107,7 +138,7 @@ class Service(m.Model):
     """
     # name = m.ForeignKey(ULText, related_name='name')
     name = ULCharField()
-    description = ULCharField(null=True)
+    description = ULTextField(null=True)
     # TODO: brief = ServiceBrief()
 
     # currency is chosen based on client preference
@@ -116,6 +147,8 @@ class Service(m.Model):
     type = m.CharField(max_length=2, choices=ServiceType.choices())
 
     parent = m.ForeignKey('self', null=True, blank=True, related_name='sub_services')
+
+    notes = m.ManyToManyField(Note)
 
     def get_total_cost(self):
         total = self.cost

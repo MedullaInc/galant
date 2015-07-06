@@ -1,10 +1,12 @@
 from django.test import LiveServerTestCase
 from selenium import webdriver
-from django.core.urlresolvers import reverse, resolve
+from django.core.urlresolvers import reverse
 
 class SignedInTest(LiveServerTestCase):
     fixtures = ['functional_tests/fixtures/ft_one_user.json',
-                'functional_tests/fixtures/ft_client.json']
+                'functional_tests/fixtures/ft_client.json',
+                'functional_tests/fixtures/ft_service.json',
+                'functional_tests/fixtures/ft_quote.json']
 
     def setUp(self):
         self.browser = webdriver.PhantomJS()
@@ -99,3 +101,60 @@ class SignedInTest(LiveServerTestCase):
         b.find_element_by_xpath('//button[@type="submit"]').click()
 
         self.assertTrue('This field is required.' in b.find_element_by_id('notes').text)
+
+    def test_add_service(self):
+        b = self.browser
+        b.get(self.live_server_url + reverse('add_service'))
+
+        b.find_element_by_name('name').send_keys('Branding')
+        b.find_element_by_name('description').send_keys('asadasdfsd asd fasdf')
+        b.find_element_by_name('cost_0').clear()
+        b.find_element_by_name('cost_0').send_keys('10')
+        b.find_element_by_name('quantity').send_keys('10')
+        b.find_element_by_xpath('//select[@name="type"]/option[@value="0"]').click()
+        b.find_element_by_xpath('//textarea[@name="notes"]').send_keys('asdf')
+
+        b.find_element_by_xpath('//button[@type="submit"]').click()
+        h3 = self.browser.find_element_by_tag_name('h3')
+
+        self.assertEqual(u'Service', h3.text)
+
+    def test_edit_service(self):
+        b = self.browser
+        b.get(self.live_server_url + reverse('edit_service', args=[1]))
+
+        b.find_element_by_name('name').send_keys('PPPPPPP')
+        b.find_element_by_name('description').send_keys('phpjpjpjpjpjpf')
+        b.find_element_by_name('cost_0').clear()
+        b.find_element_by_name('cost_0').send_keys('99')
+        b.find_element_by_name('quantity').send_keys('88')
+        b.find_element_by_xpath('//select[@name="type"]/option[@value="3"]').click()
+        b.find_element_by_xpath('//textarea[@name="notes"]').send_keys(';;;;;;;;;')
+
+        b.find_element_by_xpath('//button[@type="submit"]').click()
+        h3 = self.browser.find_element_by_tag_name('h3')
+        self.assertEqual(u'Service', h3.text)
+
+    def test_add_service_note(self):
+        b = self.browser
+        b.get(self.live_server_url + reverse('service_detail', args=[1]))
+        test_string = '2351tlgkjqlwekjalfkj'
+
+        b.find_element_by_xpath('//textarea[@name="text"]').send_keys(test_string)
+        b.find_element_by_xpath('//button[@type="submit"]').click()
+
+        self.assertTrue(test_string in b.find_element_by_id('notes').text)
+
+    def test_add_quote(self):
+        b = self.browser
+        b.get(self.live_server_url + reverse('add_quote'))
+
+        b.find_element_by_name('name').send_keys('Quote test')
+        b.find_element_by_xpath('//select[@name="client"]/option[@value="1"]').click()
+        b.find_element_by_xpath('//select[@name="intro"]/option[@value="1"]').click()
+        b.find_element_by_xpath('//select[@name="language"]/option[@value="en"]').click()
+        b.find_element_by_xpath('//select[@name="notes"]/option[@value="1"]').click()
+
+        b.find_element_by_xpath('//button[@type="submit"]').click()
+
+        self.assertEqual(b.current_url, self.live_server_url + reverse('home'))
