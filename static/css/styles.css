@@ -862,6 +862,7 @@ section * {
 .header-5 .navbar .brand:focus,
 .header-5 .navbar .brand.active {
   color: #000000;
+  text-decoration: none;
 }
 .header-5 .navbar .brand img:first-child {
   float: left;

@@ -50,7 +50,7 @@
                         <div class="collapse navbar-collapse">
                             <ul class="nav pull-right">
                                 {% if user.is_authenticated %}
-                                    <li><a href="">{% trans 'Briefs' %}</a></li>
+                                    <li><a href="{% url 'briefs' %}">{% trans 'Briefs' %}</a></li>
                                     <li><a href="{% url 'quotes' %}">{% trans 'Quotes' %}</a></li>
                                     <li><a href="{% url 'account_change_password' %}">{% trans 'Account' %}</a></li>
                                     <li><a href="{% url 'account_logout' %}">{% trans 'Sign Out' %}</a></li>

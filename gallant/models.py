@@ -192,3 +192,8 @@ class Client(m.Model):
     currency = m.CharField(max_length=3, choices=CURRENCY_CHOICES, default='USD')
 
     notes = m.ManyToManyField(Note)
+
+
+class Project(m.Model):
+    name = m.CharField(max_length=255)
+    # TODO: finish model according to diagrams
