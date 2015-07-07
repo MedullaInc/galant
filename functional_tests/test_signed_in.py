@@ -158,3 +158,17 @@ class SignedInTest(LiveServerTestCase):
         b.find_element_by_xpath('//button[@type="submit"]').click()
 
         self.assertEqual(b.current_url, self.live_server_url + reverse('home'))
+
+    def test_edit_quote(self):
+        b = self.browser
+        b.get(self.live_server_url + reverse('edit_quote', args=[1]))
+
+        b.find_element_by_name('name').send_keys('Quote test edit')
+        b.find_element_by_xpath('//select[@name="client"]/option[@value="2"]').click()
+        b.find_element_by_xpath('//select[@name="intro"]/option[@value="2"]').click()
+        b.find_element_by_xpath('//select[@name="language"]/option[@value="en"]').click()
+        b.find_element_by_xpath('//select[@name="notes"]/option[@value="2"]').click()
+
+        b.find_element_by_xpath('//button[@type="submit"]').click()
+        h3 = self.browser.find_element_by_tag_name('h3')
+        self.assertEqual(u'Quote', h3.text)

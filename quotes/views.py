@@ -1,6 +1,6 @@
 from django.views.generic.edit import CreateView, UpdateView
-from django.http import HttpResponseRedirect
-from django.shortcuts import get_object_or_404, render
+from django.views.generic.detail import DetailView
+from quotes import models as q
 from django.core.urlresolvers import reverse
 from quotes import forms
 
@@ -27,3 +27,20 @@ class QuoteCreate(CreateView):
         # TODO: return HttpResponseRedirect(reverse('quote_detail', args=[obj.id]))
         return HttpResponseRedirect(reverse('home'))
     '''
+
+
+class QuoteUpdate(UpdateView):
+    model = q.Quote
+    form_class = forms.QuoteForm
+    template_name = "gallant/create_form.html"
+
+    def get_success_url(self):
+        return reverse('quote_detail', args=[self.object.id])
+
+    def render_to_response(self, context, **response_kwargs):
+        context.update({'title': 'Update Quote'})
+        return super(UpdateView, self).render_to_response(context)
+
+
+class QuoteDetail(DetailView):
+    model = q.Quote
