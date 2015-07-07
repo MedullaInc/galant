@@ -42,7 +42,6 @@ class SignedOutTest(LiveServerTestCase):
 
         activate(language)
 
-
     def test_page_blocked(self):
         for view_name in get_resolver(None).reverse_dict.keys():
             if hasattr(view_name, '__call__') \
@@ -66,4 +65,4 @@ class SignedOutTest(LiveServerTestCase):
                           url)
 
             self.assertIn('Sign In', h1.text)
-            self.assertTrue( self.live_server_url + reverse('account_login') in self.browser.current_url)
+            self.assertTrue(self.live_server_url + reverse('account_login') in self.browser.current_url)
