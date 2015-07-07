@@ -2,12 +2,9 @@ from django.test import LiveServerTestCase
 from selenium import webdriver
 from django.core.urlresolvers import reverse
 
-class SignedInTest(LiveServerTestCase):
-    fixtures = ['functional_tests/fixtures/ft_one_user.json',
-                'functional_tests/fixtures/ft_client.json',
-                'functional_tests/fixtures/ft_service.json',
-                'functional_tests/fixtures/ft_quote.json']
 
+class SignedInTest(LiveServerTestCase):
+    fixtures = ['functional_tests/fixtures/ft_one_user.json']
     def setUp(self):
         self.browser = webdriver.PhantomJS()
 
@@ -29,6 +26,8 @@ class SignedInTest(LiveServerTestCase):
     def tearDown(self):
         self.browser.quit()
 
+
+class LoginSignUpTest(SignedInTest):
     def test_can_login(self):
         # check 'Django administration' heading
         body = self.browser.find_element_by_tag_name('body')
@@ -46,6 +45,10 @@ class SignedInTest(LiveServerTestCase):
 
 
 class GallantSignedInTest(SignedInTest):
+    fixtures = ['functional_tests/fixtures/ft_one_user.json',
+                'functional_tests/fixtures/ft_client.json',
+                'functional_tests/fixtures/ft_service.json']
+
     def test_add_client(self):
         b = self.browser
         b.get(self.live_server_url + reverse('add_client'))

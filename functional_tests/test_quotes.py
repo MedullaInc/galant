@@ -1,7 +1,12 @@
 from django.core.urlresolvers import reverse
 from test_signed_in import SignedInTest
 
+
 class QuotesSignedInTest(SignedInTest):
+    fixtures = ['functional_tests/fixtures/ft_one_user.json',
+                'functional_tests/fixtures/ft_client.json',
+                'functional_tests/fixtures/ft_service.json',
+                'functional_tests/fixtures/ft_quote.json']
 
     def test_can_access_quotes(self):
         # check 'Quotes' h1

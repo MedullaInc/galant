@@ -1,8 +1,8 @@
 from django.core.urlresolvers import reverse
 from test_signed_in import SignedInTest
 
-class BriefsSignedInTest(SignedInTest):
 
+class BriefsSignedInTest(SignedInTest):
     def test_can_access_briefs(self):
         # check 'Briefs' h1
         self.browser.get(self.live_server_url + reverse('briefs'))
