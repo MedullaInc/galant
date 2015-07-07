@@ -10,6 +10,15 @@
   },
   {
     "fields": {
+      "text": "{\"null\":\"edited text\"}",
+      "parent": null,
+      "title": "{\"null\":\"edited title\"}"
+    },
+    "model": "quotes.section",
+    "pk": 2
+  },
+  {
+    "fields": {
       "status": "0",
       "name": "asdf",
       "language": "en",
