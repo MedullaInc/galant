@@ -193,6 +193,7 @@ class Client(m.Model):
 
     notes = m.ManyToManyField(Note)
 
+
 class Project(m.Model):
     name = m.CharField(max_length=255)
     # TODO: finish model according to diagrams

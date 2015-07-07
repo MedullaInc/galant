@@ -3,13 +3,4 @@
 
 {% block content %}
 	<h1>Briefs</h1>
-
-    <form id="form" class="form" method="post">
-        {% csrf_token %}
-        {{ form|bootstrap }}
-        <div class="form-actions">
-            <button class="btn btn-default" type="submit">{% trans "Save" %}</button>
-        </div>
-    </form>
-
 {% endblock %}
