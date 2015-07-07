@@ -82,6 +82,7 @@ class Image(models.Model):
     """
     # TODO: We should analyze the best place for Image model to be located in.
 
+
 class Answer(models.Model):
     answer = CharField(max_length=1000)
     brief = ForeignKey(Brief)
