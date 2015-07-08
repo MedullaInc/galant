@@ -15,6 +15,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='multiplechoicequestion',
             name='choices',
-            field=gallant.models.ULTextArrayField(),
+            field=gallant.fields.ULTextArrayField(),
         ),
     ]
