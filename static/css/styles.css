@@ -1932,3 +1932,65 @@ input[type="text"].form-control {
 .centered {
     text-align: center;
 }
+
+#settings-toggle-group {
+    border: 1px solid #666666;
+}
+
+#settings-toggle-group button {
+    border: none;
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 0px;
+    padding: 10px;
+    padding-left: 15px;
+    padding-right: 15px;
+    margin: 0px;
+}
+
+#settings-toggle-group .dropdown-menu {
+    margin-top: 10px;
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 0px;
+    border: 1px solid #666666;
+    padding: 10px;
+    padding-top: 10px;
+}
+
+#settings-toggle-group .dropdown-menu li a {
+    color: #000000;
+    font-size: 16px;
+    font-weight: 100;
+    text-align: center;
+    padding-bottom: 10px;
+    padding-top: 10px;
+}
+
+@media ( max-width: 768px ) {
+    #settings-toggle-group button {
+        display: none
+    }
+    #settings-toggle-group .dropdown-menu {
+        display: block;
+        width: 100%;
+        padding: 0px;
+        border: none;
+        box-shadow: none;
+    }
+    #settings-toggle-group .dropdown-menu li {
+        margin: 0px;
+        margin-bottom: 10px;
+    }
+
+    #settings-toggle-group .dropdown-menu li a {
+        padding-top: 12px;
+        padding-bottom: 12px;
+        font-size: 18px;
+    }
+
+    li#settings-toggle-group {
+        border: none;
+        border-bottom: 1px solid #666666;
+    }
+}
