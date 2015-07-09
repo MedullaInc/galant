@@ -28,8 +28,8 @@ class Migration(migrations.Migration):
             name='Section',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('title', gallant.models.ULCharField()),
-                ('text', gallant.models.ULTextField()),
+                ('title', gallant.fields.ULCharField()),
+                ('text', gallant.fields.ULTextField()),
             ],
         ),
         migrations.CreateModel(

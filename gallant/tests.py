@@ -1,6 +1,7 @@
 from django.test import TransactionTestCase, TestCase
 from django import forms
 from gallant import models as g
+from gallant import fields as gf
 from autofixture import AutoFixture
 import warnings
 
@@ -52,11 +53,11 @@ class ClientTest(TransactionTestCase):
 
 
 class TestULTextForm(forms.Form):
-    field = g.ULTextFormField()
+    field = gf.ULTextFormField()
 
 
 class TestULTextArrayForm(forms.Form):
-    field = g.ULTextArrayFormField()
+    field = gf.ULTextArrayFormField()
 
 
 class ULTextTest(TestCase):
@@ -64,7 +65,7 @@ class ULTextTest(TestCase):
         f = TestULTextForm({'field': 'foobar'})
         self.assertTrue(f.is_valid())
         d = f.cleaned_data['field']
-        self.assertEqual(d.__class__, g.ULTextDict)
+        self.assertEqual(d.__class__, gf.ULTextDict)
         self.assertEqual(d.get_text(), 'foobar')
 
         d.set_text('barra de foo', 'es')
@@ -75,6 +76,6 @@ class ULTextTest(TestCase):
                                            {"en": "choice 2", "es": "opcion 2"}]})
         self.assertTrue(f.is_valid())
         d = f.cleaned_data['field']
-        self.assertEqual(d[0].__class__, g.ULTextDict)
+        self.assertEqual(d[0].__class__, gf.ULTextDict)
         self.assertEqual(d[0].get_text(), 'choice 1')
         self.assertEqual(d[1].get_text('es'), 'opcion 2')

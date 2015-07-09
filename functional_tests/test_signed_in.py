@@ -5,6 +5,7 @@ from django.core.urlresolvers import reverse
 
 class SignedInTest(LiveServerTestCase):
     fixtures = ['functional_tests/fixtures/ft_one_user.json']
+
     def setUp(self):
         self.browser = webdriver.PhantomJS()
 

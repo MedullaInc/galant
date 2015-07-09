@@ -1,4 +1,5 @@
 from gallant import models as g
+from gallant import fields as gf
 from django.db import models as m
 from django.conf import settings
 from django.utils.html import escape, mark_safe
@@ -6,8 +7,8 @@ from django.utils.html import escape, mark_safe
 
 # Text section of Quote
 class Section(m.Model):
-    title = g.ULCharField()
-    text = g.ULTextField()
+    title = gf.ULCharField()
+    text = gf.ULTextField()
     parent = m.ForeignKey('self', null=True, blank=True, related_name='sub_sections')
 
     def render_html(self, language=None):
@@ -19,7 +20,7 @@ class ServiceSection(Section):
     service = m.ForeignKey(g.Service)
 
 
-class QuoteStatus(g.ChoiceEnum):
+class QuoteStatus(gf.ChoiceEnum):
     Draft = 0
     Not_Sent = 1
     Sent = 2

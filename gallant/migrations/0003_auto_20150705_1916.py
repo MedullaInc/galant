@@ -15,6 +15,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='service',
             name='description',
-            field=gallant.models.ULTextField(null=True),
+            field=gallant.fields.ULTextField(null=True),
         ),
     ]

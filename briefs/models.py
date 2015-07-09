@@ -1,6 +1,7 @@
 from django.db import models
 from django.db.models import *
-from gallant.models import Client, Project, Service, ULTextDict, ULTextField, ULCharField, ChoiceEnum, ULTextArrayField, ULTextArrayFormField, ULTextFormField
+from gallant import models as g
+from gallant import fields as gf
 
 
 class Brief(models.Model):
@@ -21,21 +22,21 @@ class ClientBrief(Brief):
     """
     A Client Brief
     """
-    client = ForeignKey(Client)
+    client = ForeignKey(g.Client)
 
 
 class ProjectBrief(Brief):
     """
     A Project Brief
     """
-    project = ForeignKey(Project)
+    project = ForeignKey(g.Project)
 
 
 class ServiceBrief(Brief):
     """
     A Service Brief
     """
-    service = ForeignKey(Service)
+    service = ForeignKey(g.Service)
 
 
 class Question(models.Model):
@@ -66,7 +67,7 @@ class MultipleChoiceQuestion(Question):
     The choices field is a list field where the options for the question are stored.
     """
     can_select_multiple = BooleanField(default=False)
-    choices = ULTextArrayField()
+    choices = gf.ULTextArrayField()
 
 
 class ImageQuestion(MultipleChoiceQuestion):
