@@ -47,7 +47,7 @@
                             <a class="brand" href="/">Galant</a>
                         </div>
 
-                        <div class="collapse navbar-collapse">
+                        <div id="menu" class="collapse navbar-collapse">
                             <ul class="nav pull-right">
                                 {% if user.is_authenticated %}
                                     <li><a href="{% url 'briefs' %}">{% trans 'Briefs' %}</a></li>
@@ -79,19 +79,19 @@
             <div class="container">
                 <div class="row">
 
-                    <div class="col-sm-4">
+                    <div class="col-sm-4 col-xs-12">
                         {% trans 'Features' %}<br>
                         {% trans 'Pricing' %}<br>
                         {% trans 'Contact' %}
                     </div>
 
-                    <div class="col-sm-4">
+                    <div class="col-sm-4 col-xs-12">
                         {% trans 'Facebook' %}<br>
                         {% trans 'Twitter' %}<br>
                         {% trans 'Blog' %}
                     </div>
 
-                    <div class="col-sm-4">
+                    <div class="col-sm-4 col-xs-12">
                         {% trans 'Copyright Medulla Inc.' %} © {% now "Y" %}<br>
                         {% trans 'Terms & Conditions' %}<br>
                         {% trans 'Privacy Policy' %}

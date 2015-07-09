@@ -430,13 +430,6 @@ body {
     line-height: 1.29;
 }
 
-@media (max-width: 767px) {
-    body {
-        padding-right: 0;
-        padding-left: 0;
-    }
-}
-
 li {
     line-height: 20px;
 }
@@ -539,7 +532,7 @@ p {
     min-height: 100%;
     height: auto !important;
     width: 100%;
-    padding-bottom: 124px;
+    padding-bottom: 59px;
 }
 
 .header-background {
@@ -795,14 +788,30 @@ button:active {
 }
 
 @media (max-width: 1200px) {
-    body .navbar-collapse {
-        width: 230px;
+    #menu li a {
+        width: 100px;
+    }
+}
+
+@media (max-width: 1200px) {
+    body #header-5.navbar-collapse {
+        width: 220px;
         position: fixed;
         top: 0;
         right: 0;
         bottom: 0;
         height: 100% !important;
         z-index: 1;
+        border: 1px solid #666666;
+        margin: 10px;
+        padding-top: 10px;
+    }
+    #header-5 li {
+        border: 1px solid #666666;
+        margin-left: 10px;
+        margin-right: 10px;
+        margin-bottom: 10px;
+        text-align: center;
     }
 }
 
@@ -999,7 +1008,7 @@ section * {
 }
 
 /**
- * Header 1 stylesheet  
+ * Header 1 stylesheet
  * */
 .header-5 {
     left: 0;
@@ -1045,7 +1054,7 @@ section * {
 }
 
 .header-5 .navbar .nav > li {
-    margin-left: 56px;
+    margin-left: 10px;
 }
 
 .header-5 .navbar .nav > li:first-child {
@@ -1081,7 +1090,11 @@ section * {
 }
 
 .header-5 .navbar-header .brand {
-    margin-top: 34px;
+    margin-top: 25px;
+}
+
+#menu ul {
+    margin-top: 33px;
 }
 
 .header-5 .nav {
@@ -1089,11 +1102,11 @@ section * {
 }
 
 .header-5 .navbar .navbar-toggle {
-    margin-top: 35px;
+    margin-top: 37px;
 }
 
 /**
- * Footer 3 stylesheet  
+ * Footer 3 stylesheet
  * */
 .footer-3 {
     padding-top: 22px;
@@ -1104,7 +1117,7 @@ section * {
     background: #ffffff;
     border: 1px solid #666666;
     position: absolute;
-    bottom: 0px;
+    bottom: 10px;
     width: 100%;
     margin-top: 10px;
 }
@@ -1335,7 +1348,7 @@ section * {
     -moz-background-size: cover;
     -o-background-size: cover;
     color: #1f1f1f;
-    padding-bottom: 40px;
+    padding-bottom: 80px;
 }
 
 .content-1 .container {
@@ -1488,7 +1501,7 @@ section * {
 }
 
 .content-1 p.sub-main {
-    font-size: 24px;
+    font-size: 22px;
     font-weight: 100;
     line-height: 28px;
     letter-spacing: 2px;
