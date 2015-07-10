@@ -20,13 +20,16 @@ class QuotesSignedInTest(SignedInTest):
 
         b.find_element_by_name('name').send_keys('Quote test')
         b.find_element_by_xpath('//select[@name="client"]/option[@value="1"]').click()
-        b.find_element_by_xpath('//select[@name="intro"]/option[@value="1"]').click()
+        b.find_element_by_name('intro_title').send_keys('test intro title')
+        b.find_element_by_name('intro_text').send_keys('test intro text')
+        b.find_element_by_name('margin_section_title').send_keys('test margin title')
+        b.find_element_by_name('margin_section_text').send_keys('test margin text')
         b.find_element_by_xpath('//select[@name="language"]/option[@value="en"]').click()
-        b.find_element_by_xpath('//select[@name="margin_section"]/option[@value="1"]').click()
 
         b.find_element_by_xpath('//button[@type="submit"]').click()
 
-        self.assertEqual(b.current_url, self.live_server_url + reverse('home'))
+        h3 = self.browser.find_element_by_tag_name('h3')
+        self.assertEqual(u'Quote', h3.text)
 
     def test_edit_quote(self):
         b = self.browser
@@ -34,9 +37,11 @@ class QuotesSignedInTest(SignedInTest):
 
         b.find_element_by_name('name').send_keys('Quote test edit')
         b.find_element_by_xpath('//select[@name="client"]/option[@value="2"]').click()
-        b.find_element_by_xpath('//select[@name="intro"]/option[@value="2"]').click()
+        b.find_element_by_name('intro_title').send_keys('test intro title')
+        b.find_element_by_name('intro_text').send_keys('test intro text')
+        b.find_element_by_name('margin_section_title').send_keys('test margin title')
+        b.find_element_by_name('margin_section_text').send_keys('test margin text')
         b.find_element_by_xpath('//select[@name="language"]/option[@value="en"]').click()
-        b.find_element_by_xpath('//select[@name="margin_section"]/option[@value="2"]').click()
 
         b.find_element_by_xpath('//button[@type="submit"]').click()
         h3 = self.browser.find_element_by_tag_name('h3')

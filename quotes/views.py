@@ -12,7 +12,7 @@ class QuoteCreate(CreateView):
     template_name = "quotes/quote_form.html"
 
     def get_success_url(self):
-        return reverse('home')
+        return reverse('quote_detail', args=[self.object.id])
 
     def render_to_response(self, context, **response_kwargs):
         context.update({'title': 'Edit Quote'})
