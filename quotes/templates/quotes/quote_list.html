@@ -3,7 +3,7 @@
 
 {% block content %}
 <h1>{% trans "Quotes" %}</h1>
-(<a href="{% url 'add_quote' %}">{% trans "Add" %}</a>)
+(<a href="{% url 'add_quote' %}">{% trans "Add New Quote" %}</a>)
 <table class="table table-striped table-bordered">
     <tr>
         <td><b>{% trans "Date" %}</b></td>
@@ -12,7 +12,7 @@
         <td><b>{% trans "Status" %}</b></td>
     </tr>
 {% for quote in object_list %}
-    <tr data-rel="{{ quote.id }}">
+    <tr data-rel="{{ quote.id }}" style="cursor: pointer">
         <td>{{ quote.created|date:'Y-m-d H:i' }}</td>
         <td>{{ quote.client.name }}</td>
         <td>{{ quote.name }}</td>
