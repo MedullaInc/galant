@@ -12,7 +12,8 @@ class Section(m.Model):
     parent = m.ForeignKey('self', null=True, blank=True, related_name='sub_sections')
 
     def render_html(self, language=None):
-        html = '<h1>%s</h1><br>%s' % (escape(self.title.get_text(language)), escape(self.text.get_text(language)))
+        html = '<h3><b>%s</b></h3><br>%s' % \
+               (escape(self.title.get_text(language)), escape(self.text.get_text(language)))
         return mark_safe(html)
 
 
@@ -38,7 +39,7 @@ class Quote(m.Model):
     notes = m.ForeignKey(Section, null=True, related_name='notes')
 
     language = m.CharField(max_length=7, null=True, choices=settings.LANGUAGES,
-                         help_text='Language of quote, or null for template.')
+                           help_text='Language of quote, or null for template.')
 
     status = m.CharField(max_length=2, choices=QuoteStatus.choices(), default=QuoteStatus.Draft.value)
     created = m.DateTimeField(auto_now_add=True)

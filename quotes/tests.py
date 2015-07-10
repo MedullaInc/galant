@@ -18,8 +18,8 @@ class SectionTest(TransactionTestCase):
         fixture = AutoFixture(q.Section, generate_fk=True)
         section = fixture.create(1)[0]
 
-        self.assertTrue(section.render_html().startswith("<h1>"))
-        self.assertTrue("</h1><br>" in section.render_html())
+        self.assertTrue(section.render_html().startswith("<h3>"))
+        self.assertTrue("</h3><br>" in section.render_html())
 
     def test_sub_sections(self):
         fixture = AutoFixture(q.Section, generate_fk=True)
