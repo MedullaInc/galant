@@ -6,6 +6,7 @@
     <form id="form" class="form" method="post">
         {% csrf_token %}
         {{ form|bootstrap }}
+        {% block extra_form_inputs %}{% endblock %}
         <div class="form-actions">
             <button class="btn btn-default" type="submit">{% trans "Save" %}</button>
         </div>

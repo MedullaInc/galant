@@ -1,6 +1,7 @@
 from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
+from django.http import HttpResponseRedirect
 from quotes import models as q
 from django.core.urlresolvers import reverse
 from quotes import forms
@@ -8,7 +9,7 @@ from quotes import forms
 
 class QuoteCreate(CreateView):
     form_class = forms.QuoteForm
-    template_name = "gallant/create_form.html"
+    template_name = "quotes/quote_form.html"
 
     def get_success_url(self):
         return reverse('home')
@@ -17,23 +18,22 @@ class QuoteCreate(CreateView):
         context.update({'title': 'Edit Quote'})
         return super(CreateView, self).render_to_response(context)
 
-
-    '''def form_valid(self, form):
+    def form_valid(self, form):
         obj = form.save(commit=True)
-        user = g.GallantUser.objects.get(id=self.request.user.id)
-        text = '[Created]\n' + form.cleaned_data['notes']
-        note = g.Note.objects.create(text=text, created_by=user)
-        obj.notes.add(note)
+        intro = q.Section.objects.create(title=form.cleaned_data['intro_title'],
+                                         text=form.cleaned_data['intro_text'])
+        margin_section = q.Section.objects.create(title=form.cleaned_data['margin_section_title'],
+                                                  text=form.cleaned_data['margin_section_text'])
+        obj.intro = intro
+        obj.margin_section = margin_section
         obj.save()
-        # TODO: return HttpResponseRedirect(reverse('quote_detail', args=[obj.id]))
-        return HttpResponseRedirect(reverse('home'))
-    '''
+        return HttpResponseRedirect(reverse('quote_detail', args=[obj.id]))
 
 
 class QuoteUpdate(UpdateView):
     model = q.Quote
     form_class = forms.QuoteForm
-    template_name = "gallant/create_form.html"
+    template_name = "quotes/quote_form.html"
 
     def get_success_url(self):
         return reverse('quote_detail', args=[self.object.id])

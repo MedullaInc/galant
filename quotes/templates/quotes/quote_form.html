@@ -1,0 +1,33 @@
+{% extends "gallant/create_form.html" %}
+{% load bootstrap i18n %}
+
+
+{% block extra_form_inputs %}
+    <label class="control-label  " for="id_intro">Intro</label>
+    <table width="500">
+        <tr>
+            <td>Title:&nbsp;&nbsp;</td>
+            <td><input class=" form-control" id="id_intro" maxlength="512"
+                   name="intro_title" type="text" value="{{ object.intro.title.get_text }}" /></td>
+        </tr>
+        <tr>
+            <td>Content:&nbsp;&nbsp;</td>
+            <td><textarea name="intro_text" rows="5" style="width:100%;">{{ object.intro.text.get_text }}</textarea></td>
+        </tr>
+    </table>
+    <label class="control-label  " for="id_margin_section">Margin Section</label>
+    <table width="500">
+        <tr>
+            <td>Title:&nbsp;&nbsp;</td>
+            <td><input class=" form-control" id="id_margin_section" maxlength="512"
+                   name="margin_section_title" type="text" value="{{ object.margin_section.title.get_text }}" /></td>
+        </tr>
+        <tr>
+            <td>Content:&nbsp;&nbsp;</td>
+            <td><textarea name="margin_section_text" rows="5" style="width:100%;">{{ object.margin_section.text.get_text }}</textarea></td>
+        </tr>
+    </table>
+{% endblock %}
+
+{% block extra_body %}
+{% endblock %}

@@ -1,16 +1,25 @@
 from django import forms
-from django.utils.translation import get_language
+from django.utils import six
 from quotes import models as q
+from django.utils.encoding import smart_text
 
 
 class QuoteForm(forms.ModelForm):
     class Meta():
         model = q.Quote
-        fields = ['name', 'client', 'intro', 'language', 'status', 'margin_section']
-    '''
-    def __init__(self, *args, **kwargs):
-        super(QuoteForm, self).__init__(*args, **kwargs)
-        self.initial['language'] = get_language()
-        self.fields['notes'] = forms.CharField(
-            widget=forms.Textarea(attrs={'rows': 5}), required=False)
-    '''
+        fields = ['name', 'client', 'language', 'status']
+
+    def clean(self):
+        cleaned_data = super(QuoteForm, self).clean()
+        for extra_section in ['intro', 'margin_section']:
+            for postfix in ['_title', '_text']:
+                field = extra_section + postfix
+                cleaned_data[field] = clean_str(self.data[field])
+        return cleaned_data
+
+
+def clean_str(value):
+    if isinstance(value, six.string_types) or value is None:
+        return value
+    return smart_text(value)
+
