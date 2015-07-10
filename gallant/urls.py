@@ -31,7 +31,6 @@ urlpatterns = i18n_patterns(
     url(r'^quote/', include('quotes.urls')),
 
     url(r'^$', TemplateView.as_view(template_name='index.html'), name='home'),
-    url(r'^quotes/$', login_required(TemplateView.as_view(template_name='quotes/index.html')), name='quotes'),
     url(r'^briefs/$', login_required(briefs.views.index), name='briefs'),
     url(r'^clients/$', login_required(briefs.views.index), name='clients'),
     url(r'^client/add/$', login_required(gallant.views.ClientCreate.as_view()), name='add_client'),

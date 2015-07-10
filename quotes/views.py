@@ -1,5 +1,6 @@
 from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic.detail import DetailView
+from django.views.generic.list import ListView
 from quotes import models as q
 from django.core.urlresolvers import reverse
 from quotes import forms
@@ -43,4 +44,8 @@ class QuoteUpdate(UpdateView):
 
 
 class QuoteDetail(DetailView):
+    model = q.Quote
+
+
+class QuoteList(ListView):
     model = q.Quote
