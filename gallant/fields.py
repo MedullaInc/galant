@@ -3,6 +3,7 @@ from django import forms
 from django.core.exceptions import FieldError
 from jsonfield import JSONField
 from enum import Enum
+from django.conf import settings
 import inspect
 
 
@@ -10,6 +11,8 @@ class ULTextDict(dict):
     def get_text(self, language=None):
         if language is None:
             language = translation.get_language()
+            if language is None:
+                language = settings.LANGUAGE_CODE
 
         if language in self:
             return self[language]
@@ -30,7 +33,10 @@ def _ultext_to_python(value):
         return d
     elif isinstance(value, basestring):
         d = ULTextDict()
-        d.update({translation.get_language(): value})
+        lang = translation.get_language()
+        if lang is None:
+            lang = settings.LANGUAGE_CODE
+        d.update({lang: value})
         return d
 
     if value is None:
