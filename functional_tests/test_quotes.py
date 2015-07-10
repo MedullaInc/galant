@@ -22,7 +22,7 @@ class QuotesSignedInTest(SignedInTest):
         b.find_element_by_xpath('//select[@name="client"]/option[@value="1"]').click()
         b.find_element_by_xpath('//select[@name="intro"]/option[@value="1"]').click()
         b.find_element_by_xpath('//select[@name="language"]/option[@value="en"]').click()
-        b.find_element_by_xpath('//select[@name="notes"]/option[@value="1"]').click()
+        b.find_element_by_xpath('//select[@name="margin_section"]/option[@value="1"]').click()
 
         b.find_element_by_xpath('//button[@type="submit"]').click()
 
@@ -36,7 +36,7 @@ class QuotesSignedInTest(SignedInTest):
         b.find_element_by_xpath('//select[@name="client"]/option[@value="2"]').click()
         b.find_element_by_xpath('//select[@name="intro"]/option[@value="2"]').click()
         b.find_element_by_xpath('//select[@name="language"]/option[@value="en"]').click()
-        b.find_element_by_xpath('//select[@name="notes"]/option[@value="2"]').click()
+        b.find_element_by_xpath('//select[@name="margin_section"]/option[@value="2"]').click()
 
         b.find_element_by_xpath('//button[@type="submit"]').click()
         h3 = self.browser.find_element_by_tag_name('h3')
