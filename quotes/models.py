@@ -36,7 +36,8 @@ class Quote(m.Model):
     client = m.ForeignKey(g.Client, null=True)
     intro = m.ForeignKey(Section, null=True, related_name='intro')
     sections = m.ManyToManyField(Section, blank=True)
-    notes = m.ForeignKey(Section, null=True, related_name='notes')
+    margin_section = m.ForeignKey(Section, null=True, related_name='notes',
+                                  help_text='This section appears on the margin of the last page of a quote.')
 
     language = m.CharField(max_length=7, null=True, choices=settings.LANGUAGES,
                            help_text='Language of quote, or null for template.')

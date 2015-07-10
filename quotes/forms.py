@@ -6,7 +6,7 @@ from quotes import models as q
 class QuoteForm(forms.ModelForm):
     class Meta():
         model = q.Quote
-        fields = ['name', 'client', 'intro', 'language', 'status', 'notes']
+        fields = ['name', 'client', 'intro', 'language', 'status', 'margin_section']
     '''
     def __init__(self, *args, **kwargs):
         super(QuoteForm, self).__init__(*args, **kwargs)
