@@ -14,7 +14,8 @@ class QuoteForm(forms.ModelForm):
         for extra_section in ['intro', 'margin_section']:
             for postfix in ['_title', '_text']:
                 field = extra_section + postfix
-                cleaned_data[field] = clean_str(self.data[field])
+                if field in self.data:
+                    cleaned_data[field] = clean_str(self.data[field])
         return cleaned_data
 
 
