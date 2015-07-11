@@ -4,10 +4,14 @@
 {% block content %}
     <h3>{% trans "Quote" %}</h3>
     (<a href="{% url 'edit_quote' object.id %}">{% trans "Edit" %}</a>)
-    <p><b>{% trans "Name" %}:</b> {{ object.name }}</p>
-    <p><b>{% trans "Client" %}:</b> {{ object.client.name }}</p>
-    <p><b>{% trans "Status" %}:</b> {{ object.get_status_display }}</p>
-    <p><b>{% trans "Intro" %}:</b> {{ object.intro.render_html }}</p>
+    <div id="name"><b>{% trans "Name" %}:</b> {{ object.name }}</div>
+    <div id="client"><b>{% trans "Client" %}:</b> {{ object.client.name }}</div>
+    <div id="status"><b>{% trans "Status" %}:</b> {{ object.get_status_display }}</div>
+    <div id="intro_section"><b>{% trans "Intro" %}:</b> {{ object.intro.render_html }}</div>
     <br>
-    <p><b>{% trans "Margin Section" %}:</b> {{ object.margin_section.render_html }}</p>
+    <div id="margin_section"><b>{% trans "Margin Section" %}:</b> {{ object.margin_section.render_html }}</div>
+    {% for section in object.sections.all %}
+        <div id="section_{{ forloop.counter }}">
+            <b>{% trans "Section" %} {{ forloop.counter }}:</b> {{ section.render_html }}</div>
+    {% endfor %}
 {% endblock %}
