@@ -4,7 +4,7 @@
 
 {% block extra_form_inputs %}
     <table id="section_table" width="500">
-        <tbody id="intro_section">
+        <tbody>
             <tr><td>
                 <label class="control-label  " for="id_intro">Intro</label>
                 <sup style="cursor: pointer">&nbsp;[X]</sup>
@@ -19,8 +19,11 @@
                 <td><textarea name="intro_text" rows="5" style="width:100%;">{{ object.intro.text.get_text }}</textarea></td>
             </tr>
         </tbody>
-        <tbody id="margin_section">
-            <tr><td><label class="control-label  " for="id_margin_section">Margin Section</label></td></tr>
+        <tbody>
+            <tr><td>
+                <label class="control-label  " for="id_margin_section">Margin Section</label>
+                <sup style="cursor: pointer">&nbsp;[X]</sup>
+            </td></tr>
             <tr>
                 <td>Title:&nbsp;&nbsp;</td>
                 <td><input class=" form-control" id="id_margin_section" maxlength="512"
@@ -42,8 +45,11 @@
 <script>
     counter = 0;
     section = function(ct) {
-        return '<div id="section' + ct + '">' +
-        '<tr><td><label class="control-label  " for="id_intro">Section ' + ct + '</label></td></tr>' +
+        return '<tbody>' +
+        '<tr><td>' +
+        '   <label class="control-label  " for="id_intro">Section ' + ct + '</label>' +
+        '   <sup style="cursor: pointer">&nbsp;[X]</sup>' +
+        '</td></tr>' +
         '<tr><td></td></tr>\n' +
         '<tr>\n' +
         '    <td>Title:&nbsp;&nbsp;</td>\n' +
@@ -54,15 +60,15 @@
         '    <td>Content:&nbsp;&nbsp;</td>\n' +
         '    <td><textarea name="section_' + ct + '_text" rows="5" style="width:100%;"></textarea></td>\n' +
         '</tr>\n' +
-        '</div>';
+        '</tbody>';
     }
 
     $('#add_section').click(function() {
         counter++;
-        $('#section_table > tbody > tr:last').before(section(counter))
+        $('#section_table > tbody:last').before(section(counter))
     });
 
-    $('sup').click(function() {
+    $(document.body).on('click', 'sup', function() {
         del = confirm("Remove section?")
         if (del) {
             $(this).parents('tbody')[0].remove();
