@@ -4,26 +4,33 @@
 
 {% block extra_form_inputs %}
     <table id="section_table" width="500">
-        <tr><td><label class="control-label  " for="id_intro">Intro</label></td></tr>
-        <tr>
-            <td>Title:&nbsp;&nbsp;</td>
-            <td><input class=" form-control" id="id_intro" maxlength="512"
-                   name="intro_title" type="text" value="{{ object.intro.title.get_text }}" /></td>
-        </tr>
-        <tr>
-            <td>Content:&nbsp;&nbsp;</td>
-            <td><textarea name="intro_text" rows="5" style="width:100%;">{{ object.intro.text.get_text }}</textarea></td>
-        </tr>
-        <tr><td><label class="control-label  " for="id_margin_section">Margin Section</label></td></tr>
-        <tr>
-            <td>Title:&nbsp;&nbsp;</td>
-            <td><input class=" form-control" id="id_margin_section" maxlength="512"
-                   name="margin_section_title" type="text" value="{{ object.margin_section.title.get_text }}" /></td>
-        </tr>
-        <tr>
-            <td>Content:&nbsp;&nbsp;</td>
-            <td><textarea name="margin_section_text" rows="5" style="width:100%;">{{ object.margin_section.text.get_text }}</textarea></td>
-        </tr>
+        <tbody id="intro_section">
+            <tr><td>
+                <label class="control-label  " for="id_intro">Intro</label>
+                <sup style="cursor: pointer">&nbsp;[X]</sup>
+            </td></tr>
+            <tr>
+                <td>Title:&nbsp;&nbsp;</td>
+                <td><input class=" form-control" id="id_intro" maxlength="512"
+                       name="intro_title" type="text" value="{{ object.intro.title.get_text }}" /></td>
+            </tr>
+            <tr>
+                <td>Content:&nbsp;&nbsp;</td>
+                <td><textarea name="intro_text" rows="5" style="width:100%;">{{ object.intro.text.get_text }}</textarea></td>
+            </tr>
+        </tbody>
+        <tbody id="margin_section">
+            <tr><td><label class="control-label  " for="id_margin_section">Margin Section</label></td></tr>
+            <tr>
+                <td>Title:&nbsp;&nbsp;</td>
+                <td><input class=" form-control" id="id_margin_section" maxlength="512"
+                       name="margin_section_title" type="text" value="{{ object.margin_section.title.get_text }}" /></td>
+            </tr>
+            <tr>
+                <td>Content:&nbsp;&nbsp;</td>
+                <td><textarea name="margin_section_text" rows="5" style="width:100%;">{{ object.margin_section.text.get_text }}</textarea></td>
+            </tr>
+        </tbody>
         <tr>
             <td></td>
             <td><button type="button" id="add_section" class="btn btn-default" style="float: right">Add Section</button></td>
@@ -35,7 +42,8 @@
 <script>
     counter = 0;
     section = function(ct) {
-        return '<tr><td><label class="control-label  " for="id_intro">Section ' + ct + '</label></td></tr>' +
+        return '<div id="section' + ct + '">' +
+        '<tr><td><label class="control-label  " for="id_intro">Section ' + ct + '</label></td></tr>' +
         '<tr><td></td></tr>\n' +
         '<tr>\n' +
         '    <td>Title:&nbsp;&nbsp;</td>\n' +
@@ -45,12 +53,20 @@
         '<tr>\n' +
         '    <td>Content:&nbsp;&nbsp;</td>\n' +
         '    <td><textarea name="section_' + ct + '_text" rows="5" style="width:100%;"></textarea></td>\n' +
-        '</tr>\n';
+        '</tr>\n' +
+        '</div>';
     }
 
-    $('#add_section').on('click', function() {
+    $('#add_section').click(function() {
         counter++;
         $('#section_table > tbody > tr:last').before(section(counter))
+    });
+
+    $('sup').click(function() {
+        del = confirm("Remove section?")
+        if (del) {
+            $(this).parents('tbody')[0].remove();
+        }
     });
 </script>
 {% endblock %}
