@@ -119,7 +119,7 @@ class QuoteFormTest(test.TestCase):
         self.assertEquals(margin_id, new_margin_id)
         self.assertEquals(section_ids, new_section_ids)
 
-    def test_new_section(self):
+    def test_modify_section(self):
         new_data = {'section_1_title': 'title123', 'section_1_text': 'text123'}
         new_data.update(self.data)
 
