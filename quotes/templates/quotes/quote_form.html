@@ -40,6 +40,26 @@
                           style="width:100%;">{{ object.margin_section.text.get_text }}</textarea></td>
         </tr>
         </tbody>
+        {% for section in object.sections.all %}
+        <tbody>
+        <tr>
+            <td>
+                <label class="control-label  " for="id_section_{{ forloop.counter }}">Section {{ forloop.counter }}</label>
+                <sup style="cursor: pointer">&nbsp;[X]</sup>
+            </td>
+        </tr>
+        <tr>
+            <td>Title:&nbsp;&nbsp;</td>
+            <td><input class=" form-control" id="id_section_{{ forloop.counter }}" maxlength="512"
+                       name="section_{{ forloop.counter }}_title" type="text" value="{{ section.title.get_text }}"/></td>
+        </tr>
+        <tr>
+            <td>Content:&nbsp;&nbsp;</td>
+            <td><textarea name="section_{{ forloop.counter }}_text" rows="5"
+                          style="width:100%;">{{ section.text.get_text }}</textarea></td>
+        </tr>
+        </tbody>
+        {% endfor %}
         <tr>
             <td></td>
             <td>

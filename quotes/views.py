@@ -46,20 +46,42 @@ class QuoteDetail(DetailView):
 class QuoteList(ListView):
     model = q.Quote
 
-    
+
 def _create_quote(form):
     obj = form.save(commit=True)
-    intro = q.Section.objects.create(title=form.cleaned_data['intro_title'],
-                                     text=form.cleaned_data['intro_text'])
-    margin_section = q.Section.objects.create(title=form.cleaned_data['margin_section_title'],
-                                              text=form.cleaned_data['margin_section_text'])
+    intro = q.Section(title=form.cleaned_data['intro_title'],
+                      text=form.cleaned_data['intro_text'])
+    margin_section = q.Section(title=form.cleaned_data['margin_section_title'],
+                               text=form.cleaned_data['margin_section_text'])
 
+    saved_sections = [s.id for s in obj.sections.all()]
+    obj.sections.clear()
+    section_index = 0
     for key, value in form.cleaned_data.items():
         if key.startswith('section_') and key.endswith('_title'):
             section_name = key[:-6]
-            section = q.Section.objects.create(title=form.cleaned_data[section_name + '_title'],
-                                               text=form.cleaned_data[section_name + '_text'])
-            obj.sections.add(section)
+            section = q.Section(title=form.cleaned_data[section_name + '_title'],
+                                text=form.cleaned_data[section_name + '_text'])
 
-    obj.intro = intro
-    obj.margin_section = margin_section
+            # compare to section at same index, don't add if same
+            if section_index < len(saved_sections):
+                saved_section = q.Section.objects.get(id=saved_sections[section_index])
+            else:
+                saved_section = None
+
+            if section.render_html() != saved_section.render_html():
+                section.save()
+            else:
+                section = saved_section
+
+            obj.sections.add(section)
+            section_index += 1
+
+    if obj.intro is None or obj.intro.render_html() != intro.render_html():
+        intro.save()
+        obj.intro = intro
+
+    if obj.margin_section is None or \
+                    obj.margin_section.render_html() != margin_section.render_html():
+        margin_section.save()
+        obj.margin_section = margin_section
