@@ -72,12 +72,67 @@ class QuoteFormTest(test.TestCase):
         f = qf.QuoteForm(self.data)
 
         self.assertTrue(f.is_valid())
+
         obj = qv._create_quote(f)
         self.assertEquals(obj.id, 1)
 
     def test_edit_quote(self):
         f = qf.QuoteForm(self.data)
         self.assertTrue(f.is_valid())
+
         obj = qv._create_quote(f)
         new_obj = qv._create_quote(f)
         self.assertEquals(obj.id, new_obj.id)
+
+    def test_new_section(self):
+        new_data = {'section_1_title': 'title123', 'section_1_text': 'text123'}
+        new_data.update(self.data)
+
+        f = qf.QuoteForm(new_data)
+        self.assertTrue(f.is_valid())
+
+        obj = qv._create_quote(f)
+        obj.save()
+
+        self.assertEquals(obj.sections.count(), 1)
+
+    def test_same_sections(self):
+        new_data = {'section_1_title': 'title123', 'section_1_text': 'text123'}
+        new_data.update(self.data)
+
+        f = qf.QuoteForm(new_data)
+        self.assertTrue(f.is_valid())
+
+        obj = qv._create_quote(f)
+        obj.save()
+        intro_id = obj.intro.id
+        margin_id = obj.margin_section.id
+        section_ids = [s.id for s in obj.sections.all()]
+
+        new_obj = qv._create_quote(f)
+        new_obj.save()
+        new_intro_id = new_obj.intro.id
+        new_margin_id = new_obj.margin_section.id
+        new_section_ids = [s.id for s in new_obj.sections.all()]
+
+        self.assertEquals(intro_id, new_intro_id)
+        self.assertEquals(margin_id, new_margin_id)
+        self.assertEquals(section_ids, new_section_ids)
+
+    def test_new_section(self):
+        new_data = {'section_1_title': 'title123', 'section_1_text': 'text123'}
+        new_data.update(self.data)
+
+        f = qf.QuoteForm(new_data)
+        self.assertTrue(f.is_valid())
+
+        obj = qv._create_quote(f)
+        obj.save()
+        section_ids = [s.id for s in obj.sections.all()]
+
+        f.cleaned_data['section_1_title'] = 'new title'
+        new_obj = qv._create_quote(f)
+        new_obj.save()
+        new_section_ids = [s.id for s in new_obj.sections.all()]
+
+        self.assertNotEquals(section_ids, new_section_ids)

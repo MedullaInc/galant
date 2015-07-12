@@ -57,7 +57,7 @@ def _create_quote(form):
     saved_sections = [s.id for s in obj.sections.all()]
     obj.sections.clear()
     section_index = 0
-    for key, value in form.cleaned_data.items():
+    for key in form.cleaned_data:
         if key.startswith('section_') and key.endswith('_title'):
             section_name = key[:-6]
             section = q.Section(title=form.cleaned_data[section_name + '_title'],
@@ -69,7 +69,7 @@ def _create_quote(form):
             else:
                 saved_section = None
 
-            if section.render_html() != saved_section.render_html():
+            if saved_section is None or section.render_html() != saved_section.render_html():
                 section.save()
             else:
                 section = saved_section
@@ -77,13 +77,13 @@ def _create_quote(form):
             obj.sections.add(section)
             section_index += 1
 
-        return obj
-
     if obj.intro is None or obj.intro.render_html() != intro.render_html():
         intro.save()
         obj.intro = intro
 
     if obj.margin_section is None or \
-                    obj.margin_section.render_html() != margin_section.render_html():
+            obj.margin_section.render_html() != margin_section.render_html():
         margin_section.save()
         obj.margin_section = margin_section
+
+    return obj
