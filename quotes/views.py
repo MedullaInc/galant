@@ -1,32 +1,12 @@
 from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
-from django.http import HttpResponseRedirect
 from quotes import models as q
 from django.core.urlresolvers import reverse
 from quotes import forms
 
 
-class QuoteCreator(object):
-    def create_quote(self, form):
-        obj = form.save(commit=True)
-        intro = q.Section.objects.create(title=form.cleaned_data['intro_title'],
-                                         text=form.cleaned_data['intro_text'])
-        margin_section = q.Section.objects.create(title=form.cleaned_data['margin_section_title'],
-                                                  text=form.cleaned_data['margin_section_text'])
-
-        for key, value in form.cleaned_data.items():
-            if key.startswith('section_') and key.endswith('_title'):
-                section_name = key[:-6]
-                section = q.Section.objects.create(title=form.cleaned_data[section_name + '_title'],
-                                                   text=form.cleaned_data[section_name + '_text'])
-                obj.sections.add(section)
-
-        obj.intro = intro
-        obj.margin_section = margin_section
-
-
-class QuoteCreate(CreateView, QuoteCreator):
+class QuoteCreate(CreateView):
     form_class = forms.QuoteForm
     template_name = "quotes/quote_form.html"
 
@@ -34,7 +14,7 @@ class QuoteCreate(CreateView, QuoteCreator):
         return reverse('quote_detail', args=[self.object.id])
 
     def form_valid(self, form):
-        self.create_quote(form)
+        _create_quote(form)
         return super(QuoteCreate, self).form_valid(form)
 
     def render_to_response(self, context, **response_kwargs):
@@ -42,7 +22,7 @@ class QuoteCreate(CreateView, QuoteCreator):
         return super(CreateView, self).render_to_response(context)
 
 
-class QuoteUpdate(UpdateView, QuoteCreator):
+class QuoteUpdate(UpdateView):
     model = q.Quote
     form_class = forms.QuoteForm
     template_name = "quotes/quote_form.html"
@@ -51,7 +31,7 @@ class QuoteUpdate(UpdateView, QuoteCreator):
         return reverse('quote_detail', args=[self.object.id])
 
     def form_valid(self, form):
-        self.create_quote(form)
+        _create_quote(form)
         return super(QuoteUpdate, self).form_valid(form)
 
     def render_to_response(self, context, **response_kwargs):
@@ -65,3 +45,21 @@ class QuoteDetail(DetailView):
 
 class QuoteList(ListView):
     model = q.Quote
+
+    
+def _create_quote(form):
+    obj = form.save(commit=True)
+    intro = q.Section.objects.create(title=form.cleaned_data['intro_title'],
+                                     text=form.cleaned_data['intro_text'])
+    margin_section = q.Section.objects.create(title=form.cleaned_data['margin_section_title'],
+                                              text=form.cleaned_data['margin_section_text'])
+
+    for key, value in form.cleaned_data.items():
+        if key.startswith('section_') and key.endswith('_title'):
+            section_name = key[:-6]
+            section = q.Section.objects.create(title=form.cleaned_data[section_name + '_title'],
+                                               text=form.cleaned_data[section_name + '_text'])
+            obj.sections.add(section)
+
+    obj.intro = intro
+    obj.margin_section = margin_section
