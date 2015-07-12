@@ -4,7 +4,7 @@
 
 {% block extra_form_inputs %}
     <table id="section_table" width="500">
-        <tbody>
+        <tbody name="intro_section">
         <tr>
             <td>
                 <label class="control-label  " for="id_intro">Intro</label>
@@ -22,7 +22,7 @@
             </td>
         </tr>
         </tbody>
-        <tbody>
+        <tbody name="margin_section">
         <tr>
             <td>
                 <label class="control-label  " for="id_margin_section">Margin Section</label>
@@ -41,7 +41,7 @@
         </tr>
         </tbody>
         {% for section in object.sections.all %}
-        <tbody>
+        <tbody name="section_{{ forloop.counter }}">
         <tr>
             <td>
                 <label class="control-label  " for="id_section_{{ forloop.counter }}">Section {{ forloop.counter }}</label>
