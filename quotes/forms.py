@@ -11,11 +11,14 @@ class QuoteForm(forms.ModelForm):
 
     def clean(self):
         cleaned_data = super(QuoteForm, self).clean()
+        sections = [key for key, value in self.data.items() if 'section_' in key]
         for extra_section in ['intro', 'margin_section']:
             for postfix in ['_title', '_text']:
-                field = extra_section + postfix
-                if field in self.data:
-                    cleaned_data[field] = clean_str(self.data[field])
+                sections.append(extra_section + postfix)
+
+        for s in sections:
+            if s in self.data:
+                cleaned_data[s] = clean_str(self.data[s])
         return cleaned_data
 
 

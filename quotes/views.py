@@ -24,10 +24,17 @@ class QuoteCreate(CreateView):
                                          text=form.cleaned_data['intro_text'])
         margin_section = q.Section.objects.create(title=form.cleaned_data['margin_section_title'],
                                                   text=form.cleaned_data['margin_section_text'])
+
+        for key, value in form.cleaned_data.items():
+            if key.startswith('section_') and key.endswith('_title'):
+                section_name = key[:-6]
+                section = q.Section.objects.create(title=form.cleaned_data[section_name + '_title'],
+                                                   text=form.cleaned_data[section_name + '_text'])
+                obj.sections.add(section)
+
         obj.intro = intro
         obj.margin_section = margin_section
-        obj.save()
-        return HttpResponseRedirect(reverse('quote_detail', args=[obj.id]))
+        return super(QuoteCreate, self).form_valid(form)
 
 
 class QuoteUpdate(UpdateView):
@@ -37,6 +44,24 @@ class QuoteUpdate(UpdateView):
 
     def get_success_url(self):
         return reverse('quote_detail', args=[self.object.id])
+
+    def form_valid(self, form):
+        obj = form.save(commit=True)
+        intro = q.Section.objects.create(title=form.cleaned_data['intro_title'],
+                                         text=form.cleaned_data['intro_text'])
+        margin_section = q.Section.objects.create(title=form.cleaned_data['margin_section_title'],
+                                                  text=form.cleaned_data['margin_section_text'])
+
+        for key, value in form.cleaned_data.items():
+            if key.startswith('section_') and key.endswith('_title'):
+                section_name = key[:-6]
+                section = q.Section.objects.create(title=form.cleaned_data[section_name + '_title'],
+                                                   text=form.cleaned_data[section_name + '_text'])
+                obj.sections.add(section)
+
+        obj.intro = intro
+        obj.margin_section = margin_section
+        return super(QuoteUpdate, self).form_valid(form)
 
     def render_to_response(self, context, **response_kwargs):
         context.update({'title': 'Update Quote'})
