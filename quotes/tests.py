@@ -1,11 +1,13 @@
-from django.test import TransactionTestCase
+from django import test
 from quotes import models as q
-from gallant import models as g
 from autofixture import AutoFixture
+from quotes import forms as qf
+from quotes import views as qv
+from gallant import models as g
 
 
 # Create your tests here.
-class SectionTest(TransactionTestCase):
+class SectionTest(test.TransactionTestCase):
     def test_save_load(self):
         fixture = AutoFixture(q.Section, generate_fk=True)
         section = fixture.create(1)[0]
@@ -38,7 +40,7 @@ class SectionTest(TransactionTestCase):
         self.assertFalse("<script>" in section.render_html())
 
 
-class QuoteTest(TransactionTestCase):
+class QuoteTest(test.TransactionTestCase):
     def test_save_load(self):
         fixture = AutoFixture(q.Quote, generate_fk=True)
         obj = fixture.create(1)[0]
@@ -56,3 +58,26 @@ class QuoteTest(TransactionTestCase):
 
         self.assertEqual(len(base_quote.versions.all()), 9)
 
+
+class QuoteFormTest(test.TestCase):
+    data = {'status': '1', 'name': 'asdfQuote test edit', 'language': 'en', 'intro_text': 'test intro text',
+             'margin_section_title': 'test margin title', 'margin_section_text': 'test margin text',
+             'intro_title': 'modified intro title'}
+
+    def setUp(self):
+        client = AutoFixture(g.Client, generate_fk=True).create(1)
+        self.data['client'] = client[0].id
+
+    def test_create_quote(self):
+        f = qf.QuoteForm(self.data)
+
+        self.assertTrue(f.is_valid())
+        obj = qv._create_quote(f)
+        self.assertEquals(obj.id, 1)
+
+    def test_edit_quote(self):
+        f = qf.QuoteForm(self.data)
+        self.assertTrue(f.is_valid())
+        obj = qv._create_quote(f)
+        new_obj = qv._create_quote(f)
+        self.assertEquals(obj.id, new_obj.id)

@@ -77,6 +77,8 @@ def _create_quote(form):
             obj.sections.add(section)
             section_index += 1
 
+        return obj
+
     if obj.intro is None or obj.intro.render_html() != intro.render_html():
         intro.save()
         obj.intro = intro
