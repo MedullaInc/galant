@@ -82,7 +82,6 @@ class QuotesSignedInTest(SignedInTest):
         b.find_element_by_id('id_section_3_text').send_keys('s3text')
 
         b.find_element_by_xpath('//button[@type="submit"]').click()
-        b.save_screenshot('tmp.png')
         h3 = self.browser.find_element_by_tag_name('h3')
         self.assertEqual(u'Quote', h3.text)
         el = b.find_element_by_xpath('//div[@id="section_1"]/h3[1]/b')
