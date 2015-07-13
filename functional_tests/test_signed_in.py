@@ -28,6 +28,11 @@ class SignedInTest(LiveServerTestCase):
         self.browser.quit()
 
     def load_scripts(self):
+        '''
+        Call this method after loading target page to load jQuery and scripts contained
+        within <body> (Selenium doesn't automatically load them).
+        :return:
+        '''
         b = self.browser
         with open("static/js/jquery-latest.min.js", "r") as jq:
             b.execute_script(jq.read())
