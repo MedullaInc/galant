@@ -27,6 +27,15 @@ class SignedInTest(LiveServerTestCase):
     def tearDown(self):
         self.browser.quit()
 
+    def load_scripts(self):
+        b = self.browser
+        with open("static/js/jquery-latest.min.js", "r") as jq:
+            b.execute_script(jq.read())
+
+        scripts = b.find_elements_by_xpath('//body/script')
+        for s in scripts:
+            b.execute_script(s.get_attribute('innerHTML'))
+
 
 class LoginSignUpTest(SignedInTest):
     def test_can_login(self):
