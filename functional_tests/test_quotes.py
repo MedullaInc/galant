@@ -64,3 +64,73 @@ class QuotesSignedInTest(SignedInTest):
         self.assertEqual(intro.text, '1234')
         intro = b.find_element_by_xpath('//div[@id="section_2"]/h3[1]/b')
         self.assertEqual(intro.text, '4321')
+
+    def test_section_order(self):
+        b = self.browser
+        b.get(self.live_server_url + reverse('edit_quote', args=[1]))
+        self.load_scripts()
+
+        add_section = b.find_element_by_id('add_section')
+        add_section.click()
+        add_section.click()
+        add_section.click()
+        b.find_element_by_id('id_section_1_title').send_keys('1234')
+        b.find_element_by_id('id_section_1_text').send_keys('1234')
+        b.find_element_by_id('id_section_2_title').send_keys('s2title')
+        b.find_element_by_id('id_section_2_text').send_keys('s2text')
+        b.find_element_by_id('id_section_3_title').send_keys('s3title')
+        b.find_element_by_id('id_section_3_text').send_keys('s3text')
+
+        b.find_element_by_xpath('//button[@type="submit"]').click()
+        b.save_screenshot('tmp.png')
+        h3 = self.browser.find_element_by_tag_name('h3')
+        self.assertEqual(u'Quote', h3.text)
+        el = b.find_element_by_xpath('//div[@id="section_1"]/h3[1]/b')
+        self.assertEqual(el.text, '1234')
+        el = b.find_element_by_xpath('//div[@id="section_3"]/h3[1]/b')
+        self.assertEqual(el.text, 's3title')
+
+    def test_remove_section(self):
+        b = self.browser
+        b.get(self.live_server_url + reverse('edit_quote', args=[1]))
+        self.load_scripts()
+
+        add_section = b.find_element_by_id('add_section')
+        add_section.click()
+        add_section.click()
+        add_section.click()
+        b.find_element_by_id('id_section_1_title').send_keys('1234')
+        b.find_element_by_id('id_section_1_text').send_keys('1234')
+        b.find_element_by_id('id_section_2_title').send_keys('s2title')
+        b.find_element_by_id('id_section_2_text').send_keys('s2text')
+        b.find_element_by_id('id_section_3_title').send_keys('s3title')
+        b.find_element_by_id('id_section_3_text').send_keys('s3text')
+
+        # click remove thingie
+        b.find_element_by_id('section_2_remove').click()
+
+        b.find_element_by_xpath('//button[@type="submit"]').click()
+        h3 = self.browser.find_element_by_tag_name('h3')
+        self.assertEqual(u'Quote', h3.text)
+        el = b.find_element_by_xpath('//div[@id="section_1"]/h3[1]/b')
+        self.assertEqual(el.text, '1234')
+        el = b.find_element_by_xpath('//div[@id="section_2"]/h3[1]/b')
+        self.assertEqual(el.text, 's3title')
+
+    def test_add_to_existing_sections(self):
+        b = self.browser
+        b.get(self.live_server_url + reverse('edit_quote', args=[1]))
+        self.load_scripts()
+
+        add_section = b.find_element_by_id('add_section')
+        add_section.click()
+        b.find_element_by_id('id_section_1_title').send_keys('1234')
+        b.find_element_by_xpath('//button[@type="submit"]').click()
+
+        b.get(self.live_server_url + reverse('edit_quote', args=[1]))
+        self.load_scripts()
+
+        add_section = b.find_element_by_id('add_section')
+        add_section.click()
+
+        self.assertEqual(len(b.find_elements_by_id('id_section_1_title')), 1)

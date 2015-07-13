@@ -4,6 +4,7 @@ from django.views.generic.list import ListView
 from quotes import models as q
 from django.core.urlresolvers import reverse
 from quotes import forms
+import operator
 
 
 class QuoteCreate(CreateView):
@@ -57,7 +58,8 @@ def _create_quote(form):
     saved_sections = [s.id for s in obj.sections.all()]
     obj.sections.clear()
     section_index = 0
-    for key in form.cleaned_data:
+
+    for key, value in sorted(form.cleaned_data.items(), key=operator.itemgetter(1)):
         if key.startswith('section_') and key.endswith('_title'):
             section_name = key[:-6]
             section = q.Section(title=form.cleaned_data[section_name + '_title'],
