@@ -41,6 +41,10 @@ class SignedInTest(LiveServerTestCase):
         for s in scripts:
             b.execute_script(s.get_attribute('innerHTML'))
 
+        # need this to auto-accept all confirmation dialogs
+        b.execute_script("window.confirm = function(){return true;}")
+        b.execute_script("window.alert = function(){}")
+
 
 class LoginSignUpTest(SignedInTest):
     def test_can_login(self):
