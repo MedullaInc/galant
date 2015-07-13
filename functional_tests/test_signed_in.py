@@ -1,10 +1,13 @@
 from django.test import LiveServerTestCase
 from selenium import webdriver
 from django.core.urlresolvers import reverse
+import django
 
 
 class SignedInTest(LiveServerTestCase):
-    fixtures = ['functional_tests/fixtures/ft_one_user.json']
+    fixtures = ['functional_tests/fixtures/ft_one_user_logged_in.json']
+    cookie = {u'domain': u'localhost', u'name': u'sessionid', u'value': u'88f6ox013p6m2i99kv220svrk9y6y16n',
+                u'path': u'/', u'httponly': True, u'secure': False}
 
     def setUp(self):
         self.browser = webdriver.PhantomJS()
@@ -12,17 +15,8 @@ class SignedInTest(LiveServerTestCase):
         # other browsers can be set here, eg
         # self.browser = webdriver.Firefox()
 
-        # open web browser, go to the admin page
-        self.browser.get(self.live_server_url)
-
-        email_field = self.browser.find_element_by_name('login')
-        password_field = self.browser.find_element_by_name('password')
-
-        email_field.send_keys('david.agg@gmail.com')
-        password_field.send_keys('asdfasdf')
-
-        submit = self.browser.find_element_by_name('submit_login')
-        submit.click()
+        # add session cookie for logged-in user
+        self.browser.add_cookie(self.cookie)
 
     def tearDown(self):
         self.browser.quit()
@@ -47,24 +41,27 @@ class SignedInTest(LiveServerTestCase):
 
 
 class LoginSignUpTest(SignedInTest):
-    def test_can_login(self):
-        # check 'Django administration' heading
+    fixtures = ['functional_tests/fixtures/ft_one_user_logged_in.json']
+
+    def setUp(self):
+        super(LoginSignUpTest, self).setUp()
+        self.browser.get(self.live_server_url)
+
+    def test_cant_login(self):
         body = self.browser.find_element_by_tag_name('body')
         self.assertNotIn('Account Login', body.text)
 
-    def test_can_sign_up(self):
-        # check 'Django administration' heading
+    def test_cant_sign_up(self):
         body = self.browser.find_element_by_tag_name('body')
         self.assertNotIn('Sign Up Now!', body.text)
 
     def test_can_sign_out(self):
-        # check 'Django administration' heading
         body = self.browser.find_element_by_tag_name('body')
         self.assertIn('Sign Out', body.text)
 
 
 class GallantSignedInTest(SignedInTest):
-    fixtures = ['functional_tests/fixtures/ft_one_user.json',
+    fixtures = ['functional_tests/fixtures/ft_one_user_logged_in.json',
                 'functional_tests/fixtures/ft_client.json',
                 'functional_tests/fixtures/ft_service.json']
 

@@ -3,7 +3,7 @@ from test_signed_in import SignedInTest
 
 
 class QuotesSignedInTest(SignedInTest):
-    fixtures = ['functional_tests/fixtures/ft_one_user.json',
+    fixtures = ['functional_tests/fixtures/ft_one_user_logged_in.json',
                 'functional_tests/fixtures/ft_client.json',
                 'functional_tests/fixtures/ft_service.json',
                 'functional_tests/fixtures/ft_quote.json']
