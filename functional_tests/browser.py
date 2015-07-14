@@ -7,14 +7,14 @@ from django.contrib.auth import hashers
 browser = []
 
 
-def get():
+def instance():
     if len(browser) < 1:
         browser.append(webdriver.PhantomJS())
     return browser[0]
 
 
-def quit():
-    get().quit()
+def close():
+    instance().quit()
     browser.pop(0)
 
 
@@ -29,9 +29,12 @@ class SignedInTest(LiveServerTestCase):
 
         # add session cookie for logged-in user
         self.client.login(email=u.email, password='password')
-        get().add_cookie({u'domain': u'localhost', u'name': u'sessionid',
+        instance().add_cookie({u'domain': u'localhost', u'name': u'sessionid',
                                  u'value': self.client.session.session_key,
                                  u'path': u'/', u'httponly': True, u'secure': False})
+
+    def tearDown(self):
+        instance().delete_all_cookies()
 
     def load_scripts(self):
         '''
@@ -39,7 +42,7 @@ class SignedInTest(LiveServerTestCase):
         within <body> (Selenium doesn't automatically load them).
         :return:
         '''
-        b = get()
+        b = instance()
         with open("static/js/jquery-latest.min.js", "r") as jq:
             b.execute_script(jq.read())
 

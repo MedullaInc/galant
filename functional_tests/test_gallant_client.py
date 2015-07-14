@@ -3,9 +3,13 @@ import autofixture
 from functional_tests import browser
 
 
+def tearDown():
+    browser.close()
+
+
 class GallantClientTest(browser.SignedInTest):
     def test_add_client(self):
-        b = browser.get()
+        b = browser.instance()
         b.get(self.live_server_url + reverse('add_client'))
 
         b.find_element_by_name('name').send_keys('Kanye West')
@@ -19,7 +23,7 @@ class GallantClientTest(browser.SignedInTest):
         self.assertEqual(u'Client', h3.text)
 
     def test_edit_client(self):
-        b = browser.get()
+        b = browser.instance()
         c = autofixture.create_one('gallant.Client', generate_fk=True)
         c.save()
         b.get(self.live_server_url + reverse('edit_client', args=[c.id]))
@@ -35,7 +39,7 @@ class GallantClientTest(browser.SignedInTest):
         self.assertEqual(u'Client', h3.text)
 
     def test_add_client_note(self):
-        b = browser.get()
+        b = browser.instance()
         c = autofixture.create_one('gallant.Client', generate_fk=True)
         c.save()
         b.get(self.live_server_url + reverse('client_detail', args=[c.id]))
@@ -47,7 +51,7 @@ class GallantClientTest(browser.SignedInTest):
         self.assertTrue(test_string in b.find_element_by_id('notes').text)
 
     def test_blank_note_fail(self):
-        b = browser.get()
+        b = browser.instance()
         c = autofixture.create_one('gallant.Client', generate_fk=True)
         c.save()
         b.get(self.live_server_url + reverse('client_detail', args=[c.id]))
