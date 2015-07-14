@@ -1,21 +1,21 @@
 from django.core.urlresolvers import reverse
-from functional_tests.test_signed_in import SignedInTest, get_browser, quit_browser
+from functional_tests import browser
 import autofixture
 
 
 def teardown():
-    quit_browser()
+    browser.quit()
 
 
-class QuotesSignedInTest(SignedInTest):
+class QuotesSignedInTest(browser.SignedInTest):
     def test_can_access_quotes(self):
         # check 'Quotes' h1
-        get_browser().get(self.live_server_url + reverse('quotes'))
-        h1 = get_browser().find_element_by_tag_name('h1')
+        browser.get().get(self.live_server_url + reverse('quotes'))
+        h1 = browser.get().find_element_by_tag_name('h1')
         self.assertIn('Quotes', h1.text)
 
     def test_add_quote(self):
-        b = get_browser()
+        b = browser.get()
         c = autofixture.create_one('gallant.Client', generate_fk=True)
         c.save()
         b.get(self.live_server_url + reverse('add_quote'))
@@ -30,11 +30,11 @@ class QuotesSignedInTest(SignedInTest):
 
         b.find_element_by_xpath('//button[@type="submit"]').click()
 
-        h3 = get_browser().find_element_by_tag_name('h3')
+        h3 = browser.get().find_element_by_tag_name('h3')
         self.assertEqual(u'Quote', h3.text)
 
     def test_edit_quote(self):
-        b = get_browser()
+        b = browser.get()
         q = autofixture.create_one('quotes.Quote', generate_fk=True, field_values={'sections': [], 'language': 'en'})
         q.save()
         b.get(self.live_server_url + reverse('edit_quote', args=[q.id]))
@@ -43,13 +43,13 @@ class QuotesSignedInTest(SignedInTest):
         b.find_element_by_name('intro_title').send_keys('modified intro title')
 
         b.find_element_by_xpath('//button[@type="submit"]').click()
-        h3 = get_browser().find_element_by_tag_name('h3')
+        h3 = browser.get().find_element_by_tag_name('h3')
         self.assertEqual(u'Quote', h3.text)
         intro = b.find_element_by_xpath('//div[@id="intro_section"]/h3[1]/b')
         self.assertEqual(intro.text, 'modified intro title')
 
     def test_add_sections(self):
-        b = get_browser()
+        b = browser.get()
         q = autofixture.create_one('quotes.Quote', generate_fk=True, field_values={'sections': [], 'language': 'en'})
         q.save()
         b.get(self.live_server_url + reverse('edit_quote', args=[q.id]))
@@ -64,7 +64,7 @@ class QuotesSignedInTest(SignedInTest):
         b.find_element_by_id('id_section_2_text').send_keys('4321')
 
         b.find_element_by_xpath('//button[@type="submit"]').click()
-        h3 = get_browser().find_element_by_tag_name('h3')
+        h3 = browser.get().find_element_by_tag_name('h3')
         self.assertEqual(u'Quote', h3.text)
         intro = b.find_element_by_xpath('//div[@id="section_1"]/h3[1]/b')
         self.assertEqual(intro.text, '1234')
@@ -72,7 +72,7 @@ class QuotesSignedInTest(SignedInTest):
         self.assertEqual(intro.text, '4321')
 
     def test_section_order(self):
-        b = get_browser()
+        b = browser.get()
         q = autofixture.create_one('quotes.Quote', generate_fk=True, field_values={'sections': [], 'language': 'en'})
         q.save()
         b.get(self.live_server_url + reverse('edit_quote', args=[q.id]))
@@ -90,7 +90,7 @@ class QuotesSignedInTest(SignedInTest):
         b.find_element_by_id('id_section_3_text').send_keys('s3text')
 
         b.find_element_by_xpath('//button[@type="submit"]').click()
-        h3 = get_browser().find_element_by_tag_name('h3')
+        h3 = browser.get().find_element_by_tag_name('h3')
         self.assertEqual(u'Quote', h3.text)
         el = b.find_element_by_xpath('//div[@id="section_1"]/h3[1]/b')
         self.assertEqual(el.text, '1234')
@@ -98,7 +98,7 @@ class QuotesSignedInTest(SignedInTest):
         self.assertEqual(el.text, 's3title')
 
     def test_remove_section(self):
-        b = get_browser()
+        b = browser.get()
         q = autofixture.create_one('quotes.Quote', generate_fk=True, field_values={'sections': [], 'language': 'en'})
         q.save()
         b.get(self.live_server_url + reverse('edit_quote', args=[q.id]))
@@ -118,7 +118,7 @@ class QuotesSignedInTest(SignedInTest):
         b.find_element_by_id('section_2_remove').click()
 
         b.find_element_by_xpath('//button[@type="submit"]').click()
-        h3 = get_browser().find_element_by_tag_name('h3')
+        h3 = browser.get().find_element_by_tag_name('h3')
         self.assertEqual(u'Quote', h3.text)
         el = b.find_element_by_xpath('//div[@id="section_1"]/h3[1]/b')
         self.assertEqual(el.text, '1234')
@@ -126,7 +126,7 @@ class QuotesSignedInTest(SignedInTest):
         self.assertEqual(el.text, 's3title')
 
     def test_add_to_existing_sections(self):
-        b = get_browser()
+        b = browser.get()
         q = autofixture.create_one('quotes.Quote', generate_fk=True, field_values={'sections': [], 'language': 'en'})
         q.save()
         b.get(self.live_server_url + reverse('edit_quote', args=[q.id]))

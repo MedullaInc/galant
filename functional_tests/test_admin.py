@@ -1,13 +1,13 @@
-from functional_tests.test_signed_in import SignedInTest, get_browser, quit_browser
+from functional_tests import browser
 
 
 def teardown():
-    quit_browser()
+    browser.quit()
 
 
-class AdminTest(SignedInTest):
+class AdminTest(browser.SignedInTest):
     def test_can_access_admin_site(self):
-        b = get_browser()
+        b = browser.get()
         b.get(self.live_server_url + '/admin/')
         # check 'Django administration' heading
         body = b.find_element_by_tag_name('body')
