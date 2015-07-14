@@ -35,7 +35,7 @@ import sys
 import threading
 
 
-TEST_CMD_TEMPLATE = 'python manage.py test -x --settings="gallant.settings.test" --nologcapture \
+TEST_CMD_TEMPLATE = './venv/bin/coverage -p -x manage.py test -x --settings="gallant.settings.test" --nologcapture \
                      --with-nose-picker  --which-process=%d --total-processes=%d --noinput'
 
 
