@@ -24,9 +24,13 @@ import gallant
 from gallant import views
 import briefs
 from briefs import views
+import warnings
+from django.utils.deprecation import RemovedInDjango110Warning
+warnings.filterwarnings("ignore",category=RemovedInDjango110Warning)
+import allauth.urls
 
 urlpatterns = i18n_patterns(
-    url(r'^accounts/', include('allauth.urls')),
+    url(r'^accounts/', include(allauth.urls)),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^quote/', include('quotes.urls')),
 

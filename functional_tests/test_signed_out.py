@@ -5,6 +5,7 @@ from selenium.common.exceptions import NoSuchElementException
 from django.utils.translation import activate, get_language
 from django.core.urlresolvers import reverse, get_resolver
 
+
 class SignedOutTest(LiveServerTestCase):
     # fixtures = ['functional_tests/fixtures/ft_one_user.json']
 

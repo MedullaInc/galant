@@ -45,6 +45,7 @@ INSTALLED_APPS = (
     'bootstrapform',
     'custom_user',
     'selenium',
+    'django_nose',
     
     'gallant',
     'briefs',
@@ -96,6 +97,8 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
+
+TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 

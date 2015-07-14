@@ -1,4 +1,5 @@
 from django import test
+from django.db import transaction
 from quotes import models as q
 from autofixture import AutoFixture
 from quotes import forms as qf

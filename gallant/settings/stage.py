@@ -1,1 +1,1 @@
-from base import *
+from gallant.settings.base import *
