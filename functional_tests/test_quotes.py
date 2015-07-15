@@ -126,8 +126,10 @@ class QuotesSignedInTest(browser.SignedInTest):
         b.find_element_by_id('section_2_remove').click()
 
         b.find_element_by_xpath('//button[@type="submit"]').click()
-        h3 = browser.instance().find_element_by_tag_name('h3')
-        self.assertEqual(u'Quote', h3.text)
+
+        section_title = browser.instance().find_element_by_class_name('section_title')
+        self.assertEqual(u'Quote', section_title.text)
+
         el = b.find_element_by_xpath('//div[@id="section_1"]/h3[1]/b')
         self.assertEqual(el.text, '1234')
         el = b.find_element_by_xpath('//div[@id="section_2"]/h3[1]/b')
