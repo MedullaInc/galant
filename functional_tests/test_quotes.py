@@ -43,8 +43,10 @@ class QuotesSignedInTest(browser.SignedInTest):
         b.find_element_by_name('intro_title').send_keys('modified intro title')
 
         b.find_element_by_xpath('//button[@type="submit"]').click()
-        h3 = browser.instance().find_element_by_tag_name('h3')
-        self.assertEqual(u'Quote', h3.text)
+
+        section_title = browser.instance().find_element_by_class_name('section_title')
+        self.assertEqual(u'Quote', section_title.text)
+
         intro = b.find_element_by_xpath('//div[@id="intro_section"]/h3[1]/b')
         self.assertEqual(intro.text, 'modified intro title')
 
@@ -92,8 +94,10 @@ class QuotesSignedInTest(browser.SignedInTest):
         b.find_element_by_id('id_section_3_text').send_keys('s3text')
 
         b.find_element_by_xpath('//button[@type="submit"]').click()
-        h3 = browser.instance().find_element_by_tag_name('h3')
-        self.assertEqual(u'Quote', h3.text)
+
+        section_title = browser.instance().find_element_by_class_name('section_title')
+        self.assertEqual(u'Quote', section_title.text)
+
         el = b.find_element_by_xpath('//div[@id="section_1"]/h3[1]/b')
         self.assertEqual(el.text, '1234')
         el = b.find_element_by_xpath('//div[@id="section_3"]/h3[1]/b')
