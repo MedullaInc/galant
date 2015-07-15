@@ -95,6 +95,9 @@ class Client(m.Model):
 
     notes = m.ManyToManyField(Note)
 
+    def __unicode__(self):
+        return self.name
+
 
 class Project(m.Model):
     name = m.CharField(max_length=255)

@@ -1,22 +1,38 @@
-{% extends "base.html" %}
+{% extends "base_sidebar.html" %}
 {% load bootstrap i18n %}
 
+{% block section_title %}
+    <h2 class="section_title">{% trans "Client" %}</h2>
+{% endblock %}
+
+{% block sidebar %}
+
+    <a href="{% url 'clients' %}">
+        <button type="button" class="btn btn-default sidebar">
+            {% trans "Back to Clients" %}
+        </button>
+    </a>
+
+{% endblock %}
+
 {% block content %}
-    <h3>{% trans "Client" %}</h3>
-    <p><b>{% trans "Name" %}:</b> {{ object.name }}</p>
-    <p><b>{% trans "Status" %}:</b> {{ object.get_status_display }}</p>
-    <p><b>{% trans "Type" %}:</b> {{ object.get_type_display }}</p>
-    <p><b>{% trans "Size" %}:</b> {{ object.get_size_display }}</p>
-    <br>
-    <p><b>{% trans "Language" %}:</b> {{ object.get_language_display }}</p>
-    <p><b>{% trans "Currency" %}:</b> {{ object.currency }}</p>
+    <h2 class="section_title">Data</h2>
+
+    <p>{% trans "Name" %}: {{ object.name }}</p>
+    <p>{% trans "Status" %}: {{ object.get_status_display }}</p>
+    <p>{% trans "Type" %}: {{ object.get_type_display }}</p>
+    <p>{% trans "Size" %}: {{ object.get_size_display }}</p>
+    <br/>
+    <p>{% trans "Language" %}: {{ object.get_language_display }}</p>
+    <p>{% trans "Currency" %}: {{ object.currency }}</p>
 
     <hr>
     <div id="notes">
-    <p><b>{% trans "Notes" %}:</b></p>
-    {% for item in object.notes.all %}
-        {% include "gallant/note.html" %}
-    {% endfor %}
+        <h2 class="section_title">Notes</h2>
+
+        {% for item in object.notes.all %}
+            {% include "gallant/note.html" %}
+        {% endfor %}
         <div>
             {% include "gallant/add_note.html" %}
         </div>

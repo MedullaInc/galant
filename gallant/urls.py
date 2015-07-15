@@ -36,10 +36,10 @@ urlpatterns = i18n_patterns(
 
     url(r'^$', TemplateView.as_view(template_name='index.html'), name='home'),
     url(r'^briefs/$', login_required(briefs.views.index), name='briefs'),
-    url(r'^clients/$', login_required(briefs.views.index), name='clients'),
+    url(r'^clients/$', login_required(gallant.views.ClientList.as_view()), name='clients'),
     url(r'^client/add/$', login_required(gallant.views.ClientCreate.as_view()), name='add_client'),
     url(r'^client/edit/(?P<pk>[0-9]+)$', login_required(gallant.views.ClientUpdate.as_view()), name='edit_client'),
-    url(r'^client/(?P<pk>[0-9]+)$', login_required(gallant.views.client_detail), name='client_detail'),
+    url(r'^client/(?P<pk>[0-9]+)?$', login_required(gallant.views.client_detail), name='client_detail'),
     url(r'^service/add/$', login_required(gallant.views.ServiceCreate.as_view()), name='add_service'),
     url(r'^service/edit/(?P<pk>[0-9]+)$', login_required(gallant.views.ServiceUpdate.as_view()), name='edit_service'),
     url(r'^service/(?P<pk>[0-9]+)$', login_required(gallant.views.service_detail), name='service_detail'),

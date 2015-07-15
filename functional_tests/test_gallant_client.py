@@ -4,6 +4,12 @@ from functional_tests import browser
 
 
 class GallantClientTest(browser.SignedInTest):
+    def test_can_access_clients(self):
+        # check 'Clients' h1
+        browser.get().get(self.live_server_url + reverse('clients'))
+        h1 = browser.get().find_element_by_tag_name('h1')
+        self.assertIn('Clients', h1.text)
+
     def test_add_client(self):
         b = browser.get()
         b.get(self.live_server_url + reverse('add_client'))

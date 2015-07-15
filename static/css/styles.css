@@ -806,6 +806,7 @@ button:active {
         margin: 10px;
         padding-top: 10px;
     }
+
     #header-5 li {
         border: 1px solid #666666;
         margin-left: 10px;
@@ -1368,7 +1369,7 @@ section * {
 .content-1 .holder.v-center > div,
 .content-1 .holder .v-center > div {
     vertical-align: middle;
-    margin-top: 20px;
+    margin-top: 25px;
     margin-bottom: 0;
     float: none;
 }
@@ -1971,6 +1972,7 @@ input[type="text"].form-control {
     #settings-toggle-group button {
         display: none
     }
+
     #settings-toggle-group .dropdown-menu {
         display: block;
         width: 100%;
@@ -1978,6 +1980,7 @@ input[type="text"].form-control {
         border: none;
         box-shadow: none;
     }
+
     #settings-toggle-group .dropdown-menu li {
         margin: 0px;
         margin-bottom: 10px;
@@ -1993,4 +1996,93 @@ input[type="text"].form-control {
         border: none;
         border-bottom: 1px solid #666666;
     }
+}
+
+/* List View */
+
+h2.section_title {
+    margin-bottom: 10px;
+    margin-top: 0px;
+    color: #666666;
+    letter-spacing: -1px;
+}
+
+.btn-default.sidebar {
+    padding: 10px;
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 0px;
+    border: 1px solid #999999;
+    width: 100%;
+}
+
+a .btn-default.sidebar {
+    color: #000000;
+    font-size: 16px;
+    font-weight: 100;
+}
+
+.btn-default.sidebar a:hover {
+    text-decoration: none;
+}
+
+div.sidebar {
+    padding-top: 0px;
+}
+
+table.table-striped.table-bordered {
+    border: 1px solid #666666;
+}
+
+table.table-striped.table-bordered thead th {
+    background: #ffffff;
+    color: #666666;
+}
+
+table.table-striped.table-bordered thead th, table.table-striped.table-bordered tr td {
+    border: 1px solid #666666;
+    padding: 10px;
+    font-size: 14px;
+    font-weight: 200;
+}
+
+#form label {
+    font-weight: 200;
+    font-size: 14px;
+}
+
+#form textarea {
+    font-weight: 200;
+    color: #999999;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+#add_note_form, #form {
+    padding-bottom: 20px;
+}
+
+#add_note_form .btn-default, #form .btn-default {
+    padding: 10px;
+    padding-left: 40px;
+    padding-right: 40px;
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 0px;
+    border: 1px solid #999999;
+    margin-bottom: 10px;
+    font-size: 16px;
+    font-weight: 100;
+}
+
+#form .help-block {
+    font-weight: 200;
+}
+
+/* End List View*/
+
+p {
+    font-size: 16px;
 }

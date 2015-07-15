@@ -1,9 +1,14 @@
 from django.views.generic.edit import CreateView, UpdateView
+from django.views.generic.list import ListView
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.core.urlresolvers import reverse
 from gallant import forms
 from gallant import models as g
+
+
+class ClientList(ListView):
+    model = g.Client
 
 
 class ClientCreate(CreateView):

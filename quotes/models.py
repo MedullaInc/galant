@@ -12,7 +12,7 @@ class Section(m.Model):
     parent = m.ForeignKey('self', null=True, blank=True, related_name='sub_sections')
 
     def render_html(self, language=None):
-        html = '<h3><b>%s</b></h3><br>%s' % \
+        html = '<h2 class="section_title">%s</h2><p>%s</p>' % \
                (escape(self.title.get_text(language)), escape(self.text.get_text(language)))
         return mark_safe(html)
 
