@@ -100,9 +100,10 @@ class QuotesSignedInTest(browser.SignedInTest):
         section_title = browser.instance().find_element_by_class_name('section_title')
         self.assertEqual(u'Quote', section_title.text)
 
-        el = b.find_element_by_xpath('//div[@id="section_1"]/h3[1]/b')
+        el = b.find_element_by_xpath('//div[@id="section_1"]/h2[1]')
         self.assertEqual(el.text, '1234')
-        el = b.find_element_by_xpath('//div[@id="section_3"]/h3[1]/b')
+
+        el = b.find_element_by_xpath('//div[@id="section_3"]/h2[1]')
         self.assertEqual(el.text, 's3title')
 
     def test_remove_section(self):
