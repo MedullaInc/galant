@@ -11,8 +11,9 @@ class QuotesSignedInTest(browser.SignedInTest):
     def test_can_access_quotes(self):
         # check 'Quotes' h1
         browser.instance().get(self.live_server_url + reverse('quotes'))
-        h1 = browser.instance().find_element_by_tag_name('h1')
-        self.assertIn('Quotes', h1.text)
+
+        section_title = browser.instance().find_element_by_class_name('section_title')
+        self.assertEqual('Quotes', section_title.text)
 
     def test_add_quote(self):
         b = browser.instance()
