@@ -83,6 +83,7 @@ class QuoteFormTest(test.TestCase):
 
         obj = qv._create_quote(f)
         new_obj = qv._create_quote(f)
+        self.assertTrue(False)
         self.assertEquals(obj.id, new_obj.id)
 
     def test_new_section(self):
