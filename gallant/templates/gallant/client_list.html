@@ -2,7 +2,7 @@
 {% load bootstrap i18n %}
 
 {% block section_title %}
-    <h2 class="section_title">{% trans "Clients" %}</h2>
+{% trans "Clients" %}
 {% endblock %}
 
 {% block sidebar %}
@@ -15,7 +15,7 @@
 
 {% endblock %}
 
-{% block content %}
+{% block center_content %}
     <table class="table table-striped table-bordered">
         <thead>
         <th>{% trans "Name" %}</th>
