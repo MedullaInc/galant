@@ -14,7 +14,6 @@ class SectionTest(test.TransactionTestCase):
         section = fixture.create(1)[0]
         new_section = q.Section.objects.get(id=section.id)
 
-        sasdf
         self.assertEqual(section.title, new_section.title)
         self.assertEqual(section.text, new_section.text)
 
