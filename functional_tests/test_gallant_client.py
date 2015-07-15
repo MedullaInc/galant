@@ -10,7 +10,7 @@ def tearDown():
 class GallantClientTest(browser.SignedInTest):
     def test_can_access_clients(self):
         # check 'Clients' h1
-        browser.get().get(self.live_server_url + reverse('clients'))
+        browser.instance().get(self.live_server_url + reverse('clients'))
 
         section_title = browser.instance().find_element_by_class_name('section_title')
         self.assertEqual('Clients', section_title.text)
