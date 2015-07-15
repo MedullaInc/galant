@@ -48,7 +48,7 @@ class QuotesSignedInTest(browser.SignedInTest):
         section_title = browser.instance().find_element_by_class_name('section_title')
         self.assertEqual(u'Quote', section_title.text)
 
-        intro = b.find_element_by_xpath('//div[@id="intro_section"]/h3[1]/b')
+        intro = b.find_element_by_xpath('//div[@id="intro_section"]/h2[1]')
         self.assertEqual(intro.text, 'modified intro title')
 
     def test_add_sections(self):

@@ -31,7 +31,10 @@
 
     <hr>
 
-    <p id="intro_section">{% trans "Intro" %}: {{ object.intro.render_html }}</p>
+    <div id="intro_section">
+        <p>{% trans "Intro" %}:</p>
+        {{ object.intro.render_html }}
+    </div>
 
     <hr>
 
