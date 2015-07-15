@@ -1,6 +1,7 @@
 from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
+from django.http import HttpResponseRedirect
 from quotes import models as q
 from django.core.urlresolvers import reverse
 from quotes import forms
@@ -20,7 +21,7 @@ class QuoteCreate(CreateView):
 
     def render_to_response(self, context, **response_kwargs):
         context.update({'title': 'Edit Quote'})
-        return super(CreateView, self).render_to_response(context)
+        return super(QuoteCreate, self).render_to_response(context)
 
 
 class QuoteUpdate(UpdateView):
@@ -89,3 +90,38 @@ def _create_quote(form):
         obj.margin_section = margin_section
 
     return obj
+
+
+class QuoteTemplateCreate(CreateView):
+    form_class = forms.QuoteTemplateForm
+    template_name = "quotes/quote_template.html"
+
+    def get_success_url(self):
+        return reverse('quote_detail', args=[self.object.id])
+
+    def form_valid(self, form):
+        quote = _create_quote(form)
+        t = q.QuoteTemplate.objects.create(quote=quote.id)
+        t.save()
+        return HttpResponseRedirect(self.get_success_url())
+
+    def render_to_response(self, context, **response_kwargs):
+        context.update({'title': 'Create Template'})
+        return super(CreateView, self).render_to_response(context)
+
+
+class QuoteTemplateUpdate(UpdateView):
+    model = q.Quote
+    form_class = forms.QuoteTemplateForm
+    template_name = "quotes/quote_template.html"
+
+    def get_success_url(self):
+        return reverse('quote_detail', args=[self.object.id])
+
+    def form_valid(self, form):
+        _create_quote(form)
+        return super(QuoteUpdate, self).form_valid(form)
+
+    def render_to_response(self, context, **response_kwargs):
+        context.update({'title': 'Edit Template'})
+        return super(UpdateView, self).render_to_response(context)

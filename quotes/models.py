@@ -50,3 +50,7 @@ class Quote(m.Model):
     parent = m.ForeignKey('self', null=True, blank=True, related_name='versions')
 
 
+class QuoteTemplate(m.Model):
+    quote = m.ForeignKey(Quote)
+
+

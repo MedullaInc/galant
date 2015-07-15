@@ -23,6 +23,25 @@ class QuoteForm(forms.ModelForm):
         return cleaned_data
 
 
+class QuoteTemplateForm(forms.ModelForm):
+    class Meta():
+        model = q.Quote
+        fields = ['name', 'client', 'language', 'status']
+
+    def clean(self):
+        cleaned_data = super(QuoteForm, self).clean()
+        section_names = [key for key, value in self.data.items() if 'section_' in key]
+        for extra_section in ['intro', 'margin_section']:
+            for postfix in ['_title', '_text']:
+                section_names.append(extra_section + postfix)
+
+        for s in section_names:
+            if s in self.data:
+                cleaned_data[s] = clean_str(self.data[s])
+
+        return cleaned_data
+
+
 def clean_str(value):
     if isinstance(value, six.string_types) or value is None:
         return value
