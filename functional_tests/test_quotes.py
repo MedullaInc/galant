@@ -70,7 +70,7 @@ class QuotesSignedInTest(browser.SignedInTest):
         section_title = browser.instance().find_element_by_class_name('section_title')
         self.assertEqual(u'Quote', section_title.text)
 
-        intro = b.find_element_by_xpath('//tbody[@id="section_1"]/h3[1]/b')
+        intro = b.find_element_by_xpath('///tbody[@id="section_1"]/h3[1]/b')
         self.assertEqual(intro.text, '1234')
 
         intro = b.find_element_by_xpath('//tbody[@id="section_2"]/h3[1]/b')
