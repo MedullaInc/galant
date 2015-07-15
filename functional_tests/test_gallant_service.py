@@ -3,9 +3,13 @@ import autofixture
 from functional_tests import browser
 
 
+def tearDown():
+    browser.close()
+
+
 class GallantServiceTest(browser.SignedInTest):
     def test_add_service(self):
-        b = browser.get()
+        b = browser.instance()
         b.get(self.live_server_url + reverse('add_service'))
 
         b.find_element_by_name('name').send_keys('Branding')
@@ -22,7 +26,7 @@ class GallantServiceTest(browser.SignedInTest):
         self.assertEqual(u'Service', h3.text)
 
     def test_edit_service(self):
-        b = browser.get()
+        b = browser.instance()
         s = autofixture.create_one('gallant.Service', generate_fk=True)
         s.save()
         b.get(self.live_server_url + reverse('edit_service', args=[s.id]))
@@ -40,7 +44,7 @@ class GallantServiceTest(browser.SignedInTest):
         self.assertEqual(u'Service', h3.text)
 
     def test_add_service_note(self):
-        b = browser.get()
+        b = browser.instance()
         s = autofixture.create_one('gallant.Service', generate_fk=True)
         s.save()
         b.get(self.live_server_url + reverse('service_detail', args=[s.id]))
