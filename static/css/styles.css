@@ -2028,6 +2028,7 @@ a .btn-default.sidebar {
 
 div.sidebar {
     padding-top: 0px;
+    padding-bottom: 20px;
 }
 
 table.table-striped.table-bordered {
