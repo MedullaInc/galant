@@ -11,8 +11,9 @@ class GallantClientTest(browser.SignedInTest):
     def test_can_access_clients(self):
         # check 'Clients' h1
         browser.get().get(self.live_server_url + reverse('clients'))
-        h1 = browser.get().find_element_by_tag_name('h1')
-        self.assertIn('Clients', h1.text)
+
+        section_title = browser.instance().find_element_by_class_name('section_title')
+        self.assertEqual('Clients', section_title.text)
 
     def test_add_client(self):
         b = browser.instance()
@@ -25,8 +26,9 @@ class GallantClientTest(browser.SignedInTest):
         b.find_element_by_xpath('//textarea[@name="notes"]').send_keys('asdf')
 
         b.find_element_by_xpath('//button[@type="submit"]').click()
-        h3 = b.find_element_by_tag_name('h3')
-        self.assertEqual(u'Client', h3.text)
+
+        section_title = browser.instance().find_element_by_class_name('section_title')
+        self.assertEqual(u'Client', section_title.text)
 
     def test_edit_client(self):
         b = browser.instance()
@@ -41,8 +43,9 @@ class GallantClientTest(browser.SignedInTest):
         b.find_element_by_xpath('//textarea[@name="notes"]').send_keys('dddd')
 
         b.find_element_by_xpath('//button[@type="submit"]').click()
-        h3 = b.find_element_by_tag_name('h3')
-        self.assertEqual(u'Client', h3.text)
+
+        section_title = browser.instance().find_element_by_class_name('section_title')
+        self.assertEqual(u'Client', section_title.text)
 
     def test_add_client_note(self):
         b = browser.instance()
