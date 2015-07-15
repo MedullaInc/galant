@@ -40,9 +40,9 @@
     <hr>
 
     {% for section in object.sections.all %}
-        <p id="section_{{ forloop.counter }}">
-            {% trans "Section" %} {{ forloop.counter }}:</b> {{ section.render_html }}
-        </p>
+        <div id="section_{{ forloop.counter }}">
+            <p>{% trans "Section" %} {{ forloop.counter }}:</p> {{ section.render_html }}
+        </div>
 
         <hr>
     {% endfor %}
