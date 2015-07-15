@@ -29,7 +29,7 @@ class QuoteTemplateForm(forms.ModelForm):
         fields = ['name', 'client', 'language', 'status']
 
     def clean(self):
-        cleaned_data = super(QuoteForm, self).clean()
+        cleaned_data = super(QuoteTemplateForm, self).clean()
         section_names = [key for key, value in self.data.items() if 'section_' in key]
         for extra_section in ['intro', 'margin_section']:
             for postfix in ['_title', '_text']:

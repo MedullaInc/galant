@@ -107,7 +107,7 @@ class QuoteTemplateCreate(CreateView):
 
     def render_to_response(self, context, **response_kwargs):
         context.update({'title': 'Create Template'})
-        return super(CreateView, self).render_to_response(context)
+        return super(QuoteTemplateCreate, self).render_to_response(context)
 
 
 class QuoteTemplateUpdate(UpdateView):
@@ -120,8 +120,8 @@ class QuoteTemplateUpdate(UpdateView):
 
     def form_valid(self, form):
         _create_quote(form)
-        return super(QuoteUpdate, self).form_valid(form)
+        return super(QuoteTemplateUpdate, self).form_valid(form)
 
     def render_to_response(self, context, **response_kwargs):
         context.update({'title': 'Edit Template'})
-        return super(UpdateView, self).render_to_response(context)
+        return super(QuoteTemplateUpdate, self).render_to_response(context)
