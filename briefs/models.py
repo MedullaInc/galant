@@ -4,12 +4,23 @@ from gallant import models as g
 from gallant import fields as gf
 
 
+class BriefStatus(gf.ChoiceEnum):
+    Draft = 0
+    Not_Sent = 1
+    Sent = 2
+    Viewed = 3
+    Answered = 4
+    Rejected = 5
+
+
 class Brief(models.Model):
     """
     A questionnaire that will allow a user to know more about Client needs.
     There are three types of Briefs: [ClientBrief, ProjectBrief, ServiceBrief]
     """
     title = TextField(help_text='Brief title.')
+    status = CharField(max_length=2, choices=BriefStatus.choices(), default=BriefStatus.Draft.value)
+    token = CharField(max_length=64, unique=True, null=True, help_text='For emailing URL')
 
 
 class BriefTemplate(Brief):
