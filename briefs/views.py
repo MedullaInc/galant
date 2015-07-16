@@ -38,7 +38,8 @@ class BriefCreate(CreateView):
         return super(BriefCreate, self).form_valid(form)
 
     def render_to_response(self, context, **response_kwargs):
-        context.update({'title': 'Edit Brief'})
+        context['title'] = 'Edit Brief'
+        context['client'] = g.Client.objects.get(id=self.kwargs['pk'])
         return super(CreateView, self).render_to_response(context)
 
 

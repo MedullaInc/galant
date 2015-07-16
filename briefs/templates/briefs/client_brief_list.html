@@ -1,7 +1,7 @@
 {% extends "briefs/brief_list.html" %}
 {% load bootstrap i18n %}
 
-{% block view_menu %}
+{% block sidebar %}
 
     <a href="{% url 'client_detail' client.id %}">
         <button type="button" class="btn btn-default sidebar">
@@ -18,7 +18,34 @@
 {% endblock %}
 
 {% block center_content %}
+    <table class="table table-striped table-bordered">
+        <thead>
+        <th>{% trans "Name" %}</th>
+        <th>{% trans "Type" %}</th>
+        <th>{% trans "Size" %}</th>
+        <th>{% trans "Status" %}</th>
+        </thead>
+        {% for client in object_list %}
+            <tr data-rel="{{ client.id }}" style="cursor: pointer">
+                <td>{{ client.name }}</td>
+                <td>{{ client.get_type_display }}</td>
+                <td>{{ client.get_size_display }}</td>
+                <td>{{ client.get_status_display }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4">
+                    No clients yet.
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
 
-    <h2 class="section_title">{{ client.name }}</h2>
-
+{% block extra_body %}
+    <script>
+        $('.table > tbody > tr').click(function () {
+            window.location.href = "{% url 'client_detail' %}" + $(this).attr('data-rel')
+        });
+    </script>
 {% endblock %}
