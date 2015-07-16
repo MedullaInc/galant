@@ -28,7 +28,6 @@ class ClientBriefList(ListView):
 
 
 class BriefCreate(CreateView):
-
     template_name = "briefs/brief_form.html"
 
     def get(self, request, *args, **kwargs):
@@ -41,13 +40,6 @@ class BriefCreate(CreateView):
             self.get_context_data(form=form),
         )
 
-    def get_success_url(self):
-        return reverse('brief_detail', args=[self.object.id])
-
-    def form_valid(self, form):
-        # AGREGAR TIPO DE INSTANCE DE FORM
-        return super(BriefCreate, self).form_valid(form)
-
     def render_to_response(self, context, **response_kwargs):
         context['title'] = 'Edit Brief'
         context['client'] = g.Client.objects.get(id=self.kwargs['pk'])
@@ -55,8 +47,30 @@ class BriefCreate(CreateView):
 
 
 class BriefUpdate(UpdateView):
-    pass
+    template_name = "quotes/quote_form.html"
+
+    def get(self, request, *args, **kwargs):
+
+        if self.kwargs['brief_type'] == "client":
+            self.model = b.ClientBrief
+            self.form_class = forms.ClientBriefForm
+
+    def get_success_url(self):
+        return reverse('brief_detail', args=[self.object.id])
+
+    def form_valid(self, form):
+        form.client = self.kwargs['pk']
+        form.save(commit=True)
+        return super(BriefUpdate, self).form_valid(form)
+
+    def render_to_response(self, context, **response_kwargs):
+        context.update({'title': 'Update Brief'})
+        return super(UpdateView, self).render_to_response(context)
 
 
 class BriefDetail(DetailView):
-    pass
+
+    def get(self, request, *args, **kwargs):
+        if self.kwargs['brief_type'] == "client":
+            self.model = b.ClientBrief
+            self.form_class = forms.ClientBriefForm
