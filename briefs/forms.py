@@ -7,20 +7,32 @@ from django.utils.encoding import smart_text
 class BriefForm(forms.ModelForm):
     class Meta():
         model = b.Brief
-        fields = ['title']
+        fields = ['title', 'status']
 
     def clean(self):
         cleaned_data = super(BriefForm, self).clean()
-        section_names = [key for key, value in self.data.items() if 'section_' in key]
-        for extra_section in ['intro', 'margin_section']:
-            for postfix in ['_title', '_text']:
-                section_names.append(extra_section + postfix)
-
-        for s in section_names:
-            if s in self.data:
-                cleaned_data[s] = clean_str(self.data[s])
-
         return cleaned_data
+
+    def save(self, commit=True):
+        super(BriefForm, self.save(commit))
+
+
+class ClientBriefForm(BriefForm):
+    class Meta():
+        model = b.ClientBrief
+        fields = ['title', 'status']
+
+
+class ProjectBriefForm(BriefForm):
+    class Meta():
+        model = b.ProjectBrief
+        fields = ['title', 'status']
+
+
+class ServiceBriefForm(BriefForm):
+    class Meta():
+        model = b.ServiceBrief
+        fields = ['title', 'status']
 
 
 def clean_str(value):

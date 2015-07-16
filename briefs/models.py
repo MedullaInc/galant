@@ -18,7 +18,7 @@ class Brief(models.Model):
     A questionnaire that will allow a user to know more about Client needs.
     There are three types of Briefs: [ClientBrief, ProjectBrief, ServiceBrief]
     """
-    title = TextField(help_text='Brief title.')
+    title = gf.ULCharField(max_length=255, help_text='Brief title.')
     status = CharField(max_length=2, choices=BriefStatus.choices(), default=BriefStatus.Draft.value)
     token = CharField(max_length=64, unique=True, null=True, help_text='For emailing URL')
 

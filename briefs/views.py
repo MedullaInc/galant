@@ -28,13 +28,24 @@ class ClientBriefList(ListView):
 
 
 class BriefCreate(CreateView):
-    form_class = forms.BriefForm
+
     template_name = "briefs/brief_form.html"
+
+    def get(self, request, *args, **kwargs):
+        self.object = None
+
+        if self.kwargs['brief_type'] == "client":
+            form = forms.ClientBriefForm
+
+        return self.render_to_response(
+            self.get_context_data(form=form),
+        )
 
     def get_success_url(self):
         return reverse('brief_detail', args=[self.object.id])
 
     def form_valid(self, form):
+        # AGREGAR TIPO DE INSTANCE DE FORM
         return super(BriefCreate, self).form_valid(form)
 
     def render_to_response(self, context, **response_kwargs):
