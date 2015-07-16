@@ -1,0 +1,24 @@
+{% extends "briefs/brief_list.html" %}
+{% load bootstrap i18n %}
+
+{% block view_menu %}
+
+    <a href="{% url 'client_detail' client.id %}">
+        <button type="button" class="btn btn-default sidebar">
+            {% trans "Back to Client" %}
+        </button>
+    </a>
+
+    <a href="{% url 'add_brief' client.id %}">
+        <button type="button" class="btn btn-default sidebar">
+            {% trans "Create Brief" %}
+        </button>
+    </a>
+
+{% endblock %}
+
+{% block center_content %}
+
+    <h2 class="section_title">{{ client.name }}</h2>
+
+{% endblock %}

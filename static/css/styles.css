@@ -1161,7 +1161,7 @@ section * {
 
     .footer-3 > .container > * {
         float: none !important;
-        *zoom: 1;
+        zoom: 1;
     }
 
     .footer-3 > .container > *:before,
