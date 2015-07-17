@@ -44,7 +44,10 @@ class BriefCreate(CreateView):
     def render_to_response(self, context, **response_kwargs):
         context['title'] = 'Edit Brief'
         context['client'] = g.Client.objects.get(id=self.kwargs['pk'])
-        return super(CreateView, self).render_to_response(context)
+        return super(BriefCreate, self).render_to_response(context)
+
+    def get_success_url(self):
+        return reverse('brief_detail', args=[self.kwargs['brief_type'], self.object.id])
 
 
 class BriefUpdate(UpdateView):
