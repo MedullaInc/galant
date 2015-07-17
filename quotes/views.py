@@ -132,5 +132,11 @@ class QuoteTemplateUpdate(UpdateView):
         return super(QuoteTemplateUpdate, self).form_valid(form)
 
     def render_to_response(self, context, **response_kwargs):
-        context.update({'title': 'Edit Template'})
+        lang_dict = dict(settings.LANGUAGES)
+        form = forms.Form()
+        form.base_fields['language'] = forms.ChoiceField(choices=settings.LANGUAGES, label='')
+        form.initial['language'] = get_language()
+        context.update({'title': 'Edit Template',
+                        'native_language': lang_dict[get_language()],
+                        'language_form': form})
         return super(QuoteTemplateUpdate, self).render_to_response(context)
