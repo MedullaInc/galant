@@ -2,14 +2,17 @@ from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 from django.http import HttpResponseRedirect
+from django.utils.translation import get_language
+from django.conf import settings
+from django import forms
 from quotes import models as q
 from django.core.urlresolvers import reverse
-from quotes import forms
+from quotes import forms as qf
 import operator
 
 
 class QuoteCreate(CreateView):
-    form_class = forms.QuoteForm
+    form_class = qf.QuoteForm
     template_name = "quotes/quote_form.html"
 
     def get_success_url(self):
@@ -26,7 +29,7 @@ class QuoteCreate(CreateView):
 
 class QuoteUpdate(UpdateView):
     model = q.Quote
-    form_class = forms.QuoteForm
+    form_class = qf.QuoteForm
     template_name = "quotes/quote_form.html"
 
     def get_success_url(self):
@@ -93,7 +96,7 @@ def _create_quote(form):
 
 
 class QuoteTemplateCreate(CreateView):
-    form_class = forms.QuoteTemplateForm
+    form_class = qf.QuoteTemplateForm
     template_name = "quotes/quote_template.html"
 
     def get_success_url(self):
@@ -106,13 +109,19 @@ class QuoteTemplateCreate(CreateView):
         return HttpResponseRedirect(self.get_success_url())
 
     def render_to_response(self, context, **response_kwargs):
-        context.update({'title': 'Create Template'})
+        lang_dict = dict(settings.LANGUAGES)
+        form = forms.Form()
+        form.base_fields['language'] = forms.ChoiceField(choices=settings.LANGUAGES, label='')
+        form.initial['language'] = get_language()
+        context.update({'title': 'Create Template',
+                        'native_language': lang_dict[get_language()],
+                        'language_form': form})
         return super(QuoteTemplateCreate, self).render_to_response(context)
 
 
 class QuoteTemplateUpdate(UpdateView):
     model = q.Quote
-    form_class = forms.QuoteTemplateForm
+    form_class = qf.QuoteTemplateForm
     template_name = "quotes/quote_template.html"
 
     def get_success_url(self):

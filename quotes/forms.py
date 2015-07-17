@@ -26,7 +26,11 @@ class QuoteForm(forms.ModelForm):
 class QuoteTemplateForm(forms.ModelForm):
     class Meta():
         model = q.Quote
-        fields = ['name', 'client', 'language', 'status']
+        fields = ['name']
+
+    def __init__(self, *args, **kwargs):
+        super(QuoteTemplateForm, self).__init__(*args, **kwargs)
+        self.fields['name'] = forms.CharField(label='Template Name')
 
     def clean(self):
         cleaned_data = super(QuoteTemplateForm, self).clean()

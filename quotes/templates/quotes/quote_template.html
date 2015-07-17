@@ -2,6 +2,45 @@
 {% load bootstrap i18n %}
 
 
-{% block sidebar %}
+{% block extra_form_inputs %}
+    <ul class="nav nav-tabs" style="margin-bottom: -1px; border-bottom: 0">
+        <li class="active"><a>{{ native_language }}</a></li>
+        <li><a id="add_translation">
+            Add Translation</a>
+        </li>
+    </ul>
 
+    <div class="rounded-border" style="border-top-left-radius: 0px">
+        {{ block.super }}
+    </div>
+    <div id="language_select" style="display: none">
+        <form id="language_form" class="form" method="post">
+            {{ language_form|bootstrap }}
+            <button id="language_add" type="button" class="btn btn-default">Add</button>
+        </form>
+    </div>
+
+{% endblock %}
+
+
+{% block sidebar %}
+{% endblock %}
+
+{% block extra_body %}
+    {{ block.super }}
+    <script>
+        $('#add_translation').popover({
+            html: true,
+            content: $('#language_select').html(),
+            title: "Select Language",
+            placement: "bottom"
+        }).click(function(e) {
+            $('#language_add').click(function () {
+                console.log('foo');
+                $('#add_translation').popover('hide');
+            });
+            e.preventDefault();
+        });
+
+    </script>
 {% endblock %}

@@ -2031,6 +2031,24 @@ div.sidebar {
     padding-bottom: 20px;
 }
 
+.rounded-border {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-left: 25px;
+    padding-right: 25px;
+    border: 1px solid #000000;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    margin-bottom: 35px;
+}
+
+.nav-tabs > li > a:hover {
+    color: black;
+    margin-bottom: -1px;
+    border-bottom: 0;
+}
+
 table.table-striped.table-bordered {
     border: 1px solid #666666;
 }
@@ -2080,6 +2098,10 @@ table.table-striped.table-bordered thead th, table.table-striped.table-bordered 
 
 #form .help-block {
     font-weight: 200;
+}
+
+.popover-title {
+    color: gray;
 }
 
 /* End List View*/
