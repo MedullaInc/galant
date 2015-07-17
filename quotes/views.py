@@ -104,8 +104,9 @@ class QuoteTemplateCreate(CreateView):
 
     def form_valid(self, form):
         quote = _create_quote(form)
-        t = q.QuoteTemplate.objects.create(quote=quote.id)
+        t = q.QuoteTemplate.objects.create(quote=quote)
         t.save()
+        self.object = quote # TODO: switch back to template after display view is added
         return HttpResponseRedirect(self.get_success_url())
 
     def render_to_response(self, context, **response_kwargs):
