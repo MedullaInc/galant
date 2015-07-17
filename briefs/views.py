@@ -3,6 +3,7 @@ from briefs import models as b
 from gallant import models as g
 from django.views.generic import ListView, CreateView, UpdateView, DetailView
 from briefs import forms
+from django.shortcuts import get_object_or_404
 
 
 class BriefList(ListView):
@@ -30,15 +31,15 @@ class ClientBriefList(ListView):
 class BriefCreate(CreateView):
     template_name = "briefs/brief_form.html"
 
-    def get(self, request, *args, **kwargs):
-        self.object = None
-
+    def get_form(self):
         if self.kwargs['brief_type'] == "client":
-            form = forms.ClientBriefForm
+            form = super(BriefCreate, self).get_form(forms.ClientBriefForm)
+            client = get_object_or_404(g.Client, pk=self.kwargs['pk'])
+            form.instance.client = client
+        else:
+            form = super(BriefCreate, self).get_form(forms.BriefForm)
 
-        return self.render_to_response(
-            self.get_context_data(form=form),
-        )
+        return form
 
     def render_to_response(self, context, **response_kwargs):
         context['title'] = 'Edit Brief'

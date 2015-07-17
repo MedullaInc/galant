@@ -28,6 +28,10 @@ class QuoteTemplateForm(forms.ModelForm):
         model = q.Quote
         fields = ['name', 'client', 'language', 'status']
 
+    def __init__(self, *args, **kwargs):
+        super(QuoteTemplateForm, self).__init__(*args, **kwargs)
+        self.fields['name'].label = "Template Name"
+
     def clean(self):
         cleaned_data = super(QuoteTemplateForm, self).clean()
         section_names = [key for key, value in self.data.items() if 'section_' in key]

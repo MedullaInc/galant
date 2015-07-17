@@ -14,7 +14,7 @@ class BriefForm(forms.ModelForm):
         return cleaned_data
 
     def save(self, commit=True):
-        super(BriefForm, self.save(commit))
+        super(BriefForm, self).save()
 
 
 class ClientBriefForm(BriefForm):
