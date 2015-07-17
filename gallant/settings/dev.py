@@ -2,7 +2,7 @@ from gallant.settings.base import *
 
 DATABASES = {
     'default': {
-        'NAME': 'gallant_dev_broken',
+        'NAME': 'gallant_dev',
         'ENGINE': 'django.db.backends.mysql',
         'USER': 'root',
         'PASSWORD': '',
