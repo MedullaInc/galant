@@ -14,10 +14,8 @@
         {{ block.super }}
     </div>
     <div id="language_select" style="display: none">
-        <form id="language_form" class="form" method="post">
-            {{ language_form|bootstrap }}
-            <button id="language_add" type="button" class="btn btn-default">Add</button>
-        </form>
+        {{ language_form|bootstrap }}
+        <button id="language_add" type="button" class="btn btn-default">Add</button>
     </div>
 
 {% endblock %}
@@ -41,6 +39,5 @@
             });
             e.preventDefault();
         });
-
     </script>
 {% endblock %}
