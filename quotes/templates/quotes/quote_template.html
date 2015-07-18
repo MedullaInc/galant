@@ -3,8 +3,8 @@
 
 
 {% block extra_form_inputs %}
-    <ul class="nav nav-tabs" style="margin-bottom: -1px; border-bottom: 0">
-        <li class="active"><a>{{ native_language }}</a></li>
+    <ul id="tabs" class="nav nav-tabs" style="margin-bottom: -1px; border-bottom: 0">
+        <li id="{{ native_lanugage }}_tab" class="active"><a>{{ native_language }}</a></li>
         <li><a id="add_translation">
             Add Translation</a>
         </li>
@@ -34,7 +34,9 @@
             placement: "bottom"
         }).click(function(e) {
             $('#language_add').click(function () {
-                console.log('foo');
+                var l = $('#id_language').find(":selected").text()
+                var newTab = '<li><a class="active">' + l + '</a></li>'
+                $('.nav-tabs > li:last').before(newTab).show();
                 $('#add_translation').popover('hide');
             });
             e.preventDefault();
