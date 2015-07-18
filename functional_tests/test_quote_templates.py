@@ -46,7 +46,7 @@ class QuoteTemplatesTest(browser.SignedInTest):
     def test_edit_quote_lang_dropdown(self):
         q = autofixture.create_one('quotes.Quote', generate_fk=True, field_values={'sections': [], 'language': 'en'})
         q.save()
-        self._add_language_with_dropdown(self.live_server_url + reverse('edit_quote_template'))
+        self._add_language_with_dropdown(self.live_server_url + reverse('edit_quote_template', args=[q.id]))
 
     def _add_language_with_dropdown(self, url):
         b = browser.instance()
