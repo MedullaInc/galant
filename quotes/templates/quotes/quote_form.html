@@ -13,12 +13,14 @@
         </tr>
         <tr>
             <td>Title:&nbsp;&nbsp;</td>
-            <td><input class=" form-control" id="id_intro" maxlength="512"
+            <td><input class="ultext form-control" id="id_intro" maxlength="512"
+                       data='{{ object.intro.title.json }}'
                        name="intro_title" type="text" value="{{ object.intro.title.get_text }}"/></td>
         </tr>
         <tr>
             <td>Content:&nbsp;&nbsp;</td>
-            <td><textarea name="intro_text" rows="5" style="width:100%;">{{ object.intro.text.get_text }}</textarea>
+            <td><textarea class="ultext" name="intro_text" rows="5" style="width:100%;"
+                          data='{{ object.intro.text.json }}'>{{ object.intro.text.get_text }}</textarea>
             </td>
         </tr>
         </tbody>
@@ -31,13 +33,15 @@
         </tr>
         <tr>
             <td>Title:&nbsp;&nbsp;</td>
-            <td><input class=" form-control" id="id_margin_section_title" maxlength="512"
+            <td><input class="ultext form-control" id="id_margin_section_title" maxlength="512"
+                       data='{{ object.intro.title.json }}'
                        name="margin_section_title" type="text" value="{{ object.margin_section.title.get_text }}"/></td>
         </tr>
         <tr>
             <td>Content:&nbsp;&nbsp;</td>
-            <td><textarea  id="id_margin_section_text" name="margin_section_text" rows="5"
-                          style="width:100%;">{{ object.margin_section.text.get_text }}</textarea></td>
+            <td><textarea class="ultext" id="id_margin_section_text" name="margin_section_text" rows="5"
+                          style="width:100%;"
+                          data='{{ object.intro.text.json }}'>{{ object.margin_section.text.get_text }}</textarea></td>
         </tr>
         </tbody>
         {% for section in object.sections.all %}

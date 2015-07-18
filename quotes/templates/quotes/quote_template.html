@@ -4,7 +4,7 @@
 
 {% block extra_form_inputs %}
     <ul id="tabs" class="nav nav-tabs" style="margin-bottom: -1px; border-bottom: 0">
-        <li id="{{ native_language_code }}_tab" class="active" data-rel="{{ native_language_code }}"><a>
+        <li id="{{ native_language_code }}_tab" class="active" data="{{ native_language_code }}"><a>
             {{ native_language }}</a></li>
         <li id="add_translation"><a>
             Add Translation</a>
@@ -28,8 +28,41 @@
 {% block extra_body %}
     {{ block.super }}
     <script>
+        var currentLanguage = '{{ LANGUAGE_CODE }}';
+        var setLanguage = function (language) {
+            $('.ultext').each(function () {
+                var data = {};
+                try {
+                    data = JSON.parse(this.getAttribute('data'));
+                } catch (e) {
+                }
+                data[currentLanguage] = this.value;
+                this.setAttribute('data', JSON.stringify(data));
+                if (language in data) {
+                    this.value = data[language];
+                } else {
+                    this.value = '';
+                }
+            });
+
+            currentLanguage = language;
+        };
+
         $('#tabs').on("click", "li", function (e) {
+            e.preventDefault();
+            var lang = this.getAttribute('data');
+            console.log(this.id);
+            if (this.id != 'add_translation') {
+                setLanguage(lang);
+            }
             $(this).tab('show');
+        });
+
+        $('body').on('click', function (e) {
+            var p = $('#add_translation');
+            if (!p.is(e.target) && p.has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
+                p.popover('hide');
+            };
         });
 
         $('#add_translation').popover({
@@ -37,12 +70,12 @@
             content: $('#language_select').html(),
             title: "Select Language",
             placement: "bottom"
-        }).click(function() {
+        }).click(function () {
             $('#language_add').click(function () {
                 var l = $('#id_language').find(":selected");
                 $('#add_translation').popover('hide');
-                var tabHtml = '<li id="' + l.val() + '_tab" data-rel="' + l.val() + '"><a>' +
-                l.text() + '</a></li>';
+                var tabHtml = '<li id="' + l.val() + '_tab" data="' + l.val() + '"><a>' +
+                        l.text() + '</a></li>';
                 var newTab = $('.nav-tabs > li:last').before(tabHtml);
                 newTab.tab('show');
             });

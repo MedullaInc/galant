@@ -5,6 +5,7 @@ from jsonfield import JSONField
 from enum import Enum
 from django.conf import settings
 import inspect
+import json
 
 
 class ULTextDict(dict):
@@ -24,6 +25,9 @@ class ULTextDict(dict):
             language = translation.get_language()
 
         self[language] = text
+
+    def json(self):
+        return json.dumps(self)
 
 
 def _ultext_to_python(value):
