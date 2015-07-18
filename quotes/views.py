@@ -113,6 +113,7 @@ class QuoteTemplateCreate(CreateView):
         lang_dict = dict(settings.LANGUAGES)
         form = qf.LanguageForm()
         context.update({'title': 'Create Template',
+                        'native_language_code': get_language(),
                         'native_language': lang_dict[get_language()],
                         'language_form': form})
         return super(QuoteTemplateCreate, self).render_to_response(context)
