@@ -111,9 +111,7 @@ class QuoteTemplateCreate(CreateView):
 
     def render_to_response(self, context, **response_kwargs):
         lang_dict = dict(settings.LANGUAGES)
-        form = forms.Form()
-        form.base_fields['language'] = forms.ChoiceField(choices=settings.LANGUAGES, label='')
-        form.initial['language'] = get_language()
+        form = qf.LanguageForm()
         context.update({'title': 'Create Template',
                         'native_language': lang_dict[get_language()],
                         'language_form': form})

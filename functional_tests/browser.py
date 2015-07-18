@@ -55,3 +55,4 @@ class SignedInTest(LiveServerTestCase):
         # need this to auto-accept all confirmation dialogs
         b.execute_script("window.confirm = function(){return true;}")
         b.execute_script("window.alert = function(){}")
+

@@ -24,16 +24,7 @@ class QuoteTemplatesTest(browser.SignedInTest):
         self.assertEqual(u'Quote', section_title.text)
 
     def test_add_quote_lang_dropdown(self):
-        b = browser.instance()
-        b.get(self.live_server_url + reverse('add_quote_template'))
-        self.load_scripts()
-
-        b.find_element_by_id('add_translation').click()
-        b.find_element_by_xpath('//*[@id="id_language"]/option[@value="es"]').click()
-        b.find_element_by_id('language_add').click()
-
-        dropdown = browser.instance().find_element_by_xpath('//div[@class="popover-content"]//select[@id="id_language"]')
-        self.assertIsNotNone(dropdown)
+        self._add_language_with_dropdown(self.live_server_url + reverse('add_quote_template'))
 
     def test_edit_quote_template(self):
         b = browser.instance()
@@ -53,13 +44,16 @@ class QuoteTemplatesTest(browser.SignedInTest):
         self.assertEqual(intro.text, 'modified intro title')
 
     def test_edit_quote_lang_dropdown(self):
+        self._add_language_with_dropdown(self.live_server_url + reverse('add_quote_template'))
+
+    def _add_language_with_dropdown(self, url):
         b = browser.instance()
-        q = autofixture.create_one('quotes.Quote', generate_fk=True, field_values={'sections': [], 'language': 'en'})
-        q.save()
-        b.get(self.live_server_url + reverse('edit_quote_template', args=[q.id]))
+        b.get(url)
         self.load_scripts()
 
         b.find_element_by_id('add_translation').click()
+        b.find_element_by_xpath('//select[@id="id_language"]/option[@value="es"]').click()
+        b.find_element_by_id('language_add').click()
 
-        dropdown = browser.instance().find_element_by_xpath('//div[@class="popover-content"]//select[@id="id_language"]')
-        self.assertIsNotNone(dropdown)
+        new_tab = b.find_element_by_xpath('//*[@id="tabs"]/li[2]/a')
+        self.assertEqual(u'Spanish', new_tab.text)
