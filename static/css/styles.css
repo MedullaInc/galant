@@ -2043,6 +2043,10 @@ div.sidebar {
     margin-bottom: 35px;
 }
 
+.nav-tabs > li {
+    cursor: pointer;
+}
+
 .nav-tabs > li > a:hover {
     color: black;
     margin-bottom: -1px;

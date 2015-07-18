@@ -4,8 +4,9 @@
 
 {% block extra_form_inputs %}
     <ul id="tabs" class="nav nav-tabs" style="margin-bottom: -1px; border-bottom: 0">
-        <li id="{{ native_lanugage }}_tab" class="active"><a>{{ native_language }}</a></li>
-        <li><a id="add_translation">
+        <li id="{{ native_lanugage }}_tab" class="active"><a>
+            {{ native_language }}</a></li>
+        <li id="add_translation"><a>
             Add Translation</a>
         </li>
     </ul>
@@ -17,6 +18,7 @@
         {{ language_form|bootstrap }}
         <button id="language_add" type="button" class="btn btn-default">Add</button>
     </div>
+    <button type="button" id="tmp">asdf</button>
 
 {% endblock %}
 
@@ -27,19 +29,23 @@
 {% block extra_body %}
     {{ block.super }}
     <script>
+        $('#tabs').on("click", "li", function (e) {
+            e.preventDefault();
+            $(this).tab('show');
+        });
+
         $('#add_translation').popover({
             html: true,
             content: $('#language_select').html(),
             title: "Select Language",
             placement: "bottom"
-        }).click(function(e) {
+        }).click(function() {
             $('#language_add').click(function () {
-                var l = $('#id_language').find(":selected").text()
-                var newTab = '<li><a class="active">' + l + '</a></li>'
-                $('.nav-tabs > li:last').before(newTab).show();
+                var l = $('#id_language').find(":selected").text();
                 $('#add_translation').popover('hide');
+                var newTab = $('.nav-tabs > li:last').before('<li><a>' + l + '</a></li>');
+                $('#tabs li:eq(0)').tab('show');
             });
-            e.preventDefault();
         });
     </script>
 {% endblock %}

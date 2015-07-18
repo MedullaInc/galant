@@ -44,7 +44,9 @@ class QuoteTemplatesTest(browser.SignedInTest):
         self.assertEqual(intro.text, 'modified intro title')
 
     def test_edit_quote_lang_dropdown(self):
-        self._add_language_with_dropdown(self.live_server_url + reverse('add_quote_template'))
+        q = autofixture.create_one('quotes.Quote', generate_fk=True, field_values={'sections': [], 'language': 'en'})
+        q.save()
+        self._add_language_with_dropdown(self.live_server_url + reverse('edit_quote_template'))
 
     def _add_language_with_dropdown(self, url):
         b = browser.instance()
