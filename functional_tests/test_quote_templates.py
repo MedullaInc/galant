@@ -53,7 +53,7 @@ class QuoteTemplatesTest(browser.SignedInTest):
         b.get(url)
         self.load_scripts()
 
-        b.find_element_by_id('add_translation').click()
+        b.find_element_by_id('add_translation_button').click()
         b.find_element_by_xpath('//select[@id="id_language"]/option[@value="es"]').click()
         b.find_element_by_id('language_add').click()
 
