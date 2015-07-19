@@ -30,7 +30,8 @@ class QuoteTemplatesTest(browser.SignedInTest):
         b = browser.instance()
         q = autofixture.create_one('quotes.Quote', generate_fk=True, field_values={'sections': [], 'language': 'en'})
         q.save()
-        b.get(self.live_server_url + reverse('edit_quote_template', args=[q.id]))
+        qt = autofixture.create_one('quotes.QuoteTemplate', field_values={'quote': q})
+        b.get(self.live_server_url + reverse('edit_quote_template', args=[qt.id]))
 
         b.find_element_by_name('intro_title').clear()
         b.find_element_by_name('intro_title').send_keys('modified intro title')
@@ -46,7 +47,8 @@ class QuoteTemplatesTest(browser.SignedInTest):
     def test_edit_quote_lang_dropdown(self):
         q = autofixture.create_one('quotes.Quote', generate_fk=True, field_values={'sections': [], 'language': 'en'})
         q.save()
-        self._add_language_with_dropdown(self.live_server_url + reverse('edit_quote_template', args=[q.id]))
+        qt = autofixture.create_one('quotes.QuoteTemplate', field_values={'quote': q})
+        self._add_language_with_dropdown(self.live_server_url + reverse('edit_quote_template', args=[qt.id]))
 
     def _add_language_with_dropdown(self, url):
         b = browser.instance()

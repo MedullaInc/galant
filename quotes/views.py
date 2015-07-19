@@ -95,7 +95,8 @@ def _create_quote(form):
     return obj
 
 
-class QuoteTemplateCreate(CreateView):
+class QuoteTemplateView(UpdateView):
+    model = q.QuoteTemplate
     form_class = qf.QuoteTemplateForm
     template_name = "quotes/quote_template.html"
 
@@ -103,41 +104,37 @@ class QuoteTemplateCreate(CreateView):
         messages.success(self.request, 'Template saved.')
         return reverse('edit_quote_template', args=[self.object.id])
 
+    def get_object(self, queryset=None):
+        try:
+            return super(QuoteTemplateView, self).get_object(queryset)
+        except AttributeError:
+            return None
+
+    def get_form_kwargs(self):
+        """
+        Returns the keyword arguments for instantiating the form.
+        """
+        kwargs = super(QuoteTemplateView, self).get_form_kwargs()
+        if hasattr(self, 'object') and hasattr(self.object, 'quote'):
+                kwargs.update({'instance': self.object.quote})
+        return kwargs
+
     def form_valid(self, form):
         quote = _create_quote(form)
-        t = q.QuoteTemplate.objects.create(quote=quote)
-        t.save()
-        self.object = quote # TODO: switch back to template after display view is added
+        quote.save()
+        if hasattr(self, 'object') and self.object is None:
+            self.object = q.QuoteTemplate.objects.create(quote=quote)
         return HttpResponseRedirect(self.get_success_url())
 
     def render_to_response(self, context, **response_kwargs):
         lang_dict = dict(settings.LANGUAGES)
         form = qf.LanguageForm()
-        context.update({'title': 'Create Template',
-                        'native_language_code': get_language(),
-                        'native_language': lang_dict[get_language()],
-                        'language_form': form})
-        return super(QuoteTemplateCreate, self).render_to_response(context)
 
+        if hasattr(self.object, 'quote'):
+            context.update({'object': self.object.quote})
 
-class QuoteTemplateUpdate(UpdateView):
-    model = q.Quote
-    form_class = qf.QuoteTemplateForm
-    template_name = "quotes/quote_template.html"
-
-    def get_success_url(self):
-        messages.success(self.request, 'Template saved.')
-        return reverse('edit_quote_template', args=[self.object.id])
-
-    def form_valid(self, form):
-        _create_quote(form)
-        return super(QuoteTemplateUpdate, self).form_valid(form)
-
-    def render_to_response(self, context, **response_kwargs):
-        lang_dict = dict(settings.LANGUAGES)
-        form = qf.LanguageForm()
         context.update({'title': 'Edit Template',
                         'native_language_code': get_language(),
                         'native_language': lang_dict[get_language()],
                         'language_form': form})
-        return super(QuoteTemplateUpdate, self).render_to_response(context)
+        return super(QuoteTemplateView, self).render_to_response(context)
