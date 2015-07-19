@@ -20,8 +20,8 @@ class QuoteTemplatesTest(browser.SignedInTest):
 
         b.find_element_by_xpath('//button[@type="submit"]').click()
 
-        section_title = browser.instance().find_element_by_class_name('section_title')
-        self.assertEqual(u'Quote', section_title.text)
+        success_message = b.find_element_by_class_name('alert-success')
+        self.assertTrue(u'Template saved.' in success_message.text)
 
     def test_add_quote_lang_dropdown(self):
         self._add_language_with_dropdown(self.live_server_url + reverse('add_quote_template'))
@@ -37,11 +37,11 @@ class QuoteTemplatesTest(browser.SignedInTest):
 
         b.find_element_by_xpath('//button[@type="submit"]').click()
 
-        section_title = browser.instance().find_element_by_class_name('section_title')
-        self.assertEqual(u'Quote', section_title.text)
+        success_message = b.find_element_by_class_name('alert-success')
+        self.assertTrue(u'Template saved.' in success_message.text)
 
-        intro = b.find_element_by_xpath('//div[@id="intro_section"]/h2[1]')
-        self.assertEqual(intro.text, 'modified intro title')
+        intro = b.find_element_by_xpath('//input[@id="id_intro"]')
+        self.assertEqual(intro.get_attribute('value'), 'modified intro title')
 
     def test_edit_quote_lang_dropdown(self):
         q = autofixture.create_one('quotes.Quote', generate_fk=True, field_values={'sections': [], 'language': 'en'})
