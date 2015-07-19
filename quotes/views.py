@@ -4,7 +4,7 @@ from django.views.generic.list import ListView
 from django.http import HttpResponseRedirect
 from django.utils.translation import get_language
 from django.conf import settings
-from django import forms
+from django.contrib import messages
 from quotes import models as q
 from django.core.urlresolvers import reverse
 from quotes import forms as qf
@@ -100,7 +100,8 @@ class QuoteTemplateCreate(CreateView):
     template_name = "quotes/quote_template.html"
 
     def get_success_url(self):
-        return reverse('quote_detail', args=[self.object.id])
+        messages.success(self.request, 'Template saved.')
+        return reverse('edit_quote_template', args=[self.object.id])
 
     def form_valid(self, form):
         quote = _create_quote(form)
@@ -125,7 +126,8 @@ class QuoteTemplateUpdate(UpdateView):
     template_name = "quotes/quote_template.html"
 
     def get_success_url(self):
-        return reverse('quote_detail', args=[self.object.id])
+        messages.success(self.request, 'Template saved.')
+        return reverse('edit_quote_template', args=[self.object.id])
 
     def form_valid(self, form):
         _create_quote(form)

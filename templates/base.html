@@ -57,12 +57,15 @@
 
                                     <li class="btn-group" id="settings-toggle-group">
 
-                                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="settings-toggle">
+                                        <button type="button" class="btn btn-default dropdown-toggle"
+                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                                id="settings-toggle">
                                             <span class="glyphicon glyphicon-cog"></span>
                                         </button>
 
                                         <ul class="dropdown-menu">
-                                            <li><a href="{% url 'account_change_password' %}">{% trans 'Account' %}</a></li>
+                                            <li><a href="{% url 'account_change_password' %}">{% trans 'Account' %}</a>
+                                            </li>
                                             <li><a href="{% url 'account_logout' %}">{% trans 'Sign Out' %}</a></li>
                                         </ul>
 
@@ -79,6 +82,12 @@
                 </div>
             </div>
         </header>
+        {% block messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                    <button type='button' class='close' data-dismiss='alert'>&times;</button>{{ message }}</div>
+            {% endfor %}
+        {% endblock %}
 
         <section class="content-1">
             <div class="holder v-center">
