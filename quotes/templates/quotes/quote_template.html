@@ -50,8 +50,6 @@
 
         $('#tabs').on("click", "li", function (e) {
             if (this.id != 'add_translation') {
-                console.log('li click');
-                console.log(this);
                 var lang = this.getAttribute('data');
                 setLanguage(lang);
                 $(this).tab('show');
