@@ -33,10 +33,10 @@ class QuotesSignedInTest(browser.SignedInTest):
 
         b.find_element_by_name('name').send_keys('Quote test')
         b.find_element_by_xpath('//select[@name="client"]/option[@value="%d"]' % c.id).click()
-        b.find_element_by_name('intro_title').send_keys('test intro title')
-        b.find_element_by_name('intro_text').send_keys('test intro text')
-        b.find_element_by_name('margin_section_title').send_keys('test margin title')
-        b.find_element_by_name('margin_section_text').send_keys('test margin text')
+        b.find_element_by_id('id_intro_title').send_keys('test intro title')
+        b.find_element_by_id('id_intro_text').send_keys('test intro text')
+        b.find_element_by_id('id_margin_section_title').send_keys('test margin title')
+        b.find_element_by_id('id_margin_section_text').send_keys('test margin text')
         b.find_element_by_xpath('//select[@name="language"]/option[@value="en"]').click()
 
         b.find_element_by_xpath('//button[@type="submit"]').click()
@@ -48,13 +48,14 @@ class QuotesSignedInTest(browser.SignedInTest):
         b = browser.instance()
         q = get_blank_quote_autofixture()
         b.get(self.live_server_url + reverse('edit_quote', args=[q.id]))
+        self.load_scripts()
 
-        b.find_element_by_name('intro_title').clear()
-        b.find_element_by_name('intro_title').send_keys('modified intro title')
+        b.find_element_by_id('id_intro_title').clear()
+        b.find_element_by_id('id_intro_title').send_keys('modified intro title')
 
         b.find_element_by_xpath('//button[@type="submit"]').click()
 
-        section_title = browser.instance().find_element_by_class_name('section_title')
+        section_title = b.find_element_by_class_name('section_title')
         self.assertEqual(u'Quote', section_title.text)
 
         intro = b.find_element_by_xpath('//div[@id="intro_section"]/h2[1]')
@@ -76,7 +77,7 @@ class QuotesSignedInTest(browser.SignedInTest):
 
         b.find_element_by_xpath('//button[@type="submit"]').click()
 
-        section_title = browser.instance().find_element_by_class_name('section_title')
+        section_title = b.find_element_by_class_name('section_title')
         self.assertEqual(u'Quote', section_title.text)
 
         intro = b.find_element_by_xpath('//div[@id="section_1"]/h2[1]')

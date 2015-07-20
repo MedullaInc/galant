@@ -12,8 +12,8 @@ function humanize(str) {
 String.prototype.format = function() {
   var num = arguments.length;
   var str = this;
-  for (var i = 1; i < num; i++) {
-    var pattern = "\\{" + (i-1) + "\\}";
+  for (var i = 0; i < num; i++) {
+    var pattern = "\\{" + i + "\\}";
     var re = new RegExp(pattern, "g");
     str = str.replace(re, arguments[i]);
   }

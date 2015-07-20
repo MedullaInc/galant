@@ -17,17 +17,16 @@
         </tr>
         <tr>
             <td>Title:&nbsp;&nbsp;</td>
-            <td><input class="ultext" type="hidden" id="id_{{ s.name }}_title_hidden"
+            <td><input class="ultext" type="hidden" id="id_{{ s.name }}_title_hidden" name="{{ s.name }}_title"
                        for="id_{{ s.name }}_title" value='{{ s.title.json }}'/>
-                <input class="ultext form-control" id="id_{{ s.name }}_title" maxlength="512"
-                       name="{{ s.name }}_title" type="text" value="{{ s.title.get_text }}"/></td>
+                <input class="form-control" id="id_{{ s.name }}_title" maxlength="512"
+                       type="text" value="{{ s.title.get_text }}"/></td>
         </tr>
         <tr>
             <td>Content:&nbsp;&nbsp;</td>
-            <td><input class="ultext" type="hidden" id="id_{{ s.name }}_text_hidden"
+            <td><input class="ultext" type="hidden" id="id_{{ s.name }}_text_hidden" name="{{ s.name }}_text"
                        for="id_{{ s.name }}_text" value='{{ s.text.json }}'/>
-                <textarea class="ultext" name="{{ s.name }}_text" rows="5" style="width:100%;"
-                          data='{{ s.text.json }}'>{{ s.text.get_text }}</textarea>
+                <textarea rows="5" style="width:100%;" id="id_{{ s.name }}_text">{{ s.text.get_text }}</textarea>
             </td>
         </tr>
         </tbody>
@@ -45,27 +44,31 @@
     <script>
         counter = 0;
         section = function (ct) {
-            var str = '<tbody id="section_{0}">' +
-                      '<tr><td>' +
-                      '   <label class="control-label" for="id_section_' +
-                      '{0}">Section {0}foo</label>' +
-                      '   <button id="section_{0}_remove" type="button" class="close" data-dismiss="alert" aria-label="Close">' +
-                      '        <span aria-hidden="true">&times;</span>' +
-                      '    </button>' +
-                      '</td></tr>' +
-                      '<tr><td></td></tr>\n' +
-                      '<tr>\n' +
-                      '    <td>Title:&nbsp;&nbsp;</td>\n' +
-                      '    <td><input class="ultext form-control" id="id_section_{0}_title" maxlength="512"\n' +
-                      '           name="section_{0}_title" type="text" data=""/></td>\n' +
-                      '</tr>\n' +
-                      '<tr>\n' +
-                      '    <td>Content:&nbsp;&nbsp;</td>\n' +
-                      '    <td><textarea id="id_section_{0}_text" class="ultext" name="section_' +
-                      '{0}_text" rows="5" style="width:100%;"  data=""></textarea></td>\n' +
-                      '</tr>\n' +
+            var str = '<tbody id="{0}">' +
+                      '<tr>' +
+                      '    <td>' +
+                      '        <label class="control-label  " for="id_{0}">{1}</label>' +
+                      '        <button id="{0}_remove" type="button" class="close" data-dismiss="alert" aria-label="Close">' +
+                      '            <span aria-hidden="true">&times;</span>' +
+                      '        </button>' +
+                      '    </td>' +
+                      '</tr>' +
+                      '<tr>' +
+                      '    <td>Title:&nbsp;&nbsp;</td>' +
+                      '    <td><input class="ultext" type="hidden" id="id_{0}_title_hidden" name="{0}_title" ' +
+                      '               for="id_{0}_title" value=""/>' +
+                      '        <input class="form-control" id="id_{0}_title" maxlength="512"' +
+                      '               type="text" value=""/></td>' +
+                      '</tr>' +
+                      '<tr>' +
+                      '    <td>Content:&nbsp;&nbsp;</td>' +
+                      '    <td><input class="ultext" type="hidden" id="id_{0}_text_hidden" name="{0}_text"' +
+                      '               for="id_{0}_text" value=""/>' +
+                      '       <textarea rows="5" style="width:100%; id="id_{0}_text"></textarea>' +
+                      '    </td>' +
+                      '</tr>' +
                       '</tbody>';
-            return str.format(ct);
+            return str.format('section_' + ct, 'Section ' + ct);
         };
 
         renameSections = function () {
@@ -75,10 +78,20 @@
                 this.setAttribute('id', name);
                 $(this).find('label').attr('for', 'id_' + name);
                 $(this).find('label').text('Section ' + i);
-                $(this).find('input').attr('id', id + '_title');
-                $(this).find('input').attr('name', name + '_title');
+                $(this).find('input[type="text"]').attr('id', id + '_title');
                 $(this).find('textarea').attr('id', id + '_text');
-                $(this).find('textarea').attr('name', name + '_text');
+                $(this).find('input[type="hidden"]').each(function () {
+                    var postfix = '';
+                    if (/_title$/.test(this.getAttribute('for'))) {
+                        postfix = '_title';
+                    } else if (/_text$/.test(this.getAttribute('for'))) {
+                        postfix = '_text';
+                    }
+
+                    this.setAttribute('id', id + postfix + '_hidden');
+                    this.setAttribute('for', id + postfix);
+                    this.setAttribute('name', name + postfix);
+                });
             });
         };
 
@@ -95,6 +108,12 @@
                 counter--;
                 renameSections();
             }
+        });
+
+        $('#create_submit').on('click', function(e) {
+            $('.ultext').each(function () {
+                this.value = $('#' + this.getAttribute('for')).val();
+            });
         });
     </script>
 {% endblock %}

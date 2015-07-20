@@ -85,11 +85,11 @@
             $('.ultext').each(function () {
                 var data = {};
                 try {
-                    data = JSON.parse(this.getAttribute('data'));
+                    data = JSON.parse(this.value);
                 } catch (e) {
                 }
-                data[currentLanguage] = this.value;
-                this.value = JSON.stringify(data)
+                data[currentLanguage] = $('#' + this.getAttribute('for')).val();
+                this.value = JSON.stringify(data);
             });
         });
     </script>
