@@ -4,76 +4,30 @@
 
 {% block extra_form_inputs %}
     <table id="section_table" width="500">
-        <tbody id="intro_section">
+    {% for s in object.all_sections %}
+        <tbody id="{{ s.name }}">
         <tr>
             <td>
-                <label class="control-label  " for="id_intro">Intro</label>
-                <button id="intro_remove" type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <label class="control-label  " for="id_{{ s.name }}">{{ s.display_title }}</label>
+                <button id="{{ s.name }}_remove" type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </td>
         </tr>
         <tr>
             <td>Title:&nbsp;&nbsp;</td>
-            <td><input class="ultext form-control" id="id_intro" maxlength="512"
-                       data='{{ object.intro.title.json }}'
-                       name="intro_title" type="text" value="{{ object.intro.title.get_text }}"/></td>
+            <td><input class="ultext form-control" id="id_{{ s.name }}_title" maxlength="512"
+                       data='{{ s.title.json }}'
+                       name="{{ s.name }}_title" type="text" value="{{ s.title.get_text }}"/></td>
         </tr>
         <tr>
             <td>Content:&nbsp;&nbsp;</td>
-            <td><textarea class="ultext" name="intro_text" rows="5" style="width:100%;"
-                          data='{{ object.intro.text.json }}'>{{ object.intro.text.get_text }}</textarea>
+            <td><textarea class="ultext" name="{{ s.name }}_text" rows="5" style="width:100%;"
+                          data='{{ s.text.json }}'>{{ s.text.get_text }}</textarea>
             </td>
         </tr>
         </tbody>
-        <tbody id="margin_section">
-        <tr>
-            <td>
-                <label class="control-label  " for="id_margin_section">Margin Section</label>
-                <button id="intro_remove" type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </td>
-        </tr>
-        <tr>
-            <td>Title:&nbsp;&nbsp;</td>
-            <td><input class="ultext form-control" id="id_margin_section_title" maxlength="512"
-                       data='{{ object.margin_section.title.json }}'
-                       name="margin_section_title" type="text" value="{{ object.margin_section.title.get_text }}"/></td>
-        </tr>
-        <tr>
-            <td>Content:&nbsp;&nbsp;</td>
-            <td><textarea class="ultext" id="id_margin_section_text" name="margin_section_text" rows="5"
-                          style="width:100%;"
-                          data='{{ object.margin_section.text.json }}'>{{ object.margin_section.text.get_text }}</textarea>
-            </td>
-        </tr>
-        </tbody>
-        {% for section in object.sections.all %}
-            <tbody id="section_{{ forloop.counter }}">
-            <tr>
-                <td>
-                    <label class="control-label"
-                           for="id_section_{{ forloop.counter }}">Section {{ forloop.counter }}</label>
-                    <button id="section_{{ forloop.counter }}_remove" type="button" class="close" data-dismiss="alert" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                    </button>
-                </td>
-            </tr>
-            <tr>
-                <td>Title:&nbsp;&nbsp;</td>
-                <td><input class="form-control ultext" id="id_section_{{ forloop.counter }}_title" maxlength="512"
-                           name="section_{{ forloop.counter }}_title" type="text" value="{{ section.title.get_text }}"/>
-                </td>
-            </tr>
-            <tr>
-                <td>Content:&nbsp;&nbsp;</td>
-                <td><textarea id="id_section_{{ forloop.counter }}_text" class="ultext"
-                              name="section_{{ forloop.counter }}_text" rows="5"
-                              style="width:100%;">{{ section.text.get_text }}</textarea></td>
-            </tr>
-            </tbody>
-        {% endfor %}
+    {% endfor %}
         <tr>
             <td></td>
             <td>

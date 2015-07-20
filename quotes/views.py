@@ -54,9 +54,11 @@ class QuoteList(ListView):
 
 def _create_quote(form):
     obj = form.save(commit=True)
-    intro = q.Section(title=form.cleaned_data['intro_title'],
+    intro = q.Section(name='intro_section',
+                      title=form.cleaned_data['intro_title'],
                       text=form.cleaned_data['intro_text'])
-    margin_section = q.Section(title=form.cleaned_data['margin_section_title'],
+    margin_section = q.Section(name='margin_section',
+                               title=form.cleaned_data['margin_section_title'],
                                text=form.cleaned_data['margin_section_text'])
 
     saved_sections = [s.id for s in obj.sections.all()]
@@ -66,7 +68,8 @@ def _create_quote(form):
     for key, value in sorted(form.cleaned_data.items(), key=operator.itemgetter(1)):
         if key.startswith('section_') and key.endswith('_title'):
             section_name = key[:-6]
-            section = q.Section(title=form.cleaned_data[section_name + '_title'],
+            section = q.Section(name=section_name,
+                                title=form.cleaned_data[section_name + '_title'],
                                 text=form.cleaned_data[section_name + '_text'])
 
             # compare to section at same index, don't add if same
@@ -88,7 +91,7 @@ def _create_quote(form):
         obj.intro = intro
 
     if obj.margin_section is None or \
-            obj.margin_section.render_html() != margin_section.render_html():
+                    obj.margin_section.render_html() != margin_section.render_html():
         margin_section.save()
         obj.margin_section = margin_section
 
@@ -116,7 +119,7 @@ class QuoteTemplateView(UpdateView):
         """
         kwargs = super(QuoteTemplateView, self).get_form_kwargs()
         if hasattr(self, 'object') and hasattr(self.object, 'quote'):
-                kwargs.update({'instance': self.object.quote})
+            kwargs.update({'instance': self.object.quote})
         return kwargs
 
     def form_valid(self, form):
