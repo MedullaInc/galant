@@ -36,8 +36,6 @@ class QuoteTemplatesTest(browser.SignedInTest):
 
         b.find_element_by_id('id_intro_title').clear()
         b.find_element_by_id('id_intro_title').send_keys('modified intro title')
-
-        b.save_screenshot('tmp.png')
         b.find_element_by_xpath('//button[@type="submit"]').click()
 
         success_message = b.find_element_by_class_name('alert-success')
