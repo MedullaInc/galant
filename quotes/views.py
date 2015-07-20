@@ -132,14 +132,18 @@ class QuoteTemplateView(UpdateView):
     def render_to_response(self, context, **response_kwargs):
         lang_dict = dict(settings.LANGUAGES)
         form = qf.LanguageForm()
+        language_set = set([get_language()])
 
         if hasattr(self.object, 'quote'):
+            for s in self.object.quote.all_sections():
+                map(lambda l: language_set.add(l), s.title.keys())
+                map(lambda l: language_set.add(l), s.text.keys())
+
             context.update({'object': self.object.quote})
         else:
             context.update({'object': q.Quote()})
 
         context.update({'title': 'Edit Template',
-                        'native_language_code': get_language(),
-                        'native_language': lang_dict[get_language()],
+                        'languages': [(c, lang_dict[c]) for c in language_set],
                         'language_form': form})
         return super(QuoteTemplateView, self).render_to_response(context)

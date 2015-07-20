@@ -4,8 +4,10 @@
 
 {% block extra_form_inputs %}
     <ul id="tabs" class="nav nav-tabs" style="margin-bottom: -1px; border-bottom: 0">
-        <li id="{{ native_language_code }}_tab" class="active" data="{{ native_language_code }}"><a>
-            {{ native_language }}</a></li>
+        {% for language_code, language in languages %}
+        <li id="{{ language_code }}_tab" {% if forloop.first %}class="active"{% endif %} data="{{ language_code }}"><a>
+            {{ language }}</a></li>
+        {% endfor %}
         <li id="add_translation">
             <a id="add_translation_button" class="btn">Add Translation</a>
         </li>
@@ -32,16 +34,17 @@
         var setLanguage = function (language) {
             $('.ultext').each(function () {
                 var data = {};
+                var ref = $('#' + this.getAttribute('for'));
                 try {
-                    data = JSON.parse(this.getAttribute('data'));
+                    data = JSON.parse(this.value);
                 } catch (e) {
                 }
-                data[currentLanguage] = this.value;
-                this.setAttribute('data', JSON.stringify(data));
+                data[currentLanguage] = ref.val();
+                this.value = JSON.stringify(data);
                 if (language in data) {
-                    this.value = data[language];
+                    ref.val(data[language]);
                 } else {
-                    this.value = '';
+                    ref.val('');
                 }
             });
 
@@ -81,6 +84,7 @@
             });
         });
 
+        {% block create_submit_event %}
         $('#create_submit').on('click', function(e) {
             $('.ultext').each(function () {
                 var data = {};
@@ -92,5 +96,6 @@
                 this.value = JSON.stringify(data);
             });
         });
+        {% endblock %}
     </script>
 {% endblock %}
