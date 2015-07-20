@@ -54,7 +54,7 @@ class QuoteList(ListView):
 
 def _create_quote(form):
     obj = form.save(commit=True)
-    intro = q.Section(name='intro_section',
+    intro = q.Section(name='intro',
                       title=form.cleaned_data['intro_title'],
                       text=form.cleaned_data['intro_text'])
     margin_section = q.Section(name='margin_section',
