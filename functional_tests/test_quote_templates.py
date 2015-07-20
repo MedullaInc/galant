@@ -26,6 +26,7 @@ class QuoteTemplatesTest(browser.SignedInTest):
 
     def test_add_quote_lang_dropdown(self):
         self._add_language_and_text(self.live_server_url + reverse('add_quote_template'))
+
     def test_edit_quote_template(self):
         b = browser.instance()
         q = get_blank_quote_autofixture()
