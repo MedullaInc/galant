@@ -24,7 +24,7 @@ class QuoteTemplatesTest(browser.SignedInTest):
         self.assertTrue(u'Template saved.' in success_message.text)
 
     def test_add_quote_lang_dropdown(self):
-        self._add_language_with_dropdown(self.live_server_url + reverse('add_quote_template'))
+        self._add_language_and_text(self.live_server_url + reverse('add_quote_template'))
 
     def test_edit_quote_template(self):
         b = browser.instance()
@@ -48,16 +48,25 @@ class QuoteTemplatesTest(browser.SignedInTest):
         q = autofixture.create_one('quotes.Quote', generate_fk=True, field_values={'sections': [], 'language': 'en'})
         q.save()
         qt = autofixture.create_one('quotes.QuoteTemplate', field_values={'quote': q})
-        self._add_language_with_dropdown(self.live_server_url + reverse('edit_quote_template', args=[qt.id]))
+        self._add_language_and_text(self.live_server_url + reverse('edit_quote_template', args=[qt.id]))
 
-    def _add_language_with_dropdown(self, url):
+    def _add_language_and_text(self, url):
         b = browser.instance()
         b.get(url)
         self.load_scripts()
 
+        b.find_element_by_name('intro_title').clear()
+        b.find_element_by_name('intro_title').send_keys('test intro title')
         b.find_element_by_id('add_translation_button').click()
         b.find_element_by_xpath('//select[@id="id_language"]/option[@value="es"]').click()
         b.find_element_by_id('language_add').click()
+        b.find_element_by_name('intro_title').clear()
+        b.find_element_by_name('intro_title').send_keys('titulo de intro prueba')
+        b.find_element_by_id('en_tab').click()
 
-        new_tab = b.find_element_by_xpath('//*[@id="tabs"]/li[2]/a')
+        new_tab = b.find_element_by_xpath('//*[@id="es_tab"]/a')
         self.assertEqual(u'Spanish', new_tab.text)
+
+        intro = b.find_element_by_xpath('//input[@id="id_intro"]')
+        b.find_element_by_id('es_tab').click()
+        self.assertEqual(intro.get_attribute('value'), 'titulo de intro prueba')
