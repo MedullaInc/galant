@@ -8,3 +8,14 @@ function humanize(str) {
   }
   return frags.join(' ');
 }
+
+String.prototype.format = function() {
+  var num = arguments.length;
+  var str = this;
+  for (var i = 1; i < num; i++) {
+    var pattern = "\\{" + (i-1) + "\\}";
+    var re = new RegExp(pattern, "g");
+    str = str.replace(re, arguments[i]);
+  }
+  return str;
+}

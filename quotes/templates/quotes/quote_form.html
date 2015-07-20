@@ -17,13 +17,16 @@
         </tr>
         <tr>
             <td>Title:&nbsp;&nbsp;</td>
-            <td><input class="ultext form-control" id="id_{{ s.name }}_title" maxlength="512"
-                       data='{{ s.title.json }}'
+            <td><input class="ultext" type="hidden" id="id_{{ s.name }}_title_hidden"
+                       for="id_{{ s.name }}_title" value='{{ s.title.json }}'/>
+                <input class="ultext form-control" id="id_{{ s.name }}_title" maxlength="512"
                        name="{{ s.name }}_title" type="text" value="{{ s.title.get_text }}"/></td>
         </tr>
         <tr>
             <td>Content:&nbsp;&nbsp;</td>
-            <td><textarea class="ultext" name="{{ s.name }}_text" rows="5" style="width:100%;"
+            <td><input class="ultext" type="hidden" id="id_{{ s.name }}_text_hidden"
+                       for="id_{{ s.name }}_text" value='{{ s.text.json }}'/>
+                <textarea class="ultext" name="{{ s.name }}_text" rows="5" style="width:100%;"
                           data='{{ s.text.json }}'>{{ s.text.get_text }}</textarea>
             </td>
         </tr>
@@ -42,26 +45,27 @@
     <script>
         counter = 0;
         section = function (ct) {
-            return '<tbody id="section_' + ct + '">' +
-                    '<tr><td>' +
-                    '   <label class="control-label" for="id_section_' +
-                    ct + '">Section ' + ct + '</label>' +
-                    '   <button id="section_' + ct + '_remove" type="button" class="close" data-dismiss="alert" aria-label="Close">' +
-                    '        <span aria-hidden="true">&times;</span>' +
-                    '    </button>' +
-                    '</td></tr>' +
-                    '<tr><td></td></tr>\n' +
-                    '<tr>\n' +
-                    '    <td>Title:&nbsp;&nbsp;</td>\n' +
-                    '    <td><input class="ultext form-control" id="id_section_' + ct + '_title" maxlength="512"\n' +
-                    '           name="section_' + ct + '_title" type="text" data=""/></td>\n' +
-                    '</tr>\n' +
-                    '<tr>\n' +
-                    '    <td>Content:&nbsp;&nbsp;</td>\n' +
-                    '    <td><textarea id="id_section_' + ct + '_text" class="ultext" name="section_' +
-                    ct + '_text" rows="5" style="width:100%;"  data=""></textarea></td>\n' +
-                    '</tr>\n' +
-                    '</tbody>';
+            var str = '<tbody id="section_{0}">' +
+                      '<tr><td>' +
+                      '   <label class="control-label" for="id_section_' +
+                      '{0}">Section {0}foo</label>' +
+                      '   <button id="section_{0}_remove" type="button" class="close" data-dismiss="alert" aria-label="Close">' +
+                      '        <span aria-hidden="true">&times;</span>' +
+                      '    </button>' +
+                      '</td></tr>' +
+                      '<tr><td></td></tr>\n' +
+                      '<tr>\n' +
+                      '    <td>Title:&nbsp;&nbsp;</td>\n' +
+                      '    <td><input class="ultext form-control" id="id_section_{0}_title" maxlength="512"\n' +
+                      '           name="section_{0}_title" type="text" data=""/></td>\n' +
+                      '</tr>\n' +
+                      '<tr>\n' +
+                      '    <td>Content:&nbsp;&nbsp;</td>\n' +
+                      '    <td><textarea id="id_section_{0}_text" class="ultext" name="section_' +
+                      '{0}_text" rows="5" style="width:100%;"  data=""></textarea></td>\n' +
+                      '</tr>\n' +
+                      '</tbody>';
+            return str.format(ct);
         };
 
         renameSections = function () {
