@@ -31,21 +31,24 @@ class ULTextDict(dict):
 
 
 def _ultext_to_python(value):
+    d = ULTextDict()
     if isinstance(value, dict):
-        d = ULTextDict()
         d.update(value)
         return d
-    elif isinstance(value, basestring):
-        d = ULTextDict()
+
+    try:
+        d.update(json.loads(value))
+    except (ValueError, TypeError):
         lang = translation.get_language()
         if lang is None:
             lang = settings.LANGUAGE_CODE
         d.update({lang: value})
-        return d
+
 
     if value is None:
         return value
 
+    return d
     raise FieldError("ULTextField requires a dictionary.")
 
 

@@ -81,8 +81,16 @@
             });
         });
 
-        $('create_submit').on('click', function(e) {
-
+        $('#create_submit').on('click', function(e) {
+            $('.ultext').each(function () {
+                var data = {};
+                try {
+                    data = JSON.parse(this.getAttribute('data'));
+                } catch (e) {
+                }
+                data[currentLanguage] = this.value;
+                this.value = JSON.stringify(data)
+            });
         });
     </script>
 {% endblock %}
