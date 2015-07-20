@@ -4,6 +4,7 @@ from django.db import models as m
 from django.conf import settings
 from django.utils.html import escape, mark_safe
 from itertools import chain
+import autofixture
 
 
 # Text section of Quote
@@ -55,10 +56,17 @@ class Quote(m.Model):
     parent = m.ForeignKey('self', null=True, blank=True, related_name='versions')
 
     def all_sections(self):
-        return list(chain([self.intro], [self.margin_section], self.sections.all()))
+        if self.id is None:
+            intro = Section(name='intro')
+            margin_section = Section(name='margin_section')
+            sections = []
+        else:
+            intro = self.intro
+            margin_section = self.margin_section
+            sections = self.sections.all()
+
+        return list(chain([intro], [margin_section], sections))
 
 
 class QuoteTemplate(m.Model):
     quote = m.ForeignKey(Quote)
-
-

@@ -23,7 +23,7 @@ class QuoteCreate(CreateView):
         return super(QuoteCreate, self).form_valid(form)
 
     def render_to_response(self, context, **response_kwargs):
-        context.update({'title': 'Edit Quote'})
+        context.update({'title': 'Add Quote', 'object': q.Quote()})
         return super(QuoteCreate, self).render_to_response(context)
 
 
@@ -135,6 +135,8 @@ class QuoteTemplateView(UpdateView):
 
         if hasattr(self.object, 'quote'):
             context.update({'object': self.object.quote})
+        else:
+            context.update({'object': q.Quote()})
 
         context.update({'title': 'Edit Template',
                         'native_language_code': get_language(),
