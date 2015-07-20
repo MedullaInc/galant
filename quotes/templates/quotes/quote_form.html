@@ -10,6 +10,8 @@
         <tr>
             <td>
                 <label class="control-label  " for="id_{{ s.name }}">{{ s.display_title }}</label>
+            </td>
+            <td>
                 <button id="{{ s.name }}_remove" type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -48,6 +50,8 @@
                       '<tr>' +
                       '    <td>' +
                       '        <label class="control-label  " for="id_{0}">{1}</label>' +
+                      '    </td>' +
+                      '    <td>' +
                       '        <button id="{0}_remove" type="button" class="close" data-dismiss="alert" aria-label="Close">' +
                       '            <span aria-hidden="true">&times;</span>' +
                       '        </button>' +
