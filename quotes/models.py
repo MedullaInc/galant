@@ -81,4 +81,4 @@ class QuoteTemplate(m.Model):
     quote = m.ForeignKey(Quote)
 
     def language_list(self):
-        return [(c,utils.LANG_DICT[c]) for c in self.quote.get_languages()]
+        return [(c,utils.LANG_DICT[c]) for c in self.quote.get_languages() if c in utils.LANG_DICT]

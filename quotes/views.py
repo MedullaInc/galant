@@ -35,6 +35,7 @@ class QuoteCreate(CreateView):
                 quote.language = lang
         else:
             quote = q.Quote()
+            sections = quote.all_sections()
         context.update({'title': 'Add Quote',
                         'object': quote,
                         'form': qf.QuoteForm(instance=quote),
