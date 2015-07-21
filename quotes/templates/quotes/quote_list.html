@@ -6,9 +6,15 @@
 {% endblock %}
 
 {% block sidebar %}
-    <button id="add_quote_button" type="button" class="btn btn-default sidebar">
+    <a><button id="add_quote_button" type="button" class="btn btn-default sidebar">
         {% trans "Add New Quote" %}
-    </button>
+    </button></a>
+
+    <a href="{% url 'templates' %}">
+        <button type="button" class="btn btn-default sidebar">
+            {% trans "Templates" %}
+        </button>
+    </a>
 
 {% endblock %}
 
