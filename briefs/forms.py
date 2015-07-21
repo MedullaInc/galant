@@ -13,9 +13,6 @@ class BriefForm(forms.ModelForm):
         cleaned_data = super(BriefForm, self).clean()
         return cleaned_data
 
-    def save(self, commit=True):
-        super(BriefForm, self).save()
-
 
 class ClientBriefForm(BriefForm):
     class Meta():

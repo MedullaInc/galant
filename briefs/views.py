@@ -14,18 +14,13 @@ class BriefList(ListView):
 
 class ClientBriefList(ListView):
     template_name = "briefs/client_brief_list.html"
+    model = b.ClientBrief
 
     def render_to_response(self, context, **response_kwargs):
         context['title'] = 'Briefs'
         context['client'] = g.Client.objects.get(id=self.kwargs['pk'])
-        return super(ListView, self).render_to_response(context)
-
-    def get_queryset(self):
-        try:
-            briefs = b.Brief.objects.get(clientbrief=self.kwargs['pk'])
-        except b.Brief.DoesNotExist:
-            briefs = None
-        return briefs
+        context.update({'template_list': b.ClientBrief.objects.filter(client=self.kwargs['pk'])})
+        return super(ClientBriefList, self).render_to_response(context)
 
 
 class BriefCreate(CreateView):
@@ -74,7 +69,14 @@ class BriefUpdate(UpdateView):
 
 class BriefDetail(DetailView):
 
-    def get(self, request, *args, **kwargs):
+    model = b.Brief
+
+    def render_to_response(self, context, **response_kwargs):
         if self.kwargs['brief_type'] == "client":
-            self.model = b.ClientBrief
-            self.form_class = forms.ClientBriefForm
+            client_brief = b.ClientBrief.objects.get(id=self.kwargs['pk'])
+            context['object'] = client_brief
+            context['client'] = client_brief.client
+
+        context['title'] = 'Brief Detail'
+
+        return super(BriefDetail, self).render_to_response(context)

@@ -32,7 +32,7 @@ urlpatterns = i18n_patterns(
     url(r'^quote/', include('quotes.urls')),
     url(r'^briefs/', include('briefs.urls')),
 
-    url(r'^$', TemplateView.as_view(template_name='brief_list.html'), name='home'),
+    url(r'^$', TemplateView.as_view(template_name='index.html'), name='home'),
     url(r'^clients/$', login_required(gallant.views.ClientList.as_view()), name='clients'),
     url(r'^client/add/$', login_required(gallant.views.ClientCreate.as_view()), name='add_client'),
     url(r'^client/edit/(?P<pk>[0-9]+)$', login_required(gallant.views.ClientUpdate.as_view()), name='edit_client'),
