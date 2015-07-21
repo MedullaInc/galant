@@ -19,9 +19,6 @@ class ClientBriefForm(BriefForm):
         model = b.ClientBrief
         fields = ['title', 'status']
 
-    def form_valid(self, form):
-        form.instance.client = self.kwargs['pk']
-        return super(ClientBriefForm, self).form_valid(form)
 
 # class ProjectBriefForm(BriefForm):
 #     class Meta():
