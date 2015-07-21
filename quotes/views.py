@@ -174,8 +174,9 @@ class QuoteTemplateView(UpdateView):
             quote = q.Quote()
             context.update({'title': 'New Template'})
 
-        context.update({'languages': [(c, lang_dict[c]) for c in language_set],
+        context.update({'languages': [(c, lang_dict[c]) for c in language_set if c in lang_dict],
                         'language_form': form,
                         'object': quote,
+                        'language': get_language(),
                         'sections': quote.all_sections()})
         return super(QuoteTemplateView, self).render_to_response(context)

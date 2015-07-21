@@ -63,8 +63,11 @@
                 $('.nav-tabs > li:last').before(tabHtml);
             });
         });
+    </script>
+{% endblock %}
 
-        {% block create_submit_event %}
+
+{% block create_submit_event %}
         $('#create_submit').on('click', function(e) {
             $('.ultext').each(function () {
                 var data = {};
@@ -76,6 +79,4 @@
                 this.value = JSON.stringify(data);
             });
         });
-        {% endblock %}
-    </script>
 {% endblock %}

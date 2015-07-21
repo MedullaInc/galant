@@ -43,6 +43,7 @@
 {% endblock %}
 
 {% block extra_body %}
+    {{ block.super }}
     <script>
         var currentLanguage = '{{ LANGUAGE_CODE }}';
         var setLanguage = function (language) {
@@ -61,7 +62,6 @@
                     ref.val('');
                 }
             });
-
             currentLanguage = language;
         };
 
