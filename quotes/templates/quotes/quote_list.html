@@ -6,12 +6,9 @@
 {% endblock %}
 
 {% block sidebar %}
-
-    <a href="{% url 'add_quote' %}">
-        <button type="button" class="btn btn-default sidebar">
-            {% trans "Add New Quote" %}
-        </button>
-    </a>
+    <button id="add_quote_button" type="button" class="btn btn-default sidebar">
+        {% trans "Add New Quote" %}
+    </button>
 
 {% endblock %}
 
@@ -24,7 +21,7 @@
         <th><b>{% trans "Status" %}</b></th>
         </thead>
         {% for quote in object_list %}
-            <tr data-rel="{{ quote.id }}" style="cursor: pointer">
+            <tr data-rel="{{ quote.id }}" style="cursor: pointer" class="template_row">
                 <td>{{ quote.created|date:'Y-m-d H:i' }}</td>
                 <td>{{ quote.client.name }}</td>
                 <td>{{ quote.name }}</td>
@@ -38,12 +35,77 @@
             </tr>
         {% endfor %}
     </table>
+    <div id="add_button_popover" style="display: none">
+        <button type="button" class="btn btn-default from_template_button">
+            From Template
+        </button>
+        <a href="{% url 'add_quote' %}">
+            <button type="button" class="btn btn-default from_scratch_button">From Scratch</button>
+        </a>
+    </div>
 {% endblock %}
 
 {% block extra_body %}
+    <div id="template_select" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Select Template</h4>
+                </div>
+                <div class="modal-body" style="height: 500px; overflow: auto;">
+                    <table class="table table-striped table-bordered">
+                        <thead>
+                        <th><b>{% trans "Name" %}</b></th>
+                        <th><b>{% trans "Date" %}</b></th>
+                        </thead>
+                        {% for template in template_list %}
+                            <tr data-rel="{{ template.id }}" style="cursor: pointer" class="template_row">
+                                <td>{{ template.quote.name }}</td>
+                                <td>{{ template.quote.created|date:'Y-m-d H:i' }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="4">
+                                    No templates yet.
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+
+        </div>
+    </div>
     <script>
-        $('.table > tbody > tr').click(function () {
+        $('#add_quote_button').popover({
+            html: true,
+            container: 'body',
+            content: $('#add_button_popover').html(),
+            title: "New Quote",
+            placement: "right"
+        }).click(function () {
+            $('body').on('click', '.popover-content > button.from_template_button', function () {
+                $('#add_quote_button').popover('hide');
+                $('#template_select').modal('show');
+            });
+        });
+
+        $('body').on('click', function (e) {
+            var p = $('#add_quote_button');
+            if (!p.is(e.target) && p.has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
+                p.popover('hide');
+            }
+        });
+
+        $('.table > tbody > tr.quote_row').click(function () {
             window.location.href = "{% url 'quote_detail' %}" + $(this).attr('data-rel')
+        });
+
+        $('.table > tbody > tr.template_row').click(function () {
+            window.location.href = "{% url 'edit_quote_template' %}" + $(this).attr('data-rel')
         });
     </script>
 {% endblock %}

@@ -6,19 +6,21 @@
 {% endblock %}
 
 {% block sidebar %}
-
-    <a href="{% url 'quotes' %}">
-        <button type="button" class="btn btn-default sidebar">
-            {% trans "Back to Quotes" %}
-        </button>
-    </a>
-
     <a href="{% url 'edit_quote' object.id %}">
         <button type="button" class="btn btn-default sidebar">
             {% trans "Edit Quote" %}
         </button>
     </a>
-
+    <a href="{% url 'add_quote_template' quote_id=object.id %}">
+        <button type="button" class="btn btn-default sidebar" title="Create template from this quote.">
+            {% trans "Use as Template" %}
+        </button>
+    </a>
+    <a href="{% url 'quotes' %}">
+        <button type="button" class="btn btn-default sidebar">
+            {% trans "Back to Quotes" %}
+        </button>
+    </a>
 {% endblock %}
 
 {% block center_content %}

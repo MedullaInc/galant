@@ -5,6 +5,7 @@ from jsonfield import JSONField
 from enum import Enum
 from django.conf import settings
 import inspect
+import json
 
 
 class ULTextDict(dict):
@@ -25,23 +26,29 @@ class ULTextDict(dict):
 
         self[language] = text
 
+    def json(self):
+        return json.dumps(self)
+
 
 def _ultext_to_python(value):
+    d = ULTextDict()
     if isinstance(value, dict):
-        d = ULTextDict()
         d.update(value)
         return d
-    elif isinstance(value, basestring):
-        d = ULTextDict()
+
+    try:
+        d.update(json.loads(value))
+    except (ValueError, TypeError):
         lang = translation.get_language()
         if lang is None:
             lang = settings.LANGUAGE_CODE
         d.update({lang: value})
-        return d
+
 
     if value is None:
         return value
 
+    return d
     raise FieldError("ULTextField requires a dictionary.")
 
 

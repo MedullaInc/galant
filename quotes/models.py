@@ -3,10 +3,13 @@ from gallant import fields as gf
 from django.db import models as m
 from django.conf import settings
 from django.utils.html import escape, mark_safe
+from itertools import chain
+import autofixture
 
 
 # Text section of Quote
 class Section(m.Model):
+    name = m.CharField(max_length=256, default="section")
     title = gf.ULCharField()
     text = gf.ULTextField()
     parent = m.ForeignKey('self', null=True, blank=True, related_name='sub_sections')
@@ -15,6 +18,9 @@ class Section(m.Model):
         html = '<h2 class="section_title">%s</h2><p>%s</p>' % \
                (escape(self.title.get_text(language)), escape(self.text.get_text(language)))
         return mark_safe(html)
+
+    def display_title(self):
+        return self.name.replace('_', ' ').title()
 
 
 class ServiceSection(Section):
@@ -49,8 +55,18 @@ class Quote(m.Model):
 
     parent = m.ForeignKey('self', null=True, blank=True, related_name='versions')
 
+    def all_sections(self):
+        if self.id is None:
+            intro = Section(name='intro')
+            margin_section = Section(name='margin_section')
+            sections = []
+        else:
+            intro = self.intro
+            margin_section = self.margin_section
+            sections = self.sections.all()
+
+        return list(chain([intro], [margin_section], sections))
+
 
 class QuoteTemplate(m.Model):
     quote = m.ForeignKey(Quote)
-
-
