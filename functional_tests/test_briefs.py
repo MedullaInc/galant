@@ -1,5 +1,6 @@
 from django.core.urlresolvers import reverse
 from functional_tests import browser
+import autofixture
 
 
 def tearDown():
