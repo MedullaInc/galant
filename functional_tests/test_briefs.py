@@ -27,7 +27,7 @@ class BriefsSignedInTest(browser.SignedInTest):
         b.find_element_by_id('add_client_brief').click()
 
         # fill out brief & save
-        b.find_element_by_name('name').send_keys('Brief test')
+        b.find_element_by_name('title').send_keys('Brief test')
         b.find_element_by_xpath('//button[@type="submit"]').click()
 
         section_title = browser.instance().find_element_by_class_name('section_title')
