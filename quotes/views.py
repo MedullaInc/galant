@@ -52,6 +52,10 @@ class QuoteDetail(DetailView):
 class QuoteList(ListView):
     model = q.Quote
 
+    def render_to_response(self, context, **response_kwargs):
+        context.update({'template_list': q.QuoteTemplate.objects.all()})
+        return super(QuoteList, self).render_to_response(context)
+
 
 def _create_quote(form):
     obj = form.save(commit=True)
