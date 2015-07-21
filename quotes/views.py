@@ -5,8 +5,9 @@ from django.http import HttpResponseRedirect
 from django.utils.translation import get_language
 from django.conf import settings
 from django.contrib import messages
-from quotes import models as q
 from django.core.urlresolvers import reverse
+from django.shortcuts import get_object_or_404
+from quotes import models as q
 from quotes import forms as qf
 import operator
 
@@ -140,6 +141,8 @@ class QuoteTemplateView(UpdateView):
                 map(lambda l: language_set.add(l), s.text.keys())
 
             context.update({'object': self.object.quote})
+        elif 'quote_id' in self.kwargs:
+            context.update({'object': get_object_or_404(q.Quote, pk=self.kwargs['quote_id'])})
         else:
             context.update({'object': q.Quote()})
 
