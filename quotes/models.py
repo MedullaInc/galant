@@ -4,7 +4,7 @@ from django.db import models as m
 from django.conf import settings
 from django.utils.html import escape, mark_safe
 from itertools import chain
-import autofixture
+from gallant import utils
 
 
 # Text section of Quote
@@ -84,3 +84,6 @@ class Quote(m.Model):
 
 class QuoteTemplate(m.Model):
     quote = m.ForeignKey(Quote)
+
+    def language_list(self):
+        return [(c,utils.LANG_DICT[c]) for c in self.quote.get_languages()]
