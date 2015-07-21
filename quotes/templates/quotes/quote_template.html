@@ -77,8 +77,8 @@
             title: "Select Language",
             placement: "bottom"
         }).click(function (e) {
-            $('#language_add').click(function () {
-                var l = $('#id_language').find(":selected");
+            $('body').on('click', '.popover-content > button', function () {
+                var l = $('.popover-content #id_language').find(":selected");
                 var tabHtml = '<li id="' + l.val() + '_tab" data="' + l.val() + '"><a>' +
                         l.text() + '</a></li>';
                 $('.nav-tabs > li:last').before(tabHtml);
