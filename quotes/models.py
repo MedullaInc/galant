@@ -22,6 +22,12 @@ class Section(m.Model):
     def display_title(self):
         return self.name.replace('_', ' ').title()
 
+    def get_languages(self):
+        language_set = set()
+        map(lambda l: language_set.add(l), self.title.keys())
+        map(lambda l: language_set.add(l), self.text.keys())
+        return language_set
+
 
 class ServiceSection(Section):
     service = m.ForeignKey(g.Service)
@@ -55,14 +61,22 @@ class Quote(m.Model):
 
     parent = m.ForeignKey('self', null=True, blank=True, related_name='versions')
 
+    def get_languages(self):
+        language_set = set()
+        for s in list(chain([self.intro], [self.margin_section], self.sections.all())):
+            if s is not None:
+                language_set.update(s.get_languages())
+
+        return language_set
+
     def all_sections(self):
         if self.id is None:
             intro = Section(name='intro')
             margin_section = Section(name='margin_section')
             sections = []
         else:
-            intro = self.intro
-            margin_section = self.margin_section
+            intro = self.intro if self.intro is not None else Section(name='intro')
+            margin_section = self.margin_section if self.margin_section is not None else Section(name='margin_section')
             sections = self.sections.all()
 
         return list(chain([intro], [margin_section], sections))

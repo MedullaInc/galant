@@ -148,9 +148,7 @@ class QuoteTemplateView(UpdateView):
         language_set = set([get_language()])
 
         if hasattr(self.object, 'quote'):
-            for s in self.object.quote.all_sections():
-                map(lambda l: language_set.add(l), s.title.keys())
-                map(lambda l: language_set.add(l), s.text.keys())
+            language_set.update(self.object.quote.get_languages())
 
             context.update({'title': 'Edit Template',
                             'object': self.object.quote})
