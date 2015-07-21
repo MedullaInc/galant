@@ -13,6 +13,12 @@
         </button>
     </a>
 
+    <a href="{% url 'client_briefs' object.id %}">
+        <button type="button" class="btn btn-default sidebar">
+            {% trans "Client Briefs" %}
+        </button>
+    </a>
+
 {% endblock %}
 
 {% block center_content %}

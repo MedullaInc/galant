@@ -5,16 +5,6 @@
     {{ title }}
 {% endblock %}
 
-{% block sidebar %}
-
-    <a href="{% url 'clients' %}">
-        <button type="button" class="btn btn-default sidebar">
-            {% trans "Cancel" %}
-        </button>
-    </a>
-
-{% endblock %}
-
 {% block center_content %}
     <form id="form" class="form" method="post">
         {% csrf_token %}

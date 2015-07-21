@@ -1,0 +1,18 @@
+{% extends "gallant/create_form.html" %}
+{% load bootstrap i18n %}
+
+{% block sidebar %}
+
+    <a href="{% url 'client_detail' client.id %}">
+        <button type="button" class="btn btn-default sidebar">
+            {% trans "Back to Client" %}
+        </button>
+    </a>
+
+    <a href="{% url 'client_briefs' client.id %}">
+        <button type="button" class="btn btn-default sidebar">
+            {% trans "Back to Briefs" %}
+        </button>
+    </a>
+
+{% endblock %}
