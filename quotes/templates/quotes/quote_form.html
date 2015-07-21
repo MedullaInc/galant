@@ -54,8 +54,10 @@
                     data = JSON.parse(this.value);
                 } catch (e) {
                 }
-                data[currentLanguage] = ref.val();
-                this.value = JSON.stringify(data);
+                if (language != currentLanguage) {
+                    data[currentLanguage] = ref.val();
+                    this.value = JSON.stringify(data);
+                }
                 if (language in data) {
                     ref.val(data[language]);
                 } else {

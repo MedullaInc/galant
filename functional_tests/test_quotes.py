@@ -37,7 +37,6 @@ class QuotesSignedInTest(browser.SignedInTest):
         b.find_element_by_id('id_intro_text').send_keys('test intro text')
         b.find_element_by_id('id_margin_section_title').send_keys('test margin title')
         b.find_element_by_id('id_margin_section_text').send_keys('test margin text')
-        b.find_element_by_xpath('//select[@name="language"]/option[@value="en"]').click()
 
         b.find_element_by_xpath('//button[@type="submit"]').click()
 
