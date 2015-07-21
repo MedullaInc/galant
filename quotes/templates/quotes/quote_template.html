@@ -81,7 +81,7 @@
                 var l = $('#id_language').find(":selected");
                 var tabHtml = '<li id="' + l.val() + '_tab" data="' + l.val() + '"><a>' +
                         l.text() + '</a></li>';
-                var newTab = $('.nav-tabs > li:last').before(tabHtml);
+                $('.nav-tabs > li:last').before(tabHtml);
             });
         });
 

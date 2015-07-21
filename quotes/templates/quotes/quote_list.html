@@ -36,10 +36,9 @@
         {% endfor %}
     </table>
     <div id="add_button_popover" style="display: none">
-        <table>
-            <tr><td><button id="from_template_button" type="button" class="btn btn-default">From Template</button></td></tr>
-            <tr><td><button id="from_scratch_button" type="button" class="btn btn-default">From Scratch</button></td></tr>
-        </table>
+        <button type="button" class="btn btn-default from_template_button">From Template</button>
+        <a href="{% url 'add_quote' %}"
+        <button type="button" class="btn btn-default from_scratch_button">From Scratch</button>
     </div>
 {% endblock %}
 
@@ -51,6 +50,10 @@
             content: $('#add_button_popover').html(),
             title: "New Quote",
             placement: "right"
+        }).click(function () {
+            $('body').on('click', '.popover-content > button.from_template_button', function () {
+                $('#add_quote_button').popover('hide');
+            });
         });
 
         $('body').on('click', function (e) {
