@@ -6,12 +6,12 @@ from briefs import forms
 from django.shortcuts import get_object_or_404
 
 
-class BriefList(ListView):
-    model = b.Brief
-
-    def render_to_response(self, context, **response_kwargs):
-        context.update({'title': 'Briefs'})
-        return super(ListView, self).render_to_response(context)
+# class BriefList(ListView):
+#     model = b.Brief
+#
+#     def render_to_response(self, context, **response_kwargs):
+#         context.update({'title': 'Briefs'})
+#         return super(ListView, self).render_to_response(context)
 
 
 class ClientBriefList(ListView):
