@@ -35,8 +35,8 @@ class ClientBriefForm(BriefForm):
 #         fields = ['title', 'status']
 
 
-def clean_str(value):
-    if isinstance(value, six.string_types) or value is None:
-        return value
-    return smart_text(value)
+# def clean_str(value):
+#     if isinstance(value, six.string_types) or value is None:
+#         return value
+#     return smart_text(value)
 
