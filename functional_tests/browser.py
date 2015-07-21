@@ -47,8 +47,6 @@ class SignedInTest(LiveServerTestCase):
             b.execute_script(jq.read())
         with open("static/js/bootstrap.min.js", "r") as jq:
             b.execute_script(jq.read())
-        with open("static/js/gallant.js", "r") as jq:
-            b.execute_script(jq.read())
 
         scripts = b.find_elements_by_xpath('//body/script')
         for s in scripts:

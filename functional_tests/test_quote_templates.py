@@ -42,6 +42,7 @@ class QuoteTemplatesTest(browser.SignedInTest):
         b.find_element_by_id('id_intro_title').send_keys('modified intro title')
 
         self._submit_and_check(b)
+        self.load_scripts()
 
         intro = b.find_element_by_id('id_intro_title')
         self.assertEqual(intro.get_attribute('value'), 'modified intro title')
