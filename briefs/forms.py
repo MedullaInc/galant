@@ -23,16 +23,16 @@ class ClientBriefForm(BriefForm):
         form.instance.client = self.kwargs['pk']
         return super(ClientBriefForm, self).form_valid(form)
 
-class ProjectBriefForm(BriefForm):
-    class Meta():
-        model = b.ProjectBrief
-        fields = ['title', 'status']
-
-
-class ServiceBriefForm(BriefForm):
-    class Meta():
-        model = b.ServiceBrief
-        fields = ['title', 'status']
+# class ProjectBriefForm(BriefForm):
+#     class Meta():
+#         model = b.ProjectBrief
+#         fields = ['title', 'status']
+#
+#
+# class ServiceBriefForm(BriefForm):
+#     class Meta():
+#         model = b.ServiceBrief
+#         fields = ['title', 'status']
 
 
 def clean_str(value):
