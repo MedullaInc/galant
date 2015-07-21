@@ -57,7 +57,7 @@ class BriefUpdate(UpdateView):
             self.form_class = forms.ClientBriefForm
 
     def get_success_url(self):
-        return reverse('brief_detail', args=[self.kwargs['brief_type'], self.object.id])
+        return reverse('brief_detail', args=[self.object.id])
 
     def form_valid(self, form):
         form.client = self.kwargs['pk']
