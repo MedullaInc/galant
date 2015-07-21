@@ -49,6 +49,19 @@ class QuoteTemplatesTest(browser.SignedInTest):
         qt = autofixture.create_one('quotes.QuoteTemplate', generate_fk=False, field_values={'quote': q})
         self._add_language_and_text(self.live_server_url + reverse('edit_quote_template', args=[qt.id]))
 
+    def test_add_from_quote(self):
+        b = browser.instance()
+
+        q = get_blank_quote_autofixture()
+        b.get(self.live_server_url + reverse('add_quote_template', kwargs={'quote_id': q.id}))
+
+        b.find_element_by_name('name').send_keys('Quote test')
+
+        b.find_element_by_xpath('//button[@type="submit"]').click()
+
+        success_message = b.find_element_by_class_name('alert-success')
+        self.assertTrue(u'Template saved.' in success_message.text)
+
     def _add_language_and_text(self, url):
         b = browser.instance()
         b.get(url)
