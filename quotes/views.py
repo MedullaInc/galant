@@ -23,8 +23,20 @@ class QuoteCreate(CreateView):
         _create_quote(form)
         return super(QuoteCreate, self).form_valid(form)
 
-    def render_to_response(self, context, **response_kwargs):
-        context.update({'title': 'Add Quote', 'object': q.Quote()})
+    def render_to_response(self, context, **kwargs):
+        template_id = self.request.GET.get('template_id', None)
+        lang = self.request.GET.get('lang', None)
+        if template_id is not None:
+            template = get_object_or_404(q.QuoteTemplate, pk=template_id)
+            quote = template.quote
+            quote.pk = None
+            if lang is not None:
+                quote.language = lang
+        else:
+            quote = q.Quote()
+        context.update({'title': 'Add Quote',
+                        'object': quote,
+                        'form': qf.QuoteForm(instance=quote)})
         return super(QuoteCreate, self).render_to_response(context)
 
 

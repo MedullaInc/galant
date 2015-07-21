@@ -129,8 +129,8 @@
         });
 
         $('.table .template_row select').change(function (e) {
-            window.location.href = "{% url 'edit_quote_template' %}" + $(this).parents('tr').attr('data-rel') +
-                                   "?lang=" + $(this).val();
+            window.location.href = "{% url 'add_quote' %}" + "?template_id=" + $(this).parents('tr').attr('data-rel') +
+                                   "&lang=" + $(this).val();
         });
     </script>
 {% endblock %}
