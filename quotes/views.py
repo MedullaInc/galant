@@ -141,7 +141,7 @@ class QuoteTemplateView(UpdateView):
                 map(lambda l: language_set.add(l), s.text.keys())
 
             context.update({'object': self.object.quote})
-        elif 'quote_id' in self.kwargs:
+        elif 'quote_id' in self.kwargs and self.kwargs['quote_id'] is not None:
             context.update({'object': get_object_or_404(q.Quote, pk=self.kwargs['quote_id'])})
         else:
             context.update({'object': q.Quote()})
