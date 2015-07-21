@@ -30,27 +30,6 @@
 {% block extra_body %}
     {{ block.super }}
     <script>
-        var currentLanguage = '{{ LANGUAGE_CODE }}';
-        var setLanguage = function (language) {
-            $('.ultext').each(function () {
-                var data = {};
-                var ref = $('#' + this.getAttribute('for'));
-                try {
-                    data = JSON.parse(this.value);
-                } catch (e) {
-                }
-                data[currentLanguage] = ref.val();
-                this.value = JSON.stringify(data);
-                if (language in data) {
-                    ref.val(data[language]);
-                } else {
-                    ref.val('');
-                }
-            });
-
-            currentLanguage = language;
-        };
-
         $('#tabs').on("click", "li", function (e) {
             if (this.id != 'add_translation') {
                 var lang = this.getAttribute('data');

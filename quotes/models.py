@@ -70,14 +70,9 @@ class Quote(m.Model):
         return language_set
 
     def all_sections(self):
-        if self.id is None:
-            intro = Section(name='intro')
-            margin_section = Section(name='margin_section')
-            sections = []
-        else:
-            intro = self.intro if self.intro is not None else Section(name='intro')
-            margin_section = self.margin_section if self.margin_section is not None else Section(name='margin_section')
-            sections = self.sections.all()
+        intro = self.intro if self.intro is not None else Section(name='intro')
+        margin_section = self.margin_section if self.margin_section is not None else Section(name='margin_section')
+        sections = self.sections.all()
 
         return list(chain([intro], [margin_section], sections))
 

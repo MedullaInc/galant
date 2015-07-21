@@ -5,7 +5,7 @@
 
 {% block extra_form_inputs %}
     <table id="section_table" width="500">
-    {% for s in object.all_sections %}
+    {% for s in sections %}
         <tbody id="{{ s.name }}">
         <tr>
             <td>
@@ -22,13 +22,13 @@
             <td><input class="ultext" type="hidden" id="id_{{ s.name }}_title_hidden" name="{{ s.name }}_title"
                        for="id_{{ s.name }}_title" value='{{ s.title.json }}'/>
                 <input class="form-control" id="id_{{ s.name }}_title" maxlength="512"
-                       type="text" value="{{ s.title.get_text }}"/></td>
+                       type="text" value=""/></td>
         </tr>
         <tr>
             <td>Content:&nbsp;&nbsp;</td>
             <td><input class="ultext" type="hidden" id="id_{{ s.name }}_text_hidden" name="{{ s.name }}_text"
                        for="id_{{ s.name }}_text" value='{{ s.text.json }}'/>
-                <textarea rows="5" style="width:100%;" id="id_{{ s.name }}_text">{{ s.text.get_text }}</textarea>
+                <textarea rows="5" style="width:100%;" id="id_{{ s.name }}_text"></textarea>
             </td>
         </tr>
         </tbody>
@@ -44,6 +44,27 @@
 
 {% block extra_body %}
     <script>
+        var currentLanguage = '{{ LANGUAGE_CODE }}';
+        var setLanguage = function (language) {
+            $('.ultext').each(function () {
+                var data = {};
+                var ref = $('#' + this.getAttribute('for'));
+                try {
+                    data = JSON.parse(this.value);
+                } catch (e) {
+                }
+                data[currentLanguage] = ref.val();
+                this.value = JSON.stringify(data);
+                if (language in data) {
+                    ref.val(data[language]);
+                } else {
+                    ref.val('');
+                }
+            });
+
+            currentLanguage = language;
+        };
+
         counter = 0;
         section = function (ct) {
             var str = '<tbody id="{0}">' +
@@ -98,6 +119,10 @@
                 });
             });
         };
+
+        $( document ).ready(function() {
+            setLanguage('{{ language }}');
+        });
 
         $('#add_section').click(function () {
             counter++;

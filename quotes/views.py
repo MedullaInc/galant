@@ -29,6 +29,7 @@ class QuoteCreate(CreateView):
         if template_id is not None:
             template = get_object_or_404(q.QuoteTemplate, pk=template_id)
             quote = template.quote
+            sections = quote.all_sections()
             quote.pk = None
             if lang is not None:
                 quote.language = lang
@@ -36,7 +37,9 @@ class QuoteCreate(CreateView):
             quote = q.Quote()
         context.update({'title': 'Add Quote',
                         'object': quote,
-                        'form': qf.QuoteForm(instance=quote)})
+                        'form': qf.QuoteForm(instance=quote),
+                        'language': lang,
+                        'sections': sections})
         return super(QuoteCreate, self).render_to_response(context)
 
 
@@ -53,7 +56,8 @@ class QuoteUpdate(UpdateView):
         return super(QuoteUpdate, self).form_valid(form)
 
     def render_to_response(self, context, **response_kwargs):
-        context.update({'title': 'Update Quote'})
+        context.update({'title': 'Update Quote',
+                        'sections': self.object.all_sections()})
         return super(UpdateView, self).render_to_response(context)
 
 
@@ -161,16 +165,17 @@ class QuoteTemplateView(UpdateView):
 
         if hasattr(self.object, 'quote'):
             language_set.update(self.object.quote.get_languages())
-
-            context.update({'title': 'Edit Template',
-                            'object': self.object.quote})
+            quote = self.object.quote
+            context.update({'title': 'Edit Template'})
         elif 'quote_id' in self.kwargs and self.kwargs['quote_id'] is not None:
-            context.update({'title': 'New Template',
-                            'object': get_object_or_404(q.Quote, pk=self.kwargs['quote_id'])})
+            quote = get_object_or_404(q.Quote, pk=self.kwargs['quote_id'])
+            context.update({'title': 'New Template'})
         else:
-            context.update({'title': 'New Template',
-                            'object': q.Quote()})
+            quote = q.Quote()
+            context.update({'title': 'New Template'})
 
         context.update({'languages': [(c, lang_dict[c]) for c in language_set],
-                        'language_form': form})
+                        'language_form': form,
+                        'object': quote,
+                        'sections': quote.all_sections()})
         return super(QuoteTemplateView, self).render_to_response(context)

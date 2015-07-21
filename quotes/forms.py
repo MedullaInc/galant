@@ -9,7 +9,7 @@ from django.conf import settings
 class QuoteForm(forms.ModelForm):
     class Meta():
         model = q.Quote
-        fields = ['name', 'client', 'language', 'status']
+        fields = ['name', 'client', 'status']
 
     def clean(self):
         cleaned_data = super(QuoteForm, self).clean()
