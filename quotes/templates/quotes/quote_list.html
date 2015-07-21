@@ -6,12 +6,9 @@
 {% endblock %}
 
 {% block sidebar %}
-
-    <a href="{% url 'add_quote' %}">
-        <button type="button" class="btn btn-default sidebar">
-            {% trans "Add New Quote" %}
-        </button>
-    </a>
+    <button id="add_quote_button" type="button" class="btn btn-default sidebar">
+        {% trans "Add New Quote" %}
+    </button>
 
 {% endblock %}
 
@@ -38,10 +35,31 @@
             </tr>
         {% endfor %}
     </table>
+    <div id="add_button_popover" style="display: none">
+        <table>
+            <tr><td><button id="from_template_button" type="button" class="btn btn-default">From Template</button></td></tr>
+            <tr><td><button id="from_scratch_button" type="button" class="btn btn-default">From Scratch</button></td></tr>
+        </table>
+    </div>
 {% endblock %}
 
 {% block extra_body %}
     <script>
+        $('#add_quote_button').popover({
+            html: true,
+            container: 'body',
+            content: $('#add_button_popover').html(),
+            title: "New Quote",
+            placement: "right"
+        });
+
+        $('body').on('click', function (e) {
+            var p = $('#add_quote_button');
+            if (!p.is(e.target) && p.has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
+                p.popover('hide');
+            }
+        });
+
         $('.table > tbody > tr').click(function () {
             window.location.href = "{% url 'quote_detail' %}" + $(this).attr('data-rel')
         });
