@@ -6,12 +6,12 @@ from briefs import forms
 from django.shortcuts import get_object_or_404
 
 
-# class BriefList(ListView):
-#     model = b.Brief
-#
-#     def render_to_response(self, context, **response_kwargs):
-#         context.update({'title': 'Briefs'})
-#         return super(ListView, self).render_to_response(context)
+class BriefList(ListView):
+    model = b.Brief
+
+    def render_to_response(self, context, **response_kwargs):
+        context.update({'title': 'Briefs'})
+        return super(ListView, self).render_to_response(context)
 
 
 class ClientBriefList(ListView):
@@ -47,30 +47,10 @@ class BriefCreate(CreateView):
         return reverse('brief_detail', args=[self.kwargs['brief_type'], self.object.id])
 
 
-class BriefUpdate(UpdateView):
-    template_name = "quotes/quote_form.html"
-
-    def get(self, request, *args, **kwargs):
-
-        if self.kwargs['brief_type'] == "client":
-            self.model = b.ClientBrief
-            self.form_class = forms.ClientBriefForm
-
-    def get_success_url(self):
-        return reverse('brief_detail', args=[self.object.id])
-
-    def form_valid(self, form):
-        form.client = self.kwargs['pk']
-        form.save(commit=True)
-        return super(BriefUpdate, self).form_valid(form)
-
-    def render_to_response(self, context, **response_kwargs):
-        context.update({'title': 'Update Brief'})
-        return super(UpdateView, self).render_to_response(context)
-
+# class BriefUpdate(UpdateView):
+#     pass
 
 class BriefDetail(DetailView):
-
     model = b.Brief
 
     def render_to_response(self, context, **response_kwargs):
