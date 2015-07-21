@@ -69,6 +69,8 @@ class QuotesSignedInTest(browser.SignedInTest):
         add_section = b.find_element_by_id('add_section')
         add_section.click()
         add_section.click()
+        with open('browser.log', 'w+') as f:
+            f.write(b.get_log('browser'))
         b.find_element_by_id('id_section_1_title').send_keys('1234')
         b.find_element_by_id('id_section_1_text').send_keys('1234')
         b.find_element_by_id('id_section_2_title').send_keys('4321')
