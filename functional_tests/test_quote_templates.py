@@ -71,7 +71,7 @@ class QuoteTemplatesTest(browser.SignedInTest):
         b.find_element_by_id('id_intro_title').send_keys('test intro title')
         b.find_element_by_id('add_translation_button').click()
         b.find_element_by_xpath('//div[@class="popover-content"]//select[@id="id_language"]/option[@value="es"]').click()
-        b.find_element_by_xpath('//div[@class="popover-content"]//button[@id="language_add').click()
+        b.find_element_by_xpath('//div[@class="popover-content"]//button').click()
         b.find_element_by_id('id_intro_title').clear()
         b.find_element_by_id('id_intro_title').send_keys('titulo de intro prueba')
         b.find_element_by_id('en_tab').click()
