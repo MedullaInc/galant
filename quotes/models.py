@@ -72,7 +72,7 @@ class Quote(m.Model):
     def all_sections(self):
         intro = self.intro if self.intro is not None else Section(name='intro')
         margin_section = self.margin_section if self.margin_section is not None else Section(name='margin_section')
-        sections = self.sections.all()
+        sections = self.sections.all() if self.pk is not None else []
 
         return list(chain([intro], [margin_section], sections))
 
