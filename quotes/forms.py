@@ -32,10 +32,6 @@ class QuoteTemplateForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(QuoteTemplateForm, self).__init__(*args, **kwargs)
-        self.fields['name'] = forms.CharField(label='Template Name')
-
-    def __init__(self, *args, **kwargs):
-        super(QuoteTemplateForm, self).__init__(*args, **kwargs)
         self.fields['name'].label = "Template Name"
 
     def clean(self):
