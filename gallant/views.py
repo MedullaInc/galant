@@ -47,14 +47,30 @@ class ClientCreate(View):
         return HttpResponseRedirect(reverse('client_detail', args=[obj.id]))
 
 
-class ClientUpdate(UpdateView):
-    model = g.Client
-    form_class = forms.ClientForm
-    template_name = "gallant/create_form.html"
+class ClientUpdate(View):
+    def get(self, request, *args, **kwargs):
+        self.object = get_object_or_404(g.Client, pk=kwargs['pk'])
+        form = forms.ClientForm(instance=self.object)
+        return self.render_to_response({'object': self.object, 'form': form})
 
-    def render_to_response(self, context, **response_kwargs):
+    def post(self, request, *args, **kwargs):
+        self.object = get_object_or_404(g.Client, pk=kwargs['pk'])
+        form = forms.ClientForm(request.POST, instance=self.object)
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.render_to_response({'object': self.object, 'form': form})
+
+    def form_valid(self, form):
+        self.object = form.save()
+        return HttpResponseRedirect(reverse('client_detail', args=[self.object.id]))
+
+    def render_to_response(self, context, **kwargs):
         context.update({'title': 'Update Client'})
-        return super(UpdateView, self).render_to_response(context)
+        return TemplateResponse(request=self.request,
+                                template="gallant/create_form.html",
+                                context=context,
+                                **kwargs)
 
     def form_valid(self, form):
         obj = form.save(commit=True)
