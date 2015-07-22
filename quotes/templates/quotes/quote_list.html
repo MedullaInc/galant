@@ -27,7 +27,7 @@
         <th><b>{% trans "Status" %}</b></th>
         </thead>
         {% for quote in object_list %}
-            <tr data-rel="{{ quote.id }}" style="cursor: pointer" class="template_row">
+            <tr data-rel="{{ quote.id }}" style="cursor: pointer" class="quote_row">
                 <td>{{ quote.created|date:'Y-m-d H:i' }}</td>
                 <td>{{ quote.client.name }}</td>
                 <td>{{ quote.name }}</td>
