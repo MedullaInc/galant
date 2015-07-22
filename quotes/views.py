@@ -36,11 +36,12 @@ class QuoteCreate(CreateView):
         else:
             quote = q.Quote()
             sections = quote.all_sections()
-        context.update({'title': 'Add Quote',
-                        'object': quote,
-                        'form': qf.QuoteForm(instance=quote),
-                        'language': lang,
-                        'sections': sections})
+
+        if 'form' not in context:
+            context.update({'form': qf.QuoteForm(instance=quote)})
+
+        context.update({'title': 'Add Quote', 'object': quote,
+                        'language': lang, 'sections': sections})
         return super(QuoteCreate, self).render_to_response(context)
 
 
