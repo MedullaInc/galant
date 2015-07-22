@@ -70,6 +70,9 @@ class QuoteDetail(DetailView):
 class QuoteList(ListView):
     model = q.Quote
 
+    def get_queryset(self):
+        return self.model.objects.filter(client__isnull=False)
+
     def render_to_response(self, context, **response_kwargs):
         context.update({'template_list': q.QuoteTemplate.objects.all()})
         return super(QuoteList, self).render_to_response(context)

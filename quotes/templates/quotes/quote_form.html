@@ -5,9 +5,9 @@
 
 {% block extra_form_inputs %}
     <table id="section_table" width="500">
-    {% for s in sections %}
-        {{ s.as_form_table }}
-    {% endfor %}
+        {% for s in sections %}
+            {{ s.as_form_table }}
+        {% endfor %}
         <tr>
             <td></td>
             <td>
@@ -72,7 +72,7 @@
             });
         };
 
-        $( document ).ready(function() {
+        $(document).ready(function () {
             setLanguage('{{ language }}');
         });
 
@@ -92,11 +92,11 @@
         });
 
         {% block create_submit_event %}
-        $('#create_submit').on('click', function(e) {
-            $('.ultext').each(function () {
-                this.value = $('#' + this.getAttribute('for')).val();
+            $('#create_submit').on('click', function (e) {
+                $('.ultext').each(function () {
+                    this.value = $('#' + this.getAttribute('for')).val();
+                });
             });
-        });
         {% endblock %}
     </script>
 {% endblock %}
