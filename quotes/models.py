@@ -5,6 +5,7 @@ from django.conf import settings
 from django.utils.html import escape, mark_safe
 from itertools import chain
 from gallant import utils
+from quotes.templatetags import section_html
 
 
 # Text section of Quote
@@ -27,6 +28,14 @@ class Section(m.Model):
         map(lambda l: language_set.add(l), self.title.keys())
         map(lambda l: language_set.add(l), self.text.keys())
         return language_set
+
+    def as_form_table(self):
+        """
+        :return: <tbody> section HTML to be included in a <table>
+        """
+        return section_html.section_form_html(self.name, self.display_title(),
+                                              self.title.json(), self.text.json())
+
 
 
 class ServiceSection(Section):

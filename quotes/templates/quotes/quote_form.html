@@ -1,37 +1,12 @@
 {% extends "gallant/create_form.html" %}
-{% load bootstrap i18n %}
+{% load bootstrap i18n section_html %}
 
 {% block sidebar %}{% endblock %}
 
 {% block extra_form_inputs %}
     <table id="section_table" width="500">
     {% for s in sections %}
-        <tbody id="{{ s.name }}">
-        <tr>
-            <td>
-                <label class="control-label  " for="id_{{ s.name }}">{{ s.display_title }}</label>
-            </td>
-            <td>
-                <button id="{{ s.name }}_remove" type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </td>
-        </tr>
-        <tr>
-            <td>Title:&nbsp;&nbsp;</td>
-            <td><input class="ultext" type="hidden" id="id_{{ s.name }}_title_hidden" name="{{ s.name }}_title"
-                       for="id_{{ s.name }}_title" value='{{ s.title.json }}'/>
-                <input class="form-control" id="id_{{ s.name }}_title" maxlength="512"
-                       type="text" value=""/></td>
-        </tr>
-        <tr>
-            <td>Content:&nbsp;&nbsp;</td>
-            <td><input class="ultext" type="hidden" id="id_{{ s.name }}_text_hidden" name="{{ s.name }}_text"
-                       for="id_{{ s.name }}_text" value='{{ s.text.json }}'/>
-                <textarea rows="5" style="width:100%;" id="id_{{ s.name }}_text"></textarea>
-            </td>
-        </tr>
-        </tbody>
+        {{ s.as_form_table }}
     {% endfor %}
         <tr>
             <td></td>
@@ -69,32 +44,7 @@
 
         counter = 0;
         section = function (ct) {
-            var str = '<tbody id="{0}">' +
-                      '<tr>' +
-                      '    <td>' +
-                      '        <label class="control-label  " for="id_{0}">{1}</label>' +
-                      '    </td>' +
-                      '    <td>' +
-                      '        <button id="{0}_remove" type="button" class="close" data-dismiss="alert" aria-label="Close">' +
-                      '            <span aria-hidden="true">&times;</span>' +
-                      '        </button>' +
-                      '    </td>' +
-                      '</tr>' +
-                      '<tr>' +
-                      '    <td>Title:&nbsp;&nbsp;</td>' +
-                      '    <td><input class="ultext" type="hidden" id="id_{0}_title_hidden" name="{0}_title" ' +
-                      '               for="id_{0}_title" value=""/>' +
-                      '        <input class="form-control" id="id_{0}_title" maxlength="512"' +
-                      '               type="text" value=""/></td>' +
-                      '</tr>' +
-                      '<tr>' +
-                      '    <td>Content:&nbsp;&nbsp;</td>' +
-                      '    <td><input class="ultext" type="hidden" id="id_{0}_text_hidden" name="{0}_text"' +
-                      '               for="id_{0}_text" value=""/>' +
-                      '       <textarea rows="5" style="width:100%; id="id_{0}_text"></textarea>' +
-                      '    </td>' +
-                      '</tr>' +
-                      '</tbody>';
+            var str = {% section_form_javascript %};
             return str.format('section_' + ct, 'Section ' + ct);
         };
 
