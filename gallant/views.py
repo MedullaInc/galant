@@ -1,5 +1,7 @@
 from django.views.generic.edit import CreateView, UpdateView
+from django.views.generic import View
 from django.views.generic.list import ListView
+from django.template.response import TemplateResponse
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.core.urlresolvers import reverse
@@ -11,13 +13,29 @@ class ClientList(ListView):
     model = g.Client
 
 
-class ClientCreate(CreateView):
-    form_class = forms.ClientForm
-    template_name = "gallant/create_form.html"
+class ClientCreate(View):
+    def get(self, request, *args, **kwargs):
+        self.object = None
+        return self.render_to_response({'form': forms.ClientForm()})
 
-    def render_to_response(self, context, **response_kwargs):
+    def post(self, request, *args, **kwargs):
+        self.object = None
+        form = forms.ClientForm(request.POST)
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.render_to_response({'form': form})
+
+    def form_valid(self, form):
+        self.object = form.save()
+        return HttpResponseRedirect(reverse('client_detail', args=[self.object.id]))
+
+    def render_to_response(self, context, **kwargs):
         context.update({'title': 'Add Client'})
-        return super(CreateView, self).render_to_response(context)
+        return TemplateResponse(request=self.request,
+                                template="gallant/create_form.html",
+                                context=context,
+                                **kwargs)
 
     def form_valid(self, form):
         obj = form.save(commit=True)

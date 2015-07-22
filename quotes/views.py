@@ -1,4 +1,4 @@
-from django.views.generic.edit import CreateView, UpdateView
+from django.views.generic.edit import UpdateView
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 from django.views.generic import View
@@ -29,9 +29,6 @@ class QuoteCreate(View):
 
     def put(self, *args, **kwargs):
         return self.post(*args, **kwargs)
-
-    def get_success_url(self):
-        return reverse('quote_detail', args=[self.object.id])
 
     def form_valid(self, form):
         _create_quote(form)
