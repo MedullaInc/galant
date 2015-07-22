@@ -5,7 +5,7 @@ from django.utils.html import escape, mark_safe
 register = template.Library()
 
 table_html = """
-        <tbody id="{0}">
+        <tbody id="{0}" class="section">
         <tr>
             <td>
                 <label class="control-label  " for="id_{0}">{1}</label>

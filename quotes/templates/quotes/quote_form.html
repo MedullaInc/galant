@@ -49,7 +49,7 @@
         };
 
         renameSections = function () {
-            $('#section_table > tbody[id^="section_"]').each(function (i) {
+            $('#section_table > tbody.section[id^="section_"]').each(function (i) {
                 var name = 'section_' + ++i;
                 var id = 'id_section_' + i;
                 this.setAttribute('id', name);
