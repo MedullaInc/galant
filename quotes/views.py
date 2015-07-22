@@ -1,6 +1,8 @@
 from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
+from django.views.generic import View
+from django.template.response import TemplateResponse
 from django.http import HttpResponseRedirect
 from django.utils.translation import get_language
 from django.conf import settings
@@ -12,16 +14,29 @@ from quotes import forms as qf
 import operator
 
 
-class QuoteCreate(CreateView):
-    form_class = qf.QuoteForm
-    template_name = "quotes/quote_form.html"
+class QuoteCreate(View):
+    def get(self, request, *args, **kwargs):
+        self.object = None
+        return self.render_to_response({'form': qf.QuoteForm()})
+
+    def post(self, request, *args, **kwargs):
+        self.object = None
+        form = qf.QuoteForm(request.POST)
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.render_to_response({'form': form})
+
+    def put(self, *args, **kwargs):
+        return self.post(*args, **kwargs)
 
     def get_success_url(self):
         return reverse('quote_detail', args=[self.object.id])
 
     def form_valid(self, form):
         _create_quote(form)
-        return super(QuoteCreate, self).form_valid(form)
+        self.object = form.save()
+        return HttpResponseRedirect(reverse('quote_detail', args=[self.object.id]))
 
     def render_to_response(self, context, **kwargs):
         template_id = self.request.GET.get('template_id', None)
@@ -42,7 +57,10 @@ class QuoteCreate(CreateView):
 
         context.update({'title': 'Add Quote', 'object': quote,
                         'language': lang, 'sections': sections})
-        return super(QuoteCreate, self).render_to_response(context)
+        return TemplateResponse(request=self.request,
+                                template="quotes/quote_form.html",
+                                context=context,
+                                **kwargs)
 
 
 class QuoteUpdate(UpdateView):
