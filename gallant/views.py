@@ -8,19 +8,18 @@ from gallant import models as g
 
 
 class ClientList(View):
-    def get(self, request, *args, **kwargs):
+    def get(self):
         return TemplateResponse(request=self.request,
                                 template="gallant/client_list.html",
-                                context={'title': 'Clients', 'object_list': g.Client.objects.all()},
-                                **kwargs)
+                                context={'title': 'Clients', 'object_list': g.Client.objects.all()})
 
 
 class ClientCreate(View):
-    def get(self, request, *args, **kwargs):
+    def get(self):
         self.object = None
         return self.render_to_response({'form': forms.ClientForm()})
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request):
         self.object = None
         form = forms.ClientForm(request.POST)
         if form.is_valid():
@@ -28,12 +27,11 @@ class ClientCreate(View):
         else:
             return self.render_to_response({'form': form})
 
-    def render_to_response(self, context, **kwargs):
+    def render_to_response(self, context):
         context.update({'title': 'Add Client'})
         return TemplateResponse(request=self.request,
                                 template="gallant/create_form.html",
-                                context=context,
-                                **kwargs)
+                                context=context)
 
     def form_valid(self, form):
         obj = form.save(commit=True)
@@ -46,25 +44,24 @@ class ClientCreate(View):
 
 
 class ClientUpdate(View):
-    def get(self, request, *args, **kwargs):
-        self.object = get_object_or_404(g.Client, pk=kwargs['pk'])
+    def get(self):
+        self.object = get_object_or_404(g.Client, pk=self.kwargs['pk'])
         form = forms.ClientForm(instance=self.object)
         return self.render_to_response({'object': self.object, 'form': form})
 
-    def post(self, request, *args, **kwargs):
-        self.object = get_object_or_404(g.Client, pk=kwargs['pk'])
-        form = forms.ClientForm(request.POST, instance=self.object)
+    def post(self):
+        self.object = get_object_or_404(g.Client, pk=self.kwargs['pk'])
+        form = forms.ClientForm(self.request.POST, instance=self.object)
         if form.is_valid():
             return self.form_valid(form)
         else:
             return self.render_to_response({'object': self.object, 'form': form})
 
-    def render_to_response(self, context, **kwargs):
+    def render_to_response(self, context):
         context.update({'title': 'Update Client'})
         return TemplateResponse(request=self.request,
                                 template="gallant/create_form.html",
-                                context=context,
-                                **kwargs)
+                                context=context)
 
     def form_valid(self, form):
         obj = form.save(commit=True)
@@ -77,25 +74,24 @@ class ClientUpdate(View):
 
 
 class ServiceUpdate(View):
-    def get(self, request, *args, **kwargs):
-        self.object = get_object_or_404(g.Service, pk=kwargs['pk'])
+    def get(self):
+        self.object = get_object_or_404(g.Service, pk=self.kwargs['pk'])
         form = forms.ServiceForm(instance=self.object)
         return self.render_to_response({'object': self.object, 'form': form})
 
-    def post(self, request, *args, **kwargs):
-        self.object = get_object_or_404(g.Service, pk=kwargs['pk'])
-        form = forms.ServiceForm(request.POST, instance=self.object)
+    def post(self):
+        self.object = get_object_or_404(g.Service, pk=self.kwargs['pk'])
+        form = forms.ServiceForm(self.request.POST, instance=self.object)
         if form.is_valid():
             return self.form_valid(form)
         else:
             return self.render_to_response({'object': self.object, 'form': form})
 
-    def render_to_response(self, context, **kwargs):
+    def render_to_response(self, context):
         context.update({'title': 'Update Service'})
         return TemplateResponse(request=self.request,
                                 template="gallant/create_form.html",
-                                context=context,
-                                **kwargs)
+                                context=context)
 
     def form_valid(self, form):
         obj = form.save(commit=True)
@@ -121,30 +117,28 @@ def client_detail(request, pk):
     else:
         form = forms.NoteForm()  # An unbound form
 
-    return render(request, 'gallant/client_detail.html', {
-        'object': client,
-        'form': form,
-    })
+    return TemplateResponse(request=request,
+                            template="gallant/client_detail.html",
+                            context={'object': client, 'form': form})
 
 
 class ServiceCreate(View):
-    def get(self, request, *args, **kwargs):
+    def get(self):
         form = forms.ServiceForm()
         return self.render_to_response({'form': form})
 
-    def post(self, request, *args, **kwargs):
-        form = forms.ServiceForm(request.POST)
+    def post(self):
+        form = forms.ServiceForm(self.request.POST)
         if form.is_valid():
             return self.form_valid(form)
         else:
             return self.render_to_response({'form': form})
 
-    def render_to_response(self, context, **kwargs):
+    def render_to_response(self, context):
         context.update({'title': 'Add Service'})
         return TemplateResponse(request=self.request,
                                 template="gallant/create_form.html",
-                                context=context,
-                                **kwargs)
+                                context=context)
 
     def form_valid(self, form):
         obj = form.save(commit=True)
