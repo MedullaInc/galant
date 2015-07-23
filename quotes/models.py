@@ -36,6 +36,13 @@ class Section(m.Model):
         return section_html.section_form_html(self.name, self.display_title(),
                                               self.title.json(), self.text.json())
 
+    def __eq__(self, other):
+        return self.name == other.name and \
+               self.title == other.title and \
+               self.text == other.text
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
 
 
 class ServiceSection(Section):

@@ -104,12 +104,12 @@ class QuoteList(View):
                                          'template_list': q.QuoteTemplate.objects.all()})
 
 
-class QuoteTemplateList(ListView):
-    model = q.QuoteTemplate
-
-    def render_to_response(self, context, **response_kwargs):
-        context.update({'template_list': q.QuoteTemplate.objects.all()})
-        return super(QuoteTemplateList, self).render_to_response(context)
+class QuoteTemplateList(View):
+    def get(self, request, *args, **kwargs):
+        return TemplateResponse(request=self.request,
+                                template="quotes/quotetemplate_list.html",
+                                context={'title': 'Quote Templates',
+                                         'object_list': q.QuoteTemplate.objects.all()})
 
 
 def _create_quote(form):
@@ -146,50 +146,49 @@ def _create_quote(form):
             obj.sections.add(section)
             section_index += 1
 
-    if obj.intro is None or obj.intro.render_html() != intro.render_html():
+    if obj.intro is None or obj.intro != intro:
         intro.save()
         obj.intro = intro
 
     if obj.margin_section is None or \
-                    obj.margin_section.render_html() != margin_section.render_html():
+                    obj.margin_section != margin_section:
         margin_section.save()
         obj.margin_section = margin_section
 
     return obj
 
 
-class QuoteTemplateView(UpdateView):
-    model = q.QuoteTemplate
-    form_class = qf.QuoteTemplateForm
-    template_name = "quotes/quote_template.html"
+class QuoteTemplateView(View):
+    def get(self, request, *args, **kwargs):
+        if 'pk' in kwargs:
+            self.object = get_object_or_404(q.QuoteTemplate, pk=kwargs['pk'])
+            form = qf.QuoteTemplateForm(instance=self.object.quote)
+        else:
+            self.object = None
+            form = qf.QuoteTemplateForm()
+        return self.render_to_response({'form': form})
 
-    def get_success_url(self):
-        messages.success(self.request, 'Template saved.')
-        return reverse('edit_quote_template', args=[self.object.id])
+    def post(self, request, *args, **kwargs):
+        if 'pk' in kwargs:
+            self.object = get_object_or_404(q.QuoteTemplate, pk=kwargs['pk'])
+            form = qf.QuoteTemplateForm(request.POST, instance=self.object.quote)
+        else:
+            self.object = None
+            form = qf.QuoteTemplateForm(request.POST)
 
-    def get_object(self, queryset=None):
-        try:
-            return super(QuoteTemplateView, self).get_object(queryset)
-        except AttributeError:
-            return None
-
-    def get_form_kwargs(self):
-        """
-        Returns the keyword arguments for instantiating the form.
-        """
-        kwargs = super(QuoteTemplateView, self).get_form_kwargs()
-        if hasattr(self, 'object') and hasattr(self.object, 'quote'):
-            kwargs.update({'instance': self.object.quote})
-        return kwargs
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.render_to_response({'form': form})
 
     def form_valid(self, form):
         quote = _create_quote(form)
         quote.save()
         if hasattr(self, 'object') and self.object is None:
             self.object = q.QuoteTemplate.objects.create(quote=quote)
-        return HttpResponseRedirect(self.get_success_url())
+        return HttpResponseRedirect(reverse('edit_quote_template', args=[self.object.id]))
 
-    def render_to_response(self, context, **response_kwargs):
+    def render_to_response(self, context, **kwargs):
         lang_dict = dict(settings.LANGUAGES)
         form = qf.LanguageForm()
         language_set = set([get_language()])
@@ -210,4 +209,7 @@ class QuoteTemplateView(UpdateView):
                         'object': quote,
                         'language': get_language(),
                         'sections': quote.all_sections()})
-        return super(QuoteTemplateView, self).render_to_response(context)
+        return TemplateResponse(request=self.request,
+                                template="quotes/quote_template.html",
+                                context=context,
+                                **kwargs)
