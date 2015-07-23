@@ -186,6 +186,7 @@ class QuoteTemplateView(View):
         quote.save()
         if hasattr(self, 'object') and self.object is None:
             self.object = q.QuoteTemplate.objects.create(quote=quote)
+        messages.success(self.request, 'Template saved.')
         return HttpResponseRedirect(reverse('edit_quote_template', args=[self.object.id]))
 
     def render_to_response(self, context, **kwargs):
