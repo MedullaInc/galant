@@ -44,12 +44,12 @@ class ClientCreate(View):
 
 
 class ClientUpdate(View):
-    def get(self, request):
+    def get(self, request, **kwargs):
         self.object = get_object_or_404(g.Client, pk=self.kwargs['pk'])
         form = forms.ClientForm(instance=self.object)
         return self.render_to_response({'object': self.object, 'form': form})
 
-    def post(self, request):
+    def post(self, request, **kwargs):
         self.object = get_object_or_404(g.Client, pk=self.kwargs['pk'])
         form = forms.ClientForm(request.POST, instance=self.object)
         if form.is_valid():
@@ -74,12 +74,12 @@ class ClientUpdate(View):
 
 
 class ServiceUpdate(View):
-    def get(self, request):
+    def get(self, request, **kwargs):
         self.object = get_object_or_404(g.Service, pk=self.kwargs['pk'])
         form = forms.ServiceForm(instance=self.object)
         return self.render_to_response({'object': self.object, 'form': form})
 
-    def post(self, request):
+    def post(self, request, **kwargs):
         self.object = get_object_or_404(g.Service, pk=self.kwargs['pk'])
         form = forms.ServiceForm(request.POST, instance=self.object)
         if form.is_valid():
