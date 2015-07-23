@@ -60,37 +60,48 @@ class QuoteCreate(View):
                                 **kwargs)
 
 
-class QuoteUpdate(UpdateView):
-    model = q.Quote
-    form_class = qf.QuoteForm
-    template_name = "quotes/quote_form.html"
+class QuoteUpdate(View):
+    def get(self, request, *args, **kwargs):
+        self.object = get_object_or_404(q.Quote, pk=kwargs['pk'])
+        form = qf.QuoteForm(instance=self.object)
+        return self.render_to_response({'object': self.object, 'form': form})
 
-    def get_success_url(self):
-        return reverse('quote_detail', args=[self.object.id])
+    def post(self, request, *args, **kwargs):
+        self.object = get_object_or_404(q.Quote, pk=kwargs['pk'])
+        form = qf.QuoteForm(request.POST, instance=self.object)
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.render_to_response({'object': self.object, 'form': form})
 
     def form_valid(self, form):
         _create_quote(form)
-        return super(QuoteUpdate, self).form_valid(form)
+        return HttpResponseRedirect(reverse('quote_detail', args=[self.object.id]))
 
-    def render_to_response(self, context, **response_kwargs):
+    def render_to_response(self, context, **kwargs):
         context.update({'title': 'Update Quote',
                         'sections': self.object.all_sections()})
-        return super(UpdateView, self).render_to_response(context)
+        return TemplateResponse(request=self.request,
+                                template="quotes/quote_form.html",
+                                context=context,
+                                **kwargs)
 
 
-class QuoteDetail(DetailView):
-    model = q.Quote
+class QuoteDetail(View):
+    def get(self, request, *args, **kwargs):
+        quote = get_object_or_404(q.Quote, pk=kwargs['pk'])
+        return TemplateResponse(request=self.request,
+                                template="quotes/quote_detail.html",
+                                context={'title': 'Quote', 'object': quote})
 
 
-class QuoteList(ListView):
-    model = q.Quote
-
-    def get_queryset(self):
-        return self.model.objects.filter(client__isnull=False)
-
-    def render_to_response(self, context, **response_kwargs):
-        context.update({'template_list': q.QuoteTemplate.objects.all()})
-        return super(QuoteList, self).render_to_response(context)
+class QuoteList(View):
+    def get(self, request, *args, **kwargs):
+        return TemplateResponse(request=self.request,
+                                template="quotes/quote_list.html",
+                                context={'title': 'Quotes',
+                                         'object_list': q.Quote.objects.filter(client__isnull=False),
+                                         'template_list': q.QuoteTemplate.objects.all()})
 
 
 class QuoteTemplateList(ListView):
