@@ -8,14 +8,14 @@ from gallant import models as g
 
 
 class ClientList(View):
-    def get(self):
-        return TemplateResponse(request=self.request,
+    def get(self, request):
+        return TemplateResponse(request=request,
                                 template="gallant/client_list.html",
                                 context={'title': 'Clients', 'object_list': g.Client.objects.all()})
 
 
 class ClientCreate(View):
-    def get(self):
+    def get(self, request):
         self.object = None
         return self.render_to_response({'form': forms.ClientForm()})
 
@@ -44,14 +44,14 @@ class ClientCreate(View):
 
 
 class ClientUpdate(View):
-    def get(self):
+    def get(self, request):
         self.object = get_object_or_404(g.Client, pk=self.kwargs['pk'])
         form = forms.ClientForm(instance=self.object)
         return self.render_to_response({'object': self.object, 'form': form})
 
-    def post(self):
+    def post(self, request):
         self.object = get_object_or_404(g.Client, pk=self.kwargs['pk'])
-        form = forms.ClientForm(self.request.POST, instance=self.object)
+        form = forms.ClientForm(request.POST, instance=self.object)
         if form.is_valid():
             return self.form_valid(form)
         else:
@@ -74,14 +74,14 @@ class ClientUpdate(View):
 
 
 class ServiceUpdate(View):
-    def get(self):
+    def get(self, request):
         self.object = get_object_or_404(g.Service, pk=self.kwargs['pk'])
         form = forms.ServiceForm(instance=self.object)
         return self.render_to_response({'object': self.object, 'form': form})
 
-    def post(self):
+    def post(self, request):
         self.object = get_object_or_404(g.Service, pk=self.kwargs['pk'])
-        form = forms.ServiceForm(self.request.POST, instance=self.object)
+        form = forms.ServiceForm(request.POST, instance=self.object)
         if form.is_valid():
             return self.form_valid(form)
         else:
@@ -123,12 +123,12 @@ def client_detail(request, pk):
 
 
 class ServiceCreate(View):
-    def get(self):
+    def get(self, request):
         form = forms.ServiceForm()
         return self.render_to_response({'form': form})
 
-    def post(self):
-        form = forms.ServiceForm(self.request.POST)
+    def post(self, request):
+        form = forms.ServiceForm(request.POST)
         if form.is_valid():
             return self.form_valid(form)
         else:
