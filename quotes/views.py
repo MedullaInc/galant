@@ -155,7 +155,7 @@ def _create_quote(form):
 
 
 class QuoteTemplateView(View):
-    def get(self, request):
+    def get(self, request, **kwargs):
         if 'pk' in self.kwargs:
             self.object = get_object_or_404(q.QuoteTemplate, pk=self.kwargs['pk'])
             form = qf.QuoteTemplateForm(instance=self.object.quote)
