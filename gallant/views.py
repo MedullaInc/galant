@@ -1,4 +1,3 @@
-from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic import View
 from django.template.response import TemplateResponse
 from django.http import HttpResponseRedirect
@@ -77,7 +76,7 @@ class ClientUpdate(View):
         return HttpResponseRedirect(reverse('client_detail', args=[obj.id]))
 
 
-class ServiceUpdate(UpdateView):
+class ServiceUpdate(View):
     def get(self, request, *args, **kwargs):
         self.object = get_object_or_404(g.Service, pk=kwargs['pk'])
         form = forms.ServiceForm(instance=self.object)
