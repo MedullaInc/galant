@@ -9,10 +9,6 @@ class BriefForm(forms.ModelForm):
         model = b.Brief
         fields = ['title', 'status']
 
-    def __init__(self, *args, **kwargs):
-        super(BriefForm, self).__init__(*args, **kwargs)
-        self.fields['title'].value = self.instance.title.get_text
-
     def clean(self):
         cleaned_data = super(BriefForm, self).clean()
         return cleaned_data
