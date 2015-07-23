@@ -75,7 +75,8 @@ class QuoteUpdate(View):
             return self.render_to_response({'object': self.object, 'form': form})
 
     def form_valid(self, form):
-        _create_quote(form)
+        self.object = _create_quote(form)
+        self.object.save()
         return HttpResponseRedirect(reverse('quote_detail', args=[self.object.id]))
 
     def render_to_response(self, context, **kwargs):
