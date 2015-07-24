@@ -63,6 +63,13 @@ class ULTextFormField(forms.fields.CharField):
     def to_python(self, value):
         return _ultext_to_python(value)
 
+    def prepare_value(self, value):
+        if isinstance(value, basestring):
+            d = ULTextDict()
+            d.update(json.loads(value))
+            value = d
+        return value.get_text()
+
 
 class ULTextArrayFormField(forms.fields.CharField):
     def to_python(self, value):
