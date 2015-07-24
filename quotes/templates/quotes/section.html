@@ -1,0 +1,26 @@
+<tbody id="{{ name }}" class="section">
+<tr>
+    <td>
+        <label class="control-label  " for="id_{{ name }}">{{ label }}</label>
+    </td>
+    <td>
+        <button id="{{ name }}_remove" type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </td>
+</tr>
+<tr>
+    <td>Title:&nbsp;&nbsp;</td>
+    <td><input class="ultext" type="hidden" id="id_{{ name }}_title_hidden" name="{{ name }}_title"
+               for="id_{{ name }}_title" value="{{ title_json }}"/>
+        <input class="form-control" id="id_{{ name }}_title" maxlength="512"
+               type="text" value=""/></td>
+</tr>
+<tr>
+    <td>Content:&nbsp;&nbsp;</td>
+    <td><input class="ultext" type="hidden" id="id_{{ name }}_text_hidden" name="{{ name }}_text"
+               for="id_{{ name }}_text" value="{{ text_json }}"/>
+        <textarea rows="5" style="width:100%;" id="id_{{ name }}_text"></textarea>
+    </td>
+</tr>
+</tbody>
