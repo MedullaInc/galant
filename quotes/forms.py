@@ -23,8 +23,8 @@ class QuoteForm(forms.ModelForm):
 
     def quote_sections(self):
         if self.instance is None or self.instance.pk is None:
-            return [q.Section(name='intro').as_form_table(),
-                    q.Section(name='margin').as_form_table()]
+            return [q.Section(name='intro', index=0).as_form_table(),
+                    q.Section(name='margin', index=1).as_form_table()]
         else:
             return [s.as_form_table() for s in self.instance.sections.all()]
 
