@@ -32,9 +32,9 @@ class BriefsSignedInTest(browser.SignedInTest):
         section_title = browser.instance().find_element_by_class_name('section_title')
         self.assertEqual(u'Brief Detail', section_title.text)
 
-    def test_edit_brief(self):
+    def test_edit_client_brief(self):
         b = browser.instance()
-        q = autofixture.create_one('briefs.Brief', generate_fk=True)
+        q = autofixture.create_one('briefs.ClientBrief', generate_fk=True)
         q.save()
 
         b.get(self.live_server_url + reverse('edit_brief', args=['client', q.id]))
@@ -48,9 +48,9 @@ class BriefsSignedInTest(browser.SignedInTest):
         section_title = browser.instance().find_element_by_class_name('section_title')
         self.assertEqual(u'Brief Detail', section_title.text)
 
-    def test_brief_detail(self):
+    def test_client_brief_detail(self):
         b = browser.instance()
-        q = autofixture.create_one('briefs.Brief', generate_fk=True)
+        q = autofixture.create_one('briefs.ClientBrief', generate_fk=True)
         q.save()
 
         b.get(self.live_server_url + reverse('brief_detail', args=['client', q.id]))
