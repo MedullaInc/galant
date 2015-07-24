@@ -35,10 +35,10 @@ class QuotesSignedInTest(browser.SignedInTest):
 
         b.find_element_by_name('name').send_keys('Quote test')
         b.find_element_by_xpath('//select[@name="client"]/option[@value="%d"]' % c.id).click()
-        b.find_element_by_id('id_intro_title').send_keys('test intro title')
-        b.find_element_by_id('id_intro_text').send_keys('test intro text')
-        b.find_element_by_id('id_margin_title').send_keys('test margin title')
-        b.find_element_by_id('id_margin_text').send_keys('test margin text')
+        b.find_element_by_id('id_-section-0_intro_title').send_keys('test intro title')
+        b.find_element_by_id('id_-section-0_intro_text').send_keys('test intro text')
+        b.find_element_by_id('id_-section-1_margin_title').send_keys('test margin title')
+        b.find_element_by_id('id_-section-1_margin_text').send_keys('test margin text')
 
         b.find_element_by_xpath('//button[@type="submit"]').click()
 
@@ -51,8 +51,8 @@ class QuotesSignedInTest(browser.SignedInTest):
         b.get(self.live_server_url + reverse('edit_quote', args=[q.id]))
         self.load_scripts()
 
-        b.find_element_by_id('id_intro_title').clear()
-        b.find_element_by_id('id_intro_title').send_keys('modified intro title')
+        b.find_element_by_id('id_-section-0_intro_title').clear()
+        b.find_element_by_id('id_-section-0_intro_title').send_keys('modified intro title')
 
         b.find_element_by_xpath('//button[@type="submit"]').click()
 
@@ -72,10 +72,10 @@ class QuotesSignedInTest(browser.SignedInTest):
         add_section.click()
         add_section.click()
 
-        b.find_element_by_id('id_section_1_title').send_keys('1234')
-        b.find_element_by_id('id_section_1_text').send_keys('1234')
-        b.find_element_by_id('id_section_2_title').send_keys('4321')
-        b.find_element_by_id('id_section_2_text').send_keys('4321')
+        b.find_element_by_id('id_-section-2_section_1_title').send_keys('1234')
+        b.find_element_by_id('id_-section-2_section_1_text').send_keys('1234')
+        b.find_element_by_id('id_-section-3_section_2_title').send_keys('4321')
+        b.find_element_by_id('id_-section-3_section_2_text').send_keys('4321')
 
         b.find_element_by_xpath('//button[@type="submit"]').click()
 
@@ -98,12 +98,12 @@ class QuotesSignedInTest(browser.SignedInTest):
         add_section.click()
         add_section.click()
         add_section.click()
-        b.find_element_by_id('id_section_1_title').send_keys('1234')
-        b.find_element_by_id('id_section_1_text').send_keys('1234')
-        b.find_element_by_id('id_section_2_title').send_keys('s2title')
-        b.find_element_by_id('id_section_2_text').send_keys('s2text')
-        b.find_element_by_id('id_section_3_title').send_keys('s3title')
-        b.find_element_by_id('id_section_3_text').send_keys('s3text')
+        b.find_element_by_id('id_-section-2_section_1_title').send_keys('1234')
+        b.find_element_by_id('id_-section-2_section_1_text').send_keys('1234')
+        b.find_element_by_id('id_-section-3_section_2_title').send_keys('s2title')
+        b.find_element_by_id('id_-section-3_section_2_text').send_keys('s2text')
+        b.find_element_by_id('id_-section-4_section_3_title').send_keys('s3title')
+        b.find_element_by_id('id_-section-4_section_3_text').send_keys('s3text')
 
         b.find_element_by_xpath('//button[@type="submit"]').click()
 
@@ -125,15 +125,15 @@ class QuotesSignedInTest(browser.SignedInTest):
         add_section.click()
         add_section.click()
         add_section.click()
-        b.find_element_by_id('id_section_1_title').send_keys('1234')
-        b.find_element_by_id('id_section_1_text').send_keys('1234')
-        b.find_element_by_id('id_section_2_title').send_keys('s2title')
-        b.find_element_by_id('id_section_2_text').send_keys('s2text')
-        b.find_element_by_id('id_section_3_title').send_keys('s3title')
-        b.find_element_by_id('id_section_3_text').send_keys('s3text')
+        b.find_element_by_id('id_-section-2_section_1_title').send_keys('1234')
+        b.find_element_by_id('id_-section-2_section_1_text').send_keys('1234')
+        b.find_element_by_id('id_-section-3_section_2_title').send_keys('s2title')
+        b.find_element_by_id('id_-section-3_section_2_text').send_keys('s2text')
+        b.find_element_by_id('id_-section-4_section_3_title').send_keys('s3title')
+        b.find_element_by_id('id_-section-4_section_3_text').send_keys('s3text')
 
         # click remove thingie
-        b.find_element_by_id('section_2_remove').click()
+        b.find_element_by_id('-section-3_section_2_remove').click()
 
         b.find_element_by_xpath('//button[@type="submit"]').click()
 
@@ -154,7 +154,7 @@ class QuotesSignedInTest(browser.SignedInTest):
 
         add_section = b.find_element_by_id('add_section')
         add_section.click()
-        b.find_element_by_id('id_section_1_title').send_keys('1234')
+        b.find_element_by_id('id_-section-2_section_1_title').send_keys('1234')
         b.find_element_by_xpath('//button[@type="submit"]').click()
 
         b.get(self.live_server_url + reverse('edit_quote', args=[q.id]))
@@ -163,4 +163,4 @@ class QuotesSignedInTest(browser.SignedInTest):
         add_section = b.find_element_by_id('add_section')
         add_section.click()
 
-        self.assertEqual(len(b.find_elements_by_id('id_section_1_title')), 1)
+        self.assertEqual(len(b.find_elements_by_id('id_-section-2_section_1_title')), 1)

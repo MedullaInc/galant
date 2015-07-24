@@ -49,7 +49,7 @@
         counter = 0;
         section = function (ct, dyn_idx) {
             var str = {% section_form_javascript %};
-            return str.format('-section-' + ct + '_section_' + ct, 'Section ' + dyn_idx);
+            return str.format('-section-' + ct + '_section_' + dyn_idx, 'Section ' + dyn_idx);
         };
 
         renameSections = function () {
@@ -85,7 +85,7 @@
 
         $('#add_section').click(function () {
             counter++;
-            $('#section_table > tbody:last').before(section(counter, counter));
+            $('#section_table > tbody:last').before(section(counter + 1, counter));
             renameSections();
         });
 
