@@ -34,8 +34,7 @@ class Section(m.Model):
         :return: <tbody> section HTML to be included in a <table>
         """
         t = get_template('quotes/section.html')
-        return t.render({'name': ('-section-%d_' % self.index) + self.name, 'label': self.display_title(),
-                         'title_json': self.title.json(), 'text_json': self.text.json()})
+        return t.render({'name': ('-section-%d_' % self.index) + self.name, 'section': self})
 
     def __eq__(self, other):
         return self.name == other.name and \

@@ -13,11 +13,9 @@ class QuoteForm(forms.ModelForm):
 
     def clean(self):
         cleaned_data = super(QuoteForm, self).clean()
-        section_names = [key for key, value in self.data.items() if '-section-' in key]
-
-        for s in section_names:
-            if s in self.data:
-                cleaned_data[s] = clean_str(self.data[s])
+        for key, value in self.data.items():
+            if '-section-' in key or '-service-' in key:
+                cleaned_data[key] = clean_str(self.data[key])
 
         return cleaned_data
 
@@ -26,7 +24,9 @@ class QuoteForm(forms.ModelForm):
             return [q.Section(name='intro', index=0).as_form_table(),
                     q.Section(name='margin', index=1).as_form_table()]
         else:
-            return [s.as_form_table() for s in self.instance.sections.all()]
+            sections = list(self.instance.sections.all()) + list(self.instance.services.all())
+            sections.sort(lambda a, b: cmp(a.index, b.index))
+            return [s.as_form_table() for s in sections]
 
 
 class QuoteTemplateForm(QuoteForm):
