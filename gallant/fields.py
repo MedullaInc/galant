@@ -68,7 +68,9 @@ class ULTextFormField(forms.fields.CharField):
             d = ULTextDict()
             d.update(json.loads(value))
             value = d
-        return value.get_text()
+        if isinstance(value, ULTextDict):
+            return value.get_text()
+        return value
 
 
 class ULTextArrayFormField(forms.fields.CharField):
