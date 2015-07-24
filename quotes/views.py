@@ -183,11 +183,17 @@ class QuoteTemplateView(View):
             quote = q.Quote()
             context.update({'title': 'New Template'})
 
+        if quote.id is not None:
+            sections = quote.sections.all()
+        else:
+            sections = [q.Section(name='intro'),
+                        q.Section(name='margin')]
+
         context.update({'languages': [(c, lang_dict[c]) for c in language_set if c in lang_dict],
                         'language_form': form,
                         'object': quote,
                         'language': get_language(),
-                        'sections': quote.sections.all()})
+                        'sections': sections})
         return TemplateResponse(request=self.request,
                                 template="quotes/quote_template.html",
                                 context=context)
