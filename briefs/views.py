@@ -1,7 +1,9 @@
 from django.core.urlresolvers import reverse
 from briefs import models as b
+from django.http import HttpResponseRedirect
+from django.template.response import TemplateResponse
 from gallant import models as g
-from django.views.generic import ListView, CreateView, UpdateView, DetailView
+from django.views.generic import ListView, CreateView, DetailView, View
 from briefs import forms
 from django.shortcuts import get_object_or_404
 
@@ -47,8 +49,42 @@ class BriefCreate(CreateView):
         return reverse('brief_detail', args=[self.kwargs['brief_type'], self.object.id])
 
 
-# class BriefUpdate(UpdateView):
-#     pass
+class BriefUpdate(View):
+    template_name = "briefs/brief_form.html"
+
+    def get(self, request, *args, **kwargs):
+        if self.kwargs['brief_type'] == "client":
+            self.object = get_object_or_404(b.ClientBrief, pk=kwargs['pk'])
+        else:
+            self.object = get_object_or_404(b.Brief, pk=kwargs['pk'])
+
+        form = forms.BriefForm(instance=self.object)
+        return self.render_to_response({'object': self.object, 'form': form})
+
+    def render_to_response(self, context, **kwargs):
+        if self.kwargs['brief_type'] == "client":
+            context['client'] = self.object.client
+
+        context.update({'title': 'Update Brief'})
+        return TemplateResponse(request=self.request, template="briefs/brief_form.html", context=context, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        self.object = get_object_or_404(b.Brief, pk=kwargs['pk'])
+        form = forms.BriefForm(request.POST, instance=self.object)
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.render_to_response({'object': self.object, 'form': form})
+
+    def form_valid(self, form):
+        obj = form.save(commit=True)
+        obj.save()
+
+        if self.kwargs['brief_type'] == "client":
+            return HttpResponseRedirect(reverse('brief_detail', args=['client',obj.id]))
+        else:
+            pass
+
 
 class BriefDetail(DetailView):
     model = b.Brief

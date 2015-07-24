@@ -5,6 +5,22 @@
     {% trans title %}
 {% endblock %}
 
+{% block sidebar %}
+
+    <a href="{% url 'client_detail' client.id %}">
+        <button type="button" class="btn btn-default sidebar">
+            {% trans "Back to Client" %}
+        </button>
+    </a>
+
+    <a href="{% url 'edit_brief' brief_type="client" pk=brief.id %}">
+        <button type="button" class="btn btn-default sidebar" id="add_client_brief">
+            {% trans "Edit Brief" %}
+        </button>
+    </a>
+
+{% endblock %}
+
 {% block center_content %}
 
 {% endblock %}
