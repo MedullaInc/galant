@@ -61,9 +61,9 @@ class QuoteTest(test.TransactionTestCase):
 
 
 class QuoteFormTest(test.TestCase):
-    data = {'status': '1', 'name': 'asdfQuote test edit', 'language': 'en', 'intro_text': 'test intro text',
-             'margin_title': 'test margin title', 'margin_text': 'test margin text',
-             'intro_title': 'modified intro title'}
+    data = {'status': '1', 'name': 'asdfQuote test edit', 'language': 'en', '-section-0_intro_text': 'test intro text',
+             '-section-1_margin_title': 'test margin title', '-section-1_margin_text': 'test margin text',
+             '-section-0_intro_title': 'modified intro title'}
 
     def setUp(self):
         client = AutoFixture(g.Client, generate_fk=True).create(1)
@@ -86,7 +86,7 @@ class QuoteFormTest(test.TestCase):
         self.assertEquals(obj.id, new_obj.id)
 
     def test_new_section(self):
-        new_data = {'section_1_title': 'title123', 'section_1_text': 'text123'}
+        new_data = {'-section-2_section_1_title': 'title123', '-section-2_section_1_text': 'text123'}
         new_data.update(self.data)
 
         f = qf.QuoteForm(new_data)
@@ -98,7 +98,7 @@ class QuoteFormTest(test.TestCase):
         self.assertEquals(obj.sections.count(), 3)
 
     def test_same_sections(self):
-        new_data = {'section_1_title': 'title123', 'section_1_text': 'text123'}
+        new_data = {'-section-2_section_1_title': 'title123', '-section-2_section_1_text': 'text123'}
         new_data.update(self.data)
 
         f = qf.QuoteForm(new_data)
@@ -121,7 +121,7 @@ class QuoteFormTest(test.TestCase):
         self.assertEquals(section_ids, new_section_ids)
 
     def test_modify_section(self):
-        new_data = {'section_1_title': 'title123', 'section_1_text': 'text123'}
+        new_data = {'-section-2_section_1_title': 'title123', '-section-2_section_1_text': 'text123'}
         new_data.update(self.data)
 
         f = qf.QuoteForm(new_data)
@@ -131,7 +131,7 @@ class QuoteFormTest(test.TestCase):
         obj.save()
         section_ids = [s.id for s in obj.sections.all()]
 
-        f.cleaned_data['section_1_title'] = 'new title'
+        f.cleaned_data['-section-2_section_1_title'] = 'new title'
         new_obj = qv._create_quote(f)
         new_obj.save()
         new_section_ids = [s.id for s in new_obj.sections.all()]
