@@ -32,16 +32,25 @@ class BriefsSignedInTest(browser.SignedInTest):
         section_title = browser.instance().find_element_by_class_name('section_title')
         self.assertEqual(u'Brief Detail', section_title.text)
 
-    # def test_edit_brief(self):
-    #     b = browser.instance()
-    #     q = autofixture.create_one('briefs.Brief', generate_fk=True)
-    #     b.get(self.live_server_url + reverse('edit_brief', args=[q.id]))
-    #     self.load_scripts()
-    #
-    #     b.find_element_by_id('id_title').clear()
-    #     b.find_element_by_id('id_title').send_keys('modified title')
-    #
-    #     b.find_element_by_xpath('//button[@type="submit"]').click()
-    #
-    #     section_title = browser.instance().find_element_by_class_name('section_title')
-    #     self.assertEqual(u'Brief Detail', section_title.text)
+    def test_edit_brief(self):
+        b = browser.instance()
+        q = autofixture.create_one('briefs.Brief', generate_fk=True)
+        b.get(self.live_server_url + reverse('edit_brief', args=['client', q.id]))
+        self.load_scripts()
+
+        b.find_element_by_id('id_title').clear()
+        b.find_element_by_id('id_title').send_keys('modified title')
+
+        b.find_element_by_xpath('//button[@type="submit"]').click()
+
+        section_title = browser.instance().find_element_by_class_name('section_title')
+        self.assertEqual(u'Brief Detail', section_title.text)
+
+    def test_brief_detail(self):
+        b = browser.instance()
+        q = autofixture.create_one('briefs.Brief', generate_fk=True)
+        b.get(self.live_server_url + reverse('brief_detail', args=['client', q.id]))
+        self.load_scripts()
+
+        section_title = browser.instance().find_element_by_class_name('section_title')
+        self.assertEqual(u'Brief Detail', section_title.text)
