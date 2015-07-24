@@ -140,12 +140,12 @@ class QuoteTemplateView(View):
             form = qf.QuoteTemplateForm(instance=self.object.quote)
         else:
             self.object = None
-            if 'quote_id' in self.kwargs:
+            if self.kwargs['quote_id'] is not None:
                 quote = get_object_or_404(q.Quote, pk=self.kwargs['quote_id'])
                 form = qf.QuoteTemplateForm(instance=quote)
             else:
                 form = qf.QuoteTemplateForm()
-                
+
         return self.render_to_response({'form': form})
 
     def post(self, request, **kwargs):

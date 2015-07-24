@@ -60,8 +60,11 @@ class QuoteTemplatesTest(browser.SignedInTest):
 
         q = get_blank_quote_autofixture()
         b.get(self.live_server_url + reverse('add_quote_template', kwargs={'quote_id': q.id}))
+        self.load_scripts()
 
         b.find_element_by_name('name').send_keys('Quote test')
+        intro_title = b.find_element_by_id('id_-section-0_intro_title_hidden')
+        self.assertEqual(q.intro().title.json(), intro_title.get_attribute('value'))
 
         self._submit_and_check(b)
 
