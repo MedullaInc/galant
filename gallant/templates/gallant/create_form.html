@@ -8,8 +8,9 @@
 {% block center_content %}
     <form id="form" class="form" method="post">
         {% csrf_token %}
+        {% block pre_form %}{% endblock %}
         {{ form|bootstrap }}
-        {% block extra_form_inputs %}{% endblock %}
+        {% block post_form %}{% endblock %}
         <div class="form-actions">
             <button id="create_submit" class="btn btn-default" type="submit">{% trans "Save" %}</button>
         </div>

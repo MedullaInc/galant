@@ -8,11 +8,13 @@ def tearDown():
 
 
 def get_blank_quote_autofixture():
+    i = autofixture.create_one('quotes.Section', generate_fk=True, field_values={'name': 'intro'})
+    i.save()
+    m = autofixture.create_one('quotes.Section', generate_fk=True, field_values={'name': 'margin'})
+    m.save()
     q = autofixture.create_one('quotes.Quote', generate_fk=True, field_values={'sections': [], 'language': 'en'})
-    q.intro.name = 'intro'
-    q.intro.save()
-    q.margin_section.name = 'margin_section'
-    q.margin_section.save()
+    q.sections.add(i)
+    q.sections.add(m)
     q.save()
     return q
 
@@ -35,8 +37,8 @@ class QuotesSignedInTest(browser.SignedInTest):
         b.find_element_by_xpath('//select[@name="client"]/option[@value="%d"]' % c.id).click()
         b.find_element_by_id('id_intro_title').send_keys('test intro title')
         b.find_element_by_id('id_intro_text').send_keys('test intro text')
-        b.find_element_by_id('id_margin_section_title').send_keys('test margin title')
-        b.find_element_by_id('id_margin_section_text').send_keys('test margin text')
+        b.find_element_by_id('id_margin_title').send_keys('test margin title')
+        b.find_element_by_id('id_margin_text').send_keys('test margin text')
 
         b.find_element_by_xpath('//button[@type="submit"]').click()
 
@@ -57,7 +59,7 @@ class QuotesSignedInTest(browser.SignedInTest):
         section_title = b.find_element_by_class_name('section_title')
         self.assertEqual(u'Quote', section_title.text)
 
-        intro = b.find_element_by_xpath('//div[@id="intro_section"]/h2[1]')
+        intro = b.find_element_by_xpath('//div[@id="intro"]/h2[1]')
         self.assertEqual(intro.text, 'modified intro title')
 
     def test_add_sections(self):

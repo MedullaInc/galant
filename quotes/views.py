@@ -1,6 +1,3 @@
-from django.views.generic.edit import UpdateView
-from django.views.generic.detail import DetailView
-from django.views.generic.list import ListView
 from django.views.generic import View
 from django.template.response import TemplateResponse
 from django.http import HttpResponseRedirect
@@ -9,6 +6,7 @@ from django.conf import settings
 from django.contrib import messages
 from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404
+from django.forms.formsets import formset_factory
 from quotes import models as q
 from quotes import forms as qf
 import operator
@@ -17,7 +15,9 @@ import operator
 class QuoteCreate(View):
     def get(self, request):
         self.object = None
-        return self.render_to_response({'form': qf.QuoteForm()})
+        return self.render_to_response({'form': qf.QuoteForm(),
+                                        'sections': [q.Section(name='intro'),
+                                                     q.Section(name='margin')]})
 
     def post(self, request):
         self.object = None
@@ -28,8 +28,7 @@ class QuoteCreate(View):
             return self.render_to_response({'form': form})
 
     def form_valid(self, form):
-        _create_quote(form)
-        self.object = form.save()
+        self.object = _create_quote(form)
         return HttpResponseRedirect(reverse('quote_detail', args=[self.object.id]))
 
     def render_to_response(self, context):
@@ -38,19 +37,17 @@ class QuoteCreate(View):
         if template_id is not None:
             template = get_object_or_404(q.QuoteTemplate, pk=template_id)
             quote = template.quote
-            sections = quote.all_sections()
             quote.pk = None
             if lang is not None:
                 quote.language = lang
         else:
             quote = q.Quote()
-            sections = quote.all_sections()
 
         if 'form' not in context:
             context.update({'form': qf.QuoteForm(instance=quote)})
 
         context.update({'title': 'Add Quote', 'object': quote,
-                        'language': lang, 'sections': sections})
+                        'language': lang})
         return TemplateResponse(request=self.request,
                                 template="quotes/quote_form.html",
                                 context=context)
@@ -77,7 +74,7 @@ class QuoteUpdate(View):
 
     def render_to_response(self, context):
         context.update({'title': 'Update Quote',
-                        'sections': self.object.all_sections()})
+                        'sections': self.object.sections.all()})
         return TemplateResponse(request=self.request,
                                 template="quotes/quote_form.html",
                                 context=context)
@@ -110,19 +107,13 @@ class QuoteTemplateList(View):
 
 def _create_quote(form):
     obj = form.save(commit=True)
-    intro = q.Section(name='intro',
-                      title=form.cleaned_data['intro_title'],
-                      text=form.cleaned_data['intro_text'])
-    margin_section = q.Section(name='margin_section',
-                               title=form.cleaned_data['margin_section_title'],
-                               text=form.cleaned_data['margin_section_text'])
 
     saved_sections = [s.id for s in obj.sections.all()]
     obj.sections.clear()
     section_index = 0
 
     for key, value in sorted(form.cleaned_data.items(), key=operator.itemgetter(1)):
-        if key.startswith('section_') and key.endswith('_title'):
+        if key.endswith('_title'):
             section_name = key[:-6]
             section = q.Section(name=section_name,
                                 title=form.cleaned_data[section_name + '_title'],
@@ -134,22 +125,13 @@ def _create_quote(form):
             else:
                 saved_section = None
 
-            if saved_section is None or section.render_html() != saved_section.render_html():
+            if saved_section is None or section != saved_section:
                 section.save()
             else:
                 section = saved_section
 
             obj.sections.add(section)
             section_index += 1
-
-    if obj.intro is None or obj.intro != intro:
-        intro.save()
-        obj.intro = intro
-
-    if obj.margin_section is None or \
-                    obj.margin_section != margin_section:
-        margin_section.save()
-        obj.margin_section = margin_section
 
     return obj
 
@@ -205,7 +187,7 @@ class QuoteTemplateView(View):
                         'language_form': form,
                         'object': quote,
                         'language': get_language(),
-                        'sections': quote.all_sections()})
+                        'sections': quote.sections.all()})
         return TemplateResponse(request=self.request,
                                 template="quotes/quote_template.html",
                                 context=context)

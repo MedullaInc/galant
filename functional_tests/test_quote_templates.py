@@ -16,8 +16,8 @@ class QuoteTemplatesTest(browser.SignedInTest):
         b.find_element_by_name('name').send_keys('Quote test')
         b.find_element_by_id('id_intro_title').send_keys('test intro title')
         b.find_element_by_id('id_intro_text').send_keys('test intro text')
-        b.find_element_by_id('id_margin_section_title').send_keys('test margin title')
-        b.find_element_by_id('id_margin_section_text').send_keys('test margin text')
+        b.find_element_by_id('id_margin_title').send_keys('test margin title')
+        b.find_element_by_id('id_margin_text').send_keys('test margin text')
 
         self._submit_and_check(b)
 

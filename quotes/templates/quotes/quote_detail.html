@@ -33,20 +33,9 @@
 
     <hr>
 
-    <div id="intro_section">
-        <p>{% trans "Intro" %}:</p>
-        {{ object.intro.render_html }}
-    </div>
-
-    <hr>
-
-    <p id="margin_section">{% trans "Margin Section" %}:</b> {{ object.margin_section.render_html }}</p>
-
-    <hr>
-
     {% for section in object.sections.all %}
-        <div id="section_{{ forloop.counter }}">
-            <p>{% trans "Section" %} {{ forloop.counter }}:</p> {{ section.render_html }}
+        <div id="{{ section.name }}">
+            <p>{{ section.display_title }}:</p> {{ section.render_html }}
         </div>
 
         <hr>

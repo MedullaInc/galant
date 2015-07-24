@@ -62,7 +62,7 @@ class QuoteTest(test.TransactionTestCase):
 
 class QuoteFormTest(test.TestCase):
     data = {'status': '1', 'name': 'asdfQuote test edit', 'language': 'en', 'intro_text': 'test intro text',
-             'margin_section_title': 'test margin title', 'margin_section_text': 'test margin text',
+             'margin_title': 'test margin title', 'margin_text': 'test margin text',
              'intro_title': 'modified intro title'}
 
     def setUp(self):
@@ -95,7 +95,7 @@ class QuoteFormTest(test.TestCase):
         obj = qv._create_quote(f)
         obj.save()
 
-        self.assertEquals(obj.sections.count(), 1)
+        self.assertEquals(obj.sections.count(), 3)
 
     def test_same_sections(self):
         new_data = {'section_1_title': 'title123', 'section_1_text': 'text123'}
@@ -106,14 +106,14 @@ class QuoteFormTest(test.TestCase):
 
         obj = qv._create_quote(f)
         obj.save()
-        intro_id = obj.intro.id
-        margin_id = obj.margin_section.id
+        intro_id = obj.intro().id
+        margin_id = obj.margin().id
         section_ids = [s.id for s in obj.sections.all()]
 
         new_obj = qv._create_quote(f)
         new_obj.save()
-        new_intro_id = new_obj.intro.id
-        new_margin_id = new_obj.margin_section.id
+        new_intro_id = new_obj.intro().id
+        new_margin_id = new_obj.margin().id
         new_section_ids = [s.id for s in new_obj.sections.all()]
 
         self.assertEquals(intro_id, new_intro_id)
