@@ -6,7 +6,6 @@ from django.conf import settings
 from django.contrib import messages
 from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404
-from django.forms.formsets import formset_factory
 from quotes import models as q
 from quotes import forms as qf
 import operator
@@ -15,9 +14,7 @@ import operator
 class QuoteCreate(View):
     def get(self, request):
         self.object = None
-        return self.render_to_response({'form': qf.QuoteForm(),
-                                        'sections': [q.Section(name='intro'),
-                                                     q.Section(name='margin')]})
+        return self.render_to_response({'form': qf.QuoteForm()})
 
     def post(self, request):
         self.object = None
@@ -69,7 +66,6 @@ class QuoteUpdate(View):
 
     def form_valid(self, form):
         self.object = _create_quote(form)
-        self.object.save()
         return HttpResponseRedirect(reverse('quote_detail', args=[self.object.id]))
 
     def render_to_response(self, context):
@@ -133,6 +129,7 @@ def _create_quote(form):
             obj.sections.add(section)
             section_index += 1
 
+    obj.save()
     return obj
 
 
@@ -161,7 +158,6 @@ class QuoteTemplateView(View):
 
     def form_valid(self, form):
         quote = _create_quote(form)
-        quote.save()
         if hasattr(self, 'object') and self.object is None:
             self.object = q.QuoteTemplate.objects.create(quote=quote)
         messages.success(self.request, 'Template saved.')

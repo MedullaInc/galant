@@ -5,11 +5,8 @@
 
 {% block post_form %}
     <table id="section_table" width="500">
-        {% for s in sections %}
-            {{ s.as_form_table }}
-        {% endfor %}
-        {% for s in services %}
-            {{ s.as_form_table }}
+        {% for s in form.quote_sections %}
+            {{ s }}
         {% endfor %}
         <tr>
             <td></td>
@@ -25,6 +22,10 @@
     <script>
         var currentLanguage = '{{ LANGUAGE_CODE }}';
         var setLanguage = function (language) {
+            if (language == '') {
+                alert('Aattempted to set language to none.')
+                return;
+            }
             $('.ultext').each(function () {
                 var data = {};
                 var ref = $('#' + this.getAttribute('for'));
@@ -76,7 +77,7 @@
         };
 
         $(document).ready(function () {
-            setLanguage('{{ language }}');
+            setLanguage('{{ language|default:LANGUAGE_CODE }}');
         });
 
         $('#add_section').click(function () {

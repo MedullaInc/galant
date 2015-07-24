@@ -3,9 +3,8 @@ from gallant import fields as gf
 from django.db import models as m
 from django.conf import settings
 from django.utils.html import escape, mark_safe
-from itertools import chain
 from gallant import utils
-from quotes.templatetags import section_html
+from django.template.loader import get_template
 
 
 # Text section of Quote
@@ -34,8 +33,9 @@ class Section(m.Model):
         """
         :return: <tbody> section HTML to be included in a <table>
         """
-        return section_html.section_form_html(self.name, self.display_title(),
-                                              self.title.json(), self.text.json())
+        t = get_template('quotes/section.html')
+        return t.render({'name': self.name, 'label': self.display_title(),
+                         'title_json': self.title.json(), 'text_json': self.text.json()})
 
     def __eq__(self, other):
         return self.name == other.name and \

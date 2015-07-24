@@ -5,12 +5,6 @@ import re
 register = template.Library()
 
 
-def section_form_html(section_name, display_name, title_json, text_json):
-    t = get_template('quotes/section.html')
-    return t.render({'name': section_name, 'label': display_name,
-                     'title_json': title_json, 'text_json': text_json})
-
-
 @register.simple_tag
 def section_form_javascript():
     """Returns a javascript string to be used with gallant.js's format function
