@@ -35,6 +35,8 @@ class BriefsSignedInTest(browser.SignedInTest):
     def test_edit_brief(self):
         b = browser.instance()
         q = autofixture.create_one('briefs.Brief', generate_fk=True)
+        q.save()
+
         b.get(self.live_server_url + reverse('edit_brief', args=['client', q.id]))
         self.load_scripts()
 
@@ -49,6 +51,8 @@ class BriefsSignedInTest(browser.SignedInTest):
     def test_brief_detail(self):
         b = browser.instance()
         q = autofixture.create_one('briefs.Brief', generate_fk=True)
+        q.save()
+
         b.get(self.live_server_url + reverse('brief_detail', args=['client', q.id]))
         self.load_scripts()
 
