@@ -1,8 +1,6 @@
 from django import forms
 from django.utils import six
 from quotes import models as q
-from gallant import forms as gf
-from gallant import fields as gfields
 from django.utils.encoding import smart_text
 from django.utils.translation import get_language
 from django.conf import settings
@@ -15,10 +13,7 @@ class QuoteForm(forms.ModelForm):
 
     def clean(self):
         cleaned_data = super(QuoteForm, self).clean()
-        section_names = [key for key, value in self.data.items() if 'section_' in key]
-        for extra_section in ['intro', 'margin']:
-            for postfix in ['_title', '_text']:
-                section_names.append(extra_section + postfix)
+        section_names = [key for key, value in self.data.items() if '-section-' in key]
 
         for s in section_names:
             if s in self.data:
@@ -38,21 +33,6 @@ class QuoteTemplateForm(QuoteForm):
     class Meta():
         model = q.Quote
         fields = ['name']
-
-
-class SectionForm(forms.ModelForm):
-    class Meta():
-        model = q.Section
-        fields = ['name', 'index', 'title', 'text']
-
-
-class ServiceSectionForm(gf.ServiceForm):
-    index = forms.IntegerField()
-    title = gfields.ULTextFormField()
-    text = gfields.ULTextFormField()
-
-    def as_table(self):
-        super(ServiceSectionForm, self).as_table()
 
 
 class LanguageForm(forms.Form):

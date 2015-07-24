@@ -11,5 +11,5 @@ def section_form_javascript():
     """
 
     t = get_template('quotes/section.html')
-    ret = t.render({'name': '{0}', 'label': '{1'})
+    ret = t.render({'name': '{0}', 'label': '{1}', 'extra_class': 'dynamic_section'})
     return re.sub(r'(.*)', r"'\1' +", ret) + "''"

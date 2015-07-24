@@ -53,26 +53,28 @@
         };
 
         renameSections = function () {
-            $('#section_table > tbody.section[id^="section_"]').each(function (i) {
-                var name = 'section_' + ++i;
-                var id = 'id_section_' + i;
-                this.setAttribute('id', name);
-                $(this).find('label').attr('for', 'id_' + name);
-                $(this).find('label').text('Section ' + i);
-                $(this).find('input[type="text"]').attr('id', id + '_title');
-                $(this).find('textarea').attr('id', id + '_text');
-                $(this).find('input[type="hidden"]').each(function () {
-                    var postfix = '';
-                    if (/_title$/.test(this.getAttribute('for'))) {
-                        postfix = '_title';
-                    } else if (/_text$/.test(this.getAttribute('for'))) {
-                        postfix = '_text';
-                    }
+            var dyn_section_idx = 1;
+            $('#section_table > tbody.section').each(function (i) {
+                if(!$(this).hasClass('dynamic_section')) {
+                    return true;
+                }
+                var new_section = $.parseHTML(section(dyn_section_idx));
 
-                    this.setAttribute('id', id + postfix + '_hidden');
-                    this.setAttribute('for', id + postfix);
-                    this.setAttribute('name', name + postfix);
-                });
+                var htitle = $(this).find('.section_title input[type="hidden"]').first();
+                var htitle_new = $(new_section).find('.section_title input[type="hidden"]').first();
+                var htext = $(this).find('.section_text input[type="hidden"]').first();
+                var htext_new = $(new_section).find('.section_text input[type="hidden"]').first();
+
+                var title = $(this).find('.section_title input[type="text"]').first();
+                var title_new = $(new_section).find('.section_title input[type="text"]').first();
+                var text = $(this).find('.section_text input[type="textarea"]').first();
+                var text_new = $(new_section).find('.section_text input[type="textarea"]').first();
+
+                htitle_new.val(htitle.val());
+                htext_new.val(htext.val());
+                title_new.val(title.val());
+                text_new.val(text.val());
+                $(this).replaceWith(new_section);
             });
         };
 

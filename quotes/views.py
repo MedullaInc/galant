@@ -8,7 +8,7 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404
 from quotes import models as q
 from quotes import forms as qf
-import operator
+import operator, re
 
 
 class QuoteCreate(View):
@@ -105,14 +105,16 @@ def _create_quote(form):
 
     saved_sections = [s.id for s in obj.sections.all()]
     obj.sections.clear()
-    section_index = 0
 
     for key, value in sorted(form.cleaned_data.items(), key=operator.itemgetter(1)):
-        if key.endswith('_title'):
-            section_name = key[:-6]
+        m = re.match('(-section-(\d+)_([-_\w]+))_title', key)
+        if m is not None:
+            section_index = int(m.group(2))
+            section_name = m.group(3)
             section = q.Section(name=section_name,
-                                title=form.cleaned_data[section_name + '_title'],
-                                text=form.cleaned_data[section_name + '_text'])
+                                index=section_index,
+                                title=form.cleaned_data[m.group(1) + '_title'],
+                                text=form.cleaned_data[m.group(1) + '_text'])
 
             # compare to section at same index, don't add if same
             if section_index < len(saved_sections):
@@ -126,7 +128,6 @@ def _create_quote(form):
                 section = saved_section
 
             obj.sections.add(section)
-            section_index += 1
 
     obj.save()
     return obj
