@@ -15,11 +15,6 @@ class Section(m.Model):
     text = gf.ULTextField()
     parent = m.ForeignKey('self', null=True, blank=True, related_name='sub_sections')
 
-    def render_html(self, language=None):
-        html = '<h2 class="section_title">%s</h2><p>%s</p>' % \
-               (escape(self.title.get_text(language)), escape(self.text.get_text(language)))
-        return mark_safe(html)
-
     def display_title(self):
         return self.name.replace('_', ' ').title()
 
@@ -96,6 +91,12 @@ class Quote(m.Model):
 
     def margin(self):
         return self.sections.get(name='margin')
+
+    def all_sections(self):
+        sections = list(self.sections.all()) + list(self.services.all())
+        sections.sort(lambda a, b: cmp(a.index, b.index))
+        return sections
+
 
 class QuoteTemplate(m.Model):
     quote = m.ForeignKey(Quote)

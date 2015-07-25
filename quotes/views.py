@@ -137,6 +137,7 @@ def _create_quote(form):
                 # see if update or create
                 if m.group(1) + '_id' in form.cleaned_data:
                     section = get_object_or_404(q.ServiceSection, pk=form.cleaned_data[m.group(1) + '_id'])
+                    service = section.service
                 else:
                     section = q.ServiceSection()
                     service = g.Service()

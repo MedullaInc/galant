@@ -24,8 +24,7 @@ class QuoteForm(forms.ModelForm):
             return [q.Section(name='intro', index=0).as_form_table(),
                     q.Section(name='margin', index=1).as_form_table()]
         else:
-            sections = list(self.instance.sections.all()) + list(self.instance.services.all())
-            sections.sort(lambda a, b: cmp(a.index, b.index))
+            sections = self.instance.all_sections()
             return [s.as_form_table() for s in sections]
 
 

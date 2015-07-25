@@ -33,12 +33,20 @@
 
     <hr>
 
-    {% for section in object.sections.all %}
+    {% for section in object.all_sections %}
         <div id="{{ section.name }}">
-            <p>{{ section.display_title }}:</p> {{ section.render_html }}
+            <p>{{ section.display_title }}:</p>
+            <h2 class="section_title">{{ section.title.get_text }}</h2>
+            <p>{{ section.text.get_text }}</p>
         </div>
-
+        {% if section.service %}
+            {% with service=section.service %}
+            <p>Service: {{ service.name.get_text }}</p>
+            <p>Type: {{ service.get_type_display }}</p>
+            <p>Description: {{ service.description.get_text }}</p>
+            <p>{{ service.cost }} &times; {{ service.quantity }}</p>
+            {% endwith %}
+        {% endif %}
         <hr>
     {% endfor %}
-
 {% endblock %}
