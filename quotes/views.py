@@ -7,6 +7,7 @@ from django.contrib import messages
 from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404
 from quotes import models as q
+from gallant import models as g
 from quotes import forms as qf
 import operator, re
 
@@ -103,31 +104,55 @@ class QuoteTemplateList(View):
 def _create_quote(form):
     obj = form.save(commit=True)
 
-    saved_sections = [s.id for s in obj.sections.all()]
+    saved_sections = dict((s.index, s.id) for s in obj.sections.all())
+    saved_sections.update((s.index, s.id) for s in obj.services.all())
     obj.sections.clear()
+    obj.services.clear()
 
     for key, value in sorted(form.cleaned_data.items(), key=operator.itemgetter(1)):
         m = re.match('(-section-(\d+)_([-_\w]+))_title', key)
         if m is not None:
             section_index = int(m.group(2))
             section_name = m.group(3)
-            section = q.Section(name=section_name,
-                                index=section_index,
-                                title=form.cleaned_data[m.group(1) + '_title'],
-                                text=form.cleaned_data[m.group(1) + '_text'])
 
-            # compare to section at same index, don't add if same
-            if section_index < len(saved_sections):
-                saved_section = q.Section.objects.get(id=saved_sections[section_index])
+            # see if update or create
+            if m.group(1) + '_id' in form.cleaned_data:
+                section = get_object_or_404(q.Section, pk=form.cleaned_data[m.group(1) + '_id'])
             else:
-                saved_section = None
+                section = q.Section()
 
-            if saved_section is None or section != saved_section:
-                section.save()
-            else:
-                section = saved_section
+            section.name = section_name
+            section.index = section_index
+            section.title = form.cleaned_data[m.group(1) + '_title']
+            section.text = form.cleaned_data[m.group(1) + '_text']
+            section.save()
 
             obj.sections.add(section)
+        else:
+            m = re.match('(-service-(\d+)_([-_\w]+))_name', key)
+            if m is not None:
+                section_index = int(m.group(2))
+                section_name = m.group(3)
+
+                service_section = q.ServiceSection()
+
+                # see if update or create
+                if m.group(1) + '_id' in form.cleaned_data:
+                    section = get_object_or_404(q.ServiceSection, pk=form.cleaned_data[m.group(1) + '_id'])
+                else:
+                    section = q.ServiceSection()
+                    service = g.Service()
+
+                service.name = form.cleaned_data[m.group(1) + '_name'],
+                service.description = form.cleaned_data[m.group(1) + '_description'],
+                service.cost = form.cleaned_data[m.group(1) + '_cost'],
+                service.quantity = form.cleaned_data[m.group(1) + '_quantity'],
+                service.type = form.cleaned_data[m.group(1) + '_type']
+                section.name = section_name
+                section.index = section_index
+                section.service = service
+
+                obj.services.add(service_section)
 
     obj.save()
     return obj

@@ -110,14 +110,13 @@ class QuoteFormTest(test.TestCase):
         margin_id = obj.margin().id
         section_ids = [s.id for s in obj.sections.all()]
 
+        f.cleaned_data['-section-0_intro_id'] = intro_id
+        f.cleaned_data['-section-1_margin_id'] = margin_id
+        f.cleaned_data['-section-2_section_1_id'] = section_ids[2]
         new_obj = qv._create_quote(f)
         new_obj.save()
-        new_intro_id = new_obj.intro().id
-        new_margin_id = new_obj.margin().id
         new_section_ids = [s.id for s in new_obj.sections.all()]
 
-        self.assertEquals(intro_id, new_intro_id)
-        self.assertEquals(margin_id, new_margin_id)
         self.assertEquals(section_ids, new_section_ids)
 
     def test_modify_section(self):

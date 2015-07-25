@@ -9,6 +9,9 @@
         </button>
     </td>
 </tr>
+{% if section.id %}
+<input type="hidden" id="id_{{ name }}_id" name="{{ name }}_id" value="{{ section.id }}"/>
+{% endif %}
 <tr class="section_title">
     <td>Title:&nbsp;&nbsp;</td>
     <td><input class="ultext" type="hidden" id="id_{{ name }}_title_hidden" name="{{ name }}_title"
