@@ -45,7 +45,7 @@ class Service(m.Model):
     # TODO: brief = ServiceBrief()
 
     # currency is chosen based on client preference
-    cost = MoneyField(max_digits=10, decimal_places=2, default_currency='USD')
+    cost = MoneyField(max_digits=10, decimal_places=2, default=0, default_currency='USD')
     quantity = m.IntegerField()
     type = m.CharField(max_length=2, choices=ServiceType.choices())
 

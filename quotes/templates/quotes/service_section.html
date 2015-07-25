@@ -1,7 +1,7 @@
 <tbody id="{{ name }}" class="section {{ extra_class }}">
 <tr>
     <td>
-        <label class="control-label  " for="id_{{ name }}">{{ section.display_title }}{{ label }} - Service</label>
+        <label class="control-label  " for="id_{{ name }}">{% firstof section.display_title label %} - Service</label>
     </td>
     <td>
         <button id="{{ name }}_remove" type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -31,7 +31,7 @@
     <td>Cost:&nbsp;&nbsp;</td>
     <td>
         <input class=" form-control" id="id_{{ name }}_cost" name="{{ name }}_cost" step="0.1"
-               type="number" value="{{ service.cost }}">
+               type="number" value="{{ service.cost.amount }}">
     </td>
 </tr>
 <tr class="service_quantity">
