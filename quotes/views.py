@@ -134,8 +134,6 @@ def _create_quote(form):
                 section_index = int(m.group(2))
                 section_name = m.group(3)
 
-                service_section = q.ServiceSection()
-
                 # see if update or create
                 if m.group(1) + '_id' in form.cleaned_data:
                     section = get_object_or_404(q.ServiceSection, pk=form.cleaned_data[m.group(1) + '_id'])
@@ -143,16 +141,19 @@ def _create_quote(form):
                     section = q.ServiceSection()
                     service = g.Service()
 
-                service.name = form.cleaned_data[m.group(1) + '_name'],
-                service.description = form.cleaned_data[m.group(1) + '_description'],
-                service.cost = form.cleaned_data[m.group(1) + '_cost'],
-                service.quantity = form.cleaned_data[m.group(1) + '_quantity'],
+                service.name = form.cleaned_data[m.group(1) + '_name']
+                service.description = form.cleaned_data[m.group(1) + '_description']
+                # TODO: add cost dropdown or decide cost  by user preference
+                service.cost = (form.cleaned_data[m.group(1) + '_cost'], 'USD')
+                service.quantity = form.cleaned_data[m.group(1) + '_quantity']
                 service.type = form.cleaned_data[m.group(1) + '_type']
+                service.save()
                 section.name = section_name
                 section.index = section_index
                 section.service = service
+                section.save()
 
-                obj.services.add(service_section)
+                obj.services.add(section)
 
     obj.save()
     return obj

@@ -97,6 +97,20 @@ class QuoteFormTest(test.TestCase):
 
         self.assertEquals(obj.sections.count(), 3)
 
+    def test_new_service(self):
+        new_data = {'-service-2_section_1_name': 'title123', '-service-2_section_1_type': '3',
+                    '-service-2_section_1_description': 'title123', '-service-2_section_1_cost': '3',
+                    '-service-2_section_1_quantity': '2'}
+        new_data.update(self.data)
+
+        f = qf.QuoteForm(new_data)
+        self.assertTrue(f.is_valid())
+
+        obj = qv._create_quote(f)
+        obj.save()
+
+        self.assertEquals(obj.services.count(), 1)
+
     def test_same_sections(self):
         new_data = {'-section-2_section_1_title': 'title123', '-section-2_section_1_text': 'text123'}
         new_data.update(self.data)
