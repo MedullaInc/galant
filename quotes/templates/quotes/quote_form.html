@@ -46,34 +46,43 @@
             currentLanguage = language;
         };
 
-        counter = 0;
+        counter = {% firstof form.quote_sections|length %};
         section = function (ct, dyn_idx) {
             var str = {% section_form_javascript %};
             return str.format('-section-' + ct + '_section_' + dyn_idx, 'Section ' + dyn_idx);
         };
 
+        service = function (ct, dyn_idx) {
+            var str = {% service_form_javascript %};
+            return str.format('-service-' + ct + '_section_' + dyn_idx, 'Section ' + dyn_idx);
+        };
+
         renameSections = function () {
-            var dyn_section_idx = 1;
+            var dyn_section_idx = $('.dynamic_section').length;
             $('#section_table > tbody.section').each(function (i) {
-                if(!$(this).hasClass('dynamic_section')) {
+                if (!$(this).hasClass('dynamic_section')) {
                     return true;
                 }
+                console.log('i: ' + i + ', dyn_section_idx: ' + dyn_section_idx);
                 var new_section = $.parseHTML(section(i, dyn_section_idx));
 
-                var htitle = $(this).find('.section_title input[type="hidden"]').first();
-                var htitle_new = $(new_section).find('.section_title input[type="hidden"]').first();
-                var htext = $(this).find('.section_text input[type="hidden"]').first();
-                var htext_new = $(new_section).find('.section_text input[type="hidden"]').first();
+                copyElement(new_section, this, '.section_id');
+                copyElement(new_section, this, '.section_title input[type="hidden"]');
+                copyElement(new_section, this, '.section_text input[type="hidden"]');
+                copyElement(new_section, this, '.section_title input[type="text"]');
+                copyElement(new_section, this, '.section_text input[type="textarea"]');
 
-                var title = $(this).find('.section_title input[type="text"]').first();
-                var title_new = $(new_section).find('.section_title input[type="text"]').first();
-                var text = $(this).find('.section_text input[type="textarea"]').first();
-                var text_new = $(new_section).find('.section_text input[type="textarea"]').first();
 
-                htitle_new.val(htitle.val());
-                htext_new.val(htext.val());
-                title_new.val(title.val());
-                text_new.val(text.val());
+                if ($(this).hasClass('service')) {
+                    copyElement(new_section, this, '.service_name input[type="hidden"]');
+                    copyElement(new_section, this, '.service_description input[type="hidden"]');
+                    copyElement(new_section, this, '.service_name input[type="text"]');
+                    copyElement(new_section, this, '.service_description input[type="textarea"]');
+                    copyElement(new_section, this, '.service_cost input');
+                    copyElement(new_section, this, '.service_quantity input');
+                    copyElement(new_section, this, '.service_type input');
+                }
+
                 $(this).replaceWith(new_section);
                 dyn_section_idx++;
             });
@@ -85,7 +94,7 @@
 
         $('#add_section').click(function () {
             counter++;
-            $('#section_table > tbody:last').before(section(counter + 1, counter));
+            $('#section_table > tbody:last').before(section(counter, counter - 1));
             renameSections();
         });
 

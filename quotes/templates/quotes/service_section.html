@@ -10,7 +10,7 @@
     </td>
 </tr>
 {% if section.id %}
-<input type="hidden" id="id_{{ name }}_id" name="{{ name }}_id" value="{{ section.id }}"/>
+<input type="hidden" class="section_id" id="id_{{ name }}_id" name="{{ name }}_id" value="{{ section.id }}"/>
 {% endif %}
 {% with service=section.service %}
 <tr class="service_name">

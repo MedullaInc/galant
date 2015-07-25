@@ -3,11 +3,13 @@
     <td>
         <label class="control-label  " for="id_{{ name }}">{% firstof label section.display_title %}</label>
     </td>
+    {% if section.name != 'intro' and section.name != 'margin' %}
     <td>
         <button id="{{ name }}_remove" type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
     </td>
+    {% endif %}
 </tr>
 {% if section.id %}
 <input type="hidden" id="id_{{ name }}_id" name="{{ name }}_id" value="{{ section.id }}"/>
