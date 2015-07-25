@@ -4,6 +4,7 @@ from django.conf import settings
 from djmoney.models.fields import MoneyField
 from djmoney.forms.widgets import CURRENCY_CHOICES
 from gallant import fields as gf
+from django.template.loader import get_template
 
 
 class GallantUser(AbstractEmailUser):

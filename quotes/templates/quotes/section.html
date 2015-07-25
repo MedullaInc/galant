@@ -1,7 +1,7 @@
 <tbody id="{{ name }}" class="section {{ extra_class }}">
 <tr>
     <td>
-        <label class="control-label  " for="id_{{ name }}">{{ label }}{{ section.display_title }}</label>
+        <label class="control-label  " for="id_{{ name }}">{% firstof label section.display_title %}</label>
     </td>
     <td>
         <button id="{{ name }}_remove" type="button" class="close" data-dismiss="alert" aria-label="Close">

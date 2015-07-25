@@ -48,6 +48,14 @@ class Section(m.Model):
 class ServiceSection(Section):
     service = m.ForeignKey(g.Service)
 
+    def as_form_table(self):
+        """
+        :return: <tbody> section HTML to be included in a <table>
+        """
+        t = get_template('quotes/service_section.html')
+        return t.render({'name': ('-service-%d_' % self.index) + self.name, 'section': self,
+                         'type_choices': self.service._meta.get_field('type').choices})
+
 
 class QuoteStatus(gf.ChoiceEnum):
     Draft = 0
