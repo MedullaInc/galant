@@ -82,10 +82,10 @@ class QuotesSignedInTest(browser.SignedInTest):
         section_title = b.find_element_by_class_name('section_title')
         self.assertEqual(u'Quote', section_title.text)
 
-        intro = b.find_element_by_xpath('//div[@id="section_1"]/h2[1]')
+        intro = b.find_element_by_xpath('//div[@id="section_1"]//h2')
         self.assertEqual(intro.text, '1234')
 
-        intro = b.find_element_by_xpath('//div[@id="section_2"]/h2[1]')
+        intro = b.find_element_by_xpath('//div[@id="section_2"]//h2')
         self.assertEqual(intro.text, '4321')
 
     def test_add_service(self):
