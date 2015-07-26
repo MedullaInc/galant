@@ -31,7 +31,3 @@ String.prototype.format = function () {
     }
     return str;
 }
-
-console.log('asfasdfasdf');
-console.log(jQuery);
-console.log(gallant);

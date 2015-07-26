@@ -71,7 +71,6 @@ class QuotesSignedInTest(browser.SignedInTest):
         add_section = b.find_element_by_id('add_section')
         add_section.click()
         add_section.click()
-        self.save_snapshot()
 
         b.find_element_by_id('id_-section-2_section_1_title').send_keys('1234')
         b.find_element_by_id('id_-section-2_section_1_text').send_keys('1234')
@@ -99,19 +98,15 @@ class QuotesSignedInTest(browser.SignedInTest):
         add_service.click()
 
         b.find_element_by_id('id_-service-2_section_1_name').send_keys('1234')
-        b.find_element_by_id('id_-service-2_section_1_type').send_keys('1234')
-        b.find_element_by_xpath('//*[id="id_-service-2_section_1_type"]select[@name="type"]/option[@value="3"]').click()
+        b.find_element_by_xpath('//select[@name="-service-2_section_1_type"]/option[@value="3"]').click()
 
         b.find_element_by_xpath('//button[@type="submit"]').click()
 
         section_title = b.find_element_by_class_name('section_title')
         self.assertEqual(u'Quote', section_title.text)
 
-        intro = b.find_element_by_xpath('//div[@id="section_1"]/h2[1]')
-        self.assertEqual(intro.text, '1234')
-
-        intro = b.find_element_by_xpath('//div[@id="section_2"]/h2[1]')
-        self.assertEqual(intro.text, '4321')
+        name = b.find_element_by_class_name('service_name')
+        self.assertEqual(name.text, '1234')
 
     def test_section_order(self):
         b = browser.instance()
