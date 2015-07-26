@@ -59,7 +59,7 @@ class QuotesSignedInTest(browser.SignedInTest):
         section_title = b.find_element_by_class_name('section_title')
         self.assertEqual(u'Quote', section_title.text)
 
-        intro = b.find_element_by_xpath('//div[@id="intro"]/h2[1]')
+        intro = b.find_element_by_xpath('//div[@id="intro"]//h2')
         self.assertEqual(intro.text, 'modified intro title')
 
     def test_add_sections(self):
@@ -130,10 +130,10 @@ class QuotesSignedInTest(browser.SignedInTest):
         section_title = browser.instance().find_element_by_class_name('section_title')
         self.assertEqual(u'Quote', section_title.text)
 
-        el = b.find_element_by_xpath('//div[@id="section_1"]/h2[1]')
+        el = b.find_element_by_xpath('//div[@id="section_1"]//h2')
         self.assertEqual(el.text, '1234')
 
-        el = b.find_element_by_xpath('//div[@id="section_3"]/h2[1]')
+        el = b.find_element_by_xpath('//div[@id="section_3"]//h2')
         self.assertEqual(el.text, 's3title')
 
     def test_remove_section(self):
@@ -160,10 +160,10 @@ class QuotesSignedInTest(browser.SignedInTest):
         section_title = browser.instance().find_element_by_class_name('section_title')
         self.assertEqual(u'Quote', section_title.text)
 
-        el = b.find_element_by_xpath('//div[@id="section_1"]/h2[1]')
+        el = b.find_element_by_xpath('//div[@id="section_1"]//h2')
         self.assertEqual(el.text, '1234')
 
-        el = b.find_element_by_xpath('//div[@id="section_2"]/h2[1]')
+        el = b.find_element_by_xpath('//div[@id="section_2"]//h2')
         self.assertEqual(el.text, 's3title')
 
     def test_add_to_existing_sections(self):
