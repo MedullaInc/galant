@@ -2,7 +2,6 @@ from gallant import models as g
 from gallant import fields as gf
 from django.db import models as m
 from django.conf import settings
-from django.utils.html import escape, mark_safe
 from gallant import utils
 from django.template.loader import get_template
 

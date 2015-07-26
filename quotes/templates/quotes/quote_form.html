@@ -69,22 +69,22 @@
                 var new_section;
                 if ($(this).hasClass('service')) {
                     new_section = $.parseHTML(service(i, dyn_section_idx));
-                    copyElement(new_section, this, '.service_name input[type="hidden"]');
-                    copyElement(new_section, this, '.service_description input[type="hidden"]');
-                    copyElement(new_section, this, '.service_name input[type="text"]');
-                    copyElement(new_section, this, '.service_description input[type="textarea"]');
-                    copyElement(new_section, this, '.service_cost input');
-                    copyElement(new_section, this, '.service_quantity input');
-                    copyElement(new_section, this, '.service_type select');
+                    gallant.copyElement(new_section, this, '.service_name input[type="hidden"]');
+                    gallant.copyElement(new_section, this, '.service_description input[type="hidden"]');
+                    gallant.copyElement(new_section, this, '.service_name input[type="text"]');
+                    gallant.copyElement(new_section, this, '.service_description input[type="textarea"]');
+                    gallant.copyElement(new_section, this, '.service_cost input');
+                    gallant.copyElement(new_section, this, '.service_quantity input');
+                    gallant.copyElement(new_section, this, '.service_type select');
                 } else {
                     new_section = $.parseHTML(section(i, dyn_section_idx));
                 }
 
-                copyElement(new_section, this, '.section_id');
-                copyElement(new_section, this, '.section_title input[type="hidden"]');
-                copyElement(new_section, this, '.section_text input[type="hidden"]');
-                copyElement(new_section, this, '.section_title input[type="text"]');
-                copyElement(new_section, this, '.section_text input[type="textarea"]');
+                gallant.copyElement(new_section, this, '.section_id');
+                gallant.copyElement(new_section, this, '.section_title input[type="hidden"]');
+                gallant.copyElement(new_section, this, '.section_text input[type="hidden"]');
+                gallant.copyElement(new_section, this, '.section_title input[type="text"]');
+                gallant.copyElement(new_section, this, '.section_text input[type="textarea"]');
 
                 $(this).replaceWith(new_section);
                 dyn_section_idx++;

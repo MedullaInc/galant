@@ -58,3 +58,13 @@ class SignedInTest(LiveServerTestCase):
         b.execute_script("window.confirm = function(){return true;}")
         b.execute_script("window.alert = function(){}")
 
+    def save_snapshot(self):
+        b = instance()
+        b.save_screenshot('test_out.png')
+        import codecs
+        with codecs.open('test_out.html', 'w+', 'utf8') as f:
+            f.write(b.page_source)
+
+        with open('test_out.txt', 'w+') as f:
+            for entry in b.get_log('browser'):
+                f.write(str(entry) + '\n')
