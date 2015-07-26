@@ -9,9 +9,11 @@
             {{ s }}
         {% endfor %}
         <tr>
-            <td></td>
             <td>
                 <button type="button" id="add_section" class="btn btn-default" style="float: right">Add Section</button>
+            </td>
+            <td>
+                <button type="button" id="add_service" class="btn btn-default" style="float: right">Add Service</button>
             </td>
         </tr>
     </table>
@@ -96,6 +98,12 @@
         $('#add_section').click(function () {
             counter++;
             $('#section_table > tbody:last').before(section(counter, counter - 1));
+            renameSections();
+        });
+
+        $('#add_service').click(function () {
+            counter++;
+            $('#section_table > tbody:last').before(service(counter, counter - 1));
             renameSections();
         });
 
