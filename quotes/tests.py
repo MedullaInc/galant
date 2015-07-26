@@ -17,13 +17,6 @@ class SectionTest(test.TransactionTestCase):
         self.assertEqual(section.title, new_section.title)
         self.assertEqual(section.text, new_section.text)
 
-    def test_render_html(self):
-        fixture = AutoFixture(q.Section, generate_fk=True)
-        section = fixture.create(1)[0]
-
-        self.assertTrue(section.render_html().startswith('<h2 class="section_title">'))
-        self.assertTrue("</h2><p>" in section.render_html())
-
     def test_sub_sections(self):
         fixture = AutoFixture(q.Section, generate_fk=True)
         sections = fixture.create(10)
@@ -32,13 +25,6 @@ class SectionTest(test.TransactionTestCase):
             s.save()
 
         self.assertEqual(len(sections[9].sub_sections.all()), 9)
-
-    def test_safe_html(self):
-        fixture = AutoFixture(q.Section, generate_fk=True)
-        section = fixture.create(1)[0]
-        section.text.set_text('<script>evil</script>')
-
-        self.assertFalse("<script>" in section.render_html())
 
 
 class QuoteTest(test.TransactionTestCase):

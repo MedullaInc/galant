@@ -58,30 +58,31 @@
         };
 
         renameSections = function () {
-            var dyn_section_idx = $('.dynamic_section').length;
+            var dyn_section_idx = 1;
             $('#section_table > tbody.section').each(function (i) {
                 if (!$(this).hasClass('dynamic_section')) {
                     return true;
                 }
-                console.log('i: ' + i + ', dyn_section_idx: ' + dyn_section_idx);
-                var new_section = $.parseHTML(section(i, dyn_section_idx));
 
-                copyElement(new_section, this, '.section_id');
-                copyElement(new_section, this, '.section_title input[type="hidden"]');
-                copyElement(new_section, this, '.section_text input[type="hidden"]');
-                copyElement(new_section, this, '.section_title input[type="text"]');
-                copyElement(new_section, this, '.section_text input[type="textarea"]');
-
-
+                var new_section;
                 if ($(this).hasClass('service')) {
+                    new_section = $.parseHTML(service(i, dyn_section_idx));
                     copyElement(new_section, this, '.service_name input[type="hidden"]');
                     copyElement(new_section, this, '.service_description input[type="hidden"]');
                     copyElement(new_section, this, '.service_name input[type="text"]');
                     copyElement(new_section, this, '.service_description input[type="textarea"]');
                     copyElement(new_section, this, '.service_cost input');
                     copyElement(new_section, this, '.service_quantity input');
-                    copyElement(new_section, this, '.service_type input');
+                    copyElement(new_section, this, '.service_type select');
+                } else {
+                    new_section = $.parseHTML(section(i, dyn_section_idx));
                 }
+
+                copyElement(new_section, this, '.section_id');
+                copyElement(new_section, this, '.section_title input[type="hidden"]');
+                copyElement(new_section, this, '.section_text input[type="hidden"]');
+                copyElement(new_section, this, '.section_title input[type="text"]');
+                copyElement(new_section, this, '.section_text input[type="textarea"]');
 
                 $(this).replaceWith(new_section);
                 dyn_section_idx++;

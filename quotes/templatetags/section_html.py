@@ -1,5 +1,6 @@
 from django import template
 from django.template.loader import get_template
+from gallant import models as g
 import re
 
 register = template.Library()
@@ -18,5 +19,6 @@ def service_form_javascript():
     """Returns a javascript string to be used with gallant.js's format function
     """
     t = get_template('quotes/service_section.html')
-    ret = t.render({'name': '{0}', 'label': '{1}', 'extra_class': 'dynamic_section service'})
+    ret = t.render({'name': '{0}', 'label': '{1}',
+                    'type_choices': g.ServiceType.choices()})
     return re.sub(r'(.*)', r"'\1' +", ret) + "''"

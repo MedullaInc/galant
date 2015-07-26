@@ -52,7 +52,8 @@ class ServiceSection(Section):
         """
         t = get_template('quotes/service_section.html')
         return t.render({'name': ('-service-%d_' % self.index) + self.name, 'section': self,
-                         'type_choices': self.service._meta.get_field('type').choices})
+                         'type_choices': g.ServiceType.choices(),
+                         'extra_class': 'dynamic_section'})
 
 
 class QuoteStatus(gf.ChoiceEnum):
