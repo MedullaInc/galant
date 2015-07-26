@@ -58,7 +58,7 @@ class SignedInTest(LiveServerTestCase):
         b.execute_script("window.confirm = function(){return true;}")
         b.execute_script("window.alert = function(){}")
 
-    def save_snapshot(self):
+    def save_snapshot(self):  # pragma: no cover
         b = instance()
         b.save_screenshot('test_out.png')
         import codecs
