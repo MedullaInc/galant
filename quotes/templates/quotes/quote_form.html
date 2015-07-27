@@ -6,13 +6,13 @@
 {% block post_form %}
     <table id="section_table" width="500">
         {% if sections %}
-        {% for s in sections %}
-            {{ s }}
-        {% endfor %}
+            {% for s in sections %}
+                {{ s }}
+            {% endfor %}
         {% else %}
-        {% for s in form.quote_sections %}
-            {{ s }}
-        {% endfor %}
+            {% for s in form.quote_sections %}
+                {{ s }}
+            {% endfor %}
         {% endif %}
         <tr>
             <td>
@@ -23,6 +23,13 @@
             </td>
         </tr>
     </table>
+{% endblock %}
+
+{% block form_actions %}
+    {{ block.super }}
+    <td><div class="form-actions">
+        <button id="preview_pdf" class="btn btn-default" type="button">{% trans "Preview" %}</button>
+    </div></td>
 {% endblock %}
 
 {% block extra_body %}
