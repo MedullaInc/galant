@@ -26,6 +26,7 @@ class QuoteCreate(View):
 
     def form_valid(self, form):
         self.object = qf.create_quote(form)
+        messages.success(self.request, 'Quote saved.')
         return HttpResponseRedirect(reverse('quote_detail', args=[self.object.id]))
 
     def render_to_response(self, context):
@@ -34,6 +35,7 @@ class QuoteCreate(View):
         if template_id is not None:
             template = get_object_or_404(q.QuoteTemplate, pk=template_id)
             quote = template.quote
+            context.update({'sections': [s.as_form_table() for s in quote.all_sections()]})
             quote.pk = None
             if lang is not None:
                 quote.language = lang
@@ -66,6 +68,7 @@ class QuoteUpdate(View):
 
     def form_valid(self, form):
         self.object = qf.create_quote(form)
+        messages.success(self.request, 'Quote saved.')
         return HttpResponseRedirect(reverse('quote_detail', args=[self.object.id]))
 
     def render_to_response(self, context):

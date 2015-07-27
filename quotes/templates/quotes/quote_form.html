@@ -5,9 +5,15 @@
 
 {% block post_form %}
     <table id="section_table" width="500">
+        {% if sections %}
+        {% for s in sections %}
+            {{ s }}
+        {% endfor %}
+        {% else %}
         {% for s in form.quote_sections %}
             {{ s }}
         {% endfor %}
+        {% endif %}
         <tr>
             <td>
                 <button type="button" id="add_section" class="btn btn-default" style="float: right">Add Section</button>

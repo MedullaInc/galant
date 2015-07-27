@@ -62,24 +62,26 @@ class QuoteTemplatesTest(browser.SignedInTest):
         b.get(self.live_server_url + reverse('add_quote_template', kwargs={'quote_id': q.id}))
         self.load_scripts()
 
-        b.find_element_by_name('name').send_keys('Quote test')
         intro_title = b.find_element_by_id('id_-section-0-title_hidden')
         self.assertEqual(q.intro().title.json(), intro_title.get_attribute('value'))
 
     def test_add_quote_from_template(self):
+
         b = browser.instance()
         q = get_blank_quote_autofixture()
         q.intro().title.set_text('en', 'hello')
         q.intro().save()
         qt = autofixture.create_one('quotes.QuoteTemplate', generate_fk=False, field_values={'quote': q})
-        b.get(self.live_server_url + reverse('add_quote', kwargs={'template_id': qt.id, 'lang': 'en'}))
+        c = autofixture.create_one('gallant.Client', generate_fk=True)
+        c.save()
+        b.get(self.live_server_url + reverse('add_quote') + '?template_id=%d&lang=en' % qt.id)
         self.load_scripts()
 
-        b.find_element_by_name('name').send_keys('Quote test')
-        intro_title = b.find_element_by_id('id_-section-0-title_hidden')
-        self.assertEqual(q.intro().title.json(), intro_title.get_attribute('value'))
+        b.find_element_by_xpath('//select[@name="client"]/option[@value="%d"]' % c.id).click()
+        b.find_element_by_xpath('//button[@type="submit"]').click()
 
-        self._submit_and_check(b)
+        success_message = b.find_element_by_class_name('alert-success')
+        self.assertTrue(u'Quote saved.' in success_message.text)
 
     def _add_language_and_text(self, b):
         b.find_element_by_id('id_-section-0-title').clear()
