@@ -7,9 +7,7 @@ from django.contrib import messages
 from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404
 from quotes import models as q
-from gallant import models as g
 from quotes import forms as qf
-import operator, re
 
 
 class QuoteCreate(View):
@@ -26,7 +24,7 @@ class QuoteCreate(View):
             return self.render_to_response({'form': form})
 
     def form_valid(self, form):
-        self.object = _create_quote(form)
+        self.object = qf.create_quote(form)
         return HttpResponseRedirect(reverse('quote_detail', args=[self.object.id]))
 
     def render_to_response(self, context):
@@ -66,7 +64,7 @@ class QuoteUpdate(View):
             return self.render_to_response({'object': self.object, 'form': form})
 
     def form_valid(self, form):
-        self.object = _create_quote(form)
+        self.object = qf.create_quote(form)
         return HttpResponseRedirect(reverse('quote_detail', args=[self.object.id]))
 
     def render_to_response(self, context):
@@ -101,65 +99,6 @@ class QuoteTemplateList(View):
                                          'object_list': q.QuoteTemplate.objects.all()})
 
 
-def _create_quote(form):
-    obj = form.save(commit=True)
-
-    saved_sections = dict((s.index, s.id) for s in obj.sections.all())
-    saved_sections.update((s.index, s.id) for s in obj.services.all())
-    obj.sections.clear()
-    obj.services.clear()
-
-    for key, value in sorted(form.cleaned_data.items(), key=operator.itemgetter(1)):
-        m = re.match('(-section-(\d+)_([-_\w]+))_title', key)
-        if m is not None:
-            section_index = int(m.group(2))
-            section_name = m.group(3)
-
-            # see if update or create
-            if m.group(1) + '_id' in form.cleaned_data:
-                section = get_object_or_404(q.Section, pk=form.cleaned_data[m.group(1) + '_id'])
-            else:
-                section = q.Section()
-
-            section.name = section_name
-            section.index = section_index
-            section.title = form.cleaned_data[m.group(1) + '_title']
-            section.text = form.cleaned_data[m.group(1) + '_text']
-            section.save()
-
-            obj.sections.add(section)
-        else:
-            m = re.match('(-service-(\d+)_([-_\w]+))_name', key)
-            if m is not None:
-                section_index = int(m.group(2))
-                section_name = m.group(3)
-
-                # see if update or create
-                if m.group(1) + '_id' in form.cleaned_data:
-                    section = get_object_or_404(q.ServiceSection, pk=form.cleaned_data[m.group(1) + '_id'])
-                    service = section.service
-                else:
-                    section = q.ServiceSection()
-                    service = g.Service()
-
-                service.name = form.cleaned_data[m.group(1) + '_name']
-                service.description = form.cleaned_data[m.group(1) + '_description']
-                # TODO: add cost dropdown or decide cost  by user preference
-                service.cost = (form.cleaned_data[m.group(1) + '_cost'], 'USD')
-                service.quantity = form.cleaned_data[m.group(1) + '_quantity']
-                service.type = form.cleaned_data[m.group(1) + '_type']
-                service.save()
-                section.name = section_name
-                section.index = section_index
-                section.service = service
-                section.save()
-
-                obj.services.add(section)
-
-    obj.save()
-    return obj
-
-
 class QuoteTemplateView(View):
     def get(self, request, **kwargs):
         if 'pk' in self.kwargs:
@@ -189,7 +128,7 @@ class QuoteTemplateView(View):
             return self.render_to_response({'form': form})
 
     def form_valid(self, form):
-        quote = _create_quote(form)
+        quote = qf.create_quote(form)
         if hasattr(self, 'object') and self.object is None:
             self.object = q.QuoteTemplate.objects.create(quote=quote)
         messages.success(self.request, 'Template saved.')

@@ -51,12 +51,12 @@
         counter = {% firstof form.quote_sections|length %};
         section = function (ct, dyn_idx) {
             var str = {% section_form_javascript %};
-            return str.format('-section-' + ct + '_section_' + dyn_idx, 'Section ' + dyn_idx);
+            return str.format('-section-' + ct + '-', 'section_' + dyn_idx, 'Section ' + dyn_idx);
         };
 
         service = function (ct, dyn_idx) {
             var str = {% service_form_javascript %};
-            return str.format('-service-' + ct + '_section_' + dyn_idx, 'Section ' + dyn_idx);
+            return str.format('-service-' + ct + '-', 'section_' + dyn_idx, 'Section ' + dyn_idx);
         };
 
         renameSections = function () {

@@ -27,8 +27,8 @@ class Section(m.Model):
         """
         :return: <tbody> section HTML to be included in a <table>
         """
-        t = get_template('quotes/section.html')
-        context = {'name': ('-section-%d_' % self.index) + self.name, 'section': self}
+        t = get_template('quotes/section_form.html')
+        context = {'prefix': ('-section-%d-' % self.index), 'name': self.name, 'section': self}
         if self.name != 'margin' and self.name != 'intro':
             context.update({'extra_class': 'dynamic_section'})
         return t.render(context)
@@ -49,8 +49,8 @@ class ServiceSection(Section):
         """
         :return: <tbody> section HTML to be included in a <table>
         """
-        t = get_template('quotes/service_section.html')
-        return t.render({'name': ('-service-%d_' % self.index) + self.name, 'section': self,
+        t = get_template('quotes/service_section_form.html')
+        return t.render({'name': ('-service-%d-' % self.index), 'name': self.name,  'section': self,
                          'type_choices': g.ServiceType.choices(),
                          'extra_class': 'dynamic_section'})
 
