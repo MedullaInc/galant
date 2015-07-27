@@ -13,7 +13,8 @@ from quotes import forms as qf
 class QuoteCreate(View):
     def get(self, request):
         self.object = None
-        return self.render_to_response({'form': qf.QuoteForm()})
+
+        return self.render_to_response({})
 
     def post(self, request):
         self.object = None
