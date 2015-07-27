@@ -77,6 +77,8 @@ class QuoteTemplatesTest(browser.SignedInTest):
         b.get(self.live_server_url + reverse('add_quote') + '?template_id=%d&lang=en' % qt.id)
         self.load_scripts()
 
+        intro_title = b.find_element_by_id('id_-section-0-title_hidden')
+        self.assertEqual(q.intro().title.json(), intro_title.get_attribute('value'))
         b.find_element_by_xpath('//select[@name="client"]/option[@value="%d"]' % c.id).click()
         b.find_element_by_xpath('//button[@type="submit"]').click()
 
