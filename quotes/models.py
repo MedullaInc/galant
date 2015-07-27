@@ -50,7 +50,7 @@ class ServiceSection(Section):
         :return: <tbody> section HTML to be included in a <table>
         """
         t = get_template('quotes/service_section_form.html')
-        return t.render({'name': ('-service-%d-' % self.index), 'name': self.name,  'section': self,
+        return t.render({'prefix': ('-service-%d-' % self.index), 'name': self.name,  'section': self,
                          'type_choices': g.ServiceType.choices(),
                          'extra_class': 'dynamic_section'})
 

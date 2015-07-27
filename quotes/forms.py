@@ -97,7 +97,7 @@ def create_service(form, prefix):
 
     # see if update or create
     if prefix + 'id' in form.cleaned_data:
-        section = get_object_or_404(q.ServiceSection, pk=form.cleaned_data[m.group(1) + 'id'])
+        section = get_object_or_404(q.ServiceSection, pk=form.cleaned_data[prefix + 'id'])
         service = section.service
     else:
         section = q.ServiceSection()
