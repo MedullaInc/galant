@@ -4,6 +4,7 @@ from django.core.exceptions import FieldError
 from jsonfield import JSONField
 from enum import Enum
 from django.conf import settings
+from django.core.validators import RegexValidator
 import inspect
 import json
 
@@ -118,3 +119,7 @@ class ChoiceEnum(Enum):
         # format into django choice tuple
         choices = tuple([(str(p[1].value), p[0]) for p in props])
         return choices
+
+
+PHONE_REGEX = RegexValidator(regex=r'^\+?1?\d{9,15}$',
+                             message="Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed.")

@@ -4,7 +4,6 @@ from django.conf import settings
 from djmoney.models.fields import MoneyField
 from djmoney.forms.widgets import CURRENCY_CHOICES
 from gallant import fields as gf
-from django.template.loader import get_template
 
 
 class GallantUser(AbstractEmailUser):
@@ -87,6 +86,10 @@ class ClientStatus(gf.ChoiceEnum):
 
 class Client(m.Model):
     name = m.CharField(max_length=255)
+    email = m.EmailField(blank=True)
+    phone_number = m.CharField(validators=[gf.PHONE_REGEX], blank=True, max_length=15)
+    address = m.TextField(blank=True)
+
     type = m.CharField(max_length=2, choices=ClientType.choices())
     size = m.CharField(max_length=2, choices=ClientSize.choices())
     status = m.CharField(max_length=2, choices=ClientStatus.choices())
