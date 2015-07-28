@@ -111,17 +111,22 @@ class QuoteTemplateView(View):
         if 'pk' in self.kwargs:
             self.object = get_object_or_404(q.QuoteTemplate, pk=self.kwargs['pk'])
             form = qf.QuoteTemplateForm(instance=self.object.quote)
+            section_forms = qf.section_forms_quote(self.object.quote)
         else:
             self.object = None
             if self.kwargs['quote_id'] is not None:
                 quote = get_object_or_404(q.Quote, pk=self.kwargs['quote_id'])
                 form = qf.QuoteTemplateForm(instance=quote)
+                section_forms = qf.section_forms_quote(self.quote)
             else:
                 form = qf.QuoteTemplateForm()
+                section_forms = [qf.SectionForm(instance=q.Section(name='intro', index=0), prefix='-section-0'),
+                                 qf.SectionForm(instance=q.Section(name='margin', index=1), prefix='-section-1')]
 
-        return self.render_to_response({'form': form})
+        return self.render_to_response({'form': form, 'sections': section_forms})
 
     def post(self, request, **kwargs):
+        section_forms = qf.section_forms_post(request.POST)
         if 'pk' in self.kwargs:
             self.object = get_object_or_404(q.QuoteTemplate, pk=self.kwargs['pk'])
             form = qf.QuoteTemplateForm(request.POST, instance=self.object.quote)
@@ -130,12 +135,12 @@ class QuoteTemplateView(View):
             form = qf.QuoteTemplateForm(request.POST)
 
         if form.is_valid():
-            return self.form_valid(form)
+            return self.form_valid(form, section_forms)
         else:
-            return self.render_to_response({'form': form})
+            return self.render_to_response({'form': form, 'sections': section_forms})
 
-    def form_valid(self, form):
-        quote = qf.create_quote(form)
+    def form_valid(self, form, section_forms):
+        quote = qf.create_quote(form, section_forms)
         if hasattr(self, 'object') and self.object is None:
             self.object = q.QuoteTemplate.objects.create(quote=quote)
         messages.success(self.request, 'Template saved.')
