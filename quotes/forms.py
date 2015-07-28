@@ -64,50 +64,6 @@ def create_quote(quote_form, section_forms):
     return obj
 
 
-def create_section(form, prefix):
-    m = re.match('-section-(\d+)-', prefix)
-    section_index = int(m.group(1))
-
-    # see if update or create
-    if prefix + 'id' in form.cleaned_data:
-        section = get_object_or_404(q.Section, pk=form.cleaned_data[prefix + 'id'])
-    else:
-        section = q.Section()
-
-    section.name = form.cleaned_data[prefix + 'name']
-    section.index = section_index
-    section.title = form.cleaned_data[prefix + 'title']
-    section.text = form.cleaned_data[prefix + 'text']
-    section.save()
-    return section
-
-
-def create_service(form, prefix):
-    m = re.match('-service-(\d+)-', prefix)
-    section_index = int(m.group(1))
-
-    # see if update or create
-    if prefix + 'id' in form.cleaned_data:
-        section = get_object_or_404(q.ServiceSection, pk=form.cleaned_data[prefix + 'id'])
-        service = section.service
-    else:
-        section = q.ServiceSection()
-        service = g.Service()
-
-    service.name = form.cleaned_data[prefix + 'service_name']
-    service.description = form.cleaned_data[prefix + 'description']
-    # TODO: add cost dropdown or decide cost  by user preference
-    service.cost = (form.cleaned_data[prefix + 'cost'], 'USD')
-    service.quantity = form.cleaned_data[prefix + 'quantity']
-    service.type = form.cleaned_data[prefix + 'type']
-    service.save()
-    section.name = form.cleaned_data[prefix + 'name']
-    section.index = section_index
-    section.service = service
-    section.save()
-    return section
-
-
 def section_forms_post(data):
     sf = []
     for key, value in sorted(data.items(), key=operator.itemgetter(1)):
