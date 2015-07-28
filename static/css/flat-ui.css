@@ -4949,7 +4949,7 @@ a.list-group-item > .badge,
 .alert .close {
   position: relative;
   top: 3px;
-  right: -31px;
+  right: 0px;
   font-size: 18px;
   line-height: 18px;
   color: #34495e;
