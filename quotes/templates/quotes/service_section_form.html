@@ -12,13 +12,13 @@
 {% if section.id %}
 <input type="hidden" class="section_id" id="id_{{ prefix }}id" name="{{ prefix }}id" value="{{ section.id }}"/>
 {% endif %}
-<input type="hidden" class="section_name" id="id_{{ prefix }}name" name="{{ prefix }}name" value="{% firstof name section.name %}"/>
+<input type="hidden" class="section_name" id="id_{{ prefix }}section_name" name="{{ prefix }}section_name" value="{% firstof name section.name %}"/>
 {% with service=section.service %}
 <tr class="service_name">
     <td>Name:&nbsp;&nbsp;</td>
-    <td><input class="ultext" type="hidden" id="id_{{ prefix }}service_name_hidden" name="{{ prefix }}service_name"
-               for="id_{{ prefix }}service_name" value="{{ service.name.json }}"/>
-        <input class="form-control" id="id_{{ prefix }}service_name" maxlength="512"
+    <td><input class="ultext" type="hidden" id="id_{{ prefix }}name_hidden" name="{{ prefix }}name"
+               for="id_{{ prefix }}name" value="{{ service.name.json }}"/>
+        <input class="form-control" id="id_{{ prefix }}name" maxlength="512"
                type="text" value=""/></td>
 </tr>
 <tr class="service_description">
@@ -31,8 +31,9 @@
 <tr class="service_cost">
     <td>Cost:&nbsp;&nbsp;</td>
     <td>
-        <input class=" form-control" id="id_{{ prefix }}cost" name="{{ prefix }}cost" step="0.1"
-               type="number" value="{% firstof service.cost.amount '0.0' %}">
+        <input class=" form-control" id="id_{{ prefix }}cost" name="{{ prefix }}cost_0" step="10"
+               type="number" value="{% firstof service.cost.amount '0.0' %}"/>
+        <input type="hidden" name="{{ prefix }}cost_1" value="USD"/>
     </td>
 </tr>
 <tr class="service_quantity">
