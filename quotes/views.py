@@ -117,7 +117,7 @@ class QuoteTemplateView(View):
             if self.kwargs['quote_id'] is not None:
                 quote = get_object_or_404(q.Quote, pk=self.kwargs['quote_id'])
                 form = qf.QuoteTemplateForm(instance=quote)
-                section_forms = qf.section_forms_quote(self.quote)
+                section_forms = qf.section_forms_quote(quote)
             else:
                 form = qf.QuoteTemplateForm()
                 section_forms = [qf.SectionForm(instance=q.Section(name='intro', index=0), prefix='-section-0'),
