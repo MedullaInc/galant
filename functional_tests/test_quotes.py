@@ -97,7 +97,7 @@ class QuotesSignedInTest(browser.SignedInTest):
         add_service = b.find_element_by_id('add_service')
         add_service.click()
 
-        b.find_element_by_id('id_-service-2-service_name').send_keys('1234')
+        b.find_element_by_id('id_-service-2-name').send_keys('1234')
         b.find_element_by_xpath('//select[@name="-service-2-type"]/option[@value="3"]').click()
 
         b.find_element_by_xpath('//button[@type="submit"]').click()

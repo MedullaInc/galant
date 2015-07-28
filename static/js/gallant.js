@@ -18,7 +18,6 @@ window.gallant = {
         var el_dest = $(destination).find(selector).first();
 
         el_dest.val(el.val());
-        el_dest.text(el.text())
     }
 }
 
