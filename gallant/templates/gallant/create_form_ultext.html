@@ -1,0 +1,51 @@
+{% extends "gallant/create_form.html" %}
+{% load bootstrap i18n %}
+
+{% block extra_body %}
+    {{ block.super }}
+    <script>
+        var currentLanguage = '{{ LANGUAGE_CODE }}';
+        var setLanguage = function (language) {
+            if (language == '') {
+                alert('Aattempted to set language to none.')
+                return;
+            }
+            $('.ultext').each(function () {
+                var data = {};
+                var ref = $('#' + this.getAttribute('for'));
+                try {
+                    data = JSON.parse(this.value);
+                } catch (e) {
+                }
+                if (language != currentLanguage) {
+                    data[currentLanguage] = ref.val();
+                    this.value = JSON.stringify(data);
+                }
+                if (language in data) {
+                    ref.val(data[language]);
+                } else {
+                    ref.val('');
+                }
+            });
+            currentLanguage = language;
+        };
+
+        $(document).ready(function () {
+            setLanguage('{{ language|default:LANGUAGE_CODE }}');
+        });
+
+        {% block create_submit_event %}
+            $('#create_submit').on('click', function(e) {
+                $('.ultext').each(function () {
+                    var data = {};
+                    try {
+                        data = JSON.parse(this.value);
+                    } catch (e) {
+                    }
+                    data[currentLanguage] = $('#' + this.getAttribute('for')).val();
+                    this.value = JSON.stringify(data);
+                });
+            });
+        {% endblock %}
+    </script>
+{% endblock %}

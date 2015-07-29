@@ -65,18 +65,3 @@
         });
     </script>
 {% endblock %}
-
-
-{% block create_submit_event %}
-        $('#create_submit').on('click', function(e) {
-            $('.ultext').each(function () {
-                var data = {};
-                try {
-                    data = JSON.parse(this.value);
-                } catch (e) {
-                }
-                data[currentLanguage] = $('#' + this.getAttribute('for')).val();
-                this.value = JSON.stringify(data);
-            });
-        });
-{% endblock %}
