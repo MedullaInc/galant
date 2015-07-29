@@ -1,0 +1,19 @@
+<tbody id="{{ prefix }}" class="question {{ extra_class }}">
+<tr>
+    <td>Q:&nbsp;&nbsp;</td>
+    <td>
+        <button id="{{ prefix }}remove" type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </td>
+</tr>
+{% if question.id %}
+<input type="hidden" id="id_{{ prefix }}id" name="{{ prefix }}id" value="{{ question.id }}"/>
+{% endif %}
+<tr class="question_text">
+    <td><input class="ultext" type="hidden" id="id_{{ prefix }}question" name="{{ prefix }}question"
+               for="id_{{ prefix }}question" value="{{ question.json }}"/>
+        <input class="form-control" id="id_{{ prefix }}question" maxlength="512"
+               type="text" value=""/></td>
+</tr>
+</tbody>

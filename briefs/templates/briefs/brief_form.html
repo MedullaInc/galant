@@ -19,7 +19,7 @@
 
 
 {% block post_form %}
-    <table id="section_table" width="500">
+    <table id="question_table" width="500">
         {% for s in questions %}
             {{ s }}
         {% endfor %}
@@ -36,7 +36,7 @@
     <script>
         var counter = {{ questions|length|default:0 }};
         question = function (ct) {
-            var str = {% question_form_javascript %}'';
+            var str = {% question_form_javascript %};
             return str.format('-question-' + ct + '-');
         };
 
