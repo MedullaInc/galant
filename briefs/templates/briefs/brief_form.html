@@ -1,5 +1,5 @@
 {% extends "gallant/create_form_ultext.html" %}
-{% load bootstrap i18n %}
+{% load bootstrap i18n question_javascript %}
 
 {% block sidebar %}
 
@@ -25,7 +25,7 @@
         {% endfor %}
         <tr>
             <td>
-                <button type="button" id="add_question" class="btn btn-default" style="float: right">Add Section</button>
+                <button type="button" id="add_question" class="btn btn-default" style="float: right">Add Question</button>
             </td>
         </tr>
     </table>
@@ -36,12 +36,11 @@
     <script>
         var counter = {{ questions|length|default:0 }};
         question = function (ct) {
-            var str = {# question_form_javascript #}'';
+            var str = {% question_form_javascript %}'';
             return str.format('-question-' + ct + '-');
         };
 
         reindexQuestions = function () {
-            var dyn_section_idx = 1;
             $('#section_table > tbody.section').each(function (i) {
                 if (!$(this).hasClass('dynamic_section')) {
                     return true;
@@ -52,7 +51,6 @@
                 // gallant.copyElement(new_section, this, '.section_id');
 
                 $(this).replaceWith(new_section);
-                dyn_section_idx++;
             });
         };
 
