@@ -25,8 +25,8 @@
 
     <h2 class="section_title">{% trans "Data" %}</h2>
 
-    <p id="title">{% trans "Title" %}: {{ object.title }}</p>
-    <p id="client">{% trans "Client" %}: {{ object.status }}</p>
+    <p id="title">{% trans "Title" %}: {{ object.title.get_text }}</p>
+    <p id="status">{% trans "Status" %}: {{ object.get_status_display }}</p>
 
     <hr>
 

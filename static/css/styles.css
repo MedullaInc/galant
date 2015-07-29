@@ -2026,9 +2026,11 @@ input[type="text"].form-control {
 /* List View */
 
 h2.section_title {
+    font-size: 28px;
+    font-weight: 800;
     margin-bottom: 10px;
     margin-top: 0px;
-    color: #666666;
+    color: #333333;
     letter-spacing: -1px;
 }
 
