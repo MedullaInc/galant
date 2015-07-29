@@ -12,7 +12,7 @@ import re
 
 
 class QuoteForm(forms.ModelForm):
-    class Meta():
+    class Meta:
         model = q.Quote
         fields = ['name', 'client', 'status']
 
@@ -26,7 +26,7 @@ class QuoteForm(forms.ModelForm):
 
 
 class QuoteTemplateForm(QuoteForm):
-    class Meta():
+    class Meta:
         model = q.Quote
         fields = ['name']
 
@@ -89,7 +89,7 @@ def section_forms_initial():
 
 
 class SectionForm(forms.ModelForm):
-    class Meta():
+    class Meta:
         model = q.Section
         fields = ['name', 'title', 'text']
 
@@ -122,7 +122,7 @@ class SectionForm(forms.ModelForm):
 
 
 class ServiceSectionForm(forms.ModelForm):
-    class Meta():
+    class Meta:
         model = g.Service  # make sure to call with ServiceSection instance, not Service
         fields = ['name', 'description', 'cost', 'quantity', 'type']
 

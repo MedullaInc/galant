@@ -4,7 +4,7 @@ from gallant import models as g
 
 
 class ClientForm(forms.ModelForm):
-    class Meta():
+    class Meta:
         model = g.Client
         fields = ['name', 'type', 'size', 'status', 'language', 'currency']
 
@@ -16,7 +16,7 @@ class ClientForm(forms.ModelForm):
 
 
 class ServiceForm(forms.ModelForm):
-    class Meta():
+    class Meta:
         model = g.Service
         fields = ['name', 'description', 'cost', 'quantity', 'type']
 
@@ -27,7 +27,7 @@ class ServiceForm(forms.ModelForm):
 
 
 class NoteForm(forms.ModelForm):
-    class Meta():
+    class Meta:
         model = g.Note
         fields = ['text']
 
