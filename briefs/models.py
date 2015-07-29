@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models as m
 from gallant import models as g
 from gallant import fields as gf
@@ -7,8 +8,8 @@ class Question(m.Model):
     """
     A brief has Questions that need to be answered.
     """
-    question = m.CharField(max_length=255)
-    help_text = m.CharField(max_length=255)
+    question = gf.ULCharField()
+    help_text = gf.ULCharField()
     index = m.IntegerField(default=0)
 
 
@@ -68,12 +69,15 @@ class Brief(m.Model):
     token = m.CharField(max_length=64, unique=True, null=True, help_text='For emailing URL')
 
     questions = m.ManyToManyField(Question)
+    language = m.CharField(max_length=7, null=True, choices=settings.LANGUAGES,
+                           help_text='Language of quote, or null for template.')
 
 
-class BriefTemplate(Brief):
+class BriefTemplate(m.Model):
     """
     A Brief Template to be reused on other clients.
     """
+    brief = m.ForeignKey(Brief)
 
 
 class ClientBrief(Brief):
