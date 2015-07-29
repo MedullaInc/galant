@@ -1,5 +1,5 @@
 {% extends "gallant/create_form_ultext.html" %}
-{% load bootstrap i18n section_html %}
+{% load bootstrap i18n section_javascript %}
 
 {% block sidebar %}{% endblock %}
 
@@ -59,13 +59,14 @@
                     gallant.copyElement(new_section, this, '.service_type select');
                 } else {
                     new_section = $.parseHTML(section(i, dyn_section_idx));
+                    gallant.copyElement(new_section, this, '.section_title input[type="hidden"]');
+                    gallant.copyElement(new_section, this, '.section_text input[type="hidden"]');
+                    gallant.copyElement(new_section, this, '.section_title input[type="text"]');
+                    gallant.copyElement(new_section, this, '.section_text textarea');
                 }
 
                 gallant.copyElement(new_section, this, '.section_id');
-                gallant.copyElement(new_section, this, '.section_title input[type="hidden"]');
-                gallant.copyElement(new_section, this, '.section_text input[type="hidden"]');
-                gallant.copyElement(new_section, this, '.section_title input[type="text"]');
-                gallant.copyElement(new_section, this, '.section_text textarea');
+                gallant.copyElement(new_section, this, '.section_name');
 
                 $(this).replaceWith(new_section);
                 dyn_section_idx++;
