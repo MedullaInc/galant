@@ -2086,14 +2086,19 @@ table.table-striped.table-bordered {
 
 table.table-striped.table-bordered thead th {
     background: #ffffff;
-    color: #666666;
+    color: #333333;
+    font-weight: 800;
+}
+
+table.table-striped.table-bordered tr td {
+    font-weight: 200;
+    color: #666666
 }
 
 table.table-striped.table-bordered thead th, table.table-striped.table-bordered tr td {
     border: 1px solid #666666;
     padding: 10px;
     font-size: 14px;
-    font-weight: 200;
 }
 
 #form label {
@@ -2107,7 +2112,7 @@ table.table-striped.table-bordered thead th, table.table-striped.table-bordered 
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px;
-    margin-top: 10px;
+    margin-top: 0px;
 }
 
 #add_note_form, #form {
