@@ -1,61 +1,15 @@
-from django.db import models
-from django.db.models import *
+from django.db import models as m
 from gallant import models as g
 from gallant import fields as gf
 
 
-class BriefStatus(gf.ChoiceEnum):
-    Draft = 0
-    Not_Sent = 1
-    Sent = 2
-    Viewed = 3
-    Answered = 4
-    Rejected = 5
-
-
-class Brief(models.Model):
-    """
-    A questionnaire that will allow a user to know more about Client needs.
-    There are three types of Briefs: [ClientBrief, ProjectBrief, ServiceBrief]
-    """
-    title = gf.ULCharField(max_length=255, help_text='Brief title.')
-    status = CharField(max_length=2, choices=BriefStatus.choices(), default=BriefStatus.Draft.value)
-    token = CharField(max_length=64, unique=True, null=True, help_text='For emailing URL')
-
-
-class BriefTemplate(Brief):
-    """
-    A Brief Template to be reused on other clients.
-    """
-
-
-class ClientBrief(Brief):
-    """
-    A Client Brief
-    """
-    client = ForeignKey(g.Client)
-
-
-class ProjectBrief(Brief):
-    """
-    A Project Brief
-    """
-    project = ForeignKey(g.Project)
-
-
-class ServiceBrief(Brief):
-    """
-    A Service Brief
-    """
-    service = ForeignKey(g.Service)
-
-
-class Question(models.Model):
+class Question(m.Model):
     """
     A brief has Questions that need to be answered.
     """
-    question = CharField(max_length=255)
-    help_text = CharField(max_length=255)
+    question = m.CharField(max_length=255)
+    help_text = m.CharField(max_length=255)
+    index = m.IntegerField(default=0)
 
 
 class QuestionTemplate(Question):
@@ -68,7 +22,7 @@ class OpenQuestion(Question):
     """
     Open Question
     """
-    is_long_answer = BooleanField(default=False)
+    is_long_answer = m.BooleanField(default=False)
 
 
 class MultipleChoiceQuestion(Question):
@@ -77,7 +31,7 @@ class MultipleChoiceQuestion(Question):
     select more than one.
     The choices field is a list field where the options for the question are stored.
     """
-    can_select_multiple = BooleanField(default=False)
+    can_select_multiple = m.BooleanField(default=False)
     choices = gf.ULTextArrayField()
 
 
@@ -88,13 +42,61 @@ class ImageQuestion(MultipleChoiceQuestion):
     # TODO: First finish MultipleChoiceQuestion then continue with ImageQuestions.
 
 
-class Image(models.Model):
+class Image(m.Model):
     """
     Image for ImageQuestions.
     """
     # TODO: We should analyze the best place for Image model to be located in.
 
 
-class Answer(models.Model):
-    answer = CharField(max_length=1000)
-    brief = ForeignKey(Brief)
+class BriefStatus(gf.ChoiceEnum):
+    Draft = 0
+    Not_Sent = 1
+    Sent = 2
+    Viewed = 3
+    Answered = 4
+    Rejected = 5
+
+
+class Brief(m.Model):
+    """
+    A questionnaire that will allow a user to know more about Client needs.
+    There are three types of Briefs: [ClientBrief, ProjectBrief, ServiceBrief]
+    """
+    title = gf.ULCharField(max_length=255, help_text='Brief title.')
+    status = m.CharField(max_length=2, choices=BriefStatus.choices(), default=BriefStatus.Draft.value)
+    token = m.CharField(max_length=64, unique=True, null=True, help_text='For emailing URL')
+
+    questions = m.ManyToManyField(Question)
+
+
+class BriefTemplate(Brief):
+    """
+    A Brief Template to be reused on other clients.
+    """
+
+
+class ClientBrief(Brief):
+    """
+    A Client Brief
+    """
+    client = m.ForeignKey(g.Client)
+
+
+class ProjectBrief(Brief):
+    """
+    A Project Brief
+    """
+    project = m.ForeignKey(g.Project)
+
+
+class ServiceBrief(Brief):
+    """
+    A Service Brief
+    """
+    service = m.ForeignKey(g.Service)
+
+
+class Answer(m.Model):
+    answer = m.CharField(max_length=1000)
+    brief = m.ForeignKey(Brief)

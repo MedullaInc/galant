@@ -23,4 +23,19 @@
 
 {% block center_content %}
 
+    <h2 class="section_title">{% trans "Data" %}</h2>
+
+    <p id="title">{% trans "Title" %}: {{ object.title }}</p>
+    <p id="client">{% trans "Client" %}: {{ object.status }}</p>
+
+    <hr>
+
+    {% for question in object.questions.all %}
+        <div id="question_{{ question.index }}">
+            {{ question.question }}
+        </div>
+
+        <hr>
+    {% endfor %}
+
 {% endblock %}
