@@ -1236,33 +1236,53 @@ section * {
 }
 
 .login {
-    margin-top: 35px;
+    margin-top: 0px;
     background: #ffffff;
-    padding-top: 20px;
-    padding-bottom: 20px;
-    padding-left: 25px;
-    padding-right: 25px;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    padding-left: 30px;
+    padding-right: 30px;
     font-weight: 200;
-    border: 1px solid #000000;
-    -webkit-border-radius: 10px;
-    -moz-border-radius: 10px;
-    border-radius: 10px;
+    border: 1px solid #333333;
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 0px;
     margin-bottom: 35px;
 }
 
-.login .login-title {
-    font-size: 24px;
+#submit_login {
+    border: 1px solid #333333;
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 0px;
     font-weight: 100;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-size: 16px;
+}
+
+.login .login-title {
+    font-size: 28px;
+    font-weight: 800;
     line-height: 28px;
-    letter-spacing: 2px;
+    letter-spacing: -1px;
     word-spacing: -1px;
-    color: #000000;
-    margin-bottom: 20px;
+    color: #333333;
+    margin-bottom: 25px;
 }
 
 .login input[type="email"], input[type="password"] {
-    border: 1px solid #000000;
+    border: 1px solid #333333;
     margin-bottom: 10px;
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 0px;
+}
+
+.login input[type="password"] {
+    margin-bottom: 15px;
 }
 
 .container.login h4 {
@@ -1350,6 +1370,7 @@ section * {
     -o-background-size: cover;
     color: #1f1f1f;
     padding-bottom: 80px;
+    margin-top: 30px;
 }
 
 .content-1 .container {
@@ -1369,8 +1390,8 @@ section * {
 .content-1 .holder.v-center > div,
 .content-1 .holder .v-center > div {
     vertical-align: middle;
-    margin-top: 25px;
-    margin-bottom: 0;
+    margin-top: 0px;
+    margin-bottom: 101px;
     float: none;
 }
 
@@ -1490,7 +1511,7 @@ section * {
 }
 
 .content-1 p.main {
-    margin-top: 25px;
+    margin-top: 0px;
     margin-bottom: 35px;
     font-size: 50px;
     font-weight: 700;
@@ -1806,6 +1827,7 @@ a.login-btn.index.register:hover {
 }
 
 .btn.giant {
+    border: 1px solid #666666;
     font-size: 18px;
     padding: 15px;
     padding-left: 30px;
@@ -1813,6 +1835,9 @@ a.login-btn.index.register:hover {
     font-weight: 100;
     letter-spacing: 2px;
     margin-bottom: 50px;
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 0px;
 }
 
 .btn-default {
@@ -2036,7 +2061,7 @@ div.sidebar {
     padding-bottom: 20px;
     padding-left: 25px;
     padding-right: 25px;
-    border: 1px solid #000000;
+    border: 1px solid #333333;
     -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
     border-radius: 10px;
@@ -2109,8 +2134,9 @@ table.table-striped.table-bordered thead th, table.table-striped.table-bordered 
 }
 
 #template_select div.modal-backdrop {
-  z-index: -1;
+    z-index: -1;
 }
+
 /* End List View*/
 
 p {
