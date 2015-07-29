@@ -21,13 +21,15 @@ class QuoteCreate(View):
         if template_id is not None:
             template = get_object_or_404(q.QuoteTemplate, pk=template_id)
             quote = template.quote
-            context.update({'sections': [s.as_form_table() for s in quote.all_sections()]}) # TODO: need to bring in sections w/o ID so they don't get saved
+            section_forms = qf.section_forms_quote(quote, clear_pk=True)
+            context.update({'sections': section_forms})
             quote.pk = None
             if lang is not None:
                 quote.language = lang
                 context.update({'language': lang, 'form': qf.QuoteForm(instance=quote), 'object': quote})
         else:
-            context.update({'form': qf.QuoteForm(instance=q.Quote())})
+            context.update({'form': qf.QuoteForm(instance=q.Quote()),
+                            'sections': qf.section_forms_initial()})
 
         return self.render_to_response(context)
 
@@ -120,8 +122,7 @@ class QuoteTemplateView(View):
                 section_forms = qf.section_forms_quote(quote)
             else:
                 form = qf.QuoteTemplateForm()
-                section_forms = [qf.SectionForm(instance=q.Section(name='intro', index=0), prefix='-section-0'),
-                                 qf.SectionForm(instance=q.Section(name='margin', index=1), prefix='-section-1')]
+                section_forms = qf.section_forms_initial()
 
         return self.render_to_response({'form': form, 'sections': section_forms})
 

@@ -5,15 +5,9 @@
 
 {% block post_form %}
     <table id="section_table" width="500">
-        {% if sections %}
-            {% for s in sections %}
-                {{ s }}
-            {% endfor %}
-        {% else %}
-            {% for s in form.quote_sections %}
-                {{ s }}
-            {% endfor %}
-        {% endif %}
+        {% for s in sections %}
+            {{ s }}
+        {% endfor %}
         <tr>
             <td>
                 <button type="button" id="add_section" class="btn btn-default" style="float: right">Add Section</button>
@@ -61,7 +55,7 @@
             currentLanguage = language;
         };
 
-        counter = {% firstof form.quote_sections|length %};
+        counter = {{ sections|length|default:0 }};
         section = function (ct, dyn_idx) {
             var str = {% section_form_javascript %};
             return str.format('-section-' + ct + '-', 'section_' + dyn_idx, 'Section ' + dyn_idx);

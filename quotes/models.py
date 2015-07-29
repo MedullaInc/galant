@@ -23,16 +23,6 @@ class Section(m.Model):
         map(lambda l: language_set.add(l), self.text.keys())
         return language_set
 
-    def as_form_table(self):
-        """
-        :return: <tbody> section HTML to be included in a <table>
-        """
-        t = get_template('quotes/section_form.html')
-        context = {'prefix': ('-section-%d-' % self.index), 'name': self.name, 'section': self}
-        if self.name != 'margin' and self.name != 'intro':
-            context.update({'extra_class': 'dynamic_section'})
-        return t.render(context)
-
     def __eq__(self, other):
         return self.name == other.name and \
                self.title == other.title and \
@@ -44,15 +34,6 @@ class Section(m.Model):
 
 class ServiceSection(Section):
     service = m.ForeignKey(g.Service)
-
-    def as_form_table(self):
-        """
-        :return: <tbody> section HTML to be included in a <table>
-        """
-        t = get_template('quotes/service_section_form.html')
-        return t.render({'prefix': ('-service-%d-' % self.index), 'name': self.name,  'section': self,
-                         'type_choices': g.ServiceType.choices(),
-                         'extra_class': 'dynamic_section'})
 
 
 class QuoteStatus(gf.ChoiceEnum):

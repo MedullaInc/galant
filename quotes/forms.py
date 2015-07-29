@@ -24,14 +24,6 @@ class QuoteForm(forms.ModelForm):
 
         return cleaned_data
 
-    def quote_sections(self):
-        if self.instance is None or self.instance.pk is None:
-            return [q.Section(name='intro', index=0).as_form_table(),
-                    q.Section(name='margin', index=1).as_form_table()]
-        else:
-            sections = self.instance.all_sections()
-            return [s.as_form_table() for s in sections]
-
 
 class QuoteTemplateForm(QuoteForm):
     class Meta():
@@ -78,15 +70,22 @@ def section_forms_post(data):
     return sf
 
 
-def section_forms_quote(quote):
+def section_forms_quote(quote, clear_pk=False):
     sf = []
     for section in quote.all_sections():
+        if clear_pk:
+            section.pk = None
         if type(section) is q.Section:
             sf.append(SectionForm(instance=section, prefix='-section-%d' % section.index))
         elif type(section) is q.ServiceSection:
             sf.append(ServiceSectionForm(instance=section, prefix='-service-%d' % section.index))
 
     return sf
+
+
+def section_forms_initial():
+    return [SectionForm(instance=q.Section(name='intro', index=0), prefix='-section-0'),
+            SectionForm(instance=q.Section(name='margin', index=1), prefix='-section-1')]
 
 
 class SectionForm(forms.ModelForm):
