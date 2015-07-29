@@ -32,7 +32,7 @@
 
     {% for question in object.questions.all %}
         <div id="question_{{ question.index }}">
-            {{ question.question }}
+            {{ question.question.get_text }}
         </div>
 
         <hr>
