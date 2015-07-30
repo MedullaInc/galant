@@ -17,12 +17,6 @@ class BriefForm(forms.ModelForm):
         return cleaned_data
 
 
-class ClientBriefForm(BriefForm):
-    class Meta:
-        model = b.ClientBrief
-        fields = ['title', 'status']
-
-
 class QuestionForm(forms.ModelForm):
     class Meta:
         model = b.Question
@@ -52,22 +46,4 @@ class QuestionForm(forms.ModelForm):
             idx = re.match('-question-(\d+)', self.prefix).group(1) or 0
             self.instance.index = idx
         return super(QuestionForm, self).save(commit)
-
-
-# class ProjectBriefForm(BriefForm):
-#     class Meta():
-#         model = b.ProjectBrief
-#         fields = ['title', 'status']
-#
-#
-# class ServiceBriefForm(BriefForm):
-#     class Meta():
-#         model = b.ServiceBrief
-#         fields = ['title', 'status']
-
-
-# def clean_str(value):
-#     if isinstance(value, six.string_types) or value is None:
-#         return value
-#     return smart_text(value)
 
