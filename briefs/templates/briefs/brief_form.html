@@ -68,6 +68,7 @@
 
                 $(this).replaceWith(new_question);
             });
+            $('.add_choice').click(add_choice);
         };
 
         $('#add_question').click(function () {
@@ -76,11 +77,22 @@
             reindexQuestions();
         });
 
+        var add_choice = function () {
+            var ctable = $(this).closest('tbody').find('.choice_table');
+            console.log($(ctable));
+            $(ctable).find('tbody').append('<tr><td>' +
+            ' <input class="form-control {{ prefix }}choice ultext_array_target" maxlength="512"' +
+            '       type="text" value=""/>' +
+            '</td></tr>')
+        };
+
         $('#add_multiquestion').click(function () {
             counter++;
-            $('#question_table > tbody:last').before(multiquestion(counter));
+            var newquestion = $('#question_table > tbody:last').before(multiquestion(counter));
             reindexQuestions();
         });
+
+        $('.add_choice').click(add_choice);
 
         $(document.body).on('click', '.close', function () {
             del = confirm("Remove question?")
