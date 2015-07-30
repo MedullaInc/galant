@@ -1,4 +1,4 @@
-{% extends "gallant/create_form.html" %}
+{% extends "gallant/create_form_ultext.html" %}
 {% load bootstrap i18n %}
 
 {% block sidebar %}
@@ -15,4 +15,60 @@
         </button>
     </a>
 
+{% endblock %}
+
+
+{% block post_form %}
+    <table id="section_table" width="500">
+        {% for s in questions %}
+            {{ s }}
+        {% endfor %}
+        <tr>
+            <td>
+                <button type="button" id="add_question" class="btn btn-default" style="float: right">Add Section</button>
+            </td>
+        </tr>
+    </table>
+{% endblock %}
+
+{% block extra_body %}
+    {{ block.super }}
+    <script>
+        var counter = {{ questions|length|default:0 }};
+        question = function (ct) {
+            var str = {# question_form_javascript #}'';
+            return str.format('-question-' + ct + '-');
+        };
+
+        reindexQuestions = function () {
+            var dyn_section_idx = 1;
+            $('#section_table > tbody.section').each(function (i) {
+                if (!$(this).hasClass('dynamic_section')) {
+                    return true;
+                }
+
+                var new_question = $.parseHTML(question(i));
+
+                // gallant.copyElement(new_section, this, '.section_id');
+
+                $(this).replaceWith(new_section);
+                dyn_section_idx++;
+            });
+        };
+
+        $('#add_question').click(function () {
+            counter++;
+            $('#question_table > tbody:last').before(question(counter));
+            reindexQuestions();
+        });
+
+        $(document.body).on('click', '.close', function () {
+            del = confirm("Remove question?")
+            if (del) {
+                $(this).parents('tbody')[0].remove();
+                counter--;
+                reindexQuestions();
+            }
+        });
+    </script>
 {% endblock %}

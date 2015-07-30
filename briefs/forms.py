@@ -5,7 +5,7 @@ from django.utils.encoding import smart_text
 
 
 class BriefForm(forms.ModelForm):
-    class Meta():
+    class Meta:
         model = b.Brief
         fields = ['title', 'status']
 
@@ -15,7 +15,7 @@ class BriefForm(forms.ModelForm):
 
 
 class ClientBriefForm(BriefForm):
-    class Meta():
+    class Meta:
         model = b.ClientBrief
         fields = ['title', 'status']
 

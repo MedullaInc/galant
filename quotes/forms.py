@@ -1,8 +1,6 @@
 from django import forms
-from django.utils import six
 from quotes import models as q
 from gallant import models as g
-from django.utils.encoding import smart_text
 from django.utils.translation import get_language
 from django.conf import settings
 from django.shortcuts import get_object_or_404
@@ -12,33 +10,19 @@ import re
 
 
 class QuoteForm(forms.ModelForm):
-    class Meta():
+    class Meta:
         model = q.Quote
         fields = ['name', 'client', 'status']
 
-    def clean(self):
-        cleaned_data = super(QuoteForm, self).clean()
-        for key, value in self.data.items():
-            if '-section-' in key or '-service-' in key:
-                cleaned_data[key] = clean_str(self.data[key])
-
-        return cleaned_data
-
 
 class QuoteTemplateForm(QuoteForm):
-    class Meta():
+    class Meta:
         model = q.Quote
         fields = ['name']
 
 
 class LanguageForm(forms.Form):
     language = forms.ChoiceField(choices=settings.LANGUAGES, label='', initial=get_language())
-
-
-def clean_str(value):
-    if isinstance(value, six.string_types) or value is None:
-        return value
-    return smart_text(value)
 
 
 def create_quote(quote_form, section_forms):
@@ -89,7 +73,7 @@ def section_forms_initial():
 
 
 class SectionForm(forms.ModelForm):
-    class Meta():
+    class Meta:
         model = q.Section
         fields = ['name', 'title', 'text']
 
@@ -122,7 +106,7 @@ class SectionForm(forms.ModelForm):
 
 
 class ServiceSectionForm(forms.ModelForm):
-    class Meta():
+    class Meta:
         model = g.Service  # make sure to call with ServiceSection instance, not Service
         fields = ['name', 'description', 'cost', 'quantity', 'type']
 

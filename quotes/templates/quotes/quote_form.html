@@ -1,5 +1,5 @@
-{% extends "gallant/create_form.html" %}
-{% load bootstrap i18n section_html %}
+{% extends "gallant/create_form_ultext.html" %}
+{% load bootstrap i18n section_javascript %}
 
 {% block sidebar %}{% endblock %}
 
@@ -29,33 +29,7 @@
 {% block extra_body %}
     {{ block.super }}
     <script>
-        var currentLanguage = '{{ LANGUAGE_CODE }}';
-        var setLanguage = function (language) {
-            if (language == '') {
-                alert('Aattempted to set language to none.')
-                return;
-            }
-            $('.ultext').each(function () {
-                var data = {};
-                var ref = $('#' + this.getAttribute('for'));
-                try {
-                    data = JSON.parse(this.value);
-                } catch (e) {
-                }
-                if (language != currentLanguage) {
-                    data[currentLanguage] = ref.val();
-                    this.value = JSON.stringify(data);
-                }
-                if (language in data) {
-                    ref.val(data[language]);
-                } else {
-                    ref.val('');
-                }
-            });
-            currentLanguage = language;
-        };
-
-        counter = {{ sections|length|default:0 }};
+        var counter = {{ sections|length|default:0 }};
         section = function (ct, dyn_idx) {
             var str = {% section_form_javascript %};
             return str.format('-section-' + ct + '-', 'section_' + dyn_idx, 'Section ' + dyn_idx);
@@ -85,22 +59,19 @@
                     gallant.copyElement(new_section, this, '.service_type select');
                 } else {
                     new_section = $.parseHTML(section(i, dyn_section_idx));
+                    gallant.copyElement(new_section, this, '.section_title input[type="hidden"]');
+                    gallant.copyElement(new_section, this, '.section_text input[type="hidden"]');
+                    gallant.copyElement(new_section, this, '.section_title input[type="text"]');
+                    gallant.copyElement(new_section, this, '.section_text textarea');
                 }
 
                 gallant.copyElement(new_section, this, '.section_id');
-                gallant.copyElement(new_section, this, '.section_title input[type="hidden"]');
-                gallant.copyElement(new_section, this, '.section_text input[type="hidden"]');
-                gallant.copyElement(new_section, this, '.section_title input[type="text"]');
-                gallant.copyElement(new_section, this, '.section_text textarea');
+                gallant.copyElement(new_section, this, '.section_name');
 
                 $(this).replaceWith(new_section);
                 dyn_section_idx++;
             });
         };
-
-        $(document).ready(function () {
-            setLanguage('{{ language|default:LANGUAGE_CODE }}');
-        });
 
         $('#add_section').click(function () {
             counter++;
@@ -122,13 +93,14 @@
                 renameSections();
             }
         });
-
-        {% block create_submit_event %}
-            $('#create_submit').on('click', function (e) {
-                $('.ultext').each(function () {
-                    this.value = $('#' + this.getAttribute('for')).val();
-                });
-            });
-        {% endblock %}
     </script>
+{% endblock %}
+
+
+{% block create_submit_event %}
+    $('#create_submit').on('click', function (e) {
+        $('.ultext').each(function () {
+            this.value = $('#' + this.getAttribute('for')).val();
+        });
+    });
 {% endblock %}
