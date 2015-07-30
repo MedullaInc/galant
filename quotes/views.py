@@ -12,10 +12,43 @@ from reportlab.pdfgen import canvas
 from django.http import HttpResponse
 
 
-class QuoteCreate(View):
+
+class QuoteUpdate(View):
+    def get(self, request, **kwargs):
+        self.object = get_object_or_404(q.Quote, pk=self.kwargs['pk'])
+        form = qf.QuoteForm(instance=self.object)
+        section_forms = qf.section_forms_quote(quote=self.object)
+        return self.render_to_response({'object': self.object, 'form': form, 'sections': section_forms,
+                                        'title': 'Edit Quote'})
+
+    def post(self, request, **kwargs):
+        if 'pk' in self.kwargs:
+            self.object = get_object_or_404(q.Quote, pk=self.kwargs['pk'])
+        else:
+            self.object = None
+            
+        form = qf.QuoteForm(request.POST, instance=self.object)
+        section_forms = qf.section_forms_post(request.POST)
+        if form.is_valid():
+            return self.form_valid(form, section_forms)
+        else:
+            return self.render_to_response({'object': self.object, 'form': form, 'sections': section_forms,
+                                            'title': 'Edit Quote'})
+
+    def form_valid(self, form, section_forms):
+        self.object = qf.create_quote(form, section_forms)
+        messages.success(self.request, 'Quote saved.')
+        return HttpResponseRedirect(reverse('quote_detail', args=[self.object.id]))
+
+    def render_to_response(self, context):
+        return TemplateResponse(request=self.request,
+                                template="quotes/quote_form.html",
+                                context=context)
+
+
+class QuoteCreate(QuoteUpdate):
     def get(self, request):
-        self.object = None
-        context = {}
+        context = {'title': 'Add Quote'}
         template_id = self.request.GET.get('template_id', None)
         lang = self.request.GET.get('lang', None)
         if template_id is not None:
@@ -32,55 +65,6 @@ class QuoteCreate(View):
                             'sections': qf.section_forms_initial()})
 
         return self.render_to_response(context)
-
-    def post(self, request):
-        self.object = None
-        form = qf.QuoteForm(request.POST)
-        section_forms = qf.section_forms_post(request.POST)
-        valid = list([form.is_valid()] + [s.is_valid() for s in section_forms])
-        if all(valid):
-            return self.form_valid(form, section_forms)
-        else:
-            return self.render_to_response({'form': form, 'sections': section_forms})
-
-    def form_valid(self, form, section_forms):
-        self.object = qf.create_quote(form, section_forms)
-        messages.success(self.request, 'Quote saved.')
-        return HttpResponseRedirect(reverse('quote_detail', args=[self.object.id]))
-
-    def render_to_response(self, context):
-        context.update({'title': 'Add Quote'})
-        return TemplateResponse(request=self.request,
-                                template="quotes/quote_form.html",
-                                context=context)
-
-
-class QuoteUpdate(View):
-    def get(self, request, **kwargs):
-        self.object = get_object_or_404(q.Quote, pk=self.kwargs['pk'])
-        form = qf.QuoteForm(instance=self.object)
-        section_forms = qf.section_forms_quote(quote=self.object)
-        return self.render_to_response({'object': self.object, 'form': form, 'sections': section_forms})
-
-    def post(self, request, **kwargs):
-        self.object = get_object_or_404(q.Quote, pk=self.kwargs['pk'])
-        form = qf.QuoteForm(request.POST, instance=self.object)
-        section_forms = qf.section_forms_post(request.POST)
-        if form.is_valid():
-            return self.form_valid(form, section_forms)
-        else:
-            return self.render_to_response({'object': self.object, 'form': form, 'sections': section_forms})
-
-    def form_valid(self, form, section_forms):
-        self.object = qf.create_quote(form, section_forms)
-        messages.success(self.request, 'Quote saved.')
-        return HttpResponseRedirect(reverse('quote_detail', args=[self.object.id]))
-
-    def render_to_response(self, context):
-        context.update({'title': 'Update Quote'})
-        return TemplateResponse(request=self.request,
-                                template="quotes/quote_form.html",
-                                context=context)
 
 
 class QuoteDetail(View):
