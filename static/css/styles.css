@@ -2187,3 +2187,83 @@ div.modal-dialog div.modal-footer {
 }
 
 /* End Modal Boxes*/
+
+/* Tabs */
+
+ul.nav-tabs li {
+    margin-bottom: -2px;
+}
+
+ul.nav-tabs li.active a:hover {
+    border: none;
+}
+
+ul.nav-tabs li a {
+    font-size: 16px;
+    font-weight: 200;
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 0px;
+    border: 1px solid #666666;
+    border-bottom: 1px solid #ffffff;
+    padding-left: 20px;
+    padding-right: 20px;
+    margin-right: -1px;
+}
+
+ul.nav-tabs li a:hover {
+    font-size: 16px;
+    font-weight: 200;
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 0px;
+    border: 1px solid #666666;
+    border-bottom: 1px solid #ffffff;
+    padding-top: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    margin-right: -1px;
+    background: #efefef;
+}
+
+ul.nav-tabs li.active a {
+    font-size: 16px;
+    font-weight: 200;
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 0px;
+    border: 1px solid #666666;
+    border-bottom: 1px solid #ffffff;
+    padding-left: 20px;
+    padding-right: 20px;
+    margin-right: -1px;
+}
+
+ul.nav-tabs li.active a:hover {
+    font-size: 16px;
+    font-weight: 200;
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 0px;
+    border: 1px solid #666666;
+    border-bottom: 1px solid #ffffff;
+    padding-top: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    margin-right: -1px;
+    z-index: 1000;
+}
+
+ul.nav-tabs li a#add_translation_button {
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 0px;
+    border: 1px solid #666666;
+    border-bottom: 1px solid #ffffff;
+    padding-left: 20px;
+    padding-right: 20px;
+    color: #333333;
+    background: #efefef;
+}
+
+/* End Tabs */
