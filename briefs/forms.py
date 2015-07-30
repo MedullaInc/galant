@@ -70,6 +70,10 @@ def question_forms_post(data):
         m = re.match('(-question-\d+)-question', key)
         if m is not None:
             qf.append(QuestionForm(data, prefix=m.group(1)))
+        else:
+            m = re.match('(-multiquestion-\d+)-question', key)
+            if m is not None:
+                qf.append(MultiQuestionForm(data, prefix=m.group(1)))
 
     return qf
 
@@ -80,7 +84,7 @@ def question_forms_brief(brief, clear_pk=False):
         if clear_pk:
             question.pk = None
         if type(question) is b.MultipleChoiceQuestion:
-            qf.append(MultiQuestionForm(instance=question, prefix='-question-%d' % question.index))
+            qf.append(MultiQuestionForm(instance=question, prefix='-multiquestion-%d' % question.index))
         elif type(question) is b.Question:
             qf.append(QuestionForm(instance=question, prefix='-question-%d' % question.index))
 

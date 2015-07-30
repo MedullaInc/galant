@@ -50,18 +50,23 @@ def _ultext_to_python(value):
             lang = settings.LANGUAGE_CODE
         d.update({lang: value})
 
-
     if value is None:
         return value
 
     return d
-    raise FieldError("ULTextField requires a dictionary.")
 
 
 def _ultext_array_to_python(value):
     arr = ULTextDictArray()
-    for v in value:
-        arr.append(_ultext_to_python(v))
+    if isinstance(value, list):
+        for v in value:
+            arr.append(_ultext_to_python(v))
+        return arr
+
+    try:
+        arr.extend(json.loads(value))
+    except (ValueError, TypeError):
+        return ULTextDictArray(value)
     return arr
 
 
