@@ -33,12 +33,12 @@
     {% for question in object.questions.all.select_subclasses %}
         <div id="question_{{ question.index }}">
             {{ question.question.get_text }}
+            <ul class="multiquestion_choices">
+            {% for choice in question.choices %}
+                <li>{{ choice.get_text }}</li>
+            {% endfor %}
+            </ul>
         </div>
-        <ul class="multiquestion_choices">
-        {% for choice in question.choices %}
-            <li>{{ choice.get_text }}</li>
-        {% endfor %}
-        </ul>
 
         <hr>
     {% endfor %}

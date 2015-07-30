@@ -51,8 +51,10 @@ class BriefsSignedInTest(browser.SignedInTest):
     def test_edit_client_brief_question(self):
         b = browser.instance()
         q = autofixture.create_one('briefs.Question', generate_fk=True)
+        mq = autofixture.create_one('briefs.MultipleChoiceQuestion', generate_fk=True)
         brief = autofixture.create_one('briefs.ClientBrief', generate_fk=True)
         brief.questions.add(q)
+        brief.questions.add(mq)
         brief.save()
 
         b.get(self.live_server_url + reverse('edit_brief', args=['client', brief.client.id, brief.id]))
@@ -65,6 +67,31 @@ class BriefsSignedInTest(browser.SignedInTest):
 
         success_message = b.find_element_by_class_name('alert-success')
         self.assertTrue(u'Brief saved.' in success_message.text)
+
+    def test_add_client_brief_multiquestion(self):
+        b = browser.instance()
+        q = autofixture.create_one('briefs.Question', generate_fk=True)
+        brief = autofixture.create_one('briefs.ClientBrief', generate_fk=True)
+        brief.questions.add(q)
+        brief.save()
+
+        b.get(self.live_server_url + reverse('edit_brief', args=['client', brief.client.id, brief.id]))
+        self.load_scripts()
+
+        b.find_element_by_id('add_multiquestion').click()
+        b.find_element_by_id('id_-multiquestion-1-question').send_keys('Who is your daddy, and what does he do?')
+        b.find_element_by_id('id_-multiquestion-1-add_choice').click()
+        b.find_element_by_id('id_-multiquestion-1-add_choice').click()
+        b.find_elements_by_class_name('ultext_array_target')[0].send_keys('foo')
+        b.find_elements_by_class_name('ultext_array_target')[1].send_keys('bar')
+
+        b.find_element_by_xpath('//button[@type="submit"]').click()
+
+        success_message = b.find_element_by_class_name('alert-success')
+        self.assertTrue(u'Brief saved.' in success_message.text)
+
+        answer = b.find_element_by_xpath('//div[@id="question_1"]/ul/li[1]').text
+        self.assertEqual(answer, 'foo')
 
     def test_client_brief_detail(self):
         b = browser.instance()
