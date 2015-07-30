@@ -1,6 +1,6 @@
 <tbody id="{{ prefix }}" class="question multiquestion {{ extra_class }}">
 <tr>
-    <td>Q:&nbsp;&nbsp;</td>
+    <td>Q (Multiple-Choice):</td>
     <td>
         <button id="{{ prefix }}remove" type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
@@ -19,6 +19,21 @@
 </tr>
 <tr class="question_choices">
     <td><input class="ultext_array" type="hidden" id="id_{{ prefix }}choices_hidden" name="{{ prefix }}choices"
-               value="{{ question.choices.json }}"/></td>
+               value="{{ question.choices.json }}" for="id_{{ prefix }}choices"/></td>
 </tr>
+<tr id="id_{{ prefix }}choices">
+<td><table class="choice_table" style="width: calc(100% - 40px); margin-left: 40px;">
+    <tbody>
+    {% for choice in question.choices %}
+        <tr><td>
+            <input class="form-control {{ prefix }}choice ultext_array_target" maxlength="512"
+                   type="text" value=""/>
+        </td></tr>
+    {% endfor %}
+    </tbody>
+</table></td>
+</tr>
+<tr><td><button type="button" id="id_{{ prefix }}add_choice" class="btn btn-default"
+        style="float: right">Add Choice</button>
+</td></tr>
 </tbody>

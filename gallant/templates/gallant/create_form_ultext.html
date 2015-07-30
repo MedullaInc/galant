@@ -7,7 +7,7 @@
         var currentLanguage = '{{ LANGUAGE_CODE }}';
         var setLanguage = function (language) {
             if (language == '') {
-                alert('Aattempted to set language to none.')
+                alert('Attempted to set language to none.')
                 return;
             }
             $('.ultext').each(function () {
@@ -27,6 +27,30 @@
                     ref.val('');
                 }
             });
+
+            $('.ultext_array').each(function () {
+                var data_array = {};
+                var targets = $('#' + this.getAttribute('for')).find('.ultext_array_target');
+
+                try {
+                    data_array = JSON.parse(this.value);
+                } catch (e) {
+                }
+
+                for (var i = 0; i < data_array.length; i++) {
+                    if (language != currentLanguage) {
+                        data_array[i][currentLanguage] = $(targets[i]).val();
+                    }
+                    if (language in data_array[i]) {
+                        $(targets[i]).val(data_array[i][language]);
+                    } else {
+                        $(targets[i]).val('');
+                    }
+                }
+
+                this.value = JSON.stringify(data_array);
+            });
+
             currentLanguage = language;
         };
 
@@ -35,7 +59,7 @@
         });
 
         {% block create_submit_event %}
-            $('#create_submit').on('click', function(e) {
+            $('#create_submit').on('click', function (e) {
                 $('.ultext').each(function () {
                     var data = {};
                     try {

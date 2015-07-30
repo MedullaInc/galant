@@ -55,6 +55,8 @@
                 if ($(this).hasClass('multiquestion')) {
                     var new_question = $.parseHTML(multiquestion(i));
 
+                    gallant.copyElement(new_question, this, '.question_choices');
+                    $(new_question).find('.choice_table').replaceWith($(this).find('.choice_table'));
                 } else {
                     var new_question = $.parseHTML(question(i));
                 }

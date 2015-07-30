@@ -31,6 +31,11 @@ class ULTextDict(dict):
         return json.dumps(self)
 
 
+class ULTextDictArray(list):
+    def json(self):
+        return json.dumps(self)
+
+
 def _ultext_to_python(value):
     d = ULTextDict()
     if isinstance(value, dict):
@@ -54,7 +59,7 @@ def _ultext_to_python(value):
 
 
 def _ultext_array_to_python(value):
-    arr = []
+    arr = ULTextDictArray()
     for v in value:
         arr.append(_ultext_to_python(v))
     return arr
