@@ -12,7 +12,6 @@ from reportlab.pdfgen import canvas
 from django.http import HttpResponse
 
 
-
 class QuoteUpdate(View):
     def get(self, request, **kwargs):
         self.object = get_object_or_404(q.Quote, pk=self.kwargs['pk'])
@@ -29,7 +28,9 @@ class QuoteUpdate(View):
 
         form = qf.QuoteForm(request.POST, instance=self.object)
         section_forms = qf.section_forms_post(request.POST)
-        if form.is_valid():
+
+        valid = list([form.is_valid()] + [s.is_valid() for s in section_forms])
+        if all(valid):
             return self.form_valid(form, section_forms)
         else:
             return self.render_to_response({'object': self.object, 'form': form, 'sections': section_forms,
@@ -119,7 +120,8 @@ class QuoteTemplateView(View):
             self.object = None
             form = qf.QuoteTemplateForm(request.POST)
 
-        if form.is_valid():
+        valid = list([form.is_valid()] + [s.is_valid() for s in section_forms])
+        if all(valid):
             return self.form_valid(form, section_forms)
         else:
             return self.render_to_response({'form': form, 'sections': section_forms})

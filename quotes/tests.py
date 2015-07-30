@@ -46,8 +46,9 @@ class QuoteTest(test.TransactionTestCase):
 
 class QuoteFormTest(test.TestCase):
     data = {'status': '1', 'name': 'asdfQuote test edit', 'language': 'en', '-section-0-text': 'test intro text',
-            '-section-0-title': 'modified intro title', '-section-0-name': 'intro', '-section-1-name': 'margin',
-            '-section-1-title': 'test margin title', '-section-1-text': 'test margin text',}
+            '-section-0-title': 'modified intro title', '-section-0-name': 'intro', '-section-0-index': '0',
+            '-section-1-name': 'margin', '-section-1-title': 'test margin title',
+            '-section-1-text': 'test margin text', '-section-1-index': '1'}
 
     def setUp(self):
         client = AutoFixture(g.Client, generate_fk=True).create(1)
@@ -73,7 +74,8 @@ class QuoteFormTest(test.TestCase):
         self.assertEquals(obj.id, new_obj.id)
 
     def test_new_section(self):
-        new_data = {'-section-2-title': 'title123', '-section-2-text': 'text123', '-section-2-name': 'section_1'}
+        new_data = {'-section-2-title': 'title123', '-section-2-text': 'text123',
+                    '-section-2-name': 'section_1', '-section-2-index': '2'}
         new_data.update(self.data)
 
         f = qf.QuoteForm(new_data)
@@ -104,11 +106,16 @@ class QuoteFormTest(test.TestCase):
         self.assertEquals(obj.services.count(), 1)
 
     def test_same_sections(self):
-        new_data = {'-section-2-title': 'title123', '-section-2-text': 'text123', '-section-2-name': 'section_1'}
+        new_data = {'-section-2-title': 'title123', '-section-2-text': 'text123',
+                    '-section-2-name': 'section_1', '-section-2-index': '2'}
         new_data.update(self.data)
 
         f = qf.QuoteForm(new_data)
         s = qf.section_forms_post(new_data)
+        for sf in s:
+            if not sf.is_valid():
+                for field in sf:
+                    print '%s: %s' % (field.name, field.errors)
 
         self.assertTrue(f.is_valid())
 
@@ -159,7 +166,8 @@ class QuoteFormTest(test.TestCase):
         self.assertEquals(service_ids, new_service_ids)
 
     def test_modify_section(self):
-        new_data = {'-section-2-title': 'title123', '-section-2-text': 'text123', '-section-2-name': 'section_1'}
+        new_data = {'-section-2-title': 'title123', '-section-2-text': 'text123',
+                    '-section-2-name': 'section_1', '-section-2-index': '2'}
         new_data.update(self.data)
 
         f = qf.QuoteForm(new_data)

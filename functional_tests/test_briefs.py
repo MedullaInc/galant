@@ -29,8 +29,8 @@ class BriefsSignedInTest(browser.SignedInTest):
         b.find_element_by_name('title').send_keys('Brief test')
         b.find_element_by_xpath('//button[@type="submit"]').click()
 
-        section_title = browser.instance().find_element_by_class_name('section_title')
-        self.assertEqual(u'Brief Detail', section_title.text)
+        success_message = b.find_element_by_class_name('alert-success')
+        self.assertTrue(u'Brief saved.' in success_message.text)
 
     def test_edit_client_brief(self):
         b = browser.instance()
@@ -45,8 +45,8 @@ class BriefsSignedInTest(browser.SignedInTest):
 
         b.find_element_by_xpath('//button[@type="submit"]').click()
 
-        section_title = browser.instance().find_element_by_class_name('section_title')
-        self.assertEqual(u'Brief Detail', section_title.text)
+        success_message = b.find_element_by_class_name('alert-success')
+        self.assertTrue(u'Brief saved.' in success_message.text)
 
     def test_edit_client_brief_question(self):
         b = browser.instance()
@@ -63,8 +63,8 @@ class BriefsSignedInTest(browser.SignedInTest):
 
         b.find_element_by_xpath('//button[@type="submit"]').click()
 
-        section_title = b.find_element_by_class_name('section_title')
-        self.assertEqual(u'Brief Detail', section_title.text)
+        success_message = b.find_element_by_class_name('alert-success')
+        self.assertTrue(u'Brief saved.' in success_message.text)
 
     def test_client_brief_detail(self):
         b = browser.instance()

@@ -75,7 +75,7 @@ def section_forms_initial():
 class SectionForm(forms.ModelForm):
     class Meta:
         model = q.Section
-        fields = ['name', 'title', 'text']
+        fields = ['name', 'title', 'text', 'index']
 
     def __init__(self, data=None, prefix=None, *args, **kwargs):
         # see if update or create
@@ -97,12 +97,6 @@ class SectionForm(forms.ModelForm):
         if section.name != 'margin' and section.name != 'intro':
             context.update({'extra_class': 'dynamic_section'})
         return t.render(context)
-
-    def save(self, commit=True):
-        if self.prefix:
-            idx = re.match('-section-(\d+)', self.prefix).group(1) or 0
-            self.instance.index = idx
-        return super(SectionForm, self).save(commit)
 
 
 class ServiceSectionForm(forms.ModelForm):

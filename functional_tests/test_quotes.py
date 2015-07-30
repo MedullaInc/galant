@@ -42,8 +42,8 @@ class QuotesSignedInTest(browser.SignedInTest):
 
         b.find_element_by_xpath('//button[@type="submit"]').click()
 
-        section_title = browser.instance().find_element_by_class_name('section_title')
-        self.assertEqual(u'Quote', section_title.text)
+        success_message = b.find_element_by_class_name('alert-success')
+        self.assertTrue(u'Quote saved.' in success_message.text)
 
     def test_edit_quote(self):
         b = browser.instance()
@@ -56,8 +56,8 @@ class QuotesSignedInTest(browser.SignedInTest):
 
         b.find_element_by_xpath('//button[@type="submit"]').click()
 
-        section_title = b.find_element_by_class_name('section_title')
-        self.assertEqual(u'Quote', section_title.text)
+        success_message = b.find_element_by_class_name('alert-success')
+        self.assertTrue(u'Quote saved.' in success_message.text)
 
         intro = b.find_element_by_xpath('//div[@id="intro"]//h2')
         self.assertEqual(intro.text, 'modified intro title')
@@ -79,8 +79,8 @@ class QuotesSignedInTest(browser.SignedInTest):
 
         b.find_element_by_xpath('//button[@type="submit"]').click()
 
-        section_title = b.find_element_by_class_name('section_title')
-        self.assertEqual(u'Quote', section_title.text)
+        success_message = b.find_element_by_class_name('alert-success')
+        self.assertTrue(u'Quote saved.' in success_message.text)
 
         intro = b.find_element_by_xpath('//div[@id="section_1"]//h2')
         self.assertEqual(intro.text, '1234')
@@ -102,8 +102,8 @@ class QuotesSignedInTest(browser.SignedInTest):
 
         b.find_element_by_xpath('//button[@type="submit"]').click()
 
-        section_title = b.find_element_by_class_name('section_title')
-        self.assertEqual(u'Quote', section_title.text)
+        success_message = b.find_element_by_class_name('alert-success')
+        self.assertTrue(u'Quote saved.' in success_message.text)
 
         name = b.find_element_by_class_name('service_name')
         self.assertEqual(name.text, '1234')
@@ -127,8 +127,8 @@ class QuotesSignedInTest(browser.SignedInTest):
 
         b.find_element_by_xpath('//button[@type="submit"]').click()
 
-        section_title = browser.instance().find_element_by_class_name('section_title')
-        self.assertEqual(u'Quote', section_title.text)
+        success_message = b.find_element_by_class_name('alert-success')
+        self.assertTrue(u'Quote saved.' in success_message.text)
 
         el = b.find_element_by_xpath('//div[@id="section_1"]//h2')
         self.assertEqual(el.text, '1234')
@@ -157,8 +157,8 @@ class QuotesSignedInTest(browser.SignedInTest):
 
         b.find_element_by_xpath('//button[@type="submit"]').click()
 
-        section_title = browser.instance().find_element_by_class_name('section_title')
-        self.assertEqual(u'Quote', section_title.text)
+        success_message = b.find_element_by_class_name('alert-success')
+        self.assertTrue(u'Quote saved.' in success_message.text)
 
         el = b.find_element_by_xpath('//div[@id="section_1"]//h2')
         self.assertEqual(el.text, '1234')
