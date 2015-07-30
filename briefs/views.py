@@ -3,8 +3,8 @@ from briefs import models as b
 from django.http import HttpResponseRedirect
 from django.template.response import TemplateResponse
 from gallant import models as g
-from django.views.generic import ListView, CreateView, DetailView, View
-from briefs import forms
+from django.views.generic import ListView, DetailView, View
+from briefs import forms as bf
 from django.shortcuts import get_object_or_404
 
 
@@ -36,8 +36,9 @@ class BriefUpdate(View):
         else:
             self.object = get_object_or_404(b.Brief, pk=kwargs['pk'])
 
-        form = forms.BriefForm(instance=self.object)
-        context.update({'object': self.object, 'form': form, 'title': 'Edit Brief'})
+        form = bf.BriefForm(instance=self.object)
+        questions = [bf.QuestionForm(instance=q, prefix='-question-%d' % q.index) for q in self.object.questions.all()]
+        context.update({'object': self.object, 'form': form, 'title': 'Edit Brief', 'questions': questions})
         return self.render_to_response(context)
 
     def post(self, request, *args, **kwargs):
@@ -50,7 +51,7 @@ class BriefUpdate(View):
             else:
                 self.object = None
 
-        form = forms.BriefForm(request.POST, instance=self.object)
+        form = bf.BriefForm(request.POST, instance=self.object)
         if form.is_valid():
             obj = form.save()
             if self.kwargs['brief_type'] == "client":
@@ -68,7 +69,7 @@ class BriefCreate(BriefUpdate):
         if self.kwargs['brief_type'] == 'client':
             client = get_object_or_404(g.Client, pk=kwargs['type_id'])
             context['client'] = client
-        form = forms.BriefForm()
+        form = bf.BriefForm()
         context.update({'form': form, 'title': 'Create Brief'})
         return self.render_to_response(context)
 

@@ -34,11 +34,10 @@ class QuestionForm(forms.ModelForm):
 
     def as_table(self):
         t = get_template('briefs/question_form.html')
-        if self.instance:
-            question = self.instance
-        else:
-            question = self.save(commit=False)
-        context = {'prefix': self.prefix + '-', 'question': question, 'extra_class': 'dynamic_section'}
+        if not self.instance:
+            self.instance = self.save(commit=False)
+
+        context = {'prefix': self.prefix + '-', 'question': self.instance, 'extra_class': 'dynamic_section'}
         return t.render(context)
 
     def save(self, commit=True):

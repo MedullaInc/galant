@@ -11,8 +11,8 @@
 <input type="hidden" id="id_{{ prefix }}id" name="{{ prefix }}id" value="{{ question.id }}"/>
 {% endif %}
 <tr class="question_text">
-    <td><input class="ultext" type="hidden" id="id_{{ prefix }}question" name="{{ prefix }}question"
-               for="id_{{ prefix }}question" value="{{ question.json }}"/>
+    <td><input class="ultext" type="hidden" id="id_{{ prefix }}question_hidden" name="{{ prefix }}question"
+               for="id_{{ prefix }}question" value="{{ question.question.json }}"/>
         <input class="form-control" id="id_{{ prefix }}question" maxlength="512"
                type="text" value=""/></td>
 </tr>
