@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.core.urlresolvers import reverse
 from briefs import models as b
 from django.http import HttpResponseRedirect
@@ -59,6 +60,8 @@ class BriefUpdate(View):
             obj.questions.clear()
             for q in questions:
                 obj.questions.add(q.save())
+
+            messages.success(self.request, 'Brief saved.')
 
             if self.kwargs['brief_type'] == "client":
                 return HttpResponseRedirect(reverse('brief_detail', args=['client', kwargs['type_id'], obj.id]))
