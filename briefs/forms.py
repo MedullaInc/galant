@@ -39,18 +39,49 @@ class QuestionForm(forms.ModelForm):
         context = {'prefix': self.prefix + '-', 'question': self.instance, 'extra_class': 'dynamic_section'}
         return t.render(context)
 
-    def save(self, commit=True):
-        if self.prefix:
-            idx = re.match('-question-(\d+)', self.prefix).group(1) or 0
-            self.instance.index = idx
-        return super(QuestionForm, self).save(commit)
+
+class MultiQuestionForm(forms.ModelForm):
+    class Meta:
+        model = b.MultipleChoiceQuestion
+        fields = ['question', 'index', 'choices']
+
+    def __init__(self, data=None, prefix=None, *args, **kwargs):
+        # see if update or create
+        prefix = prefix or ''
+        data = data or {}
+        if prefix + '-id' in data:
+            question = get_object_or_404(b.MultipleChoiceQuestion, pk=data[prefix + '-id'])
+            super(MultiQuestionForm, self).__init__(data=data, prefix=prefix, instance=question, *args, **kwargs)
+        else:
+            super(MultiQuestionForm, self).__init__(data=data, prefix=prefix, *args, **kwargs)
+
+    def as_table(self):
+        t = get_template('briefs/multiquestion_form.html')
+        if not self.instance:
+            self.instance = self.save(commit=False)
+
+        context = {'prefix': self.prefix + '-', 'question': self.instance, 'extra_class': 'dynamic_section'}
+        return t.render(context)
 
 
-def questions_from_post(data):
+def question_forms_post(data):
     qf = []
     for key, value in sorted(data.items(), key=operator.itemgetter(1)):
         m = re.match('(-question-\d+)-question', key)
         if m is not None:
             qf.append(QuestionForm(data, prefix=m.group(1)))
+
+    return qf
+
+
+def question_forms_brief(brief, clear_pk=False):
+    qf = []
+    for question in brief.questions.all().select_subclasses():
+        if clear_pk:
+            question.pk = None
+        if type(question) is b.MultipleChoiceQuestion:
+            qf.append(MultiQuestionForm(instance=question, prefix='-question-%d' % question.index))
+        elif type(question) is b.Question:
+            qf.append(QuestionForm(instance=question, prefix='-question-%d' % question.index))
 
     return qf

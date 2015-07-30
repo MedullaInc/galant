@@ -1,0 +1,24 @@
+<tbody id="{{ prefix }}" class="question multiquestion {{ extra_class }}">
+<tr>
+    <td>Q:&nbsp;&nbsp;</td>
+    <td>
+        <button id="{{ prefix }}remove" type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </td>
+</tr>
+{% if question.id %}
+<input class="question_id" type="hidden" id="id_{{ prefix }}id" name="{{ prefix }}id" value="{{ question.id }}"/>
+{% endif %}
+<input class="question_index" type="hidden" id="id_{{ prefix }}index" name="{{ prefix }}index" value="{{ question.index }}"/>
+<tr class="question_text">
+    <td><input class="ultext" type="hidden" id="id_{{ prefix }}question_hidden" name="{{ prefix }}question"
+               for="id_{{ prefix }}question" value="{{ question.question.json }}"/>
+        <input class="form-control" id="id_{{ prefix }}question" maxlength="512"
+               type="text" value=""/></td>
+</tr>
+<tr class="question_choices">
+    <td><input class="ultext_array" type="hidden" id="id_{{ prefix }}choices_hidden" name="{{ prefix }}choices"
+               value="{{ question.choices.json }}"/></td>
+</tr>
+</tbody>

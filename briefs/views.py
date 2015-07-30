@@ -38,7 +38,7 @@ class BriefUpdate(View):
             self.object = get_object_or_404(b.Brief, pk=kwargs['pk'])
 
         form = bf.BriefForm(instance=self.object)
-        questions = [bf.QuestionForm(instance=q, prefix='-question-%d' % q.index) for q in self.object.questions.all()]
+        questions = bf.question_forms_brief(self.object)
         context.update({'object': self.object, 'form': form, 'title': 'Edit Brief', 'questions': questions})
         return self.render_to_response(context)
 
@@ -53,7 +53,7 @@ class BriefUpdate(View):
                 self.object = None
 
         form = bf.BriefForm(request.POST, instance=self.object)
-        questions = bf.questions_from_post(request.POST)
+        questions = bf.question_forms_post(request.POST)
 
         if form.is_valid():
             obj = form.save()

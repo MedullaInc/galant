@@ -2,6 +2,7 @@ from django.conf import settings
 from django.db import models as m
 from gallant import models as g
 from gallant import fields as gf
+from model_utils.managers import InheritanceManager
 
 
 class Question(m.Model):
@@ -11,6 +12,8 @@ class Question(m.Model):
     question = gf.ULCharField()
     help_text = gf.ULCharField()
     index = m.IntegerField(default=0)
+
+    objects = InheritanceManager()
 
 
 class QuestionTemplate(Question):
