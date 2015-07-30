@@ -8,8 +8,9 @@
     </td>
 </tr>
 {% if question.id %}
-<input type="hidden" id="id_{{ prefix }}id" name="{{ prefix }}id" value="{{ question.id }}"/>
+<input class="question_id" type="hidden" id="id_{{ prefix }}id" name="{{ prefix }}id" value="{{ question.id }}"/>
 {% endif %}
+<input class="question_index" type="hidden" id="id_{{ prefix }}index" name="{{ prefix }}index" value="{{ question.index }}"/>
 <tr class="question_text">
     <td><input class="ultext" type="hidden" id="id_{{ prefix }}question_hidden" name="{{ prefix }}question"
                for="id_{{ prefix }}question" value="{{ question.question.json }}"/>

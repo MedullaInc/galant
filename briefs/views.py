@@ -52,8 +52,14 @@ class BriefUpdate(View):
                 self.object = None
 
         form = bf.BriefForm(request.POST, instance=self.object)
+        questions = bf.questions_from_post(request.POST)
+
         if form.is_valid():
             obj = form.save()
+            obj.questions.clear()
+            for q in questions:
+                obj.questions.add(q.save())
+
             if self.kwargs['brief_type'] == "client":
                 return HttpResponseRedirect(reverse('brief_detail', args=['client', kwargs['type_id'], obj.id]))
         else:
@@ -72,7 +78,6 @@ class BriefCreate(BriefUpdate):
         form = bf.BriefForm()
         context.update({'form': form, 'title': 'Create Brief'})
         return self.render_to_response(context)
-
 
 
 class BriefDetail(DetailView):

@@ -12,9 +12,11 @@
     {% endif %}
 </tr>
 {% if section.id %}
-<input type="hidden" id="id_{{ prefix }}id" name="{{ prefix }}id" value="{{ section.id }}"/>
+<input class="section_id" type="hidden" id="id_{{ prefix }}id" name="{{ prefix }}id" value="{{ section.id }}"/>
 {% endif %}
-<input type="hidden" id="id_{{ prefix }}name" name="{{ prefix }}name" value="{% firstof name section.name %}"/>
+<input class="section_name" type="hidden" id="id_{{ prefix }}name" name="{{ prefix }}name"
+       value="{% firstof name section.name %}"/>
+<input class="section_index" type="hidden" id="id_{{ prefix }}index" name="{{ prefix }}index" value="{{ section.index }}"/>
 <tr class="section_title">
     <td>Title:&nbsp;&nbsp;</td>
     <td><input class="ultext" type="hidden" id="id_{{ prefix }}title_hidden" name="{{ prefix }}title"

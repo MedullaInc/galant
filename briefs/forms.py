@@ -1,9 +1,8 @@
+import operator
 from django import forms
 from django.shortcuts import get_object_or_404
 from django.template.loader import get_template
-from django.utils import six
 from briefs import models as b
-from django.utils.encoding import smart_text
 import re
 
 
@@ -20,15 +19,15 @@ class BriefForm(forms.ModelForm):
 class QuestionForm(forms.ModelForm):
     class Meta:
         model = b.Question
-        fields = ['question']
+        fields = ['question', 'index']
 
     def __init__(self, data=None, prefix=None, *args, **kwargs):
         # see if update or create
         prefix = prefix or ''
         data = data or {}
         if prefix + '-id' in data:
-            section = get_object_or_404(q.Section, pk=data[prefix + '-id'])
-            super(QuestionForm, self).__init__(data=data, prefix=prefix, instance=section, *args, **kwargs)
+            question = get_object_or_404(b.Question, pk=data[prefix + '-id'])
+            super(QuestionForm, self).__init__(data=data, prefix=prefix, instance=question, *args, **kwargs)
         else:
             super(QuestionForm, self).__init__(data=data, prefix=prefix, *args, **kwargs)
 
@@ -46,3 +45,12 @@ class QuestionForm(forms.ModelForm):
             self.instance.index = idx
         return super(QuestionForm, self).save(commit)
 
+
+def questions_from_post(data):
+    qf = []
+    for key, value in sorted(data.items(), key=operator.itemgetter(1)):
+        m = re.match('(-question-\d+)-question', key)
+        if m is not None:
+            qf.append(QuestionForm(data, prefix=m.group(1)))
+
+    return qf

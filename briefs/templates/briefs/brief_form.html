@@ -41,16 +41,19 @@
         };
 
         reindexQuestions = function () {
-            $('#section_table > tbody.section').each(function (i) {
+            $('#question_table > tbody.question').each(function (i) {
                 if (!$(this).hasClass('dynamic_section')) {
                     return true;
                 }
 
                 var new_question = $.parseHTML(question(i));
 
-                // gallant.copyElement(new_section, this, '.section_id');
+                gallant.copyElement(new_question, this, '.question_id');
+                gallant.copyElement(new_question, this, '.question_text input[type="hidden"]');
+                gallant.copyElement(new_question, this, '.question_text input[type="text"]');
+                $(new_question).find('.question_index').val(i);
 
-                $(this).replaceWith(new_section);
+                $(this).replaceWith(new_question);
             });
         };
 
