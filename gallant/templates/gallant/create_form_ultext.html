@@ -29,7 +29,7 @@
             });
 
             $('.ultext_array').each(function () {
-                var data_array = {};
+                var data_array = [];
                 var targets = $('#' + this.getAttribute('for')).find('.ultext_array_target');
 
                 try {
@@ -71,7 +71,7 @@
                 });
 
                 $('.ultext_array').each(function () {
-                    var data_array = {};
+                    var data_array = [];
                     var targets = $('#' + this.getAttribute('for')).find('.ultext_array_target');
                     try {
                         data_array = JSON.parse(this.value);

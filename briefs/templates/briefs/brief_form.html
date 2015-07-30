@@ -87,14 +87,14 @@
 
         $('#add_multiquestion').click(function () {
             counter++;
-            var newquestion = $('#question_table > tbody:last').before(multiquestion(counter));
+            $('#question_table > tbody:last').before(multiquestion(counter));
             reindexQuestions();
         });
 
         $('.add_choice').click(add_choice);
 
         $(document.body).on('click', '.close', function () {
-            del = confirm("Remove question?")
+            var del = confirm("Remove question?")
             if (del) {
                 $(this).parents('tbody')[0].remove();
                 counter--;
