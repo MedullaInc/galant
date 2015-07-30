@@ -2082,6 +2082,7 @@ div.sidebar {
 
 table.table-striped.table-bordered {
     border: 1px solid #666666;
+    margin-bottom: 40px;
 }
 
 table.table-striped.table-bordered thead th {
@@ -2149,3 +2150,40 @@ table.table-striped.table-bordered thead th, table.table-striped.table-bordered 
 p {
     font-size: 16px;
 }
+
+/* Popover */
+
+div.popover {
+    width: 186px;
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 0px;
+}
+
+div.popover-content {
+    padding: 0px 10px 10px 10px;
+}
+
+/* End Popover */
+
+/* Modal Boxes */
+
+div.modal-dialog * {
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 0px;
+}
+
+div.modal-dialog div.modal-header {
+    padding: 10px 10px 5px 10px;
+}
+
+div.modal-dialog div.modal-body {
+    padding: 20px 10px 10px 10px;
+}
+
+div.modal-dialog div.modal-footer {
+    display:none;
+}
+
+/* End Modal Boxes*/
