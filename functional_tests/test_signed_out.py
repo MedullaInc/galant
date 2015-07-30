@@ -24,7 +24,7 @@ class SignedOutTest(LiveServerTestCase):
     def test_can_login_int(self):
         language = get_language()
         for lang, e_text in [('en', u'Account Login'),
-                                ('es', u'Iniciar Sesión')]:
+                             ('es', u'Iniciar Sesión')]:
             activate(lang)
             self.browser.get(self.live_server_url + reverse('home'))
             e = self.browser.find_element_by_css_selector(".login-title")
@@ -35,7 +35,7 @@ class SignedOutTest(LiveServerTestCase):
     def test_can_signup_int(self):
         language = get_language()
         for lang, e_text in [('en', u'Sign Up Now!'),
-                                ('es', u'Regístrate!')]:
+                             ('es', u'Regístrate!')]:
             activate(lang)
             self.browser.get(self.live_server_url + reverse('home'))
             e = self.browser.find_element_by_name("signup")
@@ -51,10 +51,13 @@ class SignedOutTest(LiveServerTestCase):
                 continue
 
             # add singe <pk>-requiring views here:
-            if view_name in ['edit_client', 'client_detail', 'edit_service', 'service_detail','edit_quote', 'quote_detail', 'edit_quote_template', 'client_briefs']:
+            if view_name in ['edit_client', 'client_detail', 'edit_service', 'service_detail', 'edit_quote',
+                             'quote_detail', 'edit_quote_template', 'client_briefs']:
                 url = self.live_server_url + reverse(view_name, args=[0])
-            elif view_name in ['add_brief','brief_detail', 'edit_brief']:
+            elif view_name in ['add_brief', 'brief_list']:
                 url = self.live_server_url + reverse(view_name, args=['client', 0])
+            elif view_name in ['brief_detail', 'edit_brief']:
+                url = self.live_server_url + reverse(view_name, args=['client', 0, 0])
             else:
                 url = self.live_server_url + reverse(view_name)
 

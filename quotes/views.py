@@ -26,7 +26,7 @@ class QuoteUpdate(View):
             self.object = get_object_or_404(q.Quote, pk=self.kwargs['pk'])
         else:
             self.object = None
-            
+
         form = qf.QuoteForm(request.POST, instance=self.object)
         section_forms = qf.section_forms_post(request.POST)
         if form.is_valid():

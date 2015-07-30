@@ -13,7 +13,7 @@
         </button>
     </a>
 
-    <a href="{% url 'edit_brief' brief_type="client" pk=brief.id %}">
+    <a href="{% url 'edit_brief' brief_type="client" type_id=client.id pk=brief.id %}">
         <button type="button" class="btn btn-default sidebar" id="add_client_brief">
             {% trans "Edit Brief" %}
         </button>

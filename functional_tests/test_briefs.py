@@ -22,7 +22,7 @@ class BriefsSignedInTest(browser.SignedInTest):
         c.save()
 
         # access Client Briefs & click add brief
-        b.get(self.live_server_url + reverse('client_briefs', args=[c.id]))
+        b.get(self.live_server_url + reverse('brief_list', args=['client', c.id]))
         b.find_element_by_id('add_client_brief').click()
 
         # fill out brief & save
@@ -37,7 +37,7 @@ class BriefsSignedInTest(browser.SignedInTest):
         q = autofixture.create_one('briefs.ClientBrief', generate_fk=True)
         q.save()
 
-        b.get(self.live_server_url + reverse('edit_brief', args=['client', q.id]))
+        b.get(self.live_server_url + reverse('edit_brief', args=['client', q.client.id, q.id]))
         self.load_scripts()
 
         b.find_element_by_id('id_title').clear()
@@ -53,7 +53,7 @@ class BriefsSignedInTest(browser.SignedInTest):
         q = autofixture.create_one('briefs.ClientBrief', generate_fk=True)
         q.save()
 
-        b.get(self.live_server_url + reverse('brief_detail', args=['client', q.id]))
+        b.get(self.live_server_url + reverse('brief_detail', args=['client', q.client.id, q.id]))
         self.load_scripts()
 
         section_title = browser.instance().find_element_by_class_name('section_title')

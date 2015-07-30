@@ -13,7 +13,7 @@
         </button>
     </a>
 
-    <a href="{% url 'add_brief' brief_type="client" pk=client.id %}">
+    <a href="{% url 'add_brief' brief_type="client" type_id=client.id %}">
         <button type="button" class="btn btn-default sidebar" id="add_client_brief">
             {% trans "Create Brief" %}
         </button>
@@ -45,7 +45,8 @@
 {% block extra_body %}
     <script>
         $('.table > tbody > tr').click(function () {
-            window.location.href = "{% url 'brief_detail' brief_type="client" %}" + $(this).attr('data-rel')
+            window.location.href = "{% url 'brief_detail' brief_type="client" type_id=client.id %}" +
+                    $(this).attr('data-rel');
         });
     </script>
 {% endblock %}
