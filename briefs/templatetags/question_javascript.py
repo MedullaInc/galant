@@ -15,9 +15,9 @@ def question_form_javascript():
 
 
 @register.simple_tag
-def multquestion_form_javascript():
+def multiquestion_form_javascript():
     """Returns a javascript string to be used with gallant.js's format function
     """
-    t = get_template('briefs/multquestion_form.html')
+    t = get_template('briefs/multiquestion_form.html')
     ret = t.render({'prefix': '{0}', 'extra_class': 'dynamic_section'})
     return re.sub(r'(.*)', r"'\1' +", ret) + "''"

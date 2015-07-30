@@ -26,6 +26,7 @@
         <tr>
             <td>
                 <button type="button" id="add_question" class="btn btn-default" style="float: right">Add Question</button>
+                <button type="button" id="add_multiquestion" class="btn btn-default" style="float: left">Add Multiple Choice Question</button>
             </td>
         </tr>
     </table>
@@ -40,13 +41,23 @@
             return str.format('-question-' + ct + '-');
         };
 
+        multiquestion = function (ct) {
+            var str = {% multiquestion_form_javascript %};
+            return str.format('-multiquestion-' + ct + '-');
+        };
+
         reindexQuestions = function () {
             $('#question_table > tbody.question').each(function (i) {
                 if (!$(this).hasClass('dynamic_section')) {
                     return true;
                 }
 
-                var new_question = $.parseHTML(question(i));
+                if ($(this).hasClass('multiquestion')) {
+                    var new_question = $.parseHTML(multiquestion(i));
+
+                } else {
+                    var new_question = $.parseHTML(question(i));
+                }
 
                 gallant.copyElement(new_question, this, '.question_id');
                 gallant.copyElement(new_question, this, '.question_text input[type="hidden"]');
@@ -60,6 +71,12 @@
         $('#add_question').click(function () {
             counter++;
             $('#question_table > tbody:last').before(question(counter));
+            reindexQuestions();
+        });
+
+        $('#add_multiquestion').click(function () {
+            counter++;
+            $('#question_table > tbody:last').before(multiquestion(counter));
             reindexQuestions();
         });
 
