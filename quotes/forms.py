@@ -51,6 +51,7 @@ def section_forms_post(data):
             if m is not None:
                 sf.append(ServiceSectionForm(data, prefix=m.group(1)))
 
+    sf.sort(key=lambda x: x.index)
     return sf
 
 
@@ -87,6 +88,8 @@ class SectionForm(forms.ModelForm):
         else:
             super(SectionForm, self).__init__(data=data, prefix=prefix, *args, **kwargs)
 
+        self.index = self.instance.index
+
     def as_table(self):
         t = get_template('quotes/section_form.html')
         if self.instance:
@@ -117,8 +120,10 @@ class ServiceSectionForm(forms.ModelForm):
             self.instance = self.section.service
         else:
             name = self.data[self.prefix + '-section_name']
+            index = self.data[self.prefix + '-index']
             self.section = type('obj', (object,), {'name': name, 'display_title': name.replace('_', ' ').title(),
-                                                   'service': self.instance})
+                                                   'service': self.instance, 'index': index})
+        self.index = self.section.index
 
     def as_table(self):
         t = get_template('quotes/service_section_form.html')
