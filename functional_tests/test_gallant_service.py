@@ -21,9 +21,9 @@ class GallantServiceTest(browser.SignedInTest):
         b.find_element_by_xpath('//textarea[@name="notes"]').send_keys('asdf')
 
         b.find_element_by_xpath('//button[@type="submit"]').click()
-        h3 = b.find_element_by_tag_name('h3')
 
-        self.assertEqual(u'Service', h3.text)
+        success_message = b.find_element_by_class_name('alert-success')
+        self.assertTrue(u'Service saved.' in success_message.text)
 
     def test_edit_service(self):
         b = browser.instance()
@@ -40,8 +40,9 @@ class GallantServiceTest(browser.SignedInTest):
         b.find_element_by_xpath('//textarea[@name="notes"]').send_keys(';;;;;;;;;')
 
         b.find_element_by_xpath('//button[@type="submit"]').click()
-        h3 = b.find_element_by_tag_name('h3')
-        self.assertEqual(u'Service', h3.text)
+
+        success_message = b.find_element_by_class_name('alert-success')
+        self.assertTrue(u'Service saved.' in success_message.text)
 
     def test_add_service_note(self):
         b = browser.instance()

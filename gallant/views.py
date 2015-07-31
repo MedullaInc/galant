@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.views.generic import View
 from django.template.response import TemplateResponse
 from django.http import HttpResponseRedirect
@@ -45,6 +46,7 @@ class ClientUpdate(View):
         note = g.Note.objects.create(text=text, created_by=user)
         obj.notes.add(note)
         obj.save()
+        messages.success(self.request, 'Client saved.')
         return HttpResponseRedirect(reverse('client_detail', args=[obj.id]))
 
 
@@ -85,6 +87,7 @@ class ServiceUpdate(View):
         note = g.Note.objects.create(text=text, created_by=user)
         obj.notes.add(note)
         obj.save()
+        messages.success(self.request, 'Service saved.')
         return HttpResponseRedirect(reverse('service_detail', args=[obj.id]))
 
 
