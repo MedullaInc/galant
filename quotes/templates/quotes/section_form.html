@@ -1,34 +1,51 @@
-<tbody id="{{ prefix }}" class="section {{ extra_class }}">
-<tr>
-    <td>
-        <label class="control-label  " for="id_{{ prefix }}">{% firstof label section.display_title %}</label>
-    </td>
-    {% if section.name != 'intro' and section.name != 'margin' %}
-    <td>
-        <button id="{{ prefix }}remove" type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </td>
+<div id="{{ prefix }}" class="section {{ extra_class }}">
+
+    <div class="row margin-bottom-10">
+        <div class="col-lg-11">
+            <label class="control-label" for="id_{{ prefix }}">
+                <h3 class="section_title">
+                    {% firstof label section.display_title %}
+                </h3>
+            </label>
+        </div>
+        {% if section.name != 'intro' and section.name != 'margin' %}
+            <div class="col-lg-1">
+                <button id="{{ prefix }}remove" type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        {% endif %}
+    </div>
+
+    {% if section.id %}
+    <input class="section_id" type="hidden" id="id_{{ prefix }}id" name="{{ prefix }}id" value="{{ section.id }}"/>
     {% endif %}
-</tr>
-{% if section.id %}
-<input class="section_id" type="hidden" id="id_{{ prefix }}id" name="{{ prefix }}id" value="{{ section.id }}"/>
-{% endif %}
-<input class="section_name" type="hidden" id="id_{{ prefix }}name" name="{{ prefix }}name"
-       value="{% firstof name section.name %}"/>
-<input class="section_index" type="hidden" id="id_{{ prefix }}index" name="{{ prefix }}index" value="{{ section.index }}"/>
-<tr class="section_title">
-    <td>Title:&nbsp;&nbsp;</td>
-    <td><input class="ultext" type="hidden" id="id_{{ prefix }}title_hidden" name="{{ prefix }}title"
-               for="id_{{ prefix }}title" value="{{ section.title.json }}"/>
-        <input class="form-control" id="id_{{ prefix }}title" maxlength="512"
-               type="text" value=""/></td>
-</tr>
-<tr class="section_text">
-    <td>Content:&nbsp;&nbsp;</td>
-    <td><input class="ultext" type="hidden" id="id_{{ prefix }}text_hidden" name="{{ prefix }}text"
-               for="id_{{ prefix }}text" value="{{ section.text.json }}"/>
-        <textarea rows="5" style="width:100%;" id="id_{{ prefix }}text"></textarea>
-    </td>
-</tr>
-</tbody>
+
+    <input class="section_name" type="hidden" id="id_{{ prefix }}name" name="{{ prefix }}name" value="{% firstof name section.name %}"/>
+    <input class="section_index" type="hidden" id="id_{{ prefix }}index" name="{{ prefix }}index" value="{{ section.index }}"/>
+
+    <div class="row section_title margin-bottom-10">
+        <div class="col-lg-2">
+            <label for="title" class="form_label">
+                Title:
+            </label>
+        </div>
+        <div class="col-lg-10">
+            <input class="ultext" type="hidden" id="id_{{ prefix }}title_hidden" name="{{ prefix }}title" for="id_{{ prefix }}title" value="{{ section.title.json }}"/>
+            <input class="form-control" id="id_{{ prefix }}title" maxlength="512" type="text" value=""/>
+        </div>
+    </div>
+
+    <div class="row section_text margin-bottom-10">
+        <div class="col-lg-2">
+            <label for="content" class="form_label">
+                Content:
+            </label>
+        </div>
+        <div class="col-lg-10">
+            <input class="ultext" type="hidden" id="id_{{ prefix }}text_hidden" name="{{ prefix }}text" for="id_{{ prefix }}text" value="{{ section.text.json }}"/>
+            <textarea rows="5" style="width:100%;" id="id_{{ prefix }}text"></textarea>
+        </div>
+    </div>
+
+</div>

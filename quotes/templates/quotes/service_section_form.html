@@ -1,58 +1,80 @@
-<tbody id="{{ prefix }}" class="section service {{ extra_class }}">
-<tr>
-    <td>
-        <label class="control-label  " for="id_{{ prefix }}">{% firstof section.display_title label %} - Service</label>
-    </td>
-    <td>
-        <button id="{{ prefix }}remove" type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </td>
-</tr>
-{% if section.id %}
-<input type="hidden" class="section_id" id="id_{{ prefix }}id" name="{{ prefix }}id" value="{{ section.id }}"/>
-{% endif %}
-<input type="hidden" class="section_name" id="id_{{ prefix }}section_name" name="{{ prefix }}section_name" value="{% firstof name section.name %}"/>
-{% with service=section.service %}
-<tr class="service_name">
-    <td>Name:&nbsp;&nbsp;</td>
-    <td><input class="ultext" type="hidden" id="id_{{ prefix }}name_hidden" name="{{ prefix }}name"
-               for="id_{{ prefix }}name" value="{{ service.name.json }}"/>
-        <input class="form-control" id="id_{{ prefix }}name" maxlength="512"
-               type="text" value=""/></td>
-</tr>
-<tr class="service_description">
-    <td>Description:&nbsp;&nbsp;</td>
-    <td><input class="ultext" type="hidden" id="id_{{ prefix }}description_hidden" name="{{ prefix }}description"
-               for="id_{{ prefix }}description" value="{{ service.description.json }}"/>
-        <textarea rows="5" style="width:100%;" id="id_{{ prefix }}description"></textarea>
-    </td>
-</tr>
-<tr class="service_cost">
-    <td>Cost:&nbsp;&nbsp;</td>
-    <td>
-        <input class=" form-control" id="id_{{ prefix }}cost" name="{{ prefix }}cost_0" step="10"
-               type="number" value="{% firstof service.cost.amount '0.0' %}"/>
-        <input type="hidden" name="{{ prefix }}cost_1" value="USD"/>
-    </td>
-</tr>
-<tr class="service_quantity">
-    <td>Quantity:&nbsp;&nbsp;</td>
-    <td>
-        <input class=" form-control" id="id_{{ prefix }}quantity" name="{{ prefix }}quantity" step="1"
-               type="number" value="{% firstof service.quantity '0' %}"/>
-    </td>
-</tr>
-<tr class="service_type">
-    <td>Type:&nbsp;&nbsp;</td>
-    <td>
-        <select class=" form-control" id="id_{{ prefix }}type" name="{{ prefix }}type">
-            <option value="" {% if '' == service.type %}selected="selected"{% endif %}>---------</option>
-            {% for value, text in type_choices %}
-            <option value="{{ value }}" {% if value == service.type %}selected="selected"{% endif %}>{{ text }}</option>
-            {% endfor %}
-        </select>
-    </td>
-</tr>
-{% endwith %}
-</tbody>
+<div id="{{ prefix }}" class="section service {{ extra_class }}">
+    <div class="row margin-bottom-10">
+        <div class="col-lg-11">
+            <label class="control-label" for="id_{{ prefix }}">
+                <h3 class="section_title">
+                    {% firstof section.display_title label %} - Service
+                </h3>
+            </label>
+        </div>
+        <div class="col-lg-1">
+            <button id="{{ prefix }}remove" type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    </div>
+    {% if section.id %}
+        <input type="hidden" class="section_id" id="id_{{ prefix }}id" name="{{ prefix }}id" value="{{ section.id }}"/>
+    {% endif %}
+    <input type="hidden" class="section_name" id="id_{{ prefix }}section_name" name="{{ prefix }}section_name" value="{% firstof name section.name %}"/>
+    {% with service=section.service %}
+
+        <div class="row service_name margin-bottom-10">
+            <div class="col-lg-2">
+                <label for="title" class="form_label">
+                    Name:
+                </label>
+            </div>
+            <div class="col-lg-10">
+                <input class="ultext" type="hidden" id="id_{{ prefix }}name_hidden" name="{{ prefix }}name" for="id_{{ prefix }}name" value="{{ service.name.json }}"/>
+                <input class="form-control" id="id_{{ prefix }}name" maxlength="512" type="text" value=""/>
+            </div>
+        </div>
+
+        <div class="row service_description margin-bottom-10">
+            <div class="col-lg-2">
+                <label for="title" class="form_label">
+                    Description:
+                </label>
+            </div>
+            <div class="col-lg-10">
+                <input class="ultext" type="hidden" id="id_{{ prefix }}description_hidden" name="{{ prefix }}description" for="id_{{ prefix }}description" value="{{ service.description.json }}"/>
+                <textarea rows="5" style="width:100%;" id="id_{{ prefix }}description"></textarea>
+            </div>
+        </div>
+
+        <div class="row service_cost margin-bottom-10">
+            <div class="col-lg-2">
+                Cost:&nbsp;&nbsp;
+            </div>
+            <div class="col-lg-10">
+                <input class=" form-control" id="id_{{ prefix }}cost" name="{{ prefix }}cost_0" step="10" type="number" value="{% firstof service.cost.amount '0.0' %}"/>
+                <input type="hidden" name="{{ prefix }}cost_1" value="USD"/>
+            </div>
+        </div>
+
+        <div class="row service_quantity margin-bottom-10">
+            <div class="col-lg-2">
+                Quantity:&nbsp;&nbsp;
+            </div>
+            <div class="col-lg-10">
+                <input class=" form-control" id="id_{{ prefix }}quantity" name="{{ prefix }}quantity" step="1" type="number" value="{% firstof service.quantity '0' %}"/>
+            </div>
+        </div>
+
+        <div class="row service_type margin-bottom-10">
+            <div class="col-lg-2">
+                Type:&nbsp;&nbsp;
+            </div>
+            <div class="col-lg-10">
+                <select class=" form-control" id="id_{{ prefix }}type" name="{{ prefix }}type">
+                    <option value="" {% if '' == service.type %}selected="selected"{% endif %}>---------</option>
+                    {% for value, text in type_choices %}
+                        <option value="{{ value }}" {% if value == service.type %}selected="selected"{% endif %}>{{ text }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+
+    {% endwith %}
+</div>

@@ -1,29 +1,33 @@
 {% extends "gallant/create_form_ultext.html" %}
 {% load bootstrap i18n section_javascript %}
 
-{% block sidebar %}{% endblock %}
+{% block sidebar %}
+{% endblock %}
 
 {% block post_form %}
-    <table id="section_table" width="500">
+
+    <div id="section_table">
+
         {% for s in sections %}
             {{ s }}
         {% endfor %}
-        <tr>
-            <td>
-                <button type="button" id="add_section" class="btn btn-default" style="float: right">Add Section</button>
-            </td>
-            <td>
-                <button type="button" id="add_service" class="btn btn-default" style="float: right">Add Service</button>
-            </td>
-        </tr>
-    </table>
+
+        <div class="row">
+            <div class="col-lg-6">
+            </div>
+            <div class="col-lg-6">
+                <button type="button" id="add_service" class="btn btn-default pull-right margin-left-10">Add Service</button>
+                <button type="button" id="add_section" class="btn btn-default pull-right">Add Section</button>
+            </div>
+        </div>
+
+    </div>
+
 {% endblock %}
 
 {% block form_actions %}
     {{ block.super }}
-    <td><div class="form-actions">
-        <button id="preview_pdf" class="btn btn-default" type="button">{% trans "Preview" %}</button>
-    </div></td>
+    <button id="preview_pdf" class="btn btn-default margin-left-10" type="button">{% trans "Preview" %}</button>
 {% endblock %}
 
 {% block extra_body %}
@@ -42,7 +46,7 @@
 
         renameSections = function () {
             var dyn_section_idx = 1;
-            $('#section_table > tbody.section').each(function (i) {
+            $('#section_table > div.section').each(function (i) {
                 if (!$(this).hasClass('dynamic_section')) {
                     return true;
                 }
@@ -75,20 +79,20 @@
 
         $('#add_section').click(function () {
             counter++;
-            $('#section_table > tbody:last').before(section(counter, counter - 1));
+            $('#section_table > div:last').before(section(counter, counter - 1));
             renameSections();
         });
 
         $('#add_service').click(function () {
             counter++;
-            $('#section_table > tbody:last').before(service(counter, counter - 1));
+            $('#section_table > div:last').before(service(counter, counter - 1));
             renameSections();
         });
 
         $(document.body).on('click', '.close', function () {
             del = confirm("Remove section?")
             if (del) {
-                $(this).parents('tbody')[0].remove();
+                $(this).parents('div.section')[0].remove();
                 counter--;
                 renameSections();
             }

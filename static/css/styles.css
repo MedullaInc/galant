@@ -1930,11 +1930,15 @@ h3.area_title {
     right: 25px;
 }
 
-/* Inputs */
-
-input[type="text"].form-control {
-    border: 1px solid #bdc3c7;
+.margin-left-10 {
+    margin-left: 10px;
 }
+
+.margin-bottom-10 {
+    margin-bottom: 10px;
+}
+
+/* Inputs */
 
 .data_row.header {
     padding: 10px;
@@ -2059,15 +2063,15 @@ div.sidebar {
 }
 
 .rounded-border {
-    padding-top: 20px;
-    padding-bottom: 20px;
+    padding-top: 10px;
+    padding-bottom: 15px;
     padding-left: 25px;
     padding-right: 25px;
     border: 1px solid #333333;
-    -webkit-border-radius: 10px;
-    -moz-border-radius: 10px;
-    border-radius: 10px;
-    margin-bottom: 35px;
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 0px;
+    margin-bottom: 25px;
 }
 
 .nav-tabs > li {
@@ -2100,20 +2104,6 @@ table.table-striped.table-bordered thead th, table.table-striped.table-bordered 
     border: 1px solid #666666;
     padding: 10px;
     font-size: 14px;
-}
-
-#form label {
-    font-weight: 200;
-    font-size: 14px;
-}
-
-#form textarea {
-    font-weight: 200;
-    color: #999999;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
-    margin-top: 0px;
 }
 
 #add_note_form, #form {
@@ -2206,8 +2196,8 @@ ul.nav-tabs li a {
     border-radius: 0px;
     border: 1px solid #666666;
     border-bottom: 1px solid #ffffff;
-    padding-left: 20px;
-    padding-right: 20px;
+    padding-left: 40px;
+    padding-right: 40px;
     margin-right: -1px;
 }
 
@@ -2220,8 +2210,8 @@ ul.nav-tabs li a:hover {
     border: 1px solid #666666;
     border-bottom: 1px solid #ffffff;
     padding-top: 10px;
-    padding-left: 20px;
-    padding-right: 20px;
+    padding-left: 40px;
+    padding-right: 40px;
     margin-right: -1px;
     background: #efefef;
 }
@@ -2234,8 +2224,8 @@ ul.nav-tabs li.active a {
     border-radius: 0px;
     border: 1px solid #666666;
     border-bottom: 1px solid #ffffff;
-    padding-left: 20px;
-    padding-right: 20px;
+    padding-left: 40px;
+    padding-right: 40px;
     margin-right: -1px;
 }
 
@@ -2248,8 +2238,8 @@ ul.nav-tabs li.active a:hover {
     border: 1px solid #666666;
     border-bottom: 1px solid #ffffff;
     padding-top: 10px;
-    padding-left: 20px;
-    padding-right: 20px;
+    padding-left: 40px;
+    padding-right: 40px;
     margin-right: -1px;
     z-index: 1000;
 }
@@ -2260,10 +2250,56 @@ ul.nav-tabs li a#add_translation_button {
     border-radius: 0px;
     border: 1px solid #666666;
     border-bottom: 1px solid #ffffff;
-    padding-left: 20px;
-    padding-right: 20px;
+    padding-left: 40px;
+    padding-right: 40px;
     color: #333333;
     background: #efefef;
 }
 
 /* End Tabs */
+
+/* Forms */
+
+#form .section_title {
+    font-size: 22px;
+    font-weight: 100;
+}
+
+#form label {
+    font-weight: 200;
+    font-size: 14px;
+}
+
+#form label.control-label {
+    font-weight: 200;
+    font-size: 16px;
+}
+
+#form label.form_label {
+    font-weight: 200;
+    font-size: 16px;
+}
+
+.close {
+    position: absolute;
+    right: 15px;
+    top: 20px;
+}
+
+#form textarea {
+    font-weight: 200;
+    color: #666666;
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 0px;
+    margin-top: 0px;
+}
+
+input[type="text"].form-control {
+    border: 1px solid #666666;
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 0px;
+}
+
+/* End Forms */
