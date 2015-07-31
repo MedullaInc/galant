@@ -15,9 +15,9 @@
     </div>
     {% if section.id %}
         <input type="hidden" class="section_id" id="id_{{ prefix }}id" name="{{ prefix }}id" value="{{ section.id }}"/>
-        <input class="section_index" type="hidden" id="id_{{ prefix }}index" name="{{ prefix }}index" value="{{ section.index }}"/>
     {% endif %}
     <input type="hidden" class="section_name" id="id_{{ prefix }}section_name" name="{{ prefix }}section_name" value="{% firstof name section.name %}"/>
+    <input class="section_index" type="hidden" id="id_{{ prefix }}index" name="{{ prefix }}index" value="{{ section.index }}"/>
     {% with service=section.service %}
 
         <div class="row service_name margin-bottom-10">
