@@ -74,7 +74,16 @@ class Brief(m.Model):
 
     questions = m.ManyToManyField(Question)
     language = m.CharField(max_length=7, null=True, choices=settings.LANGUAGES,
-                           help_text='Language of quote, or null for template.')
+                           help_text='Language of brief, or null for template.')
+
+    def get_languages(self):
+        language_set = set()
+        language_set.update(self.title.get_languages())
+        for q in list(self.questions.all()):
+            if q is not None:
+                language_set.update(q.question.get_languages())
+
+        return language_set
 
 
 class BriefTemplate(m.Model):
