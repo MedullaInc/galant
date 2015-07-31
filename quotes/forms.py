@@ -121,8 +121,7 @@ class ServiceSectionForm(forms.ModelForm):
         else:
             name = self.data[self.prefix + '-section_name']
             index = self.data[self.prefix + '-index']
-            self.section = type('obj', (object,), {'name': name, 'display_title': name.replace('_', ' ').title(),
-                                                   'service': self.instance, 'index': index})
+            self.section = q.ServiceSection(name=name, index=index)
         self.index = self.section.index
 
     def as_table(self):
@@ -134,12 +133,7 @@ class ServiceSectionForm(forms.ModelForm):
 
     def save(self, commit=True):
         super(ServiceSectionForm, self).save(commit)
-        if self.prefix:
-            idx = re.match('-service-(\d+)', self.prefix).group(1) or 0
-            if hasattr(self.section, 'index'):
-                self.section.index = idx
-            else:
-                self.section = q.ServiceSection.objects.create(service=self.instance, index=idx, name=self.section.name)
+        self.section.service = self.instance
 
         self.section.save()
         return self.section

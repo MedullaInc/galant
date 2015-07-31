@@ -14,7 +14,7 @@ class SectionTest(test.TransactionTestCase):
 
         self.assertEqual(section.title, new_section.title)
         self.assertEqual(section.text, new_section.text)
-        
+
     def test_sub_sections(self):
         fixture = AutoFixture(q.Section, generate_fk=True)
         sections = fixture.create(10)
@@ -92,7 +92,7 @@ class QuoteFormTest(test.TestCase):
         new_data = {'-service-2-section_name': 'title123', '-service-2-type': '3',
                     '-service-2-description': 'title123', '-service-2-cost_0': '3',
                     '-service-2-quantity': '2', '-service-2-name': 'title123',
-                    '-service-2-cost_1': 'USD'}
+                    '-service-2-cost_1': 'USD', '-service-2-index': '2'}
         new_data.update(self.data)
 
         f = qf.QuoteForm(new_data)
@@ -140,10 +140,12 @@ class QuoteFormTest(test.TestCase):
         new_data = {'-service-2-section_name': 'title123', '-service-2-type': '3',
                     '-service-2-description': 'title123', '-service-2-cost_0': '3',
                     '-service-2-quantity': '2', '-service-2-name': 'title123',
-                    '-service-2-cost_1': 'USD', '-service-3-section_name': 'title123',
-                    '-service-3-type': '3', '-service-3-description': 'title123',
+                    '-service-2-index': '2', '-service-2-cost_1': 'USD',
+                    '-service-3-section_name': 'title123', '-service-3-type': '3',
+                    '-service-3-description': 'title123',
                     '-service-3-cost_0': '3', '-service-3-quantity': '2',
-                    '-service-3-name': 'title123', '-service-3-cost_1': 'USD'}
+                    '-service-3-name': 'title123', '-service-3-cost_1': 'USD',
+                    '-service-3-index': '3'}
         new_data.update(self.data)
 
         f = qf.QuoteForm(new_data)
