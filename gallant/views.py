@@ -14,35 +14,6 @@ class ClientList(View):
                                 context={'title': 'Clients', 'object_list': g.Client.objects.all()})
 
 
-class ClientCreate(View):
-    def get(self, request):
-        self.object = None
-        return self.render_to_response({'form': forms.ClientForm()})
-
-    def post(self, request):
-        self.object = None
-        form = forms.ClientForm(request.POST)
-        if form.is_valid():
-            return self.form_valid(form)
-        else:
-            return self.render_to_response({'form': form})
-
-    def render_to_response(self, context):
-        context.update({'title': 'Add Client'})
-        return TemplateResponse(request=self.request,
-                                template="gallant/create_form.html",
-                                context=context)
-
-    def form_valid(self, form):
-        obj = form.save(commit=True)
-        user = g.GallantUser.objects.get(id=self.request.user.id)
-        text = '[Created]\n' + form.cleaned_data['notes']
-        note = g.Note.objects.create(text=text, created_by=user)
-        obj.notes.add(note)
-        obj.save()
-        return HttpResponseRedirect(reverse('client_detail', args=[obj.id]))
-
-
 class ClientUpdate(View):
     def get(self, request, **kwargs):
         self.object = get_object_or_404(g.Client, pk=self.kwargs['pk'])
@@ -50,7 +21,11 @@ class ClientUpdate(View):
         return self.render_to_response({'object': self.object, 'form': form})
 
     def post(self, request, **kwargs):
-        self.object = get_object_or_404(g.Client, pk=self.kwargs['pk'])
+        if 'pk' in self.kwargs:
+            self.object = get_object_or_404(g.Client, pk=self.kwargs['pk'])
+        else:
+            self.object = None
+
         form = forms.ClientForm(request.POST, instance=self.object)
         if form.is_valid():
             return self.form_valid(form)
@@ -71,6 +46,12 @@ class ClientUpdate(View):
         obj.notes.add(note)
         obj.save()
         return HttpResponseRedirect(reverse('client_detail', args=[obj.id]))
+
+
+class ClientCreate(ClientUpdate):
+    def get(self, request):
+        self.object = None
+        return self.render_to_response({'form': forms.ClientForm()})
 
 
 class ServiceUpdate(View):
