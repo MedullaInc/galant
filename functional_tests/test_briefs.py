@@ -23,7 +23,6 @@ class BriefsSignedInTest(browser.SignedInTest):
 
         # access Client Briefs & click add brief
         b.get(self.live_server_url + reverse('brief_list', args=['client', c.id]))
-        self.save_snapshot()
         b.find_element_by_id('add_brief').click()
 
         # fill out brief & save

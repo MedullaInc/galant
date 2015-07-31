@@ -25,6 +25,19 @@
 
 
 {% block sidebar %}
+
+    <a href="{% url 'templates' %}">
+        <button type="button" class="btn btn-default sidebar">
+            {% trans "Back to Templates" %}
+        </button>
+    </a>
+
+    <a href="{% url 'quotes' %}">
+        <button type="button" class="btn btn-default sidebar">
+            {% trans "Back to Quotes" %}
+        </button>
+    </a>
+
 {% endblock %}
 
 {% block extra_body %}
@@ -45,6 +58,10 @@
             }
         });
 
+        $(window).resize(function(){
+           $('#add_translation_button').popover('hide');
+        });
+
         $('body').on('DOMNodeInserted', 'li:not(#add_translation)', function () {
             this.click();
         });
@@ -53,7 +70,7 @@
             html: true,
             container: 'body',
             content: $('#language_select').html(),
-            title: "Select Language",
+            title: false,
             placement: "bottom"
         }).click(function (e) {
             $('body').on('click', '.popover-content > button', function () {
