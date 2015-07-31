@@ -21,10 +21,6 @@ class QuoteTemplateForm(QuoteForm):
         fields = ['name']
 
 
-class LanguageForm(forms.Form):
-    language = forms.ChoiceField(choices=settings.LANGUAGES, label='', initial=get_language())
-
-
 def create_quote(quote_form, section_forms):
     obj = quote_form.save(commit=True)
     obj.sections.clear()

@@ -8,6 +8,7 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404
 from quotes import models as q
 from quotes import forms as qf
+from gallant import forms as gf
 from reportlab.pdfgen import canvas
 from django.http import HttpResponse
 
@@ -135,7 +136,7 @@ class QuoteTemplateView(View):
 
     def render_to_response(self, context):
         lang_dict = dict(settings.LANGUAGES)
-        form = qf.LanguageForm()
+        form = gf.LanguageForm()
         language_set = set([get_language()])
 
         if hasattr(self.object, 'quote'):
