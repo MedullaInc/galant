@@ -25,7 +25,7 @@
 
 {% block center_content %}
 
-    <h2 class="section_title">{% trans "Data" %}</h2>
+    <h2 class="section_title">{% trans "Quote Data" %}</h2>
 
     <p id="name">{% trans "Name" %}: {{ object.name }}</p>
     <p id="client">{% trans "Client" %}: {{ object.client.name }}</p>
@@ -35,20 +35,76 @@
 
     {% for section in object.all_sections %}
         <div id="{{ section.name }}">
-            <table>
-                <tr><td><div>{{ section.display_title }}:</div></td></tr>
-                <tr><td><h2 class="section_title">{{ section.title.get_text }}</h2></td></tr>
+            <div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div>
+                            {{ section.display_title }}:
+                        </div>
+                    </div>
+                </div>
 
-                <tr><td><div>{{ section.text.get_text }}</div></td></tr>
                 {% if section.service %}
                     {% with service=section.service %}
-                        <tr><td>Service:</td><td><div class="service_name">{{ service.name.get_text }}</div></td></tr>
-                        <tr><td>Type:</td><td><div class="service_type">{{ service.get_type_display }}</div></td></tr>
-                        <tr><td>Description:</td><td><div class="service_description">{{ service.description.get_text }}</div></td></tr>
-                        <tr><td>Cost:</td><td><div class="service_cost">{{ service.cost }} &times; {{ service.quantity }}</div></td></tr>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <h2 class="service_name section_title">
+                                    {{ service.name.get_text }}
+                                </h2>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-2">
+                                Type:
+                            </div>
+                            <div class="col-lg-10">
+                                <div class="service_type">
+                                    {{ service.get_type_display }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-2">
+                                Description:
+                            </div>
+                            <div class="col-lg-10">
+                                <div class="service_description">
+                                    {{ service.description.get_text }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-2">
+                                Cost:
+                            </div>
+                            <div class="col-lg-10">
+                                <div class="service_cost">
+                                    {{ service.cost }} &times; {{ service.quantity }}
+                                </div>
+                            </div>
+                        </div>
                     {% endwith %}
+
+                {% else %}
+
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <h2 class="section_title">
+                                {{ section.title.get_text }}
+                            </h2>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div>
+                                {{ section.text.get_text }}
+                            </div>
+                        </div>
+                    </div>
+
                 {% endif %}
-            </table>
+            </div>
         </div>
 
         <hr>
