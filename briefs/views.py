@@ -17,15 +17,18 @@ class BriefList(ListView):
         return super(ListView, self).render_to_response(context)
 
 
-class ClientBriefList(ListView):
-    template_name = "briefs/client_brief_list.html"
-    model = b.ClientBrief
+class BriefList(ListView):
+    template_name = "briefs/brief_list.html"
+    model = b.Brief
 
     def render_to_response(self, context, **response_kwargs):
-        context['title'] = 'Briefs'
-        context['client'] = g.Client.objects.get(id=self.kwargs['type_id'])
-        context.update({'template_list': b.ClientBrief.objects.filter(client=self.kwargs['type_id'])})
-        return super(ClientBriefList, self).render_to_response(context)
+        if self.kwargs['brief_type'] == "client":
+            client_brief = b.ClientBrief.objects.get(id=self.kwargs['type_id'])
+            context.update({'object': client_brief, 'brief_type_title': 'Client',
+                            'create_url': reverse('add_brief', args=['client', client_brief.client.id]),
+                            'detail_url': reverse('brief_detail', args=['client', client_brief.client.id])})
+
+        return super(BriefList, self).render_to_response(context)
 
 
 class BriefUpdate(View):

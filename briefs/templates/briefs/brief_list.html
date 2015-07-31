@@ -1,6 +1,26 @@
 {% extends "base_sidebar.html" %}
 {% load bootstrap i18n %}
 
+{% block section_title %}
+    {{ brief_type_title }}{% trans " Briefs" %}
+{% endblock %}
+
+{% block sidebar %}
+
+    <a href="{% url 'client_detail' client.id %}">
+        <button type="button" class="btn btn-default sidebar">
+            {% trans "Back to " %}{{ brief_type_title }}
+        </button>
+    </a>
+
+    <a href="{{ create_url }}">
+        <button type="button" class="btn btn-default sidebar" id="add_brief">
+            {% trans "Create Brief" %}
+        </button>
+    </a>
+
+{% endblock %}
+
 {% block center_content %}
     <table class="table table-striped table-bordered">
         <thead>
@@ -15,9 +35,18 @@
             {% empty %}
             <tr>
                 <td colspan="4">
-                    No clients yet.
+                    No briefs yet.
                 </td>
             </tr>
         {% endfor %}
     </table>
+{% endblock %}
+
+{% block extra_body %}
+    <script>
+        $('.table > tbody > tr').click(function () {
+            window.location.href = "{{ detail_url }}" +
+                    $(this).attr('data-rel');
+        });
+    </script>
 {% endblock %}
