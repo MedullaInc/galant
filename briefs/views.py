@@ -75,11 +75,24 @@ class BriefUpdate(View):
 class BriefCreate(BriefUpdate):
     def get(self, request, *args, **kwargs):
         context = {}
+        template_id = request.GET.get('template_id', None)
+        lang = request.GET.get('lang', None)
+        if template_id is not None:
+            template = get_object_or_404(b.BriefTemplate, pk=template_id)
+            brief = template.brief
+            question_forms = bf.question_forms_brief(brief, clear_pk=True)
+            context.update({'questions': question_forms})
+            brief.pk = None
+            if lang is not None:
+                brief.language = lang
+                context.update({'language': lang, 'form': bf.BriefForm(instance=brief), 'object': brief})
+        else:
+            context.update({'form': bf.BriefForm()})
+
         if kwargs['brief_type'] == 'client':
-            client = get_object_or_404(g.Client, pk=kwargs['type_id'])
-            context['client'] = client
-        form = bf.BriefForm()
-        context.update({'form': form, 'title': 'Create Brief'})
+            context['client'] = get_object_or_404(g.Client, pk=kwargs['type_id'])
+
+        context.update({'title': 'Create Brief'})
         return self.render_to_response(context)
 
 
