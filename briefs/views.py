@@ -30,7 +30,7 @@ class BriefList(View):
 class BriefUpdate(View):
     def get(self, request, *args, **kwargs):
         context = {}
-        if self.kwargs['brief_type'] == 'client':
+        if kwargs['brief_type'] == 'client':
             self.object = get_object_or_404(b.ClientBrief, pk=kwargs['pk'])
             context['client'] = self.object.client
         else:
@@ -45,7 +45,7 @@ class BriefUpdate(View):
         if 'pk' in kwargs:
             self.object = get_object_or_404(b.Brief, pk=kwargs['pk'])
         else:
-            if self.kwargs['brief_type'] == 'client':
+            if kwargs['brief_type'] == 'client':
                 client = get_object_or_404(g.Client, pk=kwargs['type_id'])
                 self.object = b.ClientBrief(client=client)
             else:
@@ -62,7 +62,7 @@ class BriefUpdate(View):
 
             messages.success(self.request, 'Brief saved.')
 
-            if self.kwargs['brief_type'] == "client":
+            if kwargs['brief_type'] == "client":
                 return HttpResponseRedirect(reverse('brief_detail', args=['client', kwargs['type_id'], obj.id]))
         else:
             return self.render_to_response({'object': self.object, 'form': form, 'title': 'Edit Brief'})
@@ -74,7 +74,7 @@ class BriefUpdate(View):
 class BriefCreate(BriefUpdate):
     def get(self, request, *args, **kwargs):
         context = {}
-        if self.kwargs['brief_type'] == 'client':
+        if kwargs['brief_type'] == 'client':
             client = get_object_or_404(g.Client, pk=kwargs['type_id'])
             context['client'] = client
         form = bf.BriefForm()

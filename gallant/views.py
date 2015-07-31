@@ -16,13 +16,13 @@ class ClientList(View):
 
 class ClientUpdate(View):
     def get(self, request, **kwargs):
-        self.object = get_object_or_404(g.Client, pk=self.kwargs['pk'])
+        self.object = get_object_or_404(g.Client, pk=kwargs['pk'])
         form = forms.ClientForm(instance=self.object)
         return self.render_to_response({'object': self.object, 'form': form})
 
     def post(self, request, **kwargs):
-        if 'pk' in self.kwargs:
-            self.object = get_object_or_404(g.Client, pk=self.kwargs['pk'])
+        if 'pk' in kwargs:
+            self.object = get_object_or_404(g.Client, pk=kwargs['pk'])
         else:
             self.object = None
 
@@ -56,13 +56,13 @@ class ClientCreate(ClientUpdate):
 
 class ServiceUpdate(View):
     def get(self, request, **kwargs):
-        self.object = get_object_or_404(g.Service, pk=self.kwargs['pk'])
+        self.object = get_object_or_404(g.Service, pk=kwargs['pk'])
         form = forms.ServiceForm(instance=self.object)
         return self.render_to_response({'object': self.object, 'form': form})
 
     def post(self, request, **kwargs):
         if 'pk' in kwargs:
-            self.object = get_object_or_404(g.Service, pk=self.kwargs['pk'])
+            self.object = get_object_or_404(g.Service, pk=kwargs['pk'])
         else:
             self.object = None
 
