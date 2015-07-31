@@ -1,0 +1,50 @@
+{% extends "briefs/brief_list.html" %}
+{% load bootstrap i18n %}
+
+{% block section_title %}
+    {% trans "Brief Templates" %}
+{% endblock %}
+
+{% block sidebar %}
+    <a href="{% url 'add_brief_template' %}">
+        <button type="button" class="btn btn-default sidebar">
+            {% trans "Add New Template" %}
+        </button>
+    </a>
+
+    <a href="{% url 'briefs' %}">
+        <button type="button" class="btn btn-default sidebar">
+            {% trans "Back to Briefs" %}
+        </button>
+    </a>
+
+{% endblock %}
+
+{% block center_content %}
+    <table class="table table-striped table-bordered">
+        <thead>
+        <th><b>{% trans "Name" %}</b></th>
+        <th><b>{% trans "Date" %}</b></th>
+        </thead>
+        {% for template in object_list %}
+            <tr data-rel="{{ template.id }}" style="cursor: pointer" class="template_row">
+                <td>{{ template.brief.name }}</td>
+                <td>{{ template.brief.created|date:'Y-m-d H:i' }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4">
+                    No templates yet.
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
+
+{% block extra_body %}
+    <script>
+        $('.table > tbody > tr.template_row').click(function () {
+            window.location.href = "{% url 'edit_brief_template' %}" + $(this).attr('data-rel')
+        });
+    </script>
+{% endblock %}

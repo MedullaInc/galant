@@ -11,9 +11,11 @@ class BriefForm(forms.ModelForm):
         model = b.Brief
         fields = ['title', 'status']
 
-    def clean(self):
-        cleaned_data = super(BriefForm, self).clean()
-        return cleaned_data
+
+class BriefTemplateForm(BriefForm):
+    class Meta:
+        model = b.Brief
+        fields = ['name']
 
 
 class QuestionForm(forms.ModelForm):
@@ -89,3 +91,12 @@ def question_forms_brief(brief, clear_pk=False):
             qf.append(QuestionForm(instance=question, prefix='-question-%d' % question.index))
 
     return qf
+
+
+def create_brief(form, question_forms):
+    obj = form.save()
+    obj.questions.clear()
+    for q in question_forms:
+        obj.questions.add(q.save())
+
+    return obj

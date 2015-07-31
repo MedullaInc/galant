@@ -11,4 +11,7 @@ urlpatterns = [
         login_required(views.BriefUpdate.as_view()), name='edit_brief'),
     url(r'^(?:(?P<brief_type>client|service|project)/(?P<type_id>[0-9]+))?/(?P<pk>[0-9]+)?$',
         login_required(views.BriefDetail.as_view()), name='brief_detail'),
+    url(r'^template/$', login_required(views.BriefTemplateList.as_view()), name='brief_templates'),
+    url(r'^template/add/(?P<brief_id>[0-9]+)?$', login_required(views.BriefTemplateView.as_view()), name='add_brief_template'),
+    url(r'^template/edit/(?P<pk>[0-9]+)?$', login_required(views.BriefTemplateView.as_view()), name='edit_brief_template'),
 ]

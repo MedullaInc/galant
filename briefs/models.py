@@ -78,10 +78,10 @@ class Brief(m.Model):
 
     def get_languages(self):
         language_set = set()
-        language_set.update(self.title.get_languages())
+        language_set.update(self.title.keys())
         for q in list(self.questions.all()):
             if q is not None:
-                language_set.update(q.question.get_languages())
+                language_set.update(q.question.keys())
 
         return language_set
 
