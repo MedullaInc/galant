@@ -1,4 +1,5 @@
 from django import forms
+from django.conf import settings
 from django.utils.translation import get_language
 from gallant import models as g
 
@@ -35,3 +36,7 @@ class NoteForm(forms.ModelForm):
         super(NoteForm, self).__init__(*args, **kwargs)
         self.fields['text'] = forms.CharField(
             widget=forms.Textarea(attrs={'rows': 3}))
+
+
+class LanguageForm(forms.Form):
+    language = forms.ChoiceField(choices=settings.LANGUAGES, label='', initial=get_language())

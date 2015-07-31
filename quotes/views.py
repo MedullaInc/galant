@@ -8,21 +8,22 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404
 from quotes import models as q
 from quotes import forms as qf
+from gallant import forms as gf
 from reportlab.pdfgen import canvas
 from django.http import HttpResponse
 
 
 class QuoteUpdate(View):
     def get(self, request, **kwargs):
-        self.object = get_object_or_404(q.Quote, pk=self.kwargs['pk'])
+        self.object = get_object_or_404(q.Quote, pk=kwargs['pk'])
         form = qf.QuoteForm(instance=self.object)
         section_forms = qf.section_forms_quote(quote=self.object)
         return self.render_to_response({'object': self.object, 'form': form, 'sections': section_forms,
                                         'title': 'Edit Quote'})
 
     def post(self, request, **kwargs):
-        if 'pk' in self.kwargs:
-            self.object = get_object_or_404(q.Quote, pk=self.kwargs['pk'])
+        if 'pk' in kwargs:
+            self.object = get_object_or_404(q.Quote, pk=kwargs['pk'])
         else:
             self.object = None
 
@@ -50,8 +51,8 @@ class QuoteUpdate(View):
 class QuoteCreate(QuoteUpdate):
     def get(self, request):
         context = {'title': 'Add Quote'}
-        template_id = self.request.GET.get('template_id', None)
-        lang = self.request.GET.get('lang', None)
+        template_id = request.GET.get('template_id', None)
+        lang = request.GET.get('lang', None)
         if template_id is not None:
             template = get_object_or_404(q.QuoteTemplate, pk=template_id)
             quote = template.quote
@@ -70,15 +71,15 @@ class QuoteCreate(QuoteUpdate):
 
 class QuoteDetail(View):
     def get(self, request, **kwargs):
-        quote = get_object_or_404(q.Quote, pk=self.kwargs['pk'])
-        return TemplateResponse(request=self.request,
+        quote = get_object_or_404(q.Quote, pk=kwargs['pk'])
+        return TemplateResponse(request=request,
                                 template="quotes/quote_detail.html",
                                 context={'title': 'Quote', 'object': quote})
 
 
 class QuoteList(View):
     def get(self, request):
-        return TemplateResponse(request=self.request,
+        return TemplateResponse(request=request,
                                 template="quotes/quote_list.html",
                                 context={'title': 'Quotes',
                                          'object_list': q.Quote.objects.filter(client__isnull=False),
@@ -87,7 +88,7 @@ class QuoteList(View):
 
 class QuoteTemplateList(View):
     def get(self, request):
-        return TemplateResponse(request=self.request,
+        return TemplateResponse(request=request,
                                 template="quotes/quotetemplate_list.html",
                                 context={'title': 'Quote Templates',
                                          'object_list': q.QuoteTemplate.objects.all()})
@@ -95,14 +96,14 @@ class QuoteTemplateList(View):
 
 class QuoteTemplateView(View):
     def get(self, request, **kwargs):
-        if 'pk' in self.kwargs:
-            self.object = get_object_or_404(q.QuoteTemplate, pk=self.kwargs['pk'])
+        if 'pk' in kwargs:
+            self.object = get_object_or_404(q.QuoteTemplate, pk=kwargs['pk'])
             form = qf.QuoteTemplateForm(instance=self.object.quote)
             section_forms = qf.section_forms_quote(self.object.quote)
         else:
             self.object = None
-            if self.kwargs['quote_id'] is not None:
-                quote = get_object_or_404(q.Quote, pk=self.kwargs['quote_id'])
+            if kwargs['quote_id'] is not None:
+                quote = get_object_or_404(q.Quote, pk=kwargs['quote_id'])
                 form = qf.QuoteTemplateForm(instance=quote)
                 section_forms = qf.section_forms_quote(quote)
             else:
@@ -113,8 +114,8 @@ class QuoteTemplateView(View):
 
     def post(self, request, **kwargs):
         section_forms = qf.section_forms_post(request.POST)
-        if 'pk' in self.kwargs:
-            self.object = get_object_or_404(q.QuoteTemplate, pk=self.kwargs['pk'])
+        if 'pk' in kwargs:
+            self.object = get_object_or_404(q.QuoteTemplate, pk=kwargs['pk'])
             form = qf.QuoteTemplateForm(request.POST, instance=self.object.quote)
         else:
             self.object = None
@@ -135,7 +136,7 @@ class QuoteTemplateView(View):
 
     def render_to_response(self, context):
         lang_dict = dict(settings.LANGUAGES)
-        form = qf.LanguageForm()
+        form = gf.LanguageForm()
         language_set = set([get_language()])
 
         if hasattr(self.object, 'quote'):

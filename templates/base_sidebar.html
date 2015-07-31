@@ -5,7 +5,7 @@
         <div class="col-lg-2 sidebar">
             <h2 class="section_title">
             {% block section_title %}
-                Menu
+                {% firstof title 'Menu' %}
             {% endblock section_title %}
             </h2>
             {% block sidebar %}

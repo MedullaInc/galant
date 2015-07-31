@@ -27,8 +27,8 @@ class GallantClientTest(browser.SignedInTest):
 
         b.find_element_by_xpath('//button[@type="submit"]').click()
 
-        section_title = browser.instance().find_element_by_class_name('section_title')
-        self.assertEqual(u'Client', section_title.text)
+        success_message = b.find_element_by_class_name('alert-success')
+        self.assertTrue(u'Client saved.' in success_message.text)
 
     def test_edit_client(self):
         b = browser.instance()
@@ -44,8 +44,8 @@ class GallantClientTest(browser.SignedInTest):
 
         b.find_element_by_xpath('//button[@type="submit"]').click()
 
-        section_title = browser.instance().find_element_by_class_name('section_title')
-        self.assertEqual(u'Client', section_title.text)
+        success_message = b.find_element_by_class_name('alert-success')
+        self.assertTrue(u'Client saved.' in success_message.text)
 
     def test_add_client_note(self):
         b = browser.instance()

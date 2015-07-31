@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.views.generic import View
 from django.template.response import TemplateResponse
 from django.http import HttpResponseRedirect
@@ -14,43 +15,18 @@ class ClientList(View):
                                 context={'title': 'Clients', 'object_list': g.Client.objects.all()})
 
 
-class ClientCreate(View):
-    def get(self, request):
-        self.object = None
-        return self.render_to_response({'form': forms.ClientForm()})
-
-    def post(self, request):
-        self.object = None
-        form = forms.ClientForm(request.POST)
-        if form.is_valid():
-            return self.form_valid(form)
-        else:
-            return self.render_to_response({'form': form})
-
-    def render_to_response(self, context):
-        context.update({'title': 'Add Client'})
-        return TemplateResponse(request=self.request,
-                                template="gallant/create_form.html",
-                                context=context)
-
-    def form_valid(self, form):
-        obj = form.save(commit=True)
-        user = g.GallantUser.objects.get(id=self.request.user.id)
-        text = '[Created]\n' + form.cleaned_data['notes']
-        note = g.Note.objects.create(text=text, created_by=user)
-        obj.notes.add(note)
-        obj.save()
-        return HttpResponseRedirect(reverse('client_detail', args=[obj.id]))
-
-
 class ClientUpdate(View):
     def get(self, request, **kwargs):
-        self.object = get_object_or_404(g.Client, pk=self.kwargs['pk'])
+        self.object = get_object_or_404(g.Client, pk=kwargs['pk'])
         form = forms.ClientForm(instance=self.object)
         return self.render_to_response({'object': self.object, 'form': form})
 
     def post(self, request, **kwargs):
-        self.object = get_object_or_404(g.Client, pk=self.kwargs['pk'])
+        if 'pk' in kwargs:
+            self.object = get_object_or_404(g.Client, pk=kwargs['pk'])
+        else:
+            self.object = None
+
         form = forms.ClientForm(request.POST, instance=self.object)
         if form.is_valid():
             return self.form_valid(form)
@@ -70,17 +46,28 @@ class ClientUpdate(View):
         note = g.Note.objects.create(text=text, created_by=user)
         obj.notes.add(note)
         obj.save()
+        messages.success(self.request, 'Client saved.')
         return HttpResponseRedirect(reverse('client_detail', args=[obj.id]))
+
+
+class ClientCreate(ClientUpdate):
+    def get(self, request):
+        self.object = None
+        return self.render_to_response({'form': forms.ClientForm()})
 
 
 class ServiceUpdate(View):
     def get(self, request, **kwargs):
-        self.object = get_object_or_404(g.Service, pk=self.kwargs['pk'])
+        self.object = get_object_or_404(g.Service, pk=kwargs['pk'])
         form = forms.ServiceForm(instance=self.object)
         return self.render_to_response({'object': self.object, 'form': form})
 
     def post(self, request, **kwargs):
-        self.object = get_object_or_404(g.Service, pk=self.kwargs['pk'])
+        if 'pk' in kwargs:
+            self.object = get_object_or_404(g.Service, pk=kwargs['pk'])
+        else:
+            self.object = None
+
         form = forms.ServiceForm(request.POST, instance=self.object)
         if form.is_valid():
             return self.form_valid(form)
@@ -100,6 +87,7 @@ class ServiceUpdate(View):
         note = g.Note.objects.create(text=text, created_by=user)
         obj.notes.add(note)
         obj.save()
+        messages.success(self.request, 'Service saved.')
         return HttpResponseRedirect(reverse('service_detail', args=[obj.id]))
 
 
@@ -122,32 +110,10 @@ def client_detail(request, pk):
                             context={'object': client, 'form': form})
 
 
-class ServiceCreate(View):
+class ServiceCreate(ServiceUpdate):
     def get(self, request):
         form = forms.ServiceForm()
         return self.render_to_response({'form': form})
-
-    def post(self, request):
-        form = forms.ServiceForm(request.POST)
-        if form.is_valid():
-            return self.form_valid(form)
-        else:
-            return self.render_to_response({'form': form})
-
-    def render_to_response(self, context):
-        context.update({'title': 'Add Service'})
-        return TemplateResponse(request=self.request,
-                                template="gallant/create_form.html",
-                                context=context)
-
-    def form_valid(self, form):
-        obj = form.save(commit=True)
-        user = g.GallantUser.objects.get(id=self.request.user.id)
-        text = '[Created]\n' + form.cleaned_data['notes']
-        note = g.Note.objects.create(text=text, created_by=user)
-        obj.notes.add(note)
-        obj.save()
-        return HttpResponseRedirect(reverse('service_detail', args=[obj.id]))
 
 
 def service_detail(request, pk):

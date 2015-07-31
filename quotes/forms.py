@@ -21,10 +21,6 @@ class QuoteTemplateForm(QuoteForm):
         fields = ['name']
 
 
-class LanguageForm(forms.Form):
-    language = forms.ChoiceField(choices=settings.LANGUAGES, label='', initial=get_language())
-
-
 def create_quote(quote_form, section_forms):
     obj = quote_form.save(commit=True)
     obj.sections.clear()
@@ -51,6 +47,7 @@ def section_forms_post(data):
             if m is not None:
                 sf.append(ServiceSectionForm(data, prefix=m.group(1)))
 
+    sf.sort(key=lambda x: x.index)
     return sf
 
 
@@ -87,6 +84,8 @@ class SectionForm(forms.ModelForm):
         else:
             super(SectionForm, self).__init__(data=data, prefix=prefix, *args, **kwargs)
 
+        self.index = self.instance.index
+
     def as_table(self):
         t = get_template('quotes/section_form.html')
         if self.instance:
@@ -117,8 +116,9 @@ class ServiceSectionForm(forms.ModelForm):
             self.instance = self.section.service
         else:
             name = self.data[self.prefix + '-section_name']
-            self.section = type('obj', (object,), {'name': name, 'display_title': name.replace('_', ' ').title(),
-                                                   'service': self.instance})
+            index = self.data[self.prefix + '-index']
+            self.section = q.ServiceSection(name=name, index=index)
+        self.index = self.section.index
 
     def as_table(self):
         t = get_template('quotes/service_section_form.html')
@@ -129,12 +129,7 @@ class ServiceSectionForm(forms.ModelForm):
 
     def save(self, commit=True):
         super(ServiceSectionForm, self).save(commit)
-        if self.prefix:
-            idx = re.match('-service-(\d+)', self.prefix).group(1) or 0
-            if hasattr(self.section, 'index'):
-                self.section.index = idx
-            else:
-                self.section = q.ServiceSection.objects.create(service=self.instance, index=idx, name=self.section.name)
+        self.section.service = self.instance
 
         self.section.save()
         return self.section

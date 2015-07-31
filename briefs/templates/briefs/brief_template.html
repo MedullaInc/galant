@@ -1,0 +1,84 @@
+{% extends "briefs/brief_form.html" %}
+{% load bootstrap i18n %}
+
+
+{% block post_form %}
+    <ul id="tabs" class="nav nav-tabs" style="margin-bottom: -1px; border-bottom: 0">
+        {% for language_code, language in languages %}
+        <li id="{{ language_code }}_tab" {% if forloop.first %}class="active"{% endif %} data="{{ language_code }}"><a>
+            {{ language }}</a></li>
+        {% endfor %}
+        <li id="add_translation">
+            <a id="add_translation_button" class="btn">Add Translation</a>
+        </li>
+    </ul>
+
+    <div class="rounded-border" style="border-top-left-radius: 0px">
+        {{ block.super }}
+    </div>
+    <div id="language_select" style="display: none">
+        {{ language_form|bootstrap }}
+        <button id="language_add" type="button" class="btn btn-default">Add</button>
+    </div>
+
+{% endblock %}
+
+
+{% block sidebar %}
+
+    <a href="{% url 'templates' %}">
+        <button type="button" class="btn btn-default sidebar">
+            {% trans "Back to Templates" %}
+        </button>
+    </a>
+
+    <a href="{% url 'briefs' %}">
+        <button type="button" class="btn btn-default sidebar">
+            {% trans "Back to Briefs" %}
+        </button>
+    </a>
+
+{% endblock %}
+
+{% block extra_body %}
+    {{ block.super }}
+    <script>
+        $('#tabs').on("click", "li", function (e) {
+            if (this.id != 'add_translation') {
+                var lang = this.getAttribute('data');
+                setLanguage(lang);
+                $(this).tab('show');
+            }
+        });
+
+        $('body').on('click', function (e) {
+            var p = $('#add_translation_button');
+            if (!p.is(e.target) && p.has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
+                p.popover('hide');
+            }
+        });
+
+        $(window).resize(function(){
+           $('#add_translation_button').popover('hide');
+        });
+
+        $('body').on('DOMNodeInserted', 'li:not(#add_translation)', function () {
+            this.click();
+        });
+
+        $('#add_translation_button').popover({
+            html: true,
+            container: 'body',
+            content: $('#language_select').html(),
+            title: false,
+            placement: "bottom"
+        }).click(function (e) {
+            $('body').on('click', '.popover-content > button', function () {
+                var l = $('.popover-content #id_language').find(":selected");
+                var tabHtml = '<li id="' + l.val() + '_tab" data="' + l.val() + '"><a>' +
+                        l.text() + '</a></li>';
+                $('.nav-tabs > li:last').before(tabHtml);
+            });
+        });
+    </script>
+{% endblock %}
