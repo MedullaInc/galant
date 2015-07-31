@@ -7,11 +7,13 @@
 
 {% block sidebar %}
 
+    {% if brief_type_title %}
     <a href="{% url 'client_detail' client.id %}">
         <button type="button" class="btn btn-default sidebar">
             {% trans "Back to " %}{{ brief_type_title }}
         </button>
     </a>
+    {% endif %}
 
     <a href="{{ create_url }}">
         <button type="button" class="btn btn-default sidebar" id="add_brief">

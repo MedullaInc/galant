@@ -4,31 +4,27 @@ from briefs import models as b
 from django.http import HttpResponseRedirect
 from django.template.response import TemplateResponse
 from gallant import models as g
-from django.views.generic import ListView, DetailView, View
+from django.views.generic import DetailView, View
 from briefs import forms as bf
 from django.shortcuts import get_object_or_404
 
 
-class BriefList(ListView):
-    model = b.Brief
+class BriefList(View):
+    def get(self, request, **kwargs):
+        context = {}
+        if 'brief_type' in kwargs:
+            if kwargs['brief_type'] == "client":
+                client = g.Client.objects.get(pk=kwargs['type_id'])
+                context.update({'brief_type_title': 'Client', 'object_list': client.clientbrief_set.all(),
+                                'create_url': reverse('add_brief', args=['client', client.id]),
+                                'detail_url': reverse('brief_detail', args=['client', client.id])})
+        else:
+            context.update({'create_url': reverse('add_brief'), 'object_list': b.Brief.objects.all(),
+                            'detail_url': reverse('brief_detail')})
 
-    def render_to_response(self, context, **response_kwargs):
-        context.update({'title': 'Briefs'})
-        return super(ListView, self).render_to_response(context)
-
-
-class BriefList(ListView):
-    template_name = "briefs/brief_list.html"
-    model = b.Brief
-
-    def render_to_response(self, context, **response_kwargs):
-        if self.kwargs['brief_type'] == "client":
-            client_brief = b.ClientBrief.objects.get(id=self.kwargs['type_id'])
-            context.update({'object': client_brief, 'brief_type_title': 'Client',
-                            'create_url': reverse('add_brief', args=['client', client_brief.client.id]),
-                            'detail_url': reverse('brief_detail', args=['client', client_brief.client.id])})
-
-        return super(BriefList, self).render_to_response(context)
+        return TemplateResponse(request=request,
+                                template="briefs/brief_list.html",
+                                context=context)
 
 
 class BriefUpdate(View):
