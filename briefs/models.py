@@ -17,17 +17,10 @@ class Question(m.Model):
     objects = InheritanceManager()
 
 
-class QuestionTemplate(Question):
+class LongAnswerQuestion(Question):
     """
-    A Question Template to be reused on BriefTemplates
+    Long Answer Question
     """
-
-
-class OpenQuestion(Question):
-    """
-    Open Question
-    """
-    is_long_answer = m.BooleanField(default=False)
 
 
 class MultipleChoiceQuestion(Question):

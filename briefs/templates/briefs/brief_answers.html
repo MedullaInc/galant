@@ -10,11 +10,7 @@
 {% endblock %}
 
 {% block center_content %}
-
-    <h2 class="section_title">{% trans "Data" %}</h2>
-
     <p id="title">{% trans "Title" %}: {{ object.title.get_text }}</p>
-    <p id="status">{% trans "Status" %}: {{ object.get_status_display }}</p>
 
     <hr>
 
@@ -26,6 +22,7 @@
                 <li>{{ choice.get_text }}</li>
             {% endfor %}
             </ul>
+            {{ question.get_answer_form }}
         </div>
 
         <hr>
