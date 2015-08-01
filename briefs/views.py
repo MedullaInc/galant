@@ -10,6 +10,7 @@ from django.views.generic import DetailView, View
 from briefs import forms as bf
 from gallant import forms as gf
 from django.shortcuts import get_object_or_404
+from django.db.models import Q
 
 
 class BriefList(View):
@@ -185,12 +186,29 @@ class BriefTemplateView(View):
 
 class BriefAnswer(View):
     def get(self, request, **kwargs):
-        self.object = get_object_or_404(b.Brief, token=kwargs['token'])
-        form = bf.BriefAnswersForm(instance=b.BriefAnswers(brief=self.object))
+        obj = get_object_or_404(b.Brief, Q(status=2) | Q(status=3), token=kwargs['token'])
+        form = bf.BriefAnswersForm(instance=b.BriefAnswers(brief=obj))
 
         return TemplateResponse(request=self.request,
                                 template="briefs/brief_answers.html",
-                                context={'form': form, 'object': self.object})
+                                context={'form': form, 'object': obj, 'answer_forms': form.answer_forms()})
 
     def post(self, request, **kwargs):
-        pass
+        obj = get_object_or_404(b.Brief, Q(status=2) | Q(status=3), token=kwargs['token'])
+        form = bf.BriefAnswersForm(instance=b.BriefAnswers(brief=obj), data=request.POST)
+        answers = []
+
+        for answer in form.answer_forms(request.POST):
+            answers.append(answer)
+
+        valid = list([form.is_valid()] + [a.is_valid() for a in answers])
+        if all(valid):
+            brief_answers = form.save()
+            for answer in answers:
+                brief_answers.answers.add(answer.save())
+
+            return HttpResponseRedirect(reverse('brief_detail', args=[brief_answers.brief.id]))
+
+        return TemplateResponse(request=self.request,
+                                template="briefs/brief_answers.html",
+                                context={'form': form, 'answer_forms': answers, 'object': obj})

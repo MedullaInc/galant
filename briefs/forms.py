@@ -71,6 +71,14 @@ class BriefAnswersForm(forms.ModelForm):
         model = b.BriefAnswers
         fields = []
 
+    def answer_forms(self, data=None):
+        af = []
+        for q in self.instance.brief.questions.all().select_subclasses():
+            if type(q) is b.Question:
+                af.append(AnswerForm(question=q, data=data))
+
+        return af
+
 
 def question_forms_post(data):
     qf = []
@@ -106,3 +114,14 @@ def create_brief(form, question_forms):
         obj.questions.add(q.save())
 
     return obj
+
+
+class AnswerForm(forms.Form):
+    answer = forms.CharField(label='', widget=forms.TextInput(attrs={'class':'form-control'}))
+
+    def __init__(self, question=None, *args, **kwargs):
+        self.question = question
+        super(AnswerForm, self).__init__(prefix='-answer-%d' % question.id, *args, **kwargs)
+
+    def save(self):
+        return b.Answer.objects.create(answer=self.cleaned_data['answer'], question=self.question)
