@@ -2043,6 +2043,12 @@ div.question {
     font-weight: 200;
 }
 
+h2.section_subtitle {
+    font-size: 28px;
+    font-weight: 100;
+    margin-top: 0px;
+}
+
 /* End Detail View*/
 
 /* List View */
