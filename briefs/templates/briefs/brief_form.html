@@ -19,17 +19,23 @@
 
 
 {% block post_form %}
-    <table id="question_table" width="500">
-        {% for s in questions %}
-            {{ s }}
-        {% endfor %}
-        <tr>
-            <td>
-                <button type="button" id="add_question" class="btn btn-default" style="float: right">Add Question</button>
-                <button type="button" id="add_multiquestion" class="btn btn-default" style="float: left">Add Multiple Choice Question</button>
-            </td>
-        </tr>
-    </table>
+
+    <div class="rounded-border padding-top-20">
+
+        <div id="question_table">
+            {% for s in questions %}
+                {{ s }}
+            {% endfor %}
+            <div class="row">
+                <div class="col-lg-12">
+                    <button type="button" id="add_question" class="btn btn-default pull-left margin-right-10">Add Question</button>
+                    <button type="button" id="add_multiquestion" class="btn btn-default pull-left">Add Multiple Choice Question</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
 {% endblock %}
 
 {% block extra_body %}
@@ -47,7 +53,7 @@
         };
 
         reindexQuestions = function () {
-            $('#question_table > tbody.question').each(function (i) {
+            $('#question_table > div.question').each(function (i) {
                 if (!$(this).hasClass('dynamic_section')) {
                     return true;
                 }
@@ -73,21 +79,21 @@
 
         $('#add_question').click(function () {
             counter++;
-            $('#question_table > tbody:last').before(question(counter));
+            $('#question_table > div:last').before(question(counter));
             reindexQuestions();
         });
 
         var add_choice = function () {
-            var ctable = $(this).closest('tbody').find('.choice_table');
-            $(ctable).find('tbody').append('<tr><td>' +
-            ' <input class="form-control {{ prefix }}choice ultext_array_target" maxlength="512"' +
+            var ctable = $(this).parents().closest('div').find('.choice_table');
+            $(ctable).append('<div class="row margin-bottom-10"><div class="col-lg-12">' +
+            ' <input class="form-control {{ prefix }}choice ultext_array_target" placeholder="Choice" maxlength="512"' +
             '       type="text" value=""/>' +
-            '</td></tr>')
+            '</div></div>')
         };
 
         $('#add_multiquestion').click(function () {
             counter++;
-            $('#question_table > tbody:last').before(multiquestion(counter));
+            $('#question_table > div:last').before(multiquestion(counter));
             reindexQuestions();
         });
 
@@ -96,7 +102,7 @@
         $(document.body).on('click', '.close', function () {
             var del = confirm("Remove question?")
             if (del) {
-                $(this).parents('tbody')[0].remove();
+                $(this).parents('div.question')[0].remove();
                 counter--;
                 reindexQuestions();
             }
