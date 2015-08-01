@@ -117,4 +117,9 @@ class ServiceBrief(Brief):
 
 class Answer(m.Model):
     answer = m.CharField(max_length=1000)
+    question = m.ForeignKey(Question)
+
+
+class BriefAnswers(m.Model):
     brief = m.ForeignKey(Brief)
+    answers = m.ManyToManyField(Answer)
