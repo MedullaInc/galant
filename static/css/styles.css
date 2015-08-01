@@ -1990,6 +1990,7 @@ h3.area_title {
     border: 1px solid #666666;
     padding: 10px;
     padding-top: 10px;
+    padding-bottom: 0px;
 }
 
 #settings-toggle-group .dropdown-menu li a {
@@ -1999,6 +2000,12 @@ h3.area_title {
     text-align: center;
     padding-bottom: 10px;
     padding-top: 10px;
+    width: 100%;
+    border: 1px solid #666666;
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 0px;
+    margin-bottom: 10px;
 }
 
 @media ( max-width: 768px ) {
