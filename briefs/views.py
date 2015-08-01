@@ -207,8 +207,9 @@ class BriefAnswer(View):
             for answer in answers:
                 brief_answers.answers.add(answer.save())
 
+            messages.success(request, 'Brief answered.')
             return HttpResponseRedirect(reverse('brief_detail', args=[brief_answers.brief.id]))
 
-        return TemplateResponse(request=self.request,
+        return TemplateResponse(request=request,
                                 template="briefs/brief_answers.html",
                                 context={'form': form, 'answer_forms': answers, 'object': obj})
