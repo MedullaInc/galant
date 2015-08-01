@@ -6,7 +6,6 @@
 {% endblock %}
 
 {% block sidebar %}
-
     <a href="{% url 'client_detail' client.id %}">
         <button type="button" class="btn btn-default sidebar">
             {% trans "Back to Client" %}
@@ -18,29 +17,36 @@
             {% trans "Edit Brief" %}
         </button>
     </a>
-
 {% endblock %}
 
 {% block center_content %}
 
     <h2 class="section_title">{% trans "Data" %}</h2>
 
-    <p id="title">{% trans "Title" %}: {{ object.title.get_text }}</p>
-    <p id="status">{% trans "Status" %}: {{ object.get_status_display }}</p>
+    <p id="title" class="data">{% trans "Title" %}: {{ object.title.get_text }}</p>
+    <p id="status" class="data">{% trans "Status" %}: {{ object.get_status_display }}</p>
+
+    <br/>
+    <h2 class="section_title">
+        Questions
+    </h2>
 
     <hr>
 
     {% for question in object.questions.all.select_subclasses %}
-        <div id="question_{{ question.index }}">
-            {{ question.question.get_text }}
-            <ul class="multiquestion_choices">
+        <div id="question_{{ question.index }}" class="question">
+            {{ forloop.counter }} ) {{ question.question.get_text }}
+            <div class="multiquestion_choices">
             {% for choice in question.choices %}
-                <li>{{ choice.get_text }}</li>
+                <div>
+                    — {{ choice.get_text }}
+                </div>
             {% endfor %}
-            </ul>
+            </div>
         </div>
 
         <hr>
+
     {% endfor %}
 
 {% endblock %}

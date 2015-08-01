@@ -2031,6 +2031,20 @@ h3.area_title {
     }
 }
 
+/* Detail View  / Questions / Briefs */
+
+p.data {
+    margin-bottom: 0px;
+    padding-bottom: 0px;
+}
+
+div.question {
+    font-size: 16px;
+    font-weight: 200;
+}
+
+/* End Detail View*/
+
 /* List View */
 
 h2.section_title {
@@ -2071,7 +2085,7 @@ div.sidebar {
     padding-bottom: 15px;
     padding-left: 25px;
     padding-right: 25px;
-    border: 1px solid #333333;
+    border: 1px solid #666666;
     -webkit-border-radius: 0px;
     -moz-border-radius: 0px;
     border-radius: 0px;
