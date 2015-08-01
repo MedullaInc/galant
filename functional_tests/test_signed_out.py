@@ -47,7 +47,7 @@ class SignedOutTest(LiveServerTestCase):
         for view_name in get_resolver(None).reverse_dict.keys():
             if hasattr(view_name, '__call__') \
                     or 'account' in view_name \
-                    or view_name in ['home']:  # add non-logged in permitted views here
+                    or view_name in ['home', 'brief_answer']:  # add non-logged in permitted views here
                 continue
 
             # add singe <pk>-requiring views here:

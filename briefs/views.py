@@ -181,3 +181,16 @@ class BriefTemplateView(View):
         return TemplateResponse(request=self.request,
                                 template="briefs/brief_template.html",
                                 context=context)
+
+
+class BriefAnswer(View):
+    def get(self, request, **kwargs):
+        self.object = get_object_or_404(b.Brief, token=kwargs['token'])
+        form = bf.BriefAnswersForm(instance=b.BriefAnswers(brief=self.object))
+
+        return TemplateResponse(request=self.request,
+                                template="briefs/brief_answers.html",
+                                context={'form': form, 'object': self.object})
+
+    def post(self, request, **kwargs):
+        pass
