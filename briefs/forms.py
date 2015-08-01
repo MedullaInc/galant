@@ -66,6 +66,12 @@ class MultiQuestionForm(forms.ModelForm):
         return t.render(context)
 
 
+class BriefAnswersForm(forms.ModelForm):
+    class Meta:
+        model = b.BriefAnswers
+        fields = []
+
+
 def question_forms_post(data):
     qf = []
     for key, value in sorted(data.items(), key=operator.itemgetter(1)):

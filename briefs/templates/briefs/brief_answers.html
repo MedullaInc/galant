@@ -1,0 +1,34 @@
+{% extends "base_sidebar.html" %}
+{% load bootstrap i18n %}
+
+{% block section_title %}
+    {% trans 'Answer Brief' %}
+{% endblock %}
+
+{% block sidebar %}
+
+{% endblock %}
+
+{% block center_content %}
+
+    <h2 class="section_title">{% trans "Data" %}</h2>
+
+    <p id="title">{% trans "Title" %}: {{ object.title.get_text }}</p>
+    <p id="status">{% trans "Status" %}: {{ object.get_status_display }}</p>
+
+    <hr>
+
+    {% for question in object.questions.all.select_subclasses %}
+        <div id="question_{{ question.index }}">
+            {{ question.question.get_text }}
+            <ul class="multiquestion_choices">
+            {% for choice in question.choices %}
+                <li>{{ choice.get_text }}</li>
+            {% endfor %}
+            </ul>
+        </div>
+
+        <hr>
+    {% endfor %}
+
+{% endblock %}

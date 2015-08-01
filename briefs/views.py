@@ -186,7 +186,7 @@ class BriefTemplateView(View):
 class BriefAnswer(View):
     def get(self, request, **kwargs):
         self.object = get_object_or_404(b.Brief, token=kwargs['token'])
-        form = bf.BriefAnswersForm(instance=self.object)
+        form = bf.BriefAnswersForm(instance=b.BriefAnswers(brief=self.object))
 
         return TemplateResponse(request=self.request,
                                 template="briefs/brief_answers.html",
