@@ -27,9 +27,9 @@
 
     <h2 class="section_title">{% trans "Quote Data" %}</h2>
 
-    <p id="name">{% trans "Name" %}: {{ object.name }}</p>
-    <p id="client">{% trans "Client" %}: {{ object.client.name }}</p>
-    <p id="status">{% trans "Status" %}: {{ object.get_status_display }}</p>
+    <p id="name" class="data">{% trans "Name" %}: {{ object.name }}</p>
+    <p id="client" class="data">{% trans "Client" %}: {{ object.client.name }}</p>
+    <p id="status" class="data">{% trans "Status" %}: {{ object.get_status_display }}</p>
 
     <hr>
 

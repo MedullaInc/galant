@@ -1,3 +1,4 @@
+# coding=utf-8
 from django.core.urlresolvers import reverse
 from functional_tests import browser
 import autofixture
@@ -90,8 +91,9 @@ class BriefsSignedInTest(browser.SignedInTest):
         success_message = b.find_element_by_class_name('alert-success')
         self.assertTrue(u'Brief saved.' in success_message.text)
 
-        answer = b.find_element_by_xpath('//div[@id="question_1"]/ul/li[1]').text
-        self.assertEqual(answer, 'foo')
+        answer = b.find_element_by_id('question_1').text
+        answer = b.find_element_by_xpath('//div[@id="question_1"]/div/div[1]').text
+        self.assertEqual(answer, u'— foo')
 
     def test_client_brief_detail(self):
         b = browser.instance()
