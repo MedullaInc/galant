@@ -1,3 +1,4 @@
+from uuid import uuid4
 from django.conf import settings
 from django.db import models as m
 from gallant import models as g
@@ -70,7 +71,7 @@ class Brief(m.Model):
     name = m.CharField(max_length=512, default='New Brief')
     title = gf.ULCharField(max_length=255, help_text='Brief title.')
     status = m.CharField(max_length=2, choices=BriefStatus.choices(), default=BriefStatus.Draft.value)
-    token = m.CharField(max_length=64, unique=True, null=True, help_text='For emailing URL')
+    token = m.UUIDField(default=uuid4, editable=False, unique=True)
 
     questions = m.ManyToManyField(Question)
     language = m.CharField(max_length=7, null=True, choices=settings.LANGUAGES,
