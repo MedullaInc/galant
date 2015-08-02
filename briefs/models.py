@@ -114,7 +114,7 @@ class Answer(m.Model):
 
 
 class TextAnswer(Answer):
-    answer = m.CharField(max_length=1000)
+    answer = m.CharField(max_length=3000)
 
 
 class MultipleChoiceAnswer(Answer):
