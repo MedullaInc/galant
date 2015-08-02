@@ -3,6 +3,7 @@ from django.conf import settings
 from django.db import models as m
 from gallant import models as g
 from gallant import fields as gf
+from jsonfield.fields import JSONField
 from model_utils.managers import InheritanceManager
 
 
@@ -109,8 +110,24 @@ class ServiceBrief(Brief):
 
 
 class Answer(m.Model):
-    answer = m.CharField(max_length=1000)
     question = m.ForeignKey(Question)
+
+
+class TextAnswer(Answer):
+    answer = m.CharField(max_length=1000)
+
+
+class MultipleChoiceAnswer(Answer):
+    # a list of choice indexes corresponding to the quesion's choice list
+    choices = JSONField()
+
+    @property
+    def answer(self):
+        if type(self.question) is MultipleChoiceQuestion:
+            if self.question.can_select_multiple:
+                return [self.question.choices[c] for c in self.choices]
+            else:
+                return self.question.choices[self.choices[0]]
 
 
 class BriefAnswers(m.Model):

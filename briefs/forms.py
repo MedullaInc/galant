@@ -117,11 +117,11 @@ def create_brief(form, question_forms):
 
 
 class AnswerForm(forms.Form):
-    answer = forms.CharField(label='', widget=forms.TextInput(attrs={'class':'form-control'}))
+    answer = forms.CharField(label='', widget=forms.TextInput(attrs={'class': 'form-control'}))
 
     def __init__(self, question=None, *args, **kwargs):
         self.question = question
         super(AnswerForm, self).__init__(prefix='-answer-%d' % question.id, *args, **kwargs)
 
     def save(self):
-        return b.Answer.objects.create(answer=self.cleaned_data['answer'], question=self.question)
+        return b.TextAnswer.objects.create(answer=self.cleaned_data['answer'], question=self.question)
