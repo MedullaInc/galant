@@ -101,12 +101,15 @@ class BriefDetail(DetailView):
     model = b.Brief
 
     def render_to_response(self, context, **response_kwargs):
+        context = {'title': 'Brief Detail'}
         if self.kwargs['brief_type'] == "client":
-            client_brief = b.ClientBrief.objects.get(id=self.kwargs['pk'])
-            context['object'] = client_brief
-            context['client'] = client_brief.client
+            brief = b.ClientBrief.objects.get(id=self.kwargs['pk'])
+            context.update({'object': brief, 'client': brief.client})
+        else:
+            brief = b.Brief.objects.get(id=self.kwargs['pk'])
 
-        context['title'] = 'Brief Detail'
+        if brief.briefanswers_set.count() > 0:
+            context.update({'answer_set': brief.briefanswers_set.last()})
 
         return super(BriefDetail, self).render_to_response(context)
 

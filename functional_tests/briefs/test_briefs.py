@@ -1,6 +1,7 @@
 # coding=utf-8
 from django.core.urlresolvers import reverse
 from functional_tests import browser
+from briefs import models as bm
 import autofixture
 
 
@@ -51,18 +52,21 @@ class BriefsSignedInTest(browser.SignedInTest):
 
     def test_edit_client_brief_question(self):
         b = browser.instance()
-        q = autofixture.create_one('briefs.Question', generate_fk=True)
-        mq = autofixture.create_one('briefs.MultipleChoiceQuestion', generate_fk=True)
+        q = bm.Question.objects.create(question='What?')
+        mq = bm.MultipleChoiceQuestion.objects.create(question='Huh?', choices=['a', 'b', 'c'], index=1)
         brief = autofixture.create_one('briefs.ClientBrief', generate_fk=True)
         brief.questions.add(q)
         brief.questions.add(mq)
-        brief.save()
 
         b.get(self.live_server_url + reverse('edit_brief', args=['client', brief.client.id, brief.id]))
         self.load_scripts()
 
         b.find_element_by_id('id_title').clear()
         b.find_element_by_id('id_title').send_keys('modified title')
+
+        b.find_element_by_id('id_-question-0-question').send_keys('Who is your daddy, and what does he do?')
+        b.find_element_by_id('id_-multiquestion-1-add_choice').click()
+        b.find_elements_by_class_name('ultext_array_target')[0].send_keys('foo')
 
         b.find_element_by_xpath('//button[@type="submit"]').click()
 
@@ -71,10 +75,9 @@ class BriefsSignedInTest(browser.SignedInTest):
 
     def test_add_client_brief_multiquestion(self):
         b = browser.instance()
-        q = autofixture.create_one('briefs.Question', generate_fk=True)
+        q = bm.Question.objects.create(question='What?')
         brief = autofixture.create_one('briefs.ClientBrief', generate_fk=True)
         brief.questions.add(q)
-        brief.save()
 
         b.get(self.live_server_url + reverse('edit_brief', args=['client', brief.client.id, brief.id]))
         self.load_scripts()

@@ -74,11 +74,13 @@ class BriefAnswersForm(forms.ModelForm):
 
     def answer_forms(self, data=None):
         af = []
-        for q in self.instance.brief.questions.all().select_subclasses():
+        for q in self.instance.brief.questions.all():
             if type(q) is b.Question:
                 FormType = AnswerForm
             elif type(q) is b.MultipleChoiceQuestion:
                 FormType = MultipleChoiceAnswerForm
+            elif type(q) is b.LongAnswerQuestion:
+                FormType = LongAnswerForm
 
             af.append(FormType(question=q, data=data))
 
@@ -101,7 +103,7 @@ def question_forms_post(data):
 
 def question_forms_brief(brief, clear_pk=False):
     qf = []
-    for question in brief.questions.all().select_subclasses():
+    for question in brief.questions.all():
         if clear_pk:
             question.pk = None
         if type(question) is b.MultipleChoiceQuestion:
@@ -130,6 +132,13 @@ class AnswerForm(forms.Form):
 
     def save(self):
         return b.TextAnswer.objects.create(answer=self.cleaned_data['answer'], question=self.question)
+
+
+class LongAnswerForm(AnswerForm):
+    answer = forms.CharField(label='',
+                             help_text='%d charater limit' %
+                                       b.TextAnswer._meta.get_field('answer').max_length,
+                             widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 5}))
 
 
 class MultipleChoiceAnswerForm(forms.Form):

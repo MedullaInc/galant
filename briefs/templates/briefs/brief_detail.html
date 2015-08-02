@@ -13,8 +13,8 @@
         </button>
     </a>
 
-    <a href="{% url 'edit_brief' brief_type="client" type_id=client.id pk=brief.id %}">
-        <button type="button" class="btn btn-default sidebar" id="add_client_brief">
+    <a href="{% url 'edit_brief' brief_type="client" type_id=client.id pk=object.id %}">
+        <button type="button" class="btn btn-default sidebar" id="edit_client_brief">
             {% trans "Edit Brief" %}
         </button>
     </a>
@@ -27,6 +27,9 @@
 
     <p id="title" class="data">{% trans "Title" %}: {{ object.title.get_text }}</p>
     <p id="status" class="data">{% trans "Status" %}: {{ object.get_status_display }}</p>
+    {% if answer_set %}
+    <p id="answered" class="text-success"><b>{% trans "Answered on" %} {{ answer_set.created }}</b></p>
+    {% endif %}
 
     <br/>
     <h2 class="section_title">
@@ -35,20 +38,49 @@
 
     <hr>
 
-    {% for question in object.questions.all.select_subclasses %}
-        <div id="question_{{ question.index }}" class="question">
-            {{ forloop.counter }} ) {{ question.question.get_text }}
-            <div class="multiquestion_choices">
-            {% for choice in question.choices %}
-                <div>
-                    — {{ choice.get_text }}
+    {% if answer_set %}
+        {% for answer in answer_set.answers.all %}
+            {% with question=answer.question %}
+            <div id="question_{{ question.index }}" class="question">
+                {{ forloop.counter }} ) {{ question.question.get_text }}
+                <div class="multiquestion_choices">
+                {% for choice in question.choices %}
+                    {% if forloop.counter0|slugify in answer.choices %}
+                    <div class="text-success"><b>
+                        — {{ choice.get_text }}
+                    </b></div>
+                    {% else %}
+                    <div>
+                        — {{ choice.get_text }}
+                    </div>
+                    {% endif %}
+                {% empty %}
+                    <div class="text-success"><b>
+                        {{ answer.answer }}
+                    </b></div>
+                {% endfor %}
                 </div>
-            {% endfor %}
             </div>
-        </div>
 
-        <hr>
+            <hr>
+            {% endwith %}
+        {% endfor %}
+    {% else %}
+        {% for question in object.questions.all %}
+            <div id="question_{{ question.index }}" class="question">
+                {{ forloop.counter }} ) {{ question.question.get_text }}
+                <div class="multiquestion_choices">
+                {% for choice in question.choices %}
+                    <div>
+                        — {{ choice.get_text }}
+                    </div>
+                {% endfor %}
+                </div>
+            </div>
 
-    {% endfor %}
+            <hr>
+
+        {% endfor %}
+    {% endif %}
 
 {% endblock %}

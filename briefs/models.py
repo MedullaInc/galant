@@ -4,18 +4,16 @@ from django.db import models as m
 from gallant import models as g
 from gallant import fields as gf
 from jsonfield.fields import JSONField
-from model_utils.managers import InheritanceManager
+from polymorphic import PolymorphicModel
 
 
-class Question(m.Model):
+class Question(PolymorphicModel):
     """
     A brief has Questions that need to be answered.
     """
     question = gf.ULCharField()
     help_text = gf.ULCharField()
     index = m.IntegerField(default=0)
-
-    objects = InheritanceManager()
 
 
 class LongAnswerQuestion(Question):
@@ -109,7 +107,7 @@ class ServiceBrief(Brief):
     service = m.ForeignKey(g.Service)
 
 
-class Answer(m.Model):
+class Answer(PolymorphicModel):
     question = m.ForeignKey(Question)
 
 
@@ -133,3 +131,5 @@ class MultipleChoiceAnswer(Answer):
 class BriefAnswers(m.Model):
     brief = m.ForeignKey(Brief)
     answers = m.ManyToManyField(Answer)
+
+    created = m.DateTimeField(auto_now_add=True)

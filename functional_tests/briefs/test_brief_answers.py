@@ -1,5 +1,6 @@
 from django.core.urlresolvers import reverse
 from functional_tests import browser
+from briefs import models as bm
 import autofixture
 
 
@@ -9,8 +10,9 @@ def tearDown():
 
 class BriefAnswersTest(browser.BrowserTest):
     def test_can_access_answers(self):
-        q = autofixture.create_one('briefs.Question', generate_fk=True)
-        mq = autofixture.create_one('briefs.MultipleChoiceQuestion', generate_fk=True)
+        q = bm.Question.objects.create()
+        mq = bm.MultipleChoiceQuestion.objects.create(can_select_multiple=False,
+                                                      choices=[{'en': 'foo'}, {'en': 'bar'}])
         brief = autofixture.create_one('briefs.ClientBrief', generate_fk=True, field_values={'status': 2})
         brief.questions.add(q)
         brief.questions.add(mq)
@@ -22,10 +24,9 @@ class BriefAnswersTest(browser.BrowserTest):
 
     def test_post_answers(self):
         b = browser.instance()
-        q = autofixture.create_one('briefs.Question', generate_fk=True)
-        mq = autofixture.create_one('briefs.MultipleChoiceQuestion', generate_fk=True,
-                                    field_values={'can_select_multiple': False,
-                                                  'choices': [{'en': 'foo'}, {'en': 'bar'}]})
+        q = bm.Question.objects.create()
+        mq = bm.MultipleChoiceQuestion.objects.create(can_select_multiple=False,
+                                                      choices=[{'en': 'foo'}, {'en': 'bar'}])
         brief = autofixture.create_one('briefs.ClientBrief', generate_fk=True, field_values={'status': 2})
         brief.questions.add(q)
         brief.questions.add(mq)
@@ -39,4 +40,3 @@ class BriefAnswersTest(browser.BrowserTest):
 
         success_message = b.find_element_by_class_name('alert-success')
         self.assertTrue(u'Brief answered.' in success_message.text)
-

@@ -1,5 +1,6 @@
 from django.core.urlresolvers import reverse
 from functional_tests import browser
+from briefs import models as bm
 import autofixture
 
 
@@ -28,7 +29,7 @@ class BriefTemplatesTest(browser.SignedInTest):
 
     def test_edit_brief_template(self):
         b = browser.instance()
-        quest = autofixture.create_one('briefs.Question')
+        quest = bm.Question.objects.create()
         brief = autofixture.create_one('briefs.Brief', field_values={'questions': [quest]})
         bt = autofixture.create_one('briefs.BriefTemplate', generate_fk=False, field_values={'brief': brief})
         b.get(self.live_server_url + reverse('edit_brief_template', args=[bt.id]))
@@ -54,7 +55,7 @@ class BriefTemplatesTest(browser.SignedInTest):
     def test_add_from_brief(self):
         b = browser.instance()
 
-        quest = autofixture.create_one('briefs.Question')
+        quest = bm.Question.objects.create()
         brief = autofixture.create_one('briefs.Brief', field_values={'questions': [quest]})
         b.get(self.live_server_url + reverse('add_brief_template', kwargs={'brief_id': brief.id}))
         self.load_scripts()
@@ -65,8 +66,7 @@ class BriefTemplatesTest(browser.SignedInTest):
     def test_add_brief_from_template(self):
         b = browser.instance()
         client = autofixture.create_one('gallant.Client')
-        quest = autofixture.create_one('briefs.Question',
-                                       field_values={'question': {'en': 'Who\'s on first?'}})
+        quest = bm.Question.objects.create(question='Who\'s on first?')
         brief = autofixture.create_one('briefs.Brief', field_values={'questions': [quest]})
         bt = autofixture.create_one('briefs.BriefTemplate', generate_fk=False, field_values={'brief': brief})
         b.get(self.live_server_url +
