@@ -4,6 +4,7 @@ from django.db import models as m
 from gallant import models as g
 from gallant import fields as gf
 from model_utils.managers import InheritanceManager
+from gallant import utils
 
 
 class Question(m.Model):
@@ -93,6 +94,8 @@ class BriefTemplate(m.Model):
     """
     brief = m.ForeignKey(Brief)
 
+    def language_list(self):
+        return [(c, utils.LANG_DICT[c]) for c in self.brief.get_languages() if c in utils.LANG_DICT]
 
 class ClientBrief(Brief):
     """

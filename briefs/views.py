@@ -25,6 +25,8 @@ class BriefList(View):
             context.update({'create_url': reverse('add_brief'), 'object_list': b.Brief.objects.all(),
                             'detail_url': reverse('brief_detail')})
 
+        context.update({'template_list': b.BriefTemplate.objects.all()})
+
         return TemplateResponse(request=request,
                                 template="briefs/brief_list.html",
                                 context=context)
@@ -113,7 +115,7 @@ class BriefDetail(DetailView):
 class BriefTemplateList(View):
     def get(self, request):
         return TemplateResponse(request=request,
-                                template="quotes/brieftemplate_list.html",
+                                template="briefs/brieftemplate_list.html",
                                 context={'title': 'Brief Templates',
                                          'object_list': b.BriefTemplate.objects.all()})
 
