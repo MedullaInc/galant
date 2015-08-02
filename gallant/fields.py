@@ -1,7 +1,6 @@
 from django.forms import widgets
 from django.utils import translation
 from django import forms
-from django.core.exceptions import FieldError
 from jsonfield import JSONField
 from enum import Enum
 from django.conf import settings

@@ -23,7 +23,9 @@ class BriefAnswersTest(browser.BrowserTest):
     def test_post_answers(self):
         b = browser.instance()
         q = autofixture.create_one('briefs.Question', generate_fk=True)
-        mq = autofixture.create_one('briefs.MultipleChoiceQuestion', generate_fk=True)
+        mq = autofixture.create_one('briefs.MultipleChoiceQuestion', generate_fk=True,
+                                    field_values={'can_select_multiple': False,
+                                                  'choices': [{'en': 'foo'}, {'en': 'bar'}]})
         brief = autofixture.create_one('briefs.ClientBrief', generate_fk=True, field_values={'status': 2})
         brief.questions.add(q)
         brief.questions.add(mq)
@@ -32,6 +34,7 @@ class BriefAnswersTest(browser.BrowserTest):
         b.get(self.live_server_url + reverse('brief_answer', args=[brief.token.hex]))
 
         b.find_element_by_css_selector('input[type="text"]').send_keys('foobar')
+        b.find_element_by_css_selector('input[type="radio"][value="1"]').click()
         b.find_element_by_xpath('//button[@type="submit"]').click()
 
         success_message = b.find_element_by_class_name('alert-success')

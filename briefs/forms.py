@@ -141,6 +141,7 @@ class MultipleChoiceAnswerForm(forms.Form):
             raise RuntimeError('Attempting to use MultipleChoiceAnswerForm with non-multiple-choice question.')
 
         if question.can_select_multiple:
+            self.base_fields['answer'] = forms.MultipleChoiceField(label='')
             self.base_fields['answer'].widget = forms.CheckboxSelectMultiple(attrs={'class': 'form-control'},
                                                                              renderer=gf.BootstrapCheckboxFieldRenderer)
         else:
@@ -151,4 +152,4 @@ class MultipleChoiceAnswerForm(forms.Form):
         super(MultipleChoiceAnswerForm, self).__init__(prefix='-answer-%d' % question.id, *args, **kwargs)
 
     def save(self):
-        return b.MultipleChoiceAnswer.objects.create(answer=self.cleaned_data['answer'], question=self.question)
+        return b.MultipleChoiceAnswer.objects.create(choices=self.cleaned_data['answer'], question=self.question)
