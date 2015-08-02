@@ -1,3 +1,4 @@
+from django.forms import widgets
 from django.utils import translation
 from django import forms
 from django.core.exceptions import FieldError
@@ -133,3 +134,25 @@ class ChoiceEnum(Enum):
 
 PHONE_REGEX = RegexValidator(regex=r'^\+?1?\d{9,15}$',
                              message="Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed.")
+
+
+class BootstrapRadioFieldRenderer(widgets.RadioFieldRenderer):
+    def render(self):
+        html = ''
+        for val, text in self.choices:
+            html += '''
+            <div class="radio"><label>
+                <input type="radio" name="%s" value="%d">%s
+            </label></div>''' % (self.name, val, text)
+        return html
+
+
+class BootstrapCheckboxFieldRenderer(widgets.CheckboxFieldRenderer):
+    def render(self):
+        html = ''
+        for val, text in self.choices:
+            html += '''
+            <div class="checkbox"><label>
+                <input type="checkbox" name="%s" value="%d">%s
+            </label></div>''' % (self.name, val, text)
+        return html

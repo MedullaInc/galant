@@ -3,6 +3,7 @@ from django import forms
 from django.shortcuts import get_object_or_404
 from django.template.loader import get_template
 from briefs import models as b
+from gallant import fields as gf
 import re
 
 
@@ -75,7 +76,11 @@ class BriefAnswersForm(forms.ModelForm):
         af = []
         for q in self.instance.brief.questions.all().select_subclasses():
             if type(q) is b.Question:
-                af.append(AnswerForm(question=q, data=data))
+                FormType = AnswerForm
+            elif type(q) is b.MultipleChoiceQuestion:
+                FormType = MultipleChoiceAnswerForm
+
+            af.append(FormType(question=q, data=data))
 
         return af
 
@@ -125,3 +130,25 @@ class AnswerForm(forms.Form):
 
     def save(self):
         return b.TextAnswer.objects.create(answer=self.cleaned_data['answer'], question=self.question)
+
+
+class MultipleChoiceAnswerForm(forms.Form):
+    answer = forms.ChoiceField(label='')
+
+    def __init__(self, question=None, *args, **kwargs):
+        self.question = question
+        if type(question) is not b.MultipleChoiceQuestion:
+            raise RuntimeError('Attempting to use MultipleChoiceAnswerForm with non-multiple-choice question.')
+
+        if question.can_select_multiple:
+            self.base_fields['answer'].widget = forms.CheckboxSelectMultiple(attrs={'class': 'form-control'},
+                                                                             renderer=gf.BootstrapCheckboxFieldRenderer)
+        else:
+            self.base_fields['answer'].widget = forms.RadioSelect(attrs={'class': 'form-control'},
+                                                                  renderer=gf.BootstrapRadioFieldRenderer)
+
+        self.base_fields['answer'].choices = enumerate(c.get_text() for c in question.choices)
+        super(MultipleChoiceAnswerForm, self).__init__(prefix='-answer-%d' % question.id, *args, **kwargs)
+
+    def save(self):
+        return b.MultipleChoiceAnswer.objects.create(answer=self.cleaned_data['answer'], question=self.question)
