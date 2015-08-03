@@ -10,7 +10,7 @@ import re
 class BriefForm(forms.ModelForm):
     class Meta:
         model = b.Brief
-        fields = ['title', 'status']
+        fields = ['title']
 
 
 class BriefTemplateForm(BriefForm):
