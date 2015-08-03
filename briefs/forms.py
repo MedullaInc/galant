@@ -74,7 +74,7 @@ class BriefAnswersForm(forms.ModelForm):
 
     def answer_forms(self, data=None):
         af = []
-        for q in self.instance.brief.questions.all():
+        for q in self.instance.brief.questions.all().order_by('index'):
             if type(q) is b.Question:
                 FormType = AnswerForm
             elif type(q) is b.MultipleChoiceQuestion:
@@ -103,7 +103,7 @@ def question_forms_post(data):
 
 def question_forms_brief(brief, clear_pk=False):
     qf = []
-    for question in brief.questions.all():
+    for question in brief.questions.all().order_by('index'):
         if clear_pk:
             question.pk = None
         if type(question) is b.MultipleChoiceQuestion:
