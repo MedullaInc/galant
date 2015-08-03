@@ -1,0 +1,118 @@
+{% extends "gallant/create_form_ultext.html" %}
+{% load bootstrap i18n section_javascript %}
+
+{% block sidebar %}
+
+    {% if object.id %}
+    <a href="{% url 'quote_detail' object.id %}">
+        <button type="button" class="btn btn-default sidebar">
+            {% trans "Back to Detail" %}
+        </button>
+    </a>
+    {% endif %}
+
+    <a href="{% url 'quotes' %}">
+        <button type="button" class="btn btn-default sidebar">
+            {% trans "Back to Quotes" %}
+        </button>
+    </a>
+
+{% endblock %}
+
+{% block post_form %}
+
+    <div class="rounded-border" style="border-top-left-radius: 0px">
+
+    <div id="section_table">
+
+        {% for s in sections %}
+            {{ s }}
+        {% endfor %}
+
+        <div class="row">
+            <div class="col-lg-12">
+                <button type="button" id="add_service" class="btn btn-default pull-right margin-left-10">Add Service</button>
+                <button type="button" id="add_section" class="btn btn-default pull-right">Add Section</button>
+            </div>
+        </div>
+
+    </div>
+
+    </div>
+
+{% endblock %}
+
+{% block form_actions %}
+    {{ block.super }}
+    <button id="preview_pdf" class="btn btn-default margin-left-10" type="button">{% trans "Preview" %}</button>
+{% endblock %}
+
+{% block extra_body %}
+    {{ block.super }}
+    <script>
+        var counter = {{ sections|length|default:0 }};
+        section = function (ct, dyn_idx) {
+            var str = {% section_form_javascript %};
+            return str.format('-section-' + ct + '-', 'section_' + dyn_idx, 'Section ' + dyn_idx);
+        };
+
+        service = function (ct, dyn_idx) {
+            var str = {% service_form_javascript %};
+            return str.format('-service-' + ct + '-', 'section_' + dyn_idx, 'Section ' + dyn_idx);
+        };
+
+        renameSections = function () {
+            var dyn_section_idx = 1;
+            $('#section_table > div.section').each(function (i) {
+                if (!$(this).hasClass('dynamic_section')) {
+                    return true;
+                }
+
+                var new_section;
+                if ($(this).hasClass('service')) {
+                    new_section = $.parseHTML(service(i, dyn_section_idx));
+                    gallant.copyElement(new_section, this, '.service_name input[type="hidden"]');
+                    gallant.copyElement(new_section, this, '.service_description input[type="hidden"]');
+                    gallant.copyElement(new_section, this, '.service_name input[type="text"]');
+                    gallant.copyElement(new_section, this, '.service_description textarea');
+                    gallant.copyElement(new_section, this, '.service_cost input[type="number"]');
+                    gallant.copyElement(new_section, this, '.service_quantity input');
+                    gallant.copyElement(new_section, this, '.service_type select');
+                } else {
+                    new_section = $.parseHTML(section(i, dyn_section_idx));
+                    gallant.copyElement(new_section, this, '.section_title input[type="hidden"]');
+                    gallant.copyElement(new_section, this, '.section_text input[type="hidden"]');
+                    gallant.copyElement(new_section, this, '.section_title input[type="text"]');
+                    gallant.copyElement(new_section, this, '.section_text textarea');
+                }
+
+                gallant.copyElement(new_section, this, '.section_id');
+                $(new_section).find('.section_index').val(i);
+
+                $(this).replaceWith(new_section);
+                dyn_section_idx++;
+            });
+        };
+
+        $('#add_section').click(function () {
+            counter++;
+            $('#section_table > div:last').before(section(counter, counter - 1));
+            renameSections();
+        });
+
+        $('#add_service').click(function () {
+            counter++;
+            $('#section_table > div:last').before(service(counter, counter - 1));
+            renameSections();
+        });
+
+        $(document.body).on('click', '.close', function () {
+            del = confirm("Remove section?")
+            if (del) {
+                $(this).parents('div.section')[0].remove();
+                counter--;
+                renameSections();
+            }
+        });
+    </script>
+{% endblock %}
