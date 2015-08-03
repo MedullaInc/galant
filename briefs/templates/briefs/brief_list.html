@@ -26,11 +26,13 @@
 {% block center_content %}
     <table class="table table-striped table-bordered">
         <thead>
+        <th>{% trans "Last Modified" %}</th>
         <th>{% trans "Title" %}</th>
         <th>{% trans "Status" %}</th>
         </thead>
         {% for brief in object_list %}
             <tr data-rel="{{ brief.id }}" style="cursor: pointer">
+                <td>{{ brief.modified|date:'Y-m-d H:i' }}</td>
                 <td>{{ brief.title.get_text }}</td>
                 <td>{{ brief.get_status_display }}</td>
             </tr>

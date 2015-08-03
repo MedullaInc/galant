@@ -65,6 +65,8 @@ class Brief(m.Model):
     status = m.CharField(max_length=2, choices=BriefStatus.choices(), default=BriefStatus.Draft.value)
     token = m.UUIDField(default=uuid4, editable=False, unique=True)
 
+    modified = m.DateTimeField(auto_now=True)
+
     questions = m.ManyToManyField(Question)
     language = m.CharField(max_length=7, null=True, choices=settings.LANGUAGES,
                            help_text='Language of brief, or null for template.')

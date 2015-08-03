@@ -24,12 +24,12 @@
     <table class="table table-striped table-bordered">
         <thead>
         <th><b>{% trans "Name" %}</b></th>
-        <th><b>{% trans "Date" %}</b></th>
+        <th><b>{% trans "Last Modified" %}</b></th>
         </thead>
         {% for template in object_list %}
             <tr data-rel="{{ template.id }}" style="cursor: pointer" class="template_row">
                 <td>{{ template.brief.name }}</td>
-                <td>{{ template.brief.created|date:'Y-m-d H:i' }}</td>
+                <td>{{ template.brief.modified|date:'Y-m-d H:i' }}</td>
             </tr>
             {% empty %}
             <tr>

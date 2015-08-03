@@ -56,7 +56,7 @@ class Quote(m.Model):
                            help_text='Language of quote, or null for template.')
 
     status = m.CharField(max_length=2, choices=QuoteStatus.choices(), default=QuoteStatus.Draft.value)
-    created = m.DateTimeField(auto_now_add=True)
+    modified = m.DateTimeField(auto_now=True)
 
     token = m.CharField(max_length=64, unique=True, null=True, help_text='For emailing URL')
 
