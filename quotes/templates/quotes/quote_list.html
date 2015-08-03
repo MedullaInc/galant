@@ -72,7 +72,7 @@
                         {% for template in template_list %}
                             <tr data-rel="{{ template.id }}" style="cursor: pointer" class="template_row">
                                 <td>{{ template.quote.name }}</td>
-                                <td>{{ template.quote.created|date:'Y-m-d H:i' }}</td>
+                                <td>{{ template.quote.modified|date:'Y-m-d H:i' }}</td>
                                 <td>
                                     {% if template.language_list %}
                                         <select class="template_lang form-control" name="language">
