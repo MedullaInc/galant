@@ -3,6 +3,7 @@ from django.contrib import messages
 from django.core.urlresolvers import reverse
 from briefs import models as b
 from django.http import HttpResponseRedirect
+from django.http.response import HttpResponseNotFound
 from django.template.response import TemplateResponse
 from django.utils.translation import get_language
 from gallant import models as g
@@ -100,11 +101,11 @@ class BriefCreate(BriefUpdate):
 class BriefDetail(View):
     def get(self, request, **kwargs):
         context = {'title': 'Brief Detail'}
-        if self.kwargs['brief_type'] == "client":
-            brief = get_object_or_404(b.ClientBrief, id=self.kwargs['pk'])
+        if kwargs['brief_type'] == "client":
+            brief = get_object_or_404(b.ClientBrief, id=kwargs['pk'])
             context.update({'client': brief.client})
         else:
-            brief = get_object_or_404(b.Brief, id=self.kwargs['pk'])
+            brief = get_object_or_404(b.Brief, id=kwargs['pk'])
 
         if brief.briefanswers_set.count() > 0:
             context.update({'answer_set': brief.briefanswers_set.last()})
@@ -113,6 +114,17 @@ class BriefDetail(View):
         return TemplateResponse(request=request,
                                 template="briefs/brief_detail.html",
                                 context=context)
+
+    def post(self, request, **kwargs):
+        if kwargs['brief_type'] == "client":
+            brief = get_object_or_404(b.ClientBrief, id=kwargs['pk'])
+            brief.status = b.BriefStatus.Sent.value
+            brief.save()
+
+            messages.warning(request, 'Email currently disabled.', 'warning client_email_link')
+            return self.get(request, **kwargs)
+        else:
+            return HttpResponseNotFound('<h1>Brief not found</h1>')
 
 
 class BriefTemplateList(View):
@@ -212,6 +224,8 @@ class BriefAnswer(View):
                 brief_answers.answers.add(answer.save())
 
             messages.success(request, 'Brief answered.')
+            obj.status = b.BriefStatus.Answered.value
+            obj.save()
             return HttpResponseRedirect(reverse('brief_detail', args=[brief_answers.brief.id]))
 
         return TemplateResponse(request=request,
