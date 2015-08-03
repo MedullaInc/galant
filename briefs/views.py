@@ -67,7 +67,11 @@ class BriefUpdate(View):
             messages.success(self.request, 'Brief saved.')
 
             if kwargs['brief_type'] == "client":
-                return HttpResponseRedirect(reverse('brief_detail', args=['client', kwargs['type_id'], obj.id]))
+                args = ['client', kwargs['type_id'], obj.id]
+            else:
+                args = [obj.id]
+
+            return HttpResponseRedirect(reverse('brief_detail', args=args))
         else:
             return self.render_to_response({'object': self.object, 'form': form, 'title': 'Edit Brief'})
 

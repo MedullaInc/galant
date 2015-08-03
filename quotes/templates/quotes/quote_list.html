@@ -132,7 +132,12 @@
         });
 
         $('.table .template_row').click(function (e) {
-            window.location.href = "{% url 'edit_quote_template' %}" + $(this).attr('data-rel');
+            var lang = '{{ LANGUAGE_CODE }}';
+            if ($(this).find('select').length) {
+                lang = $(this).find('select').val();
+            }
+            window.location.href = "{% url 'add_quote' %}" + "?template_id=" +
+                    $(this).attr('data-rel') + "&lang=" + lang;
         });
 
         $('.table .template_row select').click(function (e) {
