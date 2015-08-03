@@ -97,21 +97,22 @@ class BriefCreate(BriefUpdate):
         return self.render_to_response(context)
 
 
-class BriefDetail(DetailView):
-    model = b.Brief
-
-    def render_to_response(self, context, **response_kwargs):
+class BriefDetail(View):
+    def get(self, request, **kwargs):
         context = {'title': 'Brief Detail'}
         if self.kwargs['brief_type'] == "client":
-            brief = b.ClientBrief.objects.get(id=self.kwargs['pk'])
-            context.update({'object': brief, 'client': brief.client})
+            brief = get_object_or_404(b.ClientBrief, id=self.kwargs['pk'])
+            context.update({'client': brief.client})
         else:
-            brief = b.Brief.objects.get(id=self.kwargs['pk'])
+            brief = get_object_or_404(b.Brief, id=self.kwargs['pk'])
 
         if brief.briefanswers_set.count() > 0:
             context.update({'answer_set': brief.briefanswers_set.last()})
 
-        return super(BriefDetail, self).render_to_response(context)
+        context.update({'object': brief})
+        return TemplateResponse(request=request,
+                                template="briefs/brief_detail.html",
+                                context=context)
 
 
 class BriefTemplateList(View):
