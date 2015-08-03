@@ -46,7 +46,7 @@ class QuestionForm(forms.ModelForm):
 class MultiQuestionForm(forms.ModelForm):
     class Meta:
         model = b.MultipleChoiceQuestion
-        fields = ['question', 'index', 'choices']
+        fields = ['question', 'index', 'choices', 'can_select_multiple']
 
     def __init__(self, data=None, prefix=None, *args, **kwargs):
         # see if update or create

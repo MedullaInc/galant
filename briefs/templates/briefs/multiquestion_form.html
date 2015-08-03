@@ -1,9 +1,17 @@
+{% load i18n %}
+
 <div id="{{ prefix }}" class="question multiquestion {{ extra_class }}">
     <div class="row">
-        <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11">
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
             <label for="" class="form_label">
-                Question (Multiple-Choice):
+                {% trans 'Question (Multiple-Choice):' %}
             </label>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+            <div class="checkbox"class="form_label" style="margin-top: 0px"><label>
+                <input type="checkbox" name="{{ prefix }}can_select_multiple"
+                       {% if question.can_select_multiple %}checked{% endif %}>Can select multiple?
+            </label></div>
         </div>
         <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
             <button id="{{ prefix }}remove" type="button" class="close close_b" data-dismiss="alert" aria-label="Close">
@@ -47,7 +55,8 @@
     </div>
     <div class="row margin-bottom-10">
         <div class="col-lg-12">
-            <button type="button" id="id_{{ prefix }}add_choice" class="btn btn-default add_choice">Add Choice</button>
+            <button type="button" id="id_{{ prefix }}add_choice"
+                    class="btn btn-default add_choice">{% trans 'Add Choice' %}</button>
         </div>
     </div>
 </div>
