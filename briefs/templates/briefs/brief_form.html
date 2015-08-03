@@ -87,9 +87,9 @@
         var add_choice = function () {
             var ctable = $(this).parent().parent().parent().closest('div').find('.choice_table');
             $(ctable).append('<div class="row margin-bottom-10 question"><div class="col-lg-11 col-md-11 col-sm-11 col-xs-11">' +
-            ' <input class="form-control {{ prefix }}choice ultext_array_target" placeholder="Choice" maxlength="512"' +
+            ' <input class="form-control choice ultext_array_target" placeholder="Choice" maxlength="512"' +
             '       type="text" value=""/>' +
-            '</div><div class="col-lg-1 col-md-1 col-sm-1 col-xs-1"><button id="{{ prefix }}-remove" type="button" class="close close_b" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div></div>')
+            '</div><div class="col-lg-1 col-md-1 col-sm-1 col-xs-1"><button type="button" class="close close_b" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div></div>')
         };
 
         $('#add_multiquestion').click(function () {
