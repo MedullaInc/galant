@@ -88,16 +88,16 @@ class BriefAnswersForm(gf.UserModelForm):
         return af
 
 
-def question_forms_post(user, data):
+def question_forms_request(request):
     qf = []
-    for key, value in sorted(data.items(), key=operator.itemgetter(1)):
+    for key, value in sorted(request.POST.items(), key=operator.itemgetter(1)):
         m = re.match('(-question-\d+)-question', key)
         if m is not None:
-            qf.append(QuestionForm(user, data, prefix=m.group(1)))
+            qf.append(QuestionForm(request.user, request.POST, prefix=m.group(1)))
         else:
             m = re.match('(-multiquestion-\d+)-question', key)
             if m is not None:
-                qf.append(MultiQuestionForm(user, data, prefix=m.group(1)))
+                qf.append(MultiQuestionForm(request.user, request.POST, prefix=m.group(1)))
 
     return qf
 

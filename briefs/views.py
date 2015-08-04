@@ -49,7 +49,7 @@ class BriefUpdate(View):
             self.object = None
 
         form = bf.BriefForm(request.user, request.POST, instance=self.object)
-        question_forms = bf.question_forms_post(request.user, request.POST)
+        question_forms = bf.question_forms_request(request)
 
         valid = list([form.is_valid()] + [s.is_valid() for s in question_forms])
         if all(valid):
@@ -135,7 +135,7 @@ class BriefTemplateView(View):
         return self.render_to_response({'form': form, 'questions': question_forms})
 
     def post(self, request, **kwargs):
-        question_forms = bf.question_forms_post(request.user, request.POST)
+        question_forms = bf.question_forms_request(request)
         if 'pk' in kwargs:
             self.object = get_object_or_404(b.BriefTemplate, pk=kwargs['pk'])
             form = bf.BriefTemplateForm(request.user, request.POST, instance=self.object.brief)
