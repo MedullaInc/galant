@@ -4,13 +4,8 @@ from django.db import models as m
 from gallant import models as g
 from quotes import models as q
 from gallant import fields as gf
-<<<<<<< HEAD
-from model_utils.managers import InheritanceManager
-from gallant import utils
-=======
 from jsonfield.fields import JSONField
 from polymorphic import PolymorphicModel
->>>>>>> 086a53a6f6c65a28748ee8e5ab185185702ad0e7
 
 
 class Question(PolymorphicModel):
@@ -96,8 +91,6 @@ class BriefTemplate(m.Model):
     """
     brief = m.ForeignKey(Brief)
 
-    def language_list(self):
-        return [(c, utils.LANG_DICT[c]) for c in self.brief.get_languages() if c in utils.LANG_DICT]
 
 class Answer(PolymorphicModel):
     question = m.ForeignKey(Question)

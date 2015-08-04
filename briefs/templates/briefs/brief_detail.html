@@ -34,6 +34,9 @@
 
     <p id="title" class="data">{% trans "Title" %}: {{ object.title.get_text }}</p>
     <p id="status" class="data">{% trans "Status" %}: {{ object.get_status_display }}</p>
+    {% if object.status == "2" %}
+    <p id="public_link" class="data">Public Answer Link:<br/>http://{{ request.get_host }}{% url 'brief_answer' token=object.token.hex %}</p>
+    {% endif %}
     {% if answer_set %}
     <p id="answered" class="text-success"><b>{% trans "Answered on" %} {{ answer_set.created }}</b></p>
     {% endif %}
@@ -96,14 +99,8 @@
     <script>
         $(document).ready(function () {
             var alert = $('div .client_email_link');
-            alert.append(' <a>Click Here</a> to copy answer link to clipboard and email it manually.');
-            alert.find('a').click(function () {
-                $('body').append('<input type="text" id="temp" style="position:absolute;opacity:0;">');
-                $('#temp').val("http://{{ request.get_host }}{% url 'brief_answer' token=object.token.hex %}").select();
-                document.execCommand('copy');
-                $('#temp').remove();
-                window.alert('Link copied.');
-            });
+            alert.append('<br/>The brief status has been changed to <strong>Sent</strong>.<br/>Copy & paste the <strong>Public Answer Link</strong> below:<br/><span id="public_answer_link"></span>');
+            $("#public_answer_link").text("http://{{ request.get_host }}{% url 'brief_answer' token=object.token.hex %}").select();
         });
     </script>
 {% endblock %}

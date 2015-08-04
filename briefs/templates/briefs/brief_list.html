@@ -7,46 +7,38 @@
 
 {% block sidebar %}
 
-    {% if brief_type_title %}
+    {% if client %}
     <a href="{% url 'client_detail' client.id %}">
         <button type="button" class="btn btn-default sidebar">
-            {% trans "Back to " %}{{ brief_type_title }}
+            {% trans "Back to Client" %}
         </button>
     </a>
     {% endif %}
 
     <a>
-        <button id="add_brief_button" type="button" class="btn btn-default sidebar">
-            {% trans "Add New Brief" %}
+        <button type="button" class="btn btn-default sidebar" id="add_brief">
+            {% trans "Create Brief" %}
         </button>
     </a>
 
-    <a href="{% url 'brief_templates'  %}">
-        <button type="button" class="btn btn-default sidebar" id="add_brief">
-            {% trans "Brief Templates" %}
+    <a href="{% url 'brief_templates' %}">
+        <button type="button" class="btn btn-default sidebar">
+            {% trans "Templates" %}
         </button>
     </a>
 
 {% endblock %}
 
 {% block center_content %}
-
-    <div id="add_button_popover" class="popover" style="display: none">
-        <a class="from_template_button">
-            <button type="button" class="btn btn-default from_template_button sidebar">From Template</button>
-        </a>
-        <a href="{{ create_url }}">
-            <button type="button" class="btn btn-default from_scratch_button sidebar">From Scratch</button>
-        </a>
-    </div>
-
     <table class="table table-striped table-bordered">
         <thead>
+        <th>{% trans "Last Modified" %}</th>
         <th>{% trans "Title" %}</th>
         <th>{% trans "Status" %}</th>
         </thead>
         {% for brief in object_list %}
-            <tr data-rel="{{ brief.id }}" style="cursor: pointer">
+            <tr data-rel="{{ brief.id }}" style="cursor: pointer" class="brief_row">
+                <td>{{ brief.modified|date:'Y-m-d H:i' }}</td>
                 <td>{{ brief.title.get_text }}</td>
                 <td>{{ brief.get_status_display }}</td>
             </tr>
@@ -58,7 +50,19 @@
             </tr>
         {% endfor %}
     </table>
+
+    {% if client %}
+    <div id="add_button_popover" class="popover" style="display: none">
+        <a class="from_template_button">
+            <button type="button" class="btn btn-default from_template_button sidebar">From Template</button>
+        </a>
+        <a href="{% url 'add_brief' client.id %}">
+            <button type="button" class="btn btn-default from_scratch_button sidebar">From Scratch</button>
+        </a>
+    </div>
+    {% endif %}
 {% endblock %}
+
 
 {% block extra_body %}
     <div id="template_select" class="modal fade" role="dialog">
@@ -78,7 +82,7 @@
                         {% for template in template_list %}
                             <tr data-rel="{{ template.id }}" style="cursor: pointer" class="template_row">
                                 <td>{{ template.brief.name }}</td>
-                                <td>{{ template.brief.created|date:'Y-m-d H:i' }}</td>
+                                <td>{{ template.brief.modified|date:'Y-m-d H:i' }}</td>
                                 <td>
                                     {% if template.language_list %}
                                         <select class="template_lang form-control" name="language">
@@ -101,11 +105,11 @@
                 <div class="modal-footer">
                 </div>
             </div>
+
         </div>
     </div>
-
     <script>
-        $('#add_brief_button').popover({
+        $('#add_brief').popover({
             html: true,
             container: 'body',
             content: $('#add_button_popover').html(),
@@ -113,32 +117,38 @@
             placement: "bottom"
         }).click(function () {
             $('body').on('click', '.popover-content > button.from_template_button', function () {
-                $('#add_brief_button').popover('hide');
+                $('#add_brief').popover('hide');
                 $('#template_select').modal('show');
             });
             $('body').on('click', '.popover-content > a.from_template_button', function () {
-                $('#add_brief_button').popover('hide');
+                $('#add_brief').popover('hide');
                 $('#template_select').modal('show');
             });
         });
 
         $('body').on('click', function (e) {
-            var p = $('#add_brief_button');
+            var p = $('#add_brief');
             if (!p.is(e.target) && p.has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
                 p.popover('hide');
             }
         });
 
-        $(window).resize(function () {
-            $('#add_brief_button').popover('hide');
+        $(window).resize(function(){
+           $('#add_brief').popover('hide');
         });
 
-        $('.table > tbody > tr').click(function () {
-            window.location.href = "{{ detail_url }}" + $(this).attr('data-rel');
+        $('.table .brief_row').click(function () {
+            window.location.href = "{% url 'brief_detail' %}" + $(this).attr('data-rel');
         });
 
+        {% if client %}
         $('.table .template_row').click(function (e) {
-            window.location.href = "{% url 'edit_brief_template' %}" + $(this).attr('data-rel');
+            var lang = '{{ LANGUAGE_CODE }}';
+            if ($(this).find('select').length) {
+                lang = $(this).find('select').val();
+            }
+            window.location.href = "{% url 'add_brief' client.id %}" + "?template_id=" +
+                    $(this).attr('data-rel') + "&lang=" + lang;
         });
 
         $('.table .template_row select').click(function (e) {
@@ -146,7 +156,8 @@
         });
 
         $('.table .template_row select').change(function (e) {
-            window.location.href = "{% url 'add_brief' %}" + "?template_id=" + $(this).parents('tr').attr('data-rel') + "&lang=" + $(this).val();
+            window.location.href = "{% url 'add_brief' client.id %}" + "?template_id=" + $(this).parents('tr').attr('data-rel') + "&lang=" + $(this).val();
         });
+        {% endif %}
     </script>
 {% endblock %}
