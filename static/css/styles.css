@@ -490,7 +490,11 @@ input[type="search"],
 input[type="tel"],
 input[type="color"],
 .uneditable-input {
-    outline: none;
+    border: 1px solid #333333;
+    margin-bottom: 10px;
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 0px;
 }
 
 .form-group {
@@ -2344,3 +2348,11 @@ input[type="text"].form-control {
 /* Notices */
 
 /* End Notices*/
+
+/* Alerts */
+
+div.alert.alert-info {
+ margin-bottom: 10px;
+}
+
+/* End Alerts */

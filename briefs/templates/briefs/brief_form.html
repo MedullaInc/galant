@@ -3,9 +3,9 @@
 
 {% block sidebar %}
     {% if object.client %}
-    <a href="{% url 'client_detail' brief.client_id %}">
+    <a href="{% url 'brief_detail' brief.id %}">
         <button type="button" class="btn btn-default sidebar">
-            {% trans "Back to Client" %}
+            {% trans "Back to Detail" %}
         </button>
     </a>
 
