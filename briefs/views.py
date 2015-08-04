@@ -24,6 +24,8 @@ class BriefList(View):
         else:
             context.update({'object_list': b.Brief.objects.all()})
 
+        context.update({'template_list': b.BriefTemplate.objects.all()})
+
         return TemplateResponse(request=request,
                                 template="briefs/brief_list.html",
                                 context=context)
