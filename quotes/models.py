@@ -23,8 +23,8 @@ class Section(g.PolyUserModel):
 
 # Text section of Quote
 class TextSection(Section):
-    title = gf.ULCharField()
-    text = gf.ULTextField()
+    title = gf.ULCharField(blank=True)
+    text = gf.ULTextField(blank=True)
 
     def __eq__(self, other):
         return self.name == other.name and \

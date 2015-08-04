@@ -39,3 +39,22 @@ class BriefAnswersTest(browser.BrowserTest):
 
         success_message = b.find_element_by_class_name('alert-success')
         self.assertTrue(u'Brief answered.' in success_message.text)
+
+    def test_post_answers_multiselect(self):
+        b = browser.instance()
+        brief = autofixture.create_one('briefs.Brief', generate_fk=True, field_values={'status': 2})
+        q = bm.TextQuestion.objects.create(user=brief.user, question='What?')
+        mq = bm.MultipleChoiceQuestion.objects.create(user=brief.user, question='Huh?', choices=['a', 'b', 'c'],
+                                                      index=1, can_select_multiple=True)
+        brief.questions.add(q)
+        brief.questions.add(mq)
+        brief.save()
+
+        b.get(self.live_server_url + reverse('brief_answer', args=[brief.token.hex]))
+
+        b.find_element_by_css_selector('input[type="text"]').send_keys('foobar')
+        b.find_element_by_css_selector('input[type="checkbox"][value="1"]').click()
+        b.find_element_by_xpath('//button[@type="submit"]').click()
+
+        success_message = b.find_element_by_class_name('alert-success')
+        self.assertTrue(u'Brief answered.' in success_message.text)
