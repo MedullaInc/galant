@@ -3,15 +3,12 @@ from gallant import fields as gf
 from django.db import models as m
 from django.conf import settings
 from gallant import utils
-from django.template.loader import get_template
 
 
-# Text section of Quote
-class Section(m.Model):
+class Section(g.PolyUserModel):
     name = m.CharField(max_length=256, default="section")
     index = m.IntegerField(default=0)
-    title = gf.ULCharField()
-    text = gf.ULTextField()
+
     parent = m.ForeignKey('self', null=True, blank=True, related_name='sub_sections')
 
     def display_title(self):
@@ -22,6 +19,12 @@ class Section(m.Model):
         map(lambda l: language_set.add(l), self.title.keys())
         map(lambda l: language_set.add(l), self.text.keys())
         return language_set
+
+
+# Text section of Quote
+class TextSection(Section):
+    title = gf.ULCharField()
+    text = gf.ULTextField()
 
     def __eq__(self, other):
         return self.name == other.name and \
@@ -46,10 +49,10 @@ class QuoteStatus(gf.ChoiceEnum):
     Rejected = 6
 
 
-class Quote(m.Model):
+class Quote(g.UserModel):
     name = m.CharField(max_length=512, default='New Quote')
     client = m.ForeignKey(g.Client, null=True)
-    sections = m.ManyToManyField(Section, blank=True, related_name='sections')
+    sections = m.ManyToManyField(TextSection, blank=True, related_name='sections')
     services = m.ManyToManyField(ServiceSection, blank=True, related_name='services')
 
     language = m.CharField(max_length=7, null=True, choices=settings.LANGUAGES,
@@ -82,7 +85,7 @@ class Quote(m.Model):
         return sections
 
 
-class QuoteTemplate(m.Model):
+class QuoteTemplate(g.UserModel):
     quote = m.ForeignKey(Quote)
 
     def language_list(self):

@@ -1,15 +1,13 @@
-from django import forms
 from quotes import models as q
 from gallant import models as g
-from django.utils.translation import get_language
-from django.conf import settings
+from gallant import forms as gf
 from django.shortcuts import get_object_or_404
 from django.template.loader import get_template
 import operator
 import re
 
 
-class QuoteForm(forms.ModelForm):
+class QuoteForm(gf.UserModelForm):
     class Meta:
         model = q.Quote
         fields = ['name', 'client', 'status']
@@ -36,16 +34,16 @@ def create_quote(quote_form, section_forms):
     return obj
 
 
-def section_forms_post(data):
+def section_forms_request(request):
     sf = []
-    for key, value in sorted(data.items(), key=operator.itemgetter(1)):
+    for key, value in sorted(request.POST.items(), key=operator.itemgetter(1)):
         m = re.match('(-section-\d+)-name', key)
         if m is not None:
-            sf.append(SectionForm(data, prefix=m.group(1)))
+            sf.append(SectionForm(request.user, request.POST, prefix=m.group(1)))
         else:
             m = re.match('(-service-\d+)-name', key)
             if m is not None:
-                sf.append(ServiceSectionForm(data, prefix=m.group(1)))
+                sf.append(ServiceSectionForm(request.user, request.POST, prefix=m.group(1)))
 
     sf.sort(key=lambda x: x.index)
     return sf
@@ -56,33 +54,33 @@ def section_forms_quote(quote, clear_pk=False):
     for section in quote.all_sections():
         if clear_pk:
             section.pk = None
-        if type(section) is q.Section:
-            sf.append(SectionForm(instance=section, prefix='-section-%d' % section.index))
+        if type(section) is q.TextSection:
+            sf.append(SectionForm(section.user, instance=section, prefix='-section-%d' % section.index))
         elif type(section) is q.ServiceSection:
-            sf.append(ServiceSectionForm(instance=section, prefix='-service-%d' % section.index))
+            sf.append(ServiceSectionForm(section.user, instance=section, prefix='-service-%d' % section.index))
 
     return sf
 
 
-def section_forms_initial():
-    return [SectionForm(instance=q.Section(name='intro', index=0), prefix='-section-0'),
-            SectionForm(instance=q.Section(name='margin', index=1), prefix='-section-1')]
+def section_forms_initial(user):
+    return [SectionForm(user, instance=q.TextSection(name='intro', index=0), prefix='-section-0'),
+            SectionForm(user, instance=q.TextSection(name='margin', index=1), prefix='-section-1')]
 
 
-class SectionForm(forms.ModelForm):
+class SectionForm(gf.UserModelForm):
     class Meta:
-        model = q.Section
+        model = q.TextSection
         fields = ['name', 'title', 'text', 'index']
 
-    def __init__(self, data=None, prefix=None, *args, **kwargs):
+    def __init__(self, user, data=None, prefix=None, *args, **kwargs):
         # see if update or create
         prefix = prefix or ''
         data = data or {}
         if prefix + '-id' in data:
-            section = get_object_or_404(q.Section, pk=data[prefix + '-id'])
-            super(SectionForm, self).__init__(data=data, prefix=prefix, instance=section, *args, **kwargs)
+            section = get_object_or_404(q.TextSection, pk=data[prefix + '-id'])
+            super(SectionForm, self).__init__(user, data=data, prefix=prefix, instance=section, *args, **kwargs)
         else:
-            super(SectionForm, self).__init__(data=data, prefix=prefix, *args, **kwargs)
+            super(SectionForm, self).__init__(user, data=data, prefix=prefix, *args, **kwargs)
 
         self.index = self.instance.index
 
@@ -98,13 +96,13 @@ class SectionForm(forms.ModelForm):
         return t.render(context)
 
 
-class ServiceSectionForm(forms.ModelForm):
+class ServiceSectionForm(gf.UserModelForm):
     class Meta:
         model = g.Service  # make sure to call with ServiceSection instance, not Service
         fields = ['name', 'description', 'cost', 'quantity', 'type']
 
-    def __init__(self, data=None, instance=None, *args, **kwargs):
-        super(ServiceSectionForm, self).__init__(data=data, instance=instance, *args, **kwargs)
+    def __init__(self, user, data=None, instance=None, *args, **kwargs):
+        super(ServiceSectionForm, self).__init__(user=user, data=data, instance=instance, *args, **kwargs)
         self.section = None
 
         # check to see if we were called with an instance param
@@ -117,7 +115,7 @@ class ServiceSectionForm(forms.ModelForm):
         else:
             name = self.data[self.prefix + '-section_name']
             index = self.data[self.prefix + '-index']
-            self.section = q.ServiceSection(name=name, index=index)
+            self.section = q.ServiceSection(user=user, name=name, index=index)
         self.index = self.section.index
 
     def as_table(self):

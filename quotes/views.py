@@ -16,7 +16,7 @@ from django.http import HttpResponse
 class QuoteUpdate(View):
     def get(self, request, **kwargs):
         self.object = get_object_or_404(q.Quote, pk=kwargs['pk'])
-        form = qf.QuoteForm(instance=self.object)
+        form = qf.QuoteForm(request.user, instance=self.object)
         section_forms = qf.section_forms_quote(quote=self.object)
         return self.render_to_response({'object': self.object, 'form': form, 'sections': section_forms,
                                         'title': 'Edit Quote'})
@@ -27,8 +27,8 @@ class QuoteUpdate(View):
         else:
             self.object = None
 
-        form = qf.QuoteForm(request.POST, instance=self.object)
-        section_forms = qf.section_forms_post(request.POST)
+        form = qf.QuoteForm(request.user, request.POST, instance=self.object)
+        section_forms = qf.section_forms_request(request)
 
         valid = list([form.is_valid()] + [s.is_valid() for s in section_forms])
         if all(valid):
@@ -61,10 +61,10 @@ class QuoteCreate(QuoteUpdate):
             quote.pk = None
             if lang is not None:
                 quote.language = lang
-                context.update({'language': lang, 'form': qf.QuoteForm(instance=quote), 'object': quote})
+                context.update({'language': lang, 'form': qf.QuoteForm(request.user, instance=quote), 'object': quote})
         else:
-            context.update({'form': qf.QuoteForm(instance=q.Quote()),
-                            'sections': qf.section_forms_initial()})
+            context.update({'form': qf.QuoteForm(request.user, instance=q.Quote()),
+                            'sections': qf.section_forms_initial(request.user)})
 
         return self.render_to_response(context)
 
@@ -98,28 +98,28 @@ class QuoteTemplateView(View):
     def get(self, request, **kwargs):
         if 'pk' in kwargs:
             self.object = get_object_or_404(q.QuoteTemplate, pk=kwargs['pk'])
-            form = qf.QuoteTemplateForm(instance=self.object.quote)
+            form = qf.QuoteTemplateForm(request.user, instance=self.object.quote)
             section_forms = qf.section_forms_quote(self.object.quote)
         else:
             self.object = None
             if kwargs['quote_id'] is not None:
                 quote = get_object_or_404(q.Quote, pk=kwargs['quote_id'])
-                form = qf.QuoteTemplateForm(instance=quote)
+                form = qf.QuoteTemplateForm(request.user, instance=quote)
                 section_forms = qf.section_forms_quote(quote)
             else:
-                form = qf.QuoteTemplateForm()
-                section_forms = qf.section_forms_initial()
+                form = qf.QuoteTemplateForm(request.user)
+                section_forms = qf.section_forms_initial(request.user)
 
         return self.render_to_response({'form': form, 'sections': section_forms})
 
     def post(self, request, **kwargs):
-        section_forms = qf.section_forms_post(request.POST)
+        section_forms = qf.section_forms_request(request)
         if 'pk' in kwargs:
             self.object = get_object_or_404(q.QuoteTemplate, pk=kwargs['pk'])
-            form = qf.QuoteTemplateForm(request.POST, instance=self.object.quote)
+            form = qf.QuoteTemplateForm(request.user, request.POST, instance=self.object.quote)
         else:
             self.object = None
-            form = qf.QuoteTemplateForm(request.POST)
+            form = qf.QuoteTemplateForm(request.user, request.POST)
 
         valid = list([form.is_valid()] + [s.is_valid() for s in section_forms])
         if all(valid):
@@ -130,7 +130,7 @@ class QuoteTemplateView(View):
     def form_valid(self, form, section_forms):
         quote = qf.create_quote(form, section_forms)
         if hasattr(self, 'object') and self.object is None:
-            self.object = q.QuoteTemplate.objects.create(quote=quote)
+            self.object = q.QuoteTemplate.objects.create(user=quote.user, quote=quote)
         messages.success(self.request, 'Template saved.')
         return HttpResponseRedirect(reverse('edit_quote_template', args=[self.object.id]))
 

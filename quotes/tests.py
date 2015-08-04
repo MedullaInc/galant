@@ -8,15 +8,15 @@ from gallant import models as g
 # Create your tests here.
 class SectionTest(test.TransactionTestCase):
     def test_save_load(self):
-        fixture = AutoFixture(q.Section, generate_fk=True)
+        fixture = AutoFixture(q.TextSection, generate_fk=True)
         section = fixture.create(1)[0]
-        new_section = q.Section.objects.get(id=section.id)
+        new_section = q.TextSection.objects.get(id=section.id)
 
         self.assertEqual(section.title, new_section.title)
         self.assertEqual(section.text, new_section.text)
 
     def test_sub_sections(self):
-        fixture = AutoFixture(q.Section, generate_fk=True)
+        fixture = AutoFixture(q.TextSection, generate_fk=True)
         sections = fixture.create(10)
         for s in sections[0:9]:
             s.parent = sections[9]
@@ -56,7 +56,7 @@ class QuoteFormTest(test.TestCase):
 
     def test_create_quote(self):
         f = qf.QuoteForm(self.data)
-        s = qf.section_forms_post(self.data)
+        s = qf.section_forms_request(self.data)
 
         self.assertTrue(f.is_valid())
 
@@ -65,7 +65,7 @@ class QuoteFormTest(test.TestCase):
 
     def test_edit_quote(self):
         f = qf.QuoteForm(self.data)
-        s = qf.section_forms_post(self.data)
+        s = qf.section_forms_request(self.data)
 
         self.assertTrue(f.is_valid())
 
@@ -79,7 +79,7 @@ class QuoteFormTest(test.TestCase):
         new_data.update(self.data)
 
         f = qf.QuoteForm(new_data)
-        s = qf.section_forms_post(new_data)
+        s = qf.section_forms_request(new_data)
 
         self.assertTrue(f.is_valid())
 
@@ -96,7 +96,7 @@ class QuoteFormTest(test.TestCase):
         new_data.update(self.data)
 
         f = qf.QuoteForm(new_data)
-        s = qf.section_forms_post(new_data)
+        s = qf.section_forms_request(new_data)
 
         self.assertTrue(f.is_valid())
 
@@ -111,7 +111,7 @@ class QuoteFormTest(test.TestCase):
         new_data.update(self.data)
 
         f = qf.QuoteForm(new_data)
-        s = qf.section_forms_post(new_data)
+        s = qf.section_forms_request(new_data)
         for sf in s:
             if not sf.is_valid():
                 for field in sf:
@@ -128,7 +128,7 @@ class QuoteFormTest(test.TestCase):
         new_data['-section-0-id'] = intro_id
         new_data['-section-1-id'] = margin_id
         new_data['-section-2-id'] = section_ids[2]
-        s = qf.section_forms_post(new_data)
+        s = qf.section_forms_request(new_data)
 
         new_obj = qf.create_quote(f, s)
         new_obj.save()
@@ -149,7 +149,7 @@ class QuoteFormTest(test.TestCase):
         new_data.update(self.data)
 
         f = qf.QuoteForm(new_data)
-        s = qf.section_forms_post(new_data)
+        s = qf.section_forms_request(new_data)
 
         self.assertTrue(f.is_valid())
 
@@ -159,7 +159,7 @@ class QuoteFormTest(test.TestCase):
 
         new_data['-service-2-id'] = service_ids[0]
         new_data['-service-3-id'] = service_ids[1]
-        s = qf.section_forms_post(new_data)
+        s = qf.section_forms_request(new_data)
 
         new_obj = qf.create_quote(f, s)
         new_obj.save()
@@ -173,7 +173,7 @@ class QuoteFormTest(test.TestCase):
         new_data.update(self.data)
 
         f = qf.QuoteForm(new_data)
-        s = qf.section_forms_post(new_data)
+        s = qf.section_forms_request(new_data)
 
         self.assertTrue(f.is_valid())
 
@@ -182,7 +182,7 @@ class QuoteFormTest(test.TestCase):
         section_ids = [s.id for s in obj.sections.all()]
 
         new_data['-section-2-title'] = 'new title'
-        s = qf.section_forms_post(new_data)
+        s = qf.section_forms_request(new_data)
 
         new_obj = qf.create_quote(f, s)
         new_obj.save()
