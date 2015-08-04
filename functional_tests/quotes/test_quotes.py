@@ -1,5 +1,6 @@
 from django.core.urlresolvers import reverse
 from functional_tests import browser
+from quotes import models as qm
 import autofixture
 
 
@@ -8,14 +9,11 @@ def tearDown():
 
 
 def get_blank_quote_autofixture():
-    i = autofixture.create_one('quotes.Section', generate_fk=True, field_values={'name': 'intro', 'index': 0})
-    i.save()
-    m = autofixture.create_one('quotes.Section', generate_fk=True, field_values={'name': 'margin', 'index': 1})
-    m.save()
     q = autofixture.create_one('quotes.Quote', generate_fk=True, field_values={'sections': [], 'language': 'en'})
+    i = qm.TextSection.objects.create(user=q.user, name='intro', index=0)
+    m = qm.TextSection.objects.create(user=q.user, name='margin', index=1)
     q.sections.add(i)
     q.sections.add(m)
-    q.save()
     return q
 
 
