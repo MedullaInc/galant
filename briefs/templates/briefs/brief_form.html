@@ -2,14 +2,14 @@
 {% load bootstrap i18n question_javascript %}
 
 {% block sidebar %}
-    {% if client %}
-    <a href="{% url 'client_detail' client.id %}">
+    {% if object.client %}
+    <a href="{% url 'client_detail' brief.client_id %}">
         <button type="button" class="btn btn-default sidebar">
             {% trans "Back to Client" %}
         </button>
     </a>
 
-    <a href="{% url 'brief_list' 'client' client.id %}">
+    <a href="{% url 'brief_list' object.client_id %}">
         <button type="button" class="btn btn-default sidebar">
             {% trans "Back to Briefs" %}
         </button>
@@ -18,8 +18,8 @@
 {% endblock %}
 
 {% block post_form %}
-    {% if brief.client_id %}
-    <input type="hidden" name="client" value="{{ brief.client_id }}">
+    {% if object.client_id %}
+    <input type="hidden" name="client" value="{{ object.client_id }}">
     {% endif %}
     <div class="rounded-border padding-top-20">
 

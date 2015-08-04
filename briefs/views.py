@@ -15,18 +15,15 @@ from django.db.models import Q
 
 class BriefList(View):
     def get(self, request, **kwargs):
-        context = {}
-        if 'brief_type' in kwargs:
-            if kwargs['brief_type'] == "client":
-                client = g.Client.objects.get(pk=kwargs['type_id'])
-                context.update({'brief_type_title': 'Client', 'object_list': client.brief_set.all(),
-                                'create_url': reverse('add_brief', args=['client', client.id]),
-                                'detail_url': reverse('brief_detail', args=['client', client.id])})
-        else:
-            context.update({'create_url': reverse('add_brief'), 'object_list': b.Brief.objects.all(),
-                            'detail_url': reverse('brief_detail')})
+        context = {'template_list': b.BriefTemplate.objects.all()}
 
-        context.update({'template_list': b.BriefTemplate.objects.all()})
+        if 'type_id' in kwargs:
+            client = g.Client.objects.get(pk=kwargs['type_id'])
+            context.update({'client': client,
+                            'object_list': client.brief_set.all()})
+        else:
+            context.update({'object_list': b.Brief.objects.all()})
+
         return TemplateResponse(request=request,
                                 template="briefs/brief_list.html",
                                 context=context)
@@ -45,7 +42,7 @@ class BriefUpdate(View):
     def post(self, request, *args, **kwargs):
         if 'pk' in kwargs:
             self.object = get_object_or_404(b.Brief, pk=kwargs['pk'])
-        elif 'type_id' in kwargs:
+        elif 'type_id' in kwargs and kwargs['type_id'] is not None:
             client = get_object_or_404(g.Client, pk=kwargs['type_id'])
             self.object = b.Brief(client=client)
         else:
@@ -60,7 +57,7 @@ class BriefUpdate(View):
 
             messages.success(self.request, 'Brief saved.')
 
-            return HttpResponseRedirect(reverse('brief_detail', args=['client', obj.client.id, obj.id]))
+            return HttpResponseRedirect(reverse('brief_detail', args=[obj.client_id, obj.id]))
         else:
             return self.render_to_response({'object': self.object, 'form': form, 'title': 'Edit Brief'})
 
@@ -77,7 +74,7 @@ class BriefCreate(BriefUpdate):
             template = get_object_or_404(b.BriefTemplate, pk=template_id)
             brief = template.brief
             question_forms = bf.question_forms_brief(brief, clear_pk=True)
-            context.update({'questions': question_forms, 'client': brief.client})
+            context.update({'questions': question_forms})
             brief.pk = None
             if lang is not None:
                 brief.language = lang
@@ -97,7 +94,7 @@ class BriefDetail(View):
         if brief.briefanswers_set.count() > 0:
             context.update({'answer_set': brief.briefanswers_set.last()})
 
-        context.update({'object': brief, 'client': brief.client})
+        context.update({'object': brief})
         return TemplateResponse(request=request,
                                 template="briefs/brief_detail.html",
                                 context=context)

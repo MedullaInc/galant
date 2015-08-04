@@ -6,14 +6,14 @@
 {% endblock %}
 
 {% block sidebar %}
-    {% if client %}
-    <a href="{% url 'client_detail' client.id %}">
+    {% if object.client %}
+    <a href="{% url 'client_detail' object.client_id %}">
         <button type="button" class="btn btn-default sidebar">
             {% trans "Back to Client" %}
         </button>
     </a>
 
-    <a href="{% url 'edit_brief' brief_type="client" type_id=client.id pk=object.id %}">
+    <a href="{% url 'edit_brief' type_id=object.client_id pk=object.id %}">
         <button type="button" class="btn btn-default sidebar" id="edit_client_brief">
             {% trans "Edit Brief" %}
         </button>

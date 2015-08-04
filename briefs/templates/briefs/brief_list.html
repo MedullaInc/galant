@@ -7,10 +7,10 @@
 
 {% block sidebar %}
 
-    {% if brief_type_title %}
+    {% if client %}
     <a href="{% url 'client_detail' client.id %}">
         <button type="button" class="btn btn-default sidebar">
-            {% trans "Back to " %}{{ brief_type_title }}
+            {% trans "Back to Client" %}
         </button>
     </a>
     {% endif %}
@@ -50,14 +50,17 @@
             </tr>
         {% endfor %}
     </table>
+
+    {% if client %}
     <div id="add_button_popover" class="popover" style="display: none">
         <a class="from_template_button">
             <button type="button" class="btn btn-default from_template_button sidebar">From Template</button>
         </a>
-        <a href="{{ create_url }}">
+        <a href="{% url 'add_brief' client.id %}">
             <button type="button" class="btn btn-default from_scratch_button sidebar">From Scratch</button>
         </a>
     </div>
+    {% endif %}
 {% endblock %}
 
 
@@ -138,12 +141,13 @@
             window.location.href = "{% url 'brief_detail' %}" + $(this).attr('data-rel');
         });
 
+        {% if client %}
         $('.table .template_row').click(function (e) {
             var lang = '{{ LANGUAGE_CODE }}';
             if ($(this).find('select').length) {
                 lang = $(this).find('select').val();
             }
-            window.location.href = "{% url 'add_brief' %}" + "?template_id=" +
+            window.location.href = "{% url 'add_brief' client.id %}" + "?template_id=" +
                     $(this).attr('data-rel') + "&lang=" + lang;
         });
 
@@ -152,7 +156,8 @@
         });
 
         $('.table .template_row select').change(function (e) {
-            window.location.href = "{% url 'add_brief' %}" + "?template_id=" + $(this).parents('tr').attr('data-rel') + "&lang=" + $(this).val();
+            window.location.href = "{% url 'add_brief' client.id %}" + "?template_id=" + $(this).parents('tr').attr('data-rel') + "&lang=" + $(this).val();
         });
+        {% endif %}
     </script>
 {% endblock %}

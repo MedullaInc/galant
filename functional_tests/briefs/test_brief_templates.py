@@ -70,7 +70,7 @@ class BriefTemplatesTest(browser.SignedInTest):
         brief = autofixture.create_one('briefs.Brief', generate_fk=True, field_values={'questions': [quest]})
         bt = autofixture.create_one('briefs.BriefTemplate', generate_fk=False, field_values={'brief': brief})
         b.get(self.live_server_url +
-              reverse('add_brief', args=['client', client.id]) + '?template_id=%d&lang=en' % bt.id)
+              reverse('add_brief', args=[client.id]) + '?template_id=%d&lang=en' % bt.id)
         self.load_scripts()
 
         question = b.find_element_by_id('id_-question-0-question_hidden')

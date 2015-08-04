@@ -24,7 +24,7 @@ class BriefsSignedInTest(browser.SignedInTest):
         c.save()
 
         # access Client Briefs & click add brief
-        b.get(self.live_server_url + reverse('brief_list', args=['client', c.id]))
+        b.get(self.live_server_url + reverse('brief_list', args=[c.id]))
         self.load_scripts()
         b.find_element_by_id('add_brief').click()
         b.find_element_by_css_selector('.popover-content .from_scratch_button').click()
@@ -41,7 +41,7 @@ class BriefsSignedInTest(browser.SignedInTest):
         q = autofixture.create_one('briefs.Brief', generate_fk=True)
         q.save()
 
-        b.get(self.live_server_url + reverse('edit_brief', args=['client', q.client.id, q.id]))
+        b.get(self.live_server_url + reverse('edit_brief', args=[q.client.id, q.id]))
         self.load_scripts()
 
         b.find_element_by_id('id_title').clear()
@@ -60,7 +60,7 @@ class BriefsSignedInTest(browser.SignedInTest):
         brief.questions.add(q)
         brief.questions.add(mq)
 
-        b.get(self.live_server_url + reverse('edit_brief', args=['client', brief.client.id, brief.id]))
+        b.get(self.live_server_url + reverse('edit_brief', args=[brief.client.id, brief.id]))
         self.load_scripts()
 
         b.find_element_by_id('id_title').clear()
@@ -81,7 +81,7 @@ class BriefsSignedInTest(browser.SignedInTest):
         brief = autofixture.create_one('briefs.Brief', generate_fk=True)
         brief.questions.add(q)
 
-        b.get(self.live_server_url + reverse('edit_brief', args=['client', brief.client.id, brief.id]))
+        b.get(self.live_server_url + reverse('edit_brief', args=[brief.client.id, brief.id]))
         self.load_scripts()
 
         b.find_element_by_id('add_multiquestion').click()
@@ -105,7 +105,7 @@ class BriefsSignedInTest(browser.SignedInTest):
         q = autofixture.create_one('briefs.Brief', generate_fk=True)
         q.save()
 
-        b.get(self.live_server_url + reverse('brief_detail', args=['client', q.client.id, q.id]))
+        b.get(self.live_server_url + reverse('brief_detail', args=[q.client.id, q.id]))
         self.load_scripts()
 
         section_title = browser.instance().find_element_by_class_name('section_title')
