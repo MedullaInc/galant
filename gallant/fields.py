@@ -45,10 +45,13 @@ def _ultext_to_python(value):
     try:
         d.update(json.loads(value))
     except (ValueError, TypeError):
-        lang = translation.get_language()
-        if lang is None:
-            lang = settings.LANGUAGE_CODE
-        d.update({lang: value})
+        if value == '':
+            return ''
+        else:
+            lang = translation.get_language()
+            if lang is None:
+                lang = settings.LANGUAGE_CODE
+            d.update({lang: value})
 
     if value is None:
         return value
@@ -72,7 +75,10 @@ def _ultext_array_to_python(value):
 
 class ULTextFormField(forms.fields.CharField):
     def to_python(self, value):
-        return _ultext_to_python(value)
+        if value in self.empty_values:
+            return ULTextDict()
+        else:
+            return _ultext_to_python(value)
 
     def prepare_value(self, value):
         if isinstance(value, basestring):
@@ -84,7 +90,10 @@ class ULTextFormField(forms.fields.CharField):
 
 class ULTextArrayFormField(forms.fields.CharField):
     def to_python(self, value):
-        return _ultext_array_to_python(value)
+        if value in self.empty_values:
+            return []
+        else:
+            return _ultext_array_to_python(value)
 
 
 class ULTextField(JSONField):
@@ -98,7 +107,10 @@ class ULTextField(JSONField):
 
     def pre_init(self, value, obj):
         value = super(JSONField, self).pre_init(value, obj)
-        return _ultext_to_python(value)
+        if value in self.empty_values:
+            return ULTextDict()
+        else:
+            return _ultext_to_python(value)
 
 
 class ULTextArrayField(ULTextField):
@@ -106,7 +118,10 @@ class ULTextArrayField(ULTextField):
 
     def pre_init(self, value, obj):
         value = super(JSONField, self).pre_init(value, obj)
-        return _ultext_array_to_python(value)
+        if value in self.empty_values:
+            return []
+        else:
+            return _ultext_array_to_python(value)
 
 
 class ULCharField(ULTextField):
@@ -124,6 +139,7 @@ class ChoiceEnum(Enum):
         members = inspect.getmembers(cls, lambda m: not (inspect.isroutine(m)))
         # filter down to just properties
         props = [m for m in members if not (m[0][:2] == '__')]
+        props.sort(key=lambda x: x[1].value)
         # format into django choice tuple
         choices = tuple([(str(p[1].value), p[0]) for p in props])
         return choices
