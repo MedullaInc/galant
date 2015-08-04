@@ -152,7 +152,7 @@ class BriefTemplateView(View):
     def form_valid(self, form, question_forms):
         brief = bf.create_brief(form, question_forms)
         if hasattr(self, 'object') and self.object is None:
-            self.object = b.BriefTemplate.objects.create(brief=brief)
+            self.object = b.BriefTemplate.objects.create(user=brief.user, brief=brief)
         messages.success(self.request, 'Template saved.')
         return HttpResponseRedirect(reverse('edit_brief_template', args=[self.object.id]))
 

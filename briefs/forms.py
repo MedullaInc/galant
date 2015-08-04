@@ -87,6 +87,12 @@ class BriefAnswersForm(gf.UserModelForm):
 
         return af
 
+    def save(self):
+        # for saving from a POST from non-logged-in client, we assign the object's user to be
+        # the same as the relevant brief.
+        self.user = self.instance.brief.user
+        return super(BriefAnswersForm, self).save()
+
 
 def question_forms_request(request):
     qf = []
@@ -130,10 +136,12 @@ class AnswerForm(forms.Form):
 
     def __init__(self, user, question=None, *args, **kwargs):
         self.question = question
+        self.user = user
         super(AnswerForm, self).__init__(prefix='-answer-%d' % question.id, *args, **kwargs)
 
     def save(self):
-        return b.TextAnswer.objects.create(answer=self.cleaned_data['answer'], question=self.question)
+        return b.TextAnswer.objects.create(user=self.user, answer=self.cleaned_data['answer'],
+                                           question=self.question)
 
 
 class LongAnswerForm(AnswerForm):
@@ -148,6 +156,7 @@ class MultipleChoiceAnswerForm(forms.Form):
 
     def __init__(self, user, question=None, *args, **kwargs):
         self.question = question
+        self.user = user
         if type(question) is not b.MultipleChoiceQuestion:
             raise RuntimeError('Attempting to use MultipleChoiceAnswerForm with non-multiple-choice question.')
 
@@ -160,7 +169,8 @@ class MultipleChoiceAnswerForm(forms.Form):
                                                                   renderer=gfields.BootstrapRadioFieldRenderer)
 
         self.base_fields['answer'].choices = enumerate(c.get_text() for c in question.choices)
-        super(MultipleChoiceAnswerForm, self).__init__(user, prefix='-answer-%d' % question.id, *args, **kwargs)
+        super(MultipleChoiceAnswerForm, self).__init__(prefix='-answer-%d' % question.id, *args, **kwargs)
 
     def save(self):
-        return b.MultipleChoiceAnswer.objects.create(choices=self.cleaned_data['answer'], question=self.question)
+        return b.MultipleChoiceAnswer.objects.create(user=self.user, choices=self.cleaned_data['answer'],
+                                                     question=self.question)

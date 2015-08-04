@@ -10,13 +10,12 @@ def tearDown():
 
 class BriefAnswersTest(browser.BrowserTest):
     def test_can_access_answers(self):
-        q = bm.Question.objects.create()
-        mq = bm.MultipleChoiceQuestion.objects.create(can_select_multiple=False,
-                                                      choices=[{'en': 'foo'}, {'en': 'bar'}])
         brief = autofixture.create_one('briefs.Brief', generate_fk=True, field_values={'status': 2})
+        q = bm.TextQuestion.objects.create(user=brief.user, question='What?')
+        mq = bm.MultipleChoiceQuestion.objects.create(user=brief.user, question='Huh?',
+                                                      choices=['a', 'b', 'c'], index=1)
         brief.questions.add(q)
         brief.questions.add(mq)
-        brief.save()
 
         browser.instance().get(self.live_server_url + reverse('brief_answer', args=[brief.token.hex]))
         h2 = browser.instance().find_element_by_tag_name('h2')
@@ -24,10 +23,10 @@ class BriefAnswersTest(browser.BrowserTest):
 
     def test_post_answers(self):
         b = browser.instance()
-        q = bm.Question.objects.create()
-        mq = bm.MultipleChoiceQuestion.objects.create(can_select_multiple=False,
-                                                      choices=[{'en': 'foo'}, {'en': 'bar'}])
         brief = autofixture.create_one('briefs.Brief', generate_fk=True, field_values={'status': 2})
+        q = bm.TextQuestion.objects.create(user=brief.user, question='What?')
+        mq = bm.MultipleChoiceQuestion.objects.create(user=brief.user, question='Huh?',
+                                                      choices=['a', 'b', 'c'], index=1)
         brief.questions.add(q)
         brief.questions.add(mq)
         brief.save()

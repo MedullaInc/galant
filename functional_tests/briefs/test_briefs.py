@@ -54,9 +54,10 @@ class BriefsSignedInTest(browser.SignedInTest):
 
     def test_edit_client_brief_question(self):
         b = browser.instance()
-        q = bm.Question.objects.create(question='What?')
-        mq = bm.MultipleChoiceQuestion.objects.create(question='Huh?', choices=['a', 'b', 'c'], index=1)
         brief = autofixture.create_one('briefs.Brief', generate_fk=True)
+        q = bm.TextQuestion.objects.create(user=brief.user, question='What?')
+        mq = bm.MultipleChoiceQuestion.objects.create(user=brief.user, question='Huh?',
+                                                      choices=['a', 'b', 'c'], index=1)
         brief.questions.add(q)
         brief.questions.add(mq)
 
@@ -77,8 +78,8 @@ class BriefsSignedInTest(browser.SignedInTest):
 
     def test_add_client_brief_multiquestion(self):
         b = browser.instance()
-        q = bm.Question.objects.create(question='What?')
         brief = autofixture.create_one('briefs.Brief', generate_fk=True)
+        q = bm.TextQuestion.objects.create(user=brief.user, question='What?')
         brief.questions.add(q)
 
         b.get(self.live_server_url + reverse('edit_brief', args=[brief.client.id, brief.id]))
