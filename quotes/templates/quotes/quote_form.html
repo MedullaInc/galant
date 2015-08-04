@@ -116,12 +116,3 @@
         });
     </script>
 {% endblock %}
-
-
-{% block create_submit_event %}
-    $('#create_submit').on('click', function (e) {
-        $('.ultext').each(function () {
-            this.value = $('#' + this.getAttribute('for')).val();
-        });
-    });
-{% endblock %}

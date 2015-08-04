@@ -105,11 +105,6 @@
     </div>
 
     <script>
-        $('.table > tbody > tr').click(function () {
-            window.location.href = "{{ detail_url }}" +
-                    $(this).attr('data-rel');
-        });
-
         $('#add_brief_button').popover({
             html: true,
             container: 'body',
@@ -138,6 +133,10 @@
             $('#add_brief_button').popover('hide');
         });
 
+        $('.table > tbody > tr').click(function () {
+            window.location.href = "{{ detail_url }}" + $(this).attr('data-rel');
+        });
+
         $('.table .template_row').click(function (e) {
             window.location.href = "{% url 'edit_brief_template' %}" + $(this).attr('data-rel');
         });
@@ -149,7 +148,5 @@
         $('.table .template_row select').change(function (e) {
             window.location.href = "{% url 'add_brief' %}" + "?template_id=" + $(this).parents('tr').attr('data-rel') + "&lang=" + $(this).val();
         });
-
     </script>
-
 {% endblock %}

@@ -10,25 +10,20 @@
 {% endblock %}
 
 {% block center_content %}
-
-    <h2 class="section_title">{% trans "Data" %}</h2>
-
     <p id="title">{% trans "Title" %}: {{ object.title.get_text }}</p>
-    <p id="status">{% trans "Status" %}: {{ object.get_status_display }}</p>
 
     <hr>
+    <form id="form" class="form" method="post">
+        {% csrf_token %}
+        {% for answer_form in answer_forms %}
+            <div class="question_text">{{ answer_form.question.question.get_text }}</div>
+            <div class="answer_form">{{ answer_form }}</div>
+            <hr>
+        {% endfor %}
 
-    {% for question in object.questions.all.select_subclasses %}
-        <div id="question_{{ question.index }}">
-            {{ question.question.get_text }}
-            <ul class="multiquestion_choices">
-            {% for choice in question.choices %}
-                <li>{{ choice.get_text }}</li>
-            {% endfor %}
-            </ul>
+        <div class="form-actions">
+            <button id="answers_submit" class="btn btn-default pull-left" type="submit">{% trans "Submit" %}</button>
         </div>
-
-        <hr>
-    {% endfor %}
+    </form>
 
 {% endblock %}

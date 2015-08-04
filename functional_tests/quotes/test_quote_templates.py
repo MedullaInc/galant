@@ -95,6 +95,9 @@ class QuoteTemplatesTest(browser.SignedInTest):
         b.find_element_by_id('id_-section-0-title').send_keys('titulo de intro prueba')
         b.find_element_by_id('en_tab').click()
 
+        self._submit_and_check(b)
+        self.load_scripts()
+
         new_tab = b.find_element_by_xpath('//*[@id="es_tab"]/a')
         self.assertEqual(u'Spanish', new_tab.text)
 

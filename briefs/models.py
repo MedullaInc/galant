@@ -2,12 +2,18 @@ from uuid import uuid4
 from django.conf import settings
 from django.db import models as m
 from gallant import models as g
+from quotes import models as q
 from gallant import fields as gf
+<<<<<<< HEAD
 from model_utils.managers import InheritanceManager
 from gallant import utils
+=======
+from jsonfield.fields import JSONField
+from polymorphic import PolymorphicModel
+>>>>>>> 086a53a6f6c65a28748ee8e5ab185185702ad0e7
 
 
-class Question(m.Model):
+class Question(PolymorphicModel):
     """
     A brief has Questions that need to be answered.
     """
@@ -15,20 +21,11 @@ class Question(m.Model):
     help_text = gf.ULCharField()
     index = m.IntegerField(default=0)
 
-    objects = InheritanceManager()
 
-
-class QuestionTemplate(Question):
+class LongAnswerQuestion(Question):
     """
-    A Question Template to be reused on BriefTemplates
+    Long Answer Question
     """
-
-
-class OpenQuestion(Question):
-    """
-    Open Question
-    """
-    is_long_answer = m.BooleanField(default=False)
 
 
 class MultipleChoiceQuestion(Question):
@@ -74,9 +71,14 @@ class Brief(m.Model):
     status = m.CharField(max_length=2, choices=BriefStatus.choices(), default=BriefStatus.Draft.value)
     token = m.UUIDField(default=uuid4, editable=False, unique=True)
 
+    modified = m.DateTimeField(auto_now=True)
+
     questions = m.ManyToManyField(Question)
     language = m.CharField(max_length=7, null=True, choices=settings.LANGUAGES,
                            help_text='Language of brief, or null for template.')
+
+    client = m.ForeignKey(g.Client, null=True)
+    quote = m.ForeignKey(q.Quote, null=True)
 
     def get_languages(self):
         language_set = set()
@@ -97,32 +99,29 @@ class BriefTemplate(m.Model):
     def language_list(self):
         return [(c, utils.LANG_DICT[c]) for c in self.brief.get_languages() if c in utils.LANG_DICT]
 
-class ClientBrief(Brief):
-    """
-    A Client Brief
-    """
-    client = m.ForeignKey(g.Client)
-
-
-class ProjectBrief(Brief):
-    """
-    A Project Brief
-    """
-    project = m.ForeignKey(g.Project)
-
-
-class ServiceBrief(Brief):
-    """
-    A Service Brief
-    """
-    service = m.ForeignKey(g.Service)
-
-
-class Answer(m.Model):
-    answer = m.CharField(max_length=1000)
+class Answer(PolymorphicModel):
     question = m.ForeignKey(Question)
+
+
+class TextAnswer(Answer):
+    answer = m.CharField(max_length=3000)
+
+
+class MultipleChoiceAnswer(Answer):
+    # a list of choice indexes corresponding to the quesion's choice list
+    choices = JSONField()
+
+    @property
+    def answer(self):
+        if type(self.question) is MultipleChoiceQuestion:
+            if self.question.can_select_multiple:
+                return [self.question.choices[c] for c in self.choices]
+            else:
+                return self.question.choices[self.choices[0]]
 
 
 class BriefAnswers(m.Model):
     brief = m.ForeignKey(Brief)
     answers = m.ManyToManyField(Answer)
+
+    created = m.DateTimeField(auto_now_add=True)

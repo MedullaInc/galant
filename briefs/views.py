@@ -6,24 +6,23 @@ from django.http import HttpResponseRedirect
 from django.template.response import TemplateResponse
 from django.utils.translation import get_language
 from gallant import models as g
-from django.views.generic import DetailView, View
+from django.views.generic import View
 from briefs import forms as bf
 from gallant import forms as gf
 from django.shortcuts import get_object_or_404
+from django.db.models import Q
 
 
 class BriefList(View):
     def get(self, request, **kwargs):
-        context = {}
-        if 'brief_type' in kwargs:
-            if kwargs['brief_type'] == "client":
-                client = g.Client.objects.get(pk=kwargs['type_id'])
-                context.update({'brief_type_title': 'Client', 'object_list': client.clientbrief_set.all(),
-                                'create_url': reverse('add_brief', args=['client', client.id]),
-                                'detail_url': reverse('brief_detail', args=['client', client.id])})
+        context = {'template_list': b.BriefTemplate.objects.all()}
+
+        if 'type_id' in kwargs:
+            client = g.Client.objects.get(pk=kwargs['type_id'])
+            context.update({'client': client,
+                            'object_list': client.brief_set.all()})
         else:
-            context.update({'create_url': reverse('add_brief'), 'object_list': b.Brief.objects.all(),
-                            'detail_url': reverse('brief_detail')})
+            context.update({'object_list': b.Brief.objects.all()})
 
         context.update({'template_list': b.BriefTemplate.objects.all()})
 
@@ -35,11 +34,7 @@ class BriefList(View):
 class BriefUpdate(View):
     def get(self, request, *args, **kwargs):
         context = {}
-        if kwargs['brief_type'] == 'client':
-            self.object = get_object_or_404(b.ClientBrief, pk=kwargs['pk'])
-            context['client'] = self.object.client
-        else:
-            self.object = get_object_or_404(b.Brief, pk=kwargs['pk'])
+        self.object = get_object_or_404(b.Brief, pk=kwargs['pk'])
 
         form = bf.BriefForm(instance=self.object)
         questions = bf.question_forms_brief(self.object)
@@ -49,12 +44,11 @@ class BriefUpdate(View):
     def post(self, request, *args, **kwargs):
         if 'pk' in kwargs:
             self.object = get_object_or_404(b.Brief, pk=kwargs['pk'])
+        elif 'type_id' in kwargs and kwargs['type_id'] is not None:
+            client = get_object_or_404(g.Client, pk=kwargs['type_id'])
+            self.object = b.Brief(client=client)
         else:
-            if kwargs['brief_type'] == 'client':
-                client = get_object_or_404(g.Client, pk=kwargs['type_id'])
-                self.object = b.ClientBrief(client=client)
-            else:
-                self.object = None
+            self.object = None
 
         form = bf.BriefForm(request.POST, instance=self.object)
         question_forms = bf.question_forms_post(request.POST)
@@ -65,8 +59,7 @@ class BriefUpdate(View):
 
             messages.success(self.request, 'Brief saved.')
 
-            if kwargs['brief_type'] == "client":
-                return HttpResponseRedirect(reverse('brief_detail', args=['client', kwargs['type_id'], obj.id]))
+            return HttpResponseRedirect(reverse('brief_detail', args=[obj.client_id, obj.id]))
         else:
             return self.render_to_response({'object': self.object, 'form': form, 'title': 'Edit Brief'})
 
@@ -91,25 +84,30 @@ class BriefCreate(BriefUpdate):
         else:
             context.update({'form': bf.BriefForm()})
 
-        if kwargs['brief_type'] == 'client':
-            context['client'] = get_object_or_404(g.Client, pk=kwargs['type_id'])
-
         context.update({'title': 'Create Brief'})
         return self.render_to_response(context)
 
 
-class BriefDetail(DetailView):
-    model = b.Brief
+class BriefDetail(View):
+    def get(self, request, **kwargs):
+        context = {'title': 'Brief Detail'}
+        brief = get_object_or_404(b.Brief, id=kwargs['pk'])
 
-    def render_to_response(self, context, **response_kwargs):
-        if self.kwargs['brief_type'] == "client":
-            client_brief = b.ClientBrief.objects.get(id=self.kwargs['pk'])
-            context['object'] = client_brief
-            context['client'] = client_brief.client
+        if brief.briefanswers_set.count() > 0:
+            context.update({'answer_set': brief.briefanswers_set.last()})
 
-        context['title'] = 'Brief Detail'
+        context.update({'object': brief})
+        return TemplateResponse(request=request,
+                                template="briefs/brief_detail.html",
+                                context=context)
 
-        return super(BriefDetail, self).render_to_response(context)
+    def post(self, request, **kwargs):
+        brief = get_object_or_404(b.Brief, id=kwargs['pk'])
+        brief.status = b.BriefStatus.Sent.value
+        brief.save()
+
+        messages.warning(request, 'Email currently disabled.', 'warning client_email_link')
+        return self.get(request, **kwargs)
 
 
 class BriefTemplateList(View):
@@ -187,12 +185,32 @@ class BriefTemplateView(View):
 
 class BriefAnswer(View):
     def get(self, request, **kwargs):
-        self.object = get_object_or_404(b.Brief, token=kwargs['token'])
-        form = bf.BriefAnswersForm(instance=b.BriefAnswers(brief=self.object))
+        obj = get_object_or_404(b.Brief, Q(status=2) | Q(status=3), token=kwargs['token'])
+        form = bf.BriefAnswersForm(instance=b.BriefAnswers(brief=obj))
 
         return TemplateResponse(request=self.request,
                                 template="briefs/brief_answers.html",
-                                context={'form': form, 'object': self.object})
+                                context={'form': form, 'object': obj, 'answer_forms': form.answer_forms()})
 
     def post(self, request, **kwargs):
-        pass
+        obj = get_object_or_404(b.Brief, Q(status=2) | Q(status=3), token=kwargs['token'])
+        form = bf.BriefAnswersForm(instance=b.BriefAnswers(brief=obj), data=request.POST)
+        answers = []
+
+        for answer in form.answer_forms(request.POST):
+            answers.append(answer)
+
+        valid = list([form.is_valid()] + [a.is_valid() for a in answers])
+        if all(valid):
+            brief_answers = form.save()
+            for answer in answers:
+                brief_answers.answers.add(answer.save())
+
+            messages.success(request, 'Brief answered.')
+            obj.status = b.BriefStatus.Answered.value
+            obj.save()
+            return HttpResponseRedirect(reverse('brief_detail', args=[brief_answers.brief.id]))
+
+        return TemplateResponse(request=request,
+                                template="briefs/brief_answers.html",
+                                context={'form': form, 'answer_forms': answers, 'object': obj})

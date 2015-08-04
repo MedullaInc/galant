@@ -2,24 +2,25 @@
 {% load bootstrap i18n question_javascript %}
 
 {% block sidebar %}
-
-    <a href="{% url 'client_detail' client.id %}">
+    {% if object.client %}
+    <a href="{% url 'client_detail' brief.client_id %}">
         <button type="button" class="btn btn-default sidebar">
             {% trans "Back to Client" %}
         </button>
     </a>
 
-    <a href="{% url 'brief_list' 'client' client.id %}">
+    <a href="{% url 'brief_list' object.client_id %}">
         <button type="button" class="btn btn-default sidebar">
             {% trans "Back to Briefs" %}
         </button>
     </a>
-
+    {% endif %}
 {% endblock %}
 
-
 {% block post_form %}
-
+    {% if object.client_id %}
+    <input type="hidden" name="client" value="{{ object.client_id }}">
+    {% endif %}
     <div class="rounded-border padding-top-20">
 
         <div id="question_table">
@@ -75,6 +76,8 @@
                 $(this).replaceWith(new_question);
             });
             $('.add_choice').click(add_choice);
+            $('.add_choice').click();
+            $('.add_choice').click();
         };
 
         $('#add_question').click(function () {
@@ -86,9 +89,9 @@
         var add_choice = function () {
             var ctable = $(this).parent().parent().parent().closest('div').find('.choice_table');
             $(ctable).append('<div class="row margin-bottom-10 question"><div class="col-lg-11 col-md-11 col-sm-11 col-xs-11">' +
-            ' <input class="form-control {{ prefix }}choice ultext_array_target" placeholder="Choice" maxlength="512"' +
+            ' <input class="form-control choice ultext_array_target" placeholder="Choice" maxlength="512"' +
             '       type="text" value=""/>' +
-            '</div><div class="col-lg-1 col-md-1 col-sm-1 col-xs-1"><button id="{{ prefix }}-remove" type="button" class="close close_b" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div></div>')
+            '</div><div class="col-lg-1 col-md-1 col-sm-1 col-xs-1"><button type="button" class="close close_b" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div></div>')
         };
 
         $('#add_multiquestion').click(function () {
