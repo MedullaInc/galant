@@ -18,7 +18,7 @@ class ClientList(View):
 class ClientUpdate(View):
     def get(self, request, **kwargs):
         self.object = get_object_or_404(g.Client, pk=kwargs['pk'])
-        form = forms.ClientForm(instance=self.object)
+        form = forms.ClientForm(request.user, instance=self.object)
         return self.render_to_response({'object': self.object, 'form': form})
 
     def post(self, request, **kwargs):
@@ -27,7 +27,7 @@ class ClientUpdate(View):
         else:
             self.object = None
 
-        form = forms.ClientForm(request.POST, instance=self.object)
+        form = forms.ClientForm(request.user, request.POST, instance=self.object)
         if form.is_valid():
             return self.form_valid(form)
         else:
@@ -43,7 +43,7 @@ class ClientUpdate(View):
         obj = form.save(commit=True)
         user = g.GallantUser.objects.get(id=self.request.user.id)
         text = '[Updated]\n' + form.cleaned_data['notes']
-        note = g.Note.objects.create(text=text, created_by=user)
+        note = g.Note.objects.create(text=text, user=user)
         obj.notes.add(note)
         obj.save()
         messages.success(self.request, 'Client saved.')
@@ -53,13 +53,13 @@ class ClientUpdate(View):
 class ClientCreate(ClientUpdate):
     def get(self, request):
         self.object = None
-        return self.render_to_response({'form': forms.ClientForm()})
+        return self.render_to_response({'form': forms.ClientForm(request.user)})
 
 
 class ServiceUpdate(View):
     def get(self, request, **kwargs):
         self.object = get_object_or_404(g.Service, pk=kwargs['pk'])
-        form = forms.ServiceForm(instance=self.object)
+        form = forms.ServiceForm(request.user, instance=self.object)
         return self.render_to_response({'object': self.object, 'form': form})
 
     def post(self, request, **kwargs):
@@ -68,7 +68,7 @@ class ServiceUpdate(View):
         else:
             self.object = None
 
-        form = forms.ServiceForm(request.POST, instance=self.object)
+        form = forms.ServiceForm(request.user, request.POST, instance=self.object)
         if form.is_valid():
             return self.form_valid(form)
         else:
@@ -84,7 +84,7 @@ class ServiceUpdate(View):
         obj = form.save(commit=True)
         user = g.GallantUser.objects.get(id=self.request.user.id)
         text = '[Updated]\n' + form.cleaned_data['notes']
-        note = g.Note.objects.create(text=text, created_by=user)
+        note = g.Note.objects.create(text=text, user=user)
         obj.notes.add(note)
         obj.save()
         messages.success(self.request, 'Service saved.')
@@ -95,15 +95,15 @@ def client_detail(request, pk):
     client = get_object_or_404(g.Client, pk=pk)
 
     if request.method == 'POST':
-        form = forms.NoteForm(request.POST)
+        form = forms.NoteForm(request.user, request.POST)
         if form.is_valid():
             user = g.GallantUser.objects.get(id=request.user.id)
-            note = g.Note.objects.create(text=form.cleaned_data['text'], created_by=user)
+            note = g.Note.objects.create(text=form.cleaned_data['text'], user=user)
             client.notes.add(note)
             client.save()
             return HttpResponseRedirect(reverse('client_detail', args=[client.id]))
     else:
-        form = forms.NoteForm()  # An unbound form
+        form = forms.NoteForm(request.user)  # An unbound form
 
     return TemplateResponse(request=request,
                             template="gallant/client_detail.html",
@@ -112,7 +112,7 @@ def client_detail(request, pk):
 
 class ServiceCreate(ServiceUpdate):
     def get(self, request):
-        form = forms.ServiceForm()
+        form = forms.ServiceForm(request.user)
         return self.render_to_response({'form': form})
 
 
@@ -120,15 +120,15 @@ def service_detail(request, pk):
     service = get_object_or_404(g.Service, pk=pk)
 
     if request.method == 'POST':
-        form = forms.NoteForm(request.POST)
+        form = forms.NoteForm(request.user, request.POST)
         if form.is_valid():
             user = g.GallantUser.objects.get(id=request.user.id)
-            note = g.Note.objects.create(text=form.cleaned_data['text'], created_by=user)
+            note = g.Note.objects.create(text=form.cleaned_data['text'], user=user)
             service.notes.add(note)
             service.save()
             return HttpResponseRedirect(reverse('service_detail', args=[service.id]))
     else:
-        form = forms.NoteForm()
+        form = forms.NoteForm(request.user)
 
     return render(request, 'gallant/service_detail.html', {
         'object': service,

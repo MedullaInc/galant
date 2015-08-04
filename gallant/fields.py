@@ -76,9 +76,7 @@ class ULTextFormField(forms.fields.CharField):
 
     def prepare_value(self, value):
         if isinstance(value, basestring):
-            d = ULTextDict()
-            d.update(json.loads(value))
-            value = d
+            value = _ultext_to_python(value)
         if isinstance(value, ULTextDict):
             return value.get_text()
         return value

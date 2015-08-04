@@ -4,21 +4,34 @@ from django.conf import settings
 from djmoney.models.fields import MoneyField
 from djmoney.forms.widgets import CURRENCY_CHOICES
 from gallant import fields as gf
+from polymorphic import PolymorphicModel
 
 
 class GallantUser(AbstractEmailUser):
     """
     Custom Gallant user
     """
-
     class Meta(AbstractEmailUser.Meta):
         swappable = 'AUTH_USER_MODEL'
 
 
-class Note(m.Model):
+class UserModel(m.Model):
+    user = m.ForeignKey(GallantUser)
+
+    class Meta:
+        abstract = True
+
+
+class PolyUserModel(PolymorphicModel):
+    user = m.ForeignKey(GallantUser)
+
+    class Meta:
+        abstract = True
+
+
+class Note(UserModel):
     text = m.TextField(help_text='User comment / note.')
     created = m.DateTimeField(auto_now_add=True)
-    created_by = m.ForeignKey(GallantUser)
 
 
 class ServiceType(gf.ChoiceEnum):
@@ -33,7 +46,7 @@ class ServiceType(gf.ChoiceEnum):
     Interior_Design = 8
 
 
-class Service(m.Model):
+class Service(UserModel):
     """
     A service to be rendered for a client, will appear on Quotes. When associated with a project / user, it should
     be displayed as a 'deliverable' instead.
@@ -84,7 +97,7 @@ class ClientStatus(gf.ChoiceEnum):
     Blacklisted = 8
 
 
-class Client(m.Model):
+class Client(UserModel):
     name = m.CharField(max_length=255)
     email = m.EmailField(blank=True)
     phone_number = m.CharField(validators=[gf.PHONE_REGEX], blank=True, max_length=15)
@@ -103,6 +116,6 @@ class Client(m.Model):
         return self.name
 
 
-class Project(m.Model):
+class Project(UserModel):
     name = m.CharField(max_length=255)
     # TODO: finish model according to diagrams

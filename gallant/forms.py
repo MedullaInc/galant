@@ -4,7 +4,17 @@ from django.utils.translation import get_language
 from gallant import models as g
 
 
-class ClientForm(forms.ModelForm):
+class UserModelForm(forms.ModelForm):
+    def __init__(self, user, *args, **kwargs):
+        self.user = user
+        super(UserModelForm, self).__init__(*args, **kwargs)
+
+    def save(self, *args, **kwargs):
+        self.instance.user = self.user
+        return super(UserModelForm, self).save(*args, **kwargs)
+
+
+class ClientForm(UserModelForm):
     class Meta:
         model = g.Client
         fields = ['name', 'type', 'size', 'status', 'language', 'currency']
@@ -16,7 +26,7 @@ class ClientForm(forms.ModelForm):
             widget=forms.Textarea(attrs={'rows': 5}), required=False)
 
 
-class ServiceForm(forms.ModelForm):
+class ServiceForm(UserModelForm):
     class Meta:
         model = g.Service
         fields = ['name', 'description', 'cost', 'quantity', 'type']
@@ -27,7 +37,7 @@ class ServiceForm(forms.ModelForm):
             widget=forms.Textarea(attrs={'rows': 5}), required=False)
 
 
-class NoteForm(forms.ModelForm):
+class NoteForm(UserModelForm):
     class Meta:
         model = g.Note
         fields = ['text']
