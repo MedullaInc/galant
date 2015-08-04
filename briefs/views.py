@@ -34,7 +34,7 @@ class BriefUpdate(View):
         context = {}
         self.object = get_object_or_404(b.Brief, pk=kwargs['pk'])
 
-        form = bf.BriefForm(instance=self.object)
+        form = bf.BriefForm(request.user, instance=self.object)
         questions = bf.question_forms_brief(self.object)
         context.update({'object': self.object, 'form': form, 'title': 'Edit Brief', 'questions': questions})
         return self.render_to_response(context)
@@ -48,8 +48,8 @@ class BriefUpdate(View):
         else:
             self.object = None
 
-        form = bf.BriefForm(request.POST, instance=self.object)
-        question_forms = bf.question_forms_post(request.POST)
+        form = bf.BriefForm(request.user, request.POST, instance=self.object)
+        question_forms = bf.question_forms_post(request.user, request.POST)
 
         valid = list([form.is_valid()] + [s.is_valid() for s in question_forms])
         if all(valid):
@@ -78,9 +78,9 @@ class BriefCreate(BriefUpdate):
             brief.pk = None
             if lang is not None:
                 brief.language = lang
-                context.update({'language': lang, 'form': bf.BriefForm(instance=brief), 'object': brief})
+                context.update({'language': lang, 'form': bf.BriefForm(request.user, instance=brief), 'object': brief})
         else:
-            context.update({'form': bf.BriefForm()})
+            context.update({'form': bf.BriefForm(request.user)})
 
         context.update({'title': 'Create Brief'})
         return self.render_to_response(context)
@@ -120,28 +120,28 @@ class BriefTemplateView(View):
     def get(self, request, **kwargs):
         if 'pk' in kwargs:
             self.object = get_object_or_404(b.BriefTemplate, pk=kwargs['pk'])
-            form = bf.BriefTemplateForm(instance=self.object.brief)
+            form = bf.BriefTemplateForm(request.user, instance=self.object.brief)
             question_forms = bf.question_forms_brief(self.object.brief)
         else:
             self.object = None
             if kwargs['brief_id'] is not None:
                 brief = get_object_or_404(b.Brief, pk=kwargs['brief_id'])
-                form = bf.BriefTemplateForm(instance=brief)
+                form = bf.BriefTemplateForm(request.user, instance=brief)
                 question_forms = bf.question_forms_brief(brief)
             else:
-                form = bf.BriefTemplateForm()
+                form = bf.BriefTemplateForm(request.user)
                 question_forms = []
 
         return self.render_to_response({'form': form, 'questions': question_forms})
 
     def post(self, request, **kwargs):
-        question_forms = bf.question_forms_post(request.POST)
+        question_forms = bf.question_forms_post(request.user, request.POST)
         if 'pk' in kwargs:
             self.object = get_object_or_404(b.BriefTemplate, pk=kwargs['pk'])
-            form = bf.BriefTemplateForm(request.POST, instance=self.object.brief)
+            form = bf.BriefTemplateForm(request.user, request.POST, instance=self.object.brief)
         else:
             self.object = None
-            form = bf.BriefTemplateForm(request.POST)
+            form = bf.BriefTemplateForm(request.user, request.POST)
 
         valid = list([form.is_valid()] + [s.is_valid() for s in question_forms])
         if all(valid):
@@ -184,7 +184,7 @@ class BriefTemplateView(View):
 class BriefAnswer(View):
     def get(self, request, **kwargs):
         obj = get_object_or_404(b.Brief, Q(status=2) | Q(status=3), token=kwargs['token'])
-        form = bf.BriefAnswersForm(instance=b.BriefAnswers(brief=obj))
+        form = bf.BriefAnswersForm(request.user, instance=b.BriefAnswers(brief=obj))
 
         return TemplateResponse(request=self.request,
                                 template="briefs/brief_answers.html",
@@ -192,7 +192,7 @@ class BriefAnswer(View):
 
     def post(self, request, **kwargs):
         obj = get_object_or_404(b.Brief, Q(status=2) | Q(status=3), token=kwargs['token'])
-        form = bf.BriefAnswersForm(instance=b.BriefAnswers(brief=obj), data=request.POST)
+        form = bf.BriefAnswersForm(request.user, instance=b.BriefAnswers(brief=obj), data=request.POST)
         answers = []
 
         for answer in form.answer_forms(request.POST):

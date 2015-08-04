@@ -5,10 +5,9 @@ from gallant import models as g
 from quotes import models as q
 from gallant import fields as gf
 from jsonfield.fields import JSONField
-from polymorphic import PolymorphicModel
 
 
-class Question(PolymorphicModel):
+class Question(g.PolyUserModel):
     """
     A brief has Questions that need to be answered.
     """
@@ -17,7 +16,7 @@ class Question(PolymorphicModel):
     index = m.IntegerField(default=0)
 
 
-class LongAnswerQuestion(Question):
+class TextQuestion(Question):
     """
     Long Answer Question
     """
@@ -40,7 +39,7 @@ class ImageQuestion(MultipleChoiceQuestion):
     # TODO: First finish MultipleChoiceQuestion then continue with ImageQuestions.
 
 
-class Image(m.Model):
+class Image(g.UserModel):
     """
     Image for ImageQuestions.
     """
@@ -56,10 +55,9 @@ class BriefStatus(gf.ChoiceEnum):
     Rejected = 5
 
 
-class Brief(m.Model):
+class Brief(g.UserModel):
     """
     A questionnaire that will allow a user to know more about Client needs.
-    There are three types of Briefs: [ClientBrief, ProjectBrief, ServiceBrief]
     """
     name = m.CharField(max_length=512, default='New Brief')
     title = gf.ULCharField(max_length=255, help_text='Brief title.')
@@ -85,14 +83,14 @@ class Brief(m.Model):
         return language_set
 
 
-class BriefTemplate(m.Model):
+class BriefTemplate(g.UserModel):
     """
     A Brief Template to be reused on other clients.
     """
     brief = m.ForeignKey(Brief)
 
 
-class Answer(PolymorphicModel):
+class Answer(g.PolyUserModel):
     question = m.ForeignKey(Question)
 
 
@@ -113,7 +111,7 @@ class MultipleChoiceAnswer(Answer):
                 return self.question.choices[self.choices[0]]
 
 
-class BriefAnswers(m.Model):
+class BriefAnswers(g.UserModel):
     brief = m.ForeignKey(Brief)
     answers = m.ManyToManyField(Answer)
 
