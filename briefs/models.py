@@ -2,6 +2,7 @@ from uuid import uuid4
 from django.conf import settings
 from django.db import models as m
 from gallant import models as g
+from quotes import models as q
 from gallant import fields as gf
 from jsonfield.fields import JSONField
 from polymorphic import PolymorphicModel
@@ -71,6 +72,9 @@ class Brief(m.Model):
     language = m.CharField(max_length=7, null=True, choices=settings.LANGUAGES,
                            help_text='Language of brief, or null for template.')
 
+    client = m.ForeignKey(g.Client, null=True)
+    quote = m.ForeignKey(q.Quote, null=True)
+
     def get_languages(self):
         language_set = set()
         language_set.update(self.title.keys())
@@ -86,27 +90,6 @@ class BriefTemplate(m.Model):
     A Brief Template to be reused on other clients.
     """
     brief = m.ForeignKey(Brief)
-
-
-class ClientBrief(Brief):
-    """
-    A Client Brief
-    """
-    client = m.ForeignKey(g.Client)
-
-
-class ProjectBrief(Brief):
-    """
-    A Project Brief
-    """
-    project = m.ForeignKey(g.Project)
-
-
-class ServiceBrief(Brief):
-    """
-    A Service Brief
-    """
-    service = m.ForeignKey(g.Service)
 
 
 class Answer(PolymorphicModel):

@@ -13,7 +13,7 @@ class BriefAnswersTest(browser.BrowserTest):
         q = bm.Question.objects.create()
         mq = bm.MultipleChoiceQuestion.objects.create(can_select_multiple=False,
                                                       choices=[{'en': 'foo'}, {'en': 'bar'}])
-        brief = autofixture.create_one('briefs.ClientBrief', generate_fk=True, field_values={'status': 2})
+        brief = autofixture.create_one('briefs.Brief', generate_fk=True, field_values={'status': 2})
         brief.questions.add(q)
         brief.questions.add(mq)
         brief.save()
@@ -27,7 +27,7 @@ class BriefAnswersTest(browser.BrowserTest):
         q = bm.Question.objects.create()
         mq = bm.MultipleChoiceQuestion.objects.create(can_select_multiple=False,
                                                       choices=[{'en': 'foo'}, {'en': 'bar'}])
-        brief = autofixture.create_one('briefs.ClientBrief', generate_fk=True, field_values={'status': 2})
+        brief = autofixture.create_one('briefs.Brief', generate_fk=True, field_values={'status': 2})
         brief.questions.add(q)
         brief.questions.add(mq)
         brief.save()

@@ -3,11 +3,10 @@ from django.contrib import messages
 from django.core.urlresolvers import reverse
 from briefs import models as b
 from django.http import HttpResponseRedirect
-from django.http.response import HttpResponseNotFound
 from django.template.response import TemplateResponse
 from django.utils.translation import get_language
 from gallant import models as g
-from django.views.generic import DetailView, View
+from django.views.generic import View
 from briefs import forms as bf
 from gallant import forms as gf
 from django.shortcuts import get_object_or_404
@@ -20,7 +19,7 @@ class BriefList(View):
         if 'brief_type' in kwargs:
             if kwargs['brief_type'] == "client":
                 client = g.Client.objects.get(pk=kwargs['type_id'])
-                context.update({'brief_type_title': 'Client', 'object_list': client.clientbrief_set.all(),
+                context.update({'brief_type_title': 'Client', 'object_list': client.brief_set.all(),
                                 'create_url': reverse('add_brief', args=['client', client.id]),
                                 'detail_url': reverse('brief_detail', args=['client', client.id])})
         else:
@@ -36,11 +35,7 @@ class BriefList(View):
 class BriefUpdate(View):
     def get(self, request, *args, **kwargs):
         context = {}
-        if kwargs['brief_type'] == 'client':
-            self.object = get_object_or_404(b.ClientBrief, pk=kwargs['pk'])
-            context['client'] = self.object.client
-        else:
-            self.object = get_object_or_404(b.Brief, pk=kwargs['pk'])
+        self.object = get_object_or_404(b.Brief, pk=kwargs['pk'])
 
         form = bf.BriefForm(instance=self.object)
         questions = bf.question_forms_brief(self.object)
@@ -50,12 +45,11 @@ class BriefUpdate(View):
     def post(self, request, *args, **kwargs):
         if 'pk' in kwargs:
             self.object = get_object_or_404(b.Brief, pk=kwargs['pk'])
+        elif 'type_id' in kwargs:
+            client = get_object_or_404(g.Client, pk=kwargs['type_id'])
+            self.object = b.Brief(client=client)
         else:
-            if kwargs['brief_type'] == 'client':
-                client = get_object_or_404(g.Client, pk=kwargs['type_id'])
-                self.object = b.ClientBrief(client=client)
-            else:
-                self.object = None
+            self.object = None
 
         form = bf.BriefForm(request.POST, instance=self.object)
         question_forms = bf.question_forms_post(request.POST)
@@ -66,12 +60,7 @@ class BriefUpdate(View):
 
             messages.success(self.request, 'Brief saved.')
 
-            if kwargs['brief_type'] == "client":
-                args = ['client', kwargs['type_id'], obj.id]
-            else:
-                args = [obj.id]
-
-            return HttpResponseRedirect(reverse('brief_detail', args=args))
+            return HttpResponseRedirect(reverse('brief_detail', args=['client', obj.client.id, obj.id]))
         else:
             return self.render_to_response({'object': self.object, 'form': form, 'title': 'Edit Brief'})
 
@@ -88,16 +77,13 @@ class BriefCreate(BriefUpdate):
             template = get_object_or_404(b.BriefTemplate, pk=template_id)
             brief = template.brief
             question_forms = bf.question_forms_brief(brief, clear_pk=True)
-            context.update({'questions': question_forms})
+            context.update({'questions': question_forms, 'client': brief.client})
             brief.pk = None
             if lang is not None:
                 brief.language = lang
                 context.update({'language': lang, 'form': bf.BriefForm(instance=brief), 'object': brief})
         else:
             context.update({'form': bf.BriefForm()})
-
-        if kwargs['brief_type'] == 'client':
-            context['client'] = get_object_or_404(g.Client, pk=kwargs['type_id'])
 
         context.update({'title': 'Create Brief'})
         return self.render_to_response(context)
@@ -106,30 +92,23 @@ class BriefCreate(BriefUpdate):
 class BriefDetail(View):
     def get(self, request, **kwargs):
         context = {'title': 'Brief Detail'}
-        if kwargs['brief_type'] == "client":
-            brief = get_object_or_404(b.ClientBrief, id=kwargs['pk'])
-            context.update({'client': brief.client})
-        else:
-            brief = get_object_or_404(b.Brief, id=kwargs['pk'])
+        brief = get_object_or_404(b.Brief, id=kwargs['pk'])
 
         if brief.briefanswers_set.count() > 0:
             context.update({'answer_set': brief.briefanswers_set.last()})
 
-        context.update({'object': brief})
+        context.update({'object': brief, 'client': brief.client})
         return TemplateResponse(request=request,
                                 template="briefs/brief_detail.html",
                                 context=context)
 
     def post(self, request, **kwargs):
-        if kwargs['brief_type'] == "client":
-            brief = get_object_or_404(b.ClientBrief, id=kwargs['pk'])
-            brief.status = b.BriefStatus.Sent.value
-            brief.save()
+        brief = get_object_or_404(b.Brief, id=kwargs['pk'])
+        brief.status = b.BriefStatus.Sent.value
+        brief.save()
 
-            messages.warning(request, 'Email currently disabled.', 'warning client_email_link')
-            return self.get(request, **kwargs)
-        else:
-            return HttpResponseNotFound('<h1>Brief not found</h1>')
+        messages.warning(request, 'Email currently disabled.', 'warning client_email_link')
+        return self.get(request, **kwargs)
 
 
 class BriefTemplateList(View):

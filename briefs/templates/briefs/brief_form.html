@@ -18,7 +18,9 @@
 {% endblock %}
 
 {% block post_form %}
-
+    {% if brief.client_id %}
+    <input type="hidden" name="client" value="{{ brief.client_id }}">
+    {% endif %}
     <div class="rounded-border padding-top-20">
 
         <div id="question_table">

@@ -25,7 +25,9 @@ class BriefsSignedInTest(browser.SignedInTest):
 
         # access Client Briefs & click add brief
         b.get(self.live_server_url + reverse('brief_list', args=['client', c.id]))
+        self.load_scripts()
         b.find_element_by_id('add_brief').click()
+        b.find_element_by_css_selector('.popover-content .from_scratch_button').click()
 
         # fill out brief & save
         b.find_element_by_name('title').send_keys('Brief test')
@@ -36,7 +38,7 @@ class BriefsSignedInTest(browser.SignedInTest):
 
     def test_edit_client_brief(self):
         b = browser.instance()
-        q = autofixture.create_one('briefs.ClientBrief', generate_fk=True)
+        q = autofixture.create_one('briefs.Brief', generate_fk=True)
         q.save()
 
         b.get(self.live_server_url + reverse('edit_brief', args=['client', q.client.id, q.id]))
@@ -54,7 +56,7 @@ class BriefsSignedInTest(browser.SignedInTest):
         b = browser.instance()
         q = bm.Question.objects.create(question='What?')
         mq = bm.MultipleChoiceQuestion.objects.create(question='Huh?', choices=['a', 'b', 'c'], index=1)
-        brief = autofixture.create_one('briefs.ClientBrief', generate_fk=True)
+        brief = autofixture.create_one('briefs.Brief', generate_fk=True)
         brief.questions.add(q)
         brief.questions.add(mq)
 
@@ -76,7 +78,7 @@ class BriefsSignedInTest(browser.SignedInTest):
     def test_add_client_brief_multiquestion(self):
         b = browser.instance()
         q = bm.Question.objects.create(question='What?')
-        brief = autofixture.create_one('briefs.ClientBrief', generate_fk=True)
+        brief = autofixture.create_one('briefs.Brief', generate_fk=True)
         brief.questions.add(q)
 
         b.get(self.live_server_url + reverse('edit_brief', args=['client', brief.client.id, brief.id]))
@@ -100,7 +102,7 @@ class BriefsSignedInTest(browser.SignedInTest):
 
     def test_client_brief_detail(self):
         b = browser.instance()
-        q = autofixture.create_one('briefs.ClientBrief', generate_fk=True)
+        q = autofixture.create_one('briefs.Brief', generate_fk=True)
         q.save()
 
         b.get(self.live_server_url + reverse('brief_detail', args=['client', q.client.id, q.id]))
