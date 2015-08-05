@@ -10,7 +10,7 @@ from quotes import models as q
 from quotes import forms as qf
 from gallant import forms as gf
 from django.utils.text import slugify
-from phantom_pdf import render_to_pdf
+from phantom_pdf import render_to_pdf, RequestToPDF
 
 class QuoteUpdate(View):
     def get(self, request, **kwargs):
@@ -165,10 +165,14 @@ def quote_pdf(request, display_type, quote_id):
     # Render view to PDF
     #if display_type == "pdf":
     if request.GET.get("display_type", None) == "pdf":
-
         # Return PDF
         filename = slugify(quote.client.name + "_" + quote.name) + '".pdf"'
         return render_to_pdf(request, filename)
     else:
         # Return HTML
         return TemplateResponse(request, template="quotes/quote_pdf.html")
+
+
+    class PhantomJSBin(RequestToPDF):
+        def __init__(self, *args, **kwargs):
+            super(PhantomJSBin, self).__init__(PHANTOMJS_BIN='/usr/local/bin/phantomjs',*args,**kwargs)
