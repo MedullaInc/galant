@@ -10,5 +10,5 @@ urlpatterns = [
     url(r'^template/$', login_required(views.QuoteTemplateList.as_view()), name='quote_templates'),
     url(r'^template/add/(?P<quote_id>[0-9]+)?$', login_required(views.QuoteTemplateView.as_view()), name='add_quote_template'),
     url(r'^template/edit/(?P<pk>[0-9]+)?$', login_required(views.QuoteTemplateView.as_view()), name='edit_quote_template'),
-    url(r'^preview/$', login_required(views.quote_pdf), name='quote_preview'),
+    url(r'^preview/(?P<quote_id>[0-9]+)?$', login_required(views.quote_pdf), name='quote_preview'),
 ]

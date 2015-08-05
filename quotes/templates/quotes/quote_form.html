@@ -44,7 +44,9 @@
 
 {% block form_actions %}
     {{ block.super }}
-    <button id="preview_pdf" class="btn btn-default margin-left-10" type="button">{% trans "Preview" %}</button>
+    {% if object.id %}
+    <a href="{% url "quote_preview" object.id %}"><button id="preview_pdf" class="btn btn-default margin-left-10" type="button">{% trans "Preview" %}</button></a>
+    {% endif %}
 {% endblock %}
 
 {% block extra_body %}
