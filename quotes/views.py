@@ -9,9 +9,8 @@ from django.shortcuts import get_object_or_404
 from quotes import models as q
 from quotes import forms as qf
 from gallant import forms as gf
-from reportlab.pdfgen import canvas
-from django.http import HttpResponse
-
+from django.utils.text import slugify
+from phantom_pdf import render_to_pdf
 
 class QuoteUpdate(View):
     def get(self, request, **kwargs):
@@ -159,19 +158,17 @@ class QuoteTemplateView(View):
                                 context=context)
 
 
-def quote_pdf(request):
-    # Create the HttpResponse object with the appropriate PDF headers.
-    response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = 'filename="quote.pdf"'
+def quote_pdf(request, display_type, quote_id):
+    # Get quote
+    quote = q.Quote.objects.get(pk=quote_id)
 
-    # Create the PDF object, using the response object as its "file."
-    p = canvas.Canvas(response)
+    # Render view to PDF
+    #if display_type == "pdf":
+    if request.GET.get("display_type", None) == "pdf":
 
-    # Draw things on the PDF. Here's where the PDF generation happens.
-    # See the ReportLab documentation for the full list of functionality.
-    p.drawString(100, 100, "Hello world.")
-
-    # Close the PDF object cleanly, and we're done.
-    p.showPage()
-    p.save()
-    return response
+        # Return PDF
+        filename = slugify(quote.client.name + "_" + quote.name) + '".pdf"'
+        return render_to_pdf(request, filename)
+    else:
+        # Return HTML
+        return TemplateResponse(request, template="quotes/quote_pdf.html")
