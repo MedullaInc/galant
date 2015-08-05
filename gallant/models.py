@@ -11,6 +11,7 @@ class GallantUser(AbstractEmailUser):
     """
     Custom Gallant user
     """
+
     class Meta(AbstractEmailUser.Meta):
         swappable = 'AUTH_USER_MODEL'
 
@@ -32,6 +33,11 @@ class PolyUserModel(PolymorphicModel):
 class Note(UserModel):
     text = m.TextField(help_text='User comment / note.')
     created = m.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        permissions = (
+            ('view_note', 'View note'),
+        )
 
 
 class ServiceType(gf.ChoiceEnum):
@@ -71,6 +77,11 @@ class Service(UserModel):
             total += sub.get_total_cost()
 
         return total
+
+    class Meta:
+        permissions = (
+            ('view_service', 'View service'),
+        )
 
 
 class ClientType(gf.ChoiceEnum):
@@ -115,7 +126,17 @@ class Client(UserModel):
     def __unicode__(self):
         return self.name
 
+    class Meta:
+        permissions = (
+            ('view_client', 'View client'),
+        )
+
 
 class Project(UserModel):
     name = m.CharField(max_length=255)
     # TODO: finish model according to diagrams
+
+    class Meta:
+        permissions = (
+            ('view_project', 'View project'),
+        )
