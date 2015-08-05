@@ -47,6 +47,7 @@ INSTALLED_APPS = (
     'custom_user',
     'selenium',
     'django_nose',
+    'guardian',
     
     'gallant',
     'briefs',
@@ -63,6 +64,11 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+)
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend', # this is default
+    'guardian.backends.ObjectPermissionBackend',
 )
 
 ROOT_URLCONF = 'gallant.urls'
@@ -141,3 +147,4 @@ ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ANONYMOUS_USER_ID = -1
