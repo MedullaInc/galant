@@ -11,6 +11,11 @@
             {% trans "Edit Quote" %}
         </button>
     </a>
+    <a href="{% url 'quote_pdf' object.id %}">
+        <button type="button" class="btn btn-default sidebar">
+            {% trans "Download Quote" %}
+        </button>
+    </a>
     <a href="{% url 'add_quote_template' quote_id=object.id %}">
         <button type="button" class="btn btn-default sidebar" title="Create template from this quote.">
             {% trans "Use as Template" %}
