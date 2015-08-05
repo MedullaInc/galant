@@ -5,6 +5,7 @@ from gallant import models as g
 from quotes import models as q
 from gallant import fields as gf
 from jsonfield.fields import JSONField
+from gallant import utils
 
 
 class Question(g.PolyUserModel):
@@ -89,6 +90,8 @@ class BriefTemplate(g.UserModel):
     """
     brief = m.ForeignKey(Brief)
 
+    def language_list(self):
+        return [(c, utils.LANG_DICT[c]) for c in self.brief.get_languages() if c in utils.LANG_DICT]
 
 class Answer(g.PolyUserModel):
     question = m.ForeignKey(Question)

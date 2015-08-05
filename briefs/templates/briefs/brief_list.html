@@ -77,7 +77,7 @@
                         <thead>
                         <th><b>{% trans "Name" %}</b></th>
                         <th><b>{% trans "Date" %}</b></th>
-                        <th><b>{% trans "Lanugage" %}</b></th>
+                        <th><b>{% trans "Language" %}</b></th>
                         </thead>
                         {% for template in template_list %}
                             <tr data-rel="{{ template.id }}" style="cursor: pointer" class="template_row">
@@ -96,7 +96,7 @@
                             {% empty %}
                             <tr>
                                 <td colspan="4">
-                                    No templates yet.
+                                    No templates yet, <a href="{% url "add_brief_template" %}">click here to add one.</a>
                                 </td>
                             </tr>
                         {% endfor %}

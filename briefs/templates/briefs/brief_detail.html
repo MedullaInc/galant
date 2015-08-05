@@ -13,6 +13,12 @@
         </button>
     </a>
 
+    <a href="{% url 'brief_list' object.client_id %}">
+        <button type="button" class="btn btn-default sidebar">
+            {% trans "Back to Briefs" %}
+        </button>
+    </a>
+
     <a href="{% url 'edit_brief' type_id=object.client_id pk=object.id %}">
         <button type="button" class="btn btn-default sidebar" id="edit_client_brief">
             {% trans "Edit Brief" %}
@@ -75,7 +81,7 @@
             <hr>
             {% endwith %}
         {% endfor %}
-    {% else %}
+    {% elif object.questions %}
         {% for question in object.questions.all %}
             <div id="question_{{ question.index }}" class="question">
                 {{ forloop.counter }} ) {{ question.question.get_text }}
@@ -89,7 +95,9 @@
             </div>
 
             <hr>
-
+        {% empty %}
+            No questions have been added yet.<br/>
+            <a href="{% url "edit_brief" object.client.id object.id %}">Click here to add some.</a>
         {% endfor %}
     {% endif %}
 

@@ -39,6 +39,7 @@ class BriefUpdate(View):
         form = bf.BriefForm(request.user, instance=self.object)
         questions = bf.question_forms_brief(self.object)
         context.update({'object': self.object, 'form': form, 'title': 'Edit Brief', 'questions': questions})
+        context.update({'client': int(kwargs['type_id'])})
         return self.render_to_response(context)
 
     def post(self, request, *args, **kwargs):
@@ -84,6 +85,7 @@ class BriefCreate(BriefUpdate):
         else:
             context.update({'form': bf.BriefForm(request.user)})
 
+        context.update({'client': int(kwargs['type_id'])})
         context.update({'title': 'Create Brief'})
         return self.render_to_response(context)
 

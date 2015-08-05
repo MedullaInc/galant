@@ -2,19 +2,24 @@
 {% load bootstrap i18n question_javascript %}
 
 {% block sidebar %}
-    {% if object.client %}
-    <a href="{% url 'brief_detail' brief.id %}">
-        <button type="button" class="btn btn-default sidebar">
-            {% trans "Back to Detail" %}
-        </button>
-    </a>
 
-    <a href="{% url 'brief_list' object.client_id %}">
+    {% if client %}
+
+        {% if object.id %}
+        <a href="{% url 'brief_detail' client  object.id %}">
+            <button type="button" class="btn btn-default sidebar">
+                {% trans "Back to Detail" %}
+            </button>
+        </a>
+        {% endif %}
+
+    <a href="{% url 'brief_list' client %}">
         <button type="button" class="btn btn-default sidebar">
             {% trans "Back to Briefs" %}
         </button>
     </a>
     {% endif %}
+
 {% endblock %}
 
 {% block post_form %}
