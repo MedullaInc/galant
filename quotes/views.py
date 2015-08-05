@@ -158,21 +158,23 @@ class QuoteTemplateView(View):
                                 context=context)
 
 
+class PhantomJSBin(RequestToPDF):
+    def __init__(self, *args, **kwargs):
+        super(PhantomJSBin, self).__init__(PHANTOMJS_BIN='/usr/local/bin/phantomjs',*args,**kwargs)
+
+
 def quote_pdf(request, display_type, quote_id):
     # Get quote
     quote = q.Quote.objects.get(pk=quote_id)
 
-    # Render view to PDF
-    #if display_type == "pdf":
+    # Render view
     if request.GET.get("display_type", None) == "pdf":
-        # Return PDF
+        # Render PDF
         filename = slugify(quote.client.name + "_" + quote.name) + '".pdf"'
-        return render_to_pdf(request, filename)
+        pjs = PhantomJSBin()
+        return pjs.request_to_pdf(request, filename, format="A4", orientation="landscape")
+
     else:
-        # Return HTML
+        # Render HTML
         return TemplateResponse(request, template="quotes/quote_pdf.html")
 
-
-    class PhantomJSBin(RequestToPDF):
-        def __init__(self, *args, **kwargs):
-            super(PhantomJSBin, self).__init__(PHANTOMJS_BIN='/usr/local/bin/phantomjs',*args,**kwargs)
