@@ -9,9 +9,8 @@ from django.shortcuts import get_object_or_404
 from quotes import models as q
 from quotes import forms as qf
 from gallant import forms as gf
-from reportlab.pdfgen import canvas
-from django.http import HttpResponse
 from django.utils.text import slugify
+from phantom_pdf import render_to_pdf, RequestToPDF
 
 class QuoteUpdate(View):
     def get(self, request, **kwargs):
@@ -159,23 +158,27 @@ class QuoteTemplateView(View):
                                 context=context)
 
 
-def quote_pdf(request, quote_id):
+class PhantomJSBin(RequestToPDF):
+    def __init__(self, *args, **kwargs):
+        super(PhantomJSBin, self).__init__(PHANTOMJS_BIN='/usr/local/bin/phantomjs',*args,**kwargs)
 
+
+def quote_pdf(request, *args, **kwargs):
     # Get quote
-    quote = q.Quote.objects.get(pk=quote_id)
+    quote = q.Quote.objects.get(pk=kwargs['pk'])
 
-    # Create the HttpResponse object with the appropriate PDF headers.
-    response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = 'filename="' + slugify(quote.client.name + "_" + quote.name) + '".pdf"'
+    # Render PDF
+    filename = slugify(quote.client.name + "_" + quote.name)
+    pjs = PhantomJSBin()
+    request.path = reverse('quote_preview', args=[quote.id])
+    return pjs.request_to_pdf(request, filename, format="A4", orientation="landscape")
 
-    # Create the PDF object, using the response object as its "file."
-    p = canvas.Canvas(response)
 
-    # Draw things on the PDF. Here's where the PDF generation happens.
-    # See the ReportLab documentation for the full list of functionality.
-    p.drawString(100, 100, quote.client.name)
+def quote_preview(request, *args, **kwargs):
+    # Get quote
+    quote = q.Quote.objects.get(pk=kwargs['pk'])
 
-    # Close the PDF object cleanly, and we're done.
-    p.showPage()
-    p.save()
-    return response
+    # Render HTML
+    context = {'object': quote}
+    return TemplateResponse(request, template="quotes/quote_preview.html", context=context)
+

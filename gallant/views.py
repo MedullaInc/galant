@@ -2,10 +2,11 @@ from django.contrib import messages
 from django.views.generic import View
 from django.template.response import TemplateResponse
 from django.http import HttpResponseRedirect
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import render
 from django.core.urlresolvers import reverse
 from gallant import forms
 from gallant import models as g
+from gallant.utils import get_allowed_or_404
 
 
 class ClientList(View):
@@ -17,13 +18,13 @@ class ClientList(View):
 
 class ClientUpdate(View):
     def get(self, request, **kwargs):
-        self.object = get_object_or_404(g.Client, pk=kwargs['pk'])
+        self.object = get_allowed_or_404(request.user, 'view_client', g.Client, pk=kwargs['pk'])
         form = forms.ClientForm(request.user, instance=self.object)
         return self.render_to_response({'object': self.object, 'form': form})
 
     def post(self, request, **kwargs):
         if 'pk' in kwargs:
-            self.object = get_object_or_404(g.Client, pk=kwargs['pk'])
+            self.object = get_allowed_or_404(request.user, 'view_client', g.Client, pk=kwargs['pk'])
         else:
             self.object = None
 
@@ -58,13 +59,13 @@ class ClientCreate(ClientUpdate):
 
 class ServiceUpdate(View):
     def get(self, request, **kwargs):
-        self.object = get_object_or_404(g.Service, pk=kwargs['pk'])
+        self.object = get_allowed_or_404(request.user, 'view_service', g.Service, pk=kwargs['pk'])
         form = forms.ServiceForm(request.user, instance=self.object)
         return self.render_to_response({'object': self.object, 'form': form})
 
     def post(self, request, **kwargs):
         if 'pk' in kwargs:
-            self.object = get_object_or_404(g.Service, pk=kwargs['pk'])
+            self.object = get_allowed_or_404(request.user, 'view_service', g.Service, pk=kwargs['pk'])
         else:
             self.object = None
 
@@ -92,7 +93,7 @@ class ServiceUpdate(View):
 
 
 def client_detail(request, pk):
-    client = get_object_or_404(g.Client, pk=pk)
+    client = get_allowed_or_404(request.user, 'view_client', g.Client, pk=pk)
 
     if request.method == 'POST':
         form = forms.NoteForm(request.user, request.POST)
@@ -117,7 +118,7 @@ class ServiceCreate(ServiceUpdate):
 
 
 def service_detail(request, pk):
-    service = get_object_or_404(g.Service, pk=pk)
+    service = get_allowed_or_404(request.user, 'view_service', g.Service, pk=pk)
 
     if request.method == 'POST':
         form = forms.NoteForm(request.user, request.POST)

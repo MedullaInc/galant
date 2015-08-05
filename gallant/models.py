@@ -5,6 +5,7 @@ from djmoney.models.fields import MoneyField
 from djmoney.forms.widgets import CURRENCY_CHOICES
 from gallant import fields as gf
 from polymorphic import PolymorphicModel
+from guardian.shortcuts import assign_perm
 
 
 class GallantUser(AbstractEmailUser):
@@ -38,6 +39,10 @@ class Note(UserModel):
         permissions = (
             ('view_note', 'View note'),
         )
+
+    def save(self, *args, **kwargs):
+        super(Note, self).save(*args, **kwargs)
+        assign_perm('view_note', self.user, self)
 
 
 class ServiceType(gf.ChoiceEnum):
@@ -82,6 +87,10 @@ class Service(UserModel):
         permissions = (
             ('view_service', 'View service'),
         )
+
+    def save(self, *args, **kwargs):
+        super(Service, self).save(*args, **kwargs)
+        assign_perm('view_service', self.user, self)
 
 
 class ClientType(gf.ChoiceEnum):
@@ -131,6 +140,10 @@ class Client(UserModel):
             ('view_client', 'View client'),
         )
 
+    def save(self, *args, **kwargs):
+        super(Client, self).save(*args, **kwargs)
+        assign_perm('view_client', self.user, self)
+
 
 class Project(UserModel):
     name = m.CharField(max_length=255)
@@ -140,3 +153,7 @@ class Project(UserModel):
         permissions = (
             ('view_project', 'View project'),
         )
+
+    def save(self, *args, **kwargs):
+        super(Project, self).save(*args, **kwargs)
+        assign_perm('view_project', self.user, self)
