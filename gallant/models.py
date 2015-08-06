@@ -61,6 +61,8 @@ class Note(UserModel):
             ('view_note', 'View note'),
         )
 
+    objects = UserModelManager()
+
 
 class ServiceType(gf.ChoiceEnum):
     Branding = 0
@@ -104,6 +106,8 @@ class Service(UserModel):
         permissions = (
             ('view_service', 'View service'),
         )
+
+    objects = UserModelManager()
 
 
 class ClientType(gf.ChoiceEnum):
@@ -153,10 +157,6 @@ class Client(UserModel):
             ('view_client', 'View client'),
         )
 
-    def save(self, *args, **kwargs):
-        super(Client, self).save(*args, **kwargs)
-        assign_perm('view_client', self.user, self)
-
     objects = UserModelManager()
 
 
@@ -168,3 +168,5 @@ class Project(UserModel):
         permissions = (
             ('view_project', 'View project'),
         )
+
+    objects = UserModelManager()
