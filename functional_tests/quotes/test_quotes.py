@@ -8,8 +8,9 @@ def tearDown():
     browser.close()
 
 
-def get_blank_quote_autofixture():
-    q = autofixture.create_one('quotes.Quote', generate_fk=True, field_values={'sections': [], 'language': 'en'})
+def get_blank_quote_autofixture(user):
+    q = autofixture.create_one('quotes.Quote', generate_fk=True,
+                               field_values={'sections': [], 'language': 'en', 'user': user})
     i = qm.TextSection.objects.create(user=q.user, name='intro', index=0)
     m = qm.TextSection.objects.create(user=q.user, name='margin', index=1)
     q.sections.add(i)
@@ -27,7 +28,8 @@ class QuotesSignedInTest(browser.SignedInTest):
 
     def test_add_quote(self):
         b = browser.instance()
-        c = autofixture.create_one('gallant.Client', generate_fk=True)
+        c = autofixture.create_one('gallant.Client', generate_fk=True,
+                                   field_values={'user': self.user})
         c.save()
         b.get(self.live_server_url + reverse('add_quote'))
 
@@ -45,7 +47,7 @@ class QuotesSignedInTest(browser.SignedInTest):
 
     def test_edit_quote(self):
         b = browser.instance()
-        q = get_blank_quote_autofixture()
+        q = get_blank_quote_autofixture(self.user)
         b.get(self.live_server_url + reverse('edit_quote', args=[q.id]))
         self.load_scripts()
 
@@ -62,7 +64,7 @@ class QuotesSignedInTest(browser.SignedInTest):
 
     def test_add_sections(self):
         b = browser.instance()
-        q = get_blank_quote_autofixture()
+        q = get_blank_quote_autofixture(self.user)
         b.get(self.live_server_url + reverse('edit_quote', args=[q.id]))
         self.load_scripts()
 
@@ -88,7 +90,7 @@ class QuotesSignedInTest(browser.SignedInTest):
 
     def test_add_service(self):
         b = browser.instance()
-        q = get_blank_quote_autofixture()
+        q = get_blank_quote_autofixture(self.user)
         b.get(self.live_server_url + reverse('edit_quote', args=[q.id]))
         self.load_scripts()
 
@@ -108,7 +110,7 @@ class QuotesSignedInTest(browser.SignedInTest):
 
     def test_section_order(self):
         b = browser.instance()
-        q = get_blank_quote_autofixture()
+        q = get_blank_quote_autofixture(self.user)
         b.get(self.live_server_url + reverse('edit_quote', args=[q.id]))
         self.load_scripts()
 
@@ -136,7 +138,7 @@ class QuotesSignedInTest(browser.SignedInTest):
 
     def test_remove_section(self):
         b = browser.instance()
-        q = get_blank_quote_autofixture()
+        q = get_blank_quote_autofixture(self.user)
         b.get(self.live_server_url + reverse('edit_quote', args=[q.id]))
         self.load_scripts()
         add_section = b.find_element_by_id('add_section')
@@ -166,7 +168,7 @@ class QuotesSignedInTest(browser.SignedInTest):
 
     def test_add_to_existing_sections(self):
         b = browser.instance()
-        q = get_blank_quote_autofixture()
+        q = get_blank_quote_autofixture(self.user)
         b.get(self.live_server_url + reverse('edit_quote', args=[q.id]))
         self.load_scripts()
 

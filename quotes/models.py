@@ -3,6 +3,7 @@ from gallant import fields as gf
 from django.db import models as m
 from django.conf import settings
 from gallant import utils
+from gallant.models import PolyUserModelManager, UserModelManager
 
 
 class Section(g.PolyUserModel):
@@ -20,6 +21,13 @@ class Section(g.PolyUserModel):
         map(lambda l: language_set.add(l), self.text.keys())
         return language_set
 
+    class Meta:
+        permissions = (
+            ('view_section', 'View section'),
+        )
+
+    objects = PolyUserModelManager()
+
 
 # Text section of Quote
 class TextSection(Section):
@@ -34,9 +42,23 @@ class TextSection(Section):
     def __ne__(self, other):
         return not self.__eq__(other)
 
+    class Meta:
+        permissions = (
+            ('view_textsection', 'View textsection'),
+        )
+
+    objects = PolyUserModelManager()
+
 
 class ServiceSection(Section):
     service = m.ForeignKey(g.Service)
+
+    class Meta:
+        permissions = (
+            ('view_servicesection', 'View servicesection'),
+        )
+
+    objects = PolyUserModelManager()
 
 
 class QuoteStatus(gf.ChoiceEnum):
@@ -84,9 +106,23 @@ class Quote(g.UserModel):
         sections.sort(lambda a, b: cmp(a.index, b.index))
         return sections
 
+    class Meta:
+        permissions = (
+            ('view_quote', 'View quote'),
+        )
+
+    objects = UserModelManager()
+
 
 class QuoteTemplate(g.UserModel):
     quote = m.ForeignKey(Quote)
 
     def language_list(self):
         return [(c, utils.LANG_DICT[c]) for c in self.quote.get_languages() if c in utils.LANG_DICT]
+
+    class Meta:
+        permissions = (
+            ('view_quotetemplate', 'View quotetemplate'),
+        )
+
+    objects = UserModelManager()
