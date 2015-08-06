@@ -13,13 +13,13 @@
             {% trans "Back to Client" %}
         </button>
     </a>
+    {% endif %}
 
     <a>
         <button type="button" class="btn btn-default sidebar" id="add_brief">
             {% trans "Create Brief" %}
         </button>
     </a>
-    {% endif %}
 
     <a href="{% url 'brief_templates' %}">
         <button type="button" class="btn btn-default sidebar">
@@ -51,16 +51,14 @@
         {% endfor %}
     </table>
 
-    {% if client %}
     <div id="add_button_popover" class="popover" style="display: none">
         <a class="from_template_button">
             <button type="button" class="btn btn-default from_template_button sidebar">From Template</button>
         </a>
-        <a href="{% url 'add_brief' client.id %}">
+        <a href="{% if client %}{% url 'add_brief' client.id %}{% else %}{% url 'add_brief' %}{% endif %}">
             <button type="button" class="btn btn-default from_scratch_button sidebar">From Scratch</button>
         </a>
     </div>
-    {% endif %}
 {% endblock %}
 
 

@@ -5,7 +5,7 @@ from briefs import views
 urlpatterns = [
     url(r'^$', login_required(views.BriefList.as_view()), name='briefs'),
     url(r'^answer/(?P<token>[a-f0-9]{32})$', views.BriefAnswer.as_view(), name='brief_answer'),
-    url(r'^client/(?P<type_id>[0-9]+)/add/$',
+    url(r'^(?:client/(?P<type_id>[0-9]+)/)?add/$',
         login_required(views.BriefCreate.as_view()), name='add_brief'),
     url(r'^client/(?P<type_id>[0-9]+)/$',
         login_required(views.BriefList.as_view()), name='brief_list'),

@@ -3,17 +3,17 @@
 
 {% block sidebar %}
 
-    {% if client %}
+    {% if client.id %}
 
         {% if object.id %}
-        <a href="{% url 'brief_detail' client  object.id %}">
+        <a href="{% url 'brief_detail' client.id  object.id %}">
             <button type="button" class="btn btn-default sidebar">
                 {% trans "Back to Detail" %}
             </button>
         </a>
         {% endif %}
 
-    <a href="{% url 'brief_list' client %}">
+    <a href="{% url 'brief_list' client.id %}">
         <button type="button" class="btn btn-default sidebar">
             {% trans "Back to Briefs" %}
         </button>
@@ -23,9 +23,6 @@
 {% endblock %}
 
 {% block post_form %}
-    {% if object.client_id %}
-    <input type="hidden" name="client" value="{{ object.client_id }}">
-    {% endif %}
     <div class="rounded-border padding-top-20">
 
         <div id="question_table">

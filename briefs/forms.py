@@ -1,20 +1,35 @@
 import operator
-from django.shortcuts import get_object_or_404
+from django.core.exceptions import ValidationError
 from django.template.loader import get_template
 from django import forms
 from briefs import models as b
+from gallant import models as g
 from gallant import forms as gf
 from gallant import fields as gfields
+from gallant.utils import get_one_or_404
 import re
 
 
 class BriefForm(gf.UserModelForm):
     class Meta:
         model = b.Brief
-        fields = ['title']
+        fields = ['title', 'client']
+
+    def __init__(self, user, *args, **kwargs):
+        super(BriefForm, self).__init__(user, *args, **kwargs)
+        self.fields['client'].queryset = g.Client.objects.get_for(self.user, 'view_client')
+
+    def clean_client(self):
+        client = self.cleaned_data['client']
+        if client is None:
+            raise ValidationError('Please select a client.')
+        elif self.user.has_perm('view_client', client):
+            return client
+        else:
+            raise ValidationError('Invalid client.')
 
 
-class BriefTemplateForm(BriefForm):
+class BriefTemplateForm(gf.UserModelForm):
     class Meta:
         model = b.Brief
         fields = ['name']
@@ -30,7 +45,7 @@ class QuestionForm(gf.UserModelForm):
         prefix = prefix or ''
         data = data or {}
         if prefix + '-id' in data:
-            question = get_object_or_404(b.TextQuestion, pk=data[prefix + '-id'])
+            question = get_one_or_404(user, 'change_textquestion', b.TextQuestion, pk=data[prefix + '-id'])
             super(QuestionForm, self).__init__(user, data=data, prefix=prefix, instance=question, *args, **kwargs)
         else:
             super(QuestionForm, self).__init__(user, data=data, prefix=prefix, *args, **kwargs)
@@ -54,7 +69,8 @@ class MultiQuestionForm(gf.UserModelForm):
         prefix = prefix or ''
         data = data or {}
         if prefix + '-id' in data:
-            question = get_object_or_404(b.MultipleChoiceQuestion, pk=data[prefix + '-id'])
+            question = get_one_or_404(user, 'change_multiplechoicequestion',
+                                      b.MultipleChoiceQuestion, pk=data[prefix + '-id'])
             super(MultiQuestionForm, self).__init__(user, data=data, prefix=prefix, instance=question, *args, **kwargs)
         else:
             super(MultiQuestionForm, self).__init__(user, data=data, prefix=prefix, *args, **kwargs)
@@ -77,11 +93,12 @@ class BriefAnswersForm(gf.UserModelForm):
         af = []
         for q in self.instance.brief.questions.all().order_by('index'):
             if type(q) is b.TextQuestion:
-                FormType = AnswerForm
+                if q.is_long_answer:
+                    FormType = LongAnswerForm
+                else:
+                    FormType = AnswerForm
             elif type(q) is b.MultipleChoiceQuestion:
                 FormType = MultipleChoiceAnswerForm
-            elif type(q) is b.LongAnswerQuestion:
-                FormType = LongAnswerForm
 
             af.append(FormType(self.instance.brief.user, q, data))
 

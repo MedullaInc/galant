@@ -2,6 +2,7 @@ from uuid import uuid4
 from django.conf import settings
 from django.db import models as m
 from gallant import models as g
+from gallant.models import PolyUserModelManager, UserModelManager
 from quotes import models as q
 from gallant import fields as gf
 from jsonfield.fields import JSONField
@@ -16,11 +17,26 @@ class Question(g.PolyUserModel):
     help_text = gf.ULCharField()
     index = m.IntegerField(default=0)
 
+    class Meta:
+        permissions = (
+            ('view_question', 'View question'),
+        )
+
+    objects = PolyUserModelManager()
+
 
 class TextQuestion(Question):
     """
     Long Answer Question
     """
+    is_long_answer = m.BooleanField(default=False)
+
+    class Meta:
+        permissions = (
+            ('view_textquestion', 'View textquestion'),
+        )
+
+    objects = PolyUserModelManager()
 
 
 class MultipleChoiceQuestion(Question):
@@ -32,12 +48,26 @@ class MultipleChoiceQuestion(Question):
     can_select_multiple = m.BooleanField(default=False)
     choices = gf.ULTextArrayField()
 
+    class Meta:
+        permissions = (
+            ('view_multiplechoicequestion', 'View multiplechoicequestion'),
+        )
+
+    objects = PolyUserModelManager()
+
 
 class ImageQuestion(MultipleChoiceQuestion):
     """
     ImageQuestion is a Multiple Choice Questions that allows the user to select among images.
     """
     # TODO: First finish MultipleChoiceQuestion then continue with ImageQuestions.
+
+    class Meta:
+        permissions = (
+            ('view_imagequestion', 'View imagequestion'),
+        )
+
+    objects = PolyUserModelManager()
 
 
 class Image(g.UserModel):
@@ -83,6 +113,13 @@ class Brief(g.UserModel):
 
         return language_set
 
+    class Meta:
+        permissions = (
+            ('view_brief', 'View brief'),
+        )
+
+    objects = UserModelManager()
+
 
 class BriefTemplate(g.UserModel):
     """
@@ -93,12 +130,34 @@ class BriefTemplate(g.UserModel):
     def language_list(self):
         return [(c, utils.LANG_DICT[c]) for c in self.brief.get_languages() if c in utils.LANG_DICT]
 
+    class Meta:
+        permissions = (
+            ('view_brieftemplate', 'View brieftemplate'),
+        )
+
+    objects = UserModelManager()
+
+
 class Answer(g.PolyUserModel):
     question = m.ForeignKey(Question)
+
+    class Meta:
+        permissions = (
+            ('view_answer', 'View answer'),
+        )
+
+    objects = PolyUserModelManager()
 
 
 class TextAnswer(Answer):
     answer = m.CharField(max_length=3000)
+
+    class Meta:
+        permissions = (
+            ('view_textanswer', 'View textanswer'),
+        )
+
+    objects = PolyUserModelManager()
 
 
 class MultipleChoiceAnswer(Answer):
@@ -113,9 +172,23 @@ class MultipleChoiceAnswer(Answer):
             else:
                 return self.question.choices[self.choices[0]]
 
+    class Meta:
+        permissions = (
+            ('view_multiplechoiceanswer', 'View multiplechoiceanswer'),
+        )
+
+    objects = PolyUserModelManager()
+
 
 class BriefAnswers(g.UserModel):
     brief = m.ForeignKey(Brief)
     answers = m.ManyToManyField(Answer)
 
     created = m.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        permissions = (
+            ('view_briefanswers', 'View briefanswers'),
+        )
+
+    objects = UserModelManager()

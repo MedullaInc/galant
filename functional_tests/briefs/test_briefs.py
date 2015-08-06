@@ -20,7 +20,8 @@ class BriefsSignedInTest(browser.SignedInTest):
         b = browser.instance()
 
         # create Client
-        c = autofixture.create_one('gallant.Client', generate_fk=True)
+        c = autofixture.create_one('gallant.Client', generate_fk=True,
+                                   field_values={'user': self.user})
         c.save()
 
         # access Client Briefs & click add brief
@@ -31,6 +32,7 @@ class BriefsSignedInTest(browser.SignedInTest):
 
         # fill out brief & save
         b.find_element_by_name('title').send_keys('Brief test')
+        b.find_element_by_xpath('//select[@name="client"]/option[@value="%d"]' % c.id).click()
         b.find_element_by_xpath('//button[@type="submit"]').click()
 
         success_message = b.find_element_by_class_name('alert-success')
@@ -38,10 +40,13 @@ class BriefsSignedInTest(browser.SignedInTest):
 
     def test_edit_client_brief(self):
         b = browser.instance()
-        q = autofixture.create_one('briefs.Brief', generate_fk=True)
+        c = autofixture.create_one('gallant.Client', generate_fk=True,
+                                   field_values={'user': self.user})
+        q = autofixture.create_one('briefs.Brief', generate_fk=True,
+                                   field_values={'user': self.user, 'client': c})
         q.save()
 
-        b.get(self.live_server_url + reverse('edit_brief', args=[q.client.id, q.id]))
+        b.get(self.live_server_url + reverse('edit_brief', args=[c.id, q.id]))
         self.load_scripts()
 
         b.find_element_by_id('id_title').clear()
@@ -54,7 +59,10 @@ class BriefsSignedInTest(browser.SignedInTest):
 
     def test_edit_client_brief_question(self):
         b = browser.instance()
-        brief = autofixture.create_one('briefs.Brief', generate_fk=True)
+        c = autofixture.create_one('gallant.Client', generate_fk=True,
+                                   field_values={'user': self.user})
+        brief = autofixture.create_one('briefs.Brief', generate_fk=True,
+                                       field_values={'user': self.user, 'client': c})
         q = bm.TextQuestion.objects.create(user=brief.user, question='What?')
         mq = bm.MultipleChoiceQuestion.objects.create(user=brief.user, question='Huh?',
                                                       choices=['a', 'b', 'c'], index=1)
@@ -78,7 +86,10 @@ class BriefsSignedInTest(browser.SignedInTest):
 
     def test_add_client_brief_multiquestion(self):
         b = browser.instance()
-        brief = autofixture.create_one('briefs.Brief', generate_fk=True)
+        c = autofixture.create_one('gallant.Client', generate_fk=True,
+                                   field_values={'user': self.user})
+        brief = autofixture.create_one('briefs.Brief', generate_fk=True,
+                                       field_values={'user': self.user, 'client': c})
         q = bm.TextQuestion.objects.create(user=brief.user, question='What?')
         brief.questions.add(q)
 
@@ -103,10 +114,13 @@ class BriefsSignedInTest(browser.SignedInTest):
 
     def test_client_brief_detail(self):
         b = browser.instance()
-        q = autofixture.create_one('briefs.Brief', generate_fk=True)
+        c = autofixture.create_one('gallant.Client', generate_fk=True,
+                                   field_values={'user': self.user})
+        q = autofixture.create_one('briefs.Brief', generate_fk=True,
+                                   field_values={'user': self.user, 'client': c})
         q.save()
 
-        b.get(self.live_server_url + reverse('brief_detail', args=[q.client.id, q.id]))
+        b.get(self.live_server_url + reverse('brief_detail', args=[c.id, q.id]))
         self.load_scripts()
 
         section_title = browser.instance().find_element_by_class_name('section_title')
