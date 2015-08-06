@@ -1,3 +1,4 @@
+import autofixture
 from django.test import TransactionTestCase, TestCase
 from django import forms
 from gallant import models as g
@@ -10,12 +11,13 @@ class ServiceTest(TransactionTestCase):
     def test_save_load(self):
         fixture = AutoFixture(g.Service, generate_fk=True)
         service = fixture.create(1)[0]
-        new_service = g.Service.objects.get(id=service.id)
+        new_service = g.Service.objects.get_for(service.user, 'view_service', id=service.id)
 
         self.assertEqual(service.id, new_service.id)
 
     def test_sub_services(self):
-        fixture = AutoFixture(g.Service, generate_fk=True)
+        user = autofixture.create_one(g.GallantUser, generate_fk=True)
+        fixture = AutoFixture(g.Service, generate_fk=True, field_values={'user': user})
         services = fixture.create(10)
         parent = services[9]
         total_cost = parent.cost
@@ -24,7 +26,7 @@ class ServiceTest(TransactionTestCase):
             total_cost += s.get_total_cost()
             s.save()
 
-        self.assertEqual(len(services[9].sub_services.all()), 9)
+        self.assertEqual(len(services[9].sub_services.all_for(user, 'view_service')), 9)
         self.assertEqual(total_cost, parent.get_total_cost())
 
 
@@ -33,14 +35,14 @@ class ClientTest(TransactionTestCase):
         fixture = AutoFixture(g.Client, generate_fk=True)
         obj = fixture.create(1)[0]
 
-        self.assertEqual(len(obj.notes.all()), 0)
+        self.assertEqual(len(obj.notes.all_for(obj.user, 'view_note')), 0)
 
-        note_fixture = AutoFixture(g.Note, generate_fk=True)
+        note_fixture = AutoFixture(g.Note, generate_fk=True, field_values={'user': obj.user})
         notes = note_fixture.create(10)
         obj.notes = notes
         obj.save()
 
-        self.assertEqual(len(obj.notes.all()), 10)
+        self.assertEqual(len(obj.notes.all_for(obj.user, 'view_note')), 10)
 
     def test_language_length(self):
         fixture = AutoFixture(g.Client, generate_fk=True)

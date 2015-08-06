@@ -15,7 +15,7 @@ class QuoteForm(gf.UserModelForm):
 
     def __init__(self, *args, **kwargs):
         super(QuoteForm, self).__init__(*args, **kwargs)
-        self.fields['client'].queryset = g.Client.objects.get_for(self.user, 'view_client')
+        self.fields['client'].queryset = g.Client.objects.all_for(self.user, 'view_client')
 
     def clean_client(self):
         client = self.cleaned_data['client']

@@ -14,7 +14,7 @@ class ClientList(View):
         return TemplateResponse(request=request,
                                 template="gallant/client_list.html",
                                 context={'title': 'Clients',
-                                         'object_list': g.Client.objects.get_for(request.user, 'view_client')})
+                                         'object_list': g.Client.objects.all_for(request.user, 'view_client')})
 
 
 class ClientUpdate(View):

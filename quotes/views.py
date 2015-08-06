@@ -82,10 +82,10 @@ class QuoteList(View):
                                 template="quotes/quote_list.html",
                                 context={'title': 'Quotes',
                                          'object_list': q.Quote.objects
-                                                         .get_for(request.user, 'view_quote')
+                                                         .all_for(request.user, 'view_quote')
                                                          .filter(client__isnull=False),
                                          'template_list': q.QuoteTemplate.objects
-                                                           .get_for(request.user, 'view_quotetemplate')})
+                                                           .all_for(request.user, 'view_quotetemplate')})
 
 
 class QuoteTemplateList(View):
@@ -94,7 +94,7 @@ class QuoteTemplateList(View):
                                 template="quotes/quotetemplate_list.html",
                                 context={'title': 'Quote Templates',
                                          'object_list': q.QuoteTemplate.objects
-                                                         .get_for(request.user, 'view_quotetemplate')})
+                                                         .all_for(request.user, 'view_quotetemplate')})
 
 
 class QuoteTemplateView(View):
@@ -169,7 +169,7 @@ class PhantomJSBin(RequestToPDF):
 
 def quote_pdf(request, *args, **kwargs):
     # Get quote
-    quote = q.Quote.objects.get_for(request.user, 'view_quote', pk=kwargs['pk'])
+    quote = q.Quote.objects.all_for(request.user, 'view_quote', pk=kwargs['pk'])
 
     # Render PDF
     filename = slugify(quote.client.name + "_" + quote.name)
@@ -180,7 +180,7 @@ def quote_pdf(request, *args, **kwargs):
 
 def quote_preview(request, *args, **kwargs):
     # Get quote
-    quote = q.Quote.objects.get_for(request.user, 'view_quote', pk=kwargs['pk'])
+    quote = q.Quote.objects.all_for(request.user, 'view_quote', pk=kwargs['pk'])
 
     # Render HTML
     context = {'object': quote}

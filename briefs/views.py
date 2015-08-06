@@ -16,15 +16,15 @@ from gallant.utils import get_one_or_404
 
 class BriefList(View):
     def get(self, request, **kwargs):
-        context = {'template_list': b.BriefTemplate.objects.get_for(request.user, 'view_brieftemplate')}
+        context = {'template_list': b.BriefTemplate.objects.all_for(request.user, 'view_brieftemplate')}
 
         if 'type_id' in kwargs:
             client = get_one_or_404(request.user, 'view_client', g.Client, pk=kwargs['type_id'])
             context.update({'client': client,
-                            'object_list': client.brief_set.get_for(request.user, 'view_brief')})
+                            'object_list': client.brief_set.all_for(request.user, 'view_brief')})
         else:
             context.update({'object_list': b.Brief.objects
-                                            .get_for(request.user, 'view_brief')
+                                            .all_for(request.user, 'view_brief')
                                             .filter(client__isnull=False)})
 
         return TemplateResponse(request=request,
@@ -134,7 +134,7 @@ class BriefTemplateList(View):
                                 template="briefs/brieftemplate_list.html",
                                 context={'title': 'Brief Templates',
                                          'object_list': b.BriefTemplate.objects
-                                                         .get_for(request.user, 'view_brieftemplate')})
+                                                         .all_for(request.user, 'view_brieftemplate')})
 
 
 class BriefTemplateView(View):

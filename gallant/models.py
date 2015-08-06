@@ -1,3 +1,4 @@
+import inspect
 from custom_user.models import AbstractEmailUser
 from django.db import models as m
 from django.conf import settings
@@ -42,18 +43,42 @@ class PolyUserModel(PolymorphicModel):
             assign_perm(perm.codename, self.user, self)
 
 
-class UserModelManager(m.Manager):
-    use_for_related_fields = True
+class UserManagerMethodsMixin(object):
+    ''' Block some common access methods to prevent programmer error, and provide safe methods
+     to access by checking permissions
+    '''
 
-    def get_for(self, user, perm):
+    def all(self):
+        if self._caller_blocked():
+            raise RuntimeError('Attempted to use all() via UserModelManager. Use all_for() instead.')
+        return super(UserManagerMethodsMixin, self).all()
+
+    def get(self, *args, **kwargs):
+        if self._caller_blocked():
+            raise RuntimeError('Attempted to use get() via UserModelManager. Use get_for() instead.')
+        return super(UserManagerMethodsMixin, self).get(*args, **kwargs)
+
+    def all_for(self, user, perm):
         return get_objects_for_user(user, perm, self.get_queryset(), accept_global_perms=False)
 
+    def get_for(self, user, perm, *args, **kwargs):
+        obj = super(UserManagerMethodsMixin, self).get(*args, **kwargs)
+        if user.has_perm(perm, obj):
+            return obj
+        else:
+            return None
 
-class PolyUserModelManager(PolymorphicManager):
+    def _caller_blocked(self):
+        mod = inspect.getmodule(inspect.stack()[2][0])  # Who is calling us?
+        return any(app in mod.__name__ for app in ['gallant', 'quotes', 'briefs'])
+
+
+class UserModelManager(UserManagerMethodsMixin, m.Manager):
     use_for_related_fields = True
 
-    def get_for(self, user, perm):
-        return get_objects_for_user(user, perm, self.get_queryset(), accept_global_perms=False)
+
+class PolyUserModelManager(UserManagerMethodsMixin, PolymorphicManager):
+    use_for_related_fields = True
 
 
 class Note(UserModel):
@@ -101,7 +126,7 @@ class Service(UserModel):
 
     def get_total_cost(self):
         total = self.cost
-        for sub in self.sub_services.all():
+        for sub in self.sub_services.all_for(self.user, 'view_service'):
             total += sub.get_total_cost()
 
         return total
