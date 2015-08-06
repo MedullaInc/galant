@@ -29,6 +29,16 @@ class Section(g.PolyUserModel):
     objects = PolyUserModelManager()
 
 
+def _get_section_perms(new_perms):
+    return (
+        new_perms,
+        ('add_section', 'Can add section'),
+        ('change_section', 'Can change section'),
+        ('delete_section', 'Can delete section'),
+        ('view_section', 'View section'),
+    )
+
+
 # Text section of Quote
 class TextSection(Section):
     title = gf.ULCharField(blank=True)
@@ -43,9 +53,7 @@ class TextSection(Section):
         return not self.__eq__(other)
 
     class Meta:
-        permissions = (
-            ('view_textsection', 'View textsection'),
-        )
+        permissions = _get_section_perms(('view_textsection', 'View textsection'))
 
     objects = PolyUserModelManager()
 
@@ -54,9 +62,7 @@ class ServiceSection(Section):
     service = m.ForeignKey(g.Service)
 
     class Meta:
-        permissions = (
-            ('view_servicesection', 'View servicesection'),
-        )
+        permissions = _get_section_perms(('view_servicesection', 'View servicesection'))
 
     objects = PolyUserModelManager()
 
@@ -89,20 +95,21 @@ class Quote(g.UserModel):
 
     def get_languages(self):
         language_set = set()
-        for s in list(self.sections.all()):
+        for s in list(self.sections.all_for(self.user, 'view_section')):
             if s is not None:
                 language_set.update(s.get_languages())
 
         return language_set
 
     def intro(self):
-        return self.sections.get(name='intro')
+        return self.sections.get_for(self.user, 'view_section', name='intro')
 
     def margin(self):
-        return self.sections.get(name='margin')
+        return self.sections.get_for(self.user, 'view_section', name='margin')
 
     def all_sections(self):
-        sections = list(self.sections.all()) + list(self.services.all())
+        sections = list(self.sections.all_for(self.user, 'view_section')) + \
+                   list(self.services.all_for(self.user, 'view_section'))
         sections.sort(lambda a, b: cmp(a.index, b.index))
         return sections
 
