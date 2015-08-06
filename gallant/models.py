@@ -43,13 +43,17 @@ class PolyUserModel(PolymorphicModel):
 
 
 class UserModelManager(m.Manager):
+    use_for_related_fields = True
+
     def get_for(self, user, perm):
-        return get_objects_for_user(user, perm, self.model, accept_global_perms=False)
+        return get_objects_for_user(user, perm, self.get_queryset(), accept_global_perms=False)
 
 
 class PolyUserModelManager(PolymorphicManager):
+    use_for_related_fields = True
+
     def get_for(self, user, perm):
-        return get_objects_for_user(user, perm, self.model, accept_global_perms=False)
+        return get_objects_for_user(user, perm, self.get_queryset(), accept_global_perms=False)
 
 
 class Note(UserModel):
