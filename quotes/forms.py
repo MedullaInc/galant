@@ -25,7 +25,7 @@ class QuoteForm(gf.UserModelForm):
             raise ValidationError('Invalid client.')
 
 
-class QuoteTemplateForm(QuoteForm):
+class QuoteTemplateForm(gf.UserModelForm):
     class Meta:
         model = q.Quote
         fields = ['name']

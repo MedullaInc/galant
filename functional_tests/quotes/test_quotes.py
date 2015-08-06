@@ -9,8 +9,11 @@ def tearDown():
 
 
 def get_blank_quote_autofixture(user):
+    c = autofixture.create_one('gallant.Client', generate_fk=True,
+                               field_values={'user': user})
     q = autofixture.create_one('quotes.Quote', generate_fk=True,
-                               field_values={'sections': [], 'language': 'en', 'user': user})
+                               field_values={'sections': [], 'language': 'en',
+                                             'user': user, 'client': c})
     i = qm.TextSection.objects.create(user=q.user, name='intro', index=0)
     m = qm.TextSection.objects.create(user=q.user, name='margin', index=1)
     q.sections.add(i)
