@@ -103,7 +103,8 @@ class BriefCreate(BriefUpdate):
                                 'form': form,
                                 'object': brief})
         else:
-            context.update({'form': bf.BriefForm(request.user)})
+            context.update({'form': bf.BriefForm(request.user, initial={'client': client.id})})
+
         context.update({'title': 'Create Brief'})
         return self.render_to_response(context)
 
