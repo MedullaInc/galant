@@ -1,13 +1,12 @@
 from django.conf import settings
 from django.http.response import Http404
-from django.shortcuts import get_object_or_404
 
 LANG_DICT = dict(settings.LANGUAGES)
 
 
-def get_allowed_or_404(user, permission, *args, **kwargs):
-    obj = get_object_or_404(*args, **kwargs)
-    if user.has_perm(permission, obj):
+def get_one_or_404(user, perm, klass, *args, **kwargs):
+    obj = klass.objects.get(*args, **kwargs)
+    if user.has_perm(perm, obj):
         return obj
     else:
         raise Http404("Object not found.")

@@ -55,15 +55,15 @@ class BrowserTest(LiveServerTestCase):
 
 class SignedInTest(BrowserTest):
     def setUp(self):
-        u = autofixture.create_one('gallant.GallantUser', generate_fk=True,
+        self.user = autofixture.create_one('gallant.GallantUser', generate_fk=True,
                                    field_values={'password': hashers.make_password('password')})
-        u.save()
+        self.user.save()
 
         # other browsers can be set here, eg
         # self.browser = webdriver.Firefox()
 
         # add session cookie for logged-in user
-        self.client.login(email=u.email, password='password')
+        self.client.login(email=self.user.email, password='password')
         instance().add_cookie({u'domain': u'localhost', u'name': u'sessionid',
                                  u'value': self.client.session.session_key,
                                  u'path': u'/', u'httponly': True, u'secure': False})

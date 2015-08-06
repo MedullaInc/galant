@@ -5,7 +5,8 @@ from djmoney.models.fields import MoneyField
 from djmoney.forms.widgets import CURRENCY_CHOICES
 from gallant import fields as gf
 from polymorphic import PolymorphicModel
-from guardian.shortcuts import assign_perm
+from guardian.shortcuts import assign_perm, get_objects_for_user, get_perms_for_model
+from polymorphic.manager import PolymorphicManager
 
 
 class GallantUser(AbstractEmailUser):
@@ -23,12 +24,32 @@ class UserModel(m.Model):
     class Meta:
         abstract = True
 
+    def save(self, *args, **kwargs):
+        super(UserModel, self).save(*args, **kwargs)
+        for perm in get_perms_for_model(self):
+            assign_perm(perm.codename, self.user, self)
+
 
 class PolyUserModel(PolymorphicModel):
     user = m.ForeignKey(GallantUser)
 
     class Meta:
         abstract = True
+
+    def save(self, *args, **kwargs):
+        super(PolyUserModel, self).save(*args, **kwargs)
+        for perm in get_perms_for_model(self):
+            assign_perm(perm.codename, self.user, self)
+
+
+class UserModelManager(m.Manager):
+    def get_for(self, user, perm):
+        return get_objects_for_user(user, perm, self.model, accept_global_perms=False)
+
+
+class PolyUserModelManager(PolymorphicManager):
+    def get_for(self, user, perm):
+        return get_objects_for_user(user, perm, self.model, accept_global_perms=False)
 
 
 class Note(UserModel):
@@ -39,10 +60,6 @@ class Note(UserModel):
         permissions = (
             ('view_note', 'View note'),
         )
-
-    def save(self, *args, **kwargs):
-        super(Note, self).save(*args, **kwargs)
-        assign_perm('view_note', self.user, self)
 
 
 class ServiceType(gf.ChoiceEnum):
@@ -87,10 +104,6 @@ class Service(UserModel):
         permissions = (
             ('view_service', 'View service'),
         )
-
-    def save(self, *args, **kwargs):
-        super(Service, self).save(*args, **kwargs)
-        assign_perm('view_service', self.user, self)
 
 
 class ClientType(gf.ChoiceEnum):
@@ -144,6 +157,8 @@ class Client(UserModel):
         super(Client, self).save(*args, **kwargs)
         assign_perm('view_client', self.user, self)
 
+    objects = UserModelManager()
+
 
 class Project(UserModel):
     name = m.CharField(max_length=255)
@@ -153,7 +168,3 @@ class Project(UserModel):
         permissions = (
             ('view_project', 'View project'),
         )
-
-    def save(self, *args, **kwargs):
-        super(Project, self).save(*args, **kwargs)
-        assign_perm('view_project', self.user, self)

@@ -6,26 +6,28 @@ from django.shortcuts import render
 from django.core.urlresolvers import reverse
 from gallant import forms
 from gallant import models as g
-from gallant.utils import get_allowed_or_404
+from gallant.utils import get_one_or_404
 
 
 class ClientList(View):
     def get(self, request):
         return TemplateResponse(request=request,
                                 template="gallant/client_list.html",
-                                context={'title': 'Clients', 'object_list': g.Client.objects.all()})
+                                context={'title': 'Clients',
+                                         'object_list': g.Client.objects.get_for(request.user, 'view_client')})
 
 
 class ClientUpdate(View):
     def get(self, request, **kwargs):
-        self.object = get_allowed_or_404(request.user, 'view_client', g.Client, pk=kwargs['pk'])
+        self.object = get_one_or_404(request.user, 'change_client', g.Client, pk=kwargs['pk'])
         form = forms.ClientForm(request.user, instance=self.object)
         return self.render_to_response({'object': self.object, 'form': form})
 
     def post(self, request, **kwargs):
         if 'pk' in kwargs:
-            self.object = get_allowed_or_404(request.user, 'view_client', g.Client, pk=kwargs['pk'])
+            self.object = get_one_or_404(request.user, 'change_client', g.Client, pk=kwargs['pk'])
         else:
+            # No perms currently needed to create
             self.object = None
 
         form = forms.ClientForm(request.user, request.POST, instance=self.object)
@@ -35,16 +37,15 @@ class ClientUpdate(View):
             return self.render_to_response({'object': self.object, 'form': form})
 
     def render_to_response(self, context):
-        context.update({'title': 'Update Client'})
+        context.update({'title': 'Edit Client'})
         return TemplateResponse(request=self.request,
                                 template="gallant/create_form.html",
                                 context=context)
 
     def form_valid(self, form):
         obj = form.save(commit=True)
-        user = g.GallantUser.objects.get(id=self.request.user.id)
         text = '[Updated]\n' + form.cleaned_data['notes']
-        note = g.Note.objects.create(text=text, user=user)
+        note = g.Note.objects.create(text=text, user=self.request.user)
         obj.notes.add(note)
         obj.save()
         messages.success(self.request, 'Client saved.')
@@ -59,14 +60,15 @@ class ClientCreate(ClientUpdate):
 
 class ServiceUpdate(View):
     def get(self, request, **kwargs):
-        self.object = get_allowed_or_404(request.user, 'view_service', g.Service, pk=kwargs['pk'])
+        self.object = get_one_or_404(request.user, 'change_service', g.Service, pk=kwargs['pk'])
         form = forms.ServiceForm(request.user, instance=self.object)
         return self.render_to_response({'object': self.object, 'form': form})
 
     def post(self, request, **kwargs):
         if 'pk' in kwargs:
-            self.object = get_allowed_or_404(request.user, 'view_service', g.Service, pk=kwargs['pk'])
+            self.object = get_one_or_404(request.user, 'change_service', g.Service, pk=kwargs['pk'])
         else:
+            # No perms currently needed to create
             self.object = None
 
         form = forms.ServiceForm(request.user, request.POST, instance=self.object)
@@ -76,16 +78,15 @@ class ServiceUpdate(View):
             return self.render_to_response({'object': self.object, 'form': form})
 
     def render_to_response(self, context):
-        context.update({'title': 'Update Service'})
+        context.update({'title': 'Edit Service'})
         return TemplateResponse(request=self.request,
                                 template="gallant/create_form.html",
                                 context=context)
 
     def form_valid(self, form):
         obj = form.save(commit=True)
-        user = g.GallantUser.objects.get(id=self.request.user.id)
         text = '[Updated]\n' + form.cleaned_data['notes']
-        note = g.Note.objects.create(text=text, user=user)
+        note = g.Note.objects.create(text=text, user=self.request.user)
         obj.notes.add(note)
         obj.save()
         messages.success(self.request, 'Service saved.')
@@ -93,13 +94,12 @@ class ServiceUpdate(View):
 
 
 def client_detail(request, pk):
-    client = get_allowed_or_404(request.user, 'view_client', g.Client, pk=pk)
+    client = get_one_or_404(request.user, 'view_client', g.Client, pk=pk)
 
-    if request.method == 'POST':
+    if request.method == 'POST' and request.user.has_perm('change_client', client):
         form = forms.NoteForm(request.user, request.POST)
         if form.is_valid():
-            user = g.GallantUser.objects.get(id=request.user.id)
-            note = g.Note.objects.create(text=form.cleaned_data['text'], user=user)
+            note = g.Note.objects.create(text=form.cleaned_data['text'], user=request.user)
             client.notes.add(note)
             client.save()
             return HttpResponseRedirect(reverse('client_detail', args=[client.id]))
@@ -118,13 +118,12 @@ class ServiceCreate(ServiceUpdate):
 
 
 def service_detail(request, pk):
-    service = get_allowed_or_404(request.user, 'view_service', g.Service, pk=pk)
+    service = get_one_or_404(request.user, 'view_service', g.Service, pk=pk)
 
-    if request.method == 'POST':
+    if request.method == 'POST' and request.user.has_perm('change_service', service):
         form = forms.NoteForm(request.user, request.POST)
         if form.is_valid():
-            user = g.GallantUser.objects.get(id=request.user.id)
-            note = g.Note.objects.create(text=form.cleaned_data['text'], user=user)
+            note = g.Note.objects.create(text=form.cleaned_data['text'], user=request.user)
             service.notes.add(note)
             service.save()
             return HttpResponseRedirect(reverse('service_detail', args=[service.id]))

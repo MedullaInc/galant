@@ -1,6 +1,7 @@
 from django.core.urlresolvers import reverse
 import autofixture
 from functional_tests import browser
+from selenium.common.exceptions import NoSuchElementException
 
 
 def tearDown():
@@ -32,7 +33,8 @@ class GallantClientTest(browser.SignedInTest):
 
     def test_edit_client(self):
         b = browser.instance()
-        c = autofixture.create_one('gallant.Client', generate_fk=True)
+        c = autofixture.create_one('gallant.Client', generate_fk=True,
+                                   field_values={'user': self.user})
         c.save()
         b.get(self.live_server_url + reverse('edit_client', args=[c.id]))
 
@@ -49,7 +51,8 @@ class GallantClientTest(browser.SignedInTest):
 
     def test_add_client_note(self):
         b = browser.instance()
-        c = autofixture.create_one('gallant.Client', generate_fk=True)
+        c = autofixture.create_one('gallant.Client', generate_fk=True,
+                                   field_values={'user': self.user})
         c.save()
         b.get(self.live_server_url + reverse('client_detail', args=[c.id]))
         test_string = '2351tlgkjqlwekjalfkj'
@@ -61,9 +64,28 @@ class GallantClientTest(browser.SignedInTest):
 
     def test_blank_note_fail(self):
         b = browser.instance()
-        c = autofixture.create_one('gallant.Client', generate_fk=True)
+        c = autofixture.create_one('gallant.Client', generate_fk=True,
+                                   field_values={'user': self.user})
         c.save()
         b.get(self.live_server_url + reverse('client_detail', args=[c.id]))
         b.find_element_by_xpath('//button[@type="submit"]').click()
 
         self.assertTrue('This field is required.' in b.find_element_by_id('notes').text)
+
+    def test_client_perms(self):
+        b = browser.instance()
+        c = autofixture.create_one('gallant.Client', generate_fk=True,
+                                   field_values={'user': self.user})
+
+        c2 = autofixture.create_one('gallant.Client', generate_fk=True)
+        c.save()
+        b.get(self.live_server_url + reverse('client_detail', args=[c.id]))
+
+        section_title = b.find_element_by_class_name('section_title')
+        self.assertEqual('Client', section_title.text)
+
+        b.get(self.live_server_url + reverse('client_detail', args=[c2.id]))
+
+        self.assertRaises(NoSuchElementException, b.find_element_by_class_name, 'section_title')
+
+
