@@ -1,8 +1,8 @@
 from django.core.exceptions import ValidationError
+from gallant.utils import get_one_or_404
 from quotes import models as q
 from gallant import models as g
 from gallant import forms as gf
-from django.shortcuts import get_object_or_404
 from django.template.loader import get_template
 import operator
 import re
@@ -89,7 +89,8 @@ class SectionForm(gf.UserModelForm):
         prefix = prefix or ''
         data = data or {}
         if prefix + '-id' in data:
-            section = get_object_or_404(q.TextSection, pk=data[prefix + '-id'])
+            section = get_one_or_404(self.user, 'view_textsection',
+                                     q.TextSection, pk=data[prefix + '-id'])
             super(SectionForm, self).__init__(user, data=data, prefix=prefix, instance=section, *args, **kwargs)
         else:
             super(SectionForm, self).__init__(user, data=data, prefix=prefix, *args, **kwargs)
@@ -122,7 +123,8 @@ class ServiceSectionForm(gf.UserModelForm):
             self.section = instance
             self.instance = self.section.service
         elif self.prefix + '-id' in self.data:
-            self.section = get_object_or_404(q.ServiceSection, pk=self.data[self.prefix + '-id'])
+            self.section = get_one_or_404(self.user, 'view_servicesection',
+                                          q.ServiceSection, pk=self.data[self.prefix + '-id'])
             self.instance = self.section.service
         else:
             name = self.data[self.prefix + '-section_name']
