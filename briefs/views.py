@@ -67,7 +67,8 @@ class BriefUpdate(View):
 
             return HttpResponseRedirect(reverse('brief_detail', args=[obj.client_id, obj.id]))
         else:
-            return self.render_to_response({'object': self.object, 'form': form, 'title': 'Edit Brief'})
+            return self.render_to_response({'object': self.object, 'form': form,
+                                            'title': 'Edit Brief', 'questions': question_forms})
 
     def render_to_response(self, context, **kwargs):
         return TemplateResponse(request=self.request, template="briefs/brief_form.html", context=context, **kwargs)
@@ -93,9 +94,6 @@ class BriefCreate(BriefUpdate):
             brief.pk = None
 
             form = bf.BriefForm(request.user, instance=brief, initial={'client': client.id if client else None})
-
-            if client:
-                form.fields['client'].widget = forms.HiddenInput()
 
             if lang is not None:
                 brief.language = lang

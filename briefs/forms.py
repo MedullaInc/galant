@@ -38,7 +38,7 @@ class BriefTemplateForm(gf.UserModelForm):
 class QuestionForm(gf.UserModelForm):
     class Meta:
         model = b.TextQuestion
-        fields = ['question', 'index']
+        fields = ['question', 'index', 'is_long_answer']
 
     def __init__(self, user, data=None, prefix=None, *args, **kwargs):
         # see if update or create
