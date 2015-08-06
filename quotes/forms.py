@@ -89,7 +89,7 @@ class SectionForm(gf.UserModelForm):
         prefix = prefix or ''
         data = data or {}
         if prefix + '-id' in data:
-            section = get_one_or_404(self.user, 'view_textsection',
+            section = get_one_or_404(user, 'change_textsection',
                                      q.TextSection, pk=data[prefix + '-id'])
             super(SectionForm, self).__init__(user, data=data, prefix=prefix, instance=section, *args, **kwargs)
         else:
@@ -123,7 +123,7 @@ class ServiceSectionForm(gf.UserModelForm):
             self.section = instance
             self.instance = self.section.service
         elif self.prefix + '-id' in self.data:
-            self.section = get_one_or_404(self.user, 'view_servicesection',
+            self.section = get_one_or_404(user, 'change_servicesection',
                                           q.ServiceSection, pk=self.data[self.prefix + '-id'])
             self.instance = self.section.service
         else:
