@@ -103,7 +103,8 @@ class SectionForm(gf.UserModelForm):
             section = self.instance
         else:
             section = self.save(commit=False)
-        context = {'prefix': self.prefix + '-', 'name': section.name, 'section': section}
+        context = {'prefix': self.prefix + '-', 'name': section.name,
+                   'section': section, 'form': self}
         if section.name != 'margin' and section.name != 'intro':
             context.update({'extra_class': 'dynamic_section'})
         return t.render(context)
@@ -136,7 +137,7 @@ class ServiceSectionForm(gf.UserModelForm):
         t = get_template('quotes/service_section_form.html')
 
         return t.render({'prefix': self.prefix + '-', 'section': self.section,
-                         'type_choices': g.ServiceType.choices(),
+                         'type_choices': g.ServiceType.choices(), 'form': self,
                          'extra_class': 'dynamic_section'})
 
     def save(self, commit=True):
