@@ -3,6 +3,7 @@ from django.conf import settings
 from django.db import models as m
 from gallant import models as g
 from gallant.models import PolyUserModelManager, UserModelManager
+from guardian.shortcuts import get_perms_for_model, assign_perm
 from quotes import models as q
 from gallant import fields as gf
 from jsonfield.fields import JSONField
@@ -24,6 +25,17 @@ class Question(g.PolyUserModel):
 
     objects = PolyUserModelManager()
 
+# guardian uses django's default add / change / delete perms and doesn't play well
+# with polymorphic classes, so this manual approach is necessary for subclasses
+def _get_question_perms(new_perms):
+    return (
+        new_perms,
+        ('add_question', 'Can add question'),
+        ('change_question', 'Can change question'),
+        ('delete_question', 'Can delete question'),
+        ('view_question', 'View question'),
+    )
+
 
 class TextQuestion(Question):
     """
@@ -32,9 +44,7 @@ class TextQuestion(Question):
     is_long_answer = m.BooleanField(default=False)
 
     class Meta:
-        permissions = (
-            ('view_textquestion', 'View textquestion'),
-        )
+        permissions = _get_question_perms(('view_textquestion', 'View textquestion'))
 
     objects = PolyUserModelManager()
 
@@ -49,9 +59,7 @@ class MultipleChoiceQuestion(Question):
     choices = gf.ULTextArrayField()
 
     class Meta:
-        permissions = (
-            ('view_multiplechoicequestion', 'View multiplechoicequestion'),
-        )
+        permissions = _get_question_perms(('view_multiplechoicequestion', 'View multiplechoicequestion'))
 
     objects = PolyUserModelManager()
 
@@ -63,9 +71,7 @@ class ImageQuestion(MultipleChoiceQuestion):
     # TODO: First finish MultipleChoiceQuestion then continue with ImageQuestions.
 
     class Meta:
-        permissions = (
-            ('view_imagequestion', 'View imagequestion'),
-        )
+        permissions = _get_question_perms(('view_imagequestion', 'View imagequestion'))
 
     objects = PolyUserModelManager()
 
@@ -107,7 +113,7 @@ class Brief(g.UserModel):
     def get_languages(self):
         language_set = set()
         language_set.update(self.title.keys())
-        for q in list(self.questions.all()):
+        for q in list(self.questions.all_for(self.user, 'view_question')):
             if q is not None:
                 language_set.update(q.question.keys())
 
@@ -149,13 +155,22 @@ class Answer(g.PolyUserModel):
     objects = PolyUserModelManager()
 
 
+# see _get_question_perms()
+def _get_answer_perms(new_perms):
+    return (
+        new_perms,
+        ('add_answer', 'Can add answer'),
+        ('change_answer', 'Can change answer'),
+        ('delete_answer', 'Can delete answer'),
+        ('view_answer', 'View answer'),
+    )
+
+
 class TextAnswer(Answer):
     answer = m.CharField(max_length=3000)
 
     class Meta:
-        permissions = (
-            ('view_textanswer', 'View textanswer'),
-        )
+        permissions = _get_answer_perms(('view_textanswer', 'View textanswer'))
 
     objects = PolyUserModelManager()
 
@@ -173,9 +188,7 @@ class MultipleChoiceAnswer(Answer):
                 return self.question.choices[self.choices[0]]
 
     class Meta:
-        permissions = (
-            ('view_multiplechoiceanswer', 'View multiplechoiceanswer'),
-        )
+        permissions = _get_answer_perms(('view_multiplechoiceanswer', 'View multiplechoiceanswer'))
 
     objects = PolyUserModelManager()
 

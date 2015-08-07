@@ -58,7 +58,7 @@
     <hr>
 
     {% if answer_set %}
-        {% for answer in answer_set.answers.all %}
+        {% for answer in answers %}
             {% with question=answer.question %}
                 <div id="question_{{ question.index }}" class="question">
                     {{ forloop.counter }} ) {{ question.question.get_text }}
@@ -84,8 +84,8 @@
                 <hr>
             {% endwith %}
         {% endfor %}
-    {% elif object.questions %}
-        {% for question in object.questions.all %}
+    {% elif questions %}
+        {% for question in questions %}
             <div id="question_{{ question.index }}" class="question">
                 {{ forloop.counter }} ) {{ question.question.get_text }}
                 <div class="multiquestion_choices">

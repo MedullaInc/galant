@@ -111,10 +111,13 @@ class BriefDetail(View):
         context = {'title': 'Brief Detail'}
         brief = get_one_or_404(request.user, 'view_brief', b.Brief, id=kwargs['pk'])
 
-        if brief.briefanswers_set.count() > 0:
-            context.update({'answer_set': brief.briefanswers_set.last()})
+        answers_q = brief.briefanswers_set.all_for(request.user, 'view_briefanswers')
+        if answers_q.count() > 0:
+            brief_answers = answers_q.last()
+            context.update({'answer_set': brief_answers,
+                            'answers': brief_answers.all_for(request.user, 'view_answers')})
 
-        context.update({'object': brief})
+        context.update({'object': brief, 'questions': brief.questions.all_for(request.user, 'view_question')})
         return TemplateResponse(request=request,
                                 template="briefs/brief_detail.html",
                                 context=context)

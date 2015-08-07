@@ -29,6 +29,8 @@ class Section(g.PolyUserModel):
     objects = PolyUserModelManager()
 
 
+# guardian uses django's default add / change / delete perms and doesn't play well
+# with polymorphic classes, so this manual approach is necessary for subclasses
 def _get_section_perms(new_perms):
     return (
         new_perms,
