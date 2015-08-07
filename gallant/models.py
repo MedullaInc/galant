@@ -5,9 +5,11 @@ from django.conf import settings
 from djmoney.models.fields import MoneyField
 from djmoney.forms.widgets import CURRENCY_CHOICES
 from gallant import fields as gf
+from guardian.utils import get_user_obj_perms_model
 from polymorphic import PolymorphicModel
 from guardian.shortcuts import assign_perm, get_objects_for_user, get_perms_for_model
 from polymorphic.manager import PolymorphicManager
+from django.contrib.contenttypes.models import ContentType
 
 
 class GallantUser(AbstractEmailUser):
@@ -59,7 +61,7 @@ class UserManagerMethodsMixin(object):
         return super(UserManagerMethodsMixin, self).get(*args, **kwargs)
 
     def all_for(self, user, perm):
-        return get_objects_for_user(user, perm, self.get_queryset(), accept_global_perms=False)
+        return get_objects_for_user(user, perm, self, accept_global_perms=False)
 
     def get_for(self, user, perm, *args, **kwargs):
         obj = super(UserManagerMethodsMixin, self).get(*args, **kwargs)
@@ -79,6 +81,26 @@ class UserModelManager(UserManagerMethodsMixin, m.Manager):
 
 class PolyUserModelManager(UserManagerMethodsMixin, PolymorphicManager):
     use_for_related_fields = True
+
+    # WARNING: this may be inefficient in the long run. May switch to non-polymorphic.
+    def all_for(self, user, perm):
+        ids_queryset = self._get_valid_ids(self.model, user, perm)
+
+        for rel in self.model._meta.related_objects:
+            if issubclass(rel.related_model, self.model):
+                ids_queryset = ids_queryset | self._get_valid_ids(rel.related_model, user, perm)
+
+        return self.filter(pk__in=ids_queryset)
+
+    @staticmethod
+    def _get_valid_ids(model, user, perm):
+        user_model = get_user_obj_perms_model(model)
+        ctype = ContentType.objects.get_for_model(model)
+        return user_model.objects\
+                           .filter(user=user)\
+                           .filter(permission__content_type=ctype)\
+                           .filter(permission__codename=perm)\
+            .values_list('object_pk', flat=True)
 
 
 class Note(UserModel):
