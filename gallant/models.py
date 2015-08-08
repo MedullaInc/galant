@@ -211,13 +211,26 @@ class Client(UserModel):
     objects = UserModelManager()
 
 
+class ProjectStatus(gf.ChoiceEnum):
+    On_Hold = 0
+    Pending_Assignment = 1
+    Active = 2
+    Overdue = 3
+    Completed = 4
+
+
 class Project(UserModel):
     name = m.CharField(max_length=255)
-    # TODO: finish model according to diagrams
+    status = m.CharField(max_length=2, choices=ProjectStatus.choices(), default=ProjectStatus.Pending_Assignment.value)
+
+    notes = m.ManyToManyField(Note)
 
     class Meta:
         permissions = (
             ('view_project', 'View project'),
         )
+
+    def __unicode__(self):
+        return self.name
 
     objects = UserModelManager()

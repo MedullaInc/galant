@@ -94,6 +94,7 @@ class Quote(g.UserModel):
     token = m.CharField(max_length=64, unique=True, null=True, help_text='For emailing URL')
 
     parent = m.ForeignKey('self', null=True, blank=True, related_name='versions')
+    project = m.OneToOneField(g.Project, null=True)
 
     def get_languages(self):
         language_set = set()
