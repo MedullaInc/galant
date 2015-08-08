@@ -21,6 +21,9 @@ class Section(g.PolyUserModel):
         map(lambda l: language_set.add(l), self.text.keys())
         return language_set
 
+    def __unicode__(self):
+        return self.name
+
     class Meta:
         permissions = (
             ('view_section', 'View section'),
@@ -115,6 +118,9 @@ class Quote(g.UserModel):
                    list(self.services.all_for(self.user, 'view_section'))
         sections.sort(lambda a, b: cmp(a.index, b.index))
         return sections
+
+    def __unicode__(self):
+        return self.name
 
     class Meta:
         permissions = (

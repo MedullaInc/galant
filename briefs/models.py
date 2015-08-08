@@ -3,7 +3,6 @@ from django.conf import settings
 from django.db import models as m
 from gallant import models as g
 from gallant.models import PolyUserModelManager, UserModelManager
-from guardian.shortcuts import get_perms_for_model, assign_perm
 from quotes import models as q
 from gallant import fields as gf
 from jsonfield.fields import JSONField
@@ -118,6 +117,9 @@ class Brief(g.UserModel):
                 language_set.update(q.question.keys())
 
         return language_set
+
+    def __unicode__(self):
+        return self.name
 
     class Meta:
         permissions = (

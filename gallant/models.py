@@ -155,6 +155,9 @@ class Service(UserModel):
 
         return total
 
+    def __unicode__(self):
+        return self.name
+
     class Meta:
         permissions = (
             ('view_service', 'View service'),
@@ -227,12 +230,12 @@ class Project(UserModel):
 
     notes = m.ManyToManyField(Note)
 
+    def __unicode__(self):
+        return self.name
+
     class Meta:
         permissions = (
             ('view_project', 'View project'),
         )
-
-    def __unicode__(self):
-        return self.name
 
     objects = UserModelManager()
