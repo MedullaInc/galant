@@ -48,5 +48,18 @@ class NoteForm(UserModelForm):
             widget=forms.Textarea(attrs={'rows': 3}))
 
 
+class ProjectForm(UserModelForm):
+
+    class Meta:
+        model = g.Project
+        fields = ['name', 'status']
+
+    def __init__(self, *args, **kwargs):
+        super(ProjectForm, self).__init__(*args, **kwargs)
+        self.fields['notes'] = forms.CharField(
+            widget=forms.Textarea(attrs={'rows': 5}), required=False)
+
+
+
 class LanguageForm(forms.Form):
     language = forms.ChoiceField(choices=settings.LANGUAGES, label='', initial=get_language())
