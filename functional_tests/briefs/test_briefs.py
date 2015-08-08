@@ -32,7 +32,6 @@ class BriefsSignedInTest(browser.SignedInTest):
 
         # fill out brief & save
         b.find_element_by_name('title').send_keys('Brief test')
-        b.find_element_by_xpath('//select[@name="client"]/option[@value="%d"]' % c.id).click()
         b.find_element_by_xpath('//button[@type="submit"]').click()
 
         success_message = b.find_element_by_class_name('alert-success')
@@ -46,7 +45,7 @@ class BriefsSignedInTest(browser.SignedInTest):
                                    field_values={'user': self.user, 'client': c})
         q.save()
 
-        b.get(self.live_server_url + reverse('edit_brief', args=[c.id, q.id]))
+        b.get(self.live_server_url + reverse('edit_brief', args=[q.id]) + '?client_id=%d' % c.id)
         self.load_scripts()
 
         b.find_element_by_id('id_title').clear()
@@ -69,7 +68,7 @@ class BriefsSignedInTest(browser.SignedInTest):
         brief.questions.add(q)
         brief.questions.add(mq)
 
-        b.get(self.live_server_url + reverse('edit_brief', args=[brief.client.id, brief.id]))
+        b.get(self.live_server_url + reverse('edit_brief', args=[q.id]) + '?client_id=%d' % c.id)
         self.load_scripts()
 
         b.find_element_by_id('id_title').clear()
@@ -93,7 +92,7 @@ class BriefsSignedInTest(browser.SignedInTest):
         q = bm.TextQuestion.objects.create(user=brief.user, question='What?')
         brief.questions.add(q)
 
-        b.get(self.live_server_url + reverse('edit_brief', args=[brief.client.id, brief.id]))
+        b.get(self.live_server_url + reverse('edit_brief', args=[q.id]) + '?client_id=%d' % c.id)
         self.load_scripts()
 
         b.find_element_by_id('add_multiquestion').click()
@@ -120,7 +119,7 @@ class BriefsSignedInTest(browser.SignedInTest):
                                    field_values={'user': self.user, 'client': c})
         q.save()
 
-        b.get(self.live_server_url + reverse('brief_detail', args=[c.id, q.id]))
+        b.get(self.live_server_url + reverse('brief_detail', args=[q.id]) + '?client_id=%d' % c.id)
         self.load_scripts()
 
         section_title = browser.instance().find_element_by_class_name('section_title')

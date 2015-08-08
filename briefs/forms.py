@@ -13,11 +13,16 @@ import re
 class BriefForm(gf.UserModelForm):
     class Meta:
         model = b.Brief
-        fields = ['title', 'client']
+        fields = ['title', 'client', 'quote']
 
     def __init__(self, user, *args, **kwargs):
         super(BriefForm, self).__init__(user, *args, **kwargs)
-        self.fields['client'].queryset = g.Client.objects.all_for(self.user, 'view_client')
+        self.fields['quote'].widget = forms.HiddenInput()
+        self.fields['quote'].required = False
+        if 'client' in self.initial:
+            self.fields['client'].widget = forms.HiddenInput()
+        else:
+            self.fields['client'].queryset = g.Client.objects.all_for(self.user, 'view_client')
 
     def clean_client(self):
         client = self.cleaned_data['client']

@@ -58,7 +58,7 @@
         <a class="from_template_button">
             <button type="button" class="btn btn-default from_template_button sidebar">From Template</button>
         </a>
-        <a href="{% if client %}{% url 'add_brief' client.id %}{% else %}{% url 'add_brief' %}{% endif %}">
+        <a href="{% url 'add_brief' %}{% if client %}?client_id={{ client.id }}{% endif %}">
             <button type="button" class="btn btn-default from_scratch_button sidebar">From Scratch</button>
         </a>
     </div>
@@ -148,8 +148,9 @@
             if ($(this).find('select').length) {
                 lang = $(this).find('select').val();
             }
-            window.location.href = "{% url 'add_brief' client.id %}" + "?template_id=" +
-                    $(this).attr('data-rel') + "&lang=" + lang;
+            window.location.href = "{% url 'add_brief' %}" + "?template_id=" +
+                    $(this).parents('tr').attr('data-rel') + "&lang=" + $(this).val() +
+                    "{% if client %}&client_id={{ client.id }}{% endif %}";
         });
 
         $('.table .template_row select').click(function (e) {
@@ -157,7 +158,9 @@
         });
 
         $('.table .template_row select').change(function (e) {
-            window.location.href = "{% url 'add_brief' client.id %}" + "?template_id=" + $(this).parents('tr').attr('data-rel') + "&lang=" + $(this).val();
+            window.location.href = "{% url 'add_brief' %}" + "?template_id=" +
+                    $(this).parents('tr').attr('data-rel') + "&lang=" + $(this).val() +
+                    "{% if client %}&client_id={{ client.id }}{% endif %}";
         });
         {% endif %}
     </script>

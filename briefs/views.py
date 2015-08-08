@@ -7,6 +7,7 @@ from django.shortcuts import get_object_or_404
 from django.template.response import TemplateResponse
 from django.utils.translation import get_language
 from gallant import models as g
+from quotes import models as q
 from django.views.generic import View
 from briefs import forms as bf
 from gallant import forms as gf
@@ -20,8 +21,9 @@ class BriefList(View):
 
         if 'type_id' in kwargs:
             client = get_one_or_404(request.user, 'view_client', g.Client, pk=kwargs['type_id'])
+            briefs = client.brief_set.all_for(request.user, 'view_brief')
             context.update({'client': client,
-                            'object_list': client.brief_set.all_for(request.user, 'view_brief')})
+                            'object_list': briefs})
         else:
             context.update({'object_list': b.Brief.objects
                                             .all_for(request.user, 'view_brief')
@@ -35,27 +37,38 @@ class BriefList(View):
 class BriefUpdate(View):
     def get(self, request, *args, **kwargs):
         context = {}
-        self.object = get_one_or_404(request.user, 'change_brief', b.Brief, pk=kwargs['pk'])
+        brief = get_one_or_404(request.user, 'change_brief', b.Brief, pk=kwargs['pk'])
 
-        form = bf.BriefForm(request.user, instance=self.object)
-        if kwargs['type_id']:
-            context.update({'client': int(kwargs['type_id'])})
+        form = bf.BriefForm(request.user, instance=brief)
 
-        questions = bf.question_forms_brief(self.object)
-        context.update({'object': self.object, 'form': form, 'title': 'Edit Brief', 'questions': questions})
+        questions = bf.question_forms_brief(brief)
+        context.update({'object': brief, 'form': form, 'title': 'Edit Brief', 'questions': questions,
+                        'client': brief.client, 'quote': brief.quote})
 
         return self.render_to_response(context)
 
     def post(self, request, *args, **kwargs):
         if 'pk' in kwargs:
-            self.object = get_one_or_404(request.user, 'change_brief', b.Brief, pk=kwargs['pk'])
-        elif 'type_id' in kwargs and kwargs['type_id'] is not None:
-            client = get_one_or_404(request.user, 'view_client', g.Client, pk=kwargs['type_id'])
-            self.object = b.Brief(client=client)
+            brief = get_one_or_404(request.user, 'change_brief', b.Brief, pk=kwargs['pk'])
         else:
-            self.object = None
+            brief = b.Brief()
+            quote_id = request.GET.get('quote_id', None)
+            project_id = request.GET.get('project_id', None)
+            client_id = request.GET.get('client_id', None)
 
-        form = bf.BriefForm(request.user, request.POST, instance=self.object)
+            if quote_id:
+                brief.quote = get_one_or_404(request.user, 'view_quote', q.Quote, pk=quote_id)
+                client_id = brief.quote.client_id  # client specified by quote takes precedence over query param
+            elif project_id:
+                project = get_one_or_404(request.user, 'view_project', g.Project, pk=project_id)
+                brief.quote = project.quote
+                client_id = brief.quote.client_id  # likewise for project
+
+            if client_id:
+                brief.client = get_one_or_404(request.user, 'view_client', g.Client, pk=client_id)
+
+
+        form = bf.BriefForm(request.user, request.POST, instance=brief)
         question_forms = bf.question_forms_request(request)
 
         valid = list([form.is_valid()] + [s.is_valid() for s in question_forms])
@@ -64,9 +77,9 @@ class BriefUpdate(View):
 
             messages.success(self.request, 'Brief saved.')
 
-            return HttpResponseRedirect(reverse('brief_detail', args=[obj.client_id, obj.id]))
+            return HttpResponseRedirect(reverse('brief_detail', args=[obj.id]))
         else:
-            return self.render_to_response({'object': self.object, 'form': form,
+            return self.render_to_response({'object': brief, 'form': form,
                                             'title': 'Edit Brief', 'questions': question_forms})
 
     def render_to_response(self, context, **kwargs):
@@ -76,14 +89,26 @@ class BriefUpdate(View):
 class BriefCreate(BriefUpdate):
     def get(self, request, *args, **kwargs):
         context = {}
+        initial = None
+        instance = None
         template_id = request.GET.get('template_id', None)
+        quote_id = request.GET.get('quote_id', None)
+        project_id = request.GET.get('project_id', None)
+        client_id = request.GET.get('client_id', None)
         lang = request.GET.get('lang', None)
 
-        if kwargs['type_id']:
-            client = get_one_or_404(request.user, 'view_client', g.Client, pk=kwargs['type_id'])
+        if quote_id:
+            quote = get_one_or_404(request.user, 'view_quote', q.Quote, pk=quote_id)
+            initial = {'client': quote.client_id, 'quote': quote.id}
+            context.update({'quote': quote, 'client': quote.client})
+        elif project_id:
+            project = get_one_or_404(request.user, 'view_project', g.Project, pk=project_id)
+            initial = {'client': project.quote.client_id, 'quote': project.quote.id or None}
+            context.update({'project': project, 'quote': project.quote, 'client': project.quote.client})
+        elif client_id:
+            client = get_one_or_404(request.user, 'view_client', g.Client, pk=client_id)
+            initial = {'client': client.id}
             context.update({'client': client})
-        else:
-            client = None
 
         if template_id is not None:
             template = get_one_or_404(request.user, 'view_brieftemplate', b.BriefTemplate, pk=template_id)
@@ -92,17 +117,16 @@ class BriefCreate(BriefUpdate):
             context.update({'questions': question_forms})
             brief.pk = None
 
-            form = bf.BriefForm(request.user, instance=brief, initial={'client': client.id if client else None})
+            instance = brief
 
             if lang is not None:
                 brief.language = lang
                 context.update({'language': lang,
-                                'form': form,
                                 'object': brief})
-        else:
-            context.update({'form': bf.BriefForm(request.user, initial={'client': client.id})})
 
-        context.update({'title': 'Create Brief'})
+        form = bf.BriefForm(request.user, instance=instance, initial=initial)
+
+        context.update({'title': 'Create Brief', 'form': form})
         return self.render_to_response(context)
 
 
