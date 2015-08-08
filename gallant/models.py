@@ -47,7 +47,9 @@ class PolyUserModel(PolymorphicModel):
 
 class UserManagerMethodsMixin(object):
     ''' Block some common access methods to prevent programmer error, and provide safe methods
-     to access by checking permissions
+     to access by checking permissions. WARNING: Templates can still mistakenly call all(),
+     since the logic to determine if it should be allowed is too dumb to recognize one of our
+     own templates. Make sure to use objects_for template tag instead!
     '''
 
     def all(self):
@@ -70,9 +72,9 @@ class UserManagerMethodsMixin(object):
         else:
             return None
 
-    def _caller_blocked(self):
+    def _caller_blocked(self):  # Allow certain modules to call blocked methods
         mod = inspect.getmodule(inspect.stack()[2][0])  # Who is calling us?
-        return any(app in mod.__name__ for app in ['gallant', 'quotes', 'briefs'])
+        return all(app not in mod.__name__ for app in ['autofixture', 'django'])
 
 
 class UserModelManager(UserManagerMethodsMixin, m.Manager):

@@ -24,10 +24,11 @@ class GallantProjectTest(browser.SignedInTest):
 
     def test_edit_project(self):
         b = browser.instance()
-        s = autofixture.create_one('gallant.Project', generate_fk=True,
+        p = autofixture.create_one('gallant.Project', generate_fk=True,
                                    field_values={'user': self.user})
-        s.save()
-        b.get(self.live_server_url + reverse('edit_project', args=[s.id]))
+        autofixture.create_one('quotes.Quote', generate_fk=True,
+                               field_values={'user': self.user, 'project': p})
+        b.get(self.live_server_url + reverse('edit_project', args=[p.id]))
 
         b.find_element_by_name('name').send_keys('PPPPPPP')
         b.find_element_by_xpath('//textarea[@name="notes"]').send_keys(';;;;;;;;;')
@@ -39,10 +40,12 @@ class GallantProjectTest(browser.SignedInTest):
 
     def test_add_project_note(self):
         b = browser.instance()
-        s = autofixture.create_one('gallant.Project', generate_fk=True,
+        p = autofixture.create_one('gallant.Project', generate_fk=True,
                                    field_values={'user': self.user})
-        s.save()
-        b.get(self.live_server_url + reverse('project_detail', args=[s.id]))
+        autofixture.create_one('quotes.Quote', generate_fk=True,
+                               field_values={'user': self.user, 'project': p})
+
+        b.get(self.live_server_url + reverse('project_detail', args=[p.id]))
         test_string = '2351tlgkjqlwekjalfkj'
 
         b.find_element_by_xpath('//textarea[@name="text"]').send_keys(test_string)

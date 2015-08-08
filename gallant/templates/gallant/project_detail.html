@@ -1,5 +1,5 @@
 {% extends "base_sidebar.html" %}
-{% load bootstrap i18n %}
+{% load bootstrap i18n gallant_tags %}
 
 {% block section_title %}
     {% trans "Project" %}
@@ -17,7 +17,8 @@
     <p><b>{% trans "Name" %}:</b> {{ object.name }}</p>
     <p><b>{% trans "Status" %}:</b> {{ object.get_status_display }}</p>
     <br>
-    {% for section in object.quote.services.all %}
+    {% objects_for object.quote.services 'view_section' as service_sections %}
+    {% for section in service_sections %}
         <div id="{{ section.name }}">
             <div>
                 <div class="row">
@@ -61,7 +62,8 @@
                     </div>
                     <div class="service_notes">
                     <p><b>{% trans "Service Notes" %}:</b></p>
-                    {% for item in service.notes.all %}
+                    {% objects_for service.notes 'view_note' as notes %}
+                    {% for item in notes %}
                         {% include "gallant/note.html" %}
                     {% endfor %}
                     </div>
@@ -73,7 +75,8 @@
     <hr>
     <div id="notes">
     <p><b>{% trans "Project Notes" %}:</b></p>
-    {% for item in object.notes.all %}
+    {% objects_for object.notes 'view_note' as notes %}
+    {% for item in notes %}
         {% include "gallant/note.html" %}
     {% endfor %}
         <div>

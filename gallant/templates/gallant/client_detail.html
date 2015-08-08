@@ -1,5 +1,5 @@
 {% extends "base_sidebar.html" %}
-{% load bootstrap i18n %}
+{% load bootstrap i18n gallant_tags %}
 
 {% block section_title %}
     {% trans "Client" %}
@@ -42,7 +42,8 @@
     <div id="notes">
         <h2 class="section_title">Notes</h2>
 
-        {% for item in object.notes.all %}
+        {% objects_for object.notes 'view_note' as notes %}
+        {% for item in notes %}
             {% include "gallant/note.html" %}
         {% endfor %}
         <div>
