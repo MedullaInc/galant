@@ -139,9 +139,12 @@ class BriefDetail(View):
         if answers_q.count() > 0:
             brief_answers = answers_q.last()
             context.update({'answer_set': brief_answers,
-                            'answers': brief_answers.all_for(request.user, 'view_answers')})
+                            'answers': brief_answers.all_for(request.user, 'view_answers')\
+                                                    .order_by('question__index')})
 
-        context.update({'object': brief, 'questions': brief.questions.all_for(request.user, 'view_question')})
+        context.update({'object': brief, 'questions': brief.questions\
+                                                           .all_for(request.user, 'view_question')\
+                                                           .order_by('index')})
         return TemplateResponse(request=request,
                                 template="briefs/brief_detail.html",
                                 context=context)
