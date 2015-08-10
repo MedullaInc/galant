@@ -153,3 +153,6 @@ ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ANONYMOUS_USER_ID = -1
+
+# Disable allauth signup for now
+ACCOUNT_ADAPTER = 'gallant.utils.NoNewUsersAccountAdapter'
