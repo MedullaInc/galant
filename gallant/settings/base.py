@@ -112,6 +112,11 @@ DATABASES = {
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'noreply@galant.co'
+EMAIL_HOST_PASSWORD = '*&^>*q(~3x*W}*D"'
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
