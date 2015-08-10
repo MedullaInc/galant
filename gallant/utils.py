@@ -1,10 +1,12 @@
 from allauth.account.adapter import DefaultAccountAdapter
 from django.conf import settings
+from django.core.exceptions import ObjectDoesNotExist
 from django.http.response import Http404
 from django.db import models as m
 from django.contrib.sites.models import Site
 
 LANG_DICT = dict(settings.LANGUAGES)
+SITE_CACHE = {}
 
 
 def get_one_or_404(user, perm, klass, *args, **kwargs):
@@ -23,4 +25,11 @@ class NoNewUsersAccountAdapter(DefaultAccountAdapter):
 
 # context processor, creates site object for access in templates
 def site_processor(request):
-    return {'site': Site.objects.get_current()}
+    host = request.get_host()
+    if host not in SITE_CACHE:
+        try:
+            site = Site.objects.get(domain__iexact=host)
+        except ObjectDoesNotExist:
+            site = Site.objects.get(pk=1)
+        SITE_CACHE[host] = site
+    return {'site': SITE_CACHE[host]}
