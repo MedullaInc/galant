@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.contrib import messages
+from django.contrib.auth.tokens import default_token_generator
 from django.contrib.sites.models import Site
 from django.core.mail import send_mail
 from django.utils.safestring import mark_safe
@@ -224,24 +225,25 @@ class SignUp(View):
     @staticmethod
     def get(request):
         return render(request, 'gallant/create_form.html', {
-            'form': forms.SignUpForm(),
+            'form': forms.SignUpRequestForm(),
         })
 
     @staticmethod
     def post(request):
-        form = forms.SignUpForm(request.POST)
+        form = forms.SignUpRequestForm(request.POST)
 
         if form.is_valid():
             _send_signup_email(form)
             return HttpResponseRedirect(reverse('home'))
         else:
             return render(request, 'gallant/create_form.html', {
-                'form': forms.SignUpForm(),
+                'form': forms.SignUpRequestForm(),
             })
 
 
 def contact(request):
     site = get_site_from_host(request)
+    default_token_generator
     return render(request, 'content.html', {
         'content': mark_safe('<p clas="sub-main">Send feedback or questions to <a href="mailto:contact@{0}">contact@{0}</a></p>'.format(
             site

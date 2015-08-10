@@ -48,6 +48,8 @@ INSTALLED_APPS = (
     'selenium',
     'django_nose',
     'guardian',
+    'django_countries',
+    'localflavor',
     
     'gallant',
     'briefs',

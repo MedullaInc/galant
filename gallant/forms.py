@@ -64,9 +64,26 @@ class LanguageForm(forms.Form):
     language = forms.ChoiceField(choices=settings.LANGUAGES, label='', initial=get_language())
 
 
-class SignUpForm(forms.Form):
+class SignUpRequestForm(forms.Form):
     name = forms.CharField(max_length=255)
     email = forms.EmailField()
     company = forms.CharField(max_length=255, help_text='Enter company name or "self-employed"')
     description = forms.CharField(required=False, widget=forms.Textarea(attrs={'rows': 5}),
                                   max_length=2000, help_text='Tell us about yourself (optional)')
+
+
+class CreateUserForm(forms.Form):
+    email = forms.EmailField(help_text='Enter new user\'s email. A registration link will be sent.')
+
+
+class SignUpForm(forms.ModelForm):
+    class Meta:
+        model = g.GallantUser
+        fields = ['name', 'email', 'company_name']
+
+
+class ContactInfoForm(forms.ModelForm):
+    class Meta:
+        model = g.ContactInfo
+        fields = ['phone_number', 'country', 'address', 'address_2',
+                  'city', 'state', 'zip']

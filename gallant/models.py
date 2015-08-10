@@ -6,16 +6,30 @@ from djmoney.models.fields import MoneyField
 from djmoney.forms.widgets import CURRENCY_CHOICES
 from gallant import fields as gf
 from guardian.utils import get_user_obj_perms_model
+from django_countries.fields import CountryField
 from polymorphic import PolymorphicModel
 from guardian.shortcuts import assign_perm, get_objects_for_user, get_perms_for_model
 from polymorphic.manager import PolymorphicManager
 from django.contrib.contenttypes.models import ContentType
 
 
+class ContactInfo(m.Model):
+    phone_number = m.CharField(validators=[gf.PHONE_REGEX], max_length=15)
+    address = m.CharField(max_length=255)
+    address_2 = m.CharField(max_length=255)
+    city = m.CharField(max_length=127)
+    state = m.CharField(max_length=127)
+    zip = m.CharField(validators=[gf.ZIP_REGEX], max_length=12)
+    country = CountryField()
+
+
 class GallantUser(AbstractEmailUser):
     """
     Custom Gallant user
     """
+    name = m.CharField(max_length=255)
+    company_name = m.CharField(max_length=255, blank=True)
+    contact_info = m.ForeignKey(ContactInfo, null=True)
 
     class Meta(AbstractEmailUser.Meta):
         swappable = 'AUTH_USER_MODEL'
