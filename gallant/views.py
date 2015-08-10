@@ -1,14 +1,17 @@
 from django.conf import settings
 from django.contrib import messages
+from django.contrib.auth import get_user_model
+from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.forms import SetPasswordForm
 from django.contrib.auth.tokens import default_token_generator
-from django.contrib.sites.models import Site
 from django.core.mail import send_mail
+from django.http.response import Http404
+from django.utils.decorators import method_decorator
 from django.utils.safestring import mark_safe
 from django.views.generic import View
 from django.template.response import TemplateResponse
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.core.urlresolvers import reverse
 from gallant import forms
 from gallant import models as g
@@ -211,7 +214,7 @@ def project_detail(request, pk):
     })
 
 
-def _send_signup_email(form):
+def _send_signup_request_email(form):
     message = 'Name: %s\nEmail: %s\nCompany: %s\nAbout:\n%s\n' % (
         form.cleaned_data['name'],
         form.cleaned_data['email'],
@@ -234,7 +237,7 @@ class SignUpRequest(View):
         form = forms.SignUpRequestForm(request.POST)
 
         if form.is_valid():
-            _send_signup_email(form)
+            _send_signup_request_email(form)
             return HttpResponseRedirect(reverse('home'))
         else:
             return render(request, 'gallant/create_form.html', {
@@ -244,37 +247,90 @@ class SignUpRequest(View):
 
 def contact(request):
     site = get_site_from_host(request)
-    default_token_generator
     return render(request, 'content.html', {
-        'content': mark_safe('<p clas="sub-main">Send feedback or questions to <a href="mailto:contact@{0}">contact@{0}</a></p>'.format(site))
+        'content': mark_safe('<p class="sub-main">Send feedback or questions to <a href="mailto:contact@{0}">contact@{0}</a></p>'.format(site))
     })
 
 
 class Register(View):
     @staticmethod
+    def get(request, *args, **kwargs):
+        user = get_object_or_404(get_user_model(), pk=kwargs['pk'])
+        valid = default_token_generator.check_token(user, request.GET.get('token', None))
+
+        if valid:
+            return render(request, 'gallant/register_form.html', {
+                'set_password_form': SetPasswordForm(user),
+                'form': forms.GallantUserForm(instance=user),
+                'contact_form': forms.ContactInfoForm(instance=user.contact_info or None)
+            })
+        else:
+            raise Http404()
+
+    @staticmethod
+    def post(request, *args, **kwargs):
+        user = get_object_or_404(get_user_model(), pk=kwargs['pk'])
+        valid = default_token_generator.check_token(user, request.GET.get('token', None))
+
+        if valid:
+            form = forms.GallantUserForm(request.POST, instance=user)
+            contact_form = forms.ContactInfoForm(request.POST, instance=user.contact_info)
+            set_password_form = SetPasswordForm(user, request.POST)
+
+            if form.is_valid() and contact_form.is_valid() and set_password_form.is_valid():
+                u = form.save()
+                set_password_form.save()
+                u.contact_info = contact_form.save()
+                u.save()
+                messages.success(request, 'Registration successful.')
+                return HttpResponseRedirect(reverse('home'))
+            else:
+                return render(request, 'gallant/register_form.html', {
+                    'set_password_form': set_password_form,
+                    'form': form,
+                    'contact_form': contact_form
+                })
+        else:
+            raise Http404()
+
+
+def _send_register_email(email, link):
+    message = 'Your registration is almost complete. Click on this link to create an account: %s' % link
+    send_mail('Signup request', message, settings.EMAIL_HOST_USER,
+              [email], fail_silently=False)
+
+
+class AccountAdd(View):
+    @staticmethod
     def get(request):
-        return render(request, 'gallant/register_form.html', {
-            'set_password_form': SetPasswordForm(request.user),
-            'form': forms.GallantUserForm(instance=request.user),
-            'contact_form': forms.ContactInfoForm(instance=request.user.contact_info or None)
+        if not request.user.is_superuser:
+            messages.error(request, 'You don\'t have permission to access that view.')
+            return HttpResponseRedirect(reverse('home'))
+
+        return render(request, 'gallant/create_form.html', {
+            'form': forms.AccountAddForm(),
         })
 
     @staticmethod
     def post(request):
-        form = forms.GallantUserForm(request.POST, instance=request.user)
-        contact_form = forms.ContactInfoForm(request.POST)
-        set_password_form = SetPasswordForm(request.user, request.POST)
+        if not request.user.is_superuser:
+            messages.error(request, 'You don\'t have permission to access that view.')
+            return HttpResponseRedirect(reverse('home'))
 
-        if form.is_valid() and contact_form.is_valid() and set_password_form.is_valid():
-            u = form.save()
-            set_password_form.save()
-            u.contact_info = contact_form.save()
-            u.save()
-            messages.success(request, 'Registration successful.')
+        form = forms.AccountAddForm(request.POST)
+
+        if form.is_valid():
+            email = form.cleaned_data['email']
+            UserModel = get_user_model()
+            user = UserModel.objects.create(email=email)
+            token = default_token_generator.make_token(user)
+            link = 'http://' + request.get_host() + \
+                   reverse('register', args=[user.id]) + '?token=%s' % token
+
+            _send_register_email(email, link)
+            messages.success(request, 'Registration link sent.')
             return HttpResponseRedirect(reverse('home'))
         else:
-            return render(request, 'gallant/register_form.html', {
-                'set_password_form': set_password_form,
-                'form': form,
-                'contact_form': contact_form
+            return render(request, 'gallant/create_form.html', {
+                'form': forms.AccountAddForm(),
             })

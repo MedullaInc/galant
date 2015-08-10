@@ -87,3 +87,8 @@ class ContactInfoForm(forms.ModelForm):
         model = g.ContactInfo
         fields = ['phone_number', 'country', 'address', 'address_2',
                   'city', 'state', 'zip']
+
+
+class AccountAddForm(forms.Form):
+    email = forms.EmailField()
+

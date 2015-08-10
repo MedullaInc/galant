@@ -49,5 +49,6 @@ urlpatterns = i18n_patterns(
     url(r'^project/edit/(?P<pk>[0-9]+)$', login_required(gallant.views.ProjectUpdate.as_view()), name='edit_project'),
     url(r'^project/(?P<pk>[0-9]+)$', login_required(gallant.views.project_detail), name='project_detail'),
 
-    url(r'^register/', login_required(gallant.views.Register.as_view()), name='register'),
+    url(r'^register/(?P<pk>[0-9]+)', gallant.views.Register.as_view(), name='register'),
+    url(r'^account/add/', login_required(gallant.views.AccountAdd.as_view()), name='add_account'),
 )
