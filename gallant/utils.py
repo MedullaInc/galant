@@ -23,8 +23,7 @@ class NoNewUsersAccountAdapter(DefaultAccountAdapter):
         return False
 
 
-# context processor, creates site object for access in templates
-def site_processor(request):
+def get_site_from_host(request):
     host = request.get_host()
     if host not in SITE_CACHE:
         try:
@@ -32,4 +31,10 @@ def site_processor(request):
         except ObjectDoesNotExist:
             site = Site.objects.get(pk=1)
         SITE_CACHE[host] = site
-    return {'site': SITE_CACHE[host]}
+    return SITE_CACHE[host]
+
+
+# context processor, creates site object for access in templates
+def site_processor(request):
+    site = get_site_from_host(request)
+    return {'site': site}

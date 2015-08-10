@@ -11,7 +11,7 @@ from django.core.urlresolvers import reverse
 from gallant import forms
 from gallant import models as g
 from quotes import models as q
-from gallant.utils import get_one_or_404
+from gallant.utils import get_one_or_404, get_site_from_host
 
 
 class ClientList(View):
@@ -241,8 +241,9 @@ class SignUp(View):
 
 
 def contact(request):
+    site = get_site_from_host(request)
     return render(request, 'content.html', {
-        'content': mark_safe('<p clas="sub-main">Send feedback or questions to <a href="mailto:contact@%s">contact@%s</a></p>' % (
-            Site.objects.get_current(request), Site.objects.get_current(request)
+        'content': mark_safe('<p clas="sub-main">Send feedback or questions to <a href="mailto:contact@{0}">contact@{0}</a></p>'.format(
+            site
         ))
     })
