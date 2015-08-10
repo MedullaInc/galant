@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.contrib import messages
+from django.contrib.auth.forms import SetPasswordForm
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.sites.models import Site
 from django.core.mail import send_mail
@@ -221,7 +222,7 @@ def _send_signup_email(form):
               ['contact@galant.co'], fail_silently=False)
 
 
-class SignUp(View):
+class SignUpRequest(View):
     @staticmethod
     def get(request):
         return render(request, 'gallant/create_form.html', {
@@ -245,7 +246,35 @@ def contact(request):
     site = get_site_from_host(request)
     default_token_generator
     return render(request, 'content.html', {
-        'content': mark_safe('<p clas="sub-main">Send feedback or questions to <a href="mailto:contact@{0}">contact@{0}</a></p>'.format(
-            site
-        ))
+        'content': mark_safe('<p clas="sub-main">Send feedback or questions to <a href="mailto:contact@{0}">contact@{0}</a></p>'.format(site))
     })
+
+
+class Register(View):
+    @staticmethod
+    def get(request):
+        return render(request, 'gallant/register_form.html', {
+            'set_password_form': SetPasswordForm(request.user),
+            'form': forms.GallantUserForm(instance=request.user),
+            'contact_form': forms.ContactInfoForm(instance=request.user.contact_info or None)
+        })
+
+    @staticmethod
+    def post(request):
+        form = forms.GallantUserForm(request.POST, instance=request.user)
+        contact_form = forms.ContactInfoForm(request.POST)
+        set_password_form = SetPasswordForm(request.user, request.POST)
+
+        if form.is_valid() and contact_form.is_valid() and set_password_form.is_valid():
+            u = form.save()
+            set_password_form.save()
+            u.contact_info = contact_form.save()
+            u.save()
+            messages.success(request, 'Registration successful.')
+            return HttpResponseRedirect(reverse('home'))
+        else:
+            return render(request, 'gallant/register_form.html', {
+                'set_password_form': set_password_form,
+                'form': form,
+                'contact_form': contact_form
+            })

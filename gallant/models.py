@@ -16,11 +16,11 @@ from django.contrib.contenttypes.models import ContentType
 class ContactInfo(m.Model):
     phone_number = m.CharField(validators=[gf.PHONE_REGEX], max_length=15)
     address = m.CharField(max_length=255)
-    address_2 = m.CharField(max_length=255)
+    address_2 = m.CharField(max_length=255, blank=True)
     city = m.CharField(max_length=127)
     state = m.CharField(max_length=127)
     zip = m.CharField(validators=[gf.ZIP_REGEX], max_length=12)
-    country = CountryField()
+    country = CountryField(default='US')
 
 
 class GallantUser(AbstractEmailUser):

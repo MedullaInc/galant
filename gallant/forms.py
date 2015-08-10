@@ -76,10 +76,10 @@ class CreateUserForm(forms.Form):
     email = forms.EmailField(help_text='Enter new user\'s email. A registration link will be sent.')
 
 
-class SignUpForm(forms.ModelForm):
+class GallantUserForm(forms.ModelForm):
     class Meta:
         model = g.GallantUser
-        fields = ['name', 'email', 'company_name']
+        fields = ['name', 'company_name']
 
 
 class ContactInfoForm(forms.ModelForm):

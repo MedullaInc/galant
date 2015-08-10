@@ -33,7 +33,7 @@ urlpatterns = i18n_patterns(
     url(r'^briefs/', include('briefs.urls')),
 
     url(r'^$', TemplateView.as_view(template_name='index.html'), name='home'),
-    url(r'^signup/', gallant.views.SignUp.as_view(), name='signup'),
+    url(r'^signup/', gallant.views.SignUpRequest.as_view(), name='signup'),
     url(r'^contact/', gallant.views.contact, name='contact'),
 
     url(r'^clients/$', login_required(gallant.views.ClientList.as_view()), name='clients'),
@@ -49,4 +49,5 @@ urlpatterns = i18n_patterns(
     url(r'^project/edit/(?P<pk>[0-9]+)$', login_required(gallant.views.ProjectUpdate.as_view()), name='edit_project'),
     url(r'^project/(?P<pk>[0-9]+)$', login_required(gallant.views.project_detail), name='project_detail'),
 
+    url(r'^register/', login_required(gallant.views.Register.as_view()), name='register'),
 )
