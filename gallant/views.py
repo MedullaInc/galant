@@ -230,6 +230,8 @@ class SignUpRequest(View):
     def get(request):
         return render(request, 'gallant/create_form.html', {
             'form': forms.SignUpRequestForm(),
+            'title': 'Request Account',
+            'submit_text': 'Submit'
         })
 
     @staticmethod
@@ -243,6 +245,7 @@ class SignUpRequest(View):
         else:
             return render(request, 'gallant/create_form.html', {
                 'form': forms.SignUpRequestForm(),
+                'submit_text': 'Submit'
             })
 
 
