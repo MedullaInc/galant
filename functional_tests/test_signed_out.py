@@ -45,9 +45,10 @@ class SignedOutTest(LiveServerTestCase):
 
     def test_page_blocked(self):
         for view_name in get_resolver(None).reverse_dict.keys():
+            # add non-logged in permitted views here:
             if hasattr(view_name, '__call__') \
                     or 'account' in view_name \
-                    or view_name in ['home', 'brief_answer']:  # add non-logged in permitted views here
+                    or view_name in ['home', 'brief_answer', 'signup', 'contact']:
                 continue
 
             # add singe <pk>-requiring views here:

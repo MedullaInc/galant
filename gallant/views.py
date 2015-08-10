@@ -1,6 +1,8 @@
 from django.conf import settings
 from django.contrib import messages
+from django.contrib.sites.models import Site
 from django.core.mail import send_mail
+from django.utils.safestring import mark_safe
 from django.views.generic import View
 from django.template.response import TemplateResponse
 from django.http import HttpResponseRedirect
@@ -236,3 +238,11 @@ class SignUp(View):
             return render(request, 'gallant/create_form.html', {
                 'form': forms.SignUpForm(),
             })
+
+
+def contact(request):
+    return render(request, 'content.html', {
+        'content': mark_safe('<p clas="sub-main">Send feedback or questions to <a href="mailto:contact@%s">contact@%s</a></p>' % (
+            Site.objects.get_current(request), Site.objects.get_current(request)
+        ))
+    })
