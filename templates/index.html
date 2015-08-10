@@ -15,7 +15,7 @@
                 </p>
 
                 {% if user.is_authenticated == False %}
-                    <a href="{% url 'account_signup' %}" type="button" class="btn btn-default giant" name="signup">
+                    <a href="{% url 'signup' %}" type="button" class="btn btn-default giant" name="signup">
                         {% trans 'Sign Up Now!' %}
                     </a>
                 {% endif %}

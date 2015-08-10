@@ -1,4 +1,6 @@
+from django.conf import settings
 from django.contrib import messages
+from django.core.mail import send_mail
 from django.views.generic import View
 from django.template.response import TemplateResponse
 from django.http import HttpResponseRedirect
@@ -203,3 +205,34 @@ def project_detail(request, pk):
         'object': project,
         'form': form,
     })
+
+
+def _send_signup_email(form):
+    message = 'Name: %s\nEmail: %s\nCompany: %s\nAbout:\n%s\n' % (
+        form.cleaned_data['name'],
+        form.cleaned_data['email'],
+        form.cleaned_data['company'],
+        form.cleaned_data['description'],
+    )
+    send_mail('Signup request', message, settings.EMAIL_HOST_USER,
+              ['contact@galant.co'], fail_silently=False)
+
+
+class SignUp(View):
+    @staticmethod
+    def get(request):
+        return render(request, 'gallant/create_form.html', {
+            'form': forms.SignUpForm(),
+        })
+
+    @staticmethod
+    def post(request):
+        form = forms.SignUpForm(request.POST)
+
+        if form.is_valid():
+            _send_signup_email(form)
+            return HttpResponseRedirect(reverse('home'))
+        else:
+            return render(request, 'gallant/create_form.html', {
+                'form': forms.SignUpForm(),
+            })

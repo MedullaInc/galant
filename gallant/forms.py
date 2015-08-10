@@ -60,6 +60,13 @@ class ProjectForm(UserModelForm):
             widget=forms.Textarea(attrs={'rows': 5}), required=False)
 
 
-
 class LanguageForm(forms.Form):
     language = forms.ChoiceField(choices=settings.LANGUAGES, label='', initial=get_language())
+
+
+class SignUpForm(forms.Form):
+    name = forms.CharField(max_length=255)
+    email = forms.EmailField()
+    company = forms.CharField(max_length=255, help_text='Enter company name or "self-employed"')
+    description = forms.CharField(required=False, widget=forms.Textarea(attrs={'rows': 5}),
+                                  max_length=2000, help_text='Tell us about yourself (optional)')
