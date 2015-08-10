@@ -238,6 +238,7 @@ class SignUpRequest(View):
 
         if form.is_valid():
             _send_signup_request_email(form)
+            messages.success(request, 'Request sent.')
             return HttpResponseRedirect(reverse('home'))
         else:
             return render(request, 'gallant/create_form.html', {

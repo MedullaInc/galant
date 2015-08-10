@@ -71,8 +71,18 @@ class SignedOutTest(LiveServerTestCase):
             self.assertTrue(self.live_server_url + reverse('account_login') in self.browser.current_url)
 
     def test_can_access_contact(self):
-        # check 'Clients' h1
         self.browser.get(self.live_server_url + reverse('contact'))
 
-        section_title = self.browser.find_element_by_class_name('section_title')
-        self.assertEqual('Clients', section_title.text)
+        self.assertIsNotNone(self.browser.find_element_by_class_name('sub-main'))
+
+    def test_can_request_signup(self):
+        b = self.browser
+        b.get(self.live_server_url + reverse('signup'))
+        b.find_element_by_name('name').send_keys('PPPPPPP')
+        b.find_element_by_name('company').send_keys('PPPPPPP')
+        b.find_element_by_name('email').send_keys('PPPP@PPP.com')
+
+        b.find_element_by_xpath('//button[@type="submit"]').click()
+
+        success_message = b.find_element_by_class_name('alert-success')
+        self.assertTrue(u'Request sent.' in success_message.text)
