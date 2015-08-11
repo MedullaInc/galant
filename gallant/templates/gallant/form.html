@@ -1,6 +1,9 @@
 {% extends "base.html" %}
 {% load bootstrap %}
 
+{# Disable unneeded JS scripts to prevent synchronous execution when called from $.get() #}
+{% block scripts %}{% endblock %}
+
 {% block body %}
 <div class="col-lg-10">
     <form id="form" class="form" method="post">
