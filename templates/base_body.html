@@ -38,8 +38,8 @@
 
                                 {% else %}
                                     {% comment %}
-                                    <li><a href="">{% trans 'Features' %}</a></li>
-                                    <li><a href="">{% trans 'Pricing' %}</a></li>
+                                        <li><a href="">{% trans 'Features' %}</a></li>
+                                        <li><a href="">{% trans 'Pricing' %}</a></li>
                                     {% endcomment %}
                                     <li><a href="{% url 'contact' %}">{% trans 'Contact' %}</a></li>
                                 {% endif %}
@@ -52,7 +52,8 @@
         {% block messages %}
             {% for message in messages %}
                 <div class="alert alert-{{ message.tags }}">
-                    <button type='button' class='close' data-dismiss='alert'>&times;</button>{{ message }}</div>
+                    <button type='button' class='close' data-dismiss='alert'>&times;</button>
+                    {{ message }}</div>
             {% endfor %}
         {% endblock %}
 
@@ -90,7 +91,23 @@
                 </div>
             </div>
         </footer>
-
+    </div>
+    <div id="base_modal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h2 class="section_title"></h2>
+                </div>
+                <div class="modal-body" style="height: 500px; overflow: auto;">
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="feedback">
+        <a>{% trans 'Feedback' %}</a>
     </div>
 
     <script>
@@ -100,6 +117,21 @@
                 event.stopPropagation();
                 $(this).parent().siblings().removeClass('open');
                 $(this).parent().toggleClass('open');
+            });
+        });
+
+        $('#feedback').click(function () {
+            $.get("{% url 'feedback' %}", function (data) {
+                $('#base_modal .section_title').html("Tell us what you think");
+                $('#base_modal .modal-body').html(data);
+                $('#base_modal #form').submit(function () {
+                    $.post("{% url 'feedback' %}", $(this).serialize(), function () {
+                        $('#base_modal').modal('hide');
+                        location.reload(true);
+                    });
+                    return false;
+                });
+                $('#base_modal').modal('show');
             });
         });
     </script>
