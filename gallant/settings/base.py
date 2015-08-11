@@ -50,6 +50,7 @@ INSTALLED_APPS = (
     'guardian',
     'django_countries',
     'localflavor',
+    'analytical',
     
     'gallant',
     'briefs',
@@ -76,6 +77,9 @@ AUTHENTICATION_BACKENDS = (
 ROOT_URLCONF = 'gallant.urls'
 SITE_ID = 1
 LOGIN_REDIRECT_URL = '/'
+
+CLICKY_SITE_ID = '100867941'
+CRAZY_EGG_ACCOUNT_NUMBER = '00379063'
 
 TEMPLATES = [
     {
