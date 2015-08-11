@@ -1,9 +1,8 @@
-{% load staticfiles bootstrap i18n analytical %}
+{% load staticfiles bootstrap i18n gallant_tags %}
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    {% if not DEBUG %}{% analytical_head_top %}{% endif %}
     {% block head %}
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -34,10 +33,8 @@
     {% endblock head %}
     {% block extra_head %}
     {% endblock extra_head %}
-    {% if not DEBUG %}{% analytical_head_bottom %}{% endif %}
 </head>
 <body>
-{% if not DEBUG %}{% analytical_body_top %}{% endif %}
 {% block body %}
 
     <div class="page-wrapper">
@@ -144,6 +141,6 @@
 
 {% block extra_body %}
 {% endblock extra_body %}
-{% if not DEBUG %}{% analytical_body_bottom %}{% endif %}
+{% if not DEBUG %}{% analytics %}{% endif %}
 </body>
 </html>
