@@ -38,3 +38,7 @@ def get_site_from_host(request):
 def site_processor(request):
     site = get_site_from_host(request)
     return {'site': site}
+
+# context processor, adds DEBUG to templates
+def debug_processor(request):
+    return {'DEBUG': settings.DEBUG}

@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    {% analytical_head_top %}
+    {% if not DEBUG %}{% analytical_head_top %}{% endif %}
     {% block head %}
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -34,10 +34,10 @@
     {% endblock head %}
     {% block extra_head %}
     {% endblock extra_head %}
-    {% analytical_head_bottom %}
+    {% if not DEBUG %}{% analytical_head_bottom %}{% endif %}
 </head>
 <body>
-{% analytical_body_top %}
+{% if not DEBUG %}{% analytical_body_top %}{% endif %}
 {% block body %}
 
     <div class="page-wrapper">
@@ -144,6 +144,6 @@
 
 {% block extra_body %}
 {% endblock extra_body %}
-{% analytical_body_bottom %}
+{% if not DEBUG %}{% analytical_body_bottom %}{% endif %}
 </body>
 </html>

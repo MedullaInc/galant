@@ -93,7 +93,8 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'django.template.context_processors.i18n',
-                'gallant.utils.site_processor'
+                'gallant.utils.site_processor',
+                'gallant.utils.debug_processor',
             ],
         },
     },

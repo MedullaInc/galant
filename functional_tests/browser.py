@@ -35,7 +35,9 @@ class BrowserTest(LiveServerTestCase):
 
         scripts = b.find_elements_by_xpath('//body/script')
         for s in scripts:
-            b.execute_script(s.get_attribute('innerHTML'))
+            js = s.get_attribute('innerHTML')
+            if len(js) > 0:
+                b.execute_script(js)
 
         # need this to auto-accept all confirmation dialogs
         b.execute_script("window.confirm = function(){return true;}")
