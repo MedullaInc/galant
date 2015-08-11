@@ -48,7 +48,7 @@ class SignedOutTest(LiveServerTestCase):
             # add non-logged in permitted views here:
             if hasattr(view_name, '__call__') \
                     or 'account' in view_name \
-                    or view_name in ['home', 'brief_answer', 'signup', 'contact', 'register']:
+                    or view_name in ['home', 'brief_answer', 'signup', 'contact', 'register', 'feedback']:
                 continue
 
             # add singe <pk>-requiring views here:
@@ -67,7 +67,7 @@ class SignedOutTest(LiveServerTestCase):
                 self.fail('h1 Element not found, page is not blocked: %s' %
                           url)
 
-            self.assertIn('Sign In', h1.text)
+            self.assertIn('Sign In', h1.text, 'Text not found on page: %s' % url)
             self.assertTrue(self.live_server_url + reverse('account_login') in self.browser.current_url)
 
     def test_can_access_contact(self):
@@ -86,3 +86,14 @@ class SignedOutTest(LiveServerTestCase):
 
         success_message = b.find_element_by_class_name('alert-success')
         self.assertTrue(u'Request sent.' in success_message.text)
+
+    def test_feedback(self):
+        b = self.browser
+        b.get(self.live_server_url + reverse('feedback'))
+
+        b.find_element_by_name('email').send_keys('foo@bar.com')
+        b.find_element_by_name('feedback').send_keys('asdfasdfasdsadf')
+
+        b.find_element_by_xpath('//button[@type="submit"]').click()
+
+        self.assertEqual(b.find_element_by_tag_name('body').text, 'Thank you.')
