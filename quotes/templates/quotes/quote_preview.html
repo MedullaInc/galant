@@ -57,17 +57,22 @@
                 <div class="row header_bottom">
                     <div class="col-lg-4">
                         <p>
-                            Satzvergleiche der Original fassung Helvetica und der Haas Unica.
+                            {{ object.user.name }}<br/>
+                            {{ object.user.email }}<br/>
+                            {{ object.user.contactinfo.phone_number }}
                         </p>
                     </div>
                     <div class="col-lg-4">
                         <p>
-                            Comparaison de composition entre la version originale de l'Helvetica et de l'Haas Unica
+                            {{ object.user.contactinfo.address }}<br/>
+                            {{ object.user.contactinfo.addesss_2 }}
                         </p>
                     </div>
                     <div class="col-lg-4">
                         <p>
-                            Comparative settings of the original Helvetica and Haas Unica
+                            {{ object.user.contactinfo.city }}<br/>
+                            {{ object.user.contactinfo.state }}<br/>
+                            {{ object.user.contactinfo.country }} {{ object.user.contactinfo.zip }}
                         </p>
                     </div>
                 </div>
@@ -103,7 +108,7 @@
                 <div class="row">
                     <div class="col-lg-4">
                         <p>
-                            Gustavo Muñoz
+                            Created using {{ site.domain }}
                         </p>
                     </div>
                 </div>

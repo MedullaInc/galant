@@ -169,7 +169,7 @@ class PhantomJSBin(RequestToPDF):
 
 def quote_pdf(request, *args, **kwargs):
     # Get quote
-    quote = q.Quote.objects.get(pk=kwargs['pk'])
+    quote = q.Quote.objects.get_for(request.user, 'view_section', pk=kwargs['pk'])
 
     # Render PDF
     filename = slugify(quote.client.name + "_" + quote.name)
@@ -180,7 +180,7 @@ def quote_pdf(request, *args, **kwargs):
 
 def quote_preview(request, *args, **kwargs):
     # Get quote
-    quote = q.Quote.objects.get(pk=kwargs['pk'])
+    quote = q.Quote.objects.get_for(request.user, 'view_section', pk=kwargs['pk'])
 
     # Render HTML
     context = {'object': quote}
