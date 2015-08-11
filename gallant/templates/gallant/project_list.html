@@ -1,0 +1,40 @@
+{% extends "base_sidebar.html" %}
+{% load bootstrap i18n %}
+
+{% block section_title %}
+    {% trans "Projects" %}
+{% endblock %}
+
+{% block sidebar %}
+{% endblock %}
+
+{% block center_content %}
+    <table class="table table-striped table-bordered">
+        <thead>
+        <th>{% trans "Name" %}</th>
+        <th>{% trans "Status" %}</th>
+        <th>{% trans "Client" %}</th>
+        </thead>
+        {% for project in object_list %}
+            <tr data-rel="{{ project.id }}" style="cursor: pointer">
+                <td>{{ project.name }}</td>
+                <td>{{ project.get_status_display }}</td>
+                <td>{{ project.quote.client }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4">
+                    No projects yet.
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
+
+{% block extra_body %}
+    <script>
+        $('.table > tbody > tr').click(function () {
+            window.location.href = "{% url 'project_detail' %}" + $(this).attr('data-rel')
+        });
+    </script>
+{% endblock %}

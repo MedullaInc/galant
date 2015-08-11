@@ -144,6 +144,13 @@ def service_detail(request, pk):
     })
 
 
+class ProjectList(View):
+    def get(self, request):
+        return TemplateResponse(request=request,
+                                template="gallant/project_list.html",
+                                context={'title': 'Projects',
+                                         'object_list': g.Project.objects.all_for(request.user, 'view_project')})
+    
 
 class ProjectUpdate(View):
     def get(self, request, **kwargs):
