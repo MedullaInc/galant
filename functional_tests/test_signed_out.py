@@ -86,3 +86,14 @@ class SignedOutTest(LiveServerTestCase):
 
         success_message = b.find_element_by_class_name('alert-success')
         self.assertTrue(u'Request sent.' in success_message.text)
+
+    def test_feedback(self):
+        b = self.browser
+        b.get(self.live_server_url + reverse('feedback'))
+
+        b.find_element_by_name('email').send_keys('foo@bar.com')
+        b.find_element_by_name('feedback').send_keys('asdfasdfasdsadf')
+
+        b.find_element_by_xpath('//button[@type="submit"]').click()
+
+        self.assertEqual(b.find_element_by_tag_name('body').text, 'Thank you.')

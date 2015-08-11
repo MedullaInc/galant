@@ -234,7 +234,7 @@ def _send_signup_request_email(form):
 
 def _send_feedback_email(request, form):
     message = 'User Email: %s\nFeedback:\n%s\nCookies:%s\n' % (
-        request.user.email if request.user else form.cleaned_data['email'],
+        request.user.email if request.user.is_authenticated() else form.cleaned_data['email'],
         form.cleaned_data['feedback'],
         request.COOKIES,
     )
@@ -281,7 +281,7 @@ class SubmitFeedback(View):
         if form.is_valid():
             _send_feedback_email(request, form)
             messages.success(request, 'Feedback sent.')
-            return HttpResponse('')
+            return HttpResponse('Thank you.')
         else:
             return render(request, 'gallant/create_form.html', {
                 'form': forms.SignUpRequestForm(),
