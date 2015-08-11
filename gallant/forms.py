@@ -72,6 +72,20 @@ class SignUpRequestForm(forms.Form):
                                   max_length=2000, help_text='Tell us about yourself (optional)')
 
 
+class FeedbackForm(forms.Form):
+    email = forms.EmailField()
+    feedback = forms.CharField(required=False,
+                               widget=forms.Textarea(attrs={'rows': 5}),
+                               max_length=2000,
+                               help_text='Please enter comments, thoughts, or bug reports.')
+
+    def __init__(self, user, *args, **kwargs):
+        super(FeedbackForm, self).__init__(*args, **kwargs)
+        if user.is_authenticated():
+            self.initial['email'] = user.email
+            self.fields['email'].widget = forms.HiddenInput()
+
+
 class CreateUserForm(forms.Form):
     email = forms.EmailField(help_text='Enter new user\'s email. A registration link will be sent.')
 

@@ -48,7 +48,7 @@ class SignedOutTest(LiveServerTestCase):
             # add non-logged in permitted views here:
             if hasattr(view_name, '__call__') \
                     or 'account' in view_name \
-                    or view_name in ['home', 'brief_answer', 'signup', 'contact', 'register']:
+                    or view_name in ['home', 'brief_answer', 'signup', 'contact', 'register', 'feedback']:
                 continue
 
             # add singe <pk>-requiring views here:
@@ -67,7 +67,7 @@ class SignedOutTest(LiveServerTestCase):
                 self.fail('h1 Element not found, page is not blocked: %s' %
                           url)
 
-            self.assertIn('Sign In', h1.text)
+            self.assertIn('Sign In', h1.text, 'Text not found on page: %s' % url)
             self.assertTrue(self.live_server_url + reverse('account_login') in self.browser.current_url)
 
     def test_can_access_contact(self):

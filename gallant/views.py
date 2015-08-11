@@ -4,7 +4,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import SetPasswordForm
 from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import send_mail
-from django.http.response import Http404
+from django.http.response import Http404, HttpResponse
 from django.utils.safestring import mark_safe
 from django.views.generic import View
 from django.template.response import TemplateResponse
@@ -232,6 +232,16 @@ def _send_signup_request_email(form):
               ['contact@galant.co'], fail_silently=False)
 
 
+def _send_feedback_email(request, form):
+    message = 'User Email: %s\nFeedback:\n%s\nCookies:%s\n' % (
+        request.user.email if request.user else form.cleaned_data['email'],
+        form.cleaned_data['feedback'],
+        request.COOKIES,
+    )
+    send_mail('Signup request', message, settings.EMAIL_HOST_USER,
+              ['contact@galant.co'], fail_silently=False)
+
+
 class SignUpRequest(View):
     @staticmethod
     def get(request):
@@ -249,6 +259,29 @@ class SignUpRequest(View):
             _send_signup_request_email(form)
             messages.success(request, 'Request sent.')
             return HttpResponseRedirect(reverse('home'))
+        else:
+            return render(request, 'gallant/create_form.html', {
+                'form': forms.SignUpRequestForm(),
+                'submit_text': 'Submit'
+            })
+
+
+class SubmitFeedback(View):
+    @staticmethod
+    def get(request):
+        return render(request, 'gallant/form.html', {
+            'form': forms.FeedbackForm(request.user),
+            'submit_text': 'Submit'
+        })
+
+    @staticmethod
+    def post(request):
+        form = forms.FeedbackForm(request.user, request.POST)
+
+        if form.is_valid():
+            _send_feedback_email(request, form)
+            messages.success(request, 'Feedback sent.')
+            return HttpResponse('')
         else:
             return render(request, 'gallant/create_form.html', {
                 'form': forms.SignUpRequestForm(),
