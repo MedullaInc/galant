@@ -31,6 +31,10 @@ class GallantUser(AbstractEmailUser):
     company_name = m.CharField(max_length=255, blank=True)
     contact_info = m.ForeignKey(ContactInfo, null=True)
 
+    @property
+    def username(self):
+        return self.email
+
     class Meta(AbstractEmailUser.Meta):
         swappable = 'AUTH_USER_MODEL'
 
