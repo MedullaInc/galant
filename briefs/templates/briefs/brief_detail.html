@@ -7,44 +7,47 @@
 
 {% block sidebar %}
     {% if object.client %}
-    <a href="{% url 'client_detail' object.client_id %}">
-        <button type="button" class="btn btn-default sidebar">
-            {% trans "Back to Client" %}
-        </button>
-    </a>
+        <a href="{% url 'client_detail' object.client_id %}">
+            <button type="button" class="btn btn-default sidebar">
+                {% trans "Back to Client" %}
+            </button>
+        </a>
 
-    <a href="{% url 'brief_list' object.client_id %}">
-        <button type="button" class="btn btn-default sidebar">
-            {% trans "Back to Briefs" %}
-        </button>
-    </a>
+        <a href="{% url 'brief_list' object.client_id %}">
+            <button type="button" class="btn btn-default sidebar">
+                {% trans "Back to Briefs" %}
+            </button>
+        </a>
 
-    <a href="{% url 'edit_brief' type_id=object.client_id pk=object.id %}">
-        <button type="button" class="btn btn-default sidebar" id="edit_client_brief">
-            {% trans "Edit Brief" %}
-        </button>
-    </a>
+        <a href="{% url 'edit_brief' pk=object.id %}">
+            <button type="button" class="btn btn-default sidebar" id="edit_client_brief">
+                {% trans "Edit Brief" %}
+            </button>
+        </a>
 
-    <form method="post">
-        {% csrf_token %}
-        <a><button type="submit" class="btn btn-default sidebar" id="send_brief">
-            {% trans "Send Brief" %}
-        </button></a>
-    </form>
+        <form method="post">
+            {% csrf_token %}
+            <a>
+                <button type="submit" class="btn btn-default sidebar" id="send_brief">
+                    {% trans "Send Brief" %}
+                </button>
+            </a>
+        </form>
     {% endif %}
 {% endblock %}
 
 {% block center_content %}
 
-    <h2 class="section_title">{% trans "Data" %}</h2>
+    <h2 class="center_title">{{ object.client }}</h2>
 
     <p id="title" class="data">{% trans "Title" %}: {{ object.title.get_text }}</p>
     <p id="status" class="data">{% trans "Status" %}: {{ object.get_status_display }}</p>
     {% if object.status == "2" %}
-    <p id="public_link" class="data">Public Answer Link:<br/>http://{{ request.get_host }}{% url 'brief_answer' token=object.token.hex %}</p>
+        <p id="public_link" class="data">Public Answer
+            Link:<br/>http://{{ request.get_host }}{% url 'brief_answer' token=object.token.hex %}</p>
     {% endif %}
     {% if answer_set %}
-    <p id="answered" class="text-success"><b>{% trans "Answered on" %} {{ answer_set.created }}</b></p>
+        <p id="answered" class="text-success"><b>{% trans "Answered on" %} {{ answer_set.created }}</b></p>
     {% endif %}
 
     <br/>
@@ -55,47 +58,47 @@
     <hr>
 
     {% if answer_set %}
-        {% for answer in answer_set.answers.all %}
+        {% for answer in answers %}
             {% with question=answer.question %}
-            <div id="question_{{ question.index }}" class="question">
-                {{ forloop.counter }} ) {{ question.question.get_text }}
-                <div class="multiquestion_choices">
-                {% for choice in question.choices %}
-                    {% if forloop.counter0|slugify in answer.choices %}
-                    <div class="text-success"><b>
-                        — {{ choice.get_text }}
-                    </b></div>
-                    {% else %}
-                    <div>
-                        — {{ choice.get_text }}
+                <div id="question_{{ question.index }}" class="question">
+                    {{ forloop.counter }} ) {{ question.question.get_text }}
+                    <div class="multiquestion_choices">
+                        {% for choice in question.choices %}
+                            {% if forloop.counter0|slugify in answer.choices %}
+                                <div class="text-success"><b>
+                                    — {{ choice.get_text }}
+                                </b></div>
+                            {% else %}
+                                <div>
+                                    — {{ choice.get_text }}
+                                </div>
+                            {% endif %}
+                            {% empty %}
+                            <div class="text-success"><b>
+                                {{ answer.answer }}
+                            </b></div>
+                        {% endfor %}
                     </div>
-                    {% endif %}
-                {% empty %}
-                    <div class="text-success"><b>
-                        {{ answer.answer }}
-                    </b></div>
-                {% endfor %}
                 </div>
-            </div>
 
-            <hr>
+                <hr>
             {% endwith %}
         {% endfor %}
-    {% elif object.questions %}
-        {% for question in object.questions.all %}
+    {% elif questions %}
+        {% for question in questions %}
             <div id="question_{{ question.index }}" class="question">
                 {{ forloop.counter }} ) {{ question.question.get_text }}
                 <div class="multiquestion_choices">
-                {% for choice in question.choices %}
-                    <div>
-                        — {{ choice.get_text }}
-                    </div>
-                {% endfor %}
+                    {% for choice in question.choices %}
+                        <div>
+                            — {{ choice.get_text }}
+                        </div>
+                    {% endfor %}
                 </div>
             </div>
 
             <hr>
-        {% empty %}
+            {% empty %}
             No questions have been added yet.<br/>
             <a href="{% url "edit_brief" object.client.id object.id %}">Click here to add some.</a>
         {% endfor %}

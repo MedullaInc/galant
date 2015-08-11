@@ -3,6 +3,7 @@ from gallant import fields as gf
 from django.db import models as m
 from django.conf import settings
 from gallant import utils
+from gallant.models import PolyUserModelManager, UserModelManager
 
 
 class Section(g.PolyUserModel):
@@ -20,6 +21,28 @@ class Section(g.PolyUserModel):
         map(lambda l: language_set.add(l), self.text.keys())
         return language_set
 
+    def __unicode__(self):
+        return self.name
+
+    class Meta:
+        permissions = (
+            ('view_section', 'View section'),
+        )
+
+    objects = PolyUserModelManager()
+
+
+# guardian uses django's default add / change / delete perms and doesn't play well
+# with polymorphic classes, so this manual approach is necessary for subclasses
+def _get_section_perms(new_perms):
+    return (
+        new_perms,
+        ('add_section', 'Can add section'),
+        ('change_section', 'Can change section'),
+        ('delete_section', 'Can delete section'),
+        ('view_section', 'View section'),
+    )
+
 
 # Text section of Quote
 class TextSection(Section):
@@ -34,9 +57,19 @@ class TextSection(Section):
     def __ne__(self, other):
         return not self.__eq__(other)
 
+    class Meta:
+        permissions = _get_section_perms(('view_textsection', 'View textsection'))
+
+    objects = PolyUserModelManager()
+
 
 class ServiceSection(Section):
     service = m.ForeignKey(g.Service)
+
+    class Meta:
+        permissions = _get_section_perms(('view_servicesection', 'View servicesection'))
+
+    objects = PolyUserModelManager()
 
 
 class QuoteStatus(gf.ChoiceEnum):
@@ -64,25 +97,37 @@ class Quote(g.UserModel):
     token = m.CharField(max_length=64, unique=True, null=True, help_text='For emailing URL')
 
     parent = m.ForeignKey('self', null=True, blank=True, related_name='versions')
+    project = m.OneToOneField(g.Project, null=True)
 
     def get_languages(self):
         language_set = set()
-        for s in list(self.sections.all()):
+        for s in list(self.sections.all_for(self.user, 'view_section')):
             if s is not None:
                 language_set.update(s.get_languages())
 
         return language_set
 
     def intro(self):
-        return self.sections.get(name='intro')
+        return self.sections.get_for(self.user, 'view_section', name='intro')
 
     def margin(self):
-        return self.sections.get(name='margin')
+        return self.sections.get_for(self.user, 'view_section', name='margin')
 
     def all_sections(self):
-        sections = list(self.sections.all()) + list(self.services.all())
+        sections = list(self.sections.all_for(self.user, 'view_section')) + \
+                   list(self.services.all_for(self.user, 'view_section'))
         sections.sort(lambda a, b: cmp(a.index, b.index))
         return sections
+
+    def __unicode__(self):
+        return self.name
+
+    class Meta:
+        permissions = (
+            ('view_quote', 'View quote'),
+        )
+
+    objects = UserModelManager()
 
 
 class QuoteTemplate(g.UserModel):
@@ -90,3 +135,10 @@ class QuoteTemplate(g.UserModel):
 
     def language_list(self):
         return [(c, utils.LANG_DICT[c]) for c in self.quote.get_languages() if c in utils.LANG_DICT]
+
+    class Meta:
+        permissions = (
+            ('view_quotetemplate', 'View quotetemplate'),
+        )
+
+    objects = UserModelManager()

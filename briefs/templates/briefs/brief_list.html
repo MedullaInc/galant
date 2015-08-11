@@ -13,13 +13,13 @@
             {% trans "Back to Client" %}
         </button>
     </a>
+    {% endif %}
 
     <a>
         <button type="button" class="btn btn-default sidebar" id="add_brief">
             {% trans "Create Brief" %}
         </button>
     </a>
-    {% endif %}
 
     <a href="{% url 'brief_templates' %}">
         <button type="button" class="btn btn-default sidebar">
@@ -30,6 +30,9 @@
 {% endblock %}
 
 {% block center_content %}
+    {% if client %}
+        <h2 class="center_title">{{ client }}</h2>
+    {% endif %}
     <table class="table table-striped table-bordered">
         <thead>
         <th>{% trans "Last Modified" %}</th>
@@ -51,16 +54,14 @@
         {% endfor %}
     </table>
 
-    {% if client %}
     <div id="add_button_popover" class="popover" style="display: none">
         <a class="from_template_button">
             <button type="button" class="btn btn-default from_template_button sidebar">From Template</button>
         </a>
-        <a href="{% url 'add_brief' client.id %}">
+        <a href="{% url 'add_brief' %}{% if client %}?client_id={{ client.id }}{% endif %}">
             <button type="button" class="btn btn-default from_scratch_button sidebar">From Scratch</button>
         </a>
     </div>
-    {% endif %}
 {% endblock %}
 
 
@@ -147,8 +148,9 @@
             if ($(this).find('select').length) {
                 lang = $(this).find('select').val();
             }
-            window.location.href = "{% url 'add_brief' client.id %}" + "?template_id=" +
-                    $(this).attr('data-rel') + "&lang=" + lang;
+            window.location.href = "{% url 'add_brief' %}" + "?template_id=" +
+                    $(this).parents('tr').attr('data-rel') + "&lang=" + $(this).val() +
+                    "{% if client %}&client_id={{ client.id }}{% endif %}";
         });
 
         $('.table .template_row select').click(function (e) {
@@ -156,7 +158,9 @@
         });
 
         $('.table .template_row select').change(function (e) {
-            window.location.href = "{% url 'add_brief' client.id %}" + "?template_id=" + $(this).parents('tr').attr('data-rel') + "&lang=" + $(this).val();
+            window.location.href = "{% url 'add_brief' %}" + "?template_id=" +
+                    $(this).parents('tr').attr('data-rel') + "&lang=" + $(this).val() +
+                    "{% if client %}&client_id={{ client.id }}{% endif %}";
         });
         {% endif %}
     </script>

@@ -1,4 +1,4 @@
-{% load staticfiles bootstrap i18n %}
+{% load staticfiles bootstrap i18n gallant_tags %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -8,7 +8,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-        <title>{% block head_title %}Galant{% endblock head_title %}</title>
+        <title>{% block head_title %}{{ site.name }}{% endblock head_title %}</title>
 
         <!-- Bootstrap -->
         <link rel="stylesheet" href="{% static "css/flat-ui.css" %}">
@@ -45,7 +45,7 @@
                     <nav class="navbar col-sm-12" role="navigation">
                         <div class="navbar-header">
                             <button type="button" class="navbar-toggle"></button>
-                            <a class="brand" href="/">Galant</a>
+                            <a class="brand" href="/">{{ site.name }}</a>
                         </div>
 
                         <div id="menu" class="collapse navbar-collapse">
@@ -53,7 +53,7 @@
                                 {% if user.is_authenticated %}
                                     <li><a href="{% url 'clients' %}">{% trans 'Clients' %}</a></li>
                                     <li><a href="{% url 'quotes' %}">{% trans 'Quotes' %}</a></li>
-                                    <li><a href="{% url 'briefs' %}">{% trans 'Briefs' %}</a></li>
+                                    <li><a href="{% url 'projects' %}">{% trans 'Projects' %}</a></li>
                                     <li class="btn-group" id="settings-toggle-group">
 
                                         <button type="button" class="btn btn-default dropdown-toggle"
@@ -71,9 +71,11 @@
                                     </li>
 
                                 {% else %}
+                                    {% comment %}
                                     <li><a href="">{% trans 'Features' %}</a></li>
                                     <li><a href="">{% trans 'Pricing' %}</a></li>
-                                    <li><a href="">{% trans 'Contact' %}</a></li>
+                                    {% endcomment %}
+                                    <li><a href="{% url 'contact' %}">{% trans 'Contact' %}</a></li>
                                 {% endif %}
                             </ul>
                         </div>
@@ -139,5 +141,6 @@
 
 {% block extra_body %}
 {% endblock extra_body %}
+{% if not DEBUG %}{% analytics %}{% endif %}
 </body>
 </html>

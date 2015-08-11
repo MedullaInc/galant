@@ -7,15 +7,19 @@
         <div class="row">
             <div class="col-xs-12 col-sm-6 col-md-8">
                 <p class="main">
-                    Lorem ipsum, dolor sit amet consectetur adipiscing elit.
+                    Manage clients, send quotes, track projects &mdash; all in one place.
                 </p>
 
                 <p class="sub-main">
-                    Lorem ipsum, dolor sit amet consectetur adipiscing elit.
+                    {{ site.name }} was brewed in the heart of Silicon Valley with the sole purpose of helping
+                    agencies and freelancers operate their business, so they can focus on what
+                    they do best: create.
+                    <br><br>
+                    Get organized.
                 </p>
 
                 {% if user.is_authenticated == False %}
-                    <a href="{% url 'account_signup' %}" type="button" class="btn btn-default giant" name="signup">
+                    <a href="{% url 'signup' %}" type="button" class="btn btn-default giant" name="signup">
                         {% trans 'Sign Up Now!' %}
                     </a>
                 {% endif %}

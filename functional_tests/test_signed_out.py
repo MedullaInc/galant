@@ -45,17 +45,17 @@ class SignedOutTest(LiveServerTestCase):
 
     def test_page_blocked(self):
         for view_name in get_resolver(None).reverse_dict.keys():
+            # add non-logged in permitted views here:
             if hasattr(view_name, '__call__') \
                     or 'account' in view_name \
-                    or view_name in ['home', 'brief_answer']:  # add non-logged in permitted views here
+                    or view_name in ['home', 'brief_answer', 'signup', 'contact', 'register']:
                 continue
 
             # add singe <pk>-requiring views here:
             if view_name in ['edit_client', 'client_detail', 'edit_service', 'service_detail', 'edit_quote',
-                             'quote_detail', 'edit_quote_template', 'client_briefs', 'add_brief', 'brief_list']:
+                             'quote_detail', 'edit_quote_template', 'client_briefs', 'brief_list', 'edit_brief',
+                             'brief_detail', 'edit_project', 'project_detail', 'add_project']:
                 url = self.live_server_url + reverse(view_name, args=[0])
-            elif view_name in ['brief_detail', 'edit_brief']:
-                url = self.live_server_url + reverse(view_name, args=[0, 0])
             else:
                 url = self.live_server_url + reverse(view_name)
 
@@ -69,3 +69,20 @@ class SignedOutTest(LiveServerTestCase):
 
             self.assertIn('Sign In', h1.text)
             self.assertTrue(self.live_server_url + reverse('account_login') in self.browser.current_url)
+
+    def test_can_access_contact(self):
+        self.browser.get(self.live_server_url + reverse('contact'))
+
+        self.assertIsNotNone(self.browser.find_element_by_class_name('sub-main'))
+
+    def test_can_request_signup(self):
+        b = self.browser
+        b.get(self.live_server_url + reverse('signup'))
+        b.find_element_by_name('name').send_keys('PPPPPPP')
+        b.find_element_by_name('company').send_keys('PPPPPPP')
+        b.find_element_by_name('email').send_keys('PPPP@PPP.com')
+
+        b.find_element_by_xpath('//button[@type="submit"]').click()
+
+        success_message = b.find_element_by_class_name('alert-success')
+        self.assertTrue(u'Request sent.' in success_message.text)

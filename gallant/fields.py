@@ -149,6 +149,10 @@ PHONE_REGEX = RegexValidator(regex=r'^\+?1?\d{9,15}$',
                              message="Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed.")
 
 
+ZIP_REGEX = RegexValidator(regex=r'^\d{5}(?:[-\s]\d{4})?$',
+                             message="Zipcode must be entered in the format: '12345-1234' (first five digits required).")
+
+
 class BootstrapRadioFieldRenderer(widgets.RadioFieldRenderer):
     def render(self):
         html = ''

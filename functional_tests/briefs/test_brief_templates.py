@@ -29,10 +29,12 @@ class BriefTemplatesTest(browser.SignedInTest):
 
     def test_edit_brief_template(self):
         b = browser.instance()
-        brief = autofixture.create_one('briefs.Brief', generate_fk=True, field_values={'questions': []})
+        brief = autofixture.create_one('briefs.Brief', generate_fk=True,
+                                       field_values={'questions': [], 'user': self.user})
         quest = bm.TextQuestion.objects.create(user=brief.user)
         brief.questions.add(quest)
-        bt = autofixture.create_one('briefs.BriefTemplate', generate_fk=False, field_values={'brief': brief})
+        bt = autofixture.create_one('briefs.BriefTemplate', generate_fk=False,
+                                    field_values={'brief': brief, 'user': self.user})
         b.get(self.live_server_url + reverse('edit_brief_template', args=[bt.id]))
         self.load_scripts()
 
@@ -47,8 +49,10 @@ class BriefTemplatesTest(browser.SignedInTest):
 
     def test_edit_brief_lang_dropdown(self):
         b = browser.instance()
-        brief = autofixture.create_one('briefs.Brief', generate_fk=True)
-        bt = autofixture.create_one('briefs.BriefTemplate', generate_fk=False, field_values={'brief': brief})
+        brief = autofixture.create_one('briefs.Brief', generate_fk=True,
+                                       field_values={'user': self.user})
+        bt = autofixture.create_one('briefs.BriefTemplate', generate_fk=False,
+                                    field_values={'brief': brief, 'user': self.user})
         b.get(self.live_server_url + reverse('edit_brief_template', args=[bt.id]))
         self.load_scripts()
         self._add_language_and_text(b)
@@ -56,7 +60,8 @@ class BriefTemplatesTest(browser.SignedInTest):
     def test_add_from_brief(self):
         b = browser.instance()
 
-        brief = autofixture.create_one('briefs.Brief', generate_fk=True, field_values={'questions': []})
+        brief = autofixture.create_one('briefs.Brief', generate_fk=True,
+                                       field_values={'questions': [], 'user': self.user})
         quest = bm.TextQuestion.objects.create(user=brief.user)
         brief.questions.add(quest)
         b.get(self.live_server_url + reverse('add_brief_template', kwargs={'brief_id': brief.id}))
@@ -67,13 +72,16 @@ class BriefTemplatesTest(browser.SignedInTest):
 
     def test_add_brief_from_template(self):
         b = browser.instance()
-        client = autofixture.create_one('gallant.Client')
-        brief = autofixture.create_one('briefs.Brief', generate_fk=True, field_values={'questions': []})
+        client = autofixture.create_one('gallant.Client', generate_fk=True,
+                                   field_values={'user': self.user})
+        brief = autofixture.create_one('briefs.Brief', generate_fk=True,
+                                       field_values={'questions': [], 'user': self.user})
         quest = bm.TextQuestion.objects.create(user=brief.user, question='Who\'s on first?')
         brief.questions.add(quest)
-        bt = autofixture.create_one('briefs.BriefTemplate', generate_fk=False, field_values={'brief': brief})
+        bt = autofixture.create_one('briefs.BriefTemplate', generate_fk=False,
+                                    field_values={'brief': brief, 'user': self.user})
         b.get(self.live_server_url +
-              reverse('add_brief', args=[client.id]) + '?template_id=%d&lang=en' % bt.id)
+              reverse('add_brief') + '?template_id=%d&lang=en&client_id=%d' % (bt.id, client.id))
         self.load_scripts()
 
         question = b.find_element_by_id('id_-question-0-question_hidden')
