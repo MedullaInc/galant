@@ -150,7 +150,8 @@ class ProjectList(View):
                                 template="gallant/project_list.html",
                                 context={'title': 'Projects',
                                          'object_list': g.Project.objects.all_for(request.user, 'view_project'),
-                                         'quote_list': q.Quote.objects.all_for(request.user, 'view_quote')})
+                                         'quote_list': q.Quote.objects.all_for(request.user, 'view_quote')\
+                                                        .filter(project__isnull=True)})
     
 
 class ProjectUpdate(View):
