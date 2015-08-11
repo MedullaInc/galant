@@ -2166,7 +2166,7 @@ table.table-striped.table-bordered thead th, table.table-striped.table-bordered 
     color: gray;
 }
 
-#template_select div.modal-backdrop {
+div.modal-backdrop {
     z-index: -1;
 }
 

@@ -6,6 +6,11 @@
 {% endblock %}
 
 {% block sidebar %}
+    <a>
+        <button id="add_project_button" type="button" class="btn btn-default sidebar">
+            {% trans "Add New Project" %}
+        </button>
+    </a>
 {% endblock %}
 
 {% block center_content %}
@@ -32,9 +37,34 @@
 {% endblock %}
 
 {% block extra_body %}
+    <div id="quote_select" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h2 class="section_title">Select Quote</h2>
+                </div>
+                <div class="modal-body" style="height: 500px; overflow: auto;">
+                    {% with object_list=quote_list %}
+                        {% include "quotes/quote_table.html" %}
+                    {% endwith %}
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+    </div>
     <script>
+        $('#add_project_button').click(function () {
+            $('#quote_select').modal('show');
+        });
+        
         $('.table > tbody > tr').click(function () {
             window.location.href = "{% url 'project_detail' %}" + $(this).attr('data-rel')
+        });
+
+        $('.table .quote_row').click(function (e) {
+            window.location.href = "{% url 'add_project' %}" + $(this).attr('data-rel');
         });
     </script>
 {% endblock %}

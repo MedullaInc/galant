@@ -149,7 +149,8 @@ class ProjectList(View):
         return TemplateResponse(request=request,
                                 template="gallant/project_list.html",
                                 context={'title': 'Projects',
-                                         'object_list': g.Project.objects.all_for(request.user, 'view_project')})
+                                         'object_list': g.Project.objects.all_for(request.user, 'view_project'),
+                                         'quote_list': q.Quote.objects.all_for(request.user, 'view_quote')})
     
 
 class ProjectUpdate(View):
