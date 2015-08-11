@@ -9,7 +9,10 @@ register = template.Library()
 def objects_for(context, queryset, permission):
     """ Returns objects user has permission to access
     """
-    return queryset.all_for(context.request.user, permission)
+    if queryset:
+        return queryset.all_for(context.request.user, permission)
+    else:
+        return None
 
 
 @register.simple_tag(takes_context=True)
