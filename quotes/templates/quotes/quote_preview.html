@@ -44,7 +44,7 @@
                 <div class="row header_top">
                     <div class="col-lg-1">
                         <p>
-                            1
+                            Page 1
                         </p>
                     </div>
                     <div class="col-lg-11">
@@ -59,20 +59,20 @@
                         <p>
                             {{ object.user.name }}<br/>
                             {{ object.user.email }}<br/>
-                            {{ object.user.contactinfo.phone_number }}
                         </p>
                     </div>
                     <div class="col-lg-4">
                         <p>
-                            {{ object.user.contactinfo.address }}<br/>
-                            {{ object.user.contactinfo.addesss_2 }}
+                            {{ object.user.contact_info.address }}<br/>
+                            {{ object.user.contact_info.address_2 }}<br/>
+                            {{ object.user.contact_info.city }}
                         </p>
                     </div>
                     <div class="col-lg-4">
                         <p>
-                            {{ object.user.contactinfo.city }}<br/>
-                            {{ object.user.contactinfo.state }}<br/>
-                            {{ object.user.contactinfo.country }} {{ object.user.contactinfo.zip }}
+                            {{ object.user.contact_info.state }}<br/>
+                            {{ object.user.contact_info.country }} {{ object.user.contact_info.zip }}<br/>
+                            {{ object.user.contact_info.phone_number }}
                         </p>
                     </div>
                 </div>
