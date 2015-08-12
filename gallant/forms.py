@@ -106,6 +106,6 @@ class ContactInfoForm(forms.ModelForm):
                   'city', 'state', 'zip']
 
 
-class AccountAddForm(forms.Form):
+class EmailForm(forms.Form):
     email = forms.EmailField()
 

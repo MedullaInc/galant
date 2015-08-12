@@ -32,6 +32,29 @@ class GallantAccountTest(LiveServerTestCase):
         success_message = b.find_element_by_class_name('alert-success')
         self.assertTrue(u'Registration link sent.' in success_message.text)
 
+    def test_reset_password(self):
+        b = browser.instance()
+        autofixture.create_one('gallant.GallantUser', generate_fk=True,
+                                      field_values={'email': 'foo@bar.com'})
+
+        user = autofixture.create_one('gallant.GallantUser', generate_fk=True,
+                                      field_values={'password': hashers.make_password('password'),
+                                                    'is_superuser': True})
+        user.save()
+        self.client.login(email=user.email, password='password')
+        b.add_cookie({u'domain': u'localhost', u'name': u'sessionid',
+                                 u'value': self.client.session.session_key,
+                                 u'path': u'/', u'httponly': True, u'secure': False})
+
+        b.get(self.live_server_url + reverse('reset_password'))
+
+        b.find_element_by_name('email').send_keys('foo@bar.com')
+
+        b.find_element_by_xpath('//button[@type="submit"]').click()
+
+        success_message = b.find_element_by_class_name('alert-success')
+        self.assertTrue(u'Password reset link sent.' in success_message.text)
+
     def test_register(self):
         b = browser.instance()
 

@@ -52,5 +52,6 @@ urlpatterns = i18n_patterns(
 
     url(r'^register/(?P<pk>[0-9]+)', gallant.views.Register.as_view(), name='register'),
     url(r'^account/add/', login_required(gallant.views.AccountAdd.as_view()), name='add_account'),
+    url(r'^account/reset/', login_required(gallant.views.PasswordReset.as_view()), name='reset_password'),
     url(r'^feedback/', gallant.views.SubmitFeedback.as_view(), name='feedback'),
 )
