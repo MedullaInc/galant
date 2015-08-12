@@ -11,16 +11,16 @@
                 </p>
 
                 <p class="sub-main">
-                    {{ site.name }} was brewed in the heart of Silicon Valley with the sole purpose of helping
-                    agencies and freelancers operate their business, so they can focus on what
-                    they do best: create.
+                    {{ site.name }} was brewed in the heart of Silicon Valley, in close collaboration
+                    with internationally acclaimed creative agencies.<br><br>Our sole purpose is to
+                    help agencies and freelancers operate their business. That way you can focus on what
+                    you do best: create.
                     <br><br>
-                    Get organized.
                 </p>
 
                 {% if user.is_authenticated == False %}
                     <a href="{% url 'signup' %}" type="button" class="btn btn-default giant" name="signup">
-                        {% trans 'Sign Up Now!' %}
+                        {% trans 'Get organized.' %}
                     </a>
                 {% endif %}
 
