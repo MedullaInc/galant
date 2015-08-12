@@ -167,7 +167,6 @@ class QuotePDF(PDFTemplateView):
 
     def get(self, request, *args, **kwargs):
         quote = q.Quote.objects.get_for(request.user, 'view_quote', pk=kwargs['pk'])
-
         return self.render_to_response({'object': quote}, filename=slugify(quote.client.name + "_" + quote.name))
 
     def get_cmd_options(self):
