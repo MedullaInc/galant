@@ -10,7 +10,7 @@ from quotes import models as q
 from quotes import forms as qf
 from gallant import forms as gf
 from django.utils.text import slugify
-from phantom_pdf import RequestToPDF
+from wkhtmltopdf.views import PDFTemplateView
 
 class QuoteUpdate(View):
     def get(self, request, **kwargs):
@@ -162,20 +162,19 @@ class QuoteTemplateView(View):
                                 context=context)
 
 
-class PhantomJSBin(RequestToPDF):
-    def __init__(self, *args, **kwargs):
-        super(PhantomJSBin, self).__init__(PHANTOMJS_BIN='/usr/local/bin/phantomjs',*args,**kwargs)
+class QuotePDF(PDFTemplateView):
+    template_name = 'quotes/quote_preview.html'
 
+    def get(self, request, *args, **kwargs):
+        quote = q.Quote.objects.get_for(request.user, 'view_quote', pk=kwargs['pk'])
+        return self.render_to_response({'object': quote}, filename=slugify(quote.client.name + "_" + quote.name))
 
-def quote_pdf(request, *args, **kwargs):
-    # Get quote
-    quote = q.Quote.objects.get_for(request.user, 'view_quote', pk=kwargs['pk'])
-
-    # Render PDF
-    filename = slugify(quote.client.name + "_" + quote.name)
-    pjs = PhantomJSBin()
-    request.path = reverse('quote_preview', args=[quote.id])
-    return pjs.request_to_pdf(request, filename, format="A4", orientation="portrait")
+    def get_cmd_options(self):
+        return {
+            # 'orientation': 'portrait',
+            # 'collate': True,
+            # 'quiet': None,
+        }
 
 
 def quote_preview(request, *args, **kwargs):
