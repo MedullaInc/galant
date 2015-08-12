@@ -784,6 +784,7 @@ button:active {
     .navbar-header {
         float: none;
     }
+
 }
 
 .header-19 .navbar-collapse.collapse,
@@ -2040,6 +2041,7 @@ h3.area_title {
         border: none;
         border-bottom: 1px solid #666666;
     }
+
 }
 
 /* Detail View  / Questions / Briefs */
@@ -2208,7 +2210,7 @@ div.modal-dialog div.modal-body {
 }
 
 div.modal-dialog div.modal-footer {
-    display:none;
+    display: none;
 }
 
 /* End Modal Boxes*/
@@ -2327,13 +2329,14 @@ ul.nav-tabs li a#add_translation_button {
     top: 0px;
 }
 
-#form textarea {
+#form textarea, textarea.form-control {
     font-weight: 200;
     color: #666666;
     -webkit-border-radius: 0px;
     -moz-border-radius: 0px;
     border-radius: 0px;
     margin-top: 0px;
+    border: 1px solid #333;
 }
 
 input[type="text"].form-control {
@@ -2352,40 +2355,39 @@ input[type="text"].form-control {
 /* Alerts */
 
 div.alert.alert-info {
- margin-bottom: 10px;
+    margin-bottom: 10px;
 }
 
 #feedback {
-  height: 104px;
-  width: 104px;
-  position: fixed;
-  top: 40%;
-  z-index: 999;
-  transform: rotate(-90deg);
-  -webkit-transform: rotate(-90deg);
-  -moz-transform: rotate(-90deg);
-  -o-transform: rotate(-90deg);
-  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+    position: fixed;
+    top: 40%;
+    z-index: 999;
+    transform: rotate(-90deg);
+    -webkit-transform: rotate(-90deg);
+    -moz-transform: rotate(-90deg);
+    -o-transform: rotate(-90deg);
+    filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+    border: 1px solid #666;
 }
 
 #feedback a {
-  display: block;
-  background: #9bd;
-  height: 27px;
-  width: 90px;
-  padding: 1px 5px;
-  color: #fff;
-  font-family: Arial, sans-serif;
-  font-size: 17px;
-  font-weight: bold;
-  text-decoration: none;
-  border-bottom: solid 1px #333;
-  border-left: solid 1px #333;
-  border-right: solid 1px #fff;
-  cursor: pointer;
+    display: block;
+    background: #fff;
+    padding: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    color: #666;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    font-weight: 100;
+    text-decoration: none;
+    cursor: pointer;
+    letter-spacing: 1px;
 }
 
 #feedback a:hover {
-  background: #36c;
+    background: #cecece;
+    color: #ffffff
 }
+
 /* End Alerts */

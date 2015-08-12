@@ -75,7 +75,7 @@ class SignUpRequestForm(forms.Form):
 class FeedbackForm(forms.Form):
     email = forms.EmailField()
     feedback = forms.CharField(required=False,
-                               widget=forms.Textarea(attrs={'rows': 5}),
+                               widget=forms.Textarea(attrs={'rows': 10}),
                                max_length=2000,
                                help_text='Please enter comments, thoughts, or bug reports.')
 

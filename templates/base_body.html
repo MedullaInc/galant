@@ -1,6 +1,16 @@
 {% extends "base.html" %}
 {% load staticfiles bootstrap i18n gallant_tags %}
 
+{% block extra_head %}
+
+    <script>
+    $(document).ready(function(){
+        $('#feedback').css("right", "-"+ (($('#feedback').width()/2)-31) +'px');
+    });
+    </script>
+
+{% endblock extra_head %}
+
 {% block body %}
 
     <div class="page-wrapper">
@@ -107,7 +117,11 @@
         </div>
     </div>
     <div id="feedback">
-        <a>{% trans 'Feedback' %}</a>
+        {% if title %}
+        <a>{% with _('Leave Feedback for: ') as text %}{{ text|add:title }}{% endwith %}</a>
+        {% else %}
+        <a>{% with _('Leave Feedback') as text %}{{ text }}{% endwith %}</a>
+        {% endif %}
     </div>
 
     <script>
@@ -122,7 +136,7 @@
 
         $('#feedback').click(function () {
             $.get("{% url 'feedback' %}", function (data) {
-                $('#base_modal .section_title').html("Tell us what you think");
+                $('#base_modal .section_title').html("Leave Feedback");
                 $('#base_modal .modal-body').html(data);
                 $('#base_modal #form').submit(function () {
                     $.post("{% url 'feedback' %}", $(this).serialize(), function () {
