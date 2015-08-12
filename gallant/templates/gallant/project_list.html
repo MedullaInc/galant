@@ -21,7 +21,7 @@
         <th>{% trans "Client" %}</th>
         </thead>
         {% for project in object_list %}
-            <tr data-rel="{{ project.id }}" style="cursor: pointer">
+            <tr data-rel="{{ project.id }}" style="cursor: pointer" class="project_row">
                 <td>{{ project.name }}</td>
                 <td>{{ project.get_status_display }}</td>
                 <td>{{ project.quote.client }}</td>
@@ -60,7 +60,7 @@
             $('#quote_select').modal('show');
         });
         
-        $('.table > tbody > tr').click(function () {
+        $('.table .project_row').click(function () {
             window.location.href = "{% url 'project_detail' %}" + $(this).attr('data-rel')
         });
 
