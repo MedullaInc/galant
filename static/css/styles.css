@@ -2360,7 +2360,7 @@ div.alert.alert-info {
 
 #feedback {
     position: fixed;
-    top: 30%;
+    top: 40%;
     right: -100%;
     z-index: 999;
     transform: rotate(-90deg);
