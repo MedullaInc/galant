@@ -5,13 +5,14 @@ from django.utils.translation import get_language
 from django.conf import settings
 from django.contrib import messages
 from django.core.urlresolvers import reverse
-from gallant.utils import get_one_or_404
+from gallant.utils import get_one_or_404, url_to_pdf
 from quotes import models as q
 from quotes import forms as qf
 from gallant import forms as gf
 from gallant import models as g
 from django.utils.text import slugify
-from wkhtmltopdf.views import PDFTemplateView
+from wkhtmltopdf.views import PDFResponse
+
 
 class QuoteUpdate(View):
     def get(self, request, **kwargs):
@@ -163,27 +164,19 @@ class QuoteTemplateView(View):
                                 context=context)
 
 
-class QuotePDF(PDFTemplateView):
-    template_name = 'quotes/quote_preview.html'
-
+class QuotePDF(View):
     def get(self, request, *args, **kwargs):
         quote = q.Quote.objects.get_for(request.user, 'view_quote', pk=kwargs['pk'])
-        return self.render_to_response({'object': quote}, filename=slugify(quote.client.name + "_" + quote.name))
+        url = '%s://%s%s' % (request.scheme, request.get_host(), reverse('quote_preview', args=[quote.id]))
+        filename = slugify(quote.client.name + "_" + quote.name)
 
-    def get_cmd_options(self):
-        return {
-            # 'orientation': 'portrait',
-            # 'collate': True,
-            # 'quiet': None,
-        }
+        return PDFResponse(url_to_pdf(url, request.session.session_key), filename=filename)
 
 
 def quote_preview(request, *args, **kwargs):
     # Get quote
-    user = g.GallantUser.objects.get(pk=1)
-    quote = q.Quote.objects.get_for(user, 'view_quote', pk=kwargs['pk'])
+    quote = q.Quote.objects.get_for(request.user, 'view_quote', pk=kwargs['pk'])
 
     # Render HTML
     context = {'object': quote}
     return TemplateResponse(request, template="quotes/quote_preview.html", context=context)
-

@@ -1,3 +1,4 @@
+from subprocess import check_output
 from allauth.account.adapter import DefaultAccountAdapter
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
@@ -42,3 +43,10 @@ def site_processor(request):
 # context processor, adds DEBUG to templates
 def debug_processor(request):
     return {'DEBUG': settings.DEBUG}
+
+
+def url_to_pdf(url, session_key):
+    args = ['wkhtmltopdf', '--encoding', u'utf8', '--cookie', 'sessionid',
+            session_key, '--quiet', url, '-']
+
+    return check_output(args)
