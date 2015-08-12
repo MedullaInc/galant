@@ -232,11 +232,14 @@ def _send_signup_request_email(form):
               ['contact@galant.co'], fail_silently=False)
 
 
-def _send_feedback_email(request, form):
-    message = 'User Email: %s\nFeedback:\n%s\nCookies:%s\n' % (
-        request.user.email if request.user.is_authenticated() else form.cleaned_data['email'],
+def _send_feedback_email(form, path):
+    user = form.request.user
+    message = 'User Email: %s\nFeedback:\n%s\n\nUserAgent: %s\nURL: %s\nCookies: %s\n' % (
+        user.email if user.is_authenticated() else form.cleaned_data['email'],
         form.cleaned_data['feedback'],
-        request.COOKIES,
+        form.request.META['HTTP_USER_AGENT'],
+        path,
+        form.request.COOKIES,
     )
     send_mail('Signup request', message, settings.EMAIL_HOST_USER,
               ['contact@galant.co'], fail_silently=False)
@@ -269,17 +272,19 @@ class SignUpRequest(View):
 class SubmitFeedback(View):
     @staticmethod
     def get(request):
+        section_title = request.GET.get('section_title', None)
         return render(request, 'gallant/form.html', {
-            'form': forms.FeedbackForm(request.user),
+            'form': forms.FeedbackForm(request, section_title),
             'submit_text': 'Submit'
         })
 
     @staticmethod
     def post(request):
-        form = forms.FeedbackForm(request.user, request.POST)
+        path = request.GET.get('path', None)
+        form = forms.FeedbackForm(request, None, request.POST)
 
         if form.is_valid():
-            _send_feedback_email(request, form)
+            _send_feedback_email(form, path)
             messages.success(request, 'Feedback sent.')
             return HttpResponse('Thank you.')
         else:

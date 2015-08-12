@@ -79,10 +79,13 @@ class FeedbackForm(forms.Form):
                                max_length=2000,
                                help_text='Please enter comments, thoughts, or bug reports.')
 
-    def __init__(self, user, *args, **kwargs):
+    def __init__(self, request, section_title, *args, **kwargs):
         super(FeedbackForm, self).__init__(*args, **kwargs)
-        if user.is_authenticated():
-            self.initial['email'] = user.email
+        self.request = request
+
+        self.fields['feedback'].label = 'Current section: %s' % section_title
+        if request.user.is_authenticated():
+            self.initial['email'] = request.user.email
             self.fields['email'].widget = forms.HiddenInput()
 
 

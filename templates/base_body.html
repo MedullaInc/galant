@@ -135,14 +135,19 @@
         });
 
         $('#feedback').click(function () {
-            $.get("{% url 'feedback' %}", function (data) {
+            var section_title = $('.sidebar .section_title').text().trim();
+            if (section_title.length == 0) {
+                section_title = "Main";
+            }
+            $.get("{% url 'feedback' %}?section_title=" + section_title, function (data) {
                 $('#base_modal .section_title').html("Leave Feedback");
                 $('#base_modal .modal-body').html(data);
                 $('#base_modal #form').submit(function () {
-                    $.post("{% url 'feedback' %}", $(this).serialize(), function () {
-                        $('#base_modal').modal('hide');
-                        location.reload(true);
-                    });
+                    $.post("{% url 'feedback' %}?path={{ request.path }}",
+                            $(this).serialize(), function () {
+                                $('#base_modal').modal('hide');
+                                location.reload(true);
+                            });
                     return false;
                 });
                 $('#base_modal').modal('show');
