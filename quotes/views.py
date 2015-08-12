@@ -9,6 +9,7 @@ from gallant.utils import get_one_or_404
 from quotes import models as q
 from quotes import forms as qf
 from gallant import forms as gf
+from gallant import models as g
 from django.utils.text import slugify
 from wkhtmltopdf.views import PDFTemplateView
 
@@ -179,7 +180,8 @@ class QuotePDF(PDFTemplateView):
 
 def quote_preview(request, *args, **kwargs):
     # Get quote
-    quote = q.Quote.objects.get_for(request.user, 'view_quote', pk=kwargs['pk'])
+    user = g.GallantUser.objects.get(pk=1)
+    quote = q.Quote.objects.get_for(user, 'view_quote', pk=kwargs['pk'])
 
     # Render HTML
     context = {'object': quote}

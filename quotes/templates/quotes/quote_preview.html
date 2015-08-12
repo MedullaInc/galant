@@ -42,37 +42,34 @@
         <header class="header">
             <div class="container">
                 <div class="row header_top">
-                    <div class="col-lg-1">
+                    <div class="col-xs-12">
                         <p>
-                            Page 1
-                        </p>
-                    </div>
-                    <div class="col-lg-11">
-                        <p>
-                            {{ object.client.name }}<br/>
+                            <strong>{{ object.client.name }}</strong><br/>
                             {{ object.name }}
                         </p>
                     </div>
                 </div>
                 <div class="row header_bottom">
-                    <div class="col-lg-4">
+                    <div class="col-xs-4">
                         <p>
-                            {{ object.user.name }}<br/>
+                            <strong>{{ object.user.name }}</strong><br/>
                             {{ object.user.email }}<br/>
+                            {{ object.user.contact_info.phone_number }}
                         </p>
                     </div>
-                    <div class="col-lg-4">
+                    <div class="col-xs-4">
                         <p>
+                            <strong>{% trans "Address" %}</strong><br/>
                             {{ object.user.contact_info.address }}<br/>
                             {{ object.user.contact_info.address_2 }}<br/>
-                            {{ object.user.contact_info.city }}
                         </p>
                     </div>
-                    <div class="col-lg-4">
+                    <div class="col-xs-4">
                         <p>
+                            <br/>
+                            {{ object.user.contact_info.city }},
                             {{ object.user.contact_info.state }}<br/>
                             {{ object.user.contact_info.country }} {{ object.user.contact_info.zip }}<br/>
-                            {{ object.user.contact_info.phone_number }}
                         </p>
                     </div>
                 </div>
@@ -82,33 +79,72 @@
         <section class="content-1">
             <div class="holder v-center">
                 <div class="container">
-                    <div class="row">
-                        <div class="col-lg-offset-2 col-lg-10 section_title">
-                            <h2>
-                                This is a section title for the quote, it is not centered on the page
-                            </h2>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-offset-4 col-lg-8 section_content">
-                            <p>
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus et eros in quam eleifend ullamcorper. Integer cursus, nunc non congue sagittis, risus erat consectetur velit, a porta tellus eros et nisi. In nunc urna, commodo eu mi quis, posuere sollicitudin odio. In massa ligula, hendrerit eu elit sed, posuere rhoncus sapien. Suspendisse elit tortor, semper quis ultrices porta, placerat et nulla. Aenean non fermentum est, et vestibulum enim. Fusce quis lacinia diam. In luctus, elit quis imperdiet pulvinar, justo nibh porttitor felis, sit amet elementum ligula elit sit amet urna. Aliquam vehicula tempor ipsum, vulputate faucibus leo cursus vel. Fusce et dolor massa. Nullam dignissim pulvinar lorem non aliquet. Aliquam ex diam, viverra at dui a, convallis euismod nisl. Sed at odio sed quam aliquet eleifend sed non tortor.
-                            </p>
-                            <p>
-                                Sed tempus eget felis vitae faucibus. Maecenas facilisis nibh egestas dignissim rutrum. Nunc urna purus, facilisis sed leo id, accumsan fermentum lacus. Fusce ultricies sit amet eros in rhoncus. Nulla nec quam velit. Vivamus auctor vel lorem ut mollis. Vivamus id convallis nulla, ut ultrices nunc. In at velit quis sapien maximus blandit. Nunc cursus feugiat leo, ut pellentesque justo commodo vitae. Duis non sapien aliquam, gravida lacus a, molestie orci. Mauris maximus libero non ante semper, eget convallis tortor congue. Aliquam fringilla accumsan ultricies.
-                            </p>
-                        </div>
-                    </div>
+                    {% for section in object.all_sections %}
+                        {% if section.service %}
+                            {% with service=section.service %}
+                                <div class="row">
+                                    <div class="col-xs-offset-2 col-xs-10 section_title">
+                                        <h2>
+                                            {{ service.name.get_text }}
+                                        </h2>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-offset-4 col-xs-8 section_content">
+                                        <p>
+                                            {{ service.description.get_text }}
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-offset-4 col-xs-4 section_content">
+                                        <p>
+                                            {% trans "Service Cost:" %}
+                                        </p>
+                                    </div>
+                                    <div class="col-xs-4 section_content">
+                                        <p>
+                                            {{ service.cost }} &times; {{ service.quantity }}
+                                        </p>
+                                    </div>
+                                </div>
+                            {% endwith %}
+                        {% else %}
+                            <div class="row">
+                                <div class="col-xs-offset-2 col-xs-10 section_title">
+                                    <h2>
+                                        {{ section.title.get_text }}
+                                    </h2>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-offset-4 col-xs-8 section_content">
+                                    <p>
+                                        {{ section.text.get_text }}
+                                    </p>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
                 </div>
             </div>
         </section>
 
         <footer class="footer">
             <div class="container">
-                <div class="row">
-                    <div class="col-lg-4">
+                <div class="row content_footer">
+                    <div class="col-xs-4">
                         <p>
-                            Created using {{ site.domain }}
+                            {% trans "Created using" %} {{ site.domain }}
+                        </p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-11">
+                    </div>
+                    <div class="col-xs-1">
+                        <p class="pull-right">
+                            <strong>1 / 3</strong>
                         </p>
                     </div>
                 </div>
