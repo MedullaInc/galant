@@ -167,7 +167,7 @@ class Service(UserModel):
     notes = m.ManyToManyField(Note)
 
     def get_total_cost(self):
-        total = self.cost
+        total = self.cost * self.quantity
         for sub in self.sub_services.all_for(self.user, 'view_service'):
             total += sub.get_total_cost()
 

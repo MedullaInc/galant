@@ -83,7 +83,7 @@
                         {% if section.service %}
                             {% with service=section.service %}
                                 <div class="row">
-                                    <div class="col-xs-offset-2 col-xs-10 section_title">
+                                    <div class="col-xs-offset-2 col-xs-8 section_title">
                                         <h2>
                                             {{ service.name.get_text }}
                                         </h2>
@@ -91,9 +91,7 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-xs-offset-4 col-xs-8 section_content">
-                                        <p>
-                                            {{ service.description.get_text }}
-                                        </p>
+                                        {{ service.description.get_text|linebreaks }}
                                     </div>
                                 </div>
                                 <div class="row">
@@ -111,7 +109,7 @@
                             {% endwith %}
                         {% else %}
                             <div class="row">
-                                <div class="col-xs-offset-2 col-xs-10 section_title">
+                                <div class="col-xs-offset-2 col-xs-8 section_title">
                                     <h2>
                                         {{ section.title.get_text }}
                                     </h2>
@@ -119,13 +117,82 @@
                             </div>
                             <div class="row">
                                 <div class="col-xs-offset-4 col-xs-8 section_content">
-                                    <p>
-                                        {{ section.text.get_text }}
-                                    </p>
+                                    {{ section.text.get_text|linebreaks }}
                                 </div>
                             </div>
                         {% endif %}
                     {% endfor %}
+                    <div class="row">
+                        <div class="col-xs-offset-2 col-xs-10 section_title">
+                            <h2>
+                                {% trans "Prices" %}
+                            </h2>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-offset-4 col-xs-2 section_content">
+                            <p>
+                                <strong>{% trans "Service" %}</strong>
+                            </p>
+                        </div>
+                        <div class="col-xs-2 section_content">
+                            <p>
+                                <strong>{% trans "Quantity" %}</strong>
+                            </p>
+                        </div>
+                        <div class="col-xs-2 section_content">
+                            <p>
+                                <strong>{% trans "Unit Price" %}</strong>
+                            </p>
+                        </div>
+                        <div class="col-xs-2 section_content">
+                            <p>
+                                <strong>{% trans "Subtotal" %}</strong>
+                            </p>
+                        </div>
+                    </div>
+                        {% for section in object.all_sections %}
+                            {% if section.service %}
+                                {% with service=section.service %}
+                                    <div class="row">
+                                        <div class="col-xs-offset-4 col-xs-2 section_content">
+                                            <p>
+                                                {{ service.name.get_text }}
+                                            </p>
+                                        </div>
+                                        <div class="col-xs-2 section_content">
+                                            <p>
+                                                {{ service.quantity }}
+                                            </p>
+                                        </div>
+                                        <div class="col-xs-2 section_content">
+                                            <p>
+                                                {{ service.cost }}
+                                            </p>
+                                        </div>
+                                        <div class="col-xs-2 section_content">
+                                            <p>
+                                                {{ service.get_total_cost }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                {% endwith %}
+                            {% endif %}
+                        {% endfor %}
+
+                    <div class="row">
+                        <div class="col-xs-offset-8 col-xs-2 section_content">
+                            <p>
+                                <strong>{% trans "Total" %}</strong>
+                            </p>
+                        </div>
+                        <div class="col-xs-2 section_content">
+                            <p>
+                                <strong>{{ object.get_total_cost }}</strong>
+                            </p>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </section>
