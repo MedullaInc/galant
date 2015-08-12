@@ -2360,7 +2360,8 @@ div.alert.alert-info {
 
 #feedback {
     position: fixed;
-    top: 40%;
+    top: 30%;
+    right: -100%;
     z-index: 999;
     transform: rotate(-90deg);
     -webkit-transform: rotate(-90deg);
@@ -2368,12 +2369,14 @@ div.alert.alert-info {
     -o-transform: rotate(-90deg);
     filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
     border: 1px solid #666;
+    border-bottom: 0px;
 }
 
 #feedback a {
     display: block;
-    background: #fff;
+    background: #ffffff;
     padding: 10px;
+    padding-bottom: 20px;
     padding-left: 20px;
     padding-right: 20px;
     color: #666;
@@ -2386,7 +2389,7 @@ div.alert.alert-info {
 }
 
 #feedback a:hover {
-    background: #cecece;
+    background-color: #cecece;
     color: #ffffff
 }
 
