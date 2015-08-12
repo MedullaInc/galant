@@ -33,8 +33,9 @@ class QuoteTemplatesTest(browser.SignedInTest):
 
     def test_edit_quote_template(self):
         b = browser.instance()
-        q = get_blank_quote_autofixture()
-        qt = autofixture.create_one('quotes.QuoteTemplate', generate_fk=False, field_values={'quote': q})
+        q = get_blank_quote_autofixture(self.user)
+        qt = autofixture.create_one('quotes.QuoteTemplate', generate_fk=False,
+                                    field_values={'quote': q, 'user': self.user})
         b.get(self.live_server_url + reverse('edit_quote_template', args=[qt.id]))
         self.load_scripts()
 
@@ -49,8 +50,9 @@ class QuoteTemplatesTest(browser.SignedInTest):
 
     def test_edit_quote_lang_dropdown(self):
         b = browser.instance()
-        q = get_blank_quote_autofixture()
-        qt = autofixture.create_one('quotes.QuoteTemplate', generate_fk=False, field_values={'quote': q})
+        q = get_blank_quote_autofixture(self.user)
+        qt = autofixture.create_one('quotes.QuoteTemplate', generate_fk=False,
+                                    field_values={'quote': q, 'user': self.user})
         b.get(self.live_server_url + reverse('edit_quote_template', args=[qt.id]))
         self.load_scripts()
         self._add_language_and_text(b)
@@ -58,7 +60,7 @@ class QuoteTemplatesTest(browser.SignedInTest):
     def test_add_from_quote(self):
         b = browser.instance()
 
-        q = get_blank_quote_autofixture()
+        q = get_blank_quote_autofixture(self.user)
         b.get(self.live_server_url + reverse('add_quote_template', kwargs={'quote_id': q.id}))
         self.load_scripts()
 
@@ -68,11 +70,13 @@ class QuoteTemplatesTest(browser.SignedInTest):
     def test_add_quote_from_template(self):
 
         b = browser.instance()
-        q = get_blank_quote_autofixture()
+        q = get_blank_quote_autofixture(self.user)
         q.intro().title.set_text('en', 'hello')
         q.intro().save()
-        qt = autofixture.create_one('quotes.QuoteTemplate', generate_fk=False, field_values={'quote': q})
-        c = autofixture.create_one('gallant.Client', generate_fk=True)
+        qt = autofixture.create_one('quotes.QuoteTemplate', generate_fk=False,
+                                    field_values={'quote': q, 'user': self.user})
+        c = autofixture.create_one('gallant.Client', generate_fk=True,
+                                   field_values={'user': self.user})
         c.save()
         b.get(self.live_server_url + reverse('add_quote') + '?template_id=%d&lang=en' % qt.id)
         self.load_scripts()

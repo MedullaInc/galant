@@ -1,20 +1,40 @@
 import operator
-from django.shortcuts import get_object_or_404
+from django.core.exceptions import ValidationError
 from django.template.loader import get_template
 from django import forms
 from briefs import models as b
+from gallant import models as g
 from gallant import forms as gf
 from gallant import fields as gfields
+from gallant.utils import get_one_or_404
 import re
 
 
 class BriefForm(gf.UserModelForm):
     class Meta:
         model = b.Brief
-        fields = ['title']
+        fields = ['title', 'client', 'quote']
+
+    def __init__(self, user, *args, **kwargs):
+        super(BriefForm, self).__init__(user, *args, **kwargs)
+        self.fields['quote'].widget = forms.HiddenInput()
+        self.fields['quote'].required = False
+        if 'client' in self.initial:
+            self.fields['client'].widget = forms.HiddenInput()
+        else:
+            self.fields['client'].queryset = g.Client.objects.all_for(self.user, 'view_client')
+
+    def clean_client(self):
+        client = self.cleaned_data['client']
+        if client is None:
+            raise ValidationError('Please select a client.')
+        elif self.user.has_perm('view_client', client):
+            return client
+        else:
+            raise ValidationError('Invalid client.')
 
 
-class BriefTemplateForm(BriefForm):
+class BriefTemplateForm(gf.UserModelForm):
     class Meta:
         model = b.Brief
         fields = ['name']
@@ -23,14 +43,14 @@ class BriefTemplateForm(BriefForm):
 class QuestionForm(gf.UserModelForm):
     class Meta:
         model = b.TextQuestion
-        fields = ['question', 'index']
+        fields = ['question', 'index', 'is_long_answer']
 
     def __init__(self, user, data=None, prefix=None, *args, **kwargs):
         # see if update or create
         prefix = prefix or ''
         data = data or {}
         if prefix + '-id' in data:
-            question = get_object_or_404(b.TextQuestion, pk=data[prefix + '-id'])
+            question = get_one_or_404(user, 'change_textquestion', b.TextQuestion, pk=data[prefix + '-id'])
             super(QuestionForm, self).__init__(user, data=data, prefix=prefix, instance=question, *args, **kwargs)
         else:
             super(QuestionForm, self).__init__(user, data=data, prefix=prefix, *args, **kwargs)
@@ -54,7 +74,8 @@ class MultiQuestionForm(gf.UserModelForm):
         prefix = prefix or ''
         data = data or {}
         if prefix + '-id' in data:
-            question = get_object_or_404(b.MultipleChoiceQuestion, pk=data[prefix + '-id'])
+            question = get_one_or_404(user, 'change_multiplechoicequestion',
+                                      b.MultipleChoiceQuestion, pk=data[prefix + '-id'])
             super(MultiQuestionForm, self).__init__(user, data=data, prefix=prefix, instance=question, *args, **kwargs)
         else:
             super(MultiQuestionForm, self).__init__(user, data=data, prefix=prefix, *args, **kwargs)
@@ -75,13 +96,16 @@ class BriefAnswersForm(gf.UserModelForm):
 
     def answer_forms(self, data=None):
         af = []
-        for q in self.instance.brief.questions.all().order_by('index'):
+        for q in self.instance.brief.questions\
+                     .all_for(self.instance.brief.user, 'view_question')\
+                     .order_by('index'):
             if type(q) is b.TextQuestion:
-                FormType = AnswerForm
+                if q.is_long_answer:
+                    FormType = LongAnswerForm
+                else:
+                    FormType = AnswerForm
             elif type(q) is b.MultipleChoiceQuestion:
                 FormType = MultipleChoiceAnswerForm
-            elif type(q) is b.LongAnswerQuestion:
-                FormType = LongAnswerForm
 
             af.append(FormType(self.instance.brief.user, q, data))
 
@@ -111,7 +135,9 @@ def question_forms_request(request):
 def question_forms_brief(brief, clear_pk=False):
     qf = []
     user = brief.user
-    for question in brief.questions.all().order_by('index'):
+    for question in brief.questions\
+                         .all_for(user, 'view_question')\
+                         .order_by('index'):
         if clear_pk:
             question.pk = None
         if type(question) is b.MultipleChoiceQuestion:

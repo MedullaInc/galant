@@ -63,10 +63,8 @@
             </div>
         </div>
 
-        <div class="row service_type margin-bottom-10">
-            <div class="col-lg-2">
-                Type:&nbsp;&nbsp;
-            </div>
+        <div class="row service_type margin-bottom-10 form-group {% if form.type.errors %}has-error{% endif %}">
+            <label class="control-label col-lg-2" for="id_client">Type:</label>
             <div class="col-lg-10">
                 <select class=" form-control" id="id_{{ prefix }}type" name="{{ prefix }}type">
                     <option value="" {% if '' == service.type %}selected="selected"{% endif %}>---------</option>
@@ -74,6 +72,7 @@
                         <option value="{{ value }}" {% if value == service.type %}selected="selected"{% endif %}>{{ text }}</option>
                     {% endfor %}
                 </select>
+                <span class="help-block ">{{ form.type.errors.as_text }}</span>
             </div>
         </div>
 

@@ -1,7 +1,8 @@
+from django.core.exceptions import ValidationError
+from gallant.utils import get_one_or_404
 from quotes import models as q
 from gallant import models as g
 from gallant import forms as gf
-from django.shortcuts import get_object_or_404
 from django.template.loader import get_template
 import operator
 import re
@@ -12,8 +13,19 @@ class QuoteForm(gf.UserModelForm):
         model = q.Quote
         fields = ['name', 'client', 'status']
 
+    def __init__(self, *args, **kwargs):
+        super(QuoteForm, self).__init__(*args, **kwargs)
+        self.fields['client'].queryset = g.Client.objects.all_for(self.user, 'view_client')
 
-class QuoteTemplateForm(QuoteForm):
+    def clean_client(self):
+        client = self.cleaned_data['client']
+        if self.user.has_perm('view_client', client):
+            return client
+        else:
+            raise ValidationError('Invalid client.')
+
+
+class QuoteTemplateForm(gf.UserModelForm):
     class Meta:
         model = q.Quote
         fields = ['name']
@@ -77,7 +89,8 @@ class SectionForm(gf.UserModelForm):
         prefix = prefix or ''
         data = data or {}
         if prefix + '-id' in data:
-            section = get_object_or_404(q.TextSection, pk=data[prefix + '-id'])
+            section = get_one_or_404(user, 'change_textsection',
+                                     q.TextSection, pk=data[prefix + '-id'])
             super(SectionForm, self).__init__(user, data=data, prefix=prefix, instance=section, *args, **kwargs)
         else:
             super(SectionForm, self).__init__(user, data=data, prefix=prefix, *args, **kwargs)
@@ -90,7 +103,8 @@ class SectionForm(gf.UserModelForm):
             section = self.instance
         else:
             section = self.save(commit=False)
-        context = {'prefix': self.prefix + '-', 'name': section.name, 'section': section}
+        context = {'prefix': self.prefix + '-', 'name': section.name,
+                   'section': section, 'form': self}
         if section.name != 'margin' and section.name != 'intro':
             context.update({'extra_class': 'dynamic_section'})
         return t.render(context)
@@ -110,7 +124,8 @@ class ServiceSectionForm(gf.UserModelForm):
             self.section = instance
             self.instance = self.section.service
         elif self.prefix + '-id' in self.data:
-            self.section = get_object_or_404(q.ServiceSection, pk=self.data[self.prefix + '-id'])
+            self.section = get_one_or_404(user, 'change_servicesection',
+                                          q.ServiceSection, pk=self.data[self.prefix + '-id'])
             self.instance = self.section.service
         else:
             name = self.data[self.prefix + '-section_name']
@@ -122,7 +137,7 @@ class ServiceSectionForm(gf.UserModelForm):
         t = get_template('quotes/service_section_form.html')
 
         return t.render({'prefix': self.prefix + '-', 'section': self.section,
-                         'type_choices': g.ServiceType.choices(),
+                         'type_choices': g.ServiceType.choices(), 'form': self,
                          'extra_class': 'dynamic_section'})
 
     def save(self, commit=True):

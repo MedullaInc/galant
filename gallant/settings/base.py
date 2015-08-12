@@ -47,7 +47,12 @@ INSTALLED_APPS = (
     'custom_user',
     'selenium',
     'django_nose',
-    
+    'guardian',
+    'django_countries',
+    'localflavor',
+    'analytical',
+    'wkhtmltopdf',
+
     'gallant',
     'briefs',
     'quotes',
@@ -65,9 +70,17 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.security.SecurityMiddleware',
 )
 
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend', # this is default
+    'guardian.backends.ObjectPermissionBackend',
+)
+
 ROOT_URLCONF = 'gallant.urls'
 SITE_ID = 1
 LOGIN_REDIRECT_URL = '/'
+
+CLICKY_SITE_ID = '100867941'
+CRAZY_EGG_ACCOUNT_NUMBER = '00379063'
 
 TEMPLATES = [
     {
@@ -81,6 +94,8 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'django.template.context_processors.i18n',
+                'gallant.utils.site_processor',
+                'gallant.utils.debug_processor',
             ],
         },
     },
@@ -105,7 +120,14 @@ DATABASES = {
 
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# Uncomment to disable email and instead print to console
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'noreply@galant.co'
+EMAIL_HOST_PASSWORD = '*&^>*q(~3x*W}*D"'
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
@@ -141,3 +163,7 @@ ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ANONYMOUS_USER_ID = -1
+
+# Disable allauth signup for now
+ACCOUNT_ADAPTER = 'gallant.utils.NoNewUsersAccountAdapter'

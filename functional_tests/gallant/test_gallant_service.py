@@ -27,7 +27,8 @@ class GallantServiceTest(browser.SignedInTest):
 
     def test_edit_service(self):
         b = browser.instance()
-        s = autofixture.create_one('gallant.Service', generate_fk=True)
+        s = autofixture.create_one('gallant.Service', generate_fk=True,
+                                   field_values={'user': self.user})
         s.save()
         b.get(self.live_server_url + reverse('edit_service', args=[s.id]))
 
@@ -46,7 +47,8 @@ class GallantServiceTest(browser.SignedInTest):
 
     def test_add_service_note(self):
         b = browser.instance()
-        s = autofixture.create_one('gallant.Service', generate_fk=True)
+        s = autofixture.create_one('gallant.Service', generate_fk=True,
+                                   field_values={'user': self.user})
         s.save()
         b.get(self.live_server_url + reverse('service_detail', args=[s.id]))
         test_string = '2351tlgkjqlwekjalfkj'

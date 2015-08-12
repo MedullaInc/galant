@@ -20,7 +20,8 @@ class BriefsSignedInTest(browser.SignedInTest):
         b = browser.instance()
 
         # create Client
-        c = autofixture.create_one('gallant.Client', generate_fk=True)
+        c = autofixture.create_one('gallant.Client', generate_fk=True,
+                                   field_values={'user': self.user})
         c.save()
 
         # access Client Briefs & click add brief
@@ -38,10 +39,13 @@ class BriefsSignedInTest(browser.SignedInTest):
 
     def test_edit_client_brief(self):
         b = browser.instance()
-        q = autofixture.create_one('briefs.Brief', generate_fk=True)
+        c = autofixture.create_one('gallant.Client', generate_fk=True,
+                                   field_values={'user': self.user})
+        q = autofixture.create_one('briefs.Brief', generate_fk=True,
+                                   field_values={'user': self.user, 'client': c})
         q.save()
 
-        b.get(self.live_server_url + reverse('edit_brief', args=[q.client.id, q.id]))
+        b.get(self.live_server_url + reverse('edit_brief', args=[q.id]) + '?client_id=%d' % c.id)
         self.load_scripts()
 
         b.find_element_by_id('id_title').clear()
@@ -54,14 +58,17 @@ class BriefsSignedInTest(browser.SignedInTest):
 
     def test_edit_client_brief_question(self):
         b = browser.instance()
-        brief = autofixture.create_one('briefs.Brief', generate_fk=True)
+        c = autofixture.create_one('gallant.Client', generate_fk=True,
+                                   field_values={'user': self.user})
+        brief = autofixture.create_one('briefs.Brief', generate_fk=True,
+                                       field_values={'user': self.user, 'client': c})
         q = bm.TextQuestion.objects.create(user=brief.user, question='What?')
         mq = bm.MultipleChoiceQuestion.objects.create(user=brief.user, question='Huh?',
                                                       choices=['a', 'b', 'c'], index=1)
         brief.questions.add(q)
         brief.questions.add(mq)
 
-        b.get(self.live_server_url + reverse('edit_brief', args=[brief.client.id, brief.id]))
+        b.get(self.live_server_url + reverse('edit_brief', args=[brief.id]) + '?client_id=%d' % c.id)
         self.load_scripts()
 
         b.find_element_by_id('id_title').clear()
@@ -78,11 +85,14 @@ class BriefsSignedInTest(browser.SignedInTest):
 
     def test_add_client_brief_multiquestion(self):
         b = browser.instance()
-        brief = autofixture.create_one('briefs.Brief', generate_fk=True)
+        c = autofixture.create_one('gallant.Client', generate_fk=True,
+                                   field_values={'user': self.user})
+        brief = autofixture.create_one('briefs.Brief', generate_fk=True,
+                                       field_values={'user': self.user, 'client': c})
         q = bm.TextQuestion.objects.create(user=brief.user, question='What?')
         brief.questions.add(q)
 
-        b.get(self.live_server_url + reverse('edit_brief', args=[brief.client.id, brief.id]))
+        b.get(self.live_server_url + reverse('edit_brief', args=[brief.id]))
         self.load_scripts()
 
         b.find_element_by_id('add_multiquestion').click()
@@ -97,17 +107,69 @@ class BriefsSignedInTest(browser.SignedInTest):
         success_message = b.find_element_by_class_name('alert-success')
         self.assertTrue(u'Brief saved.' in success_message.text)
 
-        answer = b.find_element_by_id('question_1').text
         answer = b.find_element_by_xpath('//div[@id="question_1"]/div/div[1]').text
         self.assertEqual(answer, u'— foo')
 
     def test_client_brief_detail(self):
         b = browser.instance()
-        q = autofixture.create_one('briefs.Brief', generate_fk=True)
+        c = autofixture.create_one('gallant.Client', generate_fk=True,
+                                   field_values={'user': self.user})
+        q = autofixture.create_one('briefs.Brief', generate_fk=True,
+                                   field_values={'user': self.user, 'client': c})
         q.save()
 
-        b.get(self.live_server_url + reverse('brief_detail', args=[q.client.id, q.id]))
+        b.get(self.live_server_url + reverse('brief_detail', args=[q.id]) + '?client_id=%d' % c.id)
         self.load_scripts()
 
         section_title = browser.instance().find_element_by_class_name('section_title')
         self.assertEqual(u'Brief Detail', section_title.text)
+
+    def test_add_quote_brief(self):
+        b = browser.instance()
+        c = autofixture.create_one('gallant.Client', generate_fk=True,
+                                   field_values={'user': self.user})
+        q = autofixture.create_one('quotes.Quote', generate_fk=True,
+                                   field_values={'user': self.user, 'client': c})
+
+        b.get(self.live_server_url + reverse('add_brief') + '?quote_id=%d' % q.id)
+        self.load_scripts()
+
+        b.find_element_by_id('id_title').clear()
+        b.find_element_by_id('id_title').send_keys('modified title')
+
+        b.find_element_by_xpath('//button[@type="submit"]').click()
+
+        success_message = b.find_element_by_class_name('alert-success')
+        self.assertTrue(u'Brief saved.' in success_message.text)
+
+    def test_add_project_brief(self):
+        b = browser.instance()
+        c = autofixture.create_one('gallant.Client', generate_fk=True,
+                                   field_values={'user': self.user})
+        p = autofixture.create_one('gallant.Project', generate_fk=True,
+                                   field_values={'user': self.user})
+        autofixture.create_one('quotes.Quote', generate_fk=True,
+                               field_values={'user': self.user, 'client': c, 'project': p})
+
+        b.get(self.live_server_url + reverse('add_brief') + '?project_id=%d' % p.id)
+        self.load_scripts()
+        
+        b.find_element_by_id('id_title').clear()
+        b.find_element_by_id('id_title').send_keys('modified title')
+
+        b.find_element_by_xpath('//button[@type="submit"]').click()
+
+        success_message = b.find_element_by_class_name('alert-success')
+        self.assertTrue(u'Brief saved.' in success_message.text)
+
+    def test_send_answers_link(self):
+        b = browser.instance()
+        brief = autofixture.create_one('briefs.Brief', generate_fk=True, field_values={'user': self.user, 'status': 1})
+        brief.save()
+
+        b.get(self.live_server_url + reverse('brief_detail', args=[brief.id]))
+        b.find_element_by_id('send_brief').click()
+
+        self.assertIsNotNone(b.find_element_by_class_name('alert-warning'))
+        brief.refresh_from_db()
+        self.assertEqual(brief.status, '2')

@@ -1,5 +1,5 @@
-{% extends "base.html" %}
-{% load bootstrap i18n %}
+{% extends "base_body.html" %}
+{% load bootstrap i18n gallant_tags %}
 
 {% block content %}
     <h3>{% trans "Service" %}</h3>
@@ -13,7 +13,8 @@
     <hr>
     <div id="notes">
     <p><b>{% trans "Notes" %}:</b></p>
-    {% for item in object.notes.all %}
+    {% objects_for object.notes 'view_note' as notes %}
+    {% for item in notes %}
         {% include "gallant/note.html" %}
     {% endfor %}
         <div>

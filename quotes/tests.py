@@ -1,3 +1,4 @@
+import autofixture
 from django import test
 from quotes import models as q
 from autofixture import AutoFixture
@@ -9,19 +10,20 @@ class QuoteTest(test.TransactionTestCase):
     def test_save_load(self):
         fixture = AutoFixture(q.Quote, generate_fk=True)
         obj = fixture.create(1)[0]
-        new_obj = q.Quote.objects.get(id=obj.id)
+        new_obj = q.Quote.objects.get_for(obj.user, 'view_quote', id=obj.id)
 
         self.assertEqual(obj.id, new_obj.id)
 
     def test_versions(self):
-        fixture = AutoFixture(q.Quote, generate_fk=True)
+        user = autofixture.create_one(g.GallantUser)
+        fixture = AutoFixture(q.Quote, generate_fk=True, field_values={'user': user})
         objs = fixture.create(10)
         base_quote = objs[9]
         for o in objs[0:9]:
             o.parent = base_quote
             o.save()
 
-        self.assertEqual(len(base_quote.versions.all()), 9)
+        self.assertEqual(len(base_quote.versions.all_for(user, 'view_quote')), 9)
 
 
 class QuoteFormTest(test.TestCase):
@@ -104,7 +106,7 @@ class QuoteFormTest(test.TestCase):
         obj.save()
         intro_id = obj.intro().id
         margin_id = obj.margin().id
-        section_ids = [s.id for s in obj.sections.all()]
+        section_ids = [s.id for s in obj.sections.all_for(self.request.user, 'view_section')]
 
         new_data['-section-0-id'] = intro_id
         new_data['-section-1-id'] = margin_id
@@ -114,7 +116,7 @@ class QuoteFormTest(test.TestCase):
 
         new_obj = qf.create_quote(f, s)
         new_obj.save()
-        new_section_ids = [s.id for s in new_obj.sections.all()]
+        new_section_ids = [s.id for s in new_obj.sections.all_for(self.request.user, 'view_section')]
 
         self.assertEquals(section_ids, new_section_ids)
 
@@ -137,7 +139,8 @@ class QuoteFormTest(test.TestCase):
 
         obj = qf.create_quote(f, s)
         obj.save()
-        service_ids = [s.id for s in obj.services.all()]
+        service_ids = [s.id for s in obj.services.all_for(self.request.user,
+                                                          'view_servicesection')]
 
         new_data['-service-2-id'] = service_ids[0]
         new_data['-service-3-id'] = service_ids[1]
@@ -146,7 +149,8 @@ class QuoteFormTest(test.TestCase):
 
         new_obj = qf.create_quote(f, s)
         new_obj.save()
-        new_service_ids = [s.id for s in new_obj.services.all()]
+        new_service_ids = [s.id for s in new_obj.services.all_for(self.request.user,
+                                                                  'view_servicesection')]
 
         self.assertEquals(service_ids, new_service_ids)
 
@@ -162,7 +166,7 @@ class QuoteFormTest(test.TestCase):
 
         obj = qf.create_quote(f, s)
         obj.save()
-        section_ids = [s.id for s in obj.sections.all()]
+        section_ids = [s.id for s in obj.sections.all_for(self.request.user, 'view_section')]
 
         new_data['-section-2-title'] = 'new title'
         self.request.POST.update(new_data)
@@ -170,6 +174,6 @@ class QuoteFormTest(test.TestCase):
 
         new_obj = qf.create_quote(f, s)
         new_obj.save()
-        new_section_ids = [s.id for s in new_obj.sections.all()]
+        new_section_ids = [s.id for s in new_obj.sections.all_for(self.request.user, 'view_section')]
 
         self.assertNotEquals(section_ids, new_section_ids)
