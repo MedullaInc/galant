@@ -29,7 +29,9 @@ class ClientUpdate(View):
     def get(self, request, **kwargs):
         self.object = get_one_or_404(request.user, 'change_client', g.Client, pk=kwargs['pk'])
         form = forms.ClientForm(request.user, instance=self.object)
-        return self.render_to_response({'object': self.object, 'form': form})
+        return self.render_to_response({'object': self.object, 'form': form,
+                                        'contact_form': forms.ContactInfoForm(
+                                            instance=self.object.contact_info)})
 
     def post(self, request, **kwargs):
         if 'pk' in kwargs:
@@ -39,22 +41,26 @@ class ClientUpdate(View):
             self.object = None
 
         form = forms.ClientForm(request.user, request.POST, instance=self.object)
-        if form.is_valid():
-            return self.form_valid(form)
+        contact_form = forms.ContactInfoForm(request.POST,
+                                             instance=getattr(self.object, 'contact_info', None))
+        if form.is_valid() and contact_form.is_valid():
+            return self.form_valid(form, contact_form)
         else:
-            return self.render_to_response({'object': self.object, 'form': form})
+            return self.render_to_response({'object': self.object, 'form': form,
+                                            'contact_form': contact_form})
 
     def render_to_response(self, context):
         context.update({'title': 'Edit Client'})
         return TemplateResponse(request=self.request,
-                                template="gallant/create_form.html",
+                                template="gallant/client_form.html",
                                 context=context)
 
-    def form_valid(self, form):
+    def form_valid(self, form, contact_form):
         obj = form.save(commit=True)
         text = '[Updated]\n' + form.cleaned_data['notes']
         note = g.Note.objects.create(text=text, user=self.request.user)
         obj.notes.add(note)
+        obj.contact_info = contact_form.save()
         obj.save()
         messages.success(self.request, 'Client saved.')
         return HttpResponseRedirect(reverse('client_detail', args=[obj.id]))
@@ -63,7 +69,8 @@ class ClientUpdate(View):
 class ClientCreate(ClientUpdate):
     def get(self, request):
         self.object = None
-        return self.render_to_response({'form': forms.ClientForm(request.user)})
+        return self.render_to_response({'form': forms.ClientForm(request.user),
+                                        'contact_form': forms.ContactInfoForm()})
 
 
 def client_detail(request, pk):

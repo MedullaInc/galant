@@ -8,9 +8,11 @@
 {% block center_content %}
     <form id="form" class="form" method="post">
         {% csrf_token %}
-        {% block pre_form %}{% endblock %}
-        {{ form|bootstrap }}
-        {% block post_form %}{% endblock %}
+        {% block form_body %}
+            {% block pre_form %}{% endblock %}
+            {{ form|bootstrap }}
+            {% block post_form %}{% endblock %}
+        {% endblock %}
 
         <div id="form_actions">
             <div class="row">
