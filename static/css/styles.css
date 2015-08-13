@@ -2393,4 +2393,8 @@ div.alert.alert-info {
     color: #ffffff
 }
 
+.form-group {
+    position: inherit;
+}
+
 /* End Alerts */

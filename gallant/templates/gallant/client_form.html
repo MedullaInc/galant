@@ -1,0 +1,12 @@
+{% extends "gallant/create_form.html" %}
+{% load bootstrap %}
+
+{% block form_body %}
+    {% for field in form %}
+        {% if field.name != 'notes' %}{{ field|bootstrap }}{% endif %}
+    {% endfor %}
+    <hr>
+    {{ contact_form|bootstrap }}
+    <hr>
+    {{ form.notes|bootstrap }}
+{% endblock %}

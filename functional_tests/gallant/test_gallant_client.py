@@ -26,6 +26,12 @@ class GallantClientTest(browser.SignedInTest):
         b.find_element_by_xpath('//select[@name="status"]/option[@value="0"]').click()
         b.find_element_by_xpath('//textarea[@name="notes"]').send_keys('asdf')
 
+        b.find_element_by_name('phone_number').send_keys('1234123456')
+        b.find_element_by_name('address').send_keys('asdf')
+        b.find_element_by_name('city').send_keys('asdf')
+        b.find_element_by_name('state').send_keys('asdf')
+        b.find_element_by_name('zip').send_keys('12345')
+
         b.find_element_by_xpath('//button[@type="submit"]').click()
 
         success_message = b.find_element_by_class_name('alert-success')
@@ -43,6 +49,11 @@ class GallantClientTest(browser.SignedInTest):
         b.find_element_by_xpath('//select[@name="size"]/option[@value="1"]').click()
         b.find_element_by_xpath('//select[@name="status"]/option[@value="3"]').click()
         b.find_element_by_xpath('//textarea[@name="notes"]').send_keys('dddd')
+
+        b.find_element_by_name('phone_number').clear()
+        b.find_element_by_name('phone_number').send_keys('1234123456')
+        b.find_element_by_name('zip').clear()
+        b.find_element_by_name('zip').send_keys('12345')
 
         b.find_element_by_xpath('//button[@type="submit"]').click()
 

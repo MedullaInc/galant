@@ -1,0 +1,11 @@
+{% load i18n %}
+<p>{% trans "Phone" %}: {{ object.phone_number }}</p>
+<p>{% trans "Address" %}:</p>
+<p>{{ object.address }}<br/>
+{% if object.address_2 %}
+    {{ object.address_2 }}<br/>
+{% endif %}
+{{ object.city}},
+{{ object.state }}
+{{ object.zip }}<br/>
+{{ object.get_country_display }}

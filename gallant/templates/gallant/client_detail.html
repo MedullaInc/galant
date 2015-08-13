@@ -28,15 +28,18 @@
 {% endblock %}
 
 {% block center_content %}
-    <h2 class="section_title">Data</h2>
+    <h2 class="section_title">{{ object.name }}</h2>
 
-    <p>{% trans "Name" %}: {{ object.name }}</p>
     <p>{% trans "Status" %}: {{ object.get_status_display }}</p>
     <p>{% trans "Type" %}: {{ object.get_type_display }}</p>
     <p>{% trans "Size" %}: {{ object.get_size_display }}</p>
     <br/>
     <p>{% trans "Language" %}: {{ object.get_language_display }}</p>
     <p>{% trans "Currency" %}: {{ object.currency }}</p>
+    <br/>
+    {% with object.contact_info as object %}
+        {% include 'gallant/contact_info.html' %}
+    {% endwith %}
 
     <hr>
     <div id="notes">
