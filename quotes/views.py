@@ -163,18 +163,20 @@ class QuoteTemplateView(View):
                                 context=context)
 
 
-class QuotePDF(View):
+class QuotePDF(View):  # pragma: no cover
     def get(self, request, *args, **kwargs):
         quote = q.Quote.objects.get_for(request.user, 'view_quote', pk=kwargs['pk'])
         url = '%s://%s%s' % (request.scheme, request.get_host(), reverse('quote_preview', args=[quote.id]))
         filename = slugify(quote.client.name + "_" + quote.name)
+        # load page with ?dl=inline to show PDF in browser
+        attach_or_inline = request.GET.get('dl', 'attachment')
 
         pdf = url_to_pdf(url, request.session.session_key)
 
         response = HttpResponse(content=pdf,
                                 content_type='application/pdf')
         # change 'attachment' to 'inline' to display in page rather than d/l
-        response['Content-Disposition'] = 'attachment; filename="%s.pdf"' % filename
+        response['Content-Disposition'] = '%s; filename="%s.pdf"' % (attach_or_inline, filename)
         return response
 
 
