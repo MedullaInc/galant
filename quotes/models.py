@@ -4,6 +4,7 @@ from django.db import models as m
 from django.conf import settings
 from gallant import utils
 from gallant.models import PolyUserModelManager, UserModelManager
+from moneyed import Money
 
 
 class Section(g.PolyUserModel):
@@ -118,6 +119,13 @@ class Quote(g.UserModel):
                    list(self.services.all_for(self.user, 'view_section'))
         sections.sort(lambda a, b: cmp(a.index, b.index))
         return sections
+
+    def get_total_cost(self):
+        total = Money(0, "USD")
+        for service in self.services.all_for(self.user, 'view_section'):
+            total += service.service.get_total_cost()
+
+        return total
 
     def __unicode__(self):
         return self.name

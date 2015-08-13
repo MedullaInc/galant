@@ -1,5 +1,11 @@
 /* PDF Rendering */
 
+div.page-wrapper {
+    height: 270mm;
+    overflow: hidden;
+    position: relative;
+}
+
 /* End PDF Rendering */
 
 /* Header */
@@ -7,7 +13,7 @@
 .row.header_top {
     padding-top: 55px;
     padding-bottom: 5px;
-    margin-bottom: 12px;
+    margin-bottom: 15px;
     border-bottom: 1px solid #bebec5;
     position: relative;
 }
@@ -38,19 +44,27 @@
 
 /* Footer */
 
+footer {
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+}
+
 footer .row {
-    padding-bottom: 20px;
-    margin-bottom: 20px;
     margin-top: 39px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 footer .row.content_footer {
+    padding-bottom: 5px;
+    margin-bottom: 20px;
     border-bottom: 1px solid #bebec5;
     margin-top:  -16px;
 }
 
 footer p {
-    font-size: 12px;
+    font-size: 10px;
     line-height: 1.4;
     position: absolute;
     bottom: 0px;
