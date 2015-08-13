@@ -241,7 +241,7 @@ def _send_feedback_email(form, path):
         path,
         form.request.COOKIES,
     )
-    send_mail('Signup request', message, settings.EMAIL_HOST_USER,
+    send_mail('User feedback', message, settings.EMAIL_HOST_USER,
               ['contact@galant.co'], fail_silently=False)
 
 
@@ -357,7 +357,7 @@ class AccountAdd(View):
             return HttpResponseRedirect(reverse('home'))
 
         return render(request, 'gallant/create_form.html', {
-            'form': forms.AccountAddForm(),
+            'form': forms.EmailForm(),
         })
 
     @staticmethod
@@ -366,7 +366,7 @@ class AccountAdd(View):
             messages.error(request, 'You don\'t have permission to access that view.')
             return HttpResponseRedirect(reverse('home'))
 
-        form = forms.AccountAddForm(request.POST)
+        form = forms.EmailForm(request.POST)
 
         if form.is_valid():
             email = form.cleaned_data['email']
@@ -381,5 +381,48 @@ class AccountAdd(View):
             return HttpResponseRedirect(reverse('home'))
         else:
             return render(request, 'gallant/create_form.html', {
-                'form': forms.AccountAddForm(),
+                'form': forms.EmailForm(),
+            })
+
+
+
+def _send_reset_email(email, link):
+    message = 'Click this link to reset your password: %s\n\nIgnore this email if you didn\'t ask for a password reset.'  % link
+    send_mail('Password reset', message, settings.EMAIL_HOST_USER,
+              [email], fail_silently=False)
+
+
+class PasswordReset(View):
+    @staticmethod
+    def get(request):
+        if not request.user.is_superuser:
+            messages.error(request, 'You don\'t have permission to access that view.')
+            return HttpResponseRedirect(reverse('home'))
+
+        return render(request, 'gallant/create_form.html', {
+            'form': forms.EmailForm(),
+        })
+
+    @staticmethod
+    def post(request):
+        if not request.user.is_superuser:
+            messages.error(request, 'You don\'t have permission to access that view.')
+            return HttpResponseRedirect(reverse('home'))
+
+        form = forms.EmailForm(request.POST)
+
+        if form.is_valid():
+            email = form.cleaned_data['email']
+            UserModel = get_user_model()
+            user = UserModel.objects.get(email=email)
+            token = default_token_generator.make_token(user)
+            link = 'http://' + request.get_host() + \
+                   reverse('register', args=[user.id]) + '?token=%s' % token
+
+            _send_reset_email(email, link)
+            messages.success(request, 'Password reset link sent.')
+            return HttpResponseRedirect(reverse('home'))
+        else:
+            return render(request, 'gallant/create_form.html', {
+                'form': forms.EmailForm(),
             })

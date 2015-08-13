@@ -34,8 +34,9 @@ class SignedOutTest(LiveServerTestCase):
 
     def test_can_signup_int(self):
         language = get_language()
-        for lang, e_text in [('en', u'Sign Up Now!'),
-                             ('es', u'Regístrate!')]:
+        for lang, e_text in [('en', u'Get organized.'),
+                             #('es', u'Regístrate!')
+                             ]:
             activate(lang)
             self.browser.get(self.live_server_url + reverse('home'))
             e = self.browser.find_element_by_name("signup")

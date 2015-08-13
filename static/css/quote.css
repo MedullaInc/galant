@@ -1,7 +1,9 @@
 /* PDF Rendering */
 
-body {
-    zoom: 1.00; /*workaround for phantomJS2 rendering pages too large*/
+div.page-wrapper {
+    height: 270mm;
+    overflow: hidden;
+    position: relative;
 }
 
 /* End PDF Rendering */
@@ -9,19 +11,18 @@ body {
 /* Header */
 
 .row.header_top {
-    padding-top: 70px;
+    padding-top: 55px;
     padding-bottom: 5px;
-    margin-bottom: 12px;
+    margin-bottom: 15px;
     border-bottom: 1px solid #bebec5;
     position: relative;
 }
 
 .row.header_top p {
-    font-size: 15px;
-    line-height: 1.3;
+    font-size: 12px;
+    line-height: 1.4;
     position: absolute;
     bottom: 0px;
-    letter-spacing: 1px;
     word-spacing: 1px;
     font-weight: 200;
 }
@@ -33,9 +34,9 @@ body {
 }
 
 .row.header_bottom p {
-    font-weight: 400;
-    font-size: 15px;
-    line-height: 1.3;
+    font-weight: 200;
+    font-size: 12px;
+    line-height: 1.4;
     word-spacing: 1px;
 }
 
@@ -43,19 +44,30 @@ body {
 
 /* Footer */
 
+footer {
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+}
+
 footer .row {
+    margin-top: 39px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+footer .row.content_footer {
     padding-bottom: 5px;
     margin-bottom: 20px;
     border-bottom: 1px solid #bebec5;
-    margin-top:  -12px;
+    margin-top:  -16px;
 }
 
 footer p {
-    font-size: 15px;
-    line-height: 1.3;
+    font-size: 10px;
+    line-height: 1.4;
     position: absolute;
     bottom: 0px;
-    letter-spacing: 1px;
     word-spacing: 1px;
     font-weight: 200;
 }
@@ -65,8 +77,8 @@ footer p {
 /* Content */
 
 div.section_title h2 {
-    font-size: 48px;
-    font-weight: 500;
+    font-size: 34px;
+    font-weight: 800;
     line-height: 1.0;
     margin-top: 0px;
     margin-bottom: 30px;
@@ -74,9 +86,10 @@ div.section_title h2 {
 
 div.section_content p {
     font-weight: 200;
-    font-size: 15px;
+    font-size: 12px;
     line-height: 1.4;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
+    word-spacing: 2px;
 }
 
 

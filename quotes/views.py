@@ -1,3 +1,4 @@
+from django.http.response import HttpResponse
 from django.views.generic import View
 from django.template.response import TemplateResponse
 from django.http import HttpResponseRedirect
@@ -5,12 +6,13 @@ from django.utils.translation import get_language
 from django.conf import settings
 from django.contrib import messages
 from django.core.urlresolvers import reverse
-from gallant.utils import get_one_or_404
+from gallant.utils import get_one_or_404, url_to_pdf
 from quotes import models as q
 from quotes import forms as qf
 from gallant import forms as gf
+from gallant import models as g
 from django.utils.text import slugify
-from wkhtmltopdf.views import PDFTemplateView
+
 
 class QuoteUpdate(View):
     def get(self, request, **kwargs):
@@ -162,20 +164,21 @@ class QuoteTemplateView(View):
                                 context=context)
 
 
-class QuotePDF(PDFTemplateView):
-    template_name = 'quotes/quote_preview.html'
-
+class QuotePDF(View):  # pragma: no cover
     def get(self, request, *args, **kwargs):
         quote = q.Quote.objects.get_for(request.user, 'view_quote', pk=kwargs['pk'])
+        url = '%s://%s%s' % (request.scheme, request.get_host(), reverse('quote_preview', args=[quote.id]))
+        filename = slugify(quote.client.name + "_" + quote.name)
+        # load page with ?dl=inline to show PDF in browser
+        attach_or_inline = request.GET.get('dl', 'attachment')
 
-        return self.render_to_response({'object': quote}, filename=slugify(quote.client.name + "_" + quote.name))
+        pdf = url_to_pdf(url, request.session.session_key)
 
-    def get_cmd_options(self):
-        return {
-            # 'orientation': 'portrait',
-            # 'collate': True,
-            # 'quiet': None,
-        }
+        response = HttpResponse(content=pdf,
+                                content_type='application/pdf')
+        # change 'attachment' to 'inline' to display in page rather than d/l
+        response['Content-Disposition'] = '%s; filename="%s.pdf"' % (attach_or_inline, filename)
+        return response
 
 
 def quote_preview(request, *args, **kwargs):
@@ -185,4 +188,3 @@ def quote_preview(request, *args, **kwargs):
     # Render HTML
     context = {'object': quote}
     return TemplateResponse(request, template="quotes/quote_preview.html", context=context)
-
