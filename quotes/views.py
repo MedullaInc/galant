@@ -170,7 +170,7 @@ class QuotePDF(View):  # pragma: no cover
         url = '%s://%s%s' % (request.scheme, request.get_host(), reverse('quote_preview', args=[quote.id]))
         filename = slugify(quote.client.name + "_" + quote.name)
         # load page with ?dl=inline to show PDF in browser
-        attach_or_inline = request.GET.get('dl', 'attachment')
+        attach_or_inline = request.GET.get('dl', 'inline')
 
         pdf = url_to_pdf(url, request.session.session_key)
 
