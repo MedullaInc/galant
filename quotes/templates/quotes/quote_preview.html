@@ -30,6 +30,90 @@
 
         <link rel="stylesheet" href="{% static "css/quote.css" %}">
 
+        <script>
+
+        $(document).ready(function(){
+
+            // Initialize variables
+            var page_height = 0;
+            var page_number = 0;
+
+            // Go through each page-wrapper instance.
+            function check_page_height() {
+
+                $('body').find(".page-wrapper").each(function (page_index) {
+
+                    // Initialize variables
+                    var pdf_elements = [];
+
+                    //page_height = 643; // Use this for local testing.
+                    page_height = 4970; // Use this for wkhtmltopdf.
+
+                    // Go through each pdf_element instance.
+                    $(this).find('.pdf_element').each(function (index) {
+
+                        // Subtract pdf_element height to page_height.
+                        page_height = page_height - $(this).height();
+
+                        if ( page_height >= 0 ) {
+                            // If page_height is greater than 0, assign a class "in_page", remove class "not_in_page"
+                            $(this).addClass("in_page");
+                            $(this).removeClass("not_in_page");
+                        } else {
+                            $(this).removeClass("in_page");
+                            $(this).addClass("not_in_page");
+                        }
+                    });
+
+                    // Set page number correctly
+                    page_number = page_index + 1;
+                    $(this).find('footer #page_number').html('<strong>'+ page_number +' / '+ $(".page-wrapper").length + '</strong>');
+
+                    // If page_height is lower than 0, select elements with "not_in_page" class, call create new page function with elements array.
+                    if ( page_height < 0 ) {
+                        pdf_elements = $(this).parent().find('.pdf_element.not_in_page');
+
+                        // Remove elements from page-wrapper element
+                        $(this).find('.pdf_element.not_in_page').each(function() {
+                            $(this).remove();
+                        });
+
+                        // Pass removed elements to build new page
+                        if (pdf_elements.length > 0) {
+                            add_new_page(pdf_elements, page_index + 1);
+                        }
+                    }
+
+                });
+
+            };
+
+            function add_new_page(pdf_elements,page_id) {
+
+                // Append new page-wrapper element to body.
+                $('body').append('<div class="page-wrapper" id="page_'+ page_id +'"></div>');
+
+                // Copy header, content, footer
+                $('header').first().clone().appendTo('#page_'+page_id);
+                $('#page_'+page_id).append('<section class="content"><div class="holder v-center"><div class="container" id="container_page_'+ page_id +'"></div></div></div>')
+                $('footer').first().clone().appendTo('#page_'+page_id);
+
+                // Insert pdf_elements in content's container element
+                $.each(pdf_elements, function(key,element){
+                    $('#container_page_'+ page_id +'').append(element);
+                });
+
+                // Run check_page_height() again to continue building pages if needed
+                check_page_height();
+
+            };
+
+            check_page_height();
+
+        });
+
+        </script>
+
     {% endblock head %}
     {% block extra_head %}
     {% endblock extra_head %}
@@ -76,81 +160,88 @@
             </div>
         </header>
 
-        <section class="content-1">
+        <section class="content">
             <div class="holder v-center">
                 <div class="container">
                     {% for section in object.all_sections %}
                         {% if section.service %}
                             {% with service=section.service %}
+                                <div class="pdf_element not_in_page">
+
+                                    <div class="row">
+                                        <div class="col-xs-offset-2 col-xs-8 section_title">
+                                            <h2>
+                                                {{ service.name.get_text }}
+                                            </h2>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-offset-4 col-xs-8 section_content">
+                                            {{ service.description.get_text|linebreaks }}
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-offset-4 col-xs-4 section_content">
+                                            <p>
+                                                {% trans "Service Cost:" %}
+                                            </p>
+                                        </div>
+                                        <div class="col-xs-4 section_content">
+                                            <p>
+                                                {{ service.cost }} &times; {{ service.quantity }}
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            {% endwith %}
+                        {% else %}
+                            <div class="pdf_element not_in_page">
                                 <div class="row">
                                     <div class="col-xs-offset-2 col-xs-8 section_title">
                                         <h2>
-                                            {{ service.name.get_text }}
+                                            {{ section.title.get_text }}
                                         </h2>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-xs-offset-4 col-xs-8 section_content">
-                                        {{ service.description.get_text|linebreaks }}
+                                        {{ section.text.get_text|linebreaks }}
                                     </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-xs-offset-4 col-xs-4 section_content">
-                                        <p>
-                                            {% trans "Service Cost:" %}
-                                        </p>
-                                    </div>
-                                    <div class="col-xs-4 section_content">
-                                        <p>
-                                            {{ service.cost }} &times; {{ service.quantity }}
-                                        </p>
-                                    </div>
-                                </div>
-                            {% endwith %}
-                        {% else %}
-                            <div class="row">
-                                <div class="col-xs-offset-2 col-xs-8 section_title">
-                                    <h2>
-                                        {{ section.title.get_text }}
-                                    </h2>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-xs-offset-4 col-xs-8 section_content">
-                                    {{ section.text.get_text|linebreaks }}
                                 </div>
                             </div>
                         {% endif %}
                     {% endfor %}
-                    <div class="row">
-                        <div class="col-xs-offset-2 col-xs-10 section_title">
-                            <h2>
-                                {% trans "Prices" %}
-                            </h2>
+                    <div class="pdf_element not_in_page">
+                        <div class="row">
+                            <div class="col-xs-offset-2 col-xs-10 section_title">
+                                <h2>
+                                    {% trans "Prices" %}
+                                </h2>
+                            </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-xs-offset-4 col-xs-2 section_content">
-                            <p>
-                                <strong>{% trans "Service" %}</strong>
-                            </p>
+                        <div class="row">
+                            <div class="col-xs-offset-4 col-xs-2 section_content">
+                                <p>
+                                    <strong>{% trans "Service" %}</strong>
+                                </p>
+                            </div>
+                            <div class="col-xs-2 section_content">
+                                <p>
+                                    <strong>{% trans "Quantity" %}</strong>
+                                </p>
+                            </div>
+                            <div class="col-xs-2 section_content">
+                                <p>
+                                    <strong>{% trans "Unit Price" %}</strong>
+                                </p>
+                            </div>
+                            <div class="col-xs-2 section_content">
+                                <p>
+                                    <strong>{% trans "Subtotal" %}</strong>
+                                </p>
+                            </div>
                         </div>
-                        <div class="col-xs-2 section_content">
-                            <p>
-                                <strong>{% trans "Quantity" %}</strong>
-                            </p>
-                        </div>
-                        <div class="col-xs-2 section_content">
-                            <p>
-                                <strong>{% trans "Unit Price" %}</strong>
-                            </p>
-                        </div>
-                        <div class="col-xs-2 section_content">
-                            <p>
-                                <strong>{% trans "Subtotal" %}</strong>
-                            </p>
-                        </div>
-                    </div>
                         {% for section in object.all_sections %}
                             {% if section.service %}
                                 {% with service=section.service %}
@@ -180,19 +271,19 @@
                             {% endif %}
                         {% endfor %}
 
-                    <div class="row">
-                        <div class="col-xs-offset-8 col-xs-2 section_content">
-                            <p>
-                                <strong>{% trans "Total" %}</strong>
-                            </p>
-                        </div>
-                        <div class="col-xs-2 section_content">
-                            <p>
-                                <strong>{{ object.get_total_cost }}</strong>
-                            </p>
+                        <div class="row">
+                            <div class="col-xs-offset-8 col-xs-2 section_content">
+                                <p>
+                                    <strong>{% trans "Total" %}</strong>
+                                </p>
+                            </div>
+                            <div class="col-xs-2 section_content">
+                                <p>
+                                    <strong>{{ object.get_total_cost }}</strong>
+                                </p>
+                            </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </section>
@@ -210,8 +301,7 @@
                     <div class="col-xs-11">
                     </div>
                     <div class="col-xs-1">
-                        <p class="pull-right">
-                            <strong>1 / 3</strong>
+                        <p class="pull-right" id="page_number">
                         </p>
                     </div>
                 </div>
