@@ -1,3 +1,4 @@
+from django.http.response import HttpResponse
 from django.views.generic import View
 from django.template.response import TemplateResponse
 from django.http import HttpResponseRedirect
@@ -11,7 +12,6 @@ from quotes import forms as qf
 from gallant import forms as gf
 from gallant import models as g
 from django.utils.text import slugify
-from wkhtmltopdf.views import PDFResponse
 
 
 class QuoteUpdate(View):
@@ -164,13 +164,21 @@ class QuoteTemplateView(View):
                                 context=context)
 
 
-class QuotePDF(View):
+class QuotePDF(View):  # pragma: no cover
     def get(self, request, *args, **kwargs):
         quote = q.Quote.objects.get_for(request.user, 'view_quote', pk=kwargs['pk'])
         url = '%s://%s%s' % (request.scheme, request.get_host(), reverse('quote_preview', args=[quote.id]))
         filename = slugify(quote.client.name + "_" + quote.name)
+        # load page with ?dl=inline to show PDF in browser
+        attach_or_inline = request.GET.get('dl', 'attachment')
 
-        return PDFResponse(url_to_pdf(url, request.session.session_key), filename=filename)
+        pdf = url_to_pdf(url, request.session.session_key)
+
+        response = HttpResponse(content=pdf,
+                                content_type='application/pdf')
+        # change 'attachment' to 'inline' to display in page rather than d/l
+        response['Content-Disposition'] = '%s; filename="%s.pdf"' % (attach_or_inline, filename)
+        return response
 
 
 def quote_preview(request, *args, **kwargs):

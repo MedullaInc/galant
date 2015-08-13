@@ -29,6 +29,13 @@ class QuotesSignedInTest(browser.SignedInTest):
         section_title = browser.instance().find_element_by_class_name('section_title')
         self.assertEqual('Quotes', section_title.text)
 
+    def test_access_quote_preview(self):
+        q = get_blank_quote_autofixture(self.user)
+        browser.instance().get(self.live_server_url + reverse('quote_preview', args=[q.id]))
+
+        el = browser.instance().find_element_by_class_name('header_top')
+        self.assertIsNotNone(el)
+
     def test_add_quote(self):
         b = browser.instance()
         c = autofixture.create_one('gallant.Client', generate_fk=True,

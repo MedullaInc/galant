@@ -51,7 +51,6 @@ INSTALLED_APPS = (
     'django_countries',
     'localflavor',
     'analytical',
-    'wkhtmltopdf',
 
     'gallant',
     'briefs',
