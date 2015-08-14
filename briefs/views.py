@@ -14,6 +14,27 @@ from gallant import forms as gf
 from django.db.models import Q
 from gallant.utils import get_one_or_404
 
+def _update_context_from_query(request, context):
+    initial = {}
+    quote_id = request.GET.get('quote_id', None)
+    project_id = request.GET.get('project_id', None)
+    client_id = request.GET.get('client_id', None)
+
+    if quote_id:
+        quote = get_one_or_404(request.user, 'view_quote', q.Quote, pk=quote_id)
+        initial = {'client': quote.client_id, 'quote': quote.id}
+        context.update({'quote': quote, 'client': quote.client})
+    elif project_id:
+        project = get_one_or_404(request.user, 'view_project', g.Project, pk=project_id)
+        initial = {'client': project.quote.client_id, 'quote': project.quote.id or None}
+        context.update({'project': project, 'quote': project.quote, 'client': project.quote.client})
+    elif client_id:
+        client = get_one_or_404(request.user, 'view_client', g.Client, pk=client_id)
+        initial = {'client': client.id}
+        context.update({'client': client})
+
+    return initial
+
 
 class BriefList(View):
     def get(self, request, **kwargs):
@@ -40,10 +61,11 @@ class BriefUpdate(View):
         brief = get_one_or_404(request.user, 'change_brief', b.Brief, pk=kwargs['pk'])
 
         form = bf.BriefForm(request.user, instance=brief)
+        _update_context_from_query(request, context)
 
         questions = bf.question_forms_brief(brief)
         context.update({'object': brief, 'form': form, 'title': 'Edit Brief', 'questions': questions,
-                        'client': brief.client, 'quote': brief.quote})
+                        'client': brief.client})
 
         return self.render_to_response(context)
 
@@ -89,26 +111,11 @@ class BriefUpdate(View):
 class BriefCreate(BriefUpdate):
     def get(self, request, *args, **kwargs):
         context = {}
-        initial = None
         instance = None
         template_id = request.GET.get('template_id', None)
-        quote_id = request.GET.get('quote_id', None)
-        project_id = request.GET.get('project_id', None)
-        client_id = request.GET.get('client_id', None)
         lang = request.GET.get('lang', None)
 
-        if quote_id:
-            quote = get_one_or_404(request.user, 'view_quote', q.Quote, pk=quote_id)
-            initial = {'client': quote.client_id, 'quote': quote.id}
-            context.update({'quote': quote, 'client': quote.client})
-        elif project_id:
-            project = get_one_or_404(request.user, 'view_project', g.Project, pk=project_id)
-            initial = {'client': project.quote.client_id, 'quote': project.quote.id or None}
-            context.update({'project': project, 'quote': project.quote, 'client': project.quote.client})
-        elif client_id:
-            client = get_one_or_404(request.user, 'view_client', g.Client, pk=client_id)
-            initial = {'client': client.id}
-            context.update({'client': client})
+        initial = _update_context_from_query(request, context)
 
         if template_id is not None:
             template = get_one_or_404(request.user, 'view_brieftemplate', b.BriefTemplate, pk=template_id)
@@ -142,6 +149,7 @@ class BriefDetail(View):
                             'answers': brief_answers.answers.all_for(request.user, 'view_answers')\
                                                     .order_by('question__index')})
 
+        _update_context_from_query(request, context)
         context.update({'object': brief, 'questions': brief.questions\
                                                            .all_for(request.user, 'view_question')\
                                                            .order_by('index')})

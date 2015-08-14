@@ -3,39 +3,22 @@
 
 {% block breadcrumbs %}
     {{ block.super }}
-    {% breadcrumb 'Clients' 'client_list' object.id %}
-    {% breadcrumb object.client.name 'client_detail' object.client.id %}
-    {% breadcrumb 'Briefs' 'brief_list' object.client.id %}
+    {% if project %}
+        {% breadcrumb 'Projects' 'projects' project.id %}
+        {% breadcrumb 'Project: '|add:project.name 'project_detail' project.id %}
+    {% elif quote %}
+        {% breadcrumb 'Quotes' 'quotes' quote.id %}
+        {% breadcrumb 'Quote: '|add:quote.name 'quote_detail' quote.id %}
+    {% elif client %}
+        {% breadcrumb 'Clients' 'clients' object.id %}
+        {% breadcrumb object.client.name 'client_detail' object.client.id %}
+        {% breadcrumb 'Briefs' 'brief_list' object.client.id %}
+    {% endif %}
     {% breadcrumb 'Brief: '|add:object.name 'brief_detail' object.id %}
 {% endblock %}
 
 {% block section_title %}
     {% trans title %}
-{% endblock %}
-
-{% block sidebar %}
-    {% if object.client %}
-        <a href="{% url 'client_detail' object.client_id %}">
-            <button type="button" class="btn btn-default sidebar">
-                {% trans "Back to Client" %}
-            </button>
-        </a>
-
-        <a href="{% url 'brief_list' object.client_id %}">
-            <button type="button" class="btn btn-default sidebar">
-                {% trans "Back to Briefs" %}
-            </button>
-        </a>
-
-        <form method="post">
-            {% csrf_token %}
-            <a>
-                <button type="submit" class="btn btn-default sidebar" id="send_brief">
-                    {% trans "Send Brief" %}
-                </button>
-            </a>
-        </form>
-    {% endif %}
 {% endblock %}
 
 {% block center_content %}
@@ -45,7 +28,7 @@
             <h2 class="section_title">{{ object.client }}</h2>
         </div>
         <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1" align="right">
-            <a href="{% url 'edit_brief' object.id %}">
+            <a href="{% url 'edit_brief' object.id %}?{{ request.GET.urlencode }}">
                 <button id="section_edit" type="button" class="edit_button" aria-label="Edit">
                     <span class="glyphicon glyphicon-edit"/>
                 </button>

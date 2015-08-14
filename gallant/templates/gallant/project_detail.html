@@ -11,14 +11,6 @@
     {% trans "Project" %}
 {% endblock %}
 
-{% block sidebar %}
-    <a href="{% url 'edit_project' object.id %}">
-        <button type="button" class="btn btn-default sidebar">
-            {% trans "Edit Project" %}
-        </button>
-    </a>
-{% endblock %}
-
 {% block center_content %}
     <div class="row">
         <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11">
@@ -98,7 +90,7 @@
         {% objects_for object.quote.brief_set 'view_brief' as briefs %}
         {% for brief in briefs %}
             <div class="brief_link">
-                <a href="{% url 'brief_detail' brief.id %}">{{ brief }} </a>&mdash; {{ brief.modified|date:'Y-m-d H:i' }}
+                <a href="{% url 'brief_detail' brief.id %}?project_id={{ object.id }}">{{ brief }} </a>&mdash; {{ brief.modified|date:'Y-m-d H:i' }}
             </div>
         {% endfor %}
     </div>

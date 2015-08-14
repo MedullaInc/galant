@@ -1,44 +1,29 @@
 {% extends "gallant/create_form_ultext.html" %}
-{% load bootstrap i18n question_javascript django_bootstrap_breadcrumbs %}
+{% load bootstrap i18n question_javascript gallant_tags django_bootstrap_breadcrumbs %}
 
 {% block breadcrumbs %}
     {{ block.super }}
-    {% breadcrumb 'Clients' 'client_list' object.id %}
-    {% breadcrumb object.client.name 'client_detail' object.client.id %}
-    {% breadcrumb 'Briefs' 'brief_list' object.client.id %}
-    {% breadcrumb 'Brief: '|add:object.name 'brief_detail' object.id %}
-    {% breadcrumb 'Edit' 'edit_brief' object.id %}
-{% endblock %}
-
-{% block sidebar %}
     {% if project %}
-        <a href="{% url 'project_detail' project.id %}">
-            <button type="button" class="btn btn-default sidebar">
-                {% trans "Back to Project" %}
-            </button>
-        </a>
-    {% elif quote %}
-        <a href="{% url 'quote_detail' quote.id %}">
-            <button type="button" class="btn btn-default sidebar">
-                {% trans "Back to Quote" %}
-            </button>
-        </a>
+        {% breadcrumb 'Projects' 'projects' %}
+        {% breadcrumb 'Project: '|add:project.name 'project_detail' project.id %}
+        {% url 'brief_detail' object.id as url %}
+        {% with url|add:'?'|add:request.GET.urlencode as detail_url %}
+            {% breadcrumb 'Brief: '|add:object.name detail_url %}
+        {% endwith %}
+    {% elif object and quote %}
+        {% breadcrumb 'Quotes' 'quotes' %}
+        {% breadcrumb 'Quote: '|add:quote.name 'quote_detail' quote.id %}
+        {% url 'brief_detail' object.id as url %}
+        {% with url|add:'?'|add:request.GET.urlencode as detail_url %}
+            {% breadcrumb 'Brief: '|add:object.name detail_url %}
+        {% endwith %}
     {% elif client %}
-        {% if object.id %}
-            <a href="{% url 'brief_detail' object.id %}">
-                <button type="button" class="btn btn-default sidebar">
-                    {% trans "Back to Detail" %}
-                </button>
-            </a>
-        {% endif %}
-
-        <a href="{% url 'brief_list' client.id %}">
-            <button type="button" class="btn btn-default sidebar">
-                {% trans "Back to Briefs" %}
-            </button>
-        </a>
+        {% breadcrumb 'Clients' 'clients' object.id %}
+        {% breadcrumb object.client.name 'client_detail' object.client.id %}
+        {% breadcrumb 'Briefs' 'brief_list' object.client.id %}
+        {% breadcrumb 'Brief: '|add:object.name 'brief_detail' object.id %}
     {% endif %}
-
+    {% breadcrumb 'Edit' 'edit_brief' object.id %}
 {% endblock %}
 
 {% block pre_form %}
