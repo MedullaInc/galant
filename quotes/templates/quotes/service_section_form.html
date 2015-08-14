@@ -18,7 +18,7 @@
     {% endif %}
     <input type="hidden" class="section_name" id="id_{{ prefix }}section_name" name="{{ prefix }}section_name" value="{% firstof name section.name %}"/>
     <input class="section_index" type="hidden" id="id_{{ prefix }}index" name="{{ prefix }}index" value="{{ section.index }}"/>
-    {% with service=section.service %}
+    {% with service=form.instance %}
 
         <div class="row service_name margin-bottom-10">
             <div class="col-lg-2">
