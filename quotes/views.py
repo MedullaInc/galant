@@ -43,8 +43,10 @@ class QuoteUpdate(View):
 
                 context = {'object': quote, 'sections': sections}
                 return TemplateResponse(request, template="quotes/quote_preview_html.html", context=context)
+
             else:
                 return self.form_valid(form, section_forms)
+
         else:
             return self.render_to_response({'object': self.object, 'form': form, 'sections': section_forms,
                                             'title': 'Edit Quote'})

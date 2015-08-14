@@ -20,16 +20,17 @@
     <input class="section_index" type="hidden" id="id_{{ prefix }}index" name="{{ prefix }}index" value="{{ section.index }}"/>
     {% with service=form.instance %}
 
-        <div class="row service_name margin-bottom-10">
+        <div class="row form-group service_name margin-bottom-10 {% if form.name.errors %}has-error{% endif %}">
             <div class="col-lg-2">
-                <label for="title" class="form_label">
+                <label for="title" class="control-label form_label">
                     Name:
                 </label>
             </div>
-            <div class="col-lg-10">
+            <div class="col-lg-10 ">
                 <input class="ultext" type="hidden" id="id_{{ prefix }}name_hidden" name="{{ prefix }}name" for="id_{{ prefix }}name" value="{{ service.name.json }}"/>
-                <input class="form-control" id="id_{{ prefix }}name" maxlength="512" type="text" value=""/>
+                <input class="form-control" id="id_{{ prefix }}name" maxlength="512" type="text" value="" />
             </div>
+            <span class="help-block ">{{ form.name.errors.as_text }}</span>
         </div>
 
         <div class="row service_description margin-bottom-10">
