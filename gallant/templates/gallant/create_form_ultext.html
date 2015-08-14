@@ -62,6 +62,10 @@
     {% block create_submit_event %}
     <script>
         $('#create_submit, #preview').on('click', function (e) {
+
+            // This sends the preview to a new window.
+            $('.form').attr('target', '_blank');
+
             $('.ultext').each(function () {
                 var data = {};
                 try {
