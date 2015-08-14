@@ -19,12 +19,6 @@
             </button>
         </a>
 
-        <a href="{% url 'edit_brief' pk=object.id %}">
-            <button type="button" class="btn btn-default sidebar" id="edit_client_brief">
-                {% trans "Edit Brief" %}
-            </button>
-        </a>
-
         <form method="post">
             {% csrf_token %}
             <a>
@@ -38,7 +32,18 @@
 
 {% block center_content %}
 
-    <h2 class="center_title">{{ object.client }}</h2>
+    <div class="row">
+        <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11">
+            <h2 class="section_title">{{ object.client }}</h2>
+        </div>
+        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1" align="right">
+            <a href="{% url 'edit_brief' object.id %}">
+                <button id="section_edit" type="button" class="edit_button" aria-label="Edit">
+                    <span class="glyphicon glyphicon-edit"/>
+                </button>
+            </a>
+        </div>
+    </div>
 
     <p id="title" class="data">{% trans "Title" %}: {{ object.title.get_text }}</p>
     <p id="status" class="data">{% trans "Status" %}: {{ object.get_status_display }}</p>
