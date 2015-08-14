@@ -144,5 +144,6 @@ class ServiceSectionForm(gf.UserModelForm):
         super(ServiceSectionForm, self).save(commit)
         self.section.service = self.instance
 
-        self.section.save()
+        if commit:
+            self.section.save()
         return self.section

@@ -4,6 +4,10 @@
 {% block breadcrumbs %}
     {{ block.super }}
     {% breadcrumb 'Projects' 'project_list' %}
-    {% breadcrumb 'Project: '|add:object.name 'project_detail' object.id %}
-    {% breadcrumb 'Edit' 'edit_project' object.id %}
+    {% if object %}
+        {% breadcrumb 'Project: '|add:object.name 'project_detail' object.id %}
+        {% breadcrumb 'Edit' 'edit_project' object.id %}
+    {% else %}
+        {% breadcrumb 'Add' 'add_project' %}
+    {% endif %}
 {% endblock %}

@@ -3,27 +3,49 @@
 
 {% block breadcrumbs %}
     {{ block.super }}
+    {% url 'brief_detail' object.id as url %}
     {% if project %}
         {% breadcrumb 'Projects' 'projects' %}
         {% breadcrumb 'Project: '|add:project.name 'project_detail' project.id %}
-        {% url 'brief_detail' object.id as url %}
-        {% with url|add:'?'|add:request.GET.urlencode as detail_url %}
-            {% breadcrumb 'Brief: '|add:object.name detail_url %}
-        {% endwith %}
+        {% if object %}
+            {% with url|add:'?'|add:request.GET.urlencode as detail_url %}
+                {% breadcrumb 'Brief: '|add:object.name detail_url %}
+            {% endwith %}
+        {% endif %}
     {% elif object and quote %}
         {% breadcrumb 'Quotes' 'quotes' %}
         {% breadcrumb 'Quote: '|add:quote.name 'quote_detail' quote.id %}
-        {% url 'brief_detail' object.id as url %}
-        {% with url|add:'?'|add:request.GET.urlencode as detail_url %}
-            {% breadcrumb 'Brief: '|add:object.name detail_url %}
-        {% endwith %}
+        {% if object %}
+            {% with url|add:'?'|add:request.GET.urlencode as detail_url %}
+                {% breadcrumb 'Brief: '|add:object.name detail_url %}
+            {% endwith %}
+        {% endif %}
     {% elif client %}
-        {% breadcrumb 'Clients' 'clients' object.id %}
-        {% breadcrumb object.client.name 'client_detail' object.client.id %}
-        {% breadcrumb 'Briefs' 'brief_list' object.client.id %}
-        {% breadcrumb 'Brief: '|add:object.name 'brief_detail' object.id %}
+        {% breadcrumb 'Clients' 'clients' %}
+        {% breadcrumb client.name 'client_detail' client.id %}
+        {% breadcrumb 'Briefs' 'brief_list' client.id %}
+        {% if object %}
+            {% breadcrumb 'Brief: '|add:object.name 'brief_detail' object.id %}
+        {% endif %}
     {% endif %}
-    {% breadcrumb 'Edit' 'edit_brief' object.id %}
+    {% if object %}
+        {% breadcrumb 'Edit' 'edit_brief' object.id %}
+    {% else %}
+        {% breadcrumb 'Add' 'add_brief' %}
+    {% endif %}
+{% endblock %}
+
+{% block sidebar %}
+    {% if object.client %}
+        <form method="post">
+            {% csrf_token %}
+            <a>
+                <button type="submit" class="btn btn-default sidebar" id="send_brief">
+                    {% trans "Send Brief" %}
+                </button>
+            </a>
+        </form>
+    {% endif %}
 {% endblock %}
 
 {% block pre_form %}
