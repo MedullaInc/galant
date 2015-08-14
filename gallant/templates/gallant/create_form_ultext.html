@@ -64,7 +64,9 @@
         $('#create_submit, #preview').on('click', function (e) {
 
             // This sends the preview to a new window.
-            $('.form').attr('target', '_blank');
+            if ($(this).is("#preview")) {
+                $('.form').attr('target', '_blank');
+            }
 
             $('.ultext').each(function () {
                 var data = {};

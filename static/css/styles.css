@@ -2392,4 +2392,22 @@ div.alert.alert-info {
     position: inherit;
 }
 
+.center_content_enclosed {
+    outline: 1px solid black;
+    padding-top: 20px;
+}
+
+.edit_button {
+    -webkit-appearance: none;
+    padding: 0;
+    cursor: pointer;
+    background: 0 0;
+    border: 0;
+}
+
+.glyphicon.glyphicon-edit {
+    font-size: 20px;
+    color: black;
+}
+
 /* End Alerts */

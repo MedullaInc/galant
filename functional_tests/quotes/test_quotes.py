@@ -72,6 +72,24 @@ class QuotesSignedInTest(browser.SignedInTest):
         intro = b.find_element_by_xpath('//div[@id="intro"]//h2')
         self.assertEqual(intro.text, 'modified intro title')
 
+    def test_preview_quote(self):
+        b = browser.instance()
+
+        q = get_blank_quote_autofixture(self.user)
+        b.get(self.live_server_url + reverse('edit_quote', args=[q.id]))
+        self.load_scripts()
+
+        b.find_element_by_id('id_-section-0-title').clear()
+        b.find_element_by_id('id_-section-0-title').send_keys('modified intro title')
+
+        preview_button = b.find_element_by_id('preview')
+        b.execute_script("arguments[0].setAttribute('id', '')", preview_button)
+
+        preview_button.click()
+
+        intro = b.find_element_by_xpath('//h2')
+        self.assertEqual(intro.text, 'modified intro title')
+
     def test_add_sections(self):
         b = browser.instance()
         q = get_blank_quote_autofixture(self.user)
