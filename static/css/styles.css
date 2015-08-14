@@ -1025,7 +1025,7 @@ section * {
     padding-bottom: 0;
     background: #ffffff;
     border: 1px solid #666666;
-    margin-bottom: 10px;
+    margin-bottom: 40px;
 }
 
 .header-5 > .container {
@@ -1410,8 +1410,8 @@ section * {
         -webkit-box-sizing: border-box;
         -moz-box-sizing: border-box;
         box-sizing: border-box;
-        padding-left: 5px;
-        padding-right: 5px;
+        padding-left: 0px;
+        padding-right: 0px;
     }
 
     .content-1 .holder.v-center.row,
@@ -2075,7 +2075,7 @@ h2.section_title, h2.center_title {
     -webkit-border-radius: 0px;
     -moz-border-radius: 0px;
     border-radius: 0px;
-    border: 1px solid #999999;
+    border: 1px solid #666666;
     width: 100%;
 }
 
@@ -2103,7 +2103,7 @@ div.sidebar {
     -webkit-border-radius: 0px;
     -moz-border-radius: 0px;
     border-radius: 0px;
-    margin-bottom: 25px;
+    margin-bottom: 0px;
 }
 
 .nav-tabs > li {
@@ -2149,7 +2149,7 @@ table.table-striped.table-bordered thead th, table.table-striped.table-bordered 
     -webkit-border-radius: 0px;
     -moz-border-radius: 0px;
     border-radius: 0px;
-    border: 1px solid #999999;
+    border: 1px solid #666666;
     margin-bottom: 10px;
     font-size: 16px;
     font-weight: 100;
@@ -2331,7 +2331,7 @@ ul.nav-tabs li a#add_translation_button {
     -moz-border-radius: 0px;
     border-radius: 0px;
     margin-top: 0px;
-    border: 1px solid #333;
+    border: 1px solid #666666;
 }
 
 input[type="text"].form-control {
@@ -2392,17 +2392,31 @@ div.alert.alert-info {
     position: inherit;
 }
 
-.center_content_enclosed {
-    outline: 1px solid black;
-    padding-top: 20px;
+#center_content_enclosed {
+    border: 1px solid #666666;
+    padding: 20px;
 }
 
-.edit_button {
-    -webkit-appearance: none;
-    padding: 0;
-    cursor: pointer;
-    background: 0 0;
-    border: 0;
+div.action_box {
+    padding: 0px;
+    text-align: right;
+    padding-right: 20px;
+}
+
+button.edit_button {
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 0px;
+    border: 1px solid #666666;
+    margin-top: 0px;
+    padding: 10px 15px 10px 15px;
+}
+
+button.edit_button span.glyphicon {
+    font-size: 14px;
+}
+
+a.edit_button {
 }
 
 .glyphicon.glyphicon-edit {
