@@ -435,9 +435,9 @@ li {
 }
 
 .btn {
-    -webkit-border-radius: 6px;
-    -moz-border-radius: 6px;
-    border-radius: 6px;
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 0px;
     line-height: 22px;
     -webkit-transition: color 0.25s, background 0.25s;
     -moz-transition: color 0.25s, background 0.25s;

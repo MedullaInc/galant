@@ -30,6 +30,12 @@ class ULTextDict(dict):
     def json(self):
         return json.dumps(self)
 
+    def __unicode__(self):
+        return self.json()
+
+    def __str__(self):
+        return self.json()
+
 
 class ULTextDictArray(list):
     def json(self):

@@ -123,6 +123,11 @@ class PolyUserModelManager(UserManagerMethodsMixin, PolymorphicManager):
             .values_list('object_pk', flat=True)
 
 
+class UnsavedForeignKey(m.ForeignKey):
+    # A ForeignKey which can point to an unsaved object
+    allow_unsaved_instance_assignment = True
+
+
 class Note(UserModel):
     text = m.TextField(help_text='User comment / note.')
     created = m.DateTimeField(auto_now_add=True)
