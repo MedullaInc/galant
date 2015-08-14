@@ -35,7 +35,13 @@ class QuoteUpdate(View):
 
         if all(valid):
             if 'preview' in request.POST:
-                context = {'object': self.object, 'form': form, 'sections': section_forms}
+                quote = form.save(commit=False)
+
+                sections = []
+                for section_form in section_forms:
+                    sections.append(section_form.save(commit=False))
+
+                context = {'object': quote, 'sections': sections}
                 return TemplateResponse(request, template="quotes/quote_preview_html.html", context=context)
             else:
                 return self.form_valid(form, section_forms)

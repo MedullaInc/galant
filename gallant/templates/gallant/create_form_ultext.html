@@ -61,7 +61,7 @@
 
     {% block create_submit_event %}
     <script>
-        $('#create_submit').on('click', function (e) {
+        $('#create_submit, #preview').on('click', function (e) {
             $('.ultext').each(function () {
                 var data = {};
                 try {
