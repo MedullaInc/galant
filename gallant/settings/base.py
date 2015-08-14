@@ -51,6 +51,7 @@ INSTALLED_APPS = (
     'django_countries',
     'localflavor',
     'analytical',
+    'django_bootstrap_breadcrumbs',
 
     'gallant',
     'briefs',

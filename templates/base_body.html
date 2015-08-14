@@ -1,5 +1,6 @@
 {% extends "base.html" %}
-{% load staticfiles bootstrap i18n gallant_tags %}
+{% load staticfiles bootstrap i18n gallant_tags django_bootstrap_breadcrumbs %}
+
 
 {% block extra_head %}
 
@@ -15,6 +16,10 @@
 {% endblock extra_head %}
 
 {% block body %}
+    {% block breadcrumbs %}
+        {% clear_breadcrumbs %}
+        {% breadcrumb "Home" "home" %}
+    {% endblock %}
 
     <div class="page-wrapper">
 
@@ -62,6 +67,14 @@
                 </div>
             </div>
         </header>
+        <div class="container">
+            <div class="row">
+                <div id="breadcrumbs col-sm-12 col-md-12 col-lg-12">
+                    {% render_breadcrumbs %}
+                </div>
+            </div>
+
+        </div>
         {% block messages %}
             {% for message in messages %}
                 <div class="alert alert-{{ message.tags }}">

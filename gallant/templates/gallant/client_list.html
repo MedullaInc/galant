@@ -1,5 +1,10 @@
 {% extends "base_sidebar.html" %}
-{% load bootstrap i18n %}
+{% load bootstrap i18n django_bootstrap_breadcrumbs %}
+
+{% block breadcrumbs %}
+    {{ block.super }}
+    {% breadcrumb "Clients" "client_list" %}
+{% endblock %}
 
 {% block section_title %}
     {% trans "Clients" %}

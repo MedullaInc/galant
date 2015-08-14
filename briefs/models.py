@@ -170,7 +170,6 @@ def _get_answer_perms(new_perms):
 
 class TextAnswer(Answer):
     answer = m.CharField(max_length=3000)
-
     class Meta:
         permissions = _get_answer_perms(('view_textanswer', 'View textanswer'))
 
