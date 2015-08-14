@@ -3,9 +3,9 @@
 
 {% block breadcrumbs %}
     {{ block.super }}
-    {% breadcrumb "Clients" "client_list" object.id %}
-    {% breadcrumb client.name "client_detail" client.id %}
-    {% breadcrumb "Briefs" "brief_list" object.client.id %}
+    {% breadcrumb 'Clients' 'client_list' object.id %}
+    {% breadcrumb client.name 'client_detail' client.id %}
+    {% breadcrumb 'Briefs' 'brief_list' object.client.id %}
 {% endblock %}
 
 {% block section_title %}

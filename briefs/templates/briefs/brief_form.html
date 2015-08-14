@@ -1,5 +1,14 @@
 {% extends "gallant/create_form_ultext.html" %}
-{% load bootstrap i18n question_javascript %}
+{% load bootstrap i18n question_javascript django_bootstrap_breadcrumbs %}
+
+{% block breadcrumbs %}
+    {{ block.super }}
+    {% breadcrumb 'Clients' 'client_list' object.id %}
+    {% breadcrumb object.client.name 'client_detail' object.client.id %}
+    {% breadcrumb 'Briefs' 'brief_list' object.client.id %}
+    {% breadcrumb 'Brief: '|add:object.name 'brief_detail' object.id %}
+    {% breadcrumb 'Edit' 'edit_brief' object.id %}
+{% endblock %}
 
 {% block sidebar %}
     {% if project %}

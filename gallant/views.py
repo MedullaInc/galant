@@ -187,7 +187,7 @@ class ProjectUpdate(View):
     def render_to_response(self, context):
         context.update({'title': 'Edit Project'})
         return TemplateResponse(request=self.request,
-                                template="gallant/create_form.html",
+                                template="gallant/project_form.html",
                                 context=context)
 
     def form_valid(self, form, quote=None):
