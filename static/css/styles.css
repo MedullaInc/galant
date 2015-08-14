@@ -1129,14 +1129,15 @@ section * {
 }
 
 .footer-3 a {
-    color: #5a5959;
+    color: #666666;
     font-weight: normal;
 }
 
 .footer-3 a:hover,
 .footer-3 a:focus,
 .footer-3 a.active {
-    color: #000000;
+    color: #999999;
+    text-decoration: none;
 }
 
 .footer-3 nav ul {
@@ -1232,12 +1233,6 @@ section * {
 
 .footer-3 {
     font-weight: 200;
-}
-
-.footer-3 a {
-    color: #ffffff;
-    font-weight: 100;
-    letter-spacing: 1px;
 }
 
 .login {
