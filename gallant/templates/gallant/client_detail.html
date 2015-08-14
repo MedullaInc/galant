@@ -3,8 +3,8 @@
 
 {% block breadcrumbs %}
     {{ block.super }}
-    {% breadcrumb "Clients" "client_list" object.id %}
-    {% breadcrumb object.name "client_detail" object.id %}
+    {% breadcrumb 'Clients' 'client_list' object.id %}
+    {% breadcrumb object.name 'client_detail' object.id %}
 {% endblock %}
 
 {% block section_title %}

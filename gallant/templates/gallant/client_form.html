@@ -1,5 +1,13 @@
 {% extends "gallant/create_form.html" %}
-{% load bootstrap %}
+{% load bootstrap django_bootstrap_breadcrumbs %}
+
+{% block breadcrumbs %}
+    {{ block.super }}
+    {% breadcrumb 'Clients' 'client_list' object.id %}
+    {% breadcrumb object.name 'client_detail' object.id %}
+    {% breadcrumb 'Edit' 'edit_client' object.id %}
+{% endblock %}
+
 
 {% block form_body %}
     {% for field in form %}

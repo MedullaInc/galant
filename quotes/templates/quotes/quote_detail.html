@@ -1,5 +1,11 @@
 {% extends "base_sidebar_enclosed.html" %}
-{% load bootstrap i18n %}
+{% load bootstrap i18n django_bootstrap_breadcrumbs %}
+
+{% block breadcrumbs %}
+    {{ block.super }}
+    {% breadcrumb 'Quotes' 'quote_list' %}
+    {% breadcrumb 'Quote: '|add:object.name 'quote_detail' object.id %}
+{% endblock %}
 
 {% block section_title %}
     {% trans "Quote" %}

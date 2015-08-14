@@ -1,5 +1,12 @@
 {% extends "gallant/create_form_ultext.html" %}
-{% load bootstrap i18n section_javascript %}
+{% load bootstrap i18n section_javascript django_bootstrap_breadcrumbs %}
+
+{% block breadcrumbs %}
+    {{ block.super }}
+    {% breadcrumb 'Quotes' 'quote_list' %}
+    {% breadcrumb 'Quote: '|add:object.name 'quote_detail' object.id %}
+    {% breadcrumb 'Edit' 'edit_quote' object.id %}
+{% endblock %}
 
 {% block sidebar %}
 
