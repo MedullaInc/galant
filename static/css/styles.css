@@ -2397,4 +2397,9 @@ div.alert.alert-info {
     position: inherit;
 }
 
+.center_content_enclosed {
+    outline: 1px solid black;
+    padding-top: 20px;
+}
+
 /* End Alerts */
