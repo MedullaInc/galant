@@ -10,7 +10,6 @@ from gallant.utils import get_one_or_404, url_to_pdf
 from quotes import models as q
 from quotes import forms as qf
 from gallant import forms as gf
-from gallant import models as g
 from django.utils.text import slugify
 
 
