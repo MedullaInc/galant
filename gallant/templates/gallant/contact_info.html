@@ -5,7 +5,7 @@
 {% if object.address_2 %}
     {{ object.address_2 }}<br/>
 {% endif %}
-{{ object.city}},
+{{ object.city}}{% if object.city %},{% endif %}
 {{ object.state }}
 {{ object.zip }}<br/>
 {{ object.get_country_display }}
