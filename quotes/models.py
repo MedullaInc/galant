@@ -65,7 +65,7 @@ class TextSection(Section):
 
 
 class ServiceSection(Section):
-    service = m.ForeignKey(g.Service)
+    service = g.UnsavedForeignKey(g.Service)
 
     class Meta:
         permissions = _get_section_perms(('view_servicesection', 'View servicesection'))
