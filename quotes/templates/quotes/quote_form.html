@@ -45,12 +45,13 @@
 {% block form_actions %}
     {{ block.super }}
     {% if object.id %}
-    <a href="{% url "quote_preview" object.id %}"><button id="preview_pdf" class="btn btn-default margin-left-10" type="button">{% trans "Preview" %}</button></a>
+    <button id="preview_pdf" class="btn btn-default margin-left-10" type="submit" name="preview">{% trans "Preview" %}</button>
     {% endif %}
 {% endblock %}
 
 {% block extra_body %}
     {{ block.super }}
+
     <script>
         var counter = {{ sections|length|default:0 }};
         section = function (ct, dyn_idx) {

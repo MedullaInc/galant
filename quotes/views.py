@@ -32,8 +32,13 @@ class QuoteUpdate(View):
         section_forms = qf.section_forms_request(request)
 
         valid = list([form.is_valid()] + [s.is_valid() for s in section_forms])
+
         if all(valid):
-            return self.form_valid(form, section_forms)
+            if 'preview' in request.POST:
+                context = {'object': self.object, 'form': form, 'sections': section_forms}
+                return TemplateResponse(request, template="quotes/quote_preview_html.html", context=context)
+            else:
+                return self.form_valid(form, section_forms)
         else:
             return self.render_to_response({'object': self.object, 'form': form, 'sections': section_forms,
                                             'title': 'Edit Quote'})
