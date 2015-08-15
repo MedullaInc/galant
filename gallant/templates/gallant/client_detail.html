@@ -7,12 +7,6 @@
 
 {% block sidebar %}
 
-    <a href="{% url 'clients' %}">
-        <button type="button" class="btn btn-default sidebar">
-            {% trans "Back to Clients" %}
-        </button>
-    </a>
-
     <a href="{% url 'briefs' %}?client_id={{ object.id }}">
         <button type="button" class="btn btn-default sidebar">
             {% trans "Client Briefs" %}

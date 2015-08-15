@@ -3,14 +3,6 @@
 
 {% block sidebar %}
 
-    {% if object.id %}
-    <a href="{% url 'quote_detail' object.id %}">
-        <button type="button" class="btn btn-default sidebar">
-            {% trans "Back to Detail" %}
-        </button>
-    </a>
-    {% endif %}
-
 {% endblock %}
 
 {% block post_form %}
