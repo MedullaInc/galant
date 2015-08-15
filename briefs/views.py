@@ -156,13 +156,15 @@ class BriefDetail(View):
         if answers_q.count() > 0:
             brief_answers = answers_q.last()
             context.update({'answer_set': brief_answers,
-                            'answers': brief_answers.answers.all_for(request.user, 'view_answers')\
+                            'answers': brief_answers.answers
+                                                    .all_for(request.user, 'view_answers')
                                                     .order_by('question__index')})
 
         _update_from_query(request, context)
-        context.update({'object': brief, 'questions': brief.questions\
-                                                           .all_for(request.user, 'view_question')\
-                                                           .order_by('index')})
+        context.update({'object': brief,
+                        'questions': brief.questions
+                                          .all_for(request.user, 'view_question')\
+                                          .order_by('index')})
 
         request.breadcrumbs(_('Brief: ') + brief.name, request.path_info + query_url(request))
         return TemplateResponse(request=request,
