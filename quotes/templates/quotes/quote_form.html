@@ -103,7 +103,7 @@
             renameSections();
         });
 
-        $(document.body).on('click', '.close', function () {
+        $(document.body).on('click', '#section_table .close', function () {
             del = confirm("Remove section?")
             if (del) {
                 $(this).parents('div.section')[0].remove();
