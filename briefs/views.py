@@ -84,20 +84,16 @@ class BriefUpdate(View):
             brief = get_one_or_404(request.user, 'change_brief', b.Brief, pk=kwargs['pk'])
         else:
             brief = b.Brief()
-            quote_id = request.GET.get('quote_id', None)
-            project_id = request.GET.get('project_id', None)
-            client_id = request.GET.get('client_id', None)
 
-            if quote_id:
-                brief.quote = get_one_or_404(request.user, 'view_quote', q.Quote, pk=quote_id)
-                client_id = brief.quote.client_id  # client specified by quote takes precedence over query param
-            elif project_id:
-                project = get_one_or_404(request.user, 'view_project', g.Project, pk=project_id)
-                brief.quote = project.quote
-                client_id = brief.quote.client_id  # likewise for project
+        context = {}
+        _update_from_query(request, context)
 
-            if client_id:
-                brief.client = get_one_or_404(request.user, 'view_client', g.Client, pk=client_id)
+        if 'quote' in context:
+            # client specified by quote takes precedence over query param
+            brief.client = context['quote'].client
+        elif 'project' in context:
+            brief.quote = context['project'].quote
+            brief.client = brief.quote.client  # likewise for project
 
 
         form = bf.BriefForm(request.user, request.POST, instance=brief)
