@@ -25,7 +25,7 @@ class BriefsSignedInTest(browser.SignedInTest):
         c.save()
 
         # access Client Briefs & click add brief
-        b.get(self.live_server_url + reverse('brief_list', args=[c.id]))
+        b.get(self.live_server_url + reverse('briefs') + '?client_id=%s' % c.id)
         self.load_scripts()
         b.find_element_by_id('add_brief').click()
         b.find_element_by_css_selector('.popover-content .from_scratch_button').click()

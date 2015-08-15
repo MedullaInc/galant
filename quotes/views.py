@@ -12,6 +12,7 @@ from quotes import models as q
 from quotes import forms as qf
 from gallant import forms as gf
 from django.utils.text import slugify
+from django.utils.translation import ugettext_lazy as _
 
 
 class QuoteUpdate(View):
@@ -64,6 +65,14 @@ class QuoteUpdate(View):
         return HttpResponseRedirect(reverse('quote_detail', args=[self.object.id]))
 
     def render_to_response(self, context):
+        self.request.breadcrumbs(_('Quotes'), reverse('quotes'))
+        if self.object:
+            self.request.breadcrumbs([(_('Quote: %s' % self.object.name),
+                                       reverse('quote_detail', args=[self.object.id])),
+                                      (_('Edit'), self.request.path_info)])
+        else:
+            self.request.breadcrumbs(_('Add'), self.request.path_info)
+
         return TemplateResponse(request=self.request,
                                 template="quotes/quote_form.html",
                                 context=context)
@@ -87,12 +96,20 @@ class QuoteCreate(QuoteUpdate):
             context.update({'form': qf.QuoteForm(request.user, instance=q.Quote()),
                             'sections': qf.section_forms_initial(request.user)})
 
-        return self.render_to_response(context)
+        request.breadcrumbs([(_('Quotes'), reverse('quotes')),
+                             (_('Add'), request.path_info)])
+
+        return TemplateResponse(request=self.request,
+                                template="quotes/quote_form.html",
+                                context=context)
 
 
 class QuoteDetail(View):
     def get(self, request, **kwargs):
         quote = get_one_or_404(request.user, 'view_quote', q.Quote, pk=kwargs['pk'])
+
+        request.breadcrumbs([(_('Quotes'), reverse('quotes')),
+                             (_('Quote: %s' % quote.name), request.path_info)])
         return TemplateResponse(request=request,
                                 template="quotes/quote_detail.html",
                                 context={'title': 'Quote', 'object': quote})
@@ -100,6 +117,7 @@ class QuoteDetail(View):
 
 class QuoteList(View):
     def get(self, request):
+        self.request.breadcrumbs(_('Quotes'), request.path_info)
         return TemplateResponse(request=request,
                                 template="quotes/quote_list.html",
                                 context={'title': 'Quotes',
@@ -112,6 +130,8 @@ class QuoteList(View):
 
 class QuoteTemplateList(View):
     def get(self, request):
+        self.request.breadcrumbs([(_('Quotes'), reverse('quotes')),
+                                  (_('Templates'), request.path_info)])
         return TemplateResponse(request=request,
                                 template="quotes/quotetemplate_list.html",
                                 context={'title': 'Quote Templates',
@@ -121,12 +141,19 @@ class QuoteTemplateList(View):
 
 class QuoteTemplateView(View):
     def get(self, request, **kwargs):
+        self.request.breadcrumbs([(_('Quotes'), reverse('quotes')),
+                                  (_('Templates'), reverse('quote_templates'))])
+
         if 'pk' in kwargs:
             self.object = get_one_or_404(request.user, 'view_quotetemplate', q.QuoteTemplate, pk=kwargs['pk'])
             form = qf.QuoteTemplateForm(request.user, instance=self.object.quote)
             section_forms = qf.section_forms_quote(self.object.quote)
+
+            self.request.breadcrumbs([(_('Edit'), request.path_info)])
         else:
             self.object = None
+            self.request.breadcrumbs([(_('Add'), request.path_info)])
+
             if kwargs['quote_id'] is not None:
                 quote = get_one_or_404(request.user, 'view_quote', q.Quote, pk=kwargs['quote_id'])
                 form = qf.QuoteTemplateForm(request.user, instance=quote)

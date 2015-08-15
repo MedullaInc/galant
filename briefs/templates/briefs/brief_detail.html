@@ -25,7 +25,7 @@
             <h2 class="section_title">{{ object.client }}</h2>
         </div>
         <div class="col-lg-1 col-md-1 col-sm-2 col-xs-2 action_box">
-            <a href="{% url 'edit_brief' object.id %}?{{ request.GET.urlencode }}" class="edit_button" title="{% trans "Edit" %}">
+            <a href="{% url 'edit_brief' object.id %}{% if request.GET.urlencode %}?{% endif %}{{ request.GET.urlencode }}" class="edit_button" title="{% trans "Edit" %}">
                 <button id="section_edit" type="button" class="btn btn-default edit_button" aria-label="Edit">
                     <span class="glyphicon glyphicon-edit"/>
                 </button>

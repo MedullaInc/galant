@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
-from django.utils.translation import ugettext_lazy as _
 from django.contrib import messages
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -40,6 +39,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.flatpages',
 
     'allauth',
     'allauth.account',
@@ -51,6 +51,7 @@ INSTALLED_APPS = (
     'django_countries',
     'localflavor',
     'analytical',
+    'breadcrumbs',
 
     'gallant',
     'briefs',
@@ -67,6 +68,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'breadcrumbs.middleware.BreadcrumbsMiddleware',
 )
 
 AUTHENTICATION_BACKENDS = (
@@ -166,3 +168,6 @@ ANONYMOUS_USER_ID = -1
 
 # Disable allauth signup for now
 ACCOUNT_ADAPTER = 'gallant.utils.NoNewUsersAccountAdapter'
+
+
+BREADCRUMBS_AUTO_HOME=True

@@ -13,7 +13,7 @@
         </button>
     </a>
 
-    <a href="{% url 'brief_list' object.id %}">
+    <a href="{% url 'briefs' %}?client_id={{ object.id }}">
         <button type="button" class="btn btn-default sidebar">
             {% trans "Client Briefs" %}
         </button>

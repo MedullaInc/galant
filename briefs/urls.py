@@ -6,7 +6,6 @@ urlpatterns = [
     url(r'^$', login_required(views.BriefList.as_view()), name='briefs'),
     url(r'^answer/(?P<token>[a-f0-9]{32})$', views.BriefAnswer.as_view(), name='brief_answer'),
     url(r'^add/$', login_required(views.BriefCreate.as_view()), name='add_brief'),
-    url(r'^client/(?P<type_id>[0-9]+)/$', login_required(views.BriefList.as_view()), name='brief_list'),
     url(r'^edit/(?P<pk>[0-9]+)$', login_required(views.BriefUpdate.as_view()), name='edit_brief'),
     url(r'^(?P<pk>[0-9]+)?$', login_required(views.BriefDetail.as_view()), name='brief_detail'),
     url(r'^template/$', login_required(views.BriefTemplateList.as_view()), name='brief_templates'),

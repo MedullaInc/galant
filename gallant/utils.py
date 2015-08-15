@@ -51,3 +51,10 @@ def url_to_pdf(url, session_key):
             session_key, '--quiet', url, '-']
 
     return check_output(args)
+
+
+def query_url(request):
+    if len(request.META['QUERY_STRING']):
+        return '?%s' % request.META['QUERY_STRING']
+    else:
+        return ''

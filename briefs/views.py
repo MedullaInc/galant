@@ -12,9 +12,10 @@ from django.views.generic import View
 from briefs import forms as bf
 from gallant import forms as gf
 from django.db.models import Q
-from gallant.utils import get_one_or_404
+from gallant.utils import get_one_or_404, query_url
+from django.utils.translation import ugettext_lazy as _
 
-def _update_context_from_query(request, context):
+def _update_from_query(request, context):
     initial = {}
     quote_id = request.GET.get('quote_id', None)
     project_id = request.GET.get('project_id', None)
@@ -24,14 +25,23 @@ def _update_context_from_query(request, context):
         quote = get_one_or_404(request.user, 'view_quote', q.Quote, pk=quote_id)
         initial = {'client': quote.client_id, 'quote': quote.id}
         context.update({'quote': quote, 'client': quote.client})
+        request.breadcrumbs([(_('Quotes'), reverse('quotes')),
+                             (_('Quote: %s') + quote.name, reverse('quote_detail', args=[quote.id]))])
     elif project_id:
         project = get_one_or_404(request.user, 'view_project', g.Project, pk=project_id)
         initial = {'client': project.quote.client_id, 'quote': project.quote.id or None}
         context.update({'project': project, 'quote': project.quote, 'client': project.quote.client})
+        request.breadcrumbs([(_('Projects'), reverse('projects')),
+                             (_('Project:') + project.name, reverse('project_detail', args=[project.id]))])
     elif client_id:
         client = get_one_or_404(request.user, 'view_client', g.Client, pk=client_id)
         initial = {'client': client.id}
         context.update({'client': client})
+        request.breadcrumbs([(_('Clients'), reverse('clients')),
+                             (client.name, reverse('client_detail', args=[client.id]))])
+        request.breadcrumbs(_('Briefs'), reverse('briefs') + query_url(request))
+    else:
+        request.breadcrumbs(_('Briefs'), reverse('briefs'))
 
     return initial
 
@@ -40,11 +50,11 @@ class BriefList(View):
     def get(self, request, **kwargs):
         context = {'template_list': b.BriefTemplate.objects.all_for(request.user, 'view_brieftemplate')}
 
-        if 'type_id' in kwargs:
-            client = get_one_or_404(request.user, 'view_client', g.Client, pk=kwargs['type_id'])
-            briefs = client.brief_set.all_for(request.user, 'view_brief')
-            context.update({'client': client,
-                            'object_list': briefs})
+        _update_from_query(request, context)
+
+        if 'client' in context:
+            briefs = context['client'].brief_set.all_for(request.user, 'view_brief')
+            context.update({'object_list': briefs})
         else:
             context.update({'object_list': b.Brief.objects
                                             .all_for(request.user, 'view_brief')
@@ -61,7 +71,7 @@ class BriefUpdate(View):
         brief = get_one_or_404(request.user, 'change_brief', b.Brief, pk=kwargs['pk'])
 
         form = bf.BriefForm(request.user, instance=brief)
-        _update_context_from_query(request, context)
+        _update_from_query(request, context)
 
         questions = bf.question_forms_brief(brief)
         context.update({'object': brief, 'form': form, 'title': 'Edit Brief', 'questions': questions,
@@ -105,6 +115,9 @@ class BriefUpdate(View):
                                             'title': 'Edit Brief', 'questions': question_forms})
 
     def render_to_response(self, context, **kwargs):
+        brief = context['object']
+        self.request.breadcrumbs([(_('Brief: ') + brief.name, reverse('brief_detail', args=[brief.id])),
+                                  (_('Edit'), self.request.path_info + query_url(self.request))])
         return TemplateResponse(request=self.request, template="briefs/brief_form.html", context=context, **kwargs)
 
 
@@ -115,7 +128,7 @@ class BriefCreate(BriefUpdate):
         template_id = request.GET.get('template_id', None)
         lang = request.GET.get('lang', None)
 
-        initial = _update_context_from_query(request, context)
+        initial = _update_from_query(request, context)
 
         if template_id is not None:
             template = get_one_or_404(request.user, 'view_brieftemplate', b.BriefTemplate, pk=template_id)
@@ -134,7 +147,8 @@ class BriefCreate(BriefUpdate):
         form = bf.BriefForm(request.user, instance=instance, initial=initial)
 
         context.update({'title': 'Create Brief', 'form': form})
-        return self.render_to_response(context)
+        request.breadcrumbs(_('Add'), request.path_info + query_url(request))
+        return TemplateResponse(request=self.request, template="briefs/brief_form.html", context=context, **kwargs)
 
 
 class BriefDetail(View):
@@ -149,10 +163,12 @@ class BriefDetail(View):
                             'answers': brief_answers.answers.all_for(request.user, 'view_answers')\
                                                     .order_by('question__index')})
 
-        _update_context_from_query(request, context)
+        _update_from_query(request, context)
         context.update({'object': brief, 'questions': brief.questions\
                                                            .all_for(request.user, 'view_question')\
                                                            .order_by('index')})
+
+        request.breadcrumbs(_('Brief: ') + brief.name, request.path_info + query_url(request))
         return TemplateResponse(request=request,
                                 template="briefs/brief_detail.html",
                                 context=context)
@@ -168,6 +184,8 @@ class BriefDetail(View):
 
 class BriefTemplateList(View):
     def get(self, request):
+        self.request.breadcrumbs([(_('Briefs'), reverse('briefs')),
+                                  (_('Templates'), request.path_info)])
         return TemplateResponse(request=request,
                                 template="briefs/brieftemplate_list.html",
                                 context={'title': 'Brief Templates',
@@ -177,12 +195,19 @@ class BriefTemplateList(View):
 
 class BriefTemplateView(View):
     def get(self, request, **kwargs):
+        self.request.breadcrumbs([(_('Briefs'), reverse('briefs')),
+                                  (_('Templates'), reverse('brief_templates'))])
         if 'pk' in kwargs:
             self.object = get_one_or_404(request.user, 'view_brieftemplate', b.BriefTemplate, pk=kwargs['pk'])
             form = bf.BriefTemplateForm(request.user, instance=self.object.brief)
             question_forms = bf.question_forms_brief(self.object.brief)
+
+            self.request.breadcrumbs(_('Edit'), request.path_info)
         else:
             self.object = None
+
+            self.request.breadcrumbs(_('Add'), request.path_info)
+
             if kwargs['brief_id'] is not None:
                 brief = get_one_or_404(request.user, 'view_brief', b.Brief, pk=kwargs['brief_id'])
                 form = bf.BriefTemplateForm(request.user, instance=brief)

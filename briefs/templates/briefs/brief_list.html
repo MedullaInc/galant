@@ -139,7 +139,8 @@
         });
 
         $('.table .brief_row').click(function () {
-            window.location.href = "{% url 'brief_detail' %}" + $(this).attr('data-rel');
+            window.location.href = "{% url 'brief_detail' %}" + $(this).attr('data-rel') +
+                    "{% if request.GET.urlencode %}?{% endif %}{{ request.GET.urlencode }}";
         });
 
         {% if client %}
@@ -150,7 +151,7 @@
             }
             window.location.href = "{% url 'add_brief' %}" + "?template_id=" +
                     $(this).parents('tr').attr('data-rel') + "&lang=" + $(this).val() +
-                    "{% if client %}&client_id={{ client.id }}{% endif %}";
+                    "{{ request.GET.urlencode }}";
         });
 
         $('.table .template_row select').click(function (e) {
@@ -160,7 +161,7 @@
         $('.table .template_row select').change(function (e) {
             window.location.href = "{% url 'add_brief' %}" + "?template_id=" +
                     $(this).parents('tr').attr('data-rel') + "&lang=" + $(this).val() +
-                    "{% if client %}&client_id={{ client.id }}{% endif %}";
+                    "{{ request.GET.urlencode }}";
         });
         {% endif %}
     </script>

@@ -15,10 +15,12 @@ from gallant import forms
 from gallant import models as g
 from quotes import models as q
 from gallant.utils import get_one_or_404, get_site_from_host
+from django.utils.translation import ugettext_lazy as _
 
 
 class ClientList(View):
     def get(self, request):
+        request.breadcrumbs(_('Clients'), request.path_info)
         return TemplateResponse(request=request,
                                 template="gallant/client_list.html",
                                 context={'title': 'Clients',
@@ -51,6 +53,13 @@ class ClientUpdate(View):
 
     def render_to_response(self, context):
         context.update({'title': 'Edit Client'})
+
+        self.request.breadcrumbs(_('Clients'), reverse('clients'))
+        if self.object:
+            self.request.breadcrumbs([(_(self.object.name), reverse('client_detail', args=[self.object.id])),
+                                      (_('Edit'), self.request.path_info)])
+        else:
+            self.request.breadcrumbs(_('Add'), self.request.path_info)
         return TemplateResponse(request=self.request,
                                 template="gallant/client_form.html",
                                 context=context)
@@ -69,8 +78,14 @@ class ClientUpdate(View):
 class ClientCreate(ClientUpdate):
     def get(self, request):
         self.object = None
-        return self.render_to_response({'form': forms.ClientForm(request.user),
-                                        'contact_form': forms.ContactInfoForm()})
+        request.breadcrumbs([(_('Clients'), reverse('clients')),
+                             (_('Add'), request.path_info)])
+        context = {'form': forms.ClientForm(request.user),
+                   'contact_form': forms.ContactInfoForm(),
+                   'title': 'Add Client'}
+        return TemplateResponse(request=self.request,
+                                template="gallant/client_form.html",
+                                context=context)
 
 
 def client_detail(request, pk):
@@ -85,6 +100,9 @@ def client_detail(request, pk):
             return HttpResponseRedirect(reverse('client_detail', args=[client.id]))
     else:
         form = forms.NoteForm(request.user)  # An unbound form
+
+    request.breadcrumbs([(_('Clients'), reverse('clients')),
+                         (_(client.name), reverse('client_detail', args=[client.id]))])
 
     return TemplateResponse(request=request,
                             template="gallant/client_detail.html",
@@ -153,6 +171,7 @@ def service_detail(request, pk):
 
 class ProjectList(View):
     def get(self, request):
+        request.breadcrumbs(_('Projects'), request.path_info)
         return TemplateResponse(request=request,
                                 template="gallant/project_list.html",
                                 context={'title': 'Projects',
@@ -186,8 +205,16 @@ class ProjectUpdate(View):
 
     def render_to_response(self, context):
         context.update({'title': 'Edit Project'})
+
+        self.request.breadcrumbs(_('Projects'), reverse('projects'))
+        if self.object:
+            self.request.breadcrumbs([(_('Project: %s' % self.object.name),
+                                       reverse('project_detail', args=[self.object.id])),
+                                      (_('Edit'), self.request.path_info)])
+        else:
+            self.request.breadcrumbs(_('Add'), self.request.path_info)
         return TemplateResponse(request=self.request,
-                                template="gallant/project_form.html",
+                                template="gallant/create_form.html",
                                 context=context)
 
     def form_valid(self, form, quote=None):
@@ -206,7 +233,13 @@ class ProjectUpdate(View):
 class ProjectCreate(ProjectUpdate):
     def get(self, request, **kwargs):
         form = forms.ProjectForm(request.user)
-        return self.render_to_response({'form': form})
+        request.breadcrumbs([(_('Projects'), reverse('projects')),
+                             (_('Add'), request.path_info)])
+
+        context = {'title': 'Add Project', 'form': form}
+        return TemplateResponse(request=self.request,
+                                template="gallant/create_form.html",
+                                context=context)
 
 
 def project_detail(request, pk):
@@ -222,6 +255,8 @@ def project_detail(request, pk):
     else:
         form = forms.NoteForm(request.user)
 
+    request.breadcrumbs([(_('Projects'), reverse('projects')),
+                         (_('Project: %s' % project.name), request.path_info)])
     return render(request, 'gallant/project_detail.html', {
         'object': project,
         'form': form,
