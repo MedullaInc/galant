@@ -1,11 +1,5 @@
 {% extends "base_sidebar_enclosed.html" %}
-{% load bootstrap i18n gallant_tags django_bootstrap_breadcrumbs %}
-
-{% block breadcrumbs %}
-    {{ block.super }}
-    {% breadcrumb 'Clients' 'client_list' object.id %}
-    {% breadcrumb object.name 'client_detail' object.id %}
-{% endblock %}
+{% load bootstrap i18n gallant_tags %}
 
 {% block section_title %}
     {% trans "Client" %}

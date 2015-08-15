@@ -27,4 +27,3 @@ django-phantom-pdf>=0.3
 django-localflavor>=1.1
 django-countries>=3.3
 django-analytical>=0.22.0
-django-bootstrap-breadcrumbs>=0.7.1

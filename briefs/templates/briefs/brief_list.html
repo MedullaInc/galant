@@ -1,12 +1,5 @@
 {% extends "base_sidebar.html" %}
-{% load bootstrap i18n django_bootstrap_breadcrumbs %}
-
-{% block breadcrumbs %}
-    {{ block.super }}
-    {% breadcrumb 'Clients' 'client_list' object.id %}
-    {% breadcrumb client.name 'client_detail' client.id %}
-    {% breadcrumb 'Briefs' 'brief_list' object.client.id %}
-{% endblock %}
+{% load bootstrap i18n  %}
 
 {% block section_title %}
     {{ brief_type_title }}{% trans " Briefs" %}
