@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.contrib import messages
+from django.core.mail import send_mail
 from django.core.urlresolvers import reverse
 from briefs import models as b
 from django.http import HttpResponseRedirect
@@ -12,7 +13,7 @@ from django.views.generic import View
 from briefs import forms as bf
 from gallant import forms as gf
 from django.db.models import Q
-from gallant.utils import get_one_or_404, query_url
+from gallant.utils import get_one_or_404, query_url, get_site_from_host
 from django.utils.translation import ugettext_lazy as _
 
 def _update_from_query(request, context):
@@ -147,6 +148,14 @@ class BriefCreate(BriefUpdate):
         return TemplateResponse(request=self.request, template="briefs/brief_form.html", context=context, **kwargs)
 
 
+def _send_brief_email(email, from_name, link, site):
+    message = '%s has sent you a %s questionnaire.\n\n Click this link to answer:\n %s' %\
+        (from_name, site, link)
+    send_mail('Client Questionnaire', message,
+              '%s via %s <%s>' % (from_name, site,  settings.EMAIL_HOST_USER),
+              [email], fail_silently=False)
+
+
 class BriefDetail(View):
     def get(self, request, **kwargs):
         context = {'title': 'Brief Detail'}
@@ -176,7 +185,11 @@ class BriefDetail(View):
         brief.status = b.BriefStatus.Sent.value
         brief.save()
 
-        messages.warning(request, 'Email currently disabled.', 'warning client_email_link')
+        _send_brief_email(brief.client.email, request.user.name,
+                          (request.build_absolute_uri(
+                                           reverse('brief_answer', args=[brief.token.hex]))),
+                          get_site_from_host(request))
+        messages.success(request, 'Brief link sent to %s.' % brief.client.email)
         return self.get(request, **kwargs)
 
 

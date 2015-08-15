@@ -170,6 +170,7 @@ class BriefsSignedInTest(browser.SignedInTest):
         b.get(self.live_server_url + reverse('brief_detail', args=[brief.id]))
         b.find_element_by_id('send_brief').click()
 
-        self.assertIsNotNone(b.find_element_by_class_name('alert-warning'))
+        success_message = b.find_element_by_class_name('alert-success')
+        self.assertTrue(u'Brief link sent to %s.' % brief.client.email in success_message.text)
         brief.refresh_from_db()
         self.assertEqual(brief.status, '2')
