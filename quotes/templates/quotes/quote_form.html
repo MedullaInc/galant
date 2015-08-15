@@ -1,5 +1,5 @@
 {% extends "gallant/create_form_ultext.html" %}
-{% load bootstrap i18n section_javascript %}
+{% load bootstrap i18n section_javascript gallant_tags %}
 
 {% block sidebar %}
 
@@ -38,7 +38,7 @@
 
 {% block form_actions %}
     {{ block.super }}
-    {% if object.id %}
+    {%  if quote_type != "template" %}
     <button id="preview" class="btn btn-default margin-left-10" type="submit" name="preview">{% trans "Preview" %}</button>
     {% endif %}
 {% endblock %}
