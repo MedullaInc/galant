@@ -108,13 +108,20 @@ class BriefUpdate(View):
 
             return HttpResponseRedirect(reverse('brief_detail', args=[obj.id]))
         else:
+            if brief.pk:
+                self.request.breadcrumbs(
+                    [(_('Brief: ') + brief.name, reverse('brief_detail', args=[brief.id])),
+                     (_('Edit'), self.request.path_info + query_url(self.request))]
+                )
+            else:
+                self.request.breadcrumbs(
+                    _('Add'), self.request.path_info + query_url(self.request)
+                )
             return self.render_to_response({'object': brief, 'form': form,
                                             'title': 'Edit Brief', 'questions': question_forms})
 
     def render_to_response(self, context, **kwargs):
         brief = context['object']
-        self.request.breadcrumbs([(_('Brief: ') + brief.name, reverse('brief_detail', args=[brief.id])),
-                                  (_('Edit'), self.request.path_info + query_url(self.request))])
         return TemplateResponse(request=self.request, template="briefs/brief_form.html", context=context, **kwargs)
 
 
