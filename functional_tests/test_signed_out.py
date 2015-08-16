@@ -63,10 +63,9 @@ class SignedOutTest(LiveServerTestCase):
             self.browser.get(url)
 
             try:
-                h1 = self.browser.find_element_by_tag_name('h1')
+                h1 = self.browser.find_element_by_tag_name('h2')
             except NoSuchElementException:
-                self.fail('h1 Element not found, page is not blocked: %s' %
-                          url)
+                self.fail('h1 Element not found, page is not blocked: %s' % url)
 
             self.assertIn('Sign In', h1.text, 'Text not found on page: %s' % url)
             self.assertTrue(self.live_server_url + reverse('account_login') in self.browser.current_url)

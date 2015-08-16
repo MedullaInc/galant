@@ -1,21 +1,41 @@
-{% extends "base_body.html" %}
+{% extends "base_sidebar.html" %}
+{% load bootstrap i18n %}
 
-{% load i18n %}
+{% load gallant_tags %}
 
 {% block head_title %}{% trans "Sign Out" %}{% endblock %}
 
-{% block content %}
-<h1>{% trans "Sign Out" %}</h1>
+{% block section_title %}
+    {% trans "Sign Out" %}
+{% endblock section_title %}
 
-<p>{% trans 'Are you sure you want to sign out?' %}</p>
+{% block extra_head %}
+    {% trans "Sign Out" as breadcrumb_title %}
+    {% custom_breadcrumb request breadcrumb_title %}
+{% endblock extra_head %}
 
-<form method="post" action="{% url 'account_logout' %}">
-  {% csrf_token %}
-  {% if redirect_field_value %}
-  <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
-  {% endif %}
-  <button class="btn btn-default" type="submit">{% trans 'Sign Out' %}</button>
-</form>
+{% block center_content %}
+
+    <div class="row">
+
+        <div class="col-lg-12">
+            <p>
+                <i>
+                    {% trans 'Are you sure you want to sign out?' %}
+                </i>
+            </p>
+
+            <form method="post" action="{% url 'account_logout' %}">
+                {% csrf_token %}
+                {% if redirect_field_value %}
+                    <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+                {% endif %}
+                <button class="btn btn-default" type="submit">{% trans 'Sign Out' %}</button>
+            </form>
+
+        </div>
+
+    </div>
 
 
 {% endblock %}
