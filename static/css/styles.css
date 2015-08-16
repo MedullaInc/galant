@@ -18,7 +18,7 @@ button,
 select,
 textarea {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-size: 14px;
+    font-size: 16px;
 }
 
 a {
@@ -663,7 +663,7 @@ input[type="tel"],
 input[type="color"],
 .uneditable-input {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-size: 14px;
+    font-size: 16px;
     color: #7f8c8d;
     font-weight: 200;
     letter-spacing: 1px;
@@ -2310,22 +2310,22 @@ ul.nav-tabs li a#add_translation_button {
 
 /* Forms */
 
-#form .section_title {
+#form .section_title, .form-group .section_title {
     font-size: 22px;
     font-weight: 100;
 }
 
-#form label {
+#form label, .form-group label {
     font-weight: 200;
     font-size: 14px;
 }
 
-#form label.control-label {
+#form label.control-label, .form-group label.control-label {
     font-weight: 200;
     font-size: 16px;
 }
 
-#form label.form_label {
+#form label.form_label, .form-group label.form_label {
     font-weight: 200;
     font-size: 16px;
 }
@@ -2350,6 +2350,7 @@ ul.nav-tabs li a#add_translation_button {
     border-radius: 0px;
     margin-top: 0px;
     border: 1px solid #666666;
+    font-size: 16px;
 }
 
 input[type="text"].form-control {
@@ -2361,6 +2362,20 @@ input[type="text"].form-control {
 
 .btn.add_choice {
     margin-top: 0px;
+}
+
+p.title {
+    margin-bottom: 25px;
+    line-height: 1.3;
+}
+
+.checkbox {
+    padding-left: 0px;
+}
+
+a.forgot, a.forgot:hover {
+    text-decoration: none;
+    padding-top: 10px;
 }
 
 /* End Forms */

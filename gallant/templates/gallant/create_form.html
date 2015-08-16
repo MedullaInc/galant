@@ -6,7 +6,15 @@
 {% endblock %}
 
 {% block center_content %}
-    <form id="form" class="form" method="post">
+
+    <form class="login" method="post">
+
+        <p class="title">
+            <i>
+                {% trans "Fill the information below to request an account. <br/>We will contact you once your account is authorized." %}
+            </i>
+        </p>
+
         {% csrf_token %}
         {% block form_body %}
             {% block pre_form %}{% endblock %}

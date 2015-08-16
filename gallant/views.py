@@ -290,6 +290,7 @@ def _send_feedback_email(form, path):
 class SignUpRequest(View):
     @staticmethod
     def get(request):
+        request.breadcrumbs([(_('Request Account'), request.path_info)])
         return render(request, 'gallant/create_form.html', {
             'form': forms.SignUpRequestForm(),
             'title': 'Request Account',
@@ -298,6 +299,7 @@ class SignUpRequest(View):
 
     @staticmethod
     def post(request):
+        request.breadcrumbs([(_('Request Account'), request.path_info)])
         form = forms.SignUpRequestForm(request.POST)
 
         if form.is_valid():
@@ -307,6 +309,7 @@ class SignUpRequest(View):
         else:
             return render(request, 'gallant/create_form.html', {
                 'form': forms.SignUpRequestForm(),
+                'title': 'Request Account',
                 'submit_text': 'Submit'
             })
 

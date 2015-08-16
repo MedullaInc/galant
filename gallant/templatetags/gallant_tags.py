@@ -20,3 +20,9 @@ def analytics(context):
     """ Returns analytics code
     """
     return '%s\n%s' % (ClickyNode().render(context), CrazyEggNode().render(context))
+
+
+@register.simple_tag()
+def custom_breadcrumb(request, breadcrumb_title):
+    request.breadcrumbs((breadcrumb_title), request.path_info)
+    return ''
