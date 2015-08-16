@@ -2476,4 +2476,8 @@ div.breadcrumbs span {
     color: #666666;
 }
 
+div {
+    border: 1px solid #000000;
+}
+
 /* End Breadcrumbs */
