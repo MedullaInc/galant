@@ -112,10 +112,10 @@ class ULTextField(JSONField):
         return field
 
     def pre_init(self, value, obj):
-        value = super(JSONField, self).pre_init(value, obj)
         if value in self.empty_values:
             return ULTextDict()
         else:
+            value = super(JSONField, self).pre_init(value, obj)
             return _ultext_to_python(value)
 
 
