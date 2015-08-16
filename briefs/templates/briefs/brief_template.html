@@ -1,6 +1,9 @@
 {% extends "briefs/brief_form.html" %}
 {% load bootstrap i18n %}
 
+{% block form_body %}
+    {{ form.name|bootstrap }}
+{% endblock %}
 
 {% block post_form %}
     <ul id="tabs" class="nav nav-tabs" style="margin-bottom: -1px; border-bottom: 0">
@@ -14,6 +17,33 @@
     </ul>
 
     <div class="rounded-border" style="border-top-left-radius: 0px">
+    
+        <div class="row form-group brief_title margin-bottom-10 {% if form.title.errors %}has-error{% endif %}">
+            <div class="col-lg-2">
+                <label for="title" class="control-label form_label">
+                    Brief Title:
+                </label>
+            </div>
+            <div class="col-lg-10 ">
+                <input class="ultext" type="hidden" id="id_title_hidden" name="title" for="id_title" value="{{ form.instance.title.json }}"/>
+                <input class="form-control" id="id_title" maxlength="512" type="text" value="" />
+            </div>
+            <span class="help-block ">{{ form.title.errors.as_text }}</span>
+        </div>
+    
+        <div class="row form-group brief_greeting margin-bottom-10 {% if form.greeting.errors %}has-error{% endif %}">
+            <div class="col-lg-2">
+                <label for="greeting" class="control-label form_label">
+                    Greeting:
+                </label>
+            </div>
+            <div class="col-lg-10 ">
+                <input class="ultext" type="hidden" id="id_greeting_hidden" name="greeting" for="id_greeting" value="{{ form.instance.greeting.json }}"/>
+                <textarea rows="5" style="width:100%;" id="id_greeting"></textarea>
+            </div>
+            <span class="help-block ">{{ form.greeting.errors.as_text }}</span>
+        </div>
+    
         {{ block.super }}
     </div>
     <div id="language_select" style="display: none">

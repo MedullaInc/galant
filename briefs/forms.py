@@ -38,7 +38,14 @@ class BriefForm(gf.UserModelForm):
 class BriefTemplateForm(gf.UserModelForm):
     class Meta:
         model = b.Brief
-        fields = ['name']
+        fields = ['name', 'title', 'greeting']
+
+    def __init__(self, user, *args, **kwargs):
+        super(BriefTemplateForm, self).__init__(user, *args, **kwargs)
+        self.fields['name'].label = 'Template Name'
+        self.fields['title'].label = 'Brief Title'
+        self.fields['greeting'].widget = forms.Textarea(attrs={'rows': 3})
+        self.fields['title'].required = False
 
 
 class QuestionForm(gf.UserModelForm):
