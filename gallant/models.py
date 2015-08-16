@@ -1,16 +1,19 @@
 import inspect
+from itertools import chain
 from custom_user.models import AbstractEmailUser
+from django.contrib.auth import get_user_model
 from django.db import models as m
 from django.conf import settings
 from djmoney.models.fields import MoneyField
 from djmoney.forms.widgets import CURRENCY_CHOICES
 from gallant import fields as gf
-from guardian.utils import get_user_obj_perms_model
+from guardian.utils import get_user_obj_perms_model, get_group_obj_perms_model
 from django_countries.fields import CountryField
 from polymorphic import PolymorphicModel
-from guardian.shortcuts import assign_perm, get_objects_for_user, get_perms_for_model
+from guardian.shortcuts import assign_perm, get_objects_for_user, get_perms_for_model, get_groups_with_perms
 from polymorphic.manager import PolymorphicManager
 from django.contrib.contenttypes.models import ContentType
+from polymorphic.query import PolymorphicQuerySet
 
 
 class ContactInfo(m.Model):
@@ -103,6 +106,7 @@ class UserModelManager(UserManagerMethodsMixin, m.Manager):
 
 class PolyUserModelManager(UserManagerMethodsMixin, PolymorphicManager):
     use_for_related_fields = True
+    queryset_class = PolymorphicQuerySet
 
     # WARNING: this may be inefficient in the long run. May switch to non-polymorphic.
     def all_for(self, user, perm):
@@ -110,19 +114,31 @@ class PolyUserModelManager(UserManagerMethodsMixin, PolymorphicManager):
 
         for rel in self.model._meta.related_objects:
             if issubclass(rel.related_model, self.model):
-                ids_queryset = ids_queryset | self._get_valid_ids(rel.related_model, user, perm)
+                ids_queryset = chain(ids_queryset, self._get_valid_ids(rel.related_model, user, perm))
 
         return self.filter(pk__in=ids_queryset)
 
     @staticmethod
     def _get_valid_ids(model, user, perm):
         user_model = get_user_obj_perms_model(model)
+        group_model = get_group_obj_perms_model(model)
         ctype = ContentType.objects.get_for_model(model)
-        return user_model.objects\
-                           .filter(user=user)\
-                           .filter(permission__content_type=ctype)\
-                           .filter(permission__codename=perm)\
+        user_obj_query = user_model.objects\
+                                   .filter(user=user)\
+                                   .filter(permission__content_type=ctype)\
+                                   .filter(permission__codename=perm)\
             .values_list('object_pk', flat=True)
+
+        user_group_filter = {
+            'group__%s' % get_user_model().groups.field.related_query_name(): user
+        }
+        group_obj_query = group_model.objects\
+                                     .filter(**user_group_filter)\
+                                     .filter(permission__content_type=ctype)\
+                                     .filter(permission__codename=perm)\
+            .values_list('object_pk', flat=True)
+
+        return chain(user_obj_query, group_obj_query)
 
 
 class UnsavedForeignKey(m.ForeignKey):
