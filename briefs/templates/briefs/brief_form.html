@@ -114,7 +114,7 @@
 
         $('.add_choice').click(add_choice);
 
-        $(document.body).on('click', '.close', function () {
+        $(document.body).on('click', '#question_table .close', function () {
             var del = confirm("Remove this element?")
             if (del) {
                 $(this).parents('div.question')[0].remove();
