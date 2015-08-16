@@ -97,6 +97,7 @@ class Brief(g.UserModel):
     """
     name = m.CharField(max_length=512, default='New Brief')
     title = gf.ULCharField(max_length=255, help_text='Brief title.')
+    greeting = gf.ULCharField(max_length=2000, help_text='Greeting text.', blank=True)
     status = m.CharField(max_length=2, choices=BriefStatus.choices(), default=BriefStatus.Draft.value)
     token = m.UUIDField(default=uuid4, editable=False, unique=True)
 

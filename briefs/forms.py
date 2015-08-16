@@ -13,12 +13,13 @@ import re
 class BriefForm(gf.UserModelForm):
     class Meta:
         model = b.Brief
-        fields = ['title', 'client', 'quote']
+        fields = ['title', 'greeting', 'client', 'quote']
 
     def __init__(self, user, *args, **kwargs):
         super(BriefForm, self).__init__(user, *args, **kwargs)
         self.fields['quote'].widget = forms.HiddenInput()
         self.fields['quote'].required = False
+        self.fields['greeting'].widget = forms.Textarea(attrs={'rows': 3})
         if 'client' in self.initial:
             self.fields['client'].widget = forms.HiddenInput()
         else:
