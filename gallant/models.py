@@ -92,6 +92,8 @@ class UserManagerMethodsMixin(object):
 
     def _caller_blocked(self):  # Allow certain modules to call blocked methods
         mod = inspect.getmodule(inspect.stack()[2][0])  # Who is calling us?
+        if not mod:
+            return False
         return all(app not in mod.__name__ for app in ['autofixture', 'django'])
 
 
