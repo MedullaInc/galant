@@ -79,9 +79,6 @@
 
                 $(this).replaceWith(new_question);
             });
-            $('.add_choice').click(add_choice);
-            $('.add_choice').click();
-            $('.add_choice').click();
         };
 
         $('#add_question').click(function () {
@@ -100,11 +97,14 @@
 
         $('#add_multiquestion').click(function () {
             counter++;
-            $('#question_table > div:last').before(multiquestion(counter));
+            var m = $.parseHTML(multiquestion(counter));
+            $('#question_table > div:last').before(m);
+            $(m).find('.add_choice').click();
+            $(m).find('.add_choice').click();
             reindexQuestions();
         });
 
-        $('.add_choice').click(add_choice);
+        $(document.body).on('click', '.add_choice', add_choice);
 
         $(document.body).on('click', '#question_table .close', function () {
             var del = confirm("Remove this element?")
