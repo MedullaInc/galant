@@ -17,7 +17,11 @@ window.gallant = {
         var el = $(source).find(selector).first();
         var el_dest = $(destination).find(selector).first();
 
-        el_dest.val(el.val());
+        if (el.attr('type') == 'checkbox') {
+            $(el_dest).prop('checked', $(el).prop('checked'));
+        } else {
+            el_dest.val(el.val());
+        }
     }
 }
 

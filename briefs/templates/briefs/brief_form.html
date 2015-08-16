@@ -75,6 +75,7 @@
                 gallant.copyElement(new_question, this, '.question_id');
                 gallant.copyElement(new_question, this, '.question_text input[type="hidden"]');
                 gallant.copyElement(new_question, this, '.question_text input[type="text"]');
+                gallant.copyElement(new_question, this, 'input[type="checkbox"]');
                 $(new_question).find('.question_index').val(i);
 
                 $(this).replaceWith(new_question);
