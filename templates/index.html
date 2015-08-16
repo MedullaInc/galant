@@ -5,7 +5,11 @@
 {% block content %}
     <div>
         <div class="row">
+            {% if user.is_authenticated == True %}
+            <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+            {% else %}
             <div class="col-xs-12 col-sm-6 col-md-8">
+            {% endif %}
                 <p class="main">
                     Manage clients, send quotes, track projects &mdash; all in one place.
                 </p>

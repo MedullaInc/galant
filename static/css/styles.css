@@ -1544,6 +1544,11 @@ section * {
         color: #1f1f1f;
         font-weight: 600;
     }
+
+    .content-1 p.sub-main {
+        font-size: 18px;
+    }
+
 }
 
 .content-1 p.subtitle {
@@ -1839,8 +1844,6 @@ a.login-btn.index.register:hover {
     -moz-border-radius: 0px;
     border-radius: 0px;
 }
-
-
 
 .btn.btn-default, .btn-default {
     background: #ffffff;
