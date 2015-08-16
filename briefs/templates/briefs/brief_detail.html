@@ -16,6 +16,11 @@
             </a>
         </form>
     {% endif %}
+    <a href="{% url 'add_brief_template' brief_id=object.id %}">
+        <button type="button" class="btn btn-default sidebar" title="Create template from this brief.">
+            {% trans "Use as Template" %}
+        </button>
+    </a>
 {% endblock %}
 
 {% block center_content %}
