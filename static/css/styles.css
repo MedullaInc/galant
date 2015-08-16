@@ -1025,7 +1025,7 @@ section * {
     padding-bottom: 0;
     background: #ffffff;
     border: 1px solid #666666;
-    margin-bottom: 40px;
+    margin-bottom: 10px;
 }
 
 .header-5 > .container {
@@ -1370,7 +1370,7 @@ section * {
     -o-background-size: cover;
     color: #1f1f1f;
     padding-bottom: 80px;
-    margin-top: 30px;
+    margin-top: 10px;
 }
 
 .content-1 .container {
@@ -1511,7 +1511,7 @@ section * {
 }
 
 .content-1 p.main {
-    margin-top: 0px;
+    margin-top: 30px;
     margin-bottom: 35px;
     font-size: 50px;
     font-weight: 700;
@@ -1840,15 +1840,25 @@ a.login-btn.index.register:hover {
     border-radius: 0px;
 }
 
-.btn-default {
-    background: #bdc3c7;
-    color: #ffffff;
+
+
+.btn.btn-default, .btn-default {
+    background: #ffffff;
+    color: #333333;
     font-weight: 100;
     margin-top: 10px;
     letter-spacing: 1px;
-    font-size: 18px;
+    font-size: 16px;
     padding-left: 25px;
     padding-right: 25px;
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 0px;
+    border: 1px solid #666666;
+}
+
+#language_add.btn {
+    width: 100%;
 }
 
 a.forgot {
@@ -1976,7 +1986,7 @@ h3.area_title {
     -webkit-border-radius: 0px;
     -moz-border-radius: 0px;
     border-radius: 0px;
-    padding: 10px;
+    padding: 9px;
     padding-left: 15px;
     padding-right: 15px;
     margin: 0px;
@@ -2024,6 +2034,7 @@ h3.area_title {
     #settings-toggle-group .dropdown-menu li {
         margin: 0px;
         margin-bottom: 10px;
+        border: 0;
     }
 
     #settings-toggle-group .dropdown-menu li a {
@@ -2065,7 +2076,7 @@ h2.section_title, h2.center_title {
     font-size: 28px;
     font-weight: 800;
     margin-bottom: 10px;
-    margin-top: 0px;
+    margin-top: 10px;
     color: #333333;
     letter-spacing: -1px;
 }
@@ -2077,6 +2088,8 @@ h2.section_title, h2.center_title {
     border-radius: 0px;
     border: 1px solid #666666;
     width: 100%;
+    margin-top: 0px;
+    margin-bottom: 10px;
 }
 
 a .btn-default.sidebar {
@@ -2104,6 +2117,11 @@ div.sidebar {
     -moz-border-radius: 0px;
     border-radius: 0px;
     margin-bottom: 0px;
+}
+
+.rounded-border .rounded-border {
+    padding: 0px;
+    border: 0;
 }
 
 .nav-tabs > li {
@@ -2183,7 +2201,7 @@ div.popover {
 }
 
 div.popover-content {
-    padding: 0px 10px 10px 10px;
+    padding: 10px 10px 10px 10px;
 }
 
 /* End Popover */
@@ -2341,6 +2359,10 @@ input[type="text"].form-control {
     border-radius: 0px;
 }
 
+.btn.add_choice {
+    margin-top: 0px;
+}
+
 /* End Forms */
 
 /* Notices */
@@ -2403,7 +2425,7 @@ div.action_box {
     padding-right: 20px;
 }
 
-button.edit_button {
+button.btn-default.edit_button {
     -webkit-border-radius: 0px;
     -moz-border-radius: 0px;
     border-radius: 0px;
@@ -2425,3 +2447,33 @@ a.edit_button {
 }
 
 /* End Alerts */
+
+/* Breadcrumbs */
+
+div.breadcrumbs {
+    border: 1px solid #666666;
+    padding: 10px 20px 10px 20px;
+}
+
+div.breadcrumbs a, div.breadcrumbs a:hover {
+    font-size: 16px;
+    margin-right: 2px;
+    font-weight: 200;
+    color: #666666;
+    text-decoration: none;
+    line-height: 1.5;
+}
+
+div.breadcrumbs a.active, div.breadcrumbs a.active:hover {
+    color: #cecece;
+    text-decoration: none;
+}
+
+div.breadcrumbs span {
+    letter-spacing: 2px;
+    font-size: 18px;
+    font-weight: 100;
+    color: #666666;
+}
+
+/* End Breadcrumbs */

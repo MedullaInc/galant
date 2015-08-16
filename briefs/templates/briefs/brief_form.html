@@ -2,14 +2,6 @@
 {% load bootstrap i18n question_javascript gallant_tags %}
 
 {% block pre_form %}
-    {% if client %}
-        <div class="col-lg-9" align="right">
-            {% trans "Client" %}:
-        </div>
-        <div class="col-lg-3 client_link" align="right">
-            <a href="{% url 'client_detail' client.id %}">{{ client }}</a>
-        </div>
-    {% endif %}
 
     {% if project %}
         <div class="col-lg-9" align="right">
