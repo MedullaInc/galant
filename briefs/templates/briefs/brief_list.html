@@ -143,14 +143,13 @@
                     "{% if request.GET.urlencode %}?{% endif %}{{ request.GET.urlencode }}";
         });
 
-        {% if client %}
         $('.table .template_row').click(function (e) {
             var lang = '{{ LANGUAGE_CODE }}';
             if ($(this).find('select').length) {
                 lang = $(this).find('select').val();
             }
             window.location.href = "{% url 'add_brief' %}" + "?template_id=" +
-                    $(this).parents('tr').attr('data-rel') + "&lang=" + $(this).val() +
+                    $(this).attr('data-rel') + "&lang=" + lang +
                     "{{ request.GET.urlencode }}";
         });
 
@@ -163,6 +162,5 @@
                     $(this).parents('tr').attr('data-rel') + "&lang=" + $(this).val() +
                     "{{ request.GET.urlencode }}";
         });
-        {% endif %}
     </script>
 {% endblock %}
