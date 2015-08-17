@@ -8,6 +8,7 @@ from django.shortcuts import get_object_or_404
 from django.template.response import TemplateResponse
 from django.utils.translation import get_language
 from gallant import models as g
+from guardian.shortcuts import remove_perm
 from quotes import models as q
 from django.views.generic import View
 from briefs import forms as bf
@@ -301,7 +302,7 @@ class BriefAnswer(View):
 
     def post(self, request, **kwargs):
         obj = get_object_or_404(b.Brief, Q(status=2) | Q(status=3), token=kwargs['token'])
-        form = bf.BriefAnswersForm(request.user, instance=b.BriefAnswers(brief=obj), data=request.POST)
+        form = bf.BriefAnswersForm(obj.user, instance=b.BriefAnswers(brief=obj), data=request.POST)
         answers = []
 
         for answer in form.answer_forms(request.POST):
@@ -316,7 +317,8 @@ class BriefAnswer(View):
             messages.success(request, 'Brief answered.')
             obj.status = b.BriefStatus.Answered.value
             obj.save()
-            return HttpResponseRedirect(reverse('brief_detail', args=[brief_answers.brief.id]))
+            remove_perm('change_brief', request.user, obj)
+            return HttpResponseRedirect(reverse('brief_detail', args=[obj.id]))
 
         return TemplateResponse(request=request,
                                 template="briefs/brief_answers.html",

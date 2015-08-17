@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block sidebar %}
-    {% if object.client %}
+    {% if object.client and not answer_set%}
         <form method="post">
             {% csrf_token %}
             <a>
@@ -29,6 +29,7 @@
         <div class="col-lg-11 col-md-11 col-sm-10 col-xs-10">
             <h2 class="section_title">{{ object.client }}</h2>
         </div>
+        {% if not answer_set %}
         <div class="col-lg-1 col-md-1 col-sm-2 col-xs-2 action_box">
             <a href="{% url 'edit_brief' object.id %}{% if request.GET.urlencode %}?{% endif %}{{ request.GET.urlencode }}" class="edit_button" title="{% trans "Edit" %}">
                 <button id="section_edit" type="button" class="btn btn-default edit_button" aria-label="Edit">
@@ -36,6 +37,7 @@
                 </button>
             </a>
         </div>
+        {% endif %}
     </div>
 
     <p id="title" class="data">{% trans "Title" %}: {{ object.title.get_text }}</p>
@@ -46,7 +48,10 @@
             Link:<br/>http://{{ request.get_host }}{% url 'brief_answer' token=object.token.hex %}</p>
     {% endif %}
     {% if answer_set %}
-        <p id="answered" class="text-success"><b>{% trans "Answered on" %} {{ answer_set.created }}</b></p>
+        <p id="answered" class="text-success">
+            <b>{% trans "Answered on" %} {{ answer_set.created }}</b><br/>
+            {% trans "You can no longer edit this brief." %}
+        </p>
     {% endif %}
 
     <br/>
@@ -103,14 +108,4 @@
         {% endfor %}
     {% endif %}
 
-{% endblock %}
-
-{% block extra_body %}
-    <script>
-        $(document).ready(function () {
-            var alert = $('div .client_email_link');
-            alert.append('<br/>The brief status has been changed to <strong>Sent</strong>.<br/>Copy & paste the <strong>Public Answer Link</strong> below:<br/><span id="public_answer_link"></span>');
-            $("#public_answer_link").text("http://{{ request.get_host }}{% url 'brief_answer' token=object.token.hex %}").select();
-        });
-    </script>
 {% endblock %}
