@@ -173,7 +173,7 @@ class BriefDetail(View):
             brief_answers = answers_q.last()
             context.update({'answer_set': brief_answers,
                             'answers': brief_answers.answers
-                                                    .all_for(request.user, 'view_answers')
+                                                    .all_for(request.user, 'view_answer')
                                                     .order_by('question__index')})
 
         _update_from_query(request, context)
