@@ -25,7 +25,13 @@
 
 
 {% block sidebar %}
-
+    {% if template %}
+    <a>
+        <button type="button" class="btn btn-default sidebar" id="add_brief">
+            {% trans "Use For New Quote" %}
+        </button>
+    </a>
+    {% endif %}
 {% endblock %}
 
 {% block extra_body %}
@@ -68,5 +74,13 @@
                 $('.nav-tabs > li:last').before(tabHtml);
             });
         });
+
+        {% if template %}
+        $('#add_brief').click(function (e) {
+            window.location.href = "{% url 'add_quote' %}" + "?template_id=" +
+                    {{ template.id }} + "&lang=" + currentLanguage +
+                    "{{ request.GET.urlencode }}";
+        });
+        {% endif %}
     </script>
 {% endblock %}

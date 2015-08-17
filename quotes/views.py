@@ -205,6 +205,7 @@ class QuoteTemplateView(View):
         context.update({'languages': [(c, lang_dict[c]) for c in language_set if c in lang_dict],
                         'language_form': form,
                         'object': quote,
+                        'template': self.object,
                         'language': get_language(),
                         'quote_type': 'template'})
         return TemplateResponse(request=self.request,
