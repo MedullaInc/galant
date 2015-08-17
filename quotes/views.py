@@ -149,6 +149,11 @@ class QuoteTemplateView(View):
             form = qf.QuoteTemplateForm(request.user, instance=self.object.quote)
             section_forms = qf.section_forms_quote(self.object.quote)
 
+            if not request.user.has_perm('change_quotetemplate', self.object):
+                messages.warning(request, 'Warning: you don\'t have permission to change this template. '
+                                 'To save it as your own, use it to create a quote, then '
+                                 'create a separate template from the new quote.')
+
             self.request.breadcrumbs([(_('Edit'), request.path_info)])
         else:
             self.object = None

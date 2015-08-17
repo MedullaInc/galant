@@ -220,6 +220,11 @@ class BriefTemplateView(View):
             form = bf.BriefTemplateForm(request.user, instance=self.object.brief)
             question_forms = bf.question_forms_brief(self.object.brief)
 
+            if not request.user.has_perm('change_brieftemplate', self.object):
+                messages.warning(request, 'Warning: you don\'t have permission to change this template. '
+                                 'To save it as your own, use it to create a brief, then '
+                                 'create a separate template from the new brief.')
+
             self.request.breadcrumbs(_('Edit'), request.path_info)
         else:
             self.object = None
