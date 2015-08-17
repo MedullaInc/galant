@@ -276,6 +276,7 @@ class BriefTemplateView(View):
 
         context.update({'languages': [(c, lang_dict[c]) for c in language_set if c in lang_dict],
                         'language_form': form,
+                        'template': self.object,
                         'object': brief,
                         'language': get_language()})
         return TemplateResponse(request=self.request,
