@@ -10,7 +10,7 @@ from quotes.models import Quote, QuoteTemplate, TextSection, ServiceSection
 
 
 class Command(BaseCommand):
-    help = 'Closes the specified poll for voting'
+    help = 'Loads an initial quote template + sections and adds view permissions for "users" group.'
 
     def handle(self, **kwargs):
         load_quote()
