@@ -2075,7 +2075,7 @@ h2.section_subtitle {
 
 /* List View */
 
-h2.section_title, h2.center_title {
+h2.app_title, h2.section_title, h2.center_title {
     font-size: 28px;
     font-weight: 800;
     margin-bottom: 10px;

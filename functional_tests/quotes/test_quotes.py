@@ -26,8 +26,8 @@ class QuotesSignedInTest(browser.SignedInTest):
         # check 'Quotes' h1
         browser.instance().get(self.live_server_url + reverse('quotes'))
 
-        section_title = browser.instance().find_element_by_class_name('section_title')
-        self.assertEqual('Quotes', section_title.text)
+        app_title = browser.instance().find_element_by_class_name('app_title')
+        self.assertEqual('Quotes', app_title.text)
 
     def test_access_quote_preview(self):
         q = get_blank_quote_autofixture(self.user)

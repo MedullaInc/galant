@@ -13,8 +13,8 @@ class GallantClientTest(browser.SignedInTest):
         # check 'Clients' h1
         browser.instance().get(self.live_server_url + reverse('clients'))
 
-        section_title = browser.instance().find_element_by_class_name('section_title')
-        self.assertEqual('Clients', section_title.text)
+        app_title = browser.instance().find_element_by_class_name('app_title')
+        self.assertEqual('Clients', app_title.text)
 
     def test_add_client(self):
         b = browser.instance()
@@ -92,11 +92,11 @@ class GallantClientTest(browser.SignedInTest):
         c.save()
         b.get(self.live_server_url + reverse('client_detail', args=[c.id]))
 
-        section_title = b.find_element_by_class_name('section_title')
-        self.assertEqual('Client', section_title.text)
+        app_title = b.find_element_by_class_name('app_title')
+        self.assertEqual('Client', app_title.text)
 
         b.get(self.live_server_url + reverse('client_detail', args=[c2.id]))
 
-        self.assertRaises(NoSuchElementException, b.find_element_by_class_name, 'section_title')
+        self.assertRaises(NoSuchElementException, b.find_element_by_class_name, 'app_title')
 
 

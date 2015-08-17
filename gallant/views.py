@@ -317,9 +317,9 @@ class SignUpRequest(View):
 class SubmitFeedback(View):
     @staticmethod
     def get(request):
-        section_title = request.GET.get('section_title', None)
+        app_title = request.GET.get('app_title', None)
         return render(request, 'gallant/form.html', {
-            'form': forms.FeedbackForm(request, section_title),
+            'form': forms.FeedbackForm(request, app_title),
             'submit_text': 'Submit'
         })
 
