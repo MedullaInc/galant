@@ -14,6 +14,7 @@ from django.core.urlresolvers import reverse
 from gallant import forms
 from gallant import models as g
 from quotes import models as q
+from briefs import models as b
 from gallant.utils import get_one_or_404, get_site_from_host
 from django.utils.translation import ugettext_lazy as _
 
@@ -106,7 +107,9 @@ def client_detail(request, pk):
 
     return TemplateResponse(request=request,
                             template="gallant/client_detail.html",
-                            context={'object': client, 'form': form})
+                            context={'object': client, 'form': form,
+                                     'template_list': b.BriefTemplate.objects
+                                                       .all_for(request.user, 'view_brieftemplate')})
 
 
 class ServiceUpdate(View):
