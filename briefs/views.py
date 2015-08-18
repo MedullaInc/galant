@@ -318,7 +318,7 @@ class BriefAnswer(View):
             obj.status = b.BriefStatus.Answered.value
             obj.save()
             remove_perm('change_brief', request.user, obj)
-            return HttpResponseRedirect(reverse('brief_detail', args=[obj.id]))
+            return HttpResponseRedirect(reverse('home'))
 
         return TemplateResponse(request=request,
                                 template="briefs/brief_answers.html",
