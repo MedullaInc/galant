@@ -9,11 +9,15 @@
 
     <form class="login" method="post">
 
+        {% block form_help_text %}
+        {% if help_text %}
         <p class="title">
             <i>
-                {% trans "Fill the information below to request an account. <br/>We will contact you once your account is authorized." %}
+                {{ help_text }}
             </i>
         </p>
+        {% endif %}
+        {% endblock %}
 
         {% csrf_token %}
         {% block pre_form %}{% endblock %}

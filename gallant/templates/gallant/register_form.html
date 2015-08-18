@@ -1,5 +1,11 @@
 {% extends "gallant/create_form.html" %}
-{% load bootstrap %}
+{% load bootstrap i18n %}
+
+{% block form_help_text %}
+    {% with _('Fill the information below to request an account. <br/>We will contact you once your account is authorized.') as help_text %}
+        {{ block.super }}
+    {% endwith %}
+{% endblock %}
 
 {% block form_body %}
     {{ set_password_form|bootstrap }}
