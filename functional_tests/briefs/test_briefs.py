@@ -121,8 +121,8 @@ class BriefsSignedInTest(browser.SignedInTest):
         b.get(self.live_server_url + reverse('brief_detail', args=[q.id]) + '?client_id=%d' % c.id)
         self.load_scripts()
 
-        section_title = browser.instance().find_element_by_class_name('section_title')
-        self.assertEqual(u'Brief Detail', section_title.text)
+        app_title = browser.instance().find_element_by_class_name('app_title')
+        self.assertEqual(u'Brief Detail', app_title.text)
 
     def test_add_quote_brief(self):
         b = browser.instance()

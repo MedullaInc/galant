@@ -3,6 +3,7 @@ from gallant.utils import get_one_or_404
 from quotes import models as q
 from gallant import models as g
 from gallant import forms as gf
+from django.utils.translation import ugettext_lazy as _
 from django.template.loader import get_template
 import operator
 import re
@@ -105,7 +106,12 @@ class SectionForm(gf.UserModelForm):
             section = self.save(commit=False)
         context = {'prefix': self.prefix + '-', 'name': section.name,
                    'section': section, 'form': self}
-        if section.name != 'margin' and section.name != 'intro':
+
+        if section.name == 'margin':
+            context.update({'help_text': _('This section appears last, in the margin of the final page.')})
+        elif section.name == 'intro':
+            context.update({'help_text': _('This section appears first, with special formatting.')})
+        else:
             context.update({'extra_class': 'dynamic_section'})
         return t.render(context)
 

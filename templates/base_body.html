@@ -78,7 +78,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
-                        <h2 class="section_title">
+                        <h2 class="app_title">
                             {% block section_title %}
                                 {% firstof title 'Menu' %}
                             {% endblock section_title %}
@@ -161,11 +161,11 @@
         });
 
         $('#feedback').click(function () {
-            var section_title = $('.sidebar .section_title').text().trim();
-            if (section_title.length == 0) {
-                section_title = "Main";
+            var app_title = $('.app_title').text().trim();
+            if (app_title.length == 0) {
+                app_title = "Main";
             }
-            $.get("{% url 'feedback' %}?section_title=" + section_title, function (data) {
+            $.get("{% url 'feedback' %}?app_title=" + app_title, function (data) {
                 $('#base_modal .section_title').html("Leave Feedback");
                 $('#base_modal .modal-body').html(data);
                 $('#base_modal #form').submit(function () {

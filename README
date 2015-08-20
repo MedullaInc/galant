@@ -32,6 +32,10 @@ $ ./scripts/setup.sh
 
 - For internationalization, install gettext & run 'python manage.py compilemessages'
 
+- For Quote PDFs, install wkhtmltopdf 0.12.2.1 (binaries available for win / linux / osx)
+
+- To load example Quote & Brief templates, run 'python manage.py load_quote' and/or 'load_brief'
+
 
 Server Setup:
 - Install ngninx and Supervisor, copy config from scripts/nginx.sites-available.gallant and scripts/supervisord.conf to

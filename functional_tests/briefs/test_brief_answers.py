@@ -18,8 +18,8 @@ class BriefAnswersTest(browser.BrowserTest):
         brief.questions.add(mq)
 
         browser.instance().get(self.live_server_url + reverse('brief_answer', args=[brief.token.hex]))
-        h2 = browser.instance().find_element_by_tag_name('h2')
-        self.assertIn('Answer Brief', h2.text)
+        app_title = browser.instance().find_element_by_class_name('app_title')
+        self.assertIn('Answer Brief', app_title.text)
 
     def test_post_answers(self):
         b = browser.instance()

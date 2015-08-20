@@ -8,6 +8,7 @@ from django.shortcuts import get_object_or_404
 from django.template.response import TemplateResponse
 from django.utils.translation import get_language
 from gallant import models as g
+from guardian.shortcuts import remove_perm
 from quotes import models as q
 from django.views.generic import View
 from briefs import forms as bf
@@ -173,7 +174,7 @@ class BriefDetail(View):
             brief_answers = answers_q.last()
             context.update({'answer_set': brief_answers,
                             'answers': brief_answers.answers
-                                                    .all_for(request.user, 'view_answers')
+                                                    .all_for(request.user, 'view_answer')
                                                     .order_by('question__index')})
 
         _update_from_query(request, context)
@@ -219,6 +220,11 @@ class BriefTemplateView(View):
             self.object = get_one_or_404(request.user, 'view_brieftemplate', b.BriefTemplate, pk=kwargs['pk'])
             form = bf.BriefTemplateForm(request.user, instance=self.object.brief)
             question_forms = bf.question_forms_brief(self.object.brief)
+
+            if not request.user.has_perm('change_brieftemplate', self.object):
+                messages.warning(request, 'Warning: you don\'t have permission to change this template. '
+                                 'To save it as your own, use it to create a brief, then '
+                                 'create a separate template from the new brief.')
 
             self.request.breadcrumbs(_('Edit'), request.path_info)
         else:
@@ -276,6 +282,7 @@ class BriefTemplateView(View):
 
         context.update({'languages': [(c, lang_dict[c]) for c in language_set if c in lang_dict],
                         'language_form': form,
+                        'template': self.object,
                         'object': brief,
                         'language': get_language()})
         return TemplateResponse(request=self.request,
@@ -295,7 +302,7 @@ class BriefAnswer(View):
 
     def post(self, request, **kwargs):
         obj = get_object_or_404(b.Brief, Q(status=2) | Q(status=3), token=kwargs['token'])
-        form = bf.BriefAnswersForm(request.user, instance=b.BriefAnswers(brief=obj), data=request.POST)
+        form = bf.BriefAnswersForm(obj.user, instance=b.BriefAnswers(brief=obj), data=request.POST)
         answers = []
 
         for answer in form.answer_forms(request.POST):
@@ -310,7 +317,8 @@ class BriefAnswer(View):
             messages.success(request, 'Brief answered.')
             obj.status = b.BriefStatus.Answered.value
             obj.save()
-            return HttpResponseRedirect(reverse('brief_detail', args=[brief_answers.brief.id]))
+            remove_perm('change_brief', request.user, obj)
+            return HttpResponseRedirect(reverse('home'))
 
         return TemplateResponse(request=request,
                                 template="briefs/brief_answers.html",
