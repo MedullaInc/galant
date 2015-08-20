@@ -7,14 +7,6 @@
 
 {% block sidebar %}
 
-    {% if client %}
-    <a href="{% url 'client_detail' client.id %}">
-        <button type="button" class="btn btn-default sidebar">
-            {% trans "Back to Client" %}
-        </button>
-    </a>
-    {% endif %}
-
     <a>
         <button type="button" class="btn btn-default sidebar" id="add_brief">
             {% trans "Create Brief" %}

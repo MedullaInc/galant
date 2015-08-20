@@ -34,86 +34,280 @@
 
         <script>
 
-        $(document).ready(function(){
+            $(document).ready(function () {
 
-            // Initialize variables
-            var page_height = 0;
-            var page_number = 0;
+                // Initialize variables
+                var page_height = 0;
+                var initial_page_height = 0;
 
-            // Go through each page-wrapper instance.
-            function check_page_height() {
+                // Reorder page elements
+                function reorder_page_elements() {
 
-                $('body').find(".page-wrapper").each(function (page_index) {
+                    // Page number
+                    var $page_number = 0
 
-                    // Initialize variables
-                    var pdf_elements = [];
+                    // Reset page numbers
+                    set_page_numbers();
 
-                    {% block pagination_init %}
-                    page_height = 4970; // Use this for wkhtmltopdf.
-                    {% endblock pagination_init %}
+                    // Check
+                    $page_number += 1;
 
-                    // Go through each pdf_element instance.
-                    $(this).find('.pdf_element').each(function (index) {
+                    // Move Services
+                    pdf_elements = $('.page-wrapper').find('.pdf_element.service');
 
-                        // Subtract pdf_element height to page_height.
-                        page_height = page_height - $(this).height();
-
-                        if ( page_height >= 0 ) {
-                            // If page_height is greater than 0, assign a class "in_page", remove class "not_in_page"
-                            $(this).addClass("in_page");
-                            $(this).removeClass("not_in_page");
-                        } else {
-                            $(this).removeClass("in_page");
-                            $(this).addClass("not_in_page");
-                        }
-                    });
-
-                    // Set page number correctly
-                    page_number = page_index + 1;
-                    $(this).find('footer #page_number').html('<strong>'+ page_number +' / '+ $(".page-wrapper").length + '</strong>');
-
-                    // If page_height is lower than 0, select elements with "not_in_page" class, call create new page function with elements array.
-                    if ( page_height < 0 ) {
-                        pdf_elements = $(this).parent().find('.pdf_element.not_in_page');
-
-                        // Remove elements from page-wrapper element
-                        $(this).find('.pdf_element.not_in_page').each(function() {
-                            $(this).remove();
-                        });
-
-                        // Pass removed elements to build new page
-                        if (pdf_elements.length > 0) {
-                            add_new_page(pdf_elements, page_index + 1);
-                        }
+                    if (pdf_elements.length > 0) {
+                        //remove_elements_from_page(pdf_elements);
+                        var new_page = add_new_page($page_number);
+                        insert_elements_in_page(new_page, pdf_elements);
+                        $page_number += 1;
                     }
 
-                });
+                    // Move Prices
+                    pdf_elements = $('.page-wrapper').find('.pdf_element.not_in_page.prices');
 
-            };
+                    if (pdf_elements.length > 0) {
+                        //remove_elements_from_page(pdf_elements);
+                        var new_page = add_new_page($page_number);
+                        insert_elements_in_page(new_page, pdf_elements);
+                        $page_number += 1;
+                    }
 
-            function add_new_page(pdf_elements,page_id) {
+                    // Move Margin
+                    pdf_elements = $('.page-wrapper').find('.pdf_element.margin');
 
-                // Append new page-wrapper element to body.
-                $('body').append('<div class="page-wrapper" id="page_'+ page_id +'"></div>');
+                    if (pdf_elements.length > 0) {
+                        //remove_elements_from_page(pdf_elements);
+                        var new_page = add_new_page($page_number);
+                        insert_elements_in_page(new_page, pdf_elements);
+                    }
 
-                // Copy header, content, footer
-                $('header').first().clone().appendTo('#page_'+page_id);
-                $('#page_'+page_id).append('<section class="content"><div class="holder v-center"><div class="container" id="container_page_'+ page_id +'"></div></div></div>')
-                $('footer').first().clone().appendTo('#page_'+page_id);
+                    // Reset page numbers
+                    set_page_numbers();
 
-                // Insert pdf_elements in content's container element
-                $.each(pdf_elements, function(key,element){
-                    $('#container_page_'+ page_id +'').append(element);
-                });
+                    // Paginate
+                    paginate();
 
-                // Run check_page_height() again to continue building pages if needed
-                check_page_height();
+                }
 
-            };
+                // Go through each page-wrapper instance.
+                function paginate() {
+                    // Initialize
+                    $pages_count = $('body').find(".page-wrapper").length;
 
-            check_page_height();
+                    // Paginate all sections
+                    $('body').find(".page-wrapper").each(function (page_index) {
+                        // Paginate
+                        check_page_height(page_index);
+                        set_page_numbers();
+                    });
 
-        });
+                    if ($('body').find(".page-wrapper").length > $pages_count) {
+                        paginate();
+                    }
+
+                }
+
+                // Check page height, and adjust pages accordingly.
+                function check_page_height(page_id) {
+
+                    // INITIALIZE variables
+                    var $reboot = 0;
+                    var $page_id = page_id;
+                    var page = $('#page_' + $page_id);
+
+                    {% block pagination_init %}
+                        page_height = 4970; // Use this for wkhtmltopdf.
+                    {% endblock pagination_init %}
+
+                    initial_page_height = page_height;
+
+                    // START PAGING
+
+                    $(page).find('.pdf_element').each(function () {
+
+                        var pdf_elements = [];
+
+                        if ($(this).hasClass('prices') && ($(this).height() > page_height)) {
+
+                            // Element is prices, and greater than page_height -    Divide by sub-elements
+                            var element = $(this);
+                            page_by_rows(element, pdf_elements, $page_id, initial_page_height, page_height);
+
+                            // Reset page height
+                            page_height = initial_page_height;
+
+                        } else if ($(this).height() > initial_page_height) {
+
+                            // Element is greater than initial_page_height -        Divide by words
+                            var element = $(this);
+
+                            pdf_elements = $(this).parent().find('.pdf_element.not_in_page');
+
+                            page_by_words(element, pdf_elements, $page_id, initial_page_height, page_height);
+
+                            // Marked as positioned in new page
+                            $(this).addClass("in_page");
+                            $(this).removeClass("not_in_page");
+
+                            // Reset page height
+                            page_height = initial_page_height;
+
+                            // Restart
+                            $reboot = 0;
+
+                        } else if ($(this).height() > page_height) {
+
+                            // Element is greater than page_height -                Send to new page.
+                            pdf_elements = $(this).parent().find('.pdf_element.not_in_page');
+
+                            // Create new page
+                            $page_id = add_new_page($page_id);
+
+                            // Send elements to new page
+                            insert_elements_in_page($page_id, pdf_elements);
+
+                            // Marked as positioned in new page
+                            $(this).addClass("in_page");
+                            $(this).removeClass("not_in_page");
+
+                            // Reset page height
+                            page_height = initial_page_height;
+
+                            // Restart
+                            $reboot = 1;
+                            return false;
+
+                        } else {
+
+                            // Just subtract element height from page_height
+                            page_height = page_height - $(this).height();
+
+                            // Mark element as positioned on page to be able to select other elements.
+                            $(this).addClass("in_page");
+                            $(this).removeClass("not_in_page");
+
+                        }
+
+                        if ($reboot == 1) {
+                            return false;
+                        }
+
+                    });
+
+                    if ($reboot == 1) {
+                        check_page_height($page_id);
+                    }
+
+                    // END PAGING
+
+                }
+
+                function insert_elements_in_page(page_id, pdf_elements) {
+                    //  Insert pdf_elements in content's container element
+                    $(pdf_elements).each(function(){
+                        $('#container_page_' + page_id + '').append($(this));
+                    });
+                }
+
+                function set_page_numbers() {
+                    $('body').find(".page-wrapper").each(function (page_index, page) {
+                        var page_number = page_index + 1;
+                        $(this).attr('id', 'page_' + page_number);
+                        $(this).find(".content .holder .container").attr('id', 'container_page_' + page_number);
+                        $(this).find('footer #page_number').html('<strong>' + page_number + ' / ' + $(".page-wrapper").length + '</strong>');
+                    });
+                }
+
+                function add_new_page(page_id) {
+
+                    var new_page_id = page_id + 1;
+
+                    // Append new page-wrapper element to body after current page.
+                    $('<div class="page-wrapper" id="page_' + new_page_id + '"></div>').insertAfter('#page_' + page_id);
+
+                    // Copy header, content, footer
+                    $('.header').first().clone().appendTo('#page_' + new_page_id);
+                    $('#page_' + new_page_id).append('<section class="content"><div class="holder v-center"><div class="container" id="container_page_' + new_page_id + '"></div></div></section>')
+                    $('.footer').first().clone().appendTo('#page_' + new_page_id);
+
+                    // Set page numbers
+                    set_page_numbers();
+
+                    return new_page_id
+
+                }
+
+                function page_by_rows(element, pdf_elements, page_id, total_height, current_height) {
+                    // Iterate row by row and create new pages as needed.
+
+                    var rows = element.find('.row');
+                    var page_number = page_id;
+
+                    $(rows).each(function (i, row) {
+
+                        // If title height is greater than remaining page height,
+                        if ($(row)[0].clientHeight > current_height) {
+                            // Update page_id to new page's id.
+                            page_number = add_new_page(page_id);
+                            // Reset current_height
+                            current_height = total_height;
+                        } else {
+                            // Update current_height
+                            current_height = current_height - $(row)[0].clientHeight;
+                            // Mark element as positioned on page to be able to select other elements.
+                        }
+
+                        // Send to page
+                        insert_elements_in_page(page_number, $(row));
+
+                    });
+
+                }
+
+                function page_by_words(element, pdf_elements, page_id, total_height, current_height) {
+                    // Iterate word by word and create new pages as needed.
+
+                    var paragraphs = element.find('p');
+                    var title = element.find('.row .section_title')
+                    var $page_number = page_id;
+
+                    if ( $(title).height() > current_height ) {
+                        // Update page_id to new page's id.
+                        $page_number = add_new_page($page_number);
+                        // Reset current_height
+                        current_height = total_height;
+                        // Send to page
+                        insert_elements_in_page($page_number, $(title));
+                    } else {
+                        // Update current_height
+                        current_height = current_height - $(title).height();
+                    }
+
+                    $(paragraphs).each(function (i, paragraph) {
+
+                        if ($(paragraph).height() > total_height) {
+                            // Divide by words
+                        } else if ($(paragraph).height() > current_height) {
+                            // Send to new page
+                            // Update page_id to new page's id.
+                            //$page_number = add_new_page($page_number);
+                            // Reset current_height
+                            //current_height = total_height;
+                            // Send to page
+                            //$(paragraph).wrap('<div class="row"><div class=class="col-xs-offset-4 col-xs-8 section_content"></div></div>')
+                            //insert_elements_in_page($page_number, [$(paragraph).parent().parent()]);
+                        } else {
+                            // Update current_height
+                            current_height = current_height - $(paragraph).height();
+                        }
+
+                    });
+
+                }
+
+                reorder_page_elements();
+
+            });
 
         </script>
 
@@ -169,7 +363,7 @@
                     {% for section in object.all_sections %}
                         {% if section.service %}
                             {% with service=section.service %}
-                                <div class="pdf_element not_in_page">
+                                <div class="pdf_element not_in_page {{ service.name }}">
 
                                     <div class="row">
                                         <div class="col-xs-offset-2 col-xs-8 section_title">
@@ -215,15 +409,15 @@
                             </div>
                         {% endif %}
                     {% endfor %}
-                    <div class="pdf_element not_in_page">
-                        <div class="row">
+                    <div class="pdf_element not_in_page prices">
+                        <div class="row title">
                             <div class="col-xs-offset-2 col-xs-10 section_title">
                                 <h2>
                                     {% trans "Prices" %}
                                 </h2>
                             </div>
                         </div>
-                        <div class="row">
+                        <div class="row title">
                             <div class="col-xs-offset-4 col-xs-2 section_content">
                                 <p>
                                     <strong>{% trans "Service" %}</strong>
@@ -248,7 +442,7 @@
                         {% for section in object.all_sections %}
                             {% if section.service %}
                                 {% with service=section.service %}
-                                    <div class="row">
+                                    <div class="row content">
                                         <div class="col-xs-offset-4 col-xs-2 section_content">
                                             <p>
                                                 {{ service.name.get_text }}

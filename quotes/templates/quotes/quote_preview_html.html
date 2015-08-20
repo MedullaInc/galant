@@ -6,7 +6,7 @@
 {% endblock pdf_style %}
 
 {% block pagination_init %}
-    page_height = 643; // Use this for local testing.
+    page_height = 543; // Use this for local testing.
 {% endblock pagination_init %}
 
 {% block body %}
@@ -56,7 +56,7 @@
                     {% for section in sections %}
                         {% if section.service %}
                             {% with service=section.service %}
-                                <div class="pdf_element not_in_page">
+                                <div class="pdf_element not_in_page service">
 
                                     <div class="row">
                                         <div class="col-xs-offset-2 col-xs-8 section_title">
@@ -86,7 +86,7 @@
                                 </div>
                             {% endwith %}
                         {% else %}
-                            <div class="pdf_element not_in_page">
+                            <div class="pdf_element not_in_page {{ section.name }}">
                                 <div class="row">
                                     <div class="col-xs-offset-2 col-xs-8 section_title">
                                         <h2>
@@ -102,7 +102,7 @@
                             </div>
                         {% endif %}
                     {% endfor %}
-                    <div class="pdf_element not_in_page">
+                    <div class="pdf_element not_in_page prices">
                         <div class="row">
                             <div class="col-xs-offset-2 col-xs-10 section_title">
                                 <h2>
