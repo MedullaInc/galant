@@ -111,12 +111,12 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-xs-offset-4 col-xs-2 section_content">
+                            <div class="col-xs-offset-4 col-xs-3 section_content">
                                 <p>
                                     <strong>{% trans "Service" %}</strong>
                                 </p>
                             </div>
-                            <div class="col-xs-2 section_content">
+                            <div class="col-xs-1 section_content">
                                 <p>
                                     <strong>{% trans "Quantity" %}</strong>
                                 </p>
@@ -136,12 +136,12 @@
                             {% if section.service %}
                                 {% with service=section.service %}
                                     <div class="row">
-                                        <div class="col-xs-offset-4 col-xs-2 section_content">
+                                        <div class="col-xs-offset-4 col-xs-3 section_content">
                                             <p>
                                                 {{ service.name.get_text }}
                                             </p>
                                         </div>
-                                        <div class="col-xs-2 section_content">
+                                        <div class="col-xs-1 section_content">
                                             <p>
                                                 {{ service.quantity }}
                                             </p>

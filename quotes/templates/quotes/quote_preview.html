@@ -403,10 +403,13 @@
 
                     // Add element prices to the end
                     var $cost = $(element).find(".service_cost")[1];
-                    var $cost_row = '<div class="row"><div class="col-xs-offset-4 col-xs-4 section_content"><p class="service_cost">{% trans "Service Cost:" %}</p></div><div class="col-xs-4 section_content"><p class="service_cost">'+ $($cost).text() +'</p></div></div>'
-                    $(pdf_element).append($cost_row);
+                    if ($($cost).text() != "") {
+                        var $cost_row = '<div class="row"><div class="col-xs-offset-4 col-xs-4 section_content"><p class="service_cost">{% trans "Service Cost:" %}</p></div><div class="col-xs-4 section_content"><p class="service_cost">' + $($cost).text() + '</p></div></div>'
+                        $(pdf_element).append($cost_row);
+                    }
                 }
 
+                // Start the fun!
                 reorder_page_elements();
 
             });
@@ -465,7 +468,7 @@
                     {% for section in object.all_sections %}
                         {% if section.service %}
                             {% with service=section.service %}
-                                <div class="pdf_element not_in_page {{ service.name }}">
+                                <div class="pdf_element not_in_page service">
 
                                     <div class="row">
                                         <div class="col-xs-offset-2 col-xs-8 section_title">
@@ -481,12 +484,12 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-xs-offset-4 col-xs-4 section_content">
-                                            <p>
+                                            <p class="service_cost">
                                                 {% trans "Service Cost:" %}
                                             </p>
                                         </div>
                                         <div class="col-xs-4 section_content">
-                                            <p>
+                                            <p class="service_cost">
                                                 {{ service.cost }} &times; {{ service.quantity }}
                                             </p>
                                         </div>
@@ -495,7 +498,7 @@
                                 </div>
                             {% endwith %}
                         {% else %}
-                            <div class="pdf_element not_in_page">
+                            <div class="pdf_element not_in_page {{ section.name }}">
                                 <div class="row">
                                     <div class="col-xs-offset-2 col-xs-8 section_title">
                                         <h2>
@@ -512,20 +515,20 @@
                         {% endif %}
                     {% endfor %}
                     <div class="pdf_element not_in_page prices">
-                        <div class="row title">
+                        <div class="row">
                             <div class="col-xs-offset-2 col-xs-10 section_title">
                                 <h2>
                                     {% trans "Prices" %}
                                 </h2>
                             </div>
                         </div>
-                        <div class="row title">
-                            <div class="col-xs-offset-4 col-xs-2 section_content">
+                        <div class="row">
+                            <div class="col-xs-offset-4 col-xs-3 section_content">
                                 <p>
                                     <strong>{% trans "Service" %}</strong>
                                 </p>
                             </div>
-                            <div class="col-xs-2 section_content">
+                            <div class="col-xs-1 section_content">
                                 <p>
                                     <strong>{% trans "Quantity" %}</strong>
                                 </p>
@@ -544,13 +547,13 @@
                         {% for section in object.all_sections %}
                             {% if section.service %}
                                 {% with service=section.service %}
-                                    <div class="row content">
-                                        <div class="col-xs-offset-4 col-xs-2 section_content">
+                                    <div class="row">
+                                        <div class="col-xs-offset-4 col-xs-3 section_content">
                                             <p>
                                                 {{ service.name.get_text }}
                                             </p>
                                         </div>
-                                        <div class="col-xs-2 section_content">
+                                        <div class="col-xs-1 section_content">
                                             <p>
                                                 {{ service.quantity }}
                                             </p>
