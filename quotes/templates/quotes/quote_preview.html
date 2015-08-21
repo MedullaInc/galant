@@ -141,13 +141,13 @@
                             // Element is greater than initial_page_height -        Divide by words
                             var element = $(this);
 
-                            pdf_elements = $(this).parent().find('.pdf_element.not_in_page');
-
-                            page_by_words(element, pdf_elements, $page_id, initial_page_height, page_height);
-
                             // Marked as positioned in new page
                             $(this).addClass("in_page");
                             $(this).removeClass("not_in_page");
+
+                            pdf_elements = $(this).parent().find('.pdf_element.not_in_page');
+
+                            page_by_words(element, pdf_elements, $page_id, initial_page_height, page_height);
 
                             // Reset page height
                             page_height = initial_page_height;
@@ -204,7 +204,7 @@
 
                 function insert_elements_in_page(page_id, pdf_elements) {
                     //  Insert pdf_elements in content's container element
-                    $(pdf_elements).each(function(){
+                    $(pdf_elements).each(function () {
                         $('#container_page_' + page_id + '').append($(this));
                     });
                 }
@@ -265,41 +265,125 @@
                 }
 
                 function page_by_words(element, pdf_elements, page_id, total_height, current_height) {
-                    // Iterate word by word and create new pages as needed.
 
-                    var paragraphs = element.find('p');
-                    var title = element.find('.row .section_title')
+                    // Detach element
+                    $(element).detach();
+
+                    // Initiate variables
                     var $page_number = page_id;
 
-                    if ( $(title).height() > current_height ) {
+                    // Create pdf_element
+                    var pdf_element = '<div class="pdf_element service in_page"></div>';
+
+                    // Element title
+                    var $title = $(element).find(".section_title")[0];
+
+                    // Add row to pdf_element
+                    pdf_element = $(pdf_element).append('<div class="row new"></div>');
+
+                    // Add title to row
+                    $(pdf_element).find('.row').append($title);
+
+                    // Insert pdf_element into DOM
+                    insert_elements_in_page($page_number, pdf_element);
+
+                    //console.log(pdf_element);
+
+                    // Check pdf_element height, change to new page if needed
+                    if ($(pdf_element).height() > current_height) {
                         // Update page_id to new page's id.
                         $page_number = add_new_page($page_number);
+
                         // Reset current_height
                         current_height = total_height;
-                        // Send to page
-                        insert_elements_in_page($page_number, $(title));
+
+                        // Insert pdf_element into DOM
+                        insert_elements_in_page($page_number, pdf_element);
+
+                        // Update height
+                        current_height = current_height - $(pdf_element).height();
                     } else {
-                        // Update current_height
-                        current_height = current_height - $(title).height();
+                        // Update height
+                        current_height = current_height - $(pdf_element).height();
                     }
 
-                    $(paragraphs).each(function (i, paragraph) {
+                    // Get element paragraphs
+                    var $paragraphs = $(element).find('p');
 
-                        if ($(paragraph).height() > total_height) {
-                            // Divide by words
-                        } else if ($(paragraph).height() > current_height) {
-                            // Send to new page
-                            // Update page_id to new page's id.
-                            //$page_number = add_new_page($page_number);
-                            // Reset current_height
-                            //current_height = total_height;
-                            // Send to page
-                            //$(paragraph).wrap('<div class="row"><div class=class="col-xs-offset-4 col-xs-8 section_content"></div></div>')
-                            //insert_elements_in_page($page_number, [$(paragraph).parent().parent()]);
-                        } else {
-                            // Update current_height
-                            current_height = current_height - $(paragraph).height();
-                        }
+                    // Iterate over each paragraph
+
+                    // Create pdf_element
+                    var pdf_element = '<div class="pdf_element service in_page"></div>';
+
+                    // Add row to pdf_element
+                    pdf_element = $(pdf_element).append('<div class="row new"></div>');
+
+                    var $create_section_content = 0;
+                    var new_section_content = '';
+
+                    $($paragraphs).each(function (p, paragraph) {
+
+                        // Initialize variables
+                        var words = $(this).text().split(" ");
+                        words = words.filter(function(w){return w != ""});
+                        words = words.filter(function(w){return w != "\n"});
+
+                        var $create_p = 0;
+                        var new_p = '';
+
+                        // Iterate over each word in paragraph and insert into p
+                        $(words).each(function (i, word) {
+
+                            if (word != "") {
+
+                                // If there is no section_content, create a new one
+                                if ($create_section_content == 0) {
+                                    new_section_content = '<div class="col-xs-offset-4 col-xs-8 section_content new"></div>';
+                                    $create_section_content = 1;
+                                }
+
+                                // If there is no p, create a new one
+                                if ($create_p == 0) {
+                                    new_p = '<p id="page_' + $page_number + '_element_' + p + '"></p>';
+                                    $create_p = 1;
+                                }
+
+                                // Insert word into p
+                                new_p = $(new_p).append(word + ' ');
+
+                                // Build pdf_element
+                                new_section_content = $(new_section_content).append(new_p);
+                                $(pdf_element).find('.row').html(new_section_content);
+
+                                // Insert pdf_element into DOM
+                                insert_elements_in_page($page_number, pdf_element);
+
+                                // Check height
+                                if (((current_height - $(pdf_element).height()) / page_height) < 0.1) {
+                                    
+                                    // Update page_id to new page's id.
+                                    $page_number = add_new_page($page_number);
+
+                                    // Reset current_height
+                                    current_height = total_height;
+
+                                    // Create pdf_element
+                                    pdf_element = '<div class="pdf_element service in_page"></div>';
+
+                                    // Add row to pdf_element
+                                    pdf_element = $(pdf_element).append('<div class="row new"></div>');
+
+                                    $create_section_content = 0;
+                                    new_section_content = '';
+
+                                    $create_p = 0;
+                                    new_p = '';
+
+                                }
+
+                            }
+
+                        });
 
                     });
 
