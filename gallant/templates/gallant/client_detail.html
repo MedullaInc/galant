@@ -42,6 +42,7 @@
     <p>{% trans "Language" %}: {{ object.get_language_display }}</p>
     <p>{% trans "Currency" %}: {{ object.currency }}</p>
     <br/>
+    <p>{% trans "Email" %}: {{ object.email }}</p>
     {% with object.contact_info as object %}
         {% include 'gallant/contact_info.html' %}
     {% endwith %}

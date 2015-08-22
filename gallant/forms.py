@@ -17,7 +17,7 @@ class UserModelForm(forms.ModelForm):
 class ClientForm(UserModelForm):
     class Meta:
         model = g.Client
-        fields = ['name', 'type', 'size', 'status', 'language', 'currency']
+        fields = ['name', 'email', 'type', 'size', 'status', 'language', 'currency']
 
     def __init__(self, *args, **kwargs):
         super(ClientForm, self).__init__(*args, **kwargs)
