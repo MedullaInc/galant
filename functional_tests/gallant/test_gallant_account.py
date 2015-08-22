@@ -1,4 +1,5 @@
 from django.contrib.auth import hashers, get_user_model
+from django.contrib.auth.models import Group
 from django.contrib.auth.tokens import default_token_generator
 from django.core.urlresolvers import reverse
 import autofixture
@@ -13,12 +14,14 @@ def tearDown():
 class GallantAccountTest(LiveServerTestCase):
     def test_add_account(self):
         b = browser.instance()
+        Group.objects.get_or_create(name='users')  # not in the DB sometimes for some unknown reason
 
         user = autofixture.create_one('gallant.GallantUser', generate_fk=True,
                                       field_values={'password': hashers.make_password('password'),
                                                     'is_superuser': True})
         user.save()
         self.client.login(email=user.email, password='password')
+
         b.add_cookie({u'domain': u'localhost', u'name': u'sessionid',
                                  u'value': self.client.session.session_key,
                                  u'path': u'/', u'httponly': True, u'secure': False})

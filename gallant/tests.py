@@ -1,4 +1,6 @@
 import autofixture
+from django.contrib.auth import get_user_model
+from django.contrib.auth.models import Group
 from django.test import TransactionTestCase, TestCase
 from django import forms
 from gallant import models as g
@@ -81,3 +83,12 @@ class ULTextTest(TestCase):
         self.assertEqual(d[0].__class__, gf.ULTextDict)
         self.assertEqual(d[0].get_text(), 'choice 1')
         self.assertEqual(d[1].get_text('es'), 'opcion 2')
+
+
+class GallantUserTest(TestCase):
+    def test_create_user(self):
+        UserModel = get_user_model()
+        u = UserModel.objects.create_user(email='foo@bar.com')
+        group = Group.objects.get(name='users')
+
+        self.assertTrue(u in group.user_set.all())

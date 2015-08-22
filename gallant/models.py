@@ -1,7 +1,8 @@
 import inspect
 from itertools import chain
-from custom_user.models import AbstractEmailUser
+from custom_user.models import AbstractEmailUser, EmailUserManager
 from django.contrib.auth import get_user_model
+from django.contrib.auth.models import Group
 from django.db import models as m
 from django.conf import settings
 from djmoney.models.fields import MoneyField
@@ -26,6 +27,16 @@ class ContactInfo(m.Model):
     country = CountryField(default='US')
 
 
+class GalantUserManager(EmailUserManager):
+    def create_user(self, email, password=None, **extra_fields):
+        user = super(GalantUserManager, self).create_user(email, password, **extra_fields)
+
+        g = Group.objects.get(name='users')
+        g.user_set.add(user)
+
+        return user
+
+
 class GallantUser(AbstractEmailUser):
     """
     Custom Gallant user
@@ -33,6 +44,8 @@ class GallantUser(AbstractEmailUser):
     name = m.CharField(max_length=255)
     company_name = m.CharField(max_length=255, blank=True)
     contact_info = m.ForeignKey(ContactInfo, null=True)
+
+    objects = GalantUserManager()
 
     @property
     def username(self):

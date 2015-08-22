@@ -419,7 +419,7 @@ class AccountAdd(View):
         if form.is_valid():
             email = form.cleaned_data['email']
             UserModel = get_user_model()
-            user = UserModel.objects.create(email=email)
+            user = UserModel.objects.create_user(email=email)
             token = default_token_generator.make_token(user)
             link = 'http://' + request.get_host() + \
                    reverse('register', args=[user.id]) + '?token=%s' % token
