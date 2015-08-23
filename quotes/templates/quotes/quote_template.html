@@ -27,7 +27,7 @@
 {% block sidebar %}
     {% if template %}
     <a>
-        <button type="button" class="btn btn-default sidebar" id="add_brief">
+        <button type="button" class="btn btn-default sidebar" id="add_quote">
             {% trans "Use For New Quote" %}
         </button>
     </a>
@@ -76,7 +76,7 @@
         });
 
         {% if template %}
-        $('#add_brief').click(function (e) {
+        $('#add_quote').click(function (e) {
             window.location.href = "{% url 'add_quote' %}" + "?template_id=" +
                     {{ template.id }} + "&lang=" + currentLanguage +
                     "{{ request.GET.urlencode }}";
