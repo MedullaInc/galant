@@ -194,7 +194,8 @@ class QuoteTemplateView(View):
     def render_to_response(self, context, request):
         lang_dict = dict(settings.LANGUAGES)
         form = gf.LanguageForm()
-        language_set = set([get_language()])
+        language_set = set()
+        language = get_language()
 
         if hasattr(self.object, 'quote'):  # TODO: move this block out of here / remove request param
             language_set.update(self.object.quote.get_languages())
@@ -207,11 +208,15 @@ class QuoteTemplateView(View):
             quote = q.Quote()
             context.update({'title': 'New Template'})
 
+        if language_set:
+            language = next(iter(language_set))
+        else:
+            language_set.add(language)
         context.update({'languages': [(c, lang_dict[c]) for c in language_set if c in lang_dict],
                         'language_form': form,
                         'object': quote,
                         'template': self.object,
-                        'language': get_language(),
+                        'language': language,
                         'quote_type': 'template'})
         return TemplateResponse(request=self.request,
                                 template="quotes/quote_template.html",
