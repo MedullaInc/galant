@@ -214,3 +214,8 @@ class QuotesSignedInTest(browser.SignedInTest):
         add_section.click()
 
         self.assertEqual(len(b.find_elements_by_id('id_-section-2-title')), 1)
+
+        b.find_element_by_xpath('//button[@type="submit"]').click()
+
+        success_message = b.find_element_by_class_name('alert-success')
+        self.assertTrue(u'Quote saved.' in success_message.text)

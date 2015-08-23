@@ -26,6 +26,9 @@
                 } else {
                     ref.val('');
                 }
+                // form serialize only saves elements with name attribute, so save .ultext targets
+                // for comparison when user leaves page
+                $(ref).data('val', $(ref).val())
             });
 
             $('.ultext_array').each(function () {
@@ -60,45 +63,45 @@
     </script>
 
     {% block create_submit_event %}
-    <script>
-        $('#create_submit, #preview').on('click', function (e) {
+        <script>
+            $('#create_submit, #preview').on('click', function (e) {
 
-            // This sends the preview to a new window.
-            if ($(this).is("#preview")) {
-                $('.form').attr('target', '_blank');
-            }
-
-            $('.ultext').each(function () {
-                var data = {};
-                try {
-                    data = JSON.parse(this.value);
-                } catch (e) {
+                // This sends the preview to a new window.
+                if ($(this).is("#preview")) {
+                    $('.form').attr('target', '_blank');
                 }
-                data[currentLanguage] = $('#' + this.getAttribute('for')).val();
-                this.value = JSON.stringify(data);
+
+                $('.ultext').each(function () {
+                    var data = {};
+                    try {
+                        data = JSON.parse(this.value);
+                    } catch (e) {
+                    }
+                    data[currentLanguage] = $('#' + this.getAttribute('for')).val();
+                    this.value = JSON.stringify(data);
+                });
+
+                $('.ultext_array').each(function () {
+                    var data_array = [];
+                    var targets = $('#' + this.getAttribute('for')).find('.ultext_array_target');
+                    try {
+                        data_array = JSON.parse(this.value);
+                    } catch (e) {
+                    }
+                    for (var i = 0; i < data_array.length; i++) {
+                        data_array[i][currentLanguage] = $(targets[i]).val();
+                    }
+                    for (var i = data_array.length; i < targets.length; i++) {
+                        var obj = {};
+                        obj[currentLanguage] = $(targets[i]).val();
+                        console.log(obj);
+                        data_array.push(obj);
+                    }
+
+                    this.value = JSON.stringify(data_array);
+                });
             });
-
-            $('.ultext_array').each(function () {
-                var data_array = [];
-                var targets = $('#' + this.getAttribute('for')).find('.ultext_array_target');
-                try {
-                    data_array = JSON.parse(this.value);
-                } catch (e) {
-                }
-                for (var i = 0; i < data_array.length; i++) {
-                    data_array[i][currentLanguage] = $(targets[i]).val();
-                }
-                for (var i = data_array.length; i < targets.length; i++) {
-                    var obj = {};
-                    obj[currentLanguage] = $(targets[i]).val();
-                    console.log(obj);
-                    data_array.push(obj);
-                }
-
-                this.value = JSON.stringify(data_array);
-            });
-        });
-    </script>
+        </script>
     {% endblock %}
 {% endblock %}
 

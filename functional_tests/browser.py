@@ -42,6 +42,7 @@ class BrowserTest(LiveServerTestCase):
         # need this to auto-accept all confirmation dialogs
         b.execute_script("window.confirm = function(){return true;}")
         b.execute_script("window.alert = function(){}")
+        b.execute_script("window.onbeforeunload = function(){}")
 
     def save_snapshot(self):  # pragma: no cover
         b = instance()
