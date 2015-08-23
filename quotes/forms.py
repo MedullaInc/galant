@@ -77,7 +77,11 @@ def section_forms_quote(quote, clear_pk=False):
 
 def section_forms_initial(user):
     return [SectionForm(user, instance=q.TextSection(name='intro', index=0), prefix='-section-0'),
-            SectionForm(user, instance=q.TextSection(name='margin', index=1), prefix='-section-1')]
+            SectionForm(user, instance=q.TextSection(name='margin', index=2), prefix='-section-1'),
+            ServiceSectionForm(user, instance=q.ServiceSection(name='section_1',
+                                                               index=1,
+                                                               service=g.Service()),
+                               prefix='-service-2')]
 
 
 class SectionForm(gf.UserModelForm):
