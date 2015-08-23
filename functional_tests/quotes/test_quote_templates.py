@@ -12,12 +12,15 @@ class QuoteTemplatesTest(browser.SignedInTest):
     def test_add_quote_template(self):
         b = browser.instance()
         b.get(self.live_server_url + reverse('add_quote_template'))
+        self.load_scripts()
 
         b.find_element_by_name('name').send_keys('Quote test')
         b.find_element_by_id('id_-section-0-title').send_keys('test intro title')
         b.find_element_by_id('id_-section-0-text').send_keys('test intro text')
         b.find_element_by_id('id_-section-1-title').send_keys('test margin title')
         b.find_element_by_id('id_-section-1-text').send_keys('test margin text')
+        b.find_element_by_id('id_-service-2-name').send_keys('1234')
+        b.find_element_by_xpath('//select[@name="-service-2-type"]/option[@value="3"]').click()
 
         self._submit_and_check(b)
 
@@ -27,6 +30,7 @@ class QuoteTemplatesTest(browser.SignedInTest):
         self.load_scripts()
 
         b.find_element_by_name('name').send_keys('Quote test')
+        b.find_element_by_xpath('//select[@name="-service-2-type"]/option[@value="3"]').click()
         self._add_language_and_text(b)
 
         self._submit_and_check(b)

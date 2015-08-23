@@ -42,6 +42,7 @@ class QuotesSignedInTest(browser.SignedInTest):
                                    field_values={'user': self.user})
         c.save()
         b.get(self.live_server_url + reverse('add_quote'))
+        self.load_scripts()
 
         b.find_element_by_name('name').send_keys('Quote test')
         b.find_element_by_xpath('//select[@name="client"]/option[@value="%d"]' % c.id).click()
@@ -49,6 +50,7 @@ class QuotesSignedInTest(browser.SignedInTest):
         b.find_element_by_id('id_-section-0-text').send_keys('test intro text')
         b.find_element_by_id('id_-section-1-title').send_keys('test margin title')
         b.find_element_by_id('id_-section-1-text').send_keys('test margin text')
+        b.find_element_by_xpath('//select[@name="-service-2-type"]/option[@value="3"]').click()
 
         b.find_element_by_xpath('//button[@type="submit"]').click()
 
