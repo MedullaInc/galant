@@ -45,13 +45,14 @@
             </div>
         </div>
 
-        <div class="row service_cost margin-bottom-10">
+        <div class="row service_cost margin-bottom-10 form-group  {% if form.cost.errors %}has-error{% endif %}">
             <div class="col-lg-2">
                 Cost:&nbsp;&nbsp;
             </div>
             <div class="col-lg-10">
                 <input class=" form-control" id="id_{{ prefix }}cost" name="{{ prefix }}cost_0" step="10" type="number" value="{% firstof service.cost.amount '0.0' %}"/>
                 <input type="hidden" name="{{ prefix }}cost_1" value="USD"/>
+                <span class="help-block ">{{ form.cost.errors.as_text }}</span>
             </div>
         </div>
 
