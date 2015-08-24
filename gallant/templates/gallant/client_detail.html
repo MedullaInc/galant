@@ -66,7 +66,7 @@
         <a class="from_template_button">
             <button type="button" class="btn btn-default from_template_button sidebar">From Template</button>
         </a>
-        <a href="{% url 'add_brief' %}{% if client %}?client_id={{ client.id }}{% endif %}">
+        <a href="{% url 'add_brief' %}?client_id={{ object.id }}">
             <button type="button" class="btn btn-default from_scratch_button sidebar">From Scratch</button>
         </a>
     </div>
@@ -138,7 +138,7 @@
             }
             window.location.href = "{% url 'add_brief' %}" + "?template_id=" +
                     $(this).attr('data-rel') + "&lang=" + lang +
-                    "&{{ request.GET.urlencode }}";
+                    "&client_id={{ object.id }}";
         });
 
         $('.table .template_row select').click(function (e) {
