@@ -20,8 +20,8 @@
         </div>
     </div>
 
-    {% if question.id %}
-        <input class="question_id" type="hidden" id="id_{{ prefix }}id" name="{{ prefix }}id" value="{{ question.id }}"/>
+    {% if question.pk %}
+        <input class="question_id" type="hidden" id="id_{{ prefix }}id" name="{{ prefix }}id" value="{{ question.pk }}"/>
     {% endif %}
 
     <input class="question_index" type="hidden" id="id_{{ prefix }}index" name="{{ prefix }}index" value="{{ question.index }}"/>
