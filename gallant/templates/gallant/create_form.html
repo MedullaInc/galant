@@ -59,9 +59,8 @@
                 }
             });
 
-            $('.ultext').each(function () {
-                var el = $('#' + this.getAttribute('for'));
-                if ($(el).val() != $(el).data('val')) {
+            $('.ultext_target, .ultext_array_target').each(function () {
+                if ($(this).val() != $(this).data('val')) {
                     modified = true;
                     return false;
                 }

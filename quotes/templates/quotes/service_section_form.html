@@ -28,7 +28,7 @@
             </div>
             <div class="col-lg-10 ">
                 <input class="ultext" type="hidden" id="id_{{ prefix }}name_hidden" name="{{ prefix }}name" for="id_{{ prefix }}name" value="{{ service.name.json }}"/>
-                <input class="form-control" id="id_{{ prefix }}name" maxlength="512" type="text" value="" />
+                <input class="form-control ultext_target" id="id_{{ prefix }}name" maxlength="512" type="text" value="" />
             </div>
             <span class="help-block ">{{ form.name.errors.as_text }}</span>
         </div>
@@ -41,7 +41,7 @@
             </div>
             <div class="col-lg-10">
                 <input class="ultext" type="hidden" id="id_{{ prefix }}description_hidden" name="{{ prefix }}description" for="id_{{ prefix }}description" value="{{ service.description.json }}"/>
-                <textarea rows="5" style="width:100%;" id="id_{{ prefix }}description"></textarea>
+                <textarea class="ultext_target" rows="5" style="width:100%;" id="id_{{ prefix }}description"></textarea>
             </div>
         </div>
 

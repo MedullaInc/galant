@@ -7,7 +7,7 @@
         var currentLanguage = '{{ LANGUAGE_CODE }}';
         var setLanguage = function (language) {
             if (language == '') {
-                alert('Attempted to set language to none.')
+                alert('Attempted to set language to none.');
                 return;
             }
             $('.ultext').each(function () {
@@ -49,6 +49,10 @@
                     } else {
                         $(targets[i]).val('');
                     }
+
+                    // form serialize only saves elements with name attribute, so save targets
+                    // for comparison when user leaves page
+                    $(targets[i]).data('val', $(targets[i]).val())
                 }
 
                 this.value = JSON.stringify(data_array);
@@ -59,6 +63,10 @@
 
         $(document).ready(function () {
             setLanguage('{{ language|default:LANGUAGE_CODE }}');
+            // Save form contents for onbeforeunload
+            $('.form').each(function () {
+                $(this).data('serialize', $(this).serialize());
+            });
         });
     </script>
 

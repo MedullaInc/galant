@@ -39,7 +39,7 @@
         </div>
         <div class="col-lg-10">
             <input class="ultext" type="hidden" id="id_{{ prefix }}title_hidden" name="{{ prefix }}title" for="id_{{ prefix }}title" value="{{ section.title.json }}"/>
-            <input class="form-control" id="id_{{ prefix }}title" maxlength="512" type="text" value=""/>
+            <input class="form-control ultext_target" id="id_{{ prefix }}title" maxlength="512" type="text" value=""/>
         </div>
     </div>
 
@@ -51,7 +51,7 @@
         </div>
         <div class="col-lg-10">
             <input class="ultext" type="hidden" id="id_{{ prefix }}text_hidden" name="{{ prefix }}text" for="id_{{ prefix }}text" value="{{ section.text.json }}"/>
-            <textarea rows="5" style="width:100%;" id="id_{{ prefix }}text"></textarea>
+            <textarea class="ultext_target" rows="5" style="width:100%;" id="id_{{ prefix }}text"></textarea>
         </div>
     </div>
 
