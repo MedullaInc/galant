@@ -1,3 +1,4 @@
+import string
 from subprocess import check_output
 from allauth.account.adapter import DefaultAccountAdapter
 from django.conf import settings
@@ -47,8 +48,9 @@ def debug_processor(request):
 
 
 def url_to_pdf(url, session_key):
+    header_url = string.replace(url,'preview','preview/header')
     args = ['wkhtmltopdf', '--encoding', u'utf8', '--cookie', 'sessionid',
-            session_key, '--quiet', url, '-']
+            session_key, '--quiet', url, '--custom-header', 'header', header_url, '--custom-header-propagation', '-']
 
     return check_output(args)
 

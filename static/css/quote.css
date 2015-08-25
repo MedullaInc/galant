@@ -1,7 +1,7 @@
 /* PDF Rendering */
 
 div.page-wrapper {
-    height: 270mm;
+    /*height: 270mm;*/
     overflow: hidden;
     position: relative;
 }
@@ -45,8 +45,8 @@ div.page-wrapper {
 /* Footer */
 
 footer {
-    position: absolute;
-    bottom: 0px;
+    /*position: absolute;*/
+    /*bottom: 0px;*/
     width: 100%;
 }
 
@@ -60,7 +60,7 @@ footer .row.content_footer {
     padding-bottom: 5px;
     margin-bottom: 20px;
     border-bottom: 1px solid #bebec5;
-    margin-top:  -16px;
+    /*margin-top:  -16px;*/
 }
 
 footer p {

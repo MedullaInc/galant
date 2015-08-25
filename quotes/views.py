@@ -256,3 +256,19 @@ def quote_preview(request, *args, **kwargs):
     # Render HTML
     context = {'object': quote}
     return TemplateResponse(request, template="quotes/quote_preview.html", context=context)
+
+def quote_header(request, *args, **kwargs):
+    # Get quote
+    quote = q.Quote.objects.get_for(request.user, 'view_quote', pk=kwargs['pk'])
+
+    # Render HTML
+    context = {'object': quote}
+    return TemplateResponse(request, template="quotes/quote_header.html", context=context)
+
+def quote_footer(request, *args, **kwargs):
+    # Get quote
+    quote = q.Quote.objects.get_for(request.user, 'view_quote', pk=kwargs['pk'])
+
+    # Render HTML
+    context = {'object': quote}
+    return TemplateResponse(request, template="quotes/quote_footer.html", context=context)
