@@ -4,6 +4,15 @@ div.page-wrapper {
     /*height: 270mm;*/
 }
 
+.margin, .prices, .intro {
+    page-break-before: always;
+    page-break-after: always
+}
+
+.section_title h2 {
+     page-break-inside: avoid !important;
+}
+
 /* End PDF Rendering */
 
 /* Header */

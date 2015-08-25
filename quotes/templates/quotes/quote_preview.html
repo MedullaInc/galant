@@ -44,6 +44,24 @@
         <section class="content">
             <div class="holder v-center">
                 <div class="container">
+
+                    {% if object.intro %}
+                        <div class="pdf_element not_in_page intro">
+                            <div class="row">
+                                <div class="col-xs-offset-2 col-xs-8 section_title">
+                                    <h2>
+                                        {{ object.intro.title.get_text }}
+                                    </h2>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-offset-4 col-xs-8 section_content">
+                                    {{ object.intro.text.get_text|linebreaks }}
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+
                     {% for section in object.all_sections %}
                         {% if section.service %}
                             {% with service=section.service %}
@@ -76,23 +94,9 @@
 
                                 </div>
                             {% endwith %}
-                        {% else %}
-                            <div class="pdf_element not_in_page {{ section.name }}">
-                                <div class="row">
-                                    <div class="col-xs-offset-2 col-xs-8 section_title">
-                                        <h2>
-                                            {{ section.title.get_text }}
-                                        </h2>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-xs-offset-4 col-xs-8 section_content">
-                                        {{ section.text.get_text|linebreaks }}
-                                    </div>
-                                </div>
-                            </div>
                         {% endif %}
                     {% endfor %}
+
                     <div class="pdf_element not_in_page prices">
                         <div class="row">
                             <div class="col-xs-offset-2 col-xs-10 section_title">
@@ -165,6 +169,24 @@
                             </div>
                         </div>
                     </div>
+
+                    {% if object.margin %}
+                        <div class="pdf_element not_in_page margin">
+                            <div class="row">
+                                <div class="col-xs-offset-2 col-xs-8 section_title">
+                                    <h2>
+                                        {{ object.margin.title.get_text }}
+                                    </h2>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-offset-4 col-xs-8 section_content">
+                                    {{ object.margin.text.get_text|linebreaks }}
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+
                 </div>
             </div>
         </section>
