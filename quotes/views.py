@@ -231,7 +231,10 @@ class QuotePDF(View):  # pragma: no cover
         # load page with ?dl=inline to show PDF in browser
         attach_or_inline = request.GET.get('dl', 'inline')
 
-        pdf = url_to_pdf(url, request.session.session_key)
+        header_url = url.replace('preview', 'preview/header')
+        footer_url = url.replace('preview', 'preview/footer')
+
+        pdf = url_to_pdf(url, request.session.session_key, header_url, footer_url)
 
         response = HttpResponse(content=pdf,
                                 content_type='application/pdf')

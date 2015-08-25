@@ -47,11 +47,16 @@ def debug_processor(request):
     return {'DEBUG': settings.DEBUG}
 
 
-def url_to_pdf(url, session_key):
-    header_url = string.replace(url,'preview','preview/header')
-    args = ['wkhtmltopdf', '--encoding', u'utf8', '--cookie', 'sessionid',
-            session_key, '--quiet', url, '--custom-header', 'header', header_url, '--custom-header-propagation', '-']
+def url_to_pdf(url, session_key, header_url=None, footer_url=None):
+    args = ['wkhtmltopdf', '--encoding', u'utf8', '--cookie', 'sessionid', session_key, '--quiet', url]
 
+    if header_url:
+        args.extend(['--header-html', header_url])
+
+    if footer_url:
+        args.extend(['--footer-html', footer_url])
+
+    args.append('-')
     return check_output(args)
 
 
