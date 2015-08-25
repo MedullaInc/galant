@@ -232,7 +232,7 @@ class QuotePDF(View):  # pragma: no cover
         attach_or_inline = request.GET.get('dl', 'inline')
 
         header_url = url.replace('preview', 'preview/header')
-        footer_url = url.replace('preview', 'preview/footer')
+        footer_url = url.replace('preview', 'preview/footer').replace(':8000', ':8001')
 
         pdf = url_to_pdf(url, request.session.session_key, header_url, footer_url)
 
