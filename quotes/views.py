@@ -25,13 +25,7 @@ class QuoteUpdate(View):
 
     def post(self, request, **kwargs):
         if 'pk' in kwargs:
-            if 'preview' in request.POST:
-                self.kwargs['pk'] = None
-                kwargs['pk'] = None
-                request.POST.pk = None
-                self.object = None
-            else:
-                self.object = get_one_or_404(request.user, 'change_quote', q.Quote, pk=kwargs['pk'])
+            self.object = get_one_or_404(request.user, 'change_quote', q.Quote, pk=kwargs['pk'])
         else:
             self.object = None
 
@@ -49,9 +43,14 @@ class QuoteUpdate(View):
 
     def form_valid(self, form, section_forms):
         if 'preview' in self.request.POST:
-
+            form.instance.pk = None
             for section_form in section_forms:
                 section_form.instance.pk = None
+                section_form.instance.id = None
+
+                if hasattr(section_form, 'section'):
+                    section_form.section.pk = None
+                    section_form.section.id = None
 
             self.object = qf.create_quote(form, section_forms)
 
