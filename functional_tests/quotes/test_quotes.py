@@ -33,8 +33,23 @@ class QuotesSignedInTest(browser.SignedInTest):
         q = get_blank_quote_autofixture(self.user)
         browser.instance().get(self.live_server_url + reverse('quote_preview', args=[q.id]))
 
-        el = browser.instance().find_element_by_class_name('header_top')
-        self.assertIsNotNone(el)
+        page_wrapper = browser.instance().find_element_by_class_name('page-wrapper')
+        self.assertTrue(page_wrapper)
+
+
+    def test_access_quote_header(self):
+        q = get_blank_quote_autofixture(self.user)
+        browser.instance().get(self.live_server_url + reverse('quote_header', args=[q.id]))
+
+        header = browser.instance().find_element_by_class_name('header')
+        self.assertTrue(header)
+
+    def test_access_quote_footer(self):
+        q = get_blank_quote_autofixture(self.user)
+        browser.instance().get(self.live_server_url + reverse('quote_footer', args=[q.id]))
+
+        footer = browser.instance().find_element_by_class_name('footer')
+        self.assertTrue(footer)
 
     def test_add_quote(self):
         b = browser.instance()
@@ -73,23 +88,6 @@ class QuotesSignedInTest(browser.SignedInTest):
 
         intro = b.find_element_by_xpath('//div[@id="intro"]//h2')
         self.assertEqual(intro.text, 'modified intro title')
-
-    def test_preview_quote(self):
-        b = browser.instance()
-
-        q = get_blank_quote_autofixture(self.user)
-        b.get(self.live_server_url + reverse('edit_quote', args=[q.id]))
-        self.load_scripts()
-
-        b.find_element_by_id('id_-section-0-title').clear()
-        b.find_element_by_id('id_-section-0-title').send_keys('modified intro title')
-
-        preview_button = b.find_element_by_id('preview')
-        b.execute_script("arguments[0].setAttribute('id', '')", preview_button)
-
-        preview_button.click()
-
-        self.assertEqual(b.status_code, 200)
 
     def test_add_sections(self):
         b = browser.instance()

@@ -47,7 +47,7 @@ def debug_processor(request):
     return {'DEBUG': settings.DEBUG}
 
 
-def url_to_pdf(url, session_key, header_url=None, footer_url=None):
+def url_to_pdf(url, session_key, header_url=None, footer_url=None): # pragma: no cover
     args = ['wkhtmltopdf', '-T', '65mm', '-B', '32mm', '--encoding', u'utf8', '--cookie', 'sessionid', session_key,
             '--quiet', url]
 
