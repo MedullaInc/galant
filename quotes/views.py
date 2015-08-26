@@ -25,7 +25,13 @@ class QuoteUpdate(View):
 
     def post(self, request, **kwargs):
         if 'pk' in kwargs:
-            self.object = get_one_or_404(request.user, 'change_quote', q.Quote, pk=kwargs['pk'])
+            if 'preview' in request.POST:
+                self.kwargs['pk'] = None
+                kwargs['pk'] = None
+                request.POST.pk = None
+                self.object = None
+            else:
+                self.object = get_one_or_404(request.user, 'change_quote', q.Quote, pk=kwargs['pk'])
         else:
             self.object = None
 
@@ -35,34 +41,46 @@ class QuoteUpdate(View):
         valid = list([form.is_valid()] + [s.is_valid() for s in section_forms])
 
         if all(valid):
-            if 'preview' in request.POST:
-                quote = form.save(commit=False)
-                sections = []
-
-                for section_form in section_forms:
-                    sections.append(section_form.save(commit=False))
-
-                total_cost = Money(0, "USD")
-
-                for section in sections:
-                    if hasattr(section, 'service'):
-                        total_cost += section.service.get_total_cost()
-
-                context = {'object': quote, 'sections': sections, 'total_cost': total_cost}
-
-                return TemplateResponse(request, template="quotes/quote_preview_html.html", context=context)
-
-            else:
-                return self.form_valid(form, section_forms)
+            return self.form_valid(form, section_forms)
 
         else:
             return self.render_to_response({'object': self.object, 'form': form, 'sections': section_forms,
                                             'title': 'Edit Quote'})
 
     def form_valid(self, form, section_forms):
-        self.object = qf.create_quote(form, section_forms)
-        messages.success(self.request, 'Quote saved.')
-        return HttpResponseRedirect(reverse('quote_detail', args=[self.object.id]))
+        if 'preview' in self.request.POST:
+
+            for section_form in section_forms:
+                section_form.instance.pk = None
+
+            self.object = qf.create_quote(form, section_forms)
+
+            quote = self.object
+            url = '%s://%s%s' % (self.request.scheme, self.request.get_host(), reverse('quote_preview', args=[quote.id]))
+            filename = slugify(quote.client.name + "_" + quote.name)
+
+            attach_or_inline = 'inline'
+
+            header_url = url.replace('preview', 'preview/header')
+            footer_url = url.replace('preview', 'preview/footer').replace(':8000', ':8001')
+
+            pdf = url_to_pdf(url, self.request.session.session_key, header_url, footer_url)
+
+            response = HttpResponse(content=pdf, content_type='application/pdf')
+
+            response['Content-Disposition'] = '%s; filename="%s.pdf"' % (attach_or_inline, filename)
+
+            # Delete preview quote / services / sections
+            quote.sections.all_for(self.request.user, 'delete_section').delete()
+            quote.services.all_for(self.request.user, 'delete_section').delete()
+            quote.delete()
+
+            return response
+
+        else:
+            self.object = qf.create_quote(form, section_forms)
+            messages.success(self.request, 'Quote saved.')
+            return HttpResponseRedirect(reverse('quote_detail', args=[self.object.id]))
 
     def render_to_response(self, context):
         self.request.breadcrumbs(_('Quotes'), reverse('quotes'))
@@ -151,8 +169,8 @@ class QuoteTemplateView(View):
 
             if not request.user.has_perm('change_quotetemplate', self.object):
                 messages.warning(request, 'Warning: you don\'t have permission to change this template. '
-                                 'To save it as your own, use it to create a quote, then '
-                                 'create a separate template from the new quote.')
+                                          'To save it as your own, use it to create a quote, then '
+                                          'create a separate template from the new quote.')
 
             self.request.breadcrumbs([(_('Edit'), request.path_info)])
         else:
@@ -228,6 +246,7 @@ class QuotePDF(View):  # pragma: no cover
         quote = q.Quote.objects.get_for(request.user, 'view_quote', pk=kwargs['pk'])
         url = '%s://%s%s' % (request.scheme, request.get_host(), reverse('quote_preview', args=[quote.id]))
         filename = slugify(quote.client.name + "_" + quote.name)
+
         # load page with ?dl=inline to show PDF in browser
         attach_or_inline = request.GET.get('dl', 'inline')
 
@@ -238,18 +257,11 @@ class QuotePDF(View):  # pragma: no cover
 
         response = HttpResponse(content=pdf,
                                 content_type='application/pdf')
+
         # change 'attachment' to 'inline' to display in page rather than d/l
         response['Content-Disposition'] = '%s; filename="%s.pdf"' % (attach_or_inline, filename)
+
         return response
-
-
-def quote_preview_html(request, *args, **kwargs):
-    # Get quote
-    quote = q.Quote.objects.get_for(request.user, 'view_quote', pk=kwargs['pk'])
-
-    # Render HTML
-    context = {'object': quote}
-    return TemplateResponse(request, template="quotes/quote_preview_html.html", context=context)
 
 
 def quote_preview(request, *args, **kwargs):
@@ -260,6 +272,7 @@ def quote_preview(request, *args, **kwargs):
     context = {'object': quote}
     return TemplateResponse(request, template="quotes/quote_preview.html", context=context)
 
+
 def quote_header(request, *args, **kwargs):
     # Get quote
     quote = q.Quote.objects.get_for(request.user, 'view_quote', pk=kwargs['pk'])
@@ -267,6 +280,7 @@ def quote_header(request, *args, **kwargs):
     # Render HTML
     context = {'object': quote}
     return TemplateResponse(request, template="quotes/quote_header.html", context=context)
+
 
 def quote_footer(request, *args, **kwargs):
     # Get quote
