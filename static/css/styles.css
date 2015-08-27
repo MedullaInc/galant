@@ -2053,7 +2053,7 @@ h3.area_title {
 
 }
 
-/* Detail View  / Questions / Briefs */
+/* Detail View  / Client / Questions / Briefs */
 
 p.data {
     margin-bottom: 0px;
@@ -2071,6 +2071,10 @@ h2.section_subtitle {
     margin-top: 0px;
 }
 
+span.detail_title {
+    font-weight: 600;
+}
+
 /* End Detail View*/
 
 /* List View */
@@ -2078,7 +2082,7 @@ h2.section_subtitle {
 h2.app_title, h2.section_title, h2.center_title {
     font-size: 28px;
     font-weight: 800;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
     margin-top: 10px;
     color: #333333;
     letter-spacing: -1px;

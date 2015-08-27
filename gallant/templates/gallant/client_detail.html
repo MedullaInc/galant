@@ -35,14 +35,14 @@
         </div>
     </div>
 
-    <p>{% trans "Status" %}: {{ object.get_status_display }}</p>
-    <p>{% trans "Type" %}: {{ object.get_type_display }}</p>
-    <p>{% trans "Size" %}: {{ object.get_size_display }}</p>
+    <p><span class="detail_title">{% trans "Status" %}:</span> {{ object.get_status_display }}</p>
+    <p><span class="detail_title">{% trans "Type" %}:</span> {{ object.get_type_display }}</p>
+    <p><span class="detail_title">{% trans "Size" %}:</span> {{ object.get_size_display }}</p>
     <br/>
-    <p>{% trans "Language" %}: {{ object.get_language_display }}</p>
-    <p>{% trans "Currency" %}: {{ object.currency }}</p>
+    <p><span class="detail_title">{% trans "Language" %}:</span> {{ object.get_language_display }}</p>
+    <p><span class="detail_title">{% trans "Currency" %}:</span> {{ object.currency }}</p>
     <br/>
-    <p>{% trans "Email" %}: {{ object.email }}</p>
+    <p><span class="detail_title">{% trans "Email" %}:</span> {{ object.email }}</p>
     {% with object.contact_info as object %}
         {% include 'gallant/contact_info.html' %}
     {% endwith %}

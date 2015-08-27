@@ -33,8 +33,8 @@
         </div>
     </div>
 
-    <p id="client" class="data">{% trans "Client" %}: {{ object.client.name }}</p>
-    <p id="status" class="data">{% trans "Status" %}: {{ object.get_status_display }}</p>
+    <p id="client" class="data"><span class="detail_title">{% trans "Client" %}:</span> {{ object.client.name }}</p>
+    <p id="status" class="data"><span class="detail_title">{% trans "Status" %}:</span> {{ object.get_status_display }}</p>
 
     <br/>
 
@@ -43,6 +43,13 @@
     </h2>
 
     <hr>
+
+
+    {% if object.all_sections|length == 0 %}
+
+        <a href="{% url 'edit_quote' object.id %}">{% trans "Click here to add sections." %}</a>
+
+    {% endif %}
 
     {% for section in object.all_sections %}
         <div id="{{ section.name }}">
