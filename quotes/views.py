@@ -29,6 +29,9 @@ class QuoteUpdate(View):
         else:
             self.object = None
 
+        if 'preview' in self.request.POST:
+            self.object.project_id = None
+
         form = qf.QuoteForm(request.user, request.POST, instance=self.object)
         section_forms = qf.section_forms_request(request)
 
