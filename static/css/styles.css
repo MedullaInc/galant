@@ -646,7 +646,7 @@ img {
     -webkit-backface-visibility: hidden;
 }
 
-textarea,
+textarea, textarea.ultext_target,
 input[type="text"],
 input[type="password"],
 input[type="datetime"],
@@ -666,7 +666,7 @@ input[type="color"],
     font-size: 16px;
     color: #7f8c8d;
     font-weight: 200;
-    letter-spacing: 1px;
+    letter-spacing: 0px;
 }
 
 a:hover,
@@ -2075,6 +2075,20 @@ span.detail_title {
     font-weight: 600;
 }
 
+i.note {
+    color: #888888;
+}
+
+#notes .label {
+    padding: 10px;
+    font-weight: 200;
+    letter-spacing: 1px;
+    font-size: 12px;
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 0px;
+}
+
 /* End Detail View*/
 
 /* List View */
@@ -2180,7 +2194,9 @@ table.table-striped.table-bordered thead th, table.table-striped.table-bordered 
     font-weight: 100;
 }
 
-#form .help-block {
+.help-block div {
+    margin-bottom: 20px;
+    font-size: 16px;
     font-weight: 200;
 }
 
