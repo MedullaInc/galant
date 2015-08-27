@@ -42,7 +42,7 @@
 
     <p id="title" class="data">{% trans "Title" %}: {{ object.title.get_text }}</p>
     <p id="status" class="data">{% trans "Status" %}: {{ object.get_status_display }}</p>
-    <p id="status" class="data">{% trans "Greeting" %}: <br/>{{ object.greeting.get_text }}</p>
+    <p id="status" class="data">{% trans "Greeting" %}: <br/>{{ object.greeting.get_text|linebreaks }}</p>
     {% if object.status == "2" %}
         <p id="public_link" class="data">Public Answer
             Link:<br/>http://{{ request.get_host }}{% url 'brief_answer' token=object.token.hex %}</p>
