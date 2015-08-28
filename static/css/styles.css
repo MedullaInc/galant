@@ -2515,3 +2515,24 @@ div.breadcrumbs span {
 }
 
 /* End Breadcrumbs */
+
+/* Logged in as */
+.logged_in_as {
+    padding: 10px 10px 10px 10px;
+    border: 1px solid #666666;
+    margin-bottom: 10px;
+    font-size: 16px;
+    font-weight: 100;
+    letter-spacing: 1px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.logged_in_as a {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+}
+
+/* End logged in as */

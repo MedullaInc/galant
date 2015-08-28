@@ -77,6 +77,11 @@
 
             <div class="container">
                 <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-5 pull-right">
+                        <div class="logged_in_as" id="logged_in_as">
+                            <a href="{% url 'account_change_password' %}">{{ user }}</a>
+                        </div>
+                    </div>
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
                         <h2 class="app_title">
                             {% block section_title %}
@@ -84,7 +89,7 @@
                             {% endblock section_title %}
                         </h2>
                     </div>
-                    <div id="breadcrumbs" class="col-xs-12 col-sm-12 col-md-12 col-lg-10">
+                    <div id="breadcrumbs" class="col-xs-12 col-sm-12 col-md-12 col-lg-5">
                         <div class="breadcrumbs">
                             {% for breadcrumb in request.breadcrumbs %}
                                 <a href="{{ breadcrumb.url }}" {% if forloop.last %}class="active"{% endif %}>{{ breadcrumb.name }}</a>
@@ -152,6 +157,11 @@
 
     <script>
         $(document).ready(function () {
+
+            $('#logged_in_as').height($('.breadcrumbs').height());
+            $('#logged_in_as a').css("margin-left", -$('#logged_in_as a').width()/2+'px');
+            $('#logged_in_as a').css("margin-top", -$('#logged_in_as a').height()/2+'px');
+
             $('ul [data-toggle=dropdown]').on('click', function (event) {
                 event.preventDefault();
                 event.stopPropagation();
