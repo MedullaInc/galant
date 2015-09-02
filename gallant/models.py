@@ -18,7 +18,7 @@ from polymorphic.query import PolymorphicQuerySet
 
 
 class ContactInfo(m.Model):
-    phone_number = m.CharField(validators=[gf.PHONE_REGEX], max_length=15)
+    phone_number = m.CharField(validators=[gf.PHONE_REGEX], max_length=20)
     address = m.CharField(max_length=255)
     address_2 = m.CharField(max_length=255, blank=True)
     city = m.CharField(max_length=127)
