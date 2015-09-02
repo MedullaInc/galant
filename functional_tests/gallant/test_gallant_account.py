@@ -81,5 +81,7 @@ class GallantAccountTest(LiveServerTestCase):
 
         b.find_element_by_xpath('//button[@type="submit"]').click()
 
+        b.save_screenshot('screenshot.png')
+
         success_message = b.find_element_by_class_name('alert-success')
         self.assertTrue(u'Registration successful.' in success_message.text)
