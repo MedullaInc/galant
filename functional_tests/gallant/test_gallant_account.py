@@ -73,13 +73,15 @@ class GallantAccountTest(LiveServerTestCase):
         b.find_element_by_name('name').send_keys('foo bar')
         b.find_element_by_name('company_name').send_keys('foo inc.')
 
-        b.find_element_by_name('phone_number').send_keys('1234123456')
+        b.find_element_by_name('phone_number').send_keys('+52(81)8336-6666')
         b.find_element_by_name('address').send_keys('asdf')
         b.find_element_by_name('city').send_keys('asdf')
         b.find_element_by_name('state').send_keys('asdf')
         b.find_element_by_name('zip').send_keys('12345')
 
         b.find_element_by_xpath('//button[@type="submit"]').click()
+
+        b.save_screenshot('screenshot.png')
 
         success_message = b.find_element_by_class_name('alert-success')
         self.assertTrue(u'Registration successful.' in success_message.text)

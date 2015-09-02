@@ -26,7 +26,7 @@ class GallantClientTest(browser.SignedInTest):
         b.find_element_by_xpath('//select[@name="status"]/option[@value="0"]').click()
         b.find_element_by_xpath('//textarea[@name="notes"]').send_keys('asdf')
 
-        b.find_element_by_name('phone_number').send_keys('1234123456')
+        b.find_element_by_name('phone_number').send_keys('+52(81)8336-6666')
         b.find_element_by_name('address').send_keys('asdf')
         b.find_element_by_name('city').send_keys('asdf')
         b.find_element_by_name('state').send_keys('asdf')
@@ -51,7 +51,7 @@ class GallantClientTest(browser.SignedInTest):
         b.find_element_by_xpath('//textarea[@name="notes"]').send_keys('dddd')
 
         b.find_element_by_name('phone_number').clear()
-        b.find_element_by_name('phone_number').send_keys('1234123456')
+        b.find_element_by_name('phone_number').send_keys('+52(81)8336-6666')
         b.find_element_by_name('zip').clear()
         b.find_element_by_name('zip').send_keys('12345')
 
