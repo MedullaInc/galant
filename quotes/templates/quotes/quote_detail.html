@@ -50,6 +50,8 @@
 
         <a href="{% url 'edit_quote' object.id %}">{% trans "Click here to add sections." %}</a>
 
+        <hr>
+
     {% endif %}
 
     {% for section in object.all_sections %}
