@@ -56,11 +56,11 @@ class BriefList(View):
 
         if 'client' in context:
             briefs = context['client'].brief_set.all_for(request.user, 'view_brief')
-            context.update({'object_list': briefs})
+            context.update({'object_list': briefs, 'title': 'Briefs'})
         else:
             context.update({'object_list': b.Brief.objects
                                             .all_for(request.user, 'view_brief')
-                                            .filter(client__isnull=False)})
+                                            .filter(client__isnull=False), 'title': 'Briefs'})
 
         return TemplateResponse(request=request,
                                 template="briefs/brief_list.html",
