@@ -1,6 +1,6 @@
 from django.conf import settings
 from django.contrib import messages
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model, authenticate, login
 from django.contrib.auth.forms import SetPasswordForm
 from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import send_mail
@@ -380,6 +380,11 @@ class Register(View):
                 u.contact_info = contact_form.save()
                 u.save()
                 messages.success(request, 'Registration successful.')
+
+                # Login new user after registration
+                new_user = authenticate(username=u.email, password=request.POST['new_password1'])
+                login(request, new_user)
+
                 return HttpResponseRedirect(reverse('home'))
             else:
                 return render(request, 'gallant/register_form.html', {
