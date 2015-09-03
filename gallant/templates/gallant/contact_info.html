@@ -1,5 +1,7 @@
 {% load i18n %}
 <p><span class="detail_title">{% trans "Phone" %}:</span> {{ object.phone_number }}</p>
+<br>
+
 <p><span class="detail_title">{% trans "Address" %}:</span></p>
 <p>{{ object.address }}<br/>
 {% if object.address_2 %}

@@ -45,9 +45,14 @@
         </div>
     </div>
 
-    <p id="client" class="data"><span class="detail_title">{% trans "Client" %}:</span> {{ object.client.name }}</p>
-    <p id="status" class="data"><span class="detail_title">{% trans "Status" %}:</span> {{ object.get_status_display }}
-    </p>
+    <div class="row object_data">
+        <div class="col-lg-6">
+            <p id="client" class="data"><span class="detail_title">{% trans "Client" %}:</span> {{ object.client.name }}</p>
+            <br>
+            <p id="status" class="data"><span class="label label-default">{{ object.get_status_display }}</span></p>
+        </div>
+    </div>
+
 
     <br/>
 

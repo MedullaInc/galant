@@ -2076,10 +2076,10 @@ span.detail_title {
 }
 
 i.note {
-    color: #888888;
+    color: #999999;
 }
 
-#notes .label {
+.label.label-default {
     padding: 10px;
     font-weight: 200;
     letter-spacing: 1px;
@@ -2087,6 +2087,10 @@ i.note {
     -webkit-border-radius: 0px;
     -moz-border-radius: 0px;
     border-radius: 0px;
+}
+
+div.object_data p {
+    margin-bottom: 0px;
 }
 
 /* End Detail View*/

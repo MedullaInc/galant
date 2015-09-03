@@ -35,17 +35,32 @@
         </div>
     </div>
 
-    <p><span class="detail_title">{% trans "Status" %}:</span> {{ object.get_status_display }}</p>
-    <p><span class="detail_title">{% trans "Type" %}:</span> {{ object.get_type_display }}</p>
-    <p><span class="detail_title">{% trans "Size" %}:</span> {{ object.get_size_display }}</p>
-    <br/>
-    <p><span class="detail_title">{% trans "Language" %}:</span> {{ object.get_language_display }}</p>
-    <p><span class="detail_title">{% trans "Currency" %}:</span> {{ object.currency }}</p>
-    <br/>
-    <p><span class="detail_title">{% trans "Email" %}:</span> {{ object.email }}</p>
-    {% with object.contact_info as object %}
-        {% include 'gallant/contact_info.html' %}
-    {% endwith %}
+    <div class="row object_data">
+        <div class="col-lg-6">
+            <p><span class="label label-default">{{ object.get_status_display }}</span></p>
+            <br>
+
+            <p><span class="detail_title">{% trans "Type" %}:</span> {{ object.get_type_display }}</p>
+
+            <p><span class="detail_title">{% trans "Size" %}:</span> {{ object.get_size_display }}</p>
+            <br/>
+
+            <p><span class="detail_title">{% trans "Language" %}:</span> {{ object.get_language_display }}</p>
+
+            <p><span class="detail_title">{% trans "Currency" %}:</span> {{ object.currency }}</p>
+            <br/>
+
+        </div>
+        <div class="col-lg-6">
+
+            <p><span class="detail_title">{% trans "Email" %}:</span> {{ object.email }}</p>
+            {% with object.contact_info as object %}
+                {% include 'gallant/contact_info.html' %}
+            {% endwith %}
+
+        </div>
+
+    </div>
 
     <hr>
     <div id="notes">
@@ -104,7 +119,8 @@
                             {% empty %}
                             <tr>
                                 <td colspan="4">
-                                    No templates yet, <a href="{% url "add_brief_template" %}">click here to add one.</a>
+                                    No templates yet,
+                                    <a href="{% url "add_brief_template" %}">click here to add one.</a>
                                 </td>
                             </tr>
                         {% endfor %}
