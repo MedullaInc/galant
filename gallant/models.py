@@ -18,12 +18,12 @@ from polymorphic.query import PolymorphicQuerySet
 
 
 class ContactInfo(m.Model):
-    phone_number = m.CharField(validators=[gf.PHONE_REGEX], max_length=20)
-    address = m.CharField(max_length=255)
+    phone_number = m.CharField(validators=[gf.PHONE_REGEX], max_length=20, blank=True)
+    address = m.CharField(max_length=255, blank=True)
     address_2 = m.CharField(max_length=255, blank=True)
-    city = m.CharField(max_length=127)
-    state = m.CharField(max_length=127)
-    zip = m.CharField(validators=[gf.ZIP_REGEX], max_length=12)
+    city = m.CharField(max_length=127, blank=True)
+    state = m.CharField(max_length=127, blank=True)
+    zip = m.CharField(validators=[gf.ZIP_REGEX], max_length=12, blank=True)
     country = CountryField(default='US')
 
 
@@ -246,15 +246,15 @@ class ClientStatus(gf.ChoiceEnum):
 
 class Client(UserModel):
     name = m.CharField(max_length=255)
-    email = m.EmailField(blank=True)
-    contact_info = m.ForeignKey(ContactInfo, null=True)
+    email = m.EmailField()
+    contact_info = m.ForeignKey(ContactInfo, null=True, blank=True)
 
-    type = m.CharField(max_length=2, choices=ClientType.choices())
-    size = m.CharField(max_length=2, choices=ClientSize.choices())
+    type = m.CharField(max_length=2, choices=ClientType.choices(), blank=True)
+    size = m.CharField(max_length=2, choices=ClientSize.choices(), blank=True)
     status = m.CharField(max_length=2, choices=ClientStatus.choices())
 
     language = m.CharField(max_length=7, choices=settings.LANGUAGES)
-    currency = m.CharField(max_length=3, choices=CURRENCY_CHOICES, default='USD')
+    currency = m.CharField(max_length=3, choices=CURRENCY_CHOICES, default='USD',)
 
     notes = m.ManyToManyField(Note)
 

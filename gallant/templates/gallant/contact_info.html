@@ -1,13 +1,30 @@
 {% load i18n %}
+
+{% if object.phone_number %}
 <p><span class="detail_title">{% trans "Phone" %}:</span> {{ object.phone_number }}</p>
 <br>
+{% endif %}
 
 <p><span class="detail_title">{% trans "Address" %}:</span></p>
+
+{% if object.address %}
 <p>{{ object.address }}<br/>
+{% endif %}
+
 {% if object.address_2 %}
     {{ object.address_2 }}<br/>
 {% endif %}
+
+{% if object.city %}
 {{ object.city}}{% if object.city %},{% endif %}
+{% endif %}
+
+{% if object.state %}
 {{ object.state }}
+{% endif %}
+
+{% if object.zip %}
 {{ object.zip }}<br/>
+{% endif %}
+
 {{ object.get_country_display }}
