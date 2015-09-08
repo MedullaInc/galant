@@ -2,11 +2,11 @@
 from __future__ import unicode_literals
 
 from django.db import models, migrations
-from quotes.models import Quote
 import uuid
 
 
-def fill_quote_tokens(self,uuid):
+def fill_quote_tokens(apps, schema_editor):
+    Quote = apps.get_model('quotes', 'Quote')
     quotes = Quote.objects.filter(token=None)
 
     for quote in quotes:
