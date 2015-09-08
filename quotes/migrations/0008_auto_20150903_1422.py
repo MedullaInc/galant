@@ -3,15 +3,24 @@ from __future__ import unicode_literals
 
 from django.db import models, migrations
 import uuid
+from quotes.models import Quote
+
+
+def fill_quote_tokens():
+    quotes = Quote.objects.get(token=None)
+
+    for quote in quotes:
+        quote.token = uuid.uuid4()
+        quote.save()
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('quotes', '0007_auto_20150814_0951'),
     ]
 
     operations = [
+        migrations.RunPython(fill_quote_tokens()),
         migrations.AlterField(
             model_name='quote',
             name='token',
