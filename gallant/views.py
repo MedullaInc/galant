@@ -1,6 +1,6 @@
 from django.conf import settings
 from django.contrib import messages
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model, authenticate, login
 from django.contrib.auth.forms import SetPasswordForm
 from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import send_mail
@@ -109,7 +109,7 @@ def client_detail(request, pk):
                             template="gallant/client_detail.html",
                             context={'object': client, 'form': form,
                                      'template_list': b.BriefTemplate.objects
-                                                       .all_for(request.user, 'view_brieftemplate')})
+                                                       .all_for(request.user, 'view_brieftemplate'),'title': client.name })
 
 
 class ServiceUpdate(View):
@@ -263,6 +263,7 @@ def project_detail(request, pk):
     return render(request, 'gallant/project_detail.html', {
         'object': project,
         'form': form,
+        'title': 'Project Detail',
     })
 
 
@@ -380,6 +381,11 @@ class Register(View):
                 u.contact_info = contact_form.save()
                 u.save()
                 messages.success(request, 'Registration successful.')
+
+                # Login new user after registration
+                new_user = authenticate(username=u.email, password=request.POST['new_password1'])
+                login(request, new_user)
+
                 return HttpResponseRedirect(reverse('home'))
             else:
                 return render(request, 'gallant/register_form.html', {
@@ -431,7 +437,6 @@ class AccountAdd(View):
             return render(request, 'gallant/create_form.html', {
                 'form': forms.EmailForm(),
             })
-
 
 
 def _send_reset_email(email, link):

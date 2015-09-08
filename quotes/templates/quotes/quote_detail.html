@@ -6,6 +6,18 @@
 {% endblock %}
 
 {% block sidebar %}
+
+    {% if object.client.email and object.status == '1' %}
+        <form method="post">
+            {% csrf_token %}
+            <a>
+                <button type="submit" class="btn btn-default sidebar" id="send_brief">
+                    {% trans "Send to Client" %}
+                </button>
+            </a>
+        </form>
+    {% endif %}
+
     <a href="{% url 'quote_pdf' object.id %}">
         <button type="button" class="btn btn-default sidebar">
             {% trans "Download Quote" %}
@@ -33,16 +45,31 @@
         </div>
     </div>
 
-    <p id="client" class="data">{% trans "Client" %}: {{ object.client.name }}</p>
-    <p id="status" class="data">{% trans "Status" %}: {{ object.get_status_display }}</p>
+    <div class="row object_data">
+        <div class="col-lg-6">
+            <p id="client" class="data"><span class="detail_title">{% trans "Client" %}:</span> {{ object.client.name }}</p>
+            <br>
+            <p id="status" class="data"><span class="label label-default">{{ object.get_status_display }}</span></p>
+        </div>
+    </div>
+
 
     <br/>
 
     <h2 class="section_title">
-    Quote Sections
+        Quote Sections
     </h2>
 
     <hr>
+
+
+    {% if object.all_sections|length == 0 %}
+
+        <a href="{% url 'edit_quote' object.id %}">{% trans "Click here to add sections." %}</a>
+
+        <hr>
+
+    {% endif %}
 
     {% for section in object.all_sections %}
         <div id="{{ section.name }}">
@@ -125,5 +152,76 @@
         </div>
 
         <hr>
+
     {% endfor %}
+
+    <br>
+
+    <h2 class="section_title">
+        Quote Totals
+    </h2>
+
+    <div class="row">
+        <div class="col-lg-5 col-lg-offset-2">
+            <p>
+                <b>
+                    Service name
+                </b>
+            </p>
+        </div>
+        <div class="col-lg-2">
+            <p>
+                <b>
+                    Quantity
+                </b>
+            </p>
+        </div>
+        <div class="col-lg-3">
+            <p>
+                <b>
+                    Subtotal Cost
+                </b>
+            </p>
+        </div>
+    </div>
+
+    {% for section in object.all_sections %}
+        {% if section.service %}
+            <div class="row">
+                <div class="col-lg-5 col-lg-offset-2">
+                    <p>
+                        {{ section.service.name.get_text }}
+                    </p>
+                </div>
+                <div class="col-lg-2">
+                    <p>
+                        {{ section.service.quantity }}
+                    </p>
+                </div>
+                <div class="col-lg-3">
+                    <p>
+                        {{ section.service.get_total_cost }}
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+    {% endfor %}
+
+    <div class="row">
+        <div class="col-lg-5 col-lg-offset-2">
+            <p>
+                <b>
+                    Total
+                </b>
+            </p>
+        </div>
+        <div class="col-lg-3 col-lg-offset-2">
+            <p>
+                <b>
+                    {{ object.get_total_cost }}
+                </b>
+            </p>
+        </div>
+    </div>
+
 {% endblock %}

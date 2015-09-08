@@ -6,13 +6,14 @@ from django.utils.translation import get_language
 from django.conf import settings
 from django.contrib import messages
 from django.core.urlresolvers import reverse
-from gallant.utils import get_one_or_404, url_to_pdf
-from moneyed import Money
+from gallant.utils import get_one_or_404, url_to_pdf, get_site_from_host
+from django.shortcuts import get_object_or_404
 from quotes import models as q
 from quotes import forms as qf
 from gallant import forms as gf
 from django.utils.text import slugify
 from django.utils.translation import ugettext_lazy as _
+from django.core.mail import send_mail
 
 
 class QuoteUpdate(View):
@@ -29,6 +30,9 @@ class QuoteUpdate(View):
         else:
             self.object = None
 
+        if 'preview' in self.request.POST:
+            self.object.project_id = None
+
         form = qf.QuoteForm(request.user, request.POST, instance=self.object)
         section_forms = qf.section_forms_request(request)
 
@@ -42,7 +46,7 @@ class QuoteUpdate(View):
                                             'title': 'Edit Quote'})
 
     def form_valid(self, form, section_forms):
-        if 'preview' in self.request.POST:
+        if 'preview' in self.request.POST:  # pragma: no cover
             form.instance.pk = None
             for section_form in section_forms:
                 section_form.instance.pk = None
@@ -121,6 +125,14 @@ class QuoteCreate(QuoteUpdate):
                                 context=context)
 
 
+def _send_quote_email(email, from_name, link, site):
+    message = '%s has sent you a Quote from %s.\n\n Click this link to view:\n %s' %\
+        (from_name, site, link)
+    send_mail('Client Quote', message,
+              '%s via %s <%s>' % (from_name, site,  settings.EMAIL_HOST_USER),
+              [email], fail_silently=False)
+
+
 class QuoteDetail(View):
     def get(self, request, **kwargs):
         quote = get_one_or_404(request.user, 'view_quote', q.Quote, pk=kwargs['pk'])
@@ -130,6 +142,18 @@ class QuoteDetail(View):
         return TemplateResponse(request=request,
                                 template="quotes/quote_detail.html",
                                 context={'title': 'Quote', 'object': quote})
+
+    def post(self, request, **kwargs):
+        quote = get_one_or_404(request.user, 'view_quote', q.Quote, id=kwargs['pk'])
+        quote.status = q.QuoteStatus.Sent.value
+        quote.save()
+
+        _send_quote_email(quote.client.email, request.user.name,
+                          (request.build_absolute_uri(
+                              reverse('quote_pdf', args=[quote.token.hex]))),
+                          get_site_from_host(request))
+        messages.success(request, 'Quote link sent to %s.' % quote.client.email)
+        return self.get(request, **kwargs)
 
 
 class QuoteList(View):
@@ -240,9 +264,15 @@ class QuoteTemplateView(View):
                                 context=context)
 
 
-class QuotePDF(View):  # pragma: no cover
+class QuotePDF(View):   # pragma: no cover
     def get(self, request, *args, **kwargs):
-        quote = q.Quote.objects.get_for(request.user, 'view_quote', pk=kwargs['pk'])
+        if 'pk' in kwargs:
+            # Quote for a logged-in user
+            quote = q.Quote.objects.get_for(request.user, 'view_quote', pk=kwargs['pk'])
+        elif 'token' in kwargs:
+            # Quote for visitor directly from url with token
+            quote = get_object_or_404(q.Quote, token=kwargs['token'])
+
         url = '%s://%s%s' % (request.scheme, request.get_host(), reverse('quote_preview', args=[quote.id]))
         filename = slugify(quote.client.name + "_" + quote.name)
 

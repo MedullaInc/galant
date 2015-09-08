@@ -1,7 +1,14 @@
-<p>{{ item.text }}</p>
-<p><i>
-    by {{ item.user.email }}<br/>
-    on {{ item.created }}
-</i></p>
+{% load i18n %}
+
+<div id="note_{{ item.id }}" class="note_text">{{ item.text|linebreaks }}</div>
+<p>
+    <i class="note">
+        by {{ item.user.email }}<br/>
+        on {{ item.created }}
+    </i>
+</p>
 <hr>
 
+<script>
+    $('#note_{{ item.id }}').find('p')[0].innerHTML = $('#note_{{ item.id }}').find('p')[0].innerHTML.replace(/\[\{% trans "Updated" %}\]/m, '<span class="label label-default">{% trans "Updated" %}</span><br/>');
+</script>

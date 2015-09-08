@@ -77,6 +77,8 @@
                 // This sends the preview to a new window.
                 if ($(this).is("#preview")) {
                     $('.form').attr('target', '_blank');
+                } else {
+                    $('.form').attr('target', '');
                 }
 
                 $('.ultext').each(function () {

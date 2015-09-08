@@ -15,4 +15,5 @@ urlpatterns = [
     url(r'^preview/header/(?P<pk>[0-9]+)?$', login_required(views.quote_header), name='quote_header'),
     url(r'^preview/footer/(?P<pk>[0-9]+)?$', login_required(views.quote_footer), name='quote_footer'),
     url(r'^download/(?P<pk>[0-9]+)?$', login_required(views.QuotePDF.as_view()), name='quote_pdf'),
+    url(r'^download/(?P<token>[a-f0-9]{32})?$', login_required(views.QuotePDF.as_view()), name='quote_pdf'),
 ]

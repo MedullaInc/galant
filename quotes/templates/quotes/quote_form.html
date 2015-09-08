@@ -13,6 +13,7 @@
 
         {% for s in sections %}
             {{ s }}
+            <hr>
         {% endfor %}
 
         <div class="row">
@@ -104,4 +105,15 @@
             }
         });
     </script>
+
+    <script>
+
+        function validate_positive_value(element) {
+            if (element.val() < 0.0) {
+                element.val(0.0);
+            }
+        }
+
+    </script>
+
 {% endblock %}

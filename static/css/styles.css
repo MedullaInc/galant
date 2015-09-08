@@ -646,7 +646,7 @@ img {
     -webkit-backface-visibility: hidden;
 }
 
-textarea,
+textarea, textarea.ultext_target,
 input[type="text"],
 input[type="password"],
 input[type="datetime"],
@@ -666,7 +666,7 @@ input[type="color"],
     font-size: 16px;
     color: #7f8c8d;
     font-weight: 200;
-    letter-spacing: 1px;
+    letter-spacing: 0px;
 }
 
 a:hover,
@@ -2053,7 +2053,7 @@ h3.area_title {
 
 }
 
-/* Detail View  / Questions / Briefs */
+/* Detail View  / Client / Questions / Briefs */
 
 p.data {
     margin-bottom: 0px;
@@ -2071,6 +2071,28 @@ h2.section_subtitle {
     margin-top: 0px;
 }
 
+span.detail_title {
+    font-weight: 600;
+}
+
+i.note {
+    color: #999999;
+}
+
+.label.label-default {
+    padding: 10px;
+    font-weight: 200;
+    letter-spacing: 1px;
+    font-size: 12px;
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 0px;
+}
+
+div.object_data p {
+    margin-bottom: 0px;
+}
+
 /* End Detail View*/
 
 /* List View */
@@ -2078,7 +2100,7 @@ h2.section_subtitle {
 h2.app_title, h2.section_title, h2.center_title {
     font-size: 28px;
     font-weight: 800;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
     margin-top: 10px;
     color: #333333;
     letter-spacing: -1px;
@@ -2176,7 +2198,9 @@ table.table-striped.table-bordered thead th, table.table-striped.table-bordered 
     font-weight: 100;
 }
 
-#form .help-block {
+.help-block div {
+    margin-bottom: 20px;
+    font-size: 16px;
     font-weight: 200;
 }
 
@@ -2381,6 +2405,13 @@ a.forgot, a.forgot:hover {
     padding-top: 10px;
 }
 
+span.input-group-addon {
+    border: 1px solid #666666;
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 0px;
+}
+
 /* End Forms */
 
 /* Notices */
@@ -2495,3 +2526,24 @@ div.breadcrumbs span {
 }
 
 /* End Breadcrumbs */
+
+/* Logged in as */
+.logged_in_as {
+    padding: 10px 10px 10px 10px;
+    border: 1px solid #666666;
+    margin-bottom: 10px;
+    font-size: 16px;
+    font-weight: 100;
+    letter-spacing: 1px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.logged_in_as a {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+}
+
+/* End logged in as */
