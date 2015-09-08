@@ -35,8 +35,6 @@ class GallantClientTest(browser.SignedInTest):
 
         b.find_element_by_xpath('//button[@type="submit"]').click()
 
-        b.get_screenshot_as_file('screenshot.png')
-
         success_message = b.find_element_by_class_name('alert-success')
         self.assertTrue(u'Client saved.' in success_message.text)
 

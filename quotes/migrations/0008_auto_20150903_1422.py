@@ -9,7 +9,7 @@ def fill_quote_tokens(apps, schema_editor):
     Quote = apps.get_model('quotes', 'Quote')
     quotes = Quote.objects.filter(token=None)
 
-    for quote in quotes:
+    for quote in quotes: # pragma: no cover
         quote.token = uuid.uuid4()
         quote.save()
 
