@@ -23,12 +23,12 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='quote',
             name='token',
-            field=models.UUIDField(default=uuid.uuid4, unique=False, editable=False),
+            field=models.UUIDField(unique=False, null=True),
         ),
         migrations.RunPython(fill_quote_tokens),
         migrations.AlterField(
             model_name='quote',
             name='token',
-            field=models.UUIDField(unique=True),
+            field=models.UUIDField(default=uuid.uuid4, unique=True),
         ),
     ]
