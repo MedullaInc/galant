@@ -2,13 +2,12 @@
 from __future__ import unicode_literals
 
 from django.db import models, migrations
-from django.db.models import Manager
 from quotes.models import Quote
 import uuid
 
 
 def fill_quote_tokens():
-    quotes = super(Manager, Quote.objects).get(token=None)
+    quotes = Quote.objects.filter(token=None)
 
     for quote in quotes:
         quote.token = uuid.uuid4()
@@ -21,7 +20,7 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RunPython(fill_quote_tokens()),
+        migrations.RunPython(fill_quote_tokens),
         migrations.AlterField(
             model_name='quote',
             name='token',
