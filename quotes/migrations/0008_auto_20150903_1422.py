@@ -2,12 +2,13 @@
 from __future__ import unicode_literals
 
 from django.db import models, migrations
-import uuid
+from django.db.models import Manager
 from quotes.models import Quote
+import uuid
 
 
 def fill_quote_tokens():
-    quotes = Quote.objects.get(token=None)
+    quotes = super(Manager, Quote.objects).get(token=None)
 
     for quote in quotes:
         quote.token = uuid.uuid4()
