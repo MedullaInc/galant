@@ -126,6 +126,8 @@ class QuotesSignedInTest(browser.SignedInTest):
 
         b.find_element_by_id('id_-service-2-name').send_keys('1234')
         b.find_element_by_xpath('//select[@name="-service-2-type"]/option[@value="3"]').click()
+        b.find_element_by_id('id_-service-3-name').send_keys('1234')
+        b.find_element_by_xpath('//select[@name="-service-3-type"]/option[@value="3"]').click()
 
         b.find_element_by_xpath('//button[@type="submit"]').click()
 
