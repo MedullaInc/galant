@@ -52,6 +52,7 @@ INSTALLED_APPS = (
     'localflavor',
     'analytical',
     'breadcrumbs',
+    'djangular',
 
     'gallant',
     'briefs',
