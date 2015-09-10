@@ -23,8 +23,8 @@ class BriefTemplatesTest(browser.SignedInTest):
         self.load_scripts()
 
         b.find_element_by_name('name').send_keys('Brief test')
-        self._add_language_and_text(b)
 
+        self._add_language_and_text(b)
         self._submit_and_check(b)
 
     def test_edit_brief_template(self):
@@ -55,7 +55,9 @@ class BriefTemplatesTest(browser.SignedInTest):
                                     field_values={'brief': brief, 'user': self.user})
         b.get(self.live_server_url + reverse('edit_brief_template', args=[bt.id]))
         self.load_scripts()
+
         self._add_language_and_text(b)
+        self._submit_and_check(b)
 
     def test_add_from_brief(self):
         b = browser.instance()
@@ -87,6 +89,7 @@ class BriefTemplatesTest(browser.SignedInTest):
         question = b.find_element_by_id('id_-question-0-question_hidden')
         self.assertEqual(quest.question.json(), question.get_attribute('value'))
         b.find_element_by_xpath('//button[@type="submit"]').click()
+        self.load_scripts()
 
         success_message = b.find_element_by_class_name('alert-success')
         self.assertTrue(u'Brief saved.' in success_message.text)
@@ -101,6 +104,9 @@ class BriefTemplatesTest(browser.SignedInTest):
         b.find_element_by_id('id_-question-0-question').clear()
         b.find_element_by_id('id_-question-0-question').send_keys('Quien esta en primera?')
         b.find_element_by_id('en_tab').click()
+
+        self._submit_and_check(b)
+        self.load_scripts()
 
         new_tab = b.find_element_by_xpath('//*[@id="es_tab"]/a')
         self.assertEqual(u'Spanish', new_tab.text)
