@@ -5,6 +5,9 @@
     <script src="{% static "js/input_mask/jquery.inputmask.js" %}"></script>
     <script src="{% static "js/input_mask/jquery.bind-first.min.js" %}"></script>
     <script src="{% static "js/input_mask/jquery.inputmask-multi.js" %}"></script>
+    <script type="text/javascript">
+        angular.module('gallant', ['ng.django.forms']);
+    </script>
 {% endblock extra_head %}
 
 {% block section_title %}
@@ -13,7 +16,7 @@
 
 {% block center_content %}
 
-    <form id="main_form" class="form" method="post">
+    <form id="main_form" name="{{ form.form_name }}" class="form" method="post" ng-app="gallant">
 
         {% block form_help_text %}
             {% if help_text %}

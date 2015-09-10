@@ -45,7 +45,8 @@ class ClientUpdate(View):
 
         form = forms.ClientForm(request.user, request.POST, instance=self.object)
         contact_form = forms.ContactInfoForm(request.POST,
-                                             instance=getattr(self.object, 'contact_info', None))
+                                             instance=getattr(self.object, 'contact_info', None),
+                                             form_name=form.form_name)
         if form.is_valid() and contact_form.is_valid():
             return self.form_valid(form, contact_form)
         else:
@@ -81,8 +82,9 @@ class ClientCreate(ClientUpdate):
         self.object = None
         request.breadcrumbs([(_('Clients'), reverse('clients')),
                              (_('Add'), request.path_info)])
-        context = {'form': forms.ClientForm(request.user),
-                   'contact_form': forms.ContactInfoForm(),
+        form = forms.ClientForm(request.user)
+        context = {'form': form,
+                   'contact_form': forms.ContactInfoForm(form_name=form.form_name),
                    'title': 'Add Client'}
         return TemplateResponse(request=self.request,
                                 template="gallant/client_form.html",

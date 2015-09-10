@@ -2,9 +2,15 @@ from django import forms
 from django.conf import settings
 from django.utils.translation import get_language
 from gallant import models as g
+from djangular.forms import NgModelForm, NgFormValidationMixin
+from djangular.styling.bootstrap3.forms import Bootstrap3ModelForm
 
 
-class UserModelForm(forms.ModelForm):
+class GallantNgModelForm(NgModelForm, Bootstrap3ModelForm, NgFormValidationMixin):
+    pass
+
+
+class UserModelForm(GallantNgModelForm):
     def __init__(self, user, *args, **kwargs):
         self.user = user
         super(UserModelForm, self).__init__(*args, **kwargs)
@@ -22,8 +28,6 @@ class ClientForm(UserModelForm):
     def __init__(self, *args, **kwargs):
         super(ClientForm, self).__init__(*args, **kwargs)
         self.initial['language'] = get_language()
-        self.fields['notes'] = forms.CharField(
-            widget=forms.Textarea(attrs={'rows': 5}), required=False)
 
 
 class ServiceForm(UserModelForm):
@@ -99,7 +103,7 @@ class GallantUserForm(forms.ModelForm):
         fields = ['name', 'company_name']
 
 
-class ContactInfoForm(forms.ModelForm):
+class ContactInfoForm(GallantNgModelForm):
     class Meta:
         model = g.ContactInfo
         fields = ['phone_number', 'country', 'address', 'address_2',
