@@ -113,7 +113,27 @@ class UserManagerMethodsMixin(object):
         return all(app not in mod.__name__ for app in ['autofixture', 'django'])
 
 
+class UserManagerMethodsMixinWithSoftDelete(UserManagerMethodsMixin):
+    '''
+    Allows models with deleted column to have soft-delete abilities.
+    '''
+
+    def all_for(self, user, perm):
+        return get_objects_for_user(user, perm, self, accept_global_perms=False).filter(deleted=False)
+
+    def get_for(self, user, perm, *args, **kwargs):
+        obj = super(UserManagerMethodsMixin, self).get(*args, **kwargs).filter(deleted=False)
+        if user.has_perm(perm, obj):
+            return obj
+        else:
+            return None
+
+
 class UserModelManager(UserManagerMethodsMixin, m.Manager):
+    use_for_related_fields = True
+
+
+class UserModelManagerWithSoftDelete(UserManagerMethodsMixinWithSoftDelete, m.Manager):
     use_for_related_fields = True
 
 
@@ -258,6 +278,9 @@ class Client(UserModel):
 
     notes = m.ManyToManyField(Note)
 
+    deleted = m.BooleanField(default=False)
+    deleted_by_parent = m.BooleanField(default=False)
+
     def __unicode__(self):
         return self.name
 
@@ -266,7 +289,7 @@ class Client(UserModel):
             ('view_client', 'View client'),
         )
 
-    objects = UserModelManager()
+    objects = UserModelManagerWithSoftDelete()
 
 
 class ProjectStatus(gf.ChoiceEnum):
