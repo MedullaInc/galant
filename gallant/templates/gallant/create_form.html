@@ -5,9 +5,6 @@
     <script src="{% static "js/input_mask/jquery.inputmask.js" %}"></script>
     <script src="{% static "js/input_mask/jquery.bind-first.min.js" %}"></script>
     <script src="{% static "js/input_mask/jquery.inputmask-multi.js" %}"></script>
-    <script type="text/javascript">
-        angular.module('gallant', ['ng.django.forms']);
-    </script>
 {% endblock extra_head %}
 
 {% block section_title %}
@@ -16,7 +13,7 @@
 
 {% block center_content %}
 
-    <form id="main_form" name="{{ form.form_name }}" class="form" method="post" ng-app="gallant">
+    <form id="main_form" name="{{ form.form_name }}" class="form" method="post">
 
         {% block form_help_text %}
             {% if help_text %}
@@ -102,7 +99,7 @@
 
         // Input mask for phone numbers
         $(document).ready(function () {
-            if ($('.form').find("#id_phone_number").length > 0) {
+            if ($('.form').find("#id_contact_info\\.phone_number").length > 0) {
 
                 var maskList = $.masksSort($.masksLoad("{% static "js/input_mask/phone-codes.json" %}"), ['#'], /[0-9]|#/, "mask");
                 var maskOpts = {
@@ -123,8 +120,8 @@
                     listKey: "mask",
                 };
 
-                $('#id_phone_number').inputmasks(maskOpts);
-                
+                $('#id_contact_info\\.phone_number').inputmasks(maskOpts);
+
             }
         });
     </script>

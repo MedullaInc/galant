@@ -1,3 +1,5 @@
+from itertools import chain
+import json
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import get_user_model, authenticate, login
@@ -45,13 +47,12 @@ class ClientUpdate(View):
 
         form = forms.ClientForm(request.user, request.POST, instance=self.object)
         contact_form = forms.ContactInfoForm(request.POST,
-                                             instance=getattr(self.object, 'contact_info', None),
-                                             form_name=form.form_name)
+                                             instance=getattr(self.object, 'contact_info', None))
         if form.is_valid() and contact_form.is_valid():
             return self.form_valid(form, contact_form)
         else:
-            return self.render_to_response({'object': self.object, 'form': form,
-                                            'contact_form': contact_form})
+            response = {'status': 0, 'errors': chain(form.errors.items(), contact_form.errors.items())}
+            return HttpResponse(json.dumps(response), content_type='application/json')
 
     def render_to_response(self, context):
         context.update({'title': 'Edit Client'})
@@ -68,13 +69,14 @@ class ClientUpdate(View):
 
     def form_valid(self, form, contact_form):
         obj = form.save(commit=True)
-        text = '[Updated]\n' + form.cleaned_data['notes']
+        text = '[Updated]\n' + form.cleaned_data.get('notes', '')
         note = g.Note.objects.create(text=text, user=self.request.user)
         obj.notes.add(note)
         obj.contact_info = contact_form.save()
         obj.save()
         messages.success(self.request, 'Client saved.')
-        return HttpResponseRedirect(reverse('client_detail', args=[obj.id]))
+        response = {'status': 0, 'redirect': reverse('client_detail', args=[obj.id])}
+        return HttpResponse(json.dumps(response), content_type='application/json')
 
 
 class ClientCreate(ClientUpdate):
@@ -84,7 +86,7 @@ class ClientCreate(ClientUpdate):
                              (_('Add'), request.path_info)])
         form = forms.ClientForm(request.user)
         context = {'form': form,
-                   'contact_form': forms.ContactInfoForm(form_name=form.form_name),
+                   'contact_form': forms.ContactInfoForm(),
                    'title': 'Add Client'}
         return TemplateResponse(request=self.request,
                                 template="gallant/client_form.html",

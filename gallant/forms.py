@@ -10,7 +10,7 @@ class GallantNgModelForm(NgModelForm, Bootstrap3ModelForm, NgFormValidationMixin
     pass
 
 
-class UserModelForm(GallantNgModelForm):
+class UserModelForm(forms.ModelForm):
     def __init__(self, user, *args, **kwargs):
         self.user = user
         super(UserModelForm, self).__init__(*args, **kwargs)
@@ -20,12 +20,23 @@ class UserModelForm(GallantNgModelForm):
         return super(UserModelForm, self).save(*args, **kwargs)
 
 
-class ClientForm(UserModelForm):
+class UserModelNgForm(GallantNgModelForm):
+    def __init__(self, user, *args, **kwargs):
+        self.user = user
+        super(UserModelNgForm, self).__init__(*args, **kwargs)
+
+    def save(self, *args, **kwargs):
+        self.instance.user = self.user
+        return super(UserModelNgForm, self).save(*args, **kwargs)
+
+
+class ClientForm(UserModelNgForm):
     class Meta:
         model = g.Client
         fields = ['name', 'email', 'type', 'size', 'status', 'language', 'currency']
 
     def __init__(self, *args, **kwargs):
+        kwargs.update(prefix='client')
         super(ClientForm, self).__init__(*args, **kwargs)
         self.initial['language'] = get_language()
 
@@ -108,6 +119,10 @@ class ContactInfoForm(GallantNgModelForm):
         model = g.ContactInfo
         fields = ['phone_number', 'country', 'address', 'address_2',
                   'city', 'state', 'zip']
+
+    def __init__(self, *args, **kwargs):
+        kwargs.update(prefix='contact_info')
+        super(ContactInfoForm, self).__init__(*args, **kwargs)
 
 
 class EmailForm(forms.Form):
