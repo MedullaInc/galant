@@ -20,7 +20,6 @@ class GallantClientTest(browser.SignedInTest):
     def test_add_client(self):
         b = browser.instance()
         b.get(self.live_server_url + reverse('add_client'))
-        self.load_scripts()
 
         b.find_element_by_name('client.name').send_keys('Kanye West')
         b.find_element_by_name('client.email').send_keys('kanye@imaletyoufinish.com')
@@ -51,7 +50,6 @@ class GallantClientTest(browser.SignedInTest):
                                    field_values={'user': self.user})
         c.save()
         b.get(self.live_server_url + reverse('edit_client', args=[c.id]))
-        self.load_scripts()
 
         b.find_element_by_name('client.name').send_keys('PPPPPPP')
         b.find_element_by_xpath('//select[@name="client.type"]/option[@value="1"]').click()

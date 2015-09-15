@@ -32,19 +32,6 @@ def close():
 
 
 class BrowserTest(LiveServerTestCase):
-    def load_scripts(self):
-        '''
-        Call this method after loading target page to load jQuery and scripts contained
-        within <body> (Selenium doesn't automatically load them).
-        :return:
-        '''
-        b = instance()
-        scripts = b.find_elements_by_xpath('//script')
-        for s in scripts:
-            js = s.get_attribute('innerHTML')
-            if len(js) > 0:
-                b.execute_script(js)
-
     def disable_popups(self):
         '''
         Call this method to disable alerts and popups.

@@ -1,3 +1,4 @@
+import time
 from django.core.urlresolvers import reverse
 from functional_tests import browser
 from quotes import models as qm
@@ -35,7 +36,6 @@ class QuotesSignedInTest(browser.SignedInTest):
 
         page_wrapper = browser.instance().find_element_by_class_name('page-wrapper')
         self.assertTrue(page_wrapper)
-
 
     def test_access_quote_header(self):
         q = get_blank_quote_autofixture(self.user)
@@ -85,7 +85,6 @@ class QuotesSignedInTest(browser.SignedInTest):
         b = browser.instance()
         q = get_blank_quote_autofixture(self.user)
         b.get(self.live_server_url + reverse('edit_quote', args=[q.id]))
-        self.load_scripts()
 
         add_section = b.find_element_by_id('add_section')
         add_section.click()
@@ -108,9 +107,9 @@ class QuotesSignedInTest(browser.SignedInTest):
         b = browser.instance()
         q = get_blank_quote_autofixture(self.user)
         b.get(self.live_server_url + reverse('edit_quote', args=[q.id]))
-        self.load_scripts()
 
         add_service = b.find_element_by_id('add_service')
+        add_service.click()
         add_service.click()
 
         b.find_element_by_id('id_-service-2-name').send_keys('1234')
@@ -151,7 +150,6 @@ class QuotesSignedInTest(browser.SignedInTest):
         b = browser.instance()
         q = get_blank_quote_autofixture(self.user)
         b.get(self.live_server_url + reverse('edit_quote', args=[q.id]))
-        self.load_scripts()
         self.disable_popups()
 
         add_section = b.find_element_by_id('add_section')
@@ -180,11 +178,10 @@ class QuotesSignedInTest(browser.SignedInTest):
         b = browser.instance()
         q = get_blank_quote_autofixture(self.user)
         b.get(self.live_server_url + reverse('edit_quote', args=[q.id]))
-        self.load_scripts()
 
         add_section = b.find_element_by_id('add_section')
         add_section.click()
-        b.find_element_by_id('id_-section-3-title').send_keys('1234')
+        b.find_element_by_id('id_-section-2-title').send_keys('1234')
         b.find_element_by_xpath('//button[@type="submit"]').click()
 
         b.get(self.live_server_url + reverse('edit_quote', args=[q.id]))
