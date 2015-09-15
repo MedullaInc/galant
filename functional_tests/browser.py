@@ -1,4 +1,3 @@
-import re
 from django.test import LiveServerTestCase
 from selenium import webdriver
 import autofixture
