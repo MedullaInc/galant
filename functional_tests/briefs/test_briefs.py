@@ -26,7 +26,6 @@ class BriefsSignedInTest(browser.SignedInTest):
 
         # access Client Briefs & click add brief
         b.get(self.live_server_url + reverse('briefs') + '?client_id=%s' % c.id)
-        self.load_scripts()
         b.find_element_by_id('add_brief').click()
         b.find_element_by_css_selector('.popover-content .from_scratch_button').click()
 
@@ -46,7 +45,6 @@ class BriefsSignedInTest(browser.SignedInTest):
         q.save()
 
         b.get(self.live_server_url + reverse('edit_brief', args=[q.id]) + '?client_id=%d' % c.id)
-        self.load_scripts()
 
         b.find_element_by_id('id_title').clear()
         b.find_element_by_id('id_title').send_keys('modified title')
@@ -69,7 +67,6 @@ class BriefsSignedInTest(browser.SignedInTest):
         brief.questions.add(mq)
 
         b.get(self.live_server_url + reverse('edit_brief', args=[brief.id]) + '?client_id=%d' % c.id)
-        self.load_scripts()
 
         b.find_element_by_id('id_title').clear()
         b.find_element_by_id('id_title').send_keys('modified title')
@@ -93,7 +90,6 @@ class BriefsSignedInTest(browser.SignedInTest):
         brief.questions.add(q)
 
         b.get(self.live_server_url + reverse('edit_brief', args=[brief.id]))
-        self.load_scripts()
 
         b.find_element_by_id('add_multiquestion').click()
         b.find_element_by_id('id_-multiquestion-1-question').send_keys('Who is your daddy, and what does he do?')
@@ -119,7 +115,6 @@ class BriefsSignedInTest(browser.SignedInTest):
         q.save()
 
         b.get(self.live_server_url + reverse('brief_detail', args=[q.id]) + '?client_id=%d' % c.id)
-        self.load_scripts()
 
         app_title = browser.instance().find_element_by_class_name('app_title')
         self.assertEqual(u'Brief Detail', app_title.text)
@@ -132,7 +127,6 @@ class BriefsSignedInTest(browser.SignedInTest):
                                    field_values={'user': self.user, 'client': c})
 
         b.get(self.live_server_url + reverse('add_brief') + '?quote_id=%d' % q.id)
-        self.load_scripts()
 
         b.find_element_by_id('id_title').clear()
         b.find_element_by_id('id_title').send_keys('modified title')
@@ -152,8 +146,7 @@ class BriefsSignedInTest(browser.SignedInTest):
                                field_values={'user': self.user, 'client': c, 'project': p})
 
         b.get(self.live_server_url + reverse('add_brief') + '?project_id=%d' % p.id)
-        self.load_scripts()
-        
+
         b.find_element_by_id('id_title').clear()
         b.find_element_by_id('id_title').send_keys('modified title')
 

@@ -57,7 +57,6 @@ class QuotesSignedInTest(browser.SignedInTest):
                                    field_values={'user': self.user})
         c.save()
         b.get(self.live_server_url + reverse('add_quote'))
-        self.load_scripts()
 
         b.find_element_by_name('name').send_keys('Quote test')
         b.find_element_by_xpath('//select[@name="client"]/option[@value="%d"]' % c.id).click()
@@ -76,7 +75,6 @@ class QuotesSignedInTest(browser.SignedInTest):
         b = browser.instance()
         q = get_blank_quote_autofixture(self.user)
         b.get(self.live_server_url + reverse('edit_quote', args=[q.id]))
-        self.load_scripts()
 
         b.find_element_by_id('id_-section-0-title').clear()
         b.find_element_by_id('id_-section-0-title').send_keys('modified intro title')
@@ -141,7 +139,6 @@ class QuotesSignedInTest(browser.SignedInTest):
         b = browser.instance()
         q = get_blank_quote_autofixture(self.user)
         b.get(self.live_server_url + reverse('edit_quote', args=[q.id]))
-        self.load_scripts()
 
         add_section = b.find_element_by_id('add_section')
         add_section.click()
@@ -170,6 +167,8 @@ class QuotesSignedInTest(browser.SignedInTest):
         q = get_blank_quote_autofixture(self.user)
         b.get(self.live_server_url + reverse('edit_quote', args=[q.id]))
         self.load_scripts()
+        self.disable_popups()
+
         add_section = b.find_element_by_id('add_section')
         add_section.click()
         add_section.click()
@@ -199,7 +198,6 @@ class QuotesSignedInTest(browser.SignedInTest):
         b = browser.instance()
         q = get_blank_quote_autofixture(self.user)
         b.get(self.live_server_url + reverse('edit_quote', args=[q.id]))
-        self.load_scripts()
 
         add_section = b.find_element_by_id('add_section')
         add_section.click()
@@ -207,7 +205,6 @@ class QuotesSignedInTest(browser.SignedInTest):
         b.find_element_by_xpath('//button[@type="submit"]').click()
 
         b.get(self.live_server_url + reverse('edit_quote', args=[q.id]))
-        self.load_scripts()
 
         add_section = b.find_element_by_id('add_section')
         add_section.click()

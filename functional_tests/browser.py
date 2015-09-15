@@ -1,3 +1,4 @@
+import re
 from django.test import LiveServerTestCase
 from selenium import webdriver
 import autofixture
@@ -44,20 +45,13 @@ class BrowserTest(LiveServerTestCase):
             js = s.get_attribute('innerHTML')
             if len(js) > 0:
                 b.execute_script(js)
-            else:
-                try:
-                    url = s.get_attribute('src')
 
-                    # ugly hardcoded way of finding script locally
-                    idx = url.find('static/')
-                    if idx < 0:
-                        continue
-                    jsfile = url[idx:]
-
-                    with open(jsfile, "r") as js:
-                        b.execute_script(js.read())
-                except Exception as ex:
-                    raise RuntimeWarning('Unable to open script %s: %s' % (jsfile, ex))
+    def disable_popups(self):
+        '''
+        Call this method to disable alerts and popups.
+        :return:
+        '''
+        b = instance()
 
         # need this to auto-accept all confirmation dialogs
         b.execute_script("window.confirm = function(){return true;}")
