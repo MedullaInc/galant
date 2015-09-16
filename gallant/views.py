@@ -8,7 +8,7 @@ from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import send_mail
 from django.http.response import Http404, HttpResponse
 from django.utils.safestring import mark_safe
-from django.views.generic import View, DeleteView
+from django.views.generic import View
 from django.template.response import TemplateResponse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
@@ -99,15 +99,6 @@ class ClientCreate(ClientUpdate):
         return TemplateResponse(request=self.request,
                                 template="gallant/client_form.html",
                                 context=context)
-
-
-class ClientDeleteView(DeleteView):
-    model = g.Client
-
-    def delete(request, *args, **kwargs):
-        return Http404(
-            "Cannot delete!"
-        )
 
 
 def client_detail(request, pk):

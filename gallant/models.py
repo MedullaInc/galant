@@ -3,8 +3,9 @@ from itertools import chain
 from custom_user.models import AbstractEmailUser, EmailUserManager
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
-from django.db import models as m
+from django.db import models as m, router
 from django.conf import settings
+from django.db.models.deletion import Collector
 from djmoney.models.fields import MoneyField
 from djmoney.forms.widgets import CURRENCY_CHOICES
 from gallant import fields as gf
@@ -58,6 +59,9 @@ class GallantUser(AbstractEmailUser):
 class UserModel(m.Model):
     user = m.ForeignKey(GallantUser)
 
+    deleted = m.BooleanField(default=False)
+    deleted_by_parent = m.BooleanField(default=False)
+
     class Meta:
         abstract = True
 
@@ -66,9 +70,23 @@ class UserModel(m.Model):
         for perm in get_perms_for_model(self):
             assign_perm(perm.codename, self.user, self)
 
+    def soft_delete(self, using=None):
+        using = using or router.db_for_write(self.__class__, instance=self)
+        assert self._get_pk_val() is not None, (
+            "%s object can't be deleted because its %s attribute is set to None." %
+            (self._meta.object_name, self._meta.pk.attname)
+        )
+
+        collector = Collector(using=using)
+        collector.collect([self])
+        # collector.delete()
+
 
 class PolyUserModel(PolymorphicModel):
     user = m.ForeignKey(GallantUser)
+
+    deleted = m.BooleanField(default=False)
+    deleted_by_parent = m.BooleanField(default=False)
 
     class Meta:
         abstract = True
@@ -77,6 +95,17 @@ class PolyUserModel(PolymorphicModel):
         super(PolyUserModel, self).save(*args, **kwargs)
         for perm in get_perms_for_model(self):
             assign_perm(perm.codename, self.user, self)
+
+    def soft_delete(self, using=None):
+        using = using or router.db_for_write(self.__class__, instance=self)
+        assert self._get_pk_val() is not None, (
+            "%s object can't be deleted because its %s attribute is set to None." %
+            (self._meta.object_name, self._meta.pk.attname)
+        )
+
+        collector = Collector(using=using)
+        collector.collect([self])
+        # collector.delete()
 
 
 class UserManagerMethodsMixin(object):
@@ -278,9 +307,6 @@ class Client(UserModel):
 
     notes = m.ManyToManyField(Note)
 
-    deleted = m.BooleanField(default=False)
-    deleted_by_parent = m.BooleanField(default=False)
-
     def __unicode__(self):
         return self.name
 
@@ -289,7 +315,7 @@ class Client(UserModel):
             ('view_client', 'View client'),
         )
 
-    objects = UserModelManagerWithSoftDelete()
+    objects = UserModelManager()
 
 
 class ProjectStatus(gf.ChoiceEnum):

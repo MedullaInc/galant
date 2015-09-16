@@ -201,6 +201,14 @@ class BriefDetail(View):
         return self.get(request, **kwargs)
 
 
+class BriefDelete(View):
+    def post(self, request, **kwargs):
+        brief = get_one_or_404(request.user, 'change_brief', b.Brief, id=kwargs['pk'])
+        brief.soft_delete
+
+        return HttpResponseRedirect(reverse('briefs'))
+
+
 class BriefTemplateList(View):
     def get(self, request):
         self.request.breadcrumbs([(_('Briefs'), reverse('briefs')),
