@@ -52,15 +52,17 @@ class ServiceForm(UserModelForm):
             widget=forms.Textarea(attrs={'rows': 5}), required=False)
 
 
-class NoteForm(UserModelForm):
+class NoteForm(UserModelNgForm):
     class Meta:
         model = g.Note
         fields = ['text']
 
     def __init__(self, *args, **kwargs):
+        kwargs.update(prefix='note')
         super(NoteForm, self).__init__(*args, **kwargs)
-        self.fields['text'] = forms.CharField(
-            widget=forms.Textarea(attrs={'rows': 3}))
+        self.fields['text'].widget = forms.Textarea(attrs={'rows': 3})
+        self.fields['text'].label = 'Notes'
+        self.fields['text'].help_text = ''
 
 
 class ProjectForm(UserModelForm):

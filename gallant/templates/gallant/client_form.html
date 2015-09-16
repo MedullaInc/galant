@@ -20,23 +20,18 @@
 
                 var form = $scope.{{ form.form_name }};
                 var contact_form = $scope.{{ contact_form.form_name }};
+                var note_form = $scope.{{ note_form.form_name }};
                 var data = { csrfmiddlewaretoken:'{{csrf_token}}' };
 
-                angular.forEach(form, function (val, key) {
-                    if (!key.match(/\$/)) {
-                        val.$setDirty();
-                        if (val.$viewValue) {
-                            data[key] = val.$viewValue;
+                $.each([form, contact_form, note_form], function(i, form) {
+                    angular.forEach(form, function (val, key) {
+                        if (!key.match(/\$/)) {
+                            val.$setDirty();
+                            if (val.$viewValue) {
+                                data[key] = val.$viewValue;
+                            }
                         }
-                    }
-                });
-                angular.forEach(contact_form, function (val, key) {
-                    if (!key.match(/\$/)) {
-                        val.$setDirty();
-                        if (val.$viewValue) {
-                            data[key] = val.$viewValue;
-                        }
-                    }
+                    });
                 });
 
                 if (!form.$invalid && !contact_form.$invalid) {
@@ -76,6 +71,10 @@
         <form name="{{ contact_form.form_name }}" class="form" method="post" novalidate>
             {% csrf_token %}
             {{ contact_form.as_div }}
+        </form>
+        <form name="{{ note_form.form_name }}" class="form" method="post" novalidate>
+            {% csrf_token %}
+            {{ note_form.as_div }}
         </form>
 
         <div id="form_actions">

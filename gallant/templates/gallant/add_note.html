@@ -2,12 +2,12 @@
 
 <form id="add_note_form" class="form" method="post">
     {% csrf_token %}
-    {% if not form.is_valid %}
+    {{ form.as_div }}
+    {% if form.is_bound and not form.is_valid %}
         <div class="form-group has-error">
             <span class="help-block">{{ form.text.errors.as_text }}</span>
         </div>
     {% endif %}
-    <textarea form ="add_note_form" class="form-control" name="text" rows="3"></textarea>
     <div class="form-actions">
         <button class="btn btn-default" type="submit">{% trans "Add Note" %}</button>
     </div>
