@@ -3,16 +3,16 @@ from itertools import chain
 from custom_user.models import AbstractEmailUser, EmailUserManager
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
-from django.db import models as m, router
+from django.db import models as m
+from django.db import transaction
 from django.conf import settings
-from django.db.models.deletion import Collector
 from djmoney.models.fields import MoneyField
 from djmoney.forms.widgets import CURRENCY_CHOICES
 from gallant import fields as gf
 from guardian.utils import get_user_obj_perms_model, get_group_obj_perms_model
 from django_countries.fields import CountryField
 from polymorphic import PolymorphicModel
-from guardian.shortcuts import assign_perm, get_objects_for_user, get_perms_for_model, get_groups_with_perms
+from guardian.shortcuts import assign_perm, get_objects_for_user, get_perms_for_model
 from polymorphic.manager import PolymorphicManager
 from django.contrib.contenttypes.models import ContentType
 from polymorphic.query import PolymorphicQuerySet
@@ -70,16 +70,12 @@ class UserModel(m.Model):
         for perm in get_perms_for_model(self):
             assign_perm(perm.codename, self.user, self)
 
-    def soft_delete(self, using=None):
-        using = using or router.db_for_write(self.__class__, instance=self)
-        assert self._get_pk_val() is not None, (
-            "%s object can't be deleted because its %s attribute is set to None." %
-            (self._meta.object_name, self._meta.pk.attname)
-        )
+    def soft_delete(self, deleted_by_parent=False):
+        if deleted_by_parent is True:
+            self.deleted_by_parent = deleted_by_parent
 
-        collector = Collector(using=using)
-        collector.collect([self])
-        # collector.delete()
+        self.deleted = True
+        self.save()
 
 
 class PolyUserModel(PolymorphicModel):
@@ -96,16 +92,12 @@ class PolyUserModel(PolymorphicModel):
         for perm in get_perms_for_model(self):
             assign_perm(perm.codename, self.user, self)
 
-    def soft_delete(self, using=None):
-        using = using or router.db_for_write(self.__class__, instance=self)
-        assert self._get_pk_val() is not None, (
-            "%s object can't be deleted because its %s attribute is set to None." %
-            (self._meta.object_name, self._meta.pk.attname)
-        )
+    def soft_delete(self, deleted_by_parent=False):
+        if deleted_by_parent is True:
+            self.deleted_by_parent = deleted_by_parent
 
-        collector = Collector(using=using)
-        collector.collect([self])
-        # collector.delete()
+        self.deleted = True
+        self.save()
 
 
 class UserManagerMethodsMixin(object):
@@ -125,12 +117,15 @@ class UserManagerMethodsMixin(object):
             raise RuntimeError('Attempted to use get() via UserModelManager. Use get_for() instead.')
         return super(UserManagerMethodsMixin, self).get(*args, **kwargs)
 
-    def all_for(self, user, perm):
-        return get_objects_for_user(user, perm, self, accept_global_perms=False)
+    def all_for(self, user, perm, show_deleted=False):
+        if show_deleted is True:
+            return get_objects_for_user(user, perm, self, accept_global_perms=False).filter(deleted=True)
+        else:
+            return get_objects_for_user(user, perm, self, accept_global_perms=False).filter(deleted=False)
 
     def get_for(self, user, perm, *args, **kwargs):
         obj = super(UserManagerMethodsMixin, self).get(*args, **kwargs)
-        if user.has_perm(perm, obj):
+        if user.has_perm(perm, obj) and obj.deleted is False:
             return obj
         else:
             return None
@@ -142,27 +137,7 @@ class UserManagerMethodsMixin(object):
         return all(app not in mod.__name__ for app in ['autofixture', 'django'])
 
 
-class UserManagerMethodsMixinWithSoftDelete(UserManagerMethodsMixin):
-    '''
-    Allows models with deleted column to have soft-delete abilities.
-    '''
-
-    def all_for(self, user, perm):
-        return get_objects_for_user(user, perm, self, accept_global_perms=False).filter(deleted=False)
-
-    def get_for(self, user, perm, *args, **kwargs):
-        obj = super(UserManagerMethodsMixin, self).get(*args, **kwargs).filter(deleted=False)
-        if user.has_perm(perm, obj):
-            return obj
-        else:
-            return None
-
-
 class UserModelManager(UserManagerMethodsMixin, m.Manager):
-    use_for_related_fields = True
-
-
-class UserModelManagerWithSoftDelete(UserManagerMethodsMixinWithSoftDelete, m.Manager):
     use_for_related_fields = True
 
 

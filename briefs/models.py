@@ -1,6 +1,7 @@
 from uuid import uuid4
 from django.conf import settings
 from django.db import models as m
+from django.db import transaction
 from gallant import models as g
 from gallant.models import PolyUserModelManager, UserModelManager
 from quotes import models as q
@@ -128,6 +129,13 @@ class Brief(g.UserModel):
         )
 
     objects = UserModelManager()
+
+    def soft_delete(self, deleted_by_parent=False):
+        with transaction.atomic():
+            for question in self.questions.all_for(self.user, 'change_question'):
+                question.soft_delete(deleted_by_parent=True)
+
+            super(Brief, self).soft_delete()
 
 
 class BriefTemplate(g.UserModel):

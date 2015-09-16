@@ -2487,7 +2487,25 @@ button.edit_button span.glyphicon {
     font-size: 14px;
 }
 
-a.edit_button {
+a.edit_button:hover {
+    text-decoration: none;
+}
+
+button.btn-default.delete_button {
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 0px;
+    border: 1px solid #666666;
+    margin-top: 0px;
+    padding: 10px 15px 10px 15px;
+}
+
+button.delete_button span.glyphicon {
+    font-size: 14px;
+}
+
+a.delete_button:hover {
+    text-decoration: none;
 }
 
 .glyphicon.glyphicon-edit {
