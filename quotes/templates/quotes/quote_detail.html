@@ -57,7 +57,77 @@
     <br/>
 
     <h2 class="section_title">
-        Quote Sections
+        {% trans 'Prices' %}
+    </h2>
+    <div class="prices">
+        <div class="row">
+            <div class="col-xs-offset-2 col-xs-3 section_content">
+                <p>
+                    <strong>{% trans "Service" %}</strong>
+                </p>
+            </div>
+            <div class="col-xs-1 section_content">
+                <p>
+                    <strong>{% trans "Quantity" %}</strong>
+                </p>
+            </div>
+            <div class="col-xs-2 section_content">
+                <p>
+                    <strong>{% trans "Unit Price" %}</strong>
+                </p>
+            </div>
+            <div class="col-xs-2 section_content">
+                <p>
+                    <strong>{% trans "Subtotal" %}</strong>
+                </p>
+            </div>
+        </div>
+        {% for section in object.all_sections %}
+            {% if section.service %}
+                {% with service=section.service %}
+                    <div class="row">
+                        <div class="col-xs-offset-2 col-xs-3 section_content">
+                            <p>
+                                {{ service.name.get_text }}
+                            </p>
+                        </div>
+                        <div class="col-xs-1 section_content">
+                            <p>
+                                {{ service.quantity }}
+                            </p>
+                        </div>
+                        <div class="col-xs-2 section_content">
+                            <p>
+                                {{ service.cost }}
+                            </p>
+                        </div>
+                        <div class="col-xs-2 section_content">
+                            <p>
+                                {{ service.get_total_cost }}
+                            </p>
+                        </div>
+                    </div>
+                {% endwith %}
+            {% endif %}
+        {% endfor %}
+
+        <div class="row">
+            <div class="col-xs-offset-6 col-xs-2 section_content">
+                <p>
+                    <strong>{% trans "Total" %}</strong>
+                </p>
+            </div>
+            <div class="col-xs-2 section_content">
+                <p>
+                    <strong>{{ object.get_total_cost }}</strong>
+                </p>
+            </div>
+        </div>
+    </div>
+    <br/>
+
+    <h2 class="section_title">
+        {% trans 'Quote Sections' %}
     </h2>
 
     <hr>

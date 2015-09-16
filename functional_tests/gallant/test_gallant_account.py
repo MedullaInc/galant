@@ -73,11 +73,11 @@ class GallantAccountTest(LiveServerTestCase):
         b.find_element_by_name('name').send_keys('foo bar')
         b.find_element_by_name('company_name').send_keys('foo inc.')
 
-        b.find_element_by_name('phone_number').send_keys('+52(81)8336-6666')
-        b.find_element_by_name('address').send_keys('asdf')
-        b.find_element_by_name('city').send_keys('asdf')
-        b.find_element_by_name('state').send_keys('asdf')
-        b.find_element_by_name('zip').send_keys('12345')
+        b.find_element_by_name('contact_info.phone_number').send_keys('5281833666666')  # error here, digits are entered wrong
+        b.find_element_by_name('contact_info.address').send_keys('asdf')
+        b.find_element_by_name('contact_info.city').send_keys('asdf')
+        b.find_element_by_name('contact_info.state').send_keys('asdf')
+        b.find_element_by_name('contact_info.zip').send_keys('12345')
 
         b.find_element_by_xpath('//button[@type="submit"]').click()
 

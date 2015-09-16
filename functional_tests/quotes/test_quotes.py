@@ -1,3 +1,4 @@
+import time
 from django.core.urlresolvers import reverse
 from functional_tests import browser
 from quotes import models as qm
@@ -36,7 +37,6 @@ class QuotesSignedInTest(browser.SignedInTest):
         page_wrapper = browser.instance().find_element_by_class_name('page-wrapper')
         self.assertTrue(page_wrapper)
 
-
     def test_access_quote_header(self):
         q = get_blank_quote_autofixture(self.user)
         browser.instance().get(self.live_server_url + reverse('quote_header', args=[q.id]))
@@ -57,7 +57,6 @@ class QuotesSignedInTest(browser.SignedInTest):
                                    field_values={'user': self.user})
         c.save()
         b.get(self.live_server_url + reverse('add_quote'))
-        self.load_scripts()
 
         b.find_element_by_name('name').send_keys('Quote test')
         b.find_element_by_xpath('//select[@name="client"]/option[@value="%d"]' % c.id).click()
@@ -67,24 +66,17 @@ class QuotesSignedInTest(browser.SignedInTest):
         b.find_element_by_id('id_-section-1-text').send_keys('test margin text')
         b.find_element_by_xpath('//select[@name="-service-2-type"]/option[@value="3"]').click()
 
-        b.find_element_by_xpath('//button[@type="submit"]').click()
-
-        success_message = b.find_element_by_class_name('alert-success')
-        self.assertTrue(u'Quote saved.' in success_message.text)
+        self._submit_and_check(b)
 
     def test_edit_quote(self):
         b = browser.instance()
         q = get_blank_quote_autofixture(self.user)
         b.get(self.live_server_url + reverse('edit_quote', args=[q.id]))
-        self.load_scripts()
 
         b.find_element_by_id('id_-section-0-title').clear()
         b.find_element_by_id('id_-section-0-title').send_keys('modified intro title')
 
-        b.find_element_by_xpath('//button[@type="submit"]').click()
-
-        success_message = b.find_element_by_class_name('alert-success')
-        self.assertTrue(u'Quote saved.' in success_message.text)
+        self._submit_and_check(b)
 
         intro = b.find_element_by_xpath('//div[@id="intro"]//h2')
         self.assertEqual(intro.text, 'modified intro title')
@@ -93,7 +85,6 @@ class QuotesSignedInTest(browser.SignedInTest):
         b = browser.instance()
         q = get_blank_quote_autofixture(self.user)
         b.get(self.live_server_url + reverse('edit_quote', args=[q.id]))
-        self.load_scripts()
 
         add_section = b.find_element_by_id('add_section')
         add_section.click()
@@ -104,10 +95,7 @@ class QuotesSignedInTest(browser.SignedInTest):
         b.find_element_by_id('id_-section-3-title').send_keys('4321')
         b.find_element_by_id('id_-section-3-text').send_keys('4321')
 
-        b.find_element_by_xpath('//button[@type="submit"]').click()
-
-        success_message = b.find_element_by_class_name('alert-success')
-        self.assertTrue(u'Quote saved.' in success_message.text)
+        self._submit_and_check(b)
 
         intro = b.find_element_by_xpath('//div[@id="section_1"]//h2')
         self.assertEqual(intro.text, '1234')
@@ -119,18 +107,17 @@ class QuotesSignedInTest(browser.SignedInTest):
         b = browser.instance()
         q = get_blank_quote_autofixture(self.user)
         b.get(self.live_server_url + reverse('edit_quote', args=[q.id]))
-        self.load_scripts()
 
         add_service = b.find_element_by_id('add_service')
+        add_service.click()
         add_service.click()
 
         b.find_element_by_id('id_-service-2-name').send_keys('1234')
         b.find_element_by_xpath('//select[@name="-service-2-type"]/option[@value="3"]').click()
+        b.find_element_by_id('id_-service-3-name').send_keys('1234')
+        b.find_element_by_xpath('//select[@name="-service-3-type"]/option[@value="3"]').click()
 
-        b.find_element_by_xpath('//button[@type="submit"]').click()
-
-        success_message = b.find_element_by_class_name('alert-success')
-        self.assertTrue(u'Quote saved.' in success_message.text)
+        self._submit_and_check(b)
 
         name = b.find_element_by_class_name('service_name')
         self.assertEqual(name.text, '1234')
@@ -139,7 +126,6 @@ class QuotesSignedInTest(browser.SignedInTest):
         b = browser.instance()
         q = get_blank_quote_autofixture(self.user)
         b.get(self.live_server_url + reverse('edit_quote', args=[q.id]))
-        self.load_scripts()
 
         add_section = b.find_element_by_id('add_section')
         add_section.click()
@@ -152,10 +138,7 @@ class QuotesSignedInTest(browser.SignedInTest):
         b.find_element_by_id('id_-section-4-title').send_keys('s3title')
         b.find_element_by_id('id_-section-4-text').send_keys('s3text')
 
-        b.find_element_by_xpath('//button[@type="submit"]').click()
-
-        success_message = b.find_element_by_class_name('alert-success')
-        self.assertTrue(u'Quote saved.' in success_message.text)
+        self._submit_and_check(b)
 
         el = b.find_element_by_xpath('//div[@id="section_1"]//h2')
         self.assertEqual(el.text, '1234')
@@ -167,7 +150,8 @@ class QuotesSignedInTest(browser.SignedInTest):
         b = browser.instance()
         q = get_blank_quote_autofixture(self.user)
         b.get(self.live_server_url + reverse('edit_quote', args=[q.id]))
-        self.load_scripts()
+        self.disable_popups()
+
         add_section = b.find_element_by_id('add_section')
         add_section.click()
         add_section.click()
@@ -182,10 +166,7 @@ class QuotesSignedInTest(browser.SignedInTest):
         # click remove thingie
         b.find_element_by_id('-section-3-remove').click()
 
-        b.find_element_by_xpath('//button[@type="submit"]').click()
-
-        success_message = b.find_element_by_class_name('alert-success')
-        self.assertTrue(u'Quote saved.' in success_message.text)
+        self._submit_and_check(b)
 
         el = b.find_element_by_xpath('//div[@id="section_1"]//h2')
         self.assertEqual(el.text, '1234')
@@ -197,7 +178,6 @@ class QuotesSignedInTest(browser.SignedInTest):
         b = browser.instance()
         q = get_blank_quote_autofixture(self.user)
         b.get(self.live_server_url + reverse('edit_quote', args=[q.id]))
-        self.load_scripts()
 
         add_section = b.find_element_by_id('add_section')
         add_section.click()
@@ -205,14 +185,17 @@ class QuotesSignedInTest(browser.SignedInTest):
         b.find_element_by_xpath('//button[@type="submit"]').click()
 
         b.get(self.live_server_url + reverse('edit_quote', args=[q.id]))
-        self.load_scripts()
 
         add_section = b.find_element_by_id('add_section')
         add_section.click()
 
-        self.assertEqual(len(b.find_elements_by_id('id_-section-2-title')), 1)
+        self.assertEqual(len(b.find_elements_by_id('id_-section-3-title')), 1)
 
+        self._submit_and_check(b)
+
+    def _submit_and_check(self, b):
         b.find_element_by_xpath('//button[@type="submit"]').click()
+        self.disable_popups()
 
         success_message = b.find_element_by_class_name('alert-success')
         self.assertTrue(u'Quote saved.' in success_message.text)

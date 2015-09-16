@@ -1,3 +1,5 @@
+from itertools import chain
+import json
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import get_user_model, authenticate, login
@@ -34,7 +36,8 @@ class ClientUpdate(View):
         form = forms.ClientForm(request.user, instance=self.object)
         return self.render_to_response({'object': self.object, 'form': form,
                                         'contact_form': forms.ContactInfoForm(
-                                            instance=self.object.contact_info)})
+                                            instance=self.object.contact_info),
+                                        'note_form': forms.NoteForm(request.user)})
 
     def post(self, request, **kwargs):
         if 'pk' in kwargs:
@@ -46,11 +49,13 @@ class ClientUpdate(View):
         form = forms.ClientForm(request.user, request.POST, instance=self.object)
         contact_form = forms.ContactInfoForm(request.POST,
                                              instance=getattr(self.object, 'contact_info', None))
+        note_form = forms.NoteForm(request.user, request.POST)
+
         if form.is_valid() and contact_form.is_valid():
-            return self.form_valid(form, contact_form)
+            return self.form_valid(form, contact_form, note_form)
         else:
-            return self.render_to_response({'object': self.object, 'form': form,
-                                            'contact_form': contact_form})
+            response = {'status': 0, 'errors': chain(form.errors.items(), contact_form.errors.items())}
+            return HttpResponse(json.dumps(response), content_type='application/json')
 
     def render_to_response(self, context):
         context.update({'title': 'Edit Client'})
@@ -65,15 +70,20 @@ class ClientUpdate(View):
                                 template="gallant/client_form.html",
                                 context=context)
 
-    def form_valid(self, form, contact_form):
+    def form_valid(self, form, contact_form, note_form):
         obj = form.save(commit=True)
-        text = '[Updated]\n' + form.cleaned_data['notes']
-        note = g.Note.objects.create(text=text, user=self.request.user)
+        if note_form.is_valid():
+            note = note_form.save()
+        else:
+            note = g.Note.objects.create(user=obj.user)
+        note.text = '[Updated]\n' + note.text
+        note.save()
         obj.notes.add(note)
         obj.contact_info = contact_form.save()
         obj.save()
         messages.success(self.request, 'Client saved.')
-        return HttpResponseRedirect(reverse('client_detail', args=[obj.id]))
+        response = {'status': 0, 'redirect': reverse('client_detail', args=[obj.id])}
+        return HttpResponse(json.dumps(response), content_type='application/json')
 
 
 class ClientCreate(ClientUpdate):
@@ -81,8 +91,10 @@ class ClientCreate(ClientUpdate):
         self.object = None
         request.breadcrumbs([(_('Clients'), reverse('clients')),
                              (_('Add'), request.path_info)])
-        context = {'form': forms.ClientForm(request.user),
+        form = forms.ClientForm(request.user)
+        context = {'form': form,
                    'contact_form': forms.ContactInfoForm(),
+                   'note_form': forms.NoteForm(request.user),
                    'title': 'Add Client'}
         return TemplateResponse(request=self.request,
                                 template="gallant/client_form.html",

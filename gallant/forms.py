@@ -2,6 +2,12 @@ from django import forms
 from django.conf import settings
 from django.utils.translation import get_language
 from gallant import models as g
+from djangular.forms import NgModelForm, NgFormValidationMixin
+from djangular.styling.bootstrap3.forms import Bootstrap3ModelForm
+
+
+class GallantNgModelForm(NgModelForm, Bootstrap3ModelForm, NgFormValidationMixin):
+    pass
 
 
 class UserModelForm(forms.ModelForm):
@@ -14,16 +20,25 @@ class UserModelForm(forms.ModelForm):
         return super(UserModelForm, self).save(*args, **kwargs)
 
 
-class ClientForm(UserModelForm):
+class UserModelNgForm(GallantNgModelForm):
+    def __init__(self, user, *args, **kwargs):
+        self.user = user
+        super(UserModelNgForm, self).__init__(*args, **kwargs)
+
+    def save(self, *args, **kwargs):
+        self.instance.user = self.user
+        return super(UserModelNgForm, self).save(*args, **kwargs)
+
+
+class ClientForm(UserModelNgForm):
     class Meta:
         model = g.Client
         fields = ['name', 'email', 'type', 'size', 'status', 'language', 'currency']
 
     def __init__(self, *args, **kwargs):
+        kwargs.update(prefix='client')
         super(ClientForm, self).__init__(*args, **kwargs)
         self.initial['language'] = get_language()
-        self.fields['notes'] = forms.CharField(
-            widget=forms.Textarea(attrs={'rows': 5}), required=False)
 
 
 class ServiceForm(UserModelForm):
@@ -37,15 +52,17 @@ class ServiceForm(UserModelForm):
             widget=forms.Textarea(attrs={'rows': 5}), required=False)
 
 
-class NoteForm(UserModelForm):
+class NoteForm(UserModelNgForm):
     class Meta:
         model = g.Note
         fields = ['text']
 
     def __init__(self, *args, **kwargs):
+        kwargs.update(prefix='note')
         super(NoteForm, self).__init__(*args, **kwargs)
-        self.fields['text'] = forms.CharField(
-            widget=forms.Textarea(attrs={'rows': 3}))
+        self.fields['text'].widget = forms.Textarea(attrs={'rows': 3})
+        self.fields['text'].label = 'Notes'
+        self.fields['text'].help_text = ''
 
 
 class ProjectForm(UserModelForm):
@@ -99,11 +116,15 @@ class GallantUserForm(forms.ModelForm):
         fields = ['name', 'company_name']
 
 
-class ContactInfoForm(forms.ModelForm):
+class ContactInfoForm(GallantNgModelForm):
     class Meta:
         model = g.ContactInfo
         fields = ['phone_number', 'country', 'address', 'address_2',
                   'city', 'state', 'zip']
+
+    def __init__(self, *args, **kwargs):
+        kwargs.update(prefix='contact_info')
+        super(ContactInfoForm, self).__init__(*args, **kwargs)
 
 
 class EmailForm(forms.Form):

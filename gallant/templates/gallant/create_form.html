@@ -13,7 +13,7 @@
 
 {% block center_content %}
 
-    <form id="main_form" class="form" method="post">
+    <form id="main_form" name="{{ form.form_name }}" class="form" method="post">
 
         {% block form_help_text %}
             {% if help_text %}
@@ -99,7 +99,7 @@
 
         // Input mask for phone numbers
         $(document).ready(function () {
-            if ($('.form').find("#id_phone_number").length > 0) {
+            if ($('.form').find("#id_contact_info\\.phone_number").length > 0) {
 
                 var maskList = $.masksSort($.masksLoad("{% static "js/input_mask/phone-codes.json" %}"), ['#'], /[0-9]|#/, "mask");
                 var maskOpts = {
@@ -120,8 +120,8 @@
                     listKey: "mask",
                 };
 
-                $('#id_phone_number').inputmasks(maskOpts);
-                
+                $('#id_contact_info\\.phone_number').inputmasks(maskOpts);
+
             }
         });
     </script>

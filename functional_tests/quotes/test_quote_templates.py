@@ -12,7 +12,6 @@ class QuoteTemplatesTest(browser.SignedInTest):
     def test_add_quote_template(self):
         b = browser.instance()
         b.get(self.live_server_url + reverse('add_quote_template'))
-        self.load_scripts()
 
         b.find_element_by_name('name').send_keys('Quote test')
         b.find_element_by_id('id_-section-0-title').send_keys('test intro title')
@@ -27,7 +26,6 @@ class QuoteTemplatesTest(browser.SignedInTest):
     def test_add_quote_lang_dropdown(self):
         b = browser.instance()
         b.get(self.live_server_url + reverse('add_quote_template'))
-        self.load_scripts()
 
         b.find_element_by_name('name').send_keys('Quote test')
         b.find_element_by_xpath('//select[@name="-service-2-type"]/option[@value="3"]').click()
@@ -41,13 +39,11 @@ class QuoteTemplatesTest(browser.SignedInTest):
         qt = autofixture.create_one('quotes.QuoteTemplate', generate_fk=False,
                                     field_values={'quote': q, 'user': self.user})
         b.get(self.live_server_url + reverse('edit_quote_template', args=[qt.id]))
-        self.load_scripts()
 
         b.find_element_by_id('id_-section-0-title').clear()
         b.find_element_by_id('id_-section-0-title').send_keys('modified intro title')
 
         self._submit_and_check(b)
-        self.load_scripts()
 
         intro = b.find_element_by_id('id_-section-0-title')
         self.assertEqual(intro.get_attribute('value'), 'modified intro title')
@@ -58,15 +54,15 @@ class QuoteTemplatesTest(browser.SignedInTest):
         qt = autofixture.create_one('quotes.QuoteTemplate', generate_fk=False,
                                     field_values={'quote': q, 'user': self.user})
         b.get(self.live_server_url + reverse('edit_quote_template', args=[qt.id]))
-        self.load_scripts()
         self._add_language_and_text(b)
+
+        self._submit_and_check(b)
 
     def test_add_from_quote(self):
         b = browser.instance()
 
         q = get_blank_quote_autofixture(self.user)
         b.get(self.live_server_url + reverse('add_quote_template', kwargs={'quote_id': q.id}))
-        self.load_scripts()
 
         intro_title = b.find_element_by_id('id_-section-0-title_hidden')
         self.assertEqual(q.intro().title.json(), intro_title.get_attribute('value'))
@@ -83,7 +79,6 @@ class QuoteTemplatesTest(browser.SignedInTest):
                                    field_values={'user': self.user})
         c.save()
         b.get(self.live_server_url + reverse('add_quote') + '?template_id=%d&lang=en' % qt.id)
-        self.load_scripts()
 
         intro_title = b.find_element_by_id('id_-section-0-title_hidden')
         self.assertEqual(q.intro().title.json(), intro_title.get_attribute('value'))
@@ -104,7 +99,6 @@ class QuoteTemplatesTest(browser.SignedInTest):
         b.find_element_by_id('en_tab').click()
 
         self._submit_and_check(b)
-        self.load_scripts()
 
         new_tab = b.find_element_by_xpath('//*[@id="es_tab"]/a')
         self.assertEqual(u'Spanish', new_tab.text)

@@ -20,11 +20,10 @@ class BriefTemplatesTest(browser.SignedInTest):
     def test_add_brief_lang_dropdown(self):
         b = browser.instance()
         b.get(self.live_server_url + reverse('add_brief_template'))
-        self.load_scripts()
 
         b.find_element_by_name('name').send_keys('Brief test')
-        self._add_language_and_text(b)
 
+        self._add_language_and_text(b)
         self._submit_and_check(b)
 
     def test_edit_brief_template(self):
@@ -36,13 +35,11 @@ class BriefTemplatesTest(browser.SignedInTest):
         bt = autofixture.create_one('briefs.BriefTemplate', generate_fk=False,
                                     field_values={'brief': brief, 'user': self.user})
         b.get(self.live_server_url + reverse('edit_brief_template', args=[bt.id]))
-        self.load_scripts()
 
         b.find_element_by_id('id_-question-0-question').clear()
         b.find_element_by_id('id_-question-0-question').send_keys('modified question')
 
         self._submit_and_check(b)
-        self.load_scripts()
 
         intro = b.find_element_by_id('id_-question-0-question')
         self.assertEqual(intro.get_attribute('value'), 'modified question')
@@ -54,8 +51,9 @@ class BriefTemplatesTest(browser.SignedInTest):
         bt = autofixture.create_one('briefs.BriefTemplate', generate_fk=False,
                                     field_values={'brief': brief, 'user': self.user})
         b.get(self.live_server_url + reverse('edit_brief_template', args=[bt.id]))
-        self.load_scripts()
+
         self._add_language_and_text(b)
+        self._submit_and_check(b)
 
     def test_add_from_brief(self):
         b = browser.instance()
@@ -65,7 +63,6 @@ class BriefTemplatesTest(browser.SignedInTest):
         quest = bm.TextQuestion.objects.create(user=brief.user)
         brief.questions.add(quest)
         b.get(self.live_server_url + reverse('add_brief_template', kwargs={'brief_id': brief.id}))
-        self.load_scripts()
 
         question = b.find_element_by_id('id_-question-0-question_hidden')
         self.assertEqual(quest.question.json(), question.get_attribute('value'))
@@ -82,7 +79,6 @@ class BriefTemplatesTest(browser.SignedInTest):
                                     field_values={'brief': brief, 'user': self.user})
         b.get(self.live_server_url +
               reverse('add_brief') + '?template_id=%d&lang=en&client_id=%d' % (bt.id, client.id))
-        self.load_scripts()
 
         question = b.find_element_by_id('id_-question-0-question_hidden')
         self.assertEqual(quest.question.json(), question.get_attribute('value'))
@@ -101,6 +97,8 @@ class BriefTemplatesTest(browser.SignedInTest):
         b.find_element_by_id('id_-question-0-question').clear()
         b.find_element_by_id('id_-question-0-question').send_keys('Quien esta en primera?')
         b.find_element_by_id('en_tab').click()
+
+        self._submit_and_check(b)
 
         new_tab = b.find_element_by_xpath('//*[@id="es_tab"]/a')
         self.assertEqual(u'Spanish', new_tab.text)

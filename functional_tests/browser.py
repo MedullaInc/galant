@@ -9,7 +9,20 @@ browser = []
 
 def instance():
     if len(browser) < 1:
-        browser.append(webdriver.PhantomJS())
+        b = webdriver.PhantomJS()
+        # hack while the python interface lags
+        b.command_executor._commands['executePhantomScript'] = ('POST', '/session/$sessionId/phantom/execute')
+
+        b.execute('executePhantomScript', {'script': '''
+    var page = this; // won't work otherwise
+    page.onResourceRequested = function(requestData, request) {
+        if ((/http:\/\/.+?\.css/gi).test(requestData['url']) || requestData['Content-Type'] == 'text/css') {
+            console.log('The url of the request is matching. Aborting: ' + requestData['url']);
+            request.abort();
+        }
+}
+''', 'args': []})
+        browser.append(b)
     return browser[0]
 
 
@@ -19,25 +32,12 @@ def close():
 
 
 class BrowserTest(LiveServerTestCase):
-    def load_scripts(self):
+    def disable_popups(self):
         '''
-        Call this method after loading target page to load jQuery and scripts contained
-        within <body> (Selenium doesn't automatically load them).
+        Call this method to disable alerts and popups.
         :return:
         '''
         b = instance()
-        with open("static/js/jquery-latest.min.js", "r") as jq:
-            b.execute_script(jq.read())
-        with open("static/js/bootstrap.min.js", "r") as jq:
-            b.execute_script(jq.read())
-        with open("static/js/gallant.js", "r") as jq:
-            b.execute_script(jq.read())
-
-        scripts = b.find_elements_by_xpath('//body/script')
-        for s in scripts:
-            js = s.get_attribute('innerHTML')
-            if len(js) > 0:
-                b.execute_script(js)
 
         # need this to auto-accept all confirmation dialogs
         b.execute_script("window.confirm = function(){return true;}")
@@ -59,7 +59,7 @@ class BrowserTest(LiveServerTestCase):
 class SignedInTest(BrowserTest):
     def setUp(self):
         self.user = autofixture.create_one('gallant.GallantUser', generate_fk=True,
-                                   field_values={'password': hashers.make_password('password')})
+                                           field_values={'password': hashers.make_password('password')})
         self.user.save()
 
         # other browsers can be set here, eg
@@ -68,8 +68,8 @@ class SignedInTest(BrowserTest):
         # add session cookie for logged-in user
         self.client.login(email=self.user.email, password='password')
         instance().add_cookie({u'domain': u'localhost', u'name': u'sessionid',
-                                 u'value': self.client.session.session_key,
-                                 u'path': u'/', u'httponly': True, u'secure': False})
+                               u'value': self.client.session.session_key,
+                               u'path': u'/', u'httponly': True, u'secure': False})
 
     def tearDown(self):
         instance().delete_all_cookies()

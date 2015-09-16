@@ -53,7 +53,7 @@ class GallantServiceTest(browser.SignedInTest):
         b.get(self.live_server_url + reverse('service_detail', args=[s.id]))
         test_string = '2351tlgkjqlwekjalfkj'
 
-        b.find_element_by_xpath('//textarea[@name="text"]').send_keys(test_string)
+        b.find_element_by_xpath('//textarea[@name="note.text"]').send_keys(test_string)
         b.find_element_by_xpath('//button[@type="submit"]').click()
 
         self.assertTrue(test_string in b.find_element_by_id('notes').text)
