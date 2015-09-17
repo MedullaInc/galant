@@ -163,3 +163,9 @@ class QuoteTemplate(g.UserModel):
         )
 
     objects = UserModelManager()
+
+    def soft_delete(self, deleted_by_parent=False):
+        with transaction.atomic():
+            self.quote.soft_delete(deleted_by_parent=True)
+
+        super(QuoteTemplate, self).soft_delete(deleted_by_parent)
