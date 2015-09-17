@@ -17,6 +17,7 @@ from django.db.models import Q
 from gallant.utils import get_one_or_404, query_url, get_site_from_host
 from django.utils.translation import ugettext_lazy as _
 
+
 def _update_from_query(request, context):
     initial = {}
     quote_id = request.GET.get('quote_id', None)
@@ -43,7 +44,7 @@ def _update_from_query(request, context):
                              (client.name, reverse('client_detail', args=[client.id]))])
         request.breadcrumbs(_('Briefs'), reverse('briefs') + query_url(request))
     else:
-        request.breadcrumbs(_('Briefs'), reverse('briefs'))
+        request.breadcrumbs()
 
     return initial
 
@@ -72,6 +73,19 @@ class BriefUpdate(View):
         context = {}
         brief = get_one_or_404(request.user, 'change_brief', b.Brief, pk=kwargs['pk'])
 
+        if brief.pk:
+            self.request.breadcrumbs([
+                (_('Clients'), reverse('clients')),
+                (brief.client.name, reverse('client_detail', args=[brief.client.id])),
+                (_('Briefs'), reverse('briefs') + query_url(request)),
+                (_('Brief: ') + brief.name, reverse('brief_detail', args=[brief.id]) + query_url(self.request)),
+                (_('Edit'), self.request.path_info + query_url(self.request))
+            ])
+        else:
+            self.request.breadcrumbs(
+                _('Add'), self.request.path_info + query_url(self.request)
+            )
+
         form = bf.BriefForm(request.user, instance=brief)
         _update_from_query(request, context)
 
@@ -97,7 +111,6 @@ class BriefUpdate(View):
             brief.quote = context['project'].quote
             brief.client = brief.quote.client  # likewise for project
 
-
         form = bf.BriefForm(request.user, request.POST, instance=brief)
         question_forms = bf.question_forms_request(request)
 
@@ -110,10 +123,10 @@ class BriefUpdate(View):
             return HttpResponseRedirect(reverse('brief_detail', args=[obj.id]))
         else:
             if brief.pk:
-                self.request.breadcrumbs(
-                    [(_('Brief: ') + brief.name, reverse('brief_detail', args=[brief.id])),
-                     (_('Edit'), self.request.path_info + query_url(self.request))]
-                )
+                self.request.breadcrumbs([
+                    (_('Brief: ') + brief.name, reverse('brief_detail', args=[brief.id])),
+                    (_('Edit'), self.request.path_info + query_url(self.request))
+                ])
             else:
                 self.request.breadcrumbs(
                     _('Add'), self.request.path_info + query_url(self.request)

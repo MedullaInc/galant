@@ -248,6 +248,9 @@ class Service(UserModel):
             for note in self.notes.all_for(self.user, 'change_note'):
                 note.soft_delete(deleted_by_parent=True)
 
+            for service in self.sub_services.all_for(self.user, 'change_service'):
+                service.soft_delete(deleted_by_parent=True)
+
         super(Service, self).soft_delete(deleted_by_parent)
 
 
