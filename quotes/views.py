@@ -59,13 +59,14 @@ class QuoteUpdate(View):
             self.object = qf.create_quote(form, section_forms)
 
             quote = self.object
-            url = '%s://%s%s' % (self.request.scheme, self.request.get_host(), reverse('quote_preview', args=[quote.id]))
+            url = '%s://%s%s' % (
+            self.request.scheme, self.request.get_host(), reverse('quote_preview', args=[quote.id]))
             filename = slugify(quote.client.name + "_" + quote.name)
 
             attach_or_inline = 'inline'
 
             header_url = url.replace('preview', 'preview/header')
-            footer_url = url.replace('preview', 'preview/footer')#.replace(':8000', ':8001')
+            footer_url = url.replace('preview', 'preview/footer')  # .replace(':8000', ':8001')
 
             pdf = url_to_pdf(url, self.request.session.session_key, header_url, footer_url)
 
@@ -126,11 +127,19 @@ class QuoteCreate(QuoteUpdate):
 
 
 def _send_quote_email(email, from_name, link, site):
-    message = '%s has sent you a Quote from %s.\n\n Click this link to view:\n %s' %\
-        (from_name, site, link)
+    message = '%s has sent you a Quote from %s.\n\n Click this link to view:\n %s' % \
+              (from_name, site, link)
     send_mail('Client Quote', message,
-              '%s via %s <%s>' % (from_name, site,  settings.EMAIL_HOST_USER),
+              '%s via %s <%s>' % (from_name, site, settings.EMAIL_HOST_USER),
               [email], fail_silently=False)
+
+
+class QuoteDelete(View):
+    def get(self, request, **kwargs):
+        quote = get_one_or_404(request.user, 'change_quote', q.Quote, id=kwargs['pk'])
+        quote.soft_delete()
+
+        return HttpResponseRedirect(reverse('quotes'))
 
 
 class QuoteDetail(View):
@@ -180,6 +189,18 @@ class QuoteTemplateList(View):
                                 .all_for(request.user, 'view_quotetemplate')})
 
 
+class QuoteTemplateDetail(View):
+    def get(self, request, **kwargs):
+        quote = get_one_or_404(request.user, 'view_quotetemplate', q.QuoteTemplate, pk=kwargs['pk'])
+
+        request.breadcrumbs([(_('Quotes'), reverse('quotes')),
+                             (_('Quote Templates'), reverse('quote_templates')),
+                             (_('Quote: %s' % quote.quote.name), request.path_info)])
+        return TemplateResponse(request=request,
+                                template="quotes/quotetemplate_detail.html",
+                                context={'title': 'Quote Template', 'object': quote})
+
+
 class QuoteTemplateView(View):
     def get(self, request, **kwargs):
         self.request.breadcrumbs([(_('Quotes'), reverse('quotes')),
@@ -195,7 +216,8 @@ class QuoteTemplateView(View):
                                           'To save it as your own, use it to create a quote, then '
                                           'create a separate template from the new quote.')
 
-            self.request.breadcrumbs([(_('Edit'), request.path_info)])
+            self.request.breadcrumbs([(_('Quote: %s' % self.object.quote.name), reverse('quote_template_detail', args=[self.object.id])),
+                                      (_('Edit Template'), request.path_info)])
         else:
             self.object = None
             self.request.breadcrumbs([(_('Add'), request.path_info)])
@@ -264,7 +286,7 @@ class QuoteTemplateView(View):
                                 context=context)
 
 
-class QuotePDF(View):   # pragma: no cover
+class QuotePDF(View):  # pragma: no cover
     def get(self, request, *args, **kwargs):
         if 'pk' in kwargs:
             # Quote for a logged-in user
@@ -280,7 +302,7 @@ class QuotePDF(View):   # pragma: no cover
         attach_or_inline = request.GET.get('dl', 'inline')
 
         header_url = url.replace('preview', 'preview/header')
-        footer_url = url.replace('preview', 'preview/footer')#.replace(':8000', ':8001')
+        footer_url = url.replace('preview', 'preview/footer')  # .replace(':8000', ':8001')
 
         pdf = url_to_pdf(url, request.session.session_key, header_url, footer_url)
 

@@ -18,7 +18,8 @@
                 } catch (e) {
                 }
                 if (language != currentLanguage) {
-                    data[currentLanguage] = ref.val();
+                    // Commented following line as it was causing language form to be cleared. Will keep here to see if it is needed elsewhere
+                    //data[currentLanguage] = ref.val();
                     this.value = JSON.stringify(data);
                 }
                 if (language in data) {

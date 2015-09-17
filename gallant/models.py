@@ -243,6 +243,13 @@ class Service(UserModel):
 
     objects = UserModelManager()
 
+    def soft_delete(self, deleted_by_parent=False):
+        with transaction.atomic():
+            for note in self.notes.all_for(self.user, 'change_note'):
+                note.soft_delete(deleted_by_parent=True)
+
+        super(Service, self).soft_delete(deleted_by_parent)
+
 
 class ClientType(gf.ChoiceEnum):
     Individual = 0
@@ -292,6 +299,19 @@ class Client(UserModel):
 
     objects = UserModelManager()
 
+    def soft_delete(self, deleted_by_parent=False):
+        with transaction.atomic():
+            for note in self.notes.all_for(self.user, 'change_note'):
+                note.soft_delete(deleted_by_parent=True)
+
+            for brief in self.brief_set.all_for(self.user, 'change_brief'):
+                brief.soft_delete(deleted_by_parent=True)
+
+            for quote in self.quote_set.all_for(self.user, 'change_quote'):
+                quote.soft_delete(deleted_by_parent=True)
+
+        super(Client, self).soft_delete(deleted_by_parent)
+
 
 class ProjectStatus(gf.ChoiceEnum):
     On_Hold = 0
@@ -316,3 +336,10 @@ class Project(UserModel):
         )
 
     objects = UserModelManager()
+
+    def soft_delete(self, deleted_by_parent=False):
+        with transaction.atomic():
+            for note in self.notes.all_for(self.user, 'change_note'):
+                note.soft_delete(deleted_by_parent=True)
+
+        super(Project, self).soft_delete(deleted_by_parent)

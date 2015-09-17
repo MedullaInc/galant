@@ -124,6 +124,14 @@ def client_detail(request, pk):
                                                        .all_for(request.user, 'view_brieftemplate'),'title': client.name })
 
 
+class ClientDelete(View):
+    def get(self, request, **kwargs):
+        client = get_one_or_404(request.user, 'change_client', g.Client, id=kwargs['pk'])
+        client.soft_delete()
+
+        return HttpResponseRedirect(reverse('clients'))
+
+
 class ServiceUpdate(View):
     def get(self, request, **kwargs):
         self.object = get_one_or_404(request.user, 'change_service', g.Service, pk=kwargs['pk'])

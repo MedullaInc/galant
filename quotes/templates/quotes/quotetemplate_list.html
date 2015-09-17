@@ -38,7 +38,7 @@
 {% block extra_body %}
     <script>
         $('.table > tbody > tr.template_row').click(function () {
-            window.location.href = "{% url 'edit_quote_template' %}" + $(this).attr('data-rel')
+            window.location.href = "{% url 'quote_template_detail' %}" + $(this).attr('data-rel')
         });
     </script>
 {% endblock %}

@@ -204,7 +204,7 @@ class BriefDetail(View):
 class BriefDelete(View):
     def get(self, request, **kwargs):
         brief = get_one_or_404(request.user, 'change_brief', b.Brief, id=kwargs['pk'])
-        brief.soft_delete(deleted_by_parent=True)
+        brief.soft_delete()
 
         return HttpResponseRedirect(reverse('briefs'))
 
