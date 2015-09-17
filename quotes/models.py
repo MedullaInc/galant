@@ -148,7 +148,7 @@ class Quote(g.UserModel):
             for service in self.services.all_for(self.user, 'change_service'):
                 service.soft_delete(deleted_by_parent=True)
 
-        super(Quote, self).soft_delete(deleted_by_parent)
+            super(Quote, self).soft_delete(deleted_by_parent)
 
 
 class QuoteTemplate(g.UserModel):
@@ -166,6 +166,7 @@ class QuoteTemplate(g.UserModel):
 
     def soft_delete(self, deleted_by_parent=False):
         with transaction.atomic():
-            self.quote.soft_delete(deleted_by_parent=True)
+            if self.quote.client_id is None:
+                self.quote.soft_delete(deleted_by_parent=True)
 
-        super(QuoteTemplate, self).soft_delete(deleted_by_parent)
+            super(QuoteTemplate, self).soft_delete(deleted_by_parent)

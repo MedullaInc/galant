@@ -53,6 +53,8 @@ class BriefList(View):
     def get(self, request, **kwargs):
         context = {'template_list': b.BriefTemplate.objects.all_for(request.user, 'view_brieftemplate')}
 
+        self.request.breadcrumbs([(_('Briefs'), reverse('briefs'))])
+
         _update_from_query(request, context)
 
         if 'client' in context:
@@ -233,6 +235,31 @@ class BriefTemplateList(View):
                                                          .all_for(request.user, 'view_brieftemplate')})
 
 
+class BriefTemplateDetail(View):
+    def get(self, request, **kwargs):
+        context = {'title': 'Brief Template Detail'}
+        brief = get_one_or_404(request.user, 'view_brieftemplate', b.BriefTemplate, id=kwargs['pk'])
+
+        answers_q = brief.brief.briefanswers_set.all_for(request.user, 'view_briefanswers')
+        if answers_q.count() > 0:
+            brief_answers = answers_q.last()
+            context.update({'answer_set': brief_answers,
+                            'answers': brief_answers.answers
+                                                    .all_for(request.user, 'view_answer')
+                                                    .order_by('question__index')})
+
+        _update_from_query(request, context)
+        context.update({'object': brief,
+                        'questions': brief.brief.questions
+                                          .all_for(request.user, 'view_question')\
+                                          .order_by('index')})
+
+        request.breadcrumbs([(_('Briefs'), reverse('briefs')), (_('Templates'), reverse('brief_templates')), (_('Template: ') + brief.brief.name, request.path_info + query_url(request))])
+        return TemplateResponse(request=request,
+                                template="briefs/brieftemplate_detail.html",
+                                context=context)
+
+
 class BriefTemplateView(View):
     def get(self, request, **kwargs):
         self.request.breadcrumbs([(_('Briefs'), reverse('briefs')),
@@ -241,6 +268,7 @@ class BriefTemplateView(View):
             self.object = get_one_or_404(request.user, 'view_brieftemplate', b.BriefTemplate, pk=kwargs['pk'])
             form = bf.BriefTemplateForm(request.user, instance=self.object.brief)
             question_forms = bf.question_forms_brief(self.object.brief)
+            self.request.breadcrumbs(_('Template: %s' % self.object.brief.name), reverse('brief_template_detail', args=[kwargs['pk']]))
 
             if not request.user.has_perm('change_brieftemplate', self.object):
                 messages.warning(request, 'Warning: you don\'t have permission to change this template. '
@@ -309,6 +337,14 @@ class BriefTemplateView(View):
         return TemplateResponse(request=self.request,
                                 template="briefs/brief_template.html",
                                 context=context)
+
+
+class BriefTemplateDelete(View):
+    def get(self, request, **kwargs):
+        brief = get_one_or_404(request.user, 'change_brieftemplate', b.BriefTemplate, id=kwargs['pk'])
+        brief.soft_delete()
+
+        return HttpResponseRedirect(reverse('brief_templates'))
 
 
 class BriefAnswer(View):

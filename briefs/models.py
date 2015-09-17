@@ -154,6 +154,13 @@ class BriefTemplate(g.UserModel):
 
     objects = UserModelManager()
 
+    def soft_delete(self, deleted_by_parent=False):
+        with transaction.atomic():
+            if self.brief.client_id is None:
+                self.brief.soft_delete(deleted_by_parent=True)
+
+            super(BriefTemplate, self).soft_delete(deleted_by_parent)
+
 
 class Answer(g.PolyUserModel):
     question = m.ForeignKey(Question)
@@ -221,4 +228,4 @@ class BriefAnswers(g.UserModel):
             for answer in self.answers.all_for(self.user, 'change_answer'):
                 answer.soft_delete(deleted_by_parent=True)
 
-        super(BriefAnswers, self).soft_delete(deleted_by_parent)
+            super(BriefAnswers, self).soft_delete(deleted_by_parent)

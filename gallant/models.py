@@ -251,7 +251,7 @@ class Service(UserModel):
             for service in self.sub_services.all_for(self.user, 'change_service'):
                 service.soft_delete(deleted_by_parent=True)
 
-        super(Service, self).soft_delete(deleted_by_parent)
+            super(Service, self).soft_delete(deleted_by_parent)
 
 
 class ClientType(gf.ChoiceEnum):
@@ -313,7 +313,7 @@ class Client(UserModel):
             for quote in self.quote_set.all_for(self.user, 'change_quote'):
                 quote.soft_delete(deleted_by_parent=True)
 
-        super(Client, self).soft_delete(deleted_by_parent)
+            super(Client, self).soft_delete(deleted_by_parent)
 
 
 class ProjectStatus(gf.ChoiceEnum):
@@ -345,4 +345,4 @@ class Project(UserModel):
             for note in self.notes.all_for(self.user, 'change_note'):
                 note.soft_delete(deleted_by_parent=True)
 
-        super(Project, self).soft_delete(deleted_by_parent)
+            super(Project, self).soft_delete(deleted_by_parent)
