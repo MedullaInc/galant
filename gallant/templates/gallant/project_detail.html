@@ -43,7 +43,7 @@
                 {% with service=section.service %}
                     <div class="row">
                         <div class="col-lg-12">
-                            <a href="{% url 'service_detail' service.id %}">
+                            <a href="{% url 'service_detail' object.id service.id %}">
                                 <h2 class="section_subtitle service_name">
                                     {{ service.name.get_text }}
                                 </h2>

@@ -135,7 +135,7 @@ class ClientDelete(View):
 class ServiceUpdate(View):
     def get(self, request, **kwargs):
         self.object = get_one_or_404(request.user, 'change_service', g.Service, pk=kwargs['pk'])
-        form = forms.ServiceForm(request.user, instance=self.object)
+        form = forms.ServiceOnlyForm(request.user, instance=self.object)
         return self.render_to_response({'object': self.object, 'form': form})
 
     def post(self, request, **kwargs):
@@ -145,7 +145,7 @@ class ServiceUpdate(View):
             # No perms currently needed to create
             self.object = None
 
-        form = forms.ServiceForm(request.user, request.POST, instance=self.object)
+        form = forms.ServiceOnlyForm(request.user, request.POST, instance=self.object)
         if form.is_valid():
             return self.form_valid(form)
         else:
@@ -153,18 +153,27 @@ class ServiceUpdate(View):
 
     def render_to_response(self, context):
         context.update({'title': 'Edit Service'})
+
+        project = get_one_or_404(self.request.user, 'view_project', g.Project, pk=self.kwargs['project_id'])
+
+        self.request.breadcrumbs([(_('Projects'), reverse('projects')),
+                                  (_('Project: %s' % project), reverse('project_detail', args=[self.kwargs['project_id']])),
+                                  (_('Service: %s' % self.object.name.get_text()),reverse('service_detail', args=[self.kwargs['project_id'], self.kwargs['pk']])),
+                                  (_('Edit'), reverse('edit_service', args=[self.kwargs['project_id'], self.kwargs['pk']]))
+                                  ])
+
         return TemplateResponse(request=self.request,
-                                template="gallant/create_form.html",
+                                template="gallant/service_form.html",
                                 context=context)
 
     def form_valid(self, form):
         obj = form.save(commit=True)
-        text = '[Updated]\n' + form.cleaned_data['notes']
+        text = '[Updated]\n'
         note = g.Note.objects.create(text=text, user=self.request.user)
         obj.notes.add(note)
         obj.save()
         messages.success(self.request, 'Service saved.')
-        return HttpResponseRedirect(reverse('service_detail', args=[obj.id]))
+        return HttpResponseRedirect(reverse('service_detail', args=[self.kwargs['project_id'], obj.id]))
 
 
 class ServiceCreate(ServiceUpdate):
@@ -173,8 +182,14 @@ class ServiceCreate(ServiceUpdate):
         return self.render_to_response({'form': form})
 
 
-def service_detail(request, pk):
-    service = get_one_or_404(request.user, 'view_service', g.Service, pk=pk)
+def service_detail(request, *args, **kwargs):
+    service = get_one_or_404(request.user, 'view_service', g.Service, pk=kwargs['pk'])
+    project = get_one_or_404(request.user, 'view_project', g.Project, pk=kwargs['project_id'])
+
+    request.breadcrumbs([(_('Projects'), reverse('projects')),
+                         (_('Project: %s' % project), reverse('project_detail', args=[kwargs['project_id']])),
+                         (_('Service: %s' % service.name.get_text()), reverse('service_detail', args=[kwargs['project_id'], kwargs['pk']]))
+                         ])
 
     if request.method == 'POST' and request.user.has_perm('change_service', service):
         form = forms.NoteForm(request.user, request.POST)
@@ -182,12 +197,14 @@ def service_detail(request, pk):
             note = g.Note.objects.create(text=form.cleaned_data['text'], user=request.user)
             service.notes.add(note)
             service.save()
-            return HttpResponseRedirect(reverse('service_detail', args=[service.id]))
+            return HttpResponseRedirect(reverse('service_detail', args=[kwargs['project_id'], service.id]))
     else:
         form = forms.NoteForm(request.user)
 
     return render(request, 'gallant/service_detail.html', {
+        'title': 'Project Service',
         'object': service,
+        'project': project,
         'form': form,
     })
 
@@ -201,12 +218,12 @@ class ProjectList(View):
                                          'object_list': g.Project.objects.all_for(request.user, 'view_project'),
                                          'quote_list': q.Quote.objects.all_for(request.user, 'view_quote')\
                                                         .filter(project__isnull=True)})
-    
+
 
 class ProjectUpdate(View):
     def get(self, request, **kwargs):
         self.object = get_one_or_404(request.user, 'change_project', g.Project, pk=kwargs['pk'])
-        form = forms.ProjectForm(request.user, instance=self.object)
+        form = forms.ProjectOnlyForm(request.user, instance=self.object)
         return self.render_to_response({'object': self.object, 'form': form})
 
     def post(self, request, **kwargs):
@@ -216,7 +233,7 @@ class ProjectUpdate(View):
             # No perms currently needed to create
             self.object = None
 
-        form = forms.ProjectForm(request.user, request.POST, instance=self.object)
+        form = forms.ProjectOnlyForm(request.user, request.POST, instance=self.object)
         if form.is_valid():
             if 'quote_id' in kwargs:
                 quote = get_one_or_404(request.user, 'view_quote', q.Quote, pk=kwargs['quote_id'])
@@ -242,7 +259,7 @@ class ProjectUpdate(View):
 
     def form_valid(self, form, quote=None):
         obj = form.save(commit=True)
-        text = '[Updated]\n' + form.cleaned_data['notes']
+        text = '[Updated]\n'
         note = g.Note.objects.create(text=text, user=self.request.user)
         obj.notes.add(note)
         if quote:
@@ -255,7 +272,7 @@ class ProjectUpdate(View):
 
 class ProjectCreate(ProjectUpdate):
     def get(self, request, **kwargs):
-        form = forms.ProjectForm(request.user)
+        form = forms.ProjectOnlyForm(request.user)
         request.breadcrumbs([(_('Projects'), reverse('projects')),
                              (_('Add'), request.path_info)])
 

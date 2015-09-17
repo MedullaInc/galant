@@ -42,14 +42,14 @@ urlpatterns = i18n_patterns(
     url(r'^client/delete/(?P<pk>[0-9]+)$', login_required(gallant.views.ClientDelete.as_view()), name='delete_client'),
     url(r'^client/(?P<pk>[0-9]+)?$', login_required(gallant.views.client_detail), name='client_detail'),
 
-    url(r'^service/add/$', login_required(gallant.views.ServiceCreate.as_view()), name='add_service'),
-    url(r'^service/edit/(?P<pk>[0-9]+)$', login_required(gallant.views.ServiceUpdate.as_view()), name='edit_service'),
-    url(r'^service/(?P<pk>[0-9]+)$', login_required(gallant.views.service_detail), name='service_detail'),
-
     url(r'^projects/$', login_required(gallant.views.ProjectList.as_view()), name='projects'),
     url(r'^project/add/quote/(?P<quote_id>[0-9]+)?$', login_required(gallant.views.ProjectCreate.as_view()), name='add_project'),
     url(r'^project/edit/(?P<pk>[0-9]+)$', login_required(gallant.views.ProjectUpdate.as_view()), name='edit_project'),
     url(r'^project/(?P<pk>[0-9]+)?$', login_required(gallant.views.project_detail), name='project_detail'),
+
+    url(r'^service/add/$', login_required(gallant.views.ServiceCreate.as_view()), name='add_service'),
+    url(r'^project/(?P<project_id>[0-9]+)/service/edit/(?P<pk>[0-9]+)$', login_required(gallant.views.ServiceUpdate.as_view()), name='edit_service'),
+    url(r'^project/(?P<project_id>[0-9]+)/service/(?P<pk>[0-9]+)$', login_required(gallant.views.service_detail), name='service_detail'),
 
     url(r'^register/(?P<pk>[0-9]+)', gallant.views.Register.as_view(), name='register'),
     url(r'^account/add/', login_required(gallant.views.AccountAdd.as_view()), name='add_account'),
