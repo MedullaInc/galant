@@ -5,6 +5,14 @@
     {% trans "Project" %}
 {% endblock %}
 
+{% block sidebar %}
+    <a href="{% url 'add_service' object.id %}">
+        <button type="button" class="btn btn-default sidebar">
+            {% trans "Add New Service" %}
+        </button>
+    </a>
+{% endblock %}
+
 {% block center_content %}
     <div class="row">
         <div class="col-lg-11 col-md-11 col-sm-10 col-xs-10">

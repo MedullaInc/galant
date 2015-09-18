@@ -47,7 +47,7 @@ urlpatterns = i18n_patterns(
     url(r'^project/edit/(?P<pk>[0-9]+)$', login_required(gallant.views.ProjectUpdate.as_view()), name='edit_project'),
     url(r'^project/(?P<pk>[0-9]+)?$', login_required(gallant.views.project_detail), name='project_detail'),
 
-    url(r'^service/add/$', login_required(gallant.views.ServiceCreate.as_view()), name='add_service'),
+    url(r'^project/(?P<project_id>[0-9]+)/service/add/$', login_required(gallant.views.ServiceCreate.as_view()), name='add_service'),
     url(r'^project/(?P<project_id>[0-9]+)/service/edit/(?P<pk>[0-9]+)$', login_required(gallant.views.ServiceUpdate.as_view()), name='edit_service'),
     url(r'^project/(?P<project_id>[0-9]+)/service/(?P<pk>[0-9]+)$', login_required(gallant.views.service_detail), name='service_detail'),
 

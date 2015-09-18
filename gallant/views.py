@@ -172,14 +172,30 @@ class ServiceUpdate(View):
         note = g.Note.objects.create(text=text, user=self.request.user)
         obj.notes.add(note)
         obj.save()
+
         messages.success(self.request, 'Service saved.')
         return HttpResponseRedirect(reverse('service_detail', args=[self.kwargs['project_id'], obj.id]))
 
 
 class ServiceCreate(ServiceUpdate):
-    def get(self, request):
-        form = forms.ServiceForm(request.user)
+    def get(self, request, *args, **kwargs):
+        form = forms.ServiceOnlyForm(request.user)
         return self.render_to_response({'form': form})
+
+    def render_to_response(self, context):
+        context.update({'title': 'Edit Service'})
+
+        project = get_one_or_404(self.request.user, 'view_project', g.Project, pk=self.kwargs['project_id'])
+
+        self.request.breadcrumbs([(_('Projects'), reverse('projects')),
+                                  (_('Project: %s' % project),
+                                   reverse('project_detail', args=[self.kwargs['project_id']])),
+                                  (_('Add Service'), reverse('add_service', args=[self.kwargs['project_id']]))
+                                  ])
+
+        return TemplateResponse(request=self.request,
+                                template="gallant/service_form.html",
+                                context=context)
 
 
 def service_detail(request, *args, **kwargs):
