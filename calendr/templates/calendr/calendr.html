@@ -1,10 +1,13 @@
 {% extends "base_sidebar_enclosed.html" %}
 {% load i18n %}
 
-{% block section_title %}
-    {% trans "Calendar" %}
+{% block scripts %}
+    {{ block.super }}
+    <script src="{% static "js/angular.min.js" %}"></script>
+    <script src="{% static "djangular/js/django-angular.min.js" %}"></script>
+    <script src="{% static "calendr/js/calendr.js" %}"></script>
 {% endblock %}
 
-{% block center_content %}
-
+{% block section_title %}
+    {% trans "Calendar" %}
 {% endblock %}
