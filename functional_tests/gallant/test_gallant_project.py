@@ -15,7 +15,6 @@ class GallantProjectTest(browser.SignedInTest):
         b.get(self.live_server_url + reverse('add_project', args=[q.id]))
 
         b.find_element_by_name('name').send_keys('Branding')
-        b.find_element_by_xpath('//textarea[@name="notes"]').send_keys('asdf')
 
         b.find_element_by_xpath('//button[@type="submit"]').click()
 
@@ -31,7 +30,6 @@ class GallantProjectTest(browser.SignedInTest):
         b.get(self.live_server_url + reverse('edit_project', args=[p.id]))
 
         b.find_element_by_name('name').send_keys('PPPPPPP')
-        b.find_element_by_xpath('//textarea[@name="notes"]').send_keys(';;;;;;;;;')
 
         b.find_element_by_xpath('//button[@type="submit"]').click()
 
