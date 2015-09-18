@@ -54,11 +54,18 @@ class SignedOutTest(LiveServerTestCase):
                     or view_name in ['home', 'brief_answer', 'signup', 'contact', 'register', 'feedback']:
                 continue
 
-            # add singe <pk>-requiring views here:
-            if view_name in ['edit_client', 'client_detail', 'edit_service', 'service_detail', 'edit_quote',
+            # add single <pk>-requiring views here:
+            if view_name in ['edit_client', 'client_detail', 'add_service', 'edit_quote',
                              'quote_detail', 'edit_quote_template', 'client_briefs', 'brief_list', 'edit_brief',
-                             'brief_detail', 'edit_project', 'project_detail', 'add_project']:
+                             'brief_detail', 'edit_project', 'project_detail', 'add_project', 'delete_client',
+                             'delete_quote', 'delete_brief_template', 'delete_brief', 'edit_brief_template',
+                             'delete_quote_template']:
                 url = self.live_server_url + reverse(view_name, args=[0])
+
+            # add double <pk>-requiring views here:
+            elif view_name in ['edit_service', 'service_detail']:
+                url = self.live_server_url + reverse(view_name, args=[0,0])
+
             else:
                 url = self.live_server_url + reverse(view_name)
 
