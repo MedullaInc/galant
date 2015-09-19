@@ -90,7 +90,8 @@ class QuoteTemplateTest(test.TestCase):
 
         # Create Quote with no Client
         quote_no_client = autofixture.create_one(q.Quote, generate_fk=True,
-                                                 field_values={'sections': [], 'language': 'en', 'user': user})
+                                                 field_values={'sections': [], 'language': 'en', 'user': user,
+                                                               'client': None})
         i = q.TextSection.objects.create(user=quote_no_client.user, name='intro', index=0)
         m = q.TextSection.objects.create(user=quote_no_client.user, name='margin', index=1)
         quote_no_client.sections.add(i)
