@@ -57,6 +57,7 @@ INSTALLED_APPS = (
     'gallant',
     'briefs',
     'quotes',
+    'calendr',
 )
 
 MIDDLEWARE_CLASSES = (
