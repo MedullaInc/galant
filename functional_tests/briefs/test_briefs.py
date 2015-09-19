@@ -167,3 +167,58 @@ class BriefsSignedInTest(browser.SignedInTest):
         self.assertTrue(u'Brief link sent to %s.' % brief.client.email in success_message.text)
         brief.refresh_from_db()
         self.assertEqual(brief.status, '2')
+
+    def test_soft_delete_brief(self):
+        b = browser.instance()
+
+        # create brief
+        client = autofixture.create_one('gallant.Client', generate_fk=True,
+                                   field_values={'user': self.user})
+        brief = autofixture.create_one('briefs.Brief', generate_fk=True,
+                                   field_values={'user': self.user, 'client': client})
+        brief.save()
+
+        # access delete view
+        b.get(self.live_server_url + reverse('delete_brief', args=[brief.id]))
+
+        # check that brief access returns 404
+        response = self.client.get(self.live_server_url + reverse('brief_detail', args=[brief.id]) + '?client_id=%d' % client.id)
+        self.assertEqual(response.status_code, 404)
+
+    def test_soft_delete_brief_template(self):
+        b = browser.instance()
+
+        # create brief template
+        user = autofixture.create_one(g.GallantUser)
+        client = autofixture.create_one(g.Client, generate_fk=True, field_values={'user': user})
+
+        # Create Brief with Client & without Client
+        brief = autofixture.create_one(b.Brief, generate_fk=True, field_values={'user': user, 'client': client})
+        brief_no_client = autofixture.create_one(b.Brief, generate_fk=True, field_values={'user': user, 'client': None})
+
+        # Create Questions
+        question = b.TextQuestion.objects.create(user=brief.user, question='What?')
+        multiple_choice_question = b.MultipleChoiceQuestion.objects.create(user=brief.user, question='Huh?',
+                                                                           choices=['a', 'b', 'c'], index=1)
+
+        question_b = b.TextQuestion.objects.create(user=brief.user, question='What?')
+        multiple_choice_question_b = b.MultipleChoiceQuestion.objects.create(user=brief.user, question='Huh?',
+                                                                             choices=['a', 'b', 'c'], index=1)
+
+        # Add questions to Brief
+        brief.questions.add(question)
+        brief.questions.add(multiple_choice_question)
+
+        brief_no_client.questions.add(question_b)
+        brief_no_client.questions.add(multiple_choice_question_b)
+
+        # Create Template
+        template = autofixture.create_one(b.BriefTemplate, generate_fk=True,
+                                          field_values={'user': user, 'brief': brief})
+
+        # access delete view
+        b.get(self.live_server_url + reverse('delete_brief_template', args=[template.id]))
+
+        # check that brief access returns 404
+        response = self.client.get(self.live_server_url + reverse('brief_template_detail', args=[brief.id]))
+        self.assertEqual(response.status_code, 404)
