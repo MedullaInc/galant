@@ -25,15 +25,111 @@ class QuoteTest(test.TransactionTestCase):
 
         self.assertEqual(len(base_quote.versions.all_for(user, 'view_quote')), 9)
 
+    def test_quote_soft_delete(self):
+        # Create Quote
+        user = autofixture.create_one(g.GallantUser)
+        client = autofixture.create_one(g.Client, generate_fk=True, field_values={'user': user})
+        quote = autofixture.create_one(q.Quote, generate_fk=True,
+                                       field_values={'sections': [], 'language': 'en', 'user': user, 'client': client,
+                                                     'services': []})
+
+        # Add sections to Quote
+        intro = q.TextSection.objects.create(user=user, name='intro', index=0)
+        margin = q.TextSection.objects.create(user=user, name='margin', index=1)
+        quote.sections.add(intro)
+        quote.sections.add(margin)
+
+        # Add services to Quote
+        fixture = AutoFixture(g.Service, generate_fk=True, field_values={'quote': quote})
+        fixture.create(2)
+
+        # Soft Delete Quote
+        quote.soft_delete()
+
+        # Validate Quote deleted field is 1 and deleted_by_parent is 0
+        self.assertEqual(quote.deleted, 1)
+        self.assertEqual(quote.deleted_by_parent, 0)
+
+        # Validate Quote Sections deleted & deleted_by_parent fields are 1
+        for section in quote.sections.all_for(user, 'view_section'):
+            self.assertEqual(section.deleted, 1)
+            self.assertEqual(section.deleted_by_parent, 1)
+
+        # Validate Quote Services deleted & deleted_by_parent fields are 1
+        for service in quote.services.all_for(user, 'view_service'):
+            self.assertEqual(service.deleted, 1)
+            self.assertEqual(service.deleted_by_parent, 1)
+
+
+class QuoteTemplateTest(test.TestCase):
+    def test_save_load(self):
+        user = autofixture.create_one(g.GallantUser)
+        client = autofixture.create_one(g.Client, generate_fk=True, field_values={'user': user})
+
+        quote = autofixture.create_one(q.Quote, generate_fk=True,
+                                       field_values={'sections': [], 'language': 'en', 'user': user, 'client': client})
+        i = q.TextSection.objects.create(user=quote.user, name='intro', index=0)
+        m = q.TextSection.objects.create(user=quote.user, name='margin', index=1)
+        quote.sections.add(i)
+        quote.sections.add(m)
+
+        new_quote = q.Quote.objects.get_for(quote.user, 'view_quote', id=quote.id)
+
+        self.assertEqual(quote.id, new_quote.id)
+
+    def test_quote_template_soft_delete(self):
+        # Create Quote
+        user = autofixture.create_one(g.GallantUser)
+        client = autofixture.create_one(g.Client, generate_fk=True, field_values={'user': user})
+        quote = autofixture.create_one(q.Quote, generate_fk=True,
+                                       field_values={'sections': [], 'language': 'en', 'user': user, 'client': client})
+        i = q.TextSection.objects.create(user=quote.user, name='intro', index=0)
+        m = q.TextSection.objects.create(user=quote.user, name='margin', index=1)
+        quote.sections.add(i)
+        quote.sections.add(m)
+
+        # Create Quote with no Client
+        quote_no_client = autofixture.create_one(q.Quote, generate_fk=True,
+                                                 field_values={'sections': [], 'language': 'en', 'user': user})
+        i = q.TextSection.objects.create(user=quote_no_client.user, name='intro', index=0)
+        m = q.TextSection.objects.create(user=quote_no_client.user, name='margin', index=1)
+        quote_no_client.sections.add(i)
+        quote_no_client.sections.add(m)
+
+        # Create Quote Templates
+        quote_template = autofixture.create_one(q.QuoteTemplate, generate_fk=True,
+                                                field_values={'quote': quote, 'user': user})
+        quote_template_b = autofixture.create_one(q.QuoteTemplate, generate_fk=True,
+                                                  field_values={'quote': quote_no_client, 'user': user})
+
+        # Soft Delete Quote Templates
+        quote_template.soft_delete()
+        quote_template_b.soft_delete()
+
+        # Validate Quote Templates deleted field is 1 and deleted_by_parent is 0
+        self.assertEqual(quote_template.deleted, 1)
+        self.assertEqual(quote_template.deleted_by_parent, 0)
+        self.assertEqual(quote_template_b.deleted, 1)
+        self.assertEqual(quote_template_b.deleted_by_parent, 0)
+
+        # Validate Quote with Client was not deleted
+        self.assertEqual(quote_template.quote.deleted, 0)
+        self.assertEqual(quote_template.quote.deleted_by_parent, 0)
+
+        # Validate Quote without Client was deleted
+        self.assertEqual(quote_template_b.quote.deleted, 1)
+        self.assertEqual(quote_template_b.quote.deleted_by_parent, 1)
+
 
 class QuoteFormTest(test.TestCase):
     def setUp(self):
         client = AutoFixture(g.Client, generate_fk=True).create(1)
         self.request = type('obj', (object,), {
-            'POST': {'status': '1', 'name': 'asdfQuote test edit', 'language': 'en', '-section-0-text': 'test intro text',
-                    '-section-0-title': 'modified intro title', '-section-0-name': 'intro', '-section-0-index': '0',
-                    '-section-1-name': 'margin', '-section-1-title': 'test margin title',
-                    '-section-1-text': 'test margin text', '-section-1-index': '1', 'client': client[0].id},
+            'POST': {'status': '1', 'name': 'asdfQuote test edit', 'language': 'en',
+                     '-section-0-text': 'test intro text',
+                     '-section-0-title': 'modified intro title', '-section-0-name': 'intro', '-section-0-index': '0',
+                     '-section-1-name': 'margin', '-section-1-title': 'test margin title',
+                     '-section-1-text': 'test margin text', '-section-1-index': '1', 'client': client[0].id},
             'user': client[0].user,
         })
 
