@@ -222,10 +222,3 @@ class BriefAnswers(g.UserModel):
         )
 
     objects = UserModelManager()
-
-    def soft_delete(self, deleted_by_parent=False):
-        with transaction.atomic():
-            for answer in self.answers.all_for(self.user, 'change_answer'):
-                answer.soft_delete(deleted_by_parent=True)
-
-            super(BriefAnswers, self).soft_delete(deleted_by_parent)
