@@ -81,6 +81,14 @@ class QuotesSignedInTest(browser.SignedInTest):
         intro = b.find_element_by_xpath('//div[@id="intro"]//h2')
         self.assertEqual(intro.text, 'modified intro title')
 
+    def test_delete_quote(self):
+        b = browser.instance()
+        q = get_blank_quote_autofixture(self.user)
+        b.get(self.live_server_url + reverse('delete_quote', args=[q.id]))
+
+        response = self.client.get(self.live_server_url + reverse('quote_detail', args=[q.id]))
+        self.assertEqual(response.status_code, 404)
+
     def test_add_sections(self):
         b = browser.instance()
         q = get_blank_quote_autofixture(self.user)

@@ -48,6 +48,17 @@ class QuoteTemplatesTest(browser.SignedInTest):
         intro = b.find_element_by_id('id_-section-0-title')
         self.assertEqual(intro.get_attribute('value'), 'modified intro title')
 
+    def test_delete_quote_template(self):
+        b = browser.instance()
+        q = get_blank_quote_autofixture(self.user)
+        qt = autofixture.create_one('quotes.QuoteTemplate', generate_fk=False,
+                                    field_values={'quote': q, 'user': self.user})
+
+        b.get(self.live_server_url + reverse('delete_quote_template', args=[qt.id]))
+
+        response = self.client.get(self.live_server_url + reverse('quote_template_detail', args=[qt.id]))
+        self.assertEqual(response.status_code, 404)
+
     def test_edit_quote_lang_dropdown(self):
         b = browser.instance()
         q = get_blank_quote_autofixture(self.user)
