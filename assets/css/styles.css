@@ -2412,6 +2412,15 @@ span.input-group-addon {
     border-radius: 0px;
 }
 
+ul {
+    padding-left: 0px;
+}
+
+ul li {
+    list-style: none;
+    margin-left: 0px;
+}
+
 /* End Forms */
 
 /* Notices */

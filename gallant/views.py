@@ -247,33 +247,32 @@ class ProjectUpdate(View):
         return self.render_to_response({'object': self.object, 'form': form})
 
     def post(self, request, **kwargs):
+        quotes_to_link = []
+        quotes_to_unlink = []
+
         if 'pk' in kwargs:
             self.object = get_one_or_404(request.user, 'change_project', g.Project, pk=kwargs['pk'])
+
+            # Quotes to link to project
+            for quote in request.POST.getlist('available_quotes', None):
+                quotes_to_link.append(int(quote))
+
+            # Quotes to unlink to project
+            for quote in self.object.quote_set.all_for(request.user, 'view_quote'):
+                if request.POST.getlist('linked_quotes', None):
+                    if "%s" % quote.id not in request.POST.getlist('linked_quotes'):
+                        quotes_to_unlink.append(quote)
+                else:
+                    quotes_to_unlink.append(quote)
+
         else:
             # No perms currently needed to create
             self.object = None
 
-        # Quotes to link to project
-        quotes_to_link = []
-        for quote in request.POST.get('available_quotes', None):
-            quotes_to_link.append(quote)
-
-        # Quotes to unlink to project
-        quotes_to_unlink = []
-        for quote in self.object.quote_set.all_for(request.user, 'view_quote'):
-            if 'linked_quotes' in request.POST:
-                if "%s" % quote.id not in request.POST['linked_quotes']:
-                    quotes_to_unlink.append(quote)
-            else:
-                quotes_to_unlink.append(quote)
-
         form = forms.ProjectOnlyForm(request.user, request.POST, instance=self.object)
+
         if form.is_valid():
-            if 'quote_id' in kwargs:
-                quote = get_one_or_404(request.user, 'view_quote', q.Quote, pk=kwargs['quote_id'])
-                return self.form_valid(form, quote)
-            else:
-                return self.form_valid(form)
+            return self.form_valid(form, quotes_to_link, quotes_to_unlink)
         else:
             return self.render_to_response({'object': self.object, 'form': form})
 
@@ -291,15 +290,38 @@ class ProjectUpdate(View):
                                 template="gallant/create_form.html",
                                 context=context)
 
-    def form_valid(self, form, quote=None):
+    def form_valid(self, form, quotes_to_link, quotes_to_unlink):
         obj = form.save(commit=True)
         text = '[Updated]\n'
         note = g.Note.objects.create(text=text, user=self.request.user)
         obj.notes.add(note)
-        if quote:
+
+        # Link new quotes
+        for quote_id in quotes_to_link:
+            quote = q.Quote.objects.get_for(self.request.user, 'change_quote', id=quote_id)
             quote.projects.add(obj)
             quote.save()
+
+            text = '[Linked Quote: %s ]\n' % quote
+            note = g.Note.objects.create(text=text, user=self.request.user)
+            obj.notes.add(note)
+
+        # Unlink actual quotes
+        for quote in quotes_to_unlink:
+            quote.projects.remove(obj)
+
+            text = '[Unlinked Quote: %s]\n' % quote
+            note = g.Note.objects.create(text=text, user=self.request.user)
+            obj.notes.add(note)
+
+        # If its a new project
+        if len(quotes_to_link) is 0 and len(quotes_to_link) is 0:
+            quote = q.Quote.objects.get_for(self.request.user, 'change_quote', id=self.kwargs['quote_id'])
+            quote.projects.add(obj)
+            quote.save()
+
         obj.save()
+
         messages.success(self.request, 'Project saved.')
         return HttpResponseRedirect(reverse('project_detail', args=[obj.id]))
 

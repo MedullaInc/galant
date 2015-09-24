@@ -95,7 +95,7 @@ class ProjectOnlyForm(UserModelForm):
     def __init__(self, *args, **kwargs):
         super(ProjectOnlyForm, self).__init__(*args, **kwargs)
 
-        if self.instance:
+        if self.instance.id is not None:
             quote_set_a = self.instance.quote_set.all_for(self.user, 'view_quote')
 
             quote_set_b = q.Quote.objects.all_for(
@@ -106,17 +106,13 @@ class ProjectOnlyForm(UserModelForm):
                                                             queryset=quote_set_a)
 
             available_quotes = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple({'checked': False}),
-                                                            queryset=quote_set_b)
+                                                            queryset=quote_set_b, required=False)
 
-            self.fields['linked_quotes'] = linked_quotes
-            self.fields['available_quotes'] = available_quotes
-        else:
-            quotes_set = q.Quote.objects.all_for(self.user, 'view_quote').annotate(projects_count=Count('projects')).filter(
-                projects_count=0, status=5)
+            if len(linked_quotes.queryset) > 0:
+                self.fields['linked_quotes'] = linked_quotes
 
-            self.fields['quotes'] = forms.ModelMultipleChoiceField(
-                widget=forms.CheckboxSelectMultiple({'checked': True}),
-                queryset=quotes_set)
+            if len(available_quotes.queryset) > 0:
+                self.fields['available_quotes'] = available_quotes
 
 
 class LanguageForm(forms.Form):
