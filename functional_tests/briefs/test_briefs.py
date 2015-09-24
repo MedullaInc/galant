@@ -2,6 +2,7 @@
 from django.core.urlresolvers import reverse
 from functional_tests import browser
 from briefs import models as bm
+from gallant import models as g
 import autofixture
 
 
@@ -167,3 +168,41 @@ class BriefsSignedInTest(browser.SignedInTest):
         self.assertTrue(u'Brief link sent to %s.' % brief.client.email in success_message.text)
         brief.refresh_from_db()
         self.assertEqual(brief.status, '2')
+
+    def test_soft_delete_brief(self):
+        b = browser.instance()
+
+        # create brief
+        client = autofixture.create_one('gallant.Client', generate_fk=True,
+                                   field_values={'user': self.user})
+        brief = autofixture.create_one('briefs.Brief', generate_fk=True,
+                                   field_values={'user': self.user, 'client': client})
+        brief.save()
+
+        # access delete view
+        b.get(self.live_server_url + reverse('delete_brief', args=[brief.id]))
+
+        # check that brief access returns 404
+        response = self.client.get(self.live_server_url + reverse('brief_detail', args=[brief.id]) + '?client_id=%d' % client.id)
+        self.assertEqual(response.status_code, 404)
+
+    def test_soft_delete_brief_template(self):
+        b = browser.instance()
+
+        # create brief
+        client = autofixture.create_one('gallant.Client', generate_fk=True,
+                                        field_values={'user': self.user})
+        brief = autofixture.create_one('briefs.Brief', generate_fk=True,
+                                       field_values={'user': self.user, 'client': client})
+        brief.save()
+
+        # Create Template
+        template = autofixture.create_one(bm.BriefTemplate, generate_fk=True,
+                                          field_values={'user': self.user, 'brief': brief})
+
+        # access delete view
+        b.get(self.live_server_url + reverse('delete_brief_template', args=[template.id]))
+
+        # check that brief access returns 404
+        response = self.client.get(self.live_server_url + reverse('brief_template_detail', args=[template.id]))
+        self.assertEqual(response.status_code, 404)

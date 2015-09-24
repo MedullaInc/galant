@@ -2,6 +2,7 @@ from uuid import uuid4
 from gallant import models as g
 from gallant import fields as gf
 from django.db import models as m
+from django.db import transaction
 from django.conf import settings
 from gallant import utils
 from gallant.models import PolyUserModelManager, UserModelManager
@@ -139,6 +140,16 @@ class Quote(g.UserModel):
 
     objects = UserModelManager()
 
+    def soft_delete(self, deleted_by_parent=False):
+        with transaction.atomic():
+            for section in self.sections.all_for(self.user, 'change_section'):
+                section.soft_delete(deleted_by_parent=True)
+
+            for service in self.services.all_for(self.user, 'change_service'):
+                service.soft_delete(deleted_by_parent=True)
+
+            super(Quote, self).soft_delete(deleted_by_parent)
+
 
 class QuoteTemplate(g.UserModel):
     quote = m.ForeignKey(Quote)
@@ -152,3 +163,10 @@ class QuoteTemplate(g.UserModel):
         )
 
     objects = UserModelManager()
+
+    def soft_delete(self, deleted_by_parent=False):
+        with transaction.atomic():
+            if self.quote.client_id is None:
+                self.quote.soft_delete(deleted_by_parent=True)
+
+            super(QuoteTemplate, self).soft_delete(deleted_by_parent)

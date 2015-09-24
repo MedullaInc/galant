@@ -52,6 +52,12 @@ class ServiceForm(UserModelForm):
             widget=forms.Textarea(attrs={'rows': 5}), required=False)
 
 
+class ServiceOnlyForm(UserModelForm):
+    class Meta:
+        model = g.Service
+        fields = ['name', 'description', 'cost', 'quantity', 'type']
+
+
 class NoteForm(UserModelNgForm):
     class Meta:
         model = g.Note
@@ -75,6 +81,13 @@ class ProjectForm(UserModelForm):
         super(ProjectForm, self).__init__(*args, **kwargs)
         self.fields['notes'] = forms.CharField(
             widget=forms.Textarea(attrs={'rows': 5}), required=False)
+
+
+class ProjectOnlyForm(UserModelForm):
+
+    class Meta:
+        model = g.Project
+        fields = ['name', 'status']
 
 
 class LanguageForm(forms.Form):

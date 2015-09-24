@@ -4,6 +4,7 @@ from custom_user.models import AbstractEmailUser, EmailUserManager
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
 from django.db import models as m
+from django.db import transaction
 from django.conf import settings
 from djmoney.models.fields import MoneyField
 from djmoney.forms.widgets import CURRENCY_CHOICES
@@ -11,7 +12,7 @@ from gallant import fields as gf
 from guardian.utils import get_user_obj_perms_model, get_group_obj_perms_model
 from django_countries.fields import CountryField
 from polymorphic import PolymorphicModel
-from guardian.shortcuts import assign_perm, get_objects_for_user, get_perms_for_model, get_groups_with_perms
+from guardian.shortcuts import assign_perm, get_objects_for_user, get_perms_for_model
 from polymorphic.manager import PolymorphicManager
 from django.contrib.contenttypes.models import ContentType
 from polymorphic.query import PolymorphicQuerySet
@@ -58,6 +59,9 @@ class GallantUser(AbstractEmailUser):
 class UserModel(m.Model):
     user = m.ForeignKey(GallantUser)
 
+    deleted = m.BooleanField(default=False)
+    deleted_by_parent = m.BooleanField(default=False)
+
     class Meta:
         abstract = True
 
@@ -66,9 +70,19 @@ class UserModel(m.Model):
         for perm in get_perms_for_model(self):
             assign_perm(perm.codename, self.user, self)
 
+    def soft_delete(self, deleted_by_parent=False):
+        if deleted_by_parent is True:
+            self.deleted_by_parent = deleted_by_parent
+
+        self.deleted = True
+        self.save()
+
 
 class PolyUserModel(PolymorphicModel):
     user = m.ForeignKey(GallantUser)
+
+    deleted = m.BooleanField(default=False)
+    deleted_by_parent = m.BooleanField(default=False)
 
     class Meta:
         abstract = True
@@ -77,6 +91,13 @@ class PolyUserModel(PolymorphicModel):
         super(PolyUserModel, self).save(*args, **kwargs)
         for perm in get_perms_for_model(self):
             assign_perm(perm.codename, self.user, self)
+
+    def soft_delete(self, deleted_by_parent=False):
+        if deleted_by_parent is True:
+            self.deleted_by_parent = deleted_by_parent
+
+        self.deleted = True
+        self.save()
 
 
 class UserManagerMethodsMixin(object):
@@ -96,12 +117,15 @@ class UserManagerMethodsMixin(object):
             raise RuntimeError('Attempted to use get() via UserModelManager. Use get_for() instead.')
         return super(UserManagerMethodsMixin, self).get(*args, **kwargs)
 
-    def all_for(self, user, perm):
-        return get_objects_for_user(user, perm, self, accept_global_perms=False)
+    def all_for(self, user, perm, show_deleted=False):
+        if show_deleted is True:
+            return get_objects_for_user(user, perm, self, accept_global_perms=False).filter(deleted=True)
+        else:
+            return get_objects_for_user(user, perm, self, accept_global_perms=False).filter(deleted=False)
 
     def get_for(self, user, perm, *args, **kwargs):
         obj = super(UserManagerMethodsMixin, self).get(*args, **kwargs)
-        if user.has_perm(perm, obj):
+        if user.has_perm(perm, obj) and obj.deleted is False:
             return obj
         else:
             return None
@@ -219,6 +243,16 @@ class Service(UserModel):
 
     objects = UserModelManager()
 
+    def soft_delete(self, deleted_by_parent=False):
+        with transaction.atomic():
+            for note in self.notes.all_for(self.user, 'change_note'):
+                note.soft_delete(deleted_by_parent=True)
+
+            for service in self.sub_services.all_for(self.user, 'change_service'):
+                service.soft_delete(deleted_by_parent=True)
+
+            super(Service, self).soft_delete(deleted_by_parent)
+
 
 class ClientType(gf.ChoiceEnum):
     Individual = 0
@@ -268,6 +302,19 @@ class Client(UserModel):
 
     objects = UserModelManager()
 
+    def soft_delete(self, deleted_by_parent=False):
+        with transaction.atomic():
+            for note in self.notes.all_for(self.user, 'change_note'):
+                note.soft_delete(deleted_by_parent=True)
+
+            for brief in self.brief_set.all_for(self.user, 'change_brief'):
+                brief.soft_delete(deleted_by_parent=True)
+
+            for quote in self.quote_set.all_for(self.user, 'change_quote'):
+                quote.soft_delete(deleted_by_parent=True)
+
+            super(Client, self).soft_delete(deleted_by_parent)
+
 
 class ProjectStatus(gf.ChoiceEnum):
     On_Hold = 0
@@ -292,3 +339,10 @@ class Project(UserModel):
         )
 
     objects = UserModelManager()
+
+    def soft_delete(self, deleted_by_parent=False):
+        with transaction.atomic():
+            for note in self.notes.all_for(self.user, 'change_note'):
+                note.soft_delete(deleted_by_parent=True)
+
+            super(Project, self).soft_delete(deleted_by_parent)

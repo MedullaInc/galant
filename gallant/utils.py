@@ -13,7 +13,7 @@ SITE_CACHE = {}
 
 def get_one_or_404(user, perm, klass, *args, **kwargs):
     obj = super(m.Manager, klass.objects).get(*args, **kwargs)
-    if user.has_perm(perm, obj):
+    if user.has_perm(perm, obj) and (not hasattr(obj, 'deleted') or obj.deleted is False):
         return obj
 
     raise Http404("Object not found.")

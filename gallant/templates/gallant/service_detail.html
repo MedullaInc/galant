@@ -1,22 +1,47 @@
-{% extends "base_body.html" %}
+{% extends "base_sidebar_enclosed.html" %}
 {% load bootstrap i18n gallant_tags %}
 
-{% block content %}
-    <h3>{% trans "Service" %}</h3>
-    <p><b>{% trans "Name" %}:</b> {{ object.name.get_text }}</p>
-    <p><b>{% trans "Type" %}:</b> {{ object.get_type_display }}</p>
-    <p><b>{% trans "Description" %}:</b> {{ object.description.get_text }}</p>
-    <p><b>{% trans "Cost" %}:</b> {{ object.cost }}</p>
-    <p><b>{% trans "Quantity" %}:</b> {{ object.quantity }}</p>
-    <br>
+{% block section_title %}
+    {% trans "Project Service" %}
+{% endblock %}
+
+{% block sidebar %}
+{% endblock %}
+
+{% block center_content %}
+
+    <div class="row">
+        <div class="col-lg-11 col-md-11 col-sm-10 col-xs-10">
+            <h2 class="section_title">{{ object.name.get_text }}</h2>
+        </div>
+        <div class="col-lg-1 col-md-1 col-sm-2 col-xs-2 action_box">
+            <a href="{% url 'edit_service' project.id object.id %}" class="edit_button" title="{% trans "Edit" %}">
+                <button id="section_edit" type="button" class="btn btn-default edit_button" aria-label="Edit">
+                    <span class="glyphicon glyphicon-edit"/>
+                </button>
+            </a>
+        </div>
+    </div>
+
+    <div class="row object_data">
+        <div class="col-lg-12">
+            <p><span class="detail_title">{% trans "Type" %}:</span> {{ object.get_type_display }}</p>
+            <p><span class="detail_title">{% trans "Description" %}:</span> {{ object.description.get_text }}</p>
+            <p><span class="detail_title">{% trans "Cost" %}:</span> {{ object.cost }}</p>
+            <p><span class="detail_title">{% trans "Quantity" %}:</span> {{ object.quantity }}</p>
+            <br/>
+        </div>
+    </div>
 
     <hr>
     <div id="notes">
-    <p><b>{% trans "Notes" %}:</b></p>
-    {% objects_for object.notes 'view_note' as notes %}
-    {% for item in notes %}
-        {% include "gallant/note.html" %}
-    {% endfor %}
+        <h2 class="section_title">
+            {% trans "Project Service Notes" %}
+        </h2>
+        {% objects_for object.notes 'view_note' as notes %}
+        {% for item in notes %}
+            {% include "gallant/note.html" %}
+        {% endfor %}
         <div>
             {% include "gallant/add_note.html" %}
         </div>

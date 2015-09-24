@@ -8,8 +8,11 @@
 {% block post_form %}
     <ul id="tabs" class="nav nav-tabs" style="margin-bottom: -1px; border-bottom: 0">
         {% for language_code, language in languages %}
-        <li id="{{ language_code }}_tab" {% if forloop.first %}class="active"{% endif %} data="{{ language_code }}"><a>
-            {{ language }}</a></li>
+        <li id="{{ language_code }}_tab" data="{{ language_code }}">
+            <a>
+                {{ language }}
+            </a>
+        </li>
         {% endfor %}
         <li id="add_translation">
             <a id="add_translation_button" class="btn">Add Translation</a>
@@ -67,6 +70,16 @@
 {% block extra_body %}
     {{ block.super }}
     <script>
+
+        $(document).ready(function () {
+            {% for language_code, language in languages %}
+                if ('{{ language_code }}' == currentLanguage) {
+                    $('#{{ language_code }}_tab').addClass('active');
+                    $('#tabs').prepend($('#{{ language_code }}_tab'));
+                }
+            {% endfor %}
+        });
+
         $('#tabs').on("click", "li", function (e) {
             if (this.id != 'add_translation') {
                 var lang = this.getAttribute('data');
