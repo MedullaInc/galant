@@ -44,8 +44,7 @@
 
     <hr>
 
-    {% objects_for object.quote.services 'view_section' as service_sections %}
-    {% for section in service_sections %}
+    {% for section in services %}
         <div id="{{ section.name }}">
             <div>
                 {% with service=section.service %}

@@ -97,11 +97,10 @@ class Quote(g.UserModel):
     status = m.CharField(max_length=2, choices=QuoteStatus.choices(), default=QuoteStatus.Draft.value)
     modified = m.DateTimeField(auto_now=True)
 
-    # token = m.CharField(max_length=64, unique=True, null=False, help_text='For emailing URL')
     token = m.UUIDField(default=uuid4, editable=False, unique=True)
 
     parent = m.ForeignKey('self', null=True, blank=True, related_name='versions')
-    project = m.OneToOneField(g.Project, null=True)
+    projects = m.ManyToManyField(g.Project, blank=True)
 
     def get_languages(self):
         language_set = set()

@@ -2479,7 +2479,7 @@ button.btn-default.edit_button {
     -moz-border-radius: 0px;
     border-radius: 0px;
     border: 1px solid #666666;
-    margin-top: 0px;
+    margin-top: 10px;
     padding: 10px 15px 10px 15px;
 }
 
@@ -2496,8 +2496,8 @@ button.btn-default.delete_button {
     -moz-border-radius: 0px;
     border-radius: 0px;
     border: 1px solid #666666;
-    margin-top: 0px;
     padding: 10px 15px 10px 10px;
+    margin-top: 10px;
 }
 
 button.delete_button span.glyphicon {
