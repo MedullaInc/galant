@@ -85,6 +85,21 @@ class GallantClientTest(browser.SignedInTest):
 
         self.assertTrue(test_string in b.find_element_by_id('notes').text)
 
+    def test_client_soft_delete(self):
+        b = browser.instance()
+
+        # Create Client
+        c = autofixture.create_one('gallant.Client', generate_fk=True,
+                                   field_values={'user': self.user})
+        c.save()
+
+        # Access delete url
+        b.get(self.live_server_url + reverse('delete_client', args=[c.id]))
+
+        # Validate client detail returns 404
+        response = self.client.get(self.live_server_url + reverse('client_detail', args=[c.id]))
+        self.assertEqual(response.status_code, 404)
+
     def test_blank_note_fail(self):
         b = browser.instance()
         c = autofixture.create_one('gallant.Client', generate_fk=True,
