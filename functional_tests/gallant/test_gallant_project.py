@@ -48,7 +48,7 @@ class GallantProjectTest(browser.SignedInTest):
         success_message = b.find_element_by_class_name('alert-success')
         self.assertTrue(u'Project saved.' in success_message.text)
 
-        b.find_element_by_id('edit_project')
+        b.find_element_by_id('edit_project').click()
 
         b.find_element_by_name('name').send_keys('PPPPPPP')
 
