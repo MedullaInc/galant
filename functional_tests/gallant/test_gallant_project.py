@@ -8,6 +8,20 @@ def tearDown():
 
 
 class GallantProjectTest(browser.SignedInTest):
+    def test_project_list(self):
+        b = browser.instance()
+        q = autofixture.create_one('quotes.Quote', generate_fk=True,
+                                   field_values={'user': self.user})
+        b.get(self.live_server_url + reverse('add_project', args=[q.id]))
+
+        b.find_element_by_name('name').send_keys('Branding')
+
+        b.find_element_by_xpath('//button[@type="submit"]').click()
+
+        b.get(self.live_server_url + reverse('projects'))
+        success_message = b.find_element_by_class_name('app_title')
+        self.assertTrue(u'Projects' in success_message.text)
+
     def test_add_project(self):
         b = browser.instance()
         q = autofixture.create_one('quotes.Quote', generate_fk=True,
@@ -34,7 +48,7 @@ class GallantProjectTest(browser.SignedInTest):
         success_message = b.find_element_by_class_name('alert-success')
         self.assertTrue(u'Project saved.' in success_message.text)
 
-        b.find_element_by_id('edit_project').click()
+        b.find_element_by_id('edit_project')
 
         b.find_element_by_name('name').send_keys('PPPPPPP')
 
