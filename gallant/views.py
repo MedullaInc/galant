@@ -315,7 +315,7 @@ class ProjectUpdate(View):
             obj.notes.add(note)
 
         # If its a new project
-        if len(quotes_to_link) is 0 and len(quotes_to_link) is 0:
+        if len(obj.quote_set.all_for(self.request.user, 'view_quote')) is 0:
             quote = q.Quote.objects.get_for(self.request.user, 'change_quote', id=self.kwargs['quote_id'])
             quote.projects.add(obj)
             quote.save()
