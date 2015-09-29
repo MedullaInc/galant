@@ -12,4 +12,3 @@ class CalendrTest(browser.SignedInTest):
 
         app_title = browser.instance().find_element_by_class_name('app_title')
         self.assertEqual('Calendar', app_title.text)
-        
