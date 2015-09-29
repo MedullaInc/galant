@@ -8,6 +8,20 @@ def tearDown():
 
 
 class GallantProjectTest(browser.SignedInTest):
+    def test_project_list(self):
+        b = browser.instance()
+        q = autofixture.create_one('quotes.Quote', generate_fk=True,
+                                   field_values={'user': self.user})
+        b.get(self.live_server_url + reverse('add_project', args=[q.id]))
+
+        b.find_element_by_name('name').send_keys('Branding')
+
+        b.find_element_by_xpath('//button[@type="submit"]').click()
+
+        b.get(self.live_server_url + reverse('projects'))
+        success_message = b.find_element_by_class_name('app_title')
+        self.assertTrue(u'Projects' in success_message.text)
+
     def test_add_project(self):
         b = browser.instance()
         q = autofixture.create_one('quotes.Quote', generate_fk=True,
@@ -23,18 +37,47 @@ class GallantProjectTest(browser.SignedInTest):
 
     def test_edit_project(self):
         b = browser.instance()
-        p = autofixture.create_one('gallant.Project', generate_fk=True,
-                                   field_values={'user': self.user})
-        autofixture.create_one('quotes.Quote', generate_fk=True,
-                               field_values={'user': self.user, 'project': p})
-        b.get(self.live_server_url + reverse('edit_project', args=[p.id]))
 
-        b.find_element_by_name('name').send_keys('PPPPPPP')
+        # Add Project
+        c = autofixture.create_one('gallant.Client', generate_fk=True,
+                                   field_values={'user': self.user})
+        q = autofixture.create_one('quotes.Quote', generate_fk=True,
+                                   field_values={'user': self.user, 'client': c, 'status': 5})
+
+        b.get(self.live_server_url + reverse('add_project', args=[q.id]))
+
+        b.find_element_by_name('name').send_keys('Branding')
 
         b.find_element_by_xpath('//button[@type="submit"]').click()
 
         success_message = b.find_element_by_class_name('alert-success')
         self.assertTrue(u'Project saved.' in success_message.text)
+
+        autofixture.create_one('quotes.Quote', generate_fk=False,
+                               field_values={'name': "XXX", 'user': self.user, 'client': c, 'status': 5})
+
+        # Edit Project removing one quote
+        b.find_element_by_id('edit_project').click()
+
+        b.find_element_by_id('id_linked_quotes_0').click()
+
+        b.find_element_by_xpath('//button[@type="submit"]').click()
+
+        success_message = b.find_element_by_class_name('alert-success')
+        self.assertTrue(u'Project saved.' in success_message.text)
+
+        # Edit Project with extra quote
+        b.find_element_by_id('edit_project').click()
+
+        b.find_element_by_name('name').send_keys('PPPPPPP')
+
+        b.find_element_by_id('id_available_quotes_0').click()
+
+        b.find_element_by_xpath('//button[@type="submit"]').click()
+
+        success_message = b.find_element_by_class_name('alert-success')
+        self.assertTrue(u'Project saved.' in success_message.text)
+
 
     def test_add_project_note(self):
         b = browser.instance()

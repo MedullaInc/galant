@@ -6,6 +6,7 @@ from django.contrib.auth import get_user_model, authenticate, login
 from django.contrib.auth.forms import SetPasswordForm
 from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import send_mail
+from django.db.models import Count
 from django.http.response import Http404, HttpResponse
 from django.utils.safestring import mark_safe
 from django.views.generic import View
@@ -227,13 +228,16 @@ def service_detail(request, *args, **kwargs):
 
 class ProjectList(View):
     def get(self, request):
+        projects = g.Project.objects.all_for(request.user, 'view_project')
+        quotes = q.Quote.objects.all_for(request.user, 'view_quote').annotate(projects_count=Count('projects')).filter(projects_count=0, status=5)
+
         request.breadcrumbs(_('Projects'), request.path_info)
+
         return TemplateResponse(request=request,
                                 template="gallant/project_list.html",
                                 context={'title': 'Projects',
-                                         'object_list': g.Project.objects.all_for(request.user, 'view_project'),
-                                         'quote_list': q.Quote.objects.all_for(request.user, 'view_quote')\
-                                                        .filter(project__isnull=True)})
+                                         'object_list': projects,
+                                         'quote_list': quotes})
 
 
 class ProjectUpdate(View):
@@ -243,19 +247,32 @@ class ProjectUpdate(View):
         return self.render_to_response({'object': self.object, 'form': form})
 
     def post(self, request, **kwargs):
+        quotes_to_link = []
+        quotes_to_unlink = []
+
         if 'pk' in kwargs:
             self.object = get_one_or_404(request.user, 'change_project', g.Project, pk=kwargs['pk'])
+
+            # Quotes to link to project
+            for quote in request.POST.getlist('available_quotes', None):
+                quotes_to_link.append(int(quote))
+
+            # Quotes to unlink to project
+            for quote in self.object.quote_set.all_for(request.user, 'view_quote'):
+                if request.POST.getlist('linked_quotes', None):
+                    if "%s" % quote.id not in request.POST.getlist('linked_quotes'):
+                        quotes_to_unlink.append(quote)
+                else:
+                    quotes_to_unlink.append(quote)
+
         else:
             # No perms currently needed to create
             self.object = None
 
         form = forms.ProjectOnlyForm(request.user, request.POST, instance=self.object)
+
         if form.is_valid():
-            if 'quote_id' in kwargs:
-                quote = get_one_or_404(request.user, 'view_quote', q.Quote, pk=kwargs['quote_id'])
-                return self.form_valid(form, quote)
-            else:
-                return self.form_valid(form)
+            return self.form_valid(form, quotes_to_link, quotes_to_unlink)
         else:
             return self.render_to_response({'object': self.object, 'form': form})
 
@@ -273,15 +290,38 @@ class ProjectUpdate(View):
                                 template="gallant/create_form.html",
                                 context=context)
 
-    def form_valid(self, form, quote=None):
+    def form_valid(self, form, quotes_to_link, quotes_to_unlink):
         obj = form.save(commit=True)
         text = '[Updated]\n'
         note = g.Note.objects.create(text=text, user=self.request.user)
         obj.notes.add(note)
-        if quote:
-            quote.project = obj
+
+        # Link new quotes
+        for quote_id in quotes_to_link:
+            quote = q.Quote.objects.get_for(self.request.user, 'change_quote', id=quote_id)
+            quote.projects.add(obj)
             quote.save()
+
+            text = '[Linked Quote: %s ]\n' % quote
+            note = g.Note.objects.create(text=text, user=self.request.user)
+            obj.notes.add(note)
+
+        # Unlink actual quotes
+        for quote in quotes_to_unlink:
+            quote.projects.remove(obj)
+
+            text = '[Unlinked Quote: %s]\n' % quote
+            note = g.Note.objects.create(text=text, user=self.request.user)
+            obj.notes.add(note)
+
+        # If its a new project
+        if len(obj.quote_set.all_for(self.request.user, 'view_quote')) is 0:
+            quote = q.Quote.objects.get_for(self.request.user, 'change_quote', id=self.kwargs['quote_id'])
+            quote.projects.add(obj)
+            quote.save()
+
         obj.save()
+
         messages.success(self.request, 'Project saved.')
         return HttpResponseRedirect(reverse('project_detail', args=[obj.id]))
 
@@ -301,6 +341,12 @@ class ProjectCreate(ProjectUpdate):
 def project_detail(request, pk):
     project = get_one_or_404(request.user, 'view_project', g.Project, pk=pk)
 
+    # TODO: This should be refactored!
+    services = []
+    for quote in project.quote_set.all_for(request.user, 'view_quote'):
+        for service in quote.services.all_for(request.user, 'view_servicesection'):
+            services.append(service)
+
     if request.method == 'POST' and request.user.has_perm('change_project', project):
         form = forms.NoteForm(request.user, request.POST)
         if form.is_valid():
@@ -315,6 +361,7 @@ def project_detail(request, pk):
                          (_('Project: %s' % project.name), request.path_info)])
     return render(request, 'gallant/project_detail.html', {
         'object': project,
+        'services': services,
         'form': form,
         'title': 'Project Detail',
     })

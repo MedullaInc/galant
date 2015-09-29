@@ -4,18 +4,22 @@
 {% block pre_form %}
 
     {% if project %}
-        <div class="col-lg-9" align="right">
-            {% trans "Linked to project" %}:
-        </div>
-        <div class="col-lg-3 project_link" align="right">
-            <a href="{% url 'project_detail' project.id %}">{{ project }}</a>
+        <div class="row">
+            <div class="col-lg-9" align="right">
+                <p>{% trans "Linked to project" %}:</p>
+            </div>
+            <div class="col-lg-3 project_link" align="right">
+                <p><a href="{% url 'project_detail' project.id %}">{{ project }}</a></p>
+            </div>
         </div>
     {% elif quote %}
-        <div class="col-lg-9" align="right">
-            {% trans "Linked to quote" %}:
-        </div>
-        <div class="col-lg-3 quote_link" align="right">
-            <a href="{% url 'quote_detail' quote.id %}">{{ quote }}</a>
+        <div class="row">
+            <div class="col-lg-9" align="right">
+                <p>{% trans "Linked to quote" %}:</p>
+            </div>
+            <div class="col-lg-3 quote_link" align="right">
+                <p><a href="{% url 'quote_detail' quote.id %}">{{ quote }}</a></p>
+            </div>
         </div>
     {% endif %}
 {% endblock %}

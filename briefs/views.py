@@ -32,8 +32,9 @@ def _update_from_query(request, context):
                              (_('Quote: %s') + quote.name, reverse('quote_detail', args=[quote.id]))])
     elif project_id:
         project = get_one_or_404(request.user, 'view_project', g.Project, pk=project_id)
-        initial = {'client': project.quote.client_id, 'quote': project.quote.id or None}
-        context.update({'project': project, 'quote': project.quote, 'client': project.quote.client})
+        quote = project.quote_set.all_for(request.user, 'view_quote')[0]
+        initial = {'client': quote.client_id, 'quote': quote.id or None}
+        context.update({'project': project, 'quote': quote, 'client': quote.client})
         request.breadcrumbs([(_('Projects'), reverse('projects')),
                              (_('Project:') + project.name, reverse('project_detail', args=[project.id]))])
     elif client_id:
