@@ -47,7 +47,7 @@ class QuoteUpdate(View):
                                             'title': 'Edit Quote'})
 
     def form_valid(self, form, section_forms):
-        if 'preview' in self.request.POST or 'section_preview' in self.request.POST:  # pragma: no cover
+        if 'preview' in self.request.POST:  # pragma: no cover
             form.instance.pk = None
             form.instance.token = uuid4()
 
