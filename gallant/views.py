@@ -338,6 +338,14 @@ class ProjectCreate(ProjectUpdate):
                                 context=context)
 
 
+class ProjectDelete(View):
+    def get(self, request, **kwargs):
+        project = get_one_or_404(request.user, 'change_project', g.Project, id=kwargs['pk'])
+        project.soft_delete()
+
+        return HttpResponseRedirect(reverse('projects'))
+
+
 def project_detail(request, pk):
     project = get_one_or_404(request.user, 'view_project', g.Project, pk=pk)
 
