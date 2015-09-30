@@ -15,6 +15,9 @@
 
     <form id="main_form" name="{{ form.form_name }}" class="form" method="post">
 
+        {% block form_quick_actions %}
+        {% endblock %}
+
         {% block form_help_text %}
             {% if help_text %}
                 <p class="title">

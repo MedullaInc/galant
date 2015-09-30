@@ -2492,10 +2492,6 @@ button.btn-default.edit_button {
     padding: 10px 15px 10px 15px;
 }
 
-button.edit_button span.glyphicon {
-    font-size: 14px;
-}
-
 a.edit_button:hover {
     text-decoration: none;
 }
@@ -2509,17 +2505,39 @@ button.btn-default.delete_button {
     margin-top: 10px;
 }
 
-button.delete_button span.glyphicon {
-    font-size: 14px;
-}
-
 a.delete_button:hover {
     text-decoration: none;
 }
 
-.glyphicon.glyphicon-edit {
-    font-size: 20px;
-    color: black;
+button.btn-default.save_button {
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 0px;
+    border: 1px solid #666666;
+    margin-top: 10px;
+    padding: 10px 15px 10px 15px;
+}
+
+a.save_button:hover {
+    text-decoration: none;
+}
+
+button.btn-default.preview_button {
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 0px;
+    border: 1px solid #666666;
+    margin-top: 10px;
+    margin-left: 4px;
+    padding: 10px 15px 10px 10px;
+}
+
+a.preview_button:hover {
+    text-decoration: none;
+}
+
+button span.glyphicon {
+    font-size: 14px;
 }
 
 /* End Alerts */
