@@ -78,7 +78,6 @@ class GallantProjectTest(browser.SignedInTest):
         success_message = b.find_element_by_class_name('alert-success')
         self.assertTrue(u'Project saved.' in success_message.text)
 
-
     def test_add_project_note(self):
         b = browser.instance()
         p = autofixture.create_one('gallant.Project', generate_fk=True,
@@ -93,3 +92,18 @@ class GallantProjectTest(browser.SignedInTest):
         b.find_element_by_xpath('//button[@type="submit"]').click()
 
         self.assertTrue(test_string in b.find_element_by_id('notes').text)
+
+    def test_project_soft_delete(self):
+        b = browser.instance()
+
+        # Create Project
+        p = autofixture.create_one('gallant.Project', generate_fk=True,
+                                   field_values={'user': self.user})
+
+        # Access delete url
+        b.get(self.live_server_url + reverse('delete_project', args=[p.id]))
+
+        # Validate project detail returns 404
+        response = self.client.get(self.live_server_url + reverse('project_detail', args=[p.id]))
+        self.assertEqual(response.status_code, 404)
+
