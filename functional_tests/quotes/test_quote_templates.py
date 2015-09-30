@@ -119,7 +119,7 @@ class QuoteTemplatesTest(browser.SignedInTest):
         self.assertEqual(intro.get_attribute('value'), 'titulo de intro prueba')
 
     def _submit_and_check(self, b):
-        b.find_element_by_xpath('//button[@type="submit"]').click()
+        b.find_element_by_id('create_submit').click()
 
         success_message = b.find_element_by_class_name('alert-success')
         self.assertTrue(u'Template saved.' in success_message.text)

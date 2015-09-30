@@ -190,7 +190,7 @@ class QuotesSignedInTest(browser.SignedInTest):
         add_section = b.find_element_by_id('add_section')
         add_section.click()
         b.find_element_by_id('id_-section-2-title').send_keys('1234')
-        b.find_element_by_xpath('//button[@type="submit"]').click()
+        b.find_element_by_id('create_submit').click()
 
         b.get(self.live_server_url + reverse('edit_quote', args=[q.id]))
 
@@ -202,7 +202,7 @@ class QuotesSignedInTest(browser.SignedInTest):
         self._submit_and_check(b)
 
     def _submit_and_check(self, b):
-        b.find_element_by_xpath('//button[@type="submit"]').click()
+        b.find_element_by_id('create_submit').click()
         self.disable_popups()
 
         success_message = b.find_element_by_class_name('alert-success')
