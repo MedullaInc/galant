@@ -2,6 +2,25 @@
 {% load bootstrap i18n section_javascript gallant_tags %}
 
 {% block sidebar %}
+{% endblock %}
+
+{% block form_quick_actions %}
+
+        <div class="row">
+        <div class="col-lg-10 col-md-10 col-sm-9 col-xs-9">
+            <h2 class="section_title">{{ object.name }}</h2>
+        </div>
+        <div class="col-lg-2 col-md-2 col-sm-3 col-xs-3 action_box">
+            <button id="section_save" type="submit" class="btn btn-default save_button" aria-label="Edit">
+                <span class="glyphicon glyphicon-floppy-disk"/>
+            </button>
+            {%  if quote_type != "template" %}
+            <button id="section_preview" type="submit" class="btn btn-default preview_button" aria-label="Preview"> 
+                <span class="glyphicon glyphicon-eye-open"/> 
+            </button>
+            {% endif %}
+        </div>
+    </div>
 
 {% endblock %}
 
@@ -104,6 +123,31 @@
                 renameSections();
             }
         });
+
+        // Action box scroll down
+
+        var action_box_offset_top = 0;
+
+        $(document).ready(function(){
+
+            action_box_offset_top = $('.action_box').offset().top;
+            $('.action_box').css({'position': 'absolute', 'right': 25, 'z-index': 3});
+
+        });
+
+        $(document).scroll(function(){
+
+            if ( $(window).scrollTop() > 0.0 ) {
+
+                $('.action_box').offset({top: action_box_offset_top + $(window).scrollTop()});
+
+            } else {
+
+                $('.action_box').offset({top: action_box_offset_top });
+            }
+
+        });
+
     </script>
 
     <script>

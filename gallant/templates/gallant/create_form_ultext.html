@@ -72,10 +72,10 @@
 
     {% block create_submit_event %}
         <script>
-            $('#create_submit, #preview').on('click', function (e) {
+            $('#create_submit, #preview, #section_preview').on('click', function (e) {
 
                 // This sends the preview to a new window.
-                if ($(this).is("#preview")) {
+                if ($(this).is('#preview') || $(this).is('#section_preview')) {
                     $('.form').attr('target', '_blank');
                 } else {
                     $('.form').attr('target', '');
