@@ -128,24 +128,17 @@
 
         var action_box_offset_top = 0;
 
-        $(document).ready(function(){
-
+        $(document).ready(function () {
             action_box_offset_top = $('.action_box').offset().top;
             $('.action_box').css({'position': 'absolute', 'right': 25, 'z-index': 3});
-
         });
 
-        $(document).scroll(function(){
-
-            if ( $(window).scrollTop() > 0.0 ) {
-
-                $('.action_box').offset({top: action_box_offset_top + $(window).scrollTop()});
-
+        $(document).scroll(function () {
+            if ($(window).scrollTop() > 100.0) {
+                $('.action_box').stop().animate({'top': action_box_offset_top + $(window).scrollTop()}, 10);
             } else {
-
-                $('.action_box').offset({top: action_box_offset_top });
+                $('.action_box').offset({top: action_box_offset_top});
             }
-
         });
 
     </script>

@@ -14,6 +14,7 @@ from gallant import forms as gf
 from django.utils.text import slugify
 from django.utils.translation import ugettext_lazy as _
 from django.core.mail import send_mail
+from uuid import uuid4
 
 
 class QuoteUpdate(View):
@@ -48,6 +49,8 @@ class QuoteUpdate(View):
     def form_valid(self, form, section_forms):
         if 'preview' or 'section_preview' in self.request.POST:  # pragma: no cover
             form.instance.pk = None
+            form.instance.token = uuid4()
+
             for section_form in section_forms:
                 section_form.instance.pk = None
                 section_form.instance.id = None
