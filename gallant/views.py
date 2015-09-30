@@ -287,7 +287,7 @@ class ProjectUpdate(View):
         else:
             self.request.breadcrumbs(_('Add'), self.request.path_info)
         return TemplateResponse(request=self.request,
-                                template="gallant/create_form.html",
+                                template="gallant/base_form.html",
                                 context=context)
 
     def form_valid(self, form, quotes_to_link, quotes_to_unlink):
@@ -334,7 +334,7 @@ class ProjectCreate(ProjectUpdate):
 
         context = {'title': 'Add Project', 'form': form}
         return TemplateResponse(request=self.request,
-                                template="gallant/create_form.html",
+                                template="gallant/base_form.html",
                                 context=context)
 
 
@@ -395,7 +395,7 @@ class SignUpRequest(View):
     @staticmethod
     def get(request):
         request.breadcrumbs([(_('Request Account'), request.path_info)])
-        return render(request, 'gallant/create_form.html', {
+        return render(request, 'gallant/base_form.html', {
             'form': forms.SignUpRequestForm(),
             'title': 'Request Account',
             'submit_text': 'Submit'
@@ -411,7 +411,7 @@ class SignUpRequest(View):
             messages.success(request, 'Request sent.')
             return HttpResponseRedirect(reverse('home'))
         else:
-            return render(request, 'gallant/create_form.html', {
+            return render(request, 'gallant/base_form.html', {
                 'form': forms.SignUpRequestForm(),
                 'title': 'Request Account',
                 'submit_text': 'Submit'
@@ -437,7 +437,7 @@ class SubmitFeedback(View):
             messages.success(request, 'Feedback sent.')
             return HttpResponse('Thank you.')
         else:
-            return render(request, 'gallant/create_form.html', {
+            return render(request, 'gallant/base_form.html', {
                 'form': forms.SignUpRequestForm(),
                 'submit_text': 'Submit'
             })
@@ -510,7 +510,7 @@ class AccountAdd(View):
             messages.error(request, 'You don\'t have permission to access that view.')
             return HttpResponseRedirect(reverse('home'))
 
-        return render(request, 'gallant/create_form.html', {
+        return render(request, 'gallant/base_form.html', {
             'form': forms.EmailForm(),
         })
 
@@ -534,7 +534,7 @@ class AccountAdd(View):
             messages.success(request, 'Registration link sent.')
             return HttpResponseRedirect(reverse('home'))
         else:
-            return render(request, 'gallant/create_form.html', {
+            return render(request, 'gallant/base_form.html', {
                 'form': forms.EmailForm(),
             })
 
@@ -552,7 +552,7 @@ class PasswordReset(View):
             messages.error(request, 'You don\'t have permission to access that view.')
             return HttpResponseRedirect(reverse('home'))
 
-        return render(request, 'gallant/create_form.html', {
+        return render(request, 'gallant/base_form.html', {
             'form': forms.EmailForm(),
         })
 
@@ -576,6 +576,6 @@ class PasswordReset(View):
             messages.success(request, 'Password reset link sent.')
             return HttpResponseRedirect(reverse('home'))
         else:
-            return render(request, 'gallant/create_form.html', {
+            return render(request, 'gallant/base_form.html', {
                 'form': forms.EmailForm(),
             })
