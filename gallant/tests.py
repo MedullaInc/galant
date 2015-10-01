@@ -5,6 +5,7 @@ from django.test import TransactionTestCase, TestCase
 from django import forms
 from gallant import models as g
 from gallant import fields as gf
+from gallant import forms as gallant_forms
 from briefs import models as b
 from quotes import models as q
 from autofixture import AutoFixture
@@ -18,6 +19,13 @@ class ServiceTest(TransactionTestCase):
         new_service = g.Service.objects.get_for(service.user, 'view_service', id=service.id)
 
         self.assertEqual(service.id, new_service.id)
+
+    def test_service_form(self):
+        user = autofixture.create_one(g.GallantUser, generate_fk=True)
+        form = gallant_forms.ServiceForm(user=user, data={'name': 'asdf', 'description': 'aasdf', 'cost_0': '10',
+                                                          'cost_1': 'USD', 'quantity': '10', 'type': '3'})
+
+        self.assertTrue(form.is_valid())
 
     def test_sub_services(self):
         user = autofixture.create_one(g.GallantUser, generate_fk=True)
