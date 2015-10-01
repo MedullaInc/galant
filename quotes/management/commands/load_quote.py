@@ -37,7 +37,7 @@ def load_quote():
 
     sections.append(
         TextSection.objects.create(
-            index=1, user=user, name='margin',
+            index=1, user=user, name='important_notes',
             title={'en': 'Notes'},
             text={
                 'en': u'Once this proposal is authorized by you, the client, we will develop a timeline with delivery dates for each one of these tasks.\n\nCosts for photography, video, complex illustrations, and other such extras are not included.\n\nEditorial and copywriting costs are not included.\n\nCosts for printing, media contracts, and / or materials are not included.\n\nFor business card design, we include 10 design changes. Each extra change will have a cost of $20 USD.\n\nAny significant change requested after start of work / delivery will be subject to extra charges of up to 30% in addition to the total price quoted.\n\nThis quote is valid for 30 calendar days after its delivery.'},

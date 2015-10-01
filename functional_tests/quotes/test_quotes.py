@@ -16,7 +16,7 @@ def get_blank_quote_autofixture(user):
                                field_values={'sections': [], 'language': 'en',
                                              'user': user, 'client': c})
     i = qm.TextSection.objects.create(user=q.user, name='intro', index=0)
-    m = qm.TextSection.objects.create(user=q.user, name='margin', index=1)
+    m = qm.TextSection.objects.create(user=q.user, name='important_notes', index=1)
     q.sections.add(i)
     q.sections.add(m)
     return q
@@ -62,8 +62,8 @@ class QuotesSignedInTest(browser.SignedInTest):
         b.find_element_by_xpath('//select[@name="client"]/option[@value="%d"]' % c.id).click()
         b.find_element_by_id('id_-section-0-title').send_keys('test intro title')
         b.find_element_by_id('id_-section-0-text').send_keys('test intro text')
-        b.find_element_by_id('id_-section-1-title').send_keys('test margin title')
-        b.find_element_by_id('id_-section-1-text').send_keys('test margin text')
+        b.find_element_by_id('id_-section-1-title').send_keys('test important notes title')
+        b.find_element_by_id('id_-section-1-text').send_keys('test important notes text')
         b.find_element_by_xpath('//select[@name="-service-2-type"]/option[@value="3"]').click()
 
         self._submit_and_check(b)

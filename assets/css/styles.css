@@ -2547,6 +2547,8 @@ button span.glyphicon {
 div.breadcrumbs {
     border: 1px solid #666666;
     padding: 10px 20px 10px 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 div.breadcrumbs a, div.breadcrumbs a:hover {
@@ -2577,6 +2579,7 @@ div.breadcrumbs span {
     padding: 10px 10px 10px 10px;
     border: 1px solid #666666;
     margin-bottom: 10px;
+    margin-top: 10px;
     font-size: 16px;
     font-weight: 100;
     letter-spacing: 1px;
