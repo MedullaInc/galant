@@ -17,6 +17,17 @@ class BriefTemplatesTest(browser.SignedInTest):
 
         self._submit_and_check(b)
 
+    def test_brief_template_detail(self):
+        b = browser.instance()
+        brief = autofixture.create_one('briefs.Brief', generate_fk=True,
+                                       field_values={'user': self.user})
+        bt = autofixture.create_one('briefs.BriefTemplate', generate_fk=False,
+                                    field_values={'brief': brief, 'user': self.user})
+        b.get(self.live_server_url + reverse('brief_template_detail', args=[bt.id]))
+
+        app_title = browser.instance().find_element_by_class_name('app_title')
+        self.assertEqual('Brief Template Detail', app_title.text)
+
     def test_add_brief_lang_dropdown(self):
         b = browser.instance()
         b.get(self.live_server_url + reverse('add_brief_template'))
