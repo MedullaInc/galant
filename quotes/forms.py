@@ -77,7 +77,7 @@ def section_forms_quote(quote, clear_pk=False):
 
 def section_forms_initial(user):
     return [SectionForm(user, instance=q.TextSection(name='intro', index=0), prefix='-section-0'),
-            SectionForm(user, instance=q.TextSection(name='margin', index=2), prefix='-section-1'),
+            SectionForm(user, instance=q.TextSection(name='important_notes', index=2), prefix='-section-1'),
             ServiceSectionForm(user, instance=q.ServiceSection(name='section_1',
                                                                index=1,
                                                                service=g.Service()),
@@ -111,8 +111,8 @@ class SectionForm(gf.UserModelForm):
         context = {'prefix': self.prefix + '-', 'name': section.name,
                    'section': section, 'form': self}
 
-        if section.name == 'margin':
-            context.update({'help_text': _('This section appears last, in the margin of the final page.')})
+        if section.name == 'important_notes':
+            context.update({'help_text': _('This section appears last, in the final page.')})
         elif section.name == 'intro':
             context.update({'help_text': _('This section appears first, with special formatting.')})
         else:

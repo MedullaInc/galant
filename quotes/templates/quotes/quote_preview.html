@@ -97,7 +97,7 @@
                                 </div>
                             {% endwith %}
 
-                        {% elif section.name != "margin" and section.name != "intro" %}
+                        {% elif section.name != "important_notes" and section.name != "intro" %}
 
                             <div class="pdf_element {{ section.name }}">
                                 <div class="row">
@@ -191,18 +191,18 @@
                         </div>
                     </div>
 
-                    {% if object.margin %}
+                    {% if object.important_notes %}
                         <div class="pdf_element margin">
                             <div class="row">
                                 <div class="col-xs-offset-2 col-xs-8 section_title">
                                     <h2>
-                                        {{ object.margin.title.get_text }}
+                                        {{ object.important_notes.title.get_text }}
                                     </h2>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-xs-offset-4 col-xs-8 section_content">
-                                    {{ object.margin.text.get_text|linebreaks }}
+                                    {{ object.important_notes.text.get_text|linebreaks }}
                                 </div>
                             </div>
                         </div>

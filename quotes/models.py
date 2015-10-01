@@ -113,8 +113,8 @@ class Quote(g.UserModel):
     def intro(self):
         return self.sections.get_for(self.user, 'view_section', name='intro')
 
-    def margin(self):
-        return self.sections.get_for(self.user, 'view_section', name='margin')
+    def important_notes(self):
+        return self.sections.get_for(self.user, 'view_section', name='important_notes')
 
     def all_sections(self):
         sections = list(self.sections.all_for(self.user, 'view_section')) + \

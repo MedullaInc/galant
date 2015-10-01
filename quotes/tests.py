@@ -35,9 +35,9 @@ class QuoteTest(test.TransactionTestCase):
 
         # Add sections to Quote
         intro = q.TextSection.objects.create(user=user, name='intro', index=0)
-        margin = q.TextSection.objects.create(user=user, name='margin', index=1)
+        important_notes = q.TextSection.objects.create(user=user, name='important_notes', index=1)
         quote.sections.add(intro)
-        quote.sections.add(margin)
+        quote.sections.add(important_notes)
 
         # Add services to Quote
         fixture = AutoFixture(g.Service, generate_fk=True, field_values={'quote': quote})
@@ -69,7 +69,7 @@ class QuoteTemplateTest(test.TestCase):
         quote = autofixture.create_one(q.Quote, generate_fk=True,
                                        field_values={'sections': [], 'language': 'en', 'user': user, 'client': client})
         i = q.TextSection.objects.create(user=quote.user, name='intro', index=0)
-        m = q.TextSection.objects.create(user=quote.user, name='margin', index=1)
+        m = q.TextSection.objects.create(user=quote.user, name='important_notes', index=1)
         quote.sections.add(i)
         quote.sections.add(m)
 
@@ -84,7 +84,7 @@ class QuoteTemplateTest(test.TestCase):
         quote = autofixture.create_one(q.Quote, generate_fk=True,
                                        field_values={'sections': [], 'language': 'en', 'user': user, 'client': client})
         i = q.TextSection.objects.create(user=quote.user, name='intro', index=0)
-        m = q.TextSection.objects.create(user=quote.user, name='margin', index=1)
+        m = q.TextSection.objects.create(user=quote.user, name='important_notes', index=1)
         quote.sections.add(i)
         quote.sections.add(m)
 
@@ -93,7 +93,7 @@ class QuoteTemplateTest(test.TestCase):
                                                  field_values={'sections': [], 'language': 'en', 'user': user,
                                                                'client': None})
         i = q.TextSection.objects.create(user=quote_no_client.user, name='intro', index=0)
-        m = q.TextSection.objects.create(user=quote_no_client.user, name='margin', index=1)
+        m = q.TextSection.objects.create(user=quote_no_client.user, name='important_notes', index=1)
         quote_no_client.sections.add(i)
         quote_no_client.sections.add(m)
 
@@ -129,8 +129,8 @@ class QuoteFormTest(test.TestCase):
             'POST': {'status': '1', 'name': 'asdfQuote test edit', 'language': 'en',
                      '-section-0-text': 'test intro text',
                      '-section-0-title': 'modified intro title', '-section-0-name': 'intro', '-section-0-index': '0',
-                     '-section-1-name': 'margin', '-section-1-title': 'test margin title',
-                     '-section-1-text': 'test margin text', '-section-1-index': '1', 'client': client[0].id},
+                     '-section-1-name': 'important_notes', '-section-1-title': 'test important notes title',
+                     '-section-1-text': 'test important notes text', '-section-1-index': '1', 'client': client[0].id},
             'user': client[0].user,
         })
 
@@ -202,11 +202,11 @@ class QuoteFormTest(test.TestCase):
         obj = qf.create_quote(f, s)
         obj.save()
         intro_id = obj.intro().id
-        margin_id = obj.margin().id
+        important_notes_id = obj.important_notes().id
         section_ids = [s.id for s in obj.sections.all_for(self.request.user, 'view_section')]
 
         new_data['-section-0-id'] = intro_id
-        new_data['-section-1-id'] = margin_id
+        new_data['-section-1-id'] = important_notes_id
         new_data['-section-2-id'] = section_ids[2]
         self.request.POST.update(new_data)
         s = qf.section_forms_request(self.request)
