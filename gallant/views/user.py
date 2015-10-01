@@ -156,7 +156,7 @@ def _send_register_email(email, link):
 class AccountAdd(View):
     @staticmethod
     def get(request):
-        if not request.user.is_superuser:
+        if not request.user.is_superuser:  # pragma: no cover
             messages.error(request, 'You don\'t have permission to access that view.')
             return HttpResponseRedirect(reverse('home'))
 
@@ -166,7 +166,7 @@ class AccountAdd(View):
 
     @staticmethod
     def post(request):
-        if not request.user.is_superuser:
+        if not request.user.is_superuser:  # pragma: no cover
             messages.error(request, 'You don\'t have permission to access that view.')
             return HttpResponseRedirect(reverse('home'))
 
@@ -198,7 +198,7 @@ def _send_reset_email(email, link):
 class PasswordReset(View):
     @staticmethod
     def get(request):
-        if not request.user.is_superuser:
+        if not request.user.is_superuser:  # pragma: no cover
             messages.error(request, 'You don\'t have permission to access that view.')
             return HttpResponseRedirect(reverse('home'))
 
@@ -208,7 +208,7 @@ class PasswordReset(View):
 
     @staticmethod
     def post(request):
-        if not request.user.is_superuser:
+        if not request.user.is_superuser:  # pragma: no cover
             messages.error(request, 'You don\'t have permission to access that view.')
             return HttpResponseRedirect(reverse('home'))
 
