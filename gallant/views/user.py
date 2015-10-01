@@ -106,6 +106,7 @@ class Register(View):
 
         if valid:
             return render(request, 'gallant/register_form.html', {
+                'title': 'Register',
                 'set_password_form': SetPasswordForm(user),
                 'form': forms.GallantUserForm(instance=user),
                 'contact_form': forms.ContactInfoForm(instance=user.contact_info or None)
@@ -137,6 +138,7 @@ class Register(View):
                 return HttpResponseRedirect(reverse('home'))
             else:
                 return render(request, 'gallant/register_form.html', {
+                    'title': 'Register',
                     'set_password_form': set_password_form,
                     'form': form,
                     'contact_form': contact_form

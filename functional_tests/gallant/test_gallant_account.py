@@ -83,3 +83,17 @@ class GallantAccountTest(LiveServerTestCase):
 
         success_message = b.find_element_by_class_name('alert-success')
         self.assertTrue(u'Registration successful.' in success_message.text)
+
+    def test_register_invalid(self):
+        b = browser.instance()
+
+        UserModel = get_user_model()
+        user = UserModel.objects.create(email='foo@bar.com')
+        token = default_token_generator.make_token(user)
+
+        b.get(self.live_server_url + reverse('register', args=[user.id]) + '?token=%s' % token)
+
+        b.find_element_by_xpath('//button[@type="submit"]').click()
+
+        app_title = browser.instance().find_element_by_class_name('app_title')
+        self.assertEqual('Register', app_title.text)
