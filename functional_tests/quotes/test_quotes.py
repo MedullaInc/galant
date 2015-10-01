@@ -14,7 +14,7 @@ def get_blank_quote_autofixture(user):
                                field_values={'user': user})
     q = autofixture.create_one('quotes.Quote', generate_fk=True,
                                field_values={'sections': [], 'language': 'en',
-                                             'user': user, 'client': c})
+                                             'user': user, 'client': c, 'status': '1'})
     i = qm.TextSection.objects.create(user=q.user, name='intro', index=0)
     m = qm.TextSection.objects.create(user=q.user, name='important_notes', index=1)
     q.sections.add(i)
@@ -88,6 +88,18 @@ class QuotesSignedInTest(browser.SignedInTest):
 
         response = self.client.get(self.live_server_url + reverse('quote_detail', args=[q.id]))
         self.assertEqual(response.status_code, 404)
+
+    def test_email_quote(self):
+        b = browser.instance()
+        q = get_blank_quote_autofixture(self.user)
+        b.get(self.live_server_url + reverse('quote_detail', args=[q.id]))
+
+        b.find_element_by_id('send_quote').click()
+
+        success_message = b.find_element_by_class_name('alert-success')
+        self.assertTrue(u'Quote link sent to %s.' % q.client.email in success_message.text)
+        q.refresh_from_db()
+        self.assertEqual(q.status, '2')
 
     def test_add_sections(self):
         b = browser.instance()
