@@ -3,10 +3,12 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
 from django.test import TransactionTestCase, TestCase
 from django import forms
+from django.test.client import RequestFactory
 from gallant import models as g
 from gallant import fields as gf
 from gallant import forms as gallant_forms
 from briefs import models as b
+from gallant.serializers.service import ServiceSerializer
 from quotes import models as q
 from autofixture import AutoFixture
 import warnings
@@ -72,6 +74,15 @@ class ServiceTest(TransactionTestCase):
         for n in service.notes.all_for(user, 'view_note'):
             self.assertEqual(n.deleted, 1)
             self.assertEqual(n.deleted_by_parent, 1)
+
+    def test_service_serialize(self):
+        user = autofixture.create_one(g.GallantUser, generate_fk=True)
+        service = autofixture.create_one(g.Service, generate_fk=True, field_values={'user': user})
+
+        request = RequestFactory().get('/')
+        request.user = user
+        serializer = ServiceSerializer(service, context={'request': request})
+        self.assertIsNotNone(serializer.data)
 
 
 class ClientTest(TransactionTestCase):
