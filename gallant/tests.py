@@ -76,6 +76,9 @@ class ServiceTest(TransactionTestCase):
             self.assertEqual(n.deleted_by_parent, 1)
 
     def test_service_serialize(self):
+        import warnings
+        from django.utils.deprecation import RemovedInDjango110Warning
+        warnings.filterwarnings("ignore",category=RemovedInDjango110Warning)
         user = autofixture.create_one(g.GallantUser, generate_fk=True)
         service = autofixture.create_one(g.Service, generate_fk=True, field_values={'user': user})
 

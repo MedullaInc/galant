@@ -5,9 +5,51 @@
     {{ block.super }}
     <script src="{% static "js/angular.min.js" %}"></script>
     <script src="{% static "djangular/js/django-angular.min.js" %}"></script>
-    <script src="{% static "calendr/js/calendr.js" %}"></script>
+{% endblock %}
+
+{% block extra_head %}
+    {{ block.super }}
+    <script type="text/javascript">
+        app = angular.module('gallant', ['ng.django.forms']);
+
+        app.config(['$httpProvider', function ($httpProvider) {
+            $httpProvider.defaults.headers.common['X-CSRFToken'] = '{{ csrf_token|escapejs }}';
+        }]);
+
+        app.controller('CalendrControl', ['$scope', '$http',
+            function ($scope, $http) {
+                $http.get('/en/api/service/1').then(function (result) {
+                    console.log(result);
+                    $scope.service = result.data;
+                });
+
+                $scope.update = function () {
+                    $http.put('/en/api/service/1', $scope.service);
+                };
+            }
+        ]);
+    </script>
 {% endblock %}
 
 {% block section_title %}
     {% trans "Calendar" %}
+{% endblock %}
+
+{% block center_content %}
+    <div ng-app="gallant" ng-controller="CalendrControl">
+        <h2>Service:</h2>
+
+        <div>
+            Name: <input type="text" class="form-control" ng-model="service.name" ng-change="update()">
+        </div>
+        <div>
+            Type: <input type="text" class="form-control" ng-model="service.type" ng-change="update()">
+        </div>
+        <div>
+            Description: <input type="text" class="form-control" ng-model="service.description" ng-change="update()">
+        </div>
+        <div>
+            Quantity: <input type="text" class="form-control" ng-model="service.quantity" ng-change="update()">
+        </div>
+    </div>
 {% endblock %}

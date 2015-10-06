@@ -51,7 +51,8 @@ class SignedOutTest(LiveServerTestCase):
             # add non-logged in permitted views here:
             if hasattr(view_name, '__call__') \
                     or 'account' in view_name \
-                    or view_name in ['home', 'brief_answer', 'signup', 'contact', 'register', 'feedback']:
+                    or view_name in ['home', 'brief_answer', 'signup', 'contact', 'register',
+                                     'feedback', 'api_service_detail']:
                 continue
 
             # add single <pk>-requiring views here:
