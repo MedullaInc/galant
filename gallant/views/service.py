@@ -1,13 +1,15 @@
 from django.contrib import messages
+from django.db.models.manager import Manager
 from django.views.generic import View
 from django.template.response import TemplateResponse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.core.urlresolvers import reverse
-from gallant import forms
+from gallant import forms, serializers
 from gallant import models as g
 from gallant.utils import get_one_or_404
 from django.utils.translation import ugettext_lazy as _
+from rest_framework import generics, permissions
 
 
 class ServiceUpdate(View):
@@ -102,3 +104,13 @@ def service_detail(request, *args, **kwargs):
         'form': form,
     })
 
+
+class ServiceDetailAPI(generics.RetrieveUpdateAPIView):
+    model = g.Service
+    serializer_class = serializers.ServiceSerializer
+    permission_classes = [
+        permissions.AllowAny
+    ]
+
+    def get_queryset(self):
+        return super(Manager, self.model.objects).all()

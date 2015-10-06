@@ -53,6 +53,7 @@ INSTALLED_APPS = (
     'analytical',
     'breadcrumbs',
     'djangular',
+    'rest_framework',
 
     'gallant',
     'briefs',
