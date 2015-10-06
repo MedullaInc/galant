@@ -81,6 +81,7 @@ class ServiceTest(TransactionTestCase):
         warnings.filterwarnings("ignore",category=RemovedInDjango110Warning)
         user = autofixture.create_one(g.GallantUser, generate_fk=True)
         service = autofixture.create_one(g.Service, generate_fk=True, field_values={'user': user})
+        service.notes.add(autofixture.create_one(g.Note, generate_fk=True, field_values={'user': user}))
 
         request = RequestFactory().get('/')
         request.user = user
