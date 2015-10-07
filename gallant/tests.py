@@ -83,15 +83,28 @@ class ServiceTest(TransactionTestCase):
         service = autofixture.create_one(g.Service, generate_fk=True, field_values={'user': user})
         service.notes.add(autofixture.create_one(g.Note, generate_fk=True, field_values={'user': user}))
 
-        request = RequestFactory().get('/')
-        request.user = user
-        serializer = ServiceSerializer(service, context={'request': request})
+        serializer = ServiceSerializer(service)
         self.assertIsNotNone(serializer.data)
 
         parser = ServiceSerializer(service, data=serializer.data)
         self.assertTrue(parser.is_valid())
 
         self.assertEqual(parser.save(), service)
+
+    def test_service_serialize_create(self):
+        import warnings
+        from django.utils.deprecation import RemovedInDjango110Warning
+        warnings.filterwarnings("ignore",category=RemovedInDjango110Warning)
+        user = autofixture.create_one(g.GallantUser, generate_fk=True)
+        service = autofixture.create_one(g.Service, generate_fk=True, field_values={'user': user})
+
+        serializer = ServiceSerializer(service)
+        self.assertIsNotNone(serializer.data)
+
+        parser = ServiceSerializer(data=serializer.data)
+        self.assertTrue(parser.is_valid())
+
+        self.assertNotEqual(parser.save(user=user).id, service.id)
 
 
 class ClientTest(TransactionTestCase):
