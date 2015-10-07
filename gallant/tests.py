@@ -88,6 +88,11 @@ class ServiceTest(TransactionTestCase):
         serializer = ServiceSerializer(service, context={'request': request})
         self.assertIsNotNone(serializer.data)
 
+        parser = ServiceSerializer(service, data=serializer.data)
+        self.assertTrue(parser.is_valid())
+
+        self.assertEqual(parser.save(), service)
+
 
 class ClientTest(TransactionTestCase):
     def test_many_to_many(self):
