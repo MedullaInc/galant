@@ -133,9 +133,14 @@
             $('.action_box').css({'position': 'absolute', 'right': 25, 'z-index': 3});
         });
 
+        $(window).resize(function () {
+            action_box_offset_top = $('.action_box').offset().top;
+            $('.action_box').css({'position': 'absolute', 'right': 25, 'z-index': 3});
+        });
+
         $(document).scroll(function () {
             if ($(window).scrollTop() > 100.0) {
-                $('.action_box').stop().animate({'top': action_box_offset_top + $(window).scrollTop()}, 10);
+                $('.action_box').stop().animate({'top': $(window).scrollTop()-100}, 10);
             } else {
                 $('.action_box').offset({top: action_box_offset_top});
             }
