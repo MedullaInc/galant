@@ -29,6 +29,16 @@ div#calendar_main {
     position: relative;
 }
 
+div#calendar_top_left_corner {
+    position: fixed;
+    left: 0px;
+    top: 126px;
+    width: 300px;
+    height: 101px;
+    background: #ffffff;
+    z-index: 2;
+}
+
 div#calendar_dates {
     overflow: hidden;
     border-left: 1px solid #666666;
@@ -58,13 +68,13 @@ div#calendar_sidebar {
 div#calendar_sidebar.scroll_fixed {
     position: absolute;
     left: 0px;
-    top: 152px;
+    top: 101px;
 }
 
 div#calendar_sidebar.scroll_fixed.fixed {
     position: fixed;
     left: 0px;
-    top: 152px;
+    top: 101px;
     transform: translateZ(1);
     -webkit-transform: translateZ(1);
 }
@@ -76,7 +86,7 @@ div#calendar_tasks {
     float: left;
     position: absolute;
     left: 300px;
-    top: 152px;
+    top: 101px;
 }
 
 div.days {
@@ -89,7 +99,7 @@ div.month, div.week, div.day {
 
 div.month {
     background: #f9f9f9 linear-gradient(to right, #efefef, white);
-    border-top: 1px solid #666666;
+    border-top: none;
 }
 
 div.month p {

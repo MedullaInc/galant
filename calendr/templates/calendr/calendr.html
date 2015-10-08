@@ -40,6 +40,8 @@
 {% block content_div %}
     <div id="calendar">
         <div ng-app="gallant" ng-controller="CalendrControl" id="calendar_container">
+            <div id="calendar_top_left_corner">
+            </div>
             <div id="calendar_dates" class="scroll_fixed">
             </div>
             <div id="calendar_main">
@@ -78,9 +80,9 @@
             var weekdays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
             for (var i = 0; i < total_months; i++) {
-                $('#calendar_dates').append('<div class="month" id="month_' + i + '"><p>' + months[i] + '</p></div>');
+                $('#calendar_dates').append('<div class="month" id="month_' + i + '"></div>');
                 for (var w = 0; w < 4; w++) {
-                    $('#month_' + i).append('<div class="week" id="week_' + i + '_' + w + '"><p>Week ' + (w + 1) + '</p></div>');
+                    $('#month_' + i).append('<div class="week" id="week_' + i + '_' + w + '"><p>'+ months[i] +' — Week ' + (w + 1) + '</p></div>');
                     for (var d = 0; d < 7; d++) {
                         $('#week_' + i + '_' + w).append('<div class="day"><p>' + weekdays[d] + '</p></div>');
                     }
@@ -147,7 +149,7 @@
         var dates_top = 1;
 
         var sidebar_leftInit = 1;
-        var sidebar_top = 288;
+        var sidebar_top = 237;
 
         $('#calendar').scroll(function(){
 
