@@ -66,6 +66,10 @@
 
         });
 
+        $(window).resize(function(){
+            set_calendar_sizes();
+        })
+
         function populate_calendar_elements() {
 
             var total_months = 3;
@@ -142,8 +146,8 @@
         var dates_leftInit = $('#calendar_dates').offset().left;
         var dates_top = 1;
 
-        var sidebar_leftInit = 0;
-        var sidebar_top = $('#calendar_sidebar').offset().top;
+        var sidebar_leftInit = 1;
+        var sidebar_top = 288;
 
         $('#calendar').scroll(function(){
 
@@ -151,6 +155,7 @@
             var y = $(this).scrollTop();
 
             var x_b = $(this).scrollLeft();
+            var y_b = 0 - $(this).scrollTop();
 
             if (y >= dates_top) {
                 $('#calendar_dates.scroll_fixed').addClass('fixed');
@@ -159,7 +164,6 @@
             }
 
             if (x_b >= sidebar_leftInit) {
-                $('#calendar_sidebar.scroll_fixed').addClass('fixed');
             } else {
                 $('#calendar_sidebar.scroll_fixed').removeClass('fixed');
             }
@@ -169,7 +173,8 @@
             });
 
             $('#calendar_sidebar.scroll_fixed').offset({
-                left: x_b+10
+                left: 10,
+                top: y_b + sidebar_top
             });
 
         });
