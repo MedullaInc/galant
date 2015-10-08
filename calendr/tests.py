@@ -1,3 +1,12 @@
-from django.test import TestCase
+import autofixture
+from calendr.models import Task
+from gallant import models as g
+from django.test.testcases import TransactionTestCase
 
-# Create your tests here.
+
+class ServiceTest(TransactionTestCase):
+    def test_save_load(self):
+        user = autofixture.create_one(g.GallantUser, generate_fk=True)
+        task = Task.objects.create(user=user, assignee=user)
+
+        self.assertIsNotNone(task)
