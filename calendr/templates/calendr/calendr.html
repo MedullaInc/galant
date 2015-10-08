@@ -1,5 +1,9 @@
-{% extends "base_sidebar_enclosed.html" %}
+{% extends "base_body.html" %}
 {% load i18n staticfiles %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static "css/calendar.css" %}">
+{% endblock %}
 
 {% block scripts %}
     {{ block.super }}
@@ -19,7 +23,6 @@
         app.controller('CalendrControl', ['$scope', '$http',
             function ($scope, $http) {
                 $http.get('/en/api/service/1').then(function (result) {
-                    console.log(result);
                     $scope.service = result.data;
                 });
 
@@ -31,25 +34,145 @@
     </script>
 {% endblock %}
 
-{% block section_title %}
-    {% trans "Calendar" %}
+{% block sub_header %}
 {% endblock %}
 
-{% block center_content %}
-    <div ng-app="gallant" ng-controller="CalendrControl">
-        <h2>Service:</h2>
-
-        <div>
-            Name: <input type="text" class="form-control" ng-model="service.name" ng-change="update()">
-        </div>
-        <div>
-            Type: <input type="text" class="form-control" ng-model="service.type" ng-change="update()">
-        </div>
-        <div>
-            Description: <input type="text" class="form-control" ng-model="service.description" ng-change="update()">
-        </div>
-        <div>
-            Quantity: <input type="text" class="form-control" ng-model="service.quantity" ng-change="update()">
+{% block content_div %}
+    <div id="calendar">
+        <div ng-app="gallant" ng-controller="CalendrControl" id="calendar_container">
+            <div id="calendar_dates" class="scroll_fixed">
+            </div>
+            <div id="calendar_main">
+                <div id="calendar_sidebar" class="scroll_fixed">
+                </div>
+                <div id="calendar_tasks">
+                </div>
+            </div>
         </div>
     </div>
+
+{% endblock %}
+
+{% block footer_div %}
+{% endblock %}
+
+{% block extra_body %}
+
+    <script>
+        $(document).ready(function () {
+
+            populate_calendar_elements();
+            set_calendar_sizes();
+
+        });
+
+        function populate_calendar_elements() {
+
+            var total_months = 3;
+            var resources = ['Gustavo', 'David', 'Sebastian', 'Gustavo', 'David', 'Sebastian', 'Gustavo', 'David', 'Sebastian', 'Gustavo', 'David', 'Sebastian', 'Gustavo', 'David', 'Sebastian', 'Gustavo', 'David', 'Sebastian', 'Gustavo', 'David', 'Sebastian', 'Gustavo', 'David', 'Sebastian'];
+            var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+            var weekdays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+
+            for (var i = 0; i < total_months; i++) {
+                $('#calendar_dates').append('<div class="month" id="month_' + i + '"><p>' + months[i] + '</p></div>');
+                for (var w = 0; w < 4; w++) {
+                    $('#month_' + i).append('<div class="week" id="week_' + i + '_' + w + '"><p>Week ' + (w + 1) + '</p></div>');
+                    for (var d = 0; d < 7; d++) {
+                        $('#week_' + i + '_' + w).append('<div class="day"><p>' + weekdays[d] + '</p></div>');
+                    }
+                }
+            }
+
+            for (var r = 0; r < resources.length; r++) {
+                $('#calendar_sidebar').append('<div class="resource name"><p>' + resources[r] + '</p></div>');
+            }
+
+            $('#calendar_sidebar').append('<div class="resource bottom"></div>');
+
+            $('#calendar_sidebar').find('.resource').each(function () {
+                if ($(this).hasClass('bottom')) {
+                    $('#calendar_tasks').append('<div class="resource bottom"></div>');
+                } else {
+                    $('#calendar_tasks').append('<div class="resource"></div>');
+                }
+            });
+
+            var total_days = $('#calendar_dates').find('.day').length;
+            var day_of_week = 0;
+
+            for (var i = 0; i < total_days; i++) {
+                day_of_week += 1;
+                $('#calendar_tasks').find('.resource').each(function () {
+                    if (day_of_week == 6 || day_of_week == 7) {
+                        $(this).append('<div class="day weekend"></div>');
+                    } else {
+                        $(this).append('<div class="day weekday"></div>');
+                    }
+                });
+
+                if (day_of_week == 7) {
+                    day_of_week = 0;
+                }
+
+            }
+
+        }
+
+        function set_calendar_sizes() {
+
+            var calendar_dates_width = 0;
+
+            $('#calendar_dates').find('.month').each(function () {
+                $(this).find('.week').each(function(){
+                    calendar_dates_width += $(this).outerWidth();
+                })
+            });
+
+            $('#calendar_tasks').find('.resource').each(function(){
+               $(this).css({'width': calendar_dates_width});
+            });
+
+            $('#calendar_tasks').css({'width': calendar_dates_width + 1 });
+            $('#calendar_main').css({'width': calendar_dates_width + 1 });
+            $('#calendar_dates').css({'width': calendar_dates_width + 1 });
+            $('#calendar').height($(window).height() - $('#calendar_dates').offset().top);
+
+        }
+
+        var dates_leftInit = $('#calendar_dates').offset().left;
+        var dates_top = 1;
+
+        var sidebar_leftInit = 0;
+        var sidebar_top = $('#calendar_sidebar').offset().top;
+
+        $('#calendar').scroll(function(){
+
+            var x = 0 - $(this).scrollLeft();
+            var y = $(this).scrollTop();
+
+            var x_b = $(this).scrollLeft();
+
+            if (y >= dates_top) {
+                $('#calendar_dates.scroll_fixed').addClass('fixed');
+            } else {
+                $('#calendar_dates.scroll_fixed').removeClass('fixed');
+            }
+
+            if (x_b >= sidebar_leftInit) {
+                $('#calendar_sidebar.scroll_fixed').addClass('fixed');
+            } else {
+                $('#calendar_sidebar.scroll_fixed').removeClass('fixed');
+            }
+
+            $('#calendar_dates.scroll_fixed').offset({
+                left: x + dates_leftInit
+            });
+
+            $('#calendar_sidebar.scroll_fixed').offset({
+                left: x_b+10
+            });
+
+        });
+
+    </script>
 {% endblock %}

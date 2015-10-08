@@ -75,6 +75,7 @@
         {% url 'home' as home_url %}
         {% if request.get_full_path != home_url %}
 
+            {% block sub_header %}
             <div class="container">
                 <div class="row">
                     {% if user.is_authenticated %}
@@ -101,43 +102,49 @@
                     </div>
                 </div>
             </div>
+            {% endblock %}
 
         {% endif %}
 
-        <section class="content-1">
-            <div class="holder v-center">
+        {% block content_div %}
+            <section class="content-1">
+                <div class="holder v-center">
+                    <div class="container">
+                        {% block content %}
+                        {% endblock content %}
+                    </div>
+                </div>
+            </section>
+        {% endblock %}
+
+        {% block footer_div %}
+            <footer class="footer-3">
                 <div class="container">
-                    {% block content %}
-                    {% endblock content %}
+                    <div class="row">
+
+                        <div class="col-sm-4 col-xs-12">
+                            {% trans 'Features' %}<br>
+                            {% trans 'Pricing' %}<br>
+                            <a href="{% url 'contact' %}">{% trans 'Contact' %}</a>
+                        </div>
+
+                        <div class="col-sm-4 col-xs-12">
+                            {% trans 'Facebook' %}<br>
+                            {% trans 'Twitter' %}<br>
+                            {% trans 'Blog' %}
+                        </div>
+
+                        <div class="col-sm-4 col-xs-12">
+                            {% trans 'Copyright Medulla Inc.' %} © {% now "Y" %}<br>
+                            {% trans 'Terms & Conditions' %}<br>
+                            {% trans 'Privacy Policy' %}
+                        </div>
+
+                    </div>
                 </div>
-            </div>
-        </section>
+            </footer>
+        {% endblock %}
 
-        <footer class="footer-3">
-            <div class="container">
-                <div class="row">
-
-                    <div class="col-sm-4 col-xs-12">
-                        {% trans 'Features' %}<br>
-                        {% trans 'Pricing' %}<br>
-                        <a href="{% url 'contact' %}">{% trans 'Contact' %}</a>
-                    </div>
-
-                    <div class="col-sm-4 col-xs-12">
-                        {% trans 'Facebook' %}<br>
-                        {% trans 'Twitter' %}<br>
-                        {% trans 'Blog' %}
-                    </div>
-
-                    <div class="col-sm-4 col-xs-12">
-                        {% trans 'Copyright Medulla Inc.' %} © {% now "Y" %}<br>
-                        {% trans 'Terms & Conditions' %}<br>
-                        {% trans 'Privacy Policy' %}
-                    </div>
-
-                </div>
-            </div>
-        </footer>
     </div>
     <div id="base_modal" class="modal fade" role="dialog">
         <div class="modal-dialog">
