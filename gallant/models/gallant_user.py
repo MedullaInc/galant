@@ -114,8 +114,8 @@ class UserManagerMethodsMixin(object):
         return super(UserManagerMethodsMixin, self).get(*args, **kwargs)
 
     def all_for(self, user, perm, show_deleted=False):
-        if show_deleted is True:
-            return get_objects_for_user(user, perm, self, accept_global_perms=False).filter(deleted=True)
+        if show_deleted:
+            return get_objects_for_user(user, perm, self, accept_global_perms=False)
         else:
             return get_objects_for_user(user, perm, self, accept_global_perms=False).filter(deleted=False)
 
@@ -130,7 +130,7 @@ class UserManagerMethodsMixin(object):
         mod = inspect.getmodule(inspect.stack()[2][0])  # Who is calling us?
         if not mod:
             return False
-        return all(app not in mod.__name__ for app in ['autofixture', 'django'])
+        return all(app not in mod.__name__ for app in ['autofixture', 'django', 'rest_framework'])
 
 
 class UserModelManager(UserManagerMethodsMixin, m.Manager):

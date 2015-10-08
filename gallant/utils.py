@@ -1,4 +1,3 @@
-import string
 from subprocess import check_output
 from allauth.account.adapter import DefaultAccountAdapter
 from django.conf import settings
@@ -6,6 +5,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.http.response import Http404
 from django.db import models as m
 from django.contrib.sites.models import Site
+from rest_framework.permissions import DjangoModelPermissions
 
 LANG_DICT = dict(settings.LANGUAGES)
 SITE_CACHE = {}
@@ -17,6 +17,31 @@ def get_one_or_404(user, perm, klass, *args, **kwargs):
         return obj
 
     raise Http404("Object not found.")
+
+
+class GallantObjectPermissions(DjangoModelPermissions):
+    perms_map = {
+        'GET': ['view_%(model_name)s'],
+        'OPTIONS': [],
+        'HEAD': [],
+        'POST': ['add_%(model_name)s'],
+        'PUT': ['change_%(model_name)s'],
+        'PATCH': ['change_%(model_name)s'],
+        'DELETE': ['delete_%(model_name)s'],
+    }
+
+    def has_permission(self, request, view):
+        perms = self.get_required_permissions(request.method, view.get_queryset().model)
+        if hasattr(view, 'get_object'):
+            obj = view.get_object()
+        else:
+            return False
+
+        return (
+            request.user and
+            request.user.is_authenticated() and
+            request.user.has_perms(perms, obj)
+        )
 
 
 # Disable allauth signup for now

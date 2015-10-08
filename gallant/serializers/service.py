@@ -1,20 +1,14 @@
-from gallant.models.misc import Note
-from rest_framework import serializers, relations
+from rest_framework import serializers
 from gallant.models import Service
+from .misc import MoneyField
 
 
 class ServiceSerializer(serializers.ModelSerializer):
-    '''parent = serializers.PrimaryKeyRelatedField(queryset=)
+    user = serializers.PrimaryKeyRelatedField(read_only=True)
+    parent = serializers.PrimaryKeyRelatedField(read_only=True)
+    notes = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
+    cost = MoneyField()
 
-    def get_fields(self, *args, **kwargs):
-        fields = super(ServiceSerializer, self).get_fields(*args, **kwargs)
-        fields['notes'] = relations.ManyRelatedField(
-            child_relation=relations.RelatedField(
-                queryset=Note.objects.all_for(self.context['request'].user, 'view_note')
-            )
-        )
-        return fields
-    '''
     class Meta:
         model = Service
-        fields = ('id', 'name', 'description', 'quantity', 'type')
+        fields = ('id', 'user', 'name', 'description', 'cost', 'quantity', 'type', 'parent', 'notes')

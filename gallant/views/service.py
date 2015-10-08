@@ -1,5 +1,4 @@
 from django.contrib import messages
-from django.db.models.manager import Manager
 from django.views.generic import View
 from django.template.response import TemplateResponse
 from django.http import HttpResponseRedirect
@@ -7,9 +6,9 @@ from django.shortcuts import render
 from django.core.urlresolvers import reverse
 from gallant import forms, serializers
 from gallant import models as g
-from gallant.utils import get_one_or_404
+from gallant.utils import get_one_or_404, GallantObjectPermissions
 from django.utils.translation import ugettext_lazy as _
-from rest_framework import generics, permissions
+from rest_framework import generics
 
 
 class ServiceUpdate(View):
@@ -37,9 +36,12 @@ class ServiceUpdate(View):
         project = get_one_or_404(self.request.user, 'view_project', g.Project, pk=self.kwargs['project_id'])
 
         self.request.breadcrumbs([(_('Projects'), reverse('projects')),
-                                  (_('Project: %s' % project), reverse('project_detail', args=[self.kwargs['project_id']])),
-                                  (_('Service: %s' % self.object.name.get_text()),reverse('service_detail', args=[self.kwargs['project_id'], self.kwargs['pk']])),
-                                  (_('Edit'), reverse('edit_service', args=[self.kwargs['project_id'], self.kwargs['pk']]))
+                                  (_('Project: %s' % project),
+                                   reverse('project_detail', args=[self.kwargs['project_id']])),
+                                  (_('Service: %s' % self.object.name.get_text()),
+                                   reverse('service_detail', args=[self.kwargs['project_id'], self.kwargs['pk']])),
+                                  (_('Edit'),
+                                   reverse('edit_service', args=[self.kwargs['project_id'], self.kwargs['pk']]))
                                   ])
 
         return TemplateResponse(request=self.request,
@@ -84,7 +86,8 @@ def service_detail(request, *args, **kwargs):
 
     request.breadcrumbs([(_('Projects'), reverse('projects')),
                          (_('Project: %s' % project), reverse('project_detail', args=[kwargs['project_id']])),
-                         (_('Service: %s' % service.name.get_text()), reverse('service_detail', args=[kwargs['project_id'], kwargs['pk']]))
+                         (_('Service: %s' % service.name.get_text()),
+                          reverse('service_detail', args=[kwargs['project_id'], kwargs['pk']]))
                          ])
 
     if request.method == 'POST' and request.user.has_perm('change_service', service):
@@ -109,8 +112,9 @@ class ServiceDetailAPI(generics.RetrieveUpdateAPIView):
     model = g.Service
     serializer_class = serializers.ServiceSerializer
     permission_classes = [
-        permissions.AllowAny
+        GallantObjectPermissions
     ]
 
     def get_queryset(self):
-        return super(Manager, self.model.objects).all()
+        return self.model.objects.all_for(self.request.user, 'view_service')
+
