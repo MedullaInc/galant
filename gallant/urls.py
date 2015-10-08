@@ -53,7 +53,7 @@ urlpatterns = i18n_patterns(
     url(r'^project/(?P<project_id>[0-9]+)/service/edit/(?P<pk>[0-9]+)$', login_required(gallant.views.ServiceUpdate.as_view()), name='edit_service'),
     url(r'^project/(?P<project_id>[0-9]+)/service/(?P<pk>[0-9]+)$', login_required(gallant.views.service_detail), name='service_detail'),
 
-    url(r'^api/service/(?P<pk>[0-9]+)$', gallant.views.ServiceDetailAPI.as_view(), name='api_service_detail'),
+    url(r'^api/service/(?P<pk>[0-9]+)$', login_required(gallant.views.ServiceDetailAPI.as_view()), name='api_service_detail'),
 
     url(r'^register/(?P<pk>[0-9]+)', gallant.views.Register.as_view(), name='register'),
     url(r'^account/add/', login_required(gallant.views.AccountAdd.as_view()), name='add_account'),
