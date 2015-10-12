@@ -45,7 +45,7 @@ class Service(UserModel):
         return total
 
     def __unicode__(self):
-        return self.name
+        return self.name.get_text()
 
     class Meta:
         permissions = (
