@@ -11,6 +11,9 @@ class Note(UserModel):
     text = m.TextField(help_text='User comment / note.')
     created = m.DateTimeField(auto_now_add=True)
 
+    def __unicode__(self):
+        return '%s: %s' % (self.user.email, self.text)
+
     class Meta:
         permissions = (
             ('view_note', 'View note'),
