@@ -39,7 +39,7 @@ class Service(UserModel):
 
     def get_total_cost(self):
         total = self.cost * self.quantity
-        for sub in self.sub_services.all_for(self.user, 'view_service'):
+        for sub in self.sub_services.all_for(self.user):
             total += sub.get_total_cost()
 
         return total
@@ -56,10 +56,10 @@ class Service(UserModel):
 
     def soft_delete(self, deleted_by_parent=False):
         with transaction.atomic():
-            for note in self.notes.all_for(self.user, 'change_note'):
+            for note in self.notes.all_for(self.user, 'change'):
                 note.soft_delete(deleted_by_parent=True)
 
-            for service in self.sub_services.all_for(self.user, 'change_service'):
+            for service in self.sub_services.all_for(self.user, 'change'):
                 service.soft_delete(deleted_by_parent=True)
 
             super(Service, self).soft_delete(deleted_by_parent)

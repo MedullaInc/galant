@@ -20,7 +20,7 @@ class QuoteTemplateList(View):
                                 template="quotes/quotetemplate_list.html",
                                 context={'title': 'Quote Templates',
                                          'object_list': q.QuoteTemplate.objects
-                                .all_for(request.user, 'view_quotetemplate')})
+                                .all_for(request.user)})
 
 
 class QuoteTemplateDetail(View):

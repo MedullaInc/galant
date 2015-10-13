@@ -41,7 +41,7 @@ class Brief(g.UserModel):
     def get_languages(self):
         language_set = set()
         language_set.update(self.title.keys())
-        for q in list(self.questions.all_for(self.user, 'view_question')):
+        for q in list(self.questions.all_for(self.user)):
             if q is not None:
                 language_set.update(q.question.keys())
 
@@ -59,7 +59,7 @@ class Brief(g.UserModel):
 
     def soft_delete(self, deleted_by_parent=False):
         with transaction.atomic():
-            for question in self.questions.all_for(self.user, 'change_question'):
+            for question in self.questions.all_for(self.user, 'change'):
                 question.soft_delete(deleted_by_parent=True)
 
             super(Brief, self).soft_delete(deleted_by_parent)

@@ -19,7 +19,7 @@ class ClientList(View):
         return TemplateResponse(request=request,
                                 template="gallant/client_list.html",
                                 context={'title': 'Clients',
-                                         'object_list': g.Client.objects.all_for(request.user, 'view_client')})
+                                         'object_list': g.Client.objects.all_for(request.user)})
 
 
 class ClientUpdate(View):
@@ -113,7 +113,7 @@ def client_detail(request, pk):
                             template="gallant/client_detail.html",
                             context={'object': client, 'form': form,
                                      'template_list': b.BriefTemplate.objects
-                                                       .all_for(request.user, 'view_brieftemplate'),'title': client.name })
+                                                       .all_for(request.user),'title': client.name })
 
 
 class ClientDelete(View):

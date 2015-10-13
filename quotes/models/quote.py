@@ -39,27 +39,27 @@ class Quote(g.UserModel):
 
     def get_languages(self):
         language_set = set()
-        for s in list(self.sections.all_for(self.user, 'view_section')):
+        for s in list(self.sections.all_for(self.user)):
             if s is not None:
                 language_set.update(s.get_languages())
 
         return language_set
 
     def intro(self):
-        return self.sections.get_for(self.user, 'view_section', name='intro')
+        return self.sections.get_for(self.user, name='intro')
 
     def important_notes(self):
-        return self.sections.get_for(self.user, 'view_section', name='important_notes')
+        return self.sections.get_for(self.user, name='important_notes')
 
     def all_sections(self):
-        sections = list(self.sections.all_for(self.user, 'view_section')) + \
-                   list(self.services.all_for(self.user, 'view_section'))
+        sections = list(self.sections.all_for(self.user)) + \
+                   list(self.services.all_for(self.user))
         sections.sort(lambda a, b: cmp(a.index, b.index))
         return sections
 
     def get_total_cost(self):
         total = Money(0, "USD")
-        for service in self.services.all_for(self.user, 'view_section'):
+        for service in self.services.all_for(self.user):
             total += service.service.get_total_cost()
 
         return total
@@ -76,10 +76,10 @@ class Quote(g.UserModel):
 
     def soft_delete(self, deleted_by_parent=False):
         with transaction.atomic():
-            for section in self.sections.all_for(self.user, 'change_section'):
+            for section in self.sections.all_for(self.user, 'change'):
                 section.soft_delete(deleted_by_parent=True)
 
-            for service in self.services.all_for(self.user, 'change_service'):
+            for service in self.services.all_for(self.user, 'change'):
                 service.soft_delete(deleted_by_parent=True)
 
             super(Quote, self).soft_delete(deleted_by_parent)

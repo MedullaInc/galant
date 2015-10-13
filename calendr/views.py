@@ -17,5 +17,5 @@ class TaskDetailAPI(generics.RetrieveUpdateAPIView):
     ]
 
     def get_queryset(self):
-        return self.model.objects.all_for(self.request.user, 'view_task')
+        return self.model.objects.all_for(self.request.user)
 

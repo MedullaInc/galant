@@ -57,13 +57,13 @@ class Client(UserModel):
 
     def soft_delete(self, deleted_by_parent=False):
         with transaction.atomic():
-            for note in self.notes.all_for(self.user, 'change_note'):
+            for note in self.notes.all_for(self.user, 'change'):
                 note.soft_delete(deleted_by_parent=True)
 
-            for brief in self.brief_set.all_for(self.user, 'change_brief'):
+            for brief in self.brief_set.all_for(self.user, 'change'):
                 brief.soft_delete(deleted_by_parent=True)
 
-            for quote in self.quote_set.all_for(self.user, 'change_quote'):
+            for quote in self.quote_set.all_for(self.user, 'change'):
                 quote.soft_delete(deleted_by_parent=True)
 
             super(Client, self).soft_delete(deleted_by_parent)

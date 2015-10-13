@@ -116,5 +116,5 @@ class ServiceDetailAPI(generics.RetrieveUpdateAPIView):
     ]
 
     def get_queryset(self):
-        return self.model.objects.all_for(self.request.user, 'view_service')
+        return self.model.objects.all_for(self.request.user)
 

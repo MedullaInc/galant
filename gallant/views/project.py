@@ -14,8 +14,8 @@ from django.utils.translation import ugettext_lazy as _
 
 class ProjectList(View):
     def get(self, request):
-        projects = g.Project.objects.all_for(request.user, 'view_project')
-        quotes = q.Quote.objects.all_for(request.user, 'view_quote').annotate(projects_count=Count('projects')).filter(projects_count=0, status=5)
+        projects = g.Project.objects.all_for(request.user)
+        quotes = q.Quote.objects.all_for(request.user).annotate(projects_count=Count('projects')).filter(projects_count=0, status=5)
 
         request.breadcrumbs(_('Projects'), request.path_info)
 
@@ -44,7 +44,7 @@ class ProjectUpdate(View):
                 quotes_to_link.append(int(quote))
 
             # Quotes to unlink to project
-            for quote in self.object.quote_set.all_for(request.user, 'view_quote'):
+            for quote in self.object.quote_set.all_for(request.user):
                 if request.POST.getlist('linked_quotes', None):
                     if "%s" % quote.id not in request.POST.getlist('linked_quotes'):
                         quotes_to_unlink.append(quote)
@@ -84,7 +84,7 @@ class ProjectUpdate(View):
 
         # Link new quotes
         for quote_id in quotes_to_link:
-            quote = q.Quote.objects.get_for(self.request.user, 'change_quote', id=quote_id)
+            quote = q.Quote.objects.get_for(self.request.user, 'change', id=quote_id)
             quote.projects.add(obj)
             quote.save()
 
@@ -101,8 +101,8 @@ class ProjectUpdate(View):
             obj.notes.add(note)
 
         # If its a new project
-        if len(obj.quote_set.all_for(self.request.user, 'view_quote')) is 0:
-            quote = q.Quote.objects.get_for(self.request.user, 'change_quote', id=self.kwargs['quote_id'])
+        if len(obj.quote_set.all_for(self.request.user)) is 0:
+            quote = q.Quote.objects.get_for(self.request.user, 'change', id=self.kwargs['quote_id'])
             quote.projects.add(obj)
             quote.save()
 
@@ -137,8 +137,8 @@ def project_detail(request, pk):
 
     # TODO: This should be refactored!
     services = []
-    for quote in project.quote_set.all_for(request.user, 'view_quote'):
-        for service in quote.services.all_for(request.user, 'view_servicesection'):
+    for quote in project.quote_set.all_for(request.user):
+        for service in quote.services.all_for(request.user):
             services.append(service)
 
     if request.method == 'POST' and request.user.has_perm('change_project', project):

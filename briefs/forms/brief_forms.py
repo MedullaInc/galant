@@ -18,7 +18,7 @@ class BriefForm(gf.UserModelForm):
         if 'client' in self.initial:
             self.fields['client'].widget = forms.HiddenInput()
         else:
-            self.fields['client'].queryset = g.Client.objects.all_for(self.user, 'view_client')
+            self.fields['client'].queryset = g.Client.objects.all_for(self.user)
 
     def clean_client(self):
         client = self.cleaned_data['client']

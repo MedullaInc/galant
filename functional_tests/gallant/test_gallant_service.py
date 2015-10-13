@@ -74,6 +74,9 @@ class GallantServiceTest(browser.SignedInTest):
 
         b.find_element_by_xpath('//textarea[@name="note.text"]').send_keys(test_string)
         b.find_element_by_xpath('//button[@type="submit"]').click()
+        
+        s.refresh_from_db()
+        self.assertEqual(s.notes.count(), 1)
 
         self.assertTrue(test_string in b.find_element_by_id('notes').text)
 

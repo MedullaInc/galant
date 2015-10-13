@@ -91,7 +91,7 @@
                     </div>
                     <div class="row service_notes">
                         <div class="col-lg-10 col-lg-offset-2">
-                            {% objects_for service.notes 'view_note' as notes %}
+                            {% objects_for service.notes as notes %}
                             {% for item in notes %}
                                 {% include "gallant/note.html" %}
                             {% endfor %}
@@ -113,7 +113,7 @@
 
             <hr>
 
-            {% objects_for object.quote.brief_set 'view_brief' as briefs %}
+            {% objects_for object.quote.brief_set as briefs %}
             {% for brief in briefs %}
                 <div class="brief_link">
                     <a href="{% url 'brief_detail' brief.id %}?project_id={{ object.id }}">{{ brief }} </a>&mdash;
@@ -133,7 +133,7 @@
 
         <hr>
 
-        {% objects_for object.notes 'view_note' as notes %}
+        {% objects_for object.notes as notes %}
         {% for item in notes %}
             {% include "gallant/note.html" %}
         {% endfor %}

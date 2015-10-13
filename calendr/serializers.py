@@ -10,11 +10,11 @@ class TaskSerializer(serializers.ModelSerializer):
     def get_fields(self, *args, **kwargs):
         fields = super(TaskSerializer, self).get_fields(*args, **kwargs)
         fields['project'] = serializers.PrimaryKeyRelatedField(
-            queryset=g.Project.objects.all_for(self.context['request'].user, 'view_project'))
+            queryset=g.Project.objects.all_for(self.context['request'].user))
         fields['services'] = serializers.PrimaryKeyRelatedField(
-            many=True, queryset=g.Service.objects.all_for(self.context['request'].user, 'view_service'))
+            many=True, queryset=g.Service.objects.all_for(self.context['request'].user))
         fields['notes'] = serializers.PrimaryKeyRelatedField(
-            many=True, queryset=g.Note.objects.all_for(self.context['request'].user, 'view_note'))
+            many=True, queryset=g.Note.objects.all_for(self.context['request'].user))
 
         return fields
 

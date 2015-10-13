@@ -12,7 +12,7 @@ class QuotePDF(View):  # pragma: no cover
     def get(self, request, *args, **kwargs):
         if 'pk' in kwargs:
             # Quote for a logged-in user
-            quote = q.Quote.objects.get_for(request.user, 'view_quote', pk=kwargs['pk'])
+            quote = q.Quote.objects.get_for(request.user, pk=kwargs['pk'])
         elif 'token' in kwargs:
             # Quote for visitor directly from url with token
             quote = get_object_or_404(q.Quote, token=kwargs['token'])
@@ -39,7 +39,7 @@ class QuotePDF(View):  # pragma: no cover
 
 def quote_preview(request, *args, **kwargs):
     # Get quote
-    quote = q.Quote.objects.get_for(request.user, 'view_quote', pk=kwargs['pk'])
+    quote = q.Quote.objects.get_for(request.user, pk=kwargs['pk'])
 
     # Render HTML
     context = {'object': quote}
@@ -48,7 +48,7 @@ def quote_preview(request, *args, **kwargs):
 
 def quote_header(request, *args, **kwargs):
     # Get quote
-    quote = q.Quote.objects.get_for(request.user, 'view_quote', pk=kwargs['pk'])
+    quote = q.Quote.objects.get_for(request.user, pk=kwargs['pk'])
 
     # Render HTML
     context = {'object': quote}
@@ -57,7 +57,7 @@ def quote_header(request, *args, **kwargs):
 
 def quote_footer(request, *args, **kwargs):
     # Get quote
-    quote = q.Quote.objects.get_for(request.user, 'view_quote', pk=kwargs['pk'])
+    quote = q.Quote.objects.get_for(request.user, pk=kwargs['pk'])
 
     # Render HTML
     context = {'object': quote}

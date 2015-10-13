@@ -10,7 +10,7 @@ class QuoteTest(test.TransactionTestCase):
     def test_save_load(self):
         fixture = AutoFixture(q.Quote, generate_fk=True)
         obj = fixture.create(1)[0]
-        new_obj = q.Quote.objects.get_for(obj.user, 'view_quote', id=obj.id)
+        new_obj = q.Quote.objects.get_for(obj.user, id=obj.id)
 
         self.assertEqual(obj.id, new_obj.id)
 
@@ -23,7 +23,7 @@ class QuoteTest(test.TransactionTestCase):
             o.parent = base_quote
             o.save()
 
-        self.assertEqual(len(base_quote.versions.all_for(user, 'view_quote')), 9)
+        self.assertEqual(len(base_quote.versions.all_for(user)), 9)
 
     def test_quote_soft_delete(self):
         # Create Quote
@@ -51,12 +51,12 @@ class QuoteTest(test.TransactionTestCase):
         self.assertEqual(quote.deleted_by_parent, 0)
 
         # Validate Quote Sections deleted & deleted_by_parent fields are 1
-        for section in quote.sections.all_for(user, 'view_section'):
+        for section in quote.sections.all_for(user):
             self.assertEqual(section.deleted, 1)
             self.assertEqual(section.deleted_by_parent, 1)
 
         # Validate Quote Services deleted & deleted_by_parent fields are 1
-        for service in quote.services.all_for(user, 'view_service'):
+        for service in quote.services.all_for(user):
             self.assertEqual(service.deleted, 1)
             self.assertEqual(service.deleted_by_parent, 1)
 
@@ -73,7 +73,7 @@ class QuoteTemplateTest(test.TestCase):
         quote.sections.add(i)
         quote.sections.add(m)
 
-        new_quote = q.Quote.objects.get_for(quote.user, 'view_quote', id=quote.id)
+        new_quote = q.Quote.objects.get_for(quote.user, id=quote.id)
 
         self.assertEqual(quote.id, new_quote.id)
 
@@ -203,7 +203,7 @@ class QuoteFormTest(test.TestCase):
         obj.save()
         intro_id = obj.intro().id
         important_notes_id = obj.important_notes().id
-        section_ids = [s.id for s in obj.sections.all_for(self.request.user, 'view_section')]
+        section_ids = [s.id for s in obj.sections.all_for(self.request.user)]
 
         new_data['-section-0-id'] = intro_id
         new_data['-section-1-id'] = important_notes_id
@@ -213,7 +213,7 @@ class QuoteFormTest(test.TestCase):
 
         new_obj = qf.create_quote(f, s)
         new_obj.save()
-        new_section_ids = [s.id for s in new_obj.sections.all_for(self.request.user, 'view_section')]
+        new_section_ids = [s.id for s in new_obj.sections.all_for(self.request.user)]
 
         self.assertEquals(section_ids, new_section_ids)
 
@@ -236,8 +236,7 @@ class QuoteFormTest(test.TestCase):
 
         obj = qf.create_quote(f, s)
         obj.save()
-        service_ids = [s.id for s in obj.services.all_for(self.request.user,
-                                                          'view_servicesection')]
+        service_ids = [s.id for s in obj.services.all_for(self.request.user)]
 
         new_data['-service-2-id'] = service_ids[0]
         new_data['-service-3-id'] = service_ids[1]
@@ -246,8 +245,7 @@ class QuoteFormTest(test.TestCase):
 
         new_obj = qf.create_quote(f, s)
         new_obj.save()
-        new_service_ids = [s.id for s in new_obj.services.all_for(self.request.user,
-                                                                  'view_servicesection')]
+        new_service_ids = [s.id for s in new_obj.services.all_for(self.request.user)]
 
         self.assertEquals(service_ids, new_service_ids)
 
@@ -263,7 +261,7 @@ class QuoteFormTest(test.TestCase):
 
         obj = qf.create_quote(f, s)
         obj.save()
-        section_ids = [s.id for s in obj.sections.all_for(self.request.user, 'view_section')]
+        section_ids = [s.id for s in obj.sections.all_for(self.request.user)]
 
         new_data['-section-2-title'] = 'new title'
         self.request.POST.update(new_data)
@@ -271,6 +269,6 @@ class QuoteFormTest(test.TestCase):
 
         new_obj = qf.create_quote(f, s)
         new_obj.save()
-        new_section_ids = [s.id for s in new_obj.sections.all_for(self.request.user, 'view_section')]
+        new_section_ids = [s.id for s in new_obj.sections.all_for(self.request.user)]
 
         self.assertNotEquals(section_ids, new_section_ids)

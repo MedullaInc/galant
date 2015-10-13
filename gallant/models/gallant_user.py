@@ -113,13 +113,15 @@ class UserManagerMethodsMixin(object):
             raise RuntimeError('Attempted to use get() via UserModelManager. Use get_for() instead.')
         return super(UserManagerMethodsMixin, self).get(*args, **kwargs)
 
-    def all_for(self, user, perm, show_deleted=False):
+    def all_for(self, user, perm='view', show_deleted=False):
+        perm = '%s_%s' % (perm, self.model._meta.model_name)
         if show_deleted:
             return get_objects_for_user(user, perm, self, accept_global_perms=False)
         else:
             return get_objects_for_user(user, perm, self, accept_global_perms=False).filter(deleted=False)
 
-    def get_for(self, user, perm, *args, **kwargs):
+    def get_for(self, user, perm='view', *args, **kwargs):
+        perm = '%s_%s' % (perm, self.model._meta.model_name)
         obj = super(UserManagerMethodsMixin, self).get(*args, **kwargs)
         if user.has_perm(perm, obj) and obj.deleted is False:
             return obj
@@ -142,7 +144,8 @@ class PolyUserModelManager(UserManagerMethodsMixin, PolymorphicManager):
     queryset_class = PolymorphicQuerySet
 
     # WARNING: this may be inefficient in the long run. May switch to non-polymorphic.
-    def all_for(self, user, perm):
+    def all_for(self, user, perm='view'):
+        perm = '%s_%s' % (perm, self.model._meta.model_name)
         ids_queryset = self._get_valid_ids(self.model, user, perm)
 
         for rel in self.model._meta.related_objects:

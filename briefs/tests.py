@@ -10,7 +10,7 @@ class BriefTest(test.TransactionTestCase):
     def test_save_load(self):
         fixture = AutoFixture(b.Brief, generate_fk=True)
         brief = fixture.create(1)[0]
-        new_brief = b.Brief.objects.get_for(brief.user, 'view_brief', id=brief.id)
+        new_brief = b.Brief.objects.get_for(brief.user, id=brief.id)
         self.assertEqual(brief.id, new_brief.id)
 
     def test_brief_soft_delete(self):
@@ -37,7 +37,7 @@ class BriefTest(test.TransactionTestCase):
         self.assertEqual(brief.deleted_by_parent, 0)
 
         # Validate questions deleted field is 1 and deleted_by_parent is 1
-        for q in brief.questions.all_for(user, 'view_question'):
+        for q in brief.questions.all_for(user):
             self.assertEqual(q.deleted, 1)
             self.assertEqual(q.deleted_by_parent, 1)
 
@@ -46,12 +46,12 @@ class BriefTemplateTest(test.TransactionTestCase):
     def test_save_load(self):
         fixture = AutoFixture(b.Brief, generate_fk=True)
         brief = fixture.create(1)[0]
-        new_brief = b.Brief.objects.get_for(brief.user, 'view_brief', id=brief.id)
+        new_brief = b.Brief.objects.get_for(brief.user, id=brief.id)
         self.assertEqual(brief.id, new_brief.id)
 
         template_fixture = AutoFixture(b.BriefTemplate, generate_fk=True)
         template_brief = template_fixture.create(1)[0]
-        new_template_brief = b.BriefTemplate.objects.get_for(template_brief.user, 'view_brieftemplate')
+        new_template_brief = b.BriefTemplate.objects.get_for(template_brief.user)
         self.assertEqual(template_brief.id, new_template_brief.id)
 
     def test_brief_template_soft_delete(self):

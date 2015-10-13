@@ -21,7 +21,7 @@ class BriefTemplateList(View):
                                 template="briefs/brieftemplate_list.html",
                                 context={'title': 'Brief Templates',
                                          'object_list': b.BriefTemplate.objects
-                                                         .all_for(request.user, 'view_brieftemplate')})
+                                                         .all_for(request.user)})
 
 
 class BriefTemplateDetail(View):
@@ -29,18 +29,18 @@ class BriefTemplateDetail(View):
         context = {'title': 'Brief Template Detail'}
         brief = get_one_or_404(request.user, 'view_brieftemplate', b.BriefTemplate, id=kwargs['pk'])
 
-        answers_q = brief.brief.briefanswers_set.all_for(request.user, 'view_briefanswers')
+        answers_q = brief.brief.briefanswers_set.all_for(request.user)
         if answers_q.count() > 0:
             brief_answers = answers_q.last()
             context.update({'answer_set': brief_answers,
                             'answers': brief_answers.answers
-                                                    .all_for(request.user, 'view_answer')
+                                                    .all_for(request.user)
                                                     .order_by('question__index')})
 
         _update_from_query(request, context)
         context.update({'object': brief,
                         'questions': brief.brief.questions
-                                          .all_for(request.user, 'view_question')\
+                                          .all_for(request.user)\
                                           .order_by('index')})
 
         request.breadcrumbs([(_('Briefs'), reverse('briefs')), (_('Templates'), reverse('brief_templates')), (_('Template: ') + brief.brief.name, request.path_info + query_url(request))])

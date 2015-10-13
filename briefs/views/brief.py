@@ -27,7 +27,7 @@ def _update_from_query(request, context):
                              (_('Quote: %s') + quote.name, reverse('quote_detail', args=[quote.id]))])
     elif project_id:
         project = get_one_or_404(request.user, 'view_project', g.Project, pk=project_id)
-        quote = project.quote_set.all_for(request.user, 'view_quote')[0]
+        quote = project.quote_set.all_for(request.user)[0]
         initial = {'client': quote.client_id, 'quote': quote.id or None}
         context.update({'project': project, 'quote': quote, 'client': quote.client})
         request.breadcrumbs([(_('Projects'), reverse('projects')),
@@ -47,18 +47,18 @@ def _update_from_query(request, context):
 
 class BriefList(View):
     def get(self, request, **kwargs):
-        context = {'template_list': b.BriefTemplate.objects.all_for(request.user, 'view_brieftemplate')}
+        context = {'template_list': b.BriefTemplate.objects.all_for(request.user)}
 
         self.request.breadcrumbs([(_('Briefs'), reverse('briefs'))])
 
         _update_from_query(request, context)
 
         if 'client' in context:
-            briefs = context['client'].brief_set.all_for(request.user, 'view_brief')
+            briefs = context['client'].brief_set.all_for(request.user)
             context.update({'object_list': briefs, 'title': 'Briefs'})
         else:
             context.update({'object_list': b.Brief.objects
-                                            .all_for(request.user, 'view_brief')
+                                            .all_for(request.user)
                                             .filter(client__isnull=False), 'title': 'Briefs'})
 
         return TemplateResponse(request=request,
@@ -180,18 +180,18 @@ class BriefDetail(View):
         context = {'title': 'Brief Detail'}
         brief = get_one_or_404(request.user, 'view_brief', b.Brief, id=kwargs['pk'])
 
-        answers_q = brief.briefanswers_set.all_for(request.user, 'view_briefanswers')
+        answers_q = brief.briefanswers_set.all_for(request.user)
         if answers_q.count() > 0:
             brief_answers = answers_q.last()
             context.update({'answer_set': brief_answers,
                             'answers': brief_answers.answers
-                                                    .all_for(request.user, 'view_answer')
+                                                    .all_for(request.user)
                                                     .order_by('question__index')})
 
         _update_from_query(request, context)
         context.update({'object': brief,
                         'questions': brief.questions
-                                          .all_for(request.user, 'view_question')\
+                                          .all_for(request.user)\
                                           .order_by('index')})
 
         request.breadcrumbs(_('Brief: ') + brief.name, request.path_info + query_url(request))

@@ -65,7 +65,7 @@ class BriefAnswersForm(gf.UserModelForm):
     def answer_forms(self, data=None):
         af = []
         for q in self.instance.brief.questions\
-                     .all_for(self.instance.brief.user, 'view_question')\
+                     .all_for(self.instance.brief.user)\
                      .order_by('index'):
             if type(q) is b.TextQuestion:
                 if q.is_long_answer:
@@ -104,7 +104,7 @@ def question_forms_brief(brief, clear_pk=False):
     qf = []
     user = brief.user
     for question in brief.questions\
-                         .all_for(user, 'view_question')\
+                         .all_for(user)\
                          .order_by('index'):
         if clear_pk:
             question.pk = None

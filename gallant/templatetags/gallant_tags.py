@@ -6,7 +6,7 @@ register = template.Library()
 
 
 @register.assignment_tag(takes_context=True)
-def objects_for(context, queryset, permission):
+def objects_for(context, queryset, permission='view'):
     """ Returns objects user has permission to access
     """
     if queryset:

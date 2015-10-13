@@ -75,8 +75,8 @@ class QuoteUpdate(View):
             response['Content-Disposition'] = '%s; filename="%s.pdf"' % (attach_or_inline, filename)
 
             # Delete preview quote / services / sections
-            quote.sections.all_for(self.request.user, 'delete_section').delete()
-            quote.services.all_for(self.request.user, 'delete_section').delete()
+            quote.sections.all_for(self.request.user, 'delete').delete()
+            quote.services.all_for(self.request.user, 'delete').delete()
             quote.delete()
 
             return response
@@ -180,7 +180,7 @@ class QuoteList(View):
                                 template="quotes/quote_list.html",
                                 context={'title': 'Quotes',
                                          'object_list': q.Quote.objects
-                                .all_for(request.user, 'view_quote')
+                                .all_for(request.user)
                                 .filter(client__isnull=False),
                                          'template_list': q.QuoteTemplate.objects
-                                .all_for(request.user, 'view_quotetemplate')})
+                                .all_for(request.user)})

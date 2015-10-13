@@ -31,7 +31,7 @@ class Project(UserModel):
 
     def soft_delete(self, deleted_by_parent=False):
         with transaction.atomic():
-            for note in self.notes.all_for(self.user, 'change_note'):
+            for note in self.notes.all_for(self.user, 'change'):
                 note.soft_delete(deleted_by_parent=True)
 
             super(Project, self).soft_delete(deleted_by_parent)

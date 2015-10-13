@@ -18,7 +18,7 @@ class ServiceTest(TransactionTestCase):
     def test_save_load(self):
         fixture = AutoFixture(g.Service, generate_fk=True)
         service = fixture.create(1)[0]
-        new_service = g.Service.objects.get_for(service.user, 'view_service', id=service.id)
+        new_service = g.Service.objects.get_for(service.user, id=service.id)
 
         self.assertEqual(service.id, new_service.id)
 
@@ -40,7 +40,7 @@ class ServiceTest(TransactionTestCase):
             total_cost += s.get_total_cost()
             s.save()
 
-        self.assertEqual(len(services[9].sub_services.all_for(user, 'view_service')), 9)
+        self.assertEqual(len(services[9].sub_services.all_for(user)), 9)
         self.assertEqual(total_cost, parent.get_total_cost())
 
     def test_service_soft_delete(self):
@@ -66,12 +66,12 @@ class ServiceTest(TransactionTestCase):
         self.assertEqual(service.deleted_by_parent, 0)
 
         # Check that subservices have deleted = 1 & deleted_by_parent = 1
-        for s in service.sub_services.all_for(user, 'view_service'):
+        for s in service.sub_services.all_for(user):
             self.assertEqual(s.deleted, 1)
             self.assertEqual(s.deleted_by_parent, 1)
 
         # Check that notes have deleted = 1 & deleted_by_parent = 1
-        for n in service.notes.all_for(user, 'view_note'):
+        for n in service.notes.all_for(user):
             self.assertEqual(n.deleted, 1)
             self.assertEqual(n.deleted_by_parent, 1)
 
@@ -112,14 +112,14 @@ class ClientTest(TransactionTestCase):
         fixture = AutoFixture(g.Client, generate_fk=True)
         obj = fixture.create(1)[0]
 
-        self.assertEqual(len(obj.notes.all_for(obj.user, 'view_note')), 0)
+        self.assertEqual(len(obj.notes.all_for(obj.user)), 0)
 
         note_fixture = AutoFixture(g.Note, generate_fk=True, field_values={'user': obj.user})
         notes = note_fixture.create(10)
         obj.notes = notes
         obj.save()
 
-        self.assertEqual(len(obj.notes.all_for(obj.user, 'view_note')), 10)
+        self.assertEqual(len(obj.notes.all_for(obj.user)), 10)
 
     def test_language_length(self):
         fixture = AutoFixture(g.Client, generate_fk=True)
@@ -155,17 +155,17 @@ class ClientTest(TransactionTestCase):
         self.assertEqual(client.deleted_by_parent, 0)
 
         # Validate client notes deleted field & deleted_by_parent are 1
-        for n in client.notes.all_for(client.user, 'view_note'):
+        for n in client.notes.all_for(client.user):
             self.assertEqual(n.deleted, 1)
             self.assertEqual(n.deleted_by_parent, 1)
 
         # Validate client briefs deleted field & deleted_by_parent are 1
-        for brief in client.brief_set.all_for(client.user, 'view_brief'):
+        for brief in client.brief_set.all_for(client.user):
             self.assertEqual(brief.deleted, 1)
             self.assertEqual(brief.deleted_by_parent, 1)
 
         # Validate client quotes deleted field & deleted_by_parent are 1
-        for quote in client.quote_set.all_for(client.user, 'view_quote'):
+        for quote in client.quote_set.all_for(client.user):
             self.assertEqual(quote.deleted, 1)
             self.assertEqual(quote.deleted_by_parent, 1)
 
@@ -174,7 +174,7 @@ class ProjectTest(TransactionTestCase):
     def test_save_load(self):
         fixture = AutoFixture(g.Project, generate_fk=True)
         project = fixture.create(1)[0]
-        new_project = g.Project.objects.get_for(project.user, 'view_project', id=project.id)
+        new_project = g.Project.objects.get_for(project.user, id=project.id)
 
         self.assertEqual(project.id, new_project.id)
 
@@ -195,7 +195,7 @@ class ProjectTest(TransactionTestCase):
         self.assertEqual(project.deleted_by_parent, 0)
 
         # Validate project notes deleted and deleted_by_parent fields are 1
-        for note in project.notes.all_for(project.user, 'view_note'):
+        for note in project.notes.all_for(project.user):
             self.assertEqual(note.deleted, 1)
             self.assertEqual(note.deleted_by_parent, 1)
 

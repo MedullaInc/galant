@@ -76,7 +76,7 @@
     <div id="notes">
         <h2 class="section_title">Notes</h2>
 
-        {% objects_for object.notes 'view_note' as notes %}
+        {% objects_for object.notes as notes %}
         {% for item in notes %}
             {% include "gallant/note.html" %}
         {% endfor %}

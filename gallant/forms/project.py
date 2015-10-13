@@ -27,13 +27,13 @@ class ProjectOnlyForm(UserModelForm):
         super(ProjectOnlyForm, self).__init__(*args, **kwargs)
 
         if self.instance.id is not None:
-            quote_set_a = self.instance.quote_set.all_for(self.user, 'view_quote')
+            quote_set_a = self.instance.quote_set.all_for(self.user)
             quote_set_b = []
 
             if len(quote_set_a) > 0:
                 client = quote_set_a[0].client
                 quote_set_b = q.Quote.objects.all_for(
-                    self.user, 'view_quote').annotate(projects_count=Count('projects')).filter(
+                    self.user).annotate(projects_count=Count('projects')).filter(
                     projects_count=0, status=5, client_id=client.id)
 
             linked_quotes = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple({'checked': True}),
