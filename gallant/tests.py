@@ -1,20 +1,25 @@
 import autofixture
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
+from django.core.urlresolvers import reverse
 from django.test import TransactionTestCase, TestCase
 from django import forms
-from django.test.client import RequestFactory
 from gallant import models as g
 from gallant import fields as gf
 from gallant import forms as gallant_forms
 from briefs import models as b
-from gallant.serializers.service import ServiceSerializer
+from gallant import serializers
+from gallant import views
 from quotes import models as q
 from autofixture import AutoFixture
+from rest_framework import status
+from rest_framework.test import APIRequestFactory, force_authenticate
 import warnings
 
 
 class ServiceTest(TransactionTestCase):
+    fixtures = ['djmoney_rates.json']
+
     def test_save_load(self):
         fixture = AutoFixture(g.Service, generate_fk=True)
         service = fixture.create(1)[0]
@@ -30,6 +35,9 @@ class ServiceTest(TransactionTestCase):
         self.assertTrue(form.is_valid())
 
     def test_sub_services(self):
+        import warnings
+        from django.utils.deprecation import RemovedInDjango19Warning
+        warnings.filterwarnings("ignore",category=RemovedInDjango19Warning)
         user = autofixture.create_one(g.GallantUser, generate_fk=True)
         fixture = AutoFixture(g.Service, generate_fk=True, field_values={'user': user})
         services = fixture.create(10)
@@ -83,10 +91,10 @@ class ServiceTest(TransactionTestCase):
         service = autofixture.create_one(g.Service, generate_fk=True, field_values={'user': user})
         service.notes.add(autofixture.create_one(g.Note, generate_fk=True, field_values={'user': user}))
 
-        serializer = ServiceSerializer(service)
+        serializer = serializers.ServiceSerializer(service)
         self.assertIsNotNone(serializer.data)
 
-        parser = ServiceSerializer(service, data=serializer.data)
+        parser = serializers.ServiceSerializer(service, data=serializer.data)
         self.assertTrue(parser.is_valid())
 
         self.assertEqual(parser.save(), service)
@@ -98,10 +106,10 @@ class ServiceTest(TransactionTestCase):
         user = autofixture.create_one(g.GallantUser, generate_fk=True)
         service = autofixture.create_one(g.Service, generate_fk=True, field_values={'user': user})
 
-        serializer = ServiceSerializer(service)
+        serializer = serializers.ServiceSerializer(service)
         self.assertIsNotNone(serializer.data)
 
-        parser = ServiceSerializer(data=serializer.data)
+        parser = serializers.ServiceSerializer(data=serializer.data)
         self.assertTrue(parser.is_valid())
 
         self.assertNotEqual(parser.save(user=user).id, service.id)
@@ -198,6 +206,82 @@ class ProjectTest(TransactionTestCase):
         for note in project.notes.all_for(project.user):
             self.assertEqual(note.deleted, 1)
             self.assertEqual(note.deleted_by_parent, 1)
+
+    def test_project_serialize(self):
+        import warnings
+        from django.utils.deprecation import RemovedInDjango110Warning
+        warnings.filterwarnings("ignore", category=RemovedInDjango110Warning)
+        factory = APIRequestFactory()
+        user = autofixture.create_one(g.GallantUser, generate_fk=True)
+        project = autofixture.create_one(g.Project, generate_fk=True, field_values={'user': user})
+        project.notes.add(autofixture.create_one(g.Note, generate_fk=True, field_values={'user': user}))
+
+        request = factory.get(reverse('api_project_detail', args=[project.id]))
+        request.user = user
+        force_authenticate(request, user=user)
+
+        serializer = serializers.ProjectSerializer(project, context={'request': request})
+        self.assertIsNotNone(serializer.data)
+
+        parser = serializers.ProjectSerializer(project, data=serializer.data, context={'request': request})
+        self.assertTrue(parser.is_valid())
+
+        self.assertEqual(parser.save(), project)
+
+    def test_project_serialize_create(self):
+        import warnings
+        from django.utils.deprecation import RemovedInDjango110Warning
+        warnings.filterwarnings("ignore",category=RemovedInDjango110Warning)
+        factory = APIRequestFactory()
+        user = autofixture.create_one(g.GallantUser, generate_fk=True)
+        project = autofixture.create_one(g.Project, generate_fk=True, field_values={'user': user})
+
+        request = factory.get(reverse('api_project_detail', args=[project.id]))
+        request.user = user
+        force_authenticate(request, user=user)
+
+        serializer = serializers.ProjectSerializer(project, context={'request': request})
+        self.assertIsNotNone(serializer.data)
+
+        parser = serializers.ProjectSerializer(data=serializer.data, context={'request': request})
+        self.assertTrue(parser.is_valid())
+
+        self.assertNotEqual(parser.save(user=user).id, project.id)
+
+    def test_access_api_project(self):
+        factory = APIRequestFactory()
+        user = autofixture.create_one('gallant.GallantUser', generate_fk=True)
+        project = autofixture.create_one('gallant.Project', generate_fk=True,
+                                         field_values={'user': user})
+
+        request = factory.get(reverse('api_project_detail', args=[project.id]))
+        request.user = user
+        force_authenticate(request, user=user)
+
+        response = views.ProjectDetailAPI.as_view()(request, pk=project.id)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_update_api_project(self):
+        factory = APIRequestFactory()
+        user = autofixture.create_one('gallant.GallantUser', generate_fk=True)
+        project = autofixture.create_one('gallant.Project', generate_fk=True,
+                                         field_values={'user': user})
+
+        project.notes.add(autofixture.create_one('gallant.Note', generate_fk=True,
+                                                 field_values={'user': user}))
+        project.notes.add(autofixture.create_one('gallant.Note', generate_fk=True,
+                                                 field_values={'user': user}))
+        
+        data = {'notes': []}
+
+        request = factory.patch(reverse('api_project_detail', args=[project.id]), data=data, format='json')
+        force_authenticate(request, user=user)
+
+        response = views.ProjectDetailAPI.as_view()(request, pk=project.id)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        project.refresh_from_db()
+        self.assertEqual(project.notes.count(), 0)
 
 
 class TestULTextForm(forms.Form):

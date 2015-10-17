@@ -107,3 +107,9 @@ class GallantProjectTest(browser.SignedInTest):
         response = self.client.get(self.live_server_url + reverse('project_detail', args=[p.id]))
         self.assertEqual(response.status_code, 404)
 
+    def test_can_access_project_endpoint(self):
+        s = autofixture.create_one('gallant.Project', generate_fk=True,
+                                   field_values={'user': self.user})
+
+        response = self.client.get(self.live_server_url + reverse('api_project_detail', args=[s.id]))
+        self.assertEqual(response.status_code, 200)

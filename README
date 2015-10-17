@@ -36,6 +36,8 @@ $ ./scripts/setup.sh
 
 - To load example Quote & Brief templates, run 'python manage.py load_quote' and/or 'load_brief'
 
+- For openexchangerates.org exchange rates, run 'python manage.py update_rates'
+
 
 Server Setup:
 - Install ngninx and Supervisor, copy config from scripts/nginx.sites-available.gallant and scripts/supervisord.conf to

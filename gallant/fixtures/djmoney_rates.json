@@ -1,0 +1,1550 @@
+[
+{
+    "fields": {
+        "base_currency": "USD",
+        "name": "openexchange.org",
+        "last_update": "2015-10-17T05:36:57.687Z"
+    },
+    "model": "djmoney_rates.ratesource",
+    "pk": 1
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "105.521041",
+        "currency": "DZD"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 1
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "13.084050",
+        "currency": "NAD"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 2
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "3.851490",
+        "currency": "GHS"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 3
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "7.932396",
+        "currency": "EGP"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 4
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "1.723147",
+        "currency": "BGN"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 5
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "1.000000",
+        "currency": "PAB"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 6
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "6.912771",
+        "currency": "BOB"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 7
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "6.571717",
+        "currency": "DKK"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 8
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "10.221838",
+        "currency": "BWP"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 9
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "1508.929992",
+        "currency": "LBP"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 10
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "2188.153317",
+        "currency": "TZS"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 11
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "22302.183333",
+        "currency": "VND"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 12
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "135.102000",
+        "currency": "AOA"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 13
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "4049.957476",
+        "currency": "KHR"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 14
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "4.178976",
+        "currency": "MYR"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 15
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "0.825895",
+        "currency": "KYD"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 16
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "1.356283",
+        "currency": "LYD"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 17
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "21.360800",
+        "currency": "UAH"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 18
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "0.708144",
+        "currency": "JOD"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 19
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "1.793333",
+        "currency": "AWG"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 20
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "3.748798",
+        "currency": "SAR"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 21
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "3.021901",
+        "currency": "LTL"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 22
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "7.750092",
+        "currency": "HKD"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 23
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "0.953561",
+        "currency": "CHF"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 24
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "0.647658",
+        "currency": "GIP"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 25
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "17258.200000",
+        "currency": "BYR"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 26
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "123.314300",
+        "currency": "ALL"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 27
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "0.001431",
+        "currency": "XPD"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 28
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "300.820915",
+        "currency": "MRO"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 29
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "6.720068",
+        "currency": "HRK"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 30
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "177.620001",
+        "currency": "DJF"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 31
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "13.085050",
+        "currency": "SZL"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 32
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "35.268480",
+        "currency": "THB"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 33
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "579.067876",
+        "currency": "XAF"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 34
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "1.383459",
+        "currency": "BND"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 35
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "124.798400",
+        "currency": "ISK"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 36
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "29.435120",
+        "currency": "UYU"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 37
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "27.485850",
+        "currency": "NIO"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 38
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "8127.687598",
+        "currency": "LAK"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 39
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "188.787998",
+        "currency": "SYP"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 40
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "9.641599",
+        "currency": "MAD"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 41
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "42.440000",
+        "currency": "MZN"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 42
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "46.027160",
+        "currency": "PHP"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 43
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "13.085170",
+        "currency": "ZAR"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 44
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "104.245499",
+        "currency": "NPR"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 45
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "322.387247",
+        "currency": "ZWL"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 46
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "199.151000",
+        "currency": "NGN"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 47
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "533.605120",
+        "currency": "CRC"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 48
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "3.672526",
+        "currency": "AED"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 49
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "13.775050",
+        "currency": "EEK"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 50
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "553.239099",
+        "currency": "MWK"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 51
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "140.707400",
+        "currency": "LKR"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 52
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "104.365300",
+        "currency": "PKR"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 53
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "273.107799",
+        "currency": "HUF"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 54
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "1.000000",
+        "currency": "BMD"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 55
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "13.085063",
+        "currency": "LSL"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 56
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "1994.166667",
+        "currency": "MNT"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 57
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "472.979997",
+        "currency": "AMD"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 58
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "3664.226667",
+        "currency": "UGX"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 59
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "3.640570",
+        "currency": "QAR"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 60
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "0.707795",
+        "currency": "XDR"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 61
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "119.475599",
+        "currency": "JMD"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 62
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "2.368275",
+        "currency": "GEL"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 63
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "0.647658",
+        "currency": "SHP"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 64
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "64.449999",
+        "currency": "AFN"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 65
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "8.006140",
+        "currency": "SBD"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 66
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "900.090000",
+        "currency": "KPW"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 67
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "2.892021",
+        "currency": "TRY"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 68
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "77.854180",
+        "currency": "BDT"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 69
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "215.165401",
+        "currency": "YER"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 70
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "53.479575",
+        "currency": "HTG"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 71
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "579.820216",
+        "currency": "XOF"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 72
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "3082.463333",
+        "currency": "MGA"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 73
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "1.788750",
+        "currency": "ANG"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 74
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "84.080002",
+        "currency": "LRD"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 75
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "723.778753",
+        "currency": "RWF"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 76
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "8.108423",
+        "currency": "NOK"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 77
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "8.002270",
+        "currency": "MOP"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 78
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "64.737561",
+        "currency": "INR"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 79
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "16.421030",
+        "currency": "MXN"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 80
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "23.851010",
+        "currency": "CZK"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 81
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "6.535400",
+        "currency": "TJS"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 82
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "0.003712",
+        "currency": "BTC"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 83
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "64.827318",
+        "currency": "BTN"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 84
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "2886.573359",
+        "currency": "COP"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 85
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "3.501467",
+        "currency": "TMT"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 86
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "35.287912",
+        "currency": "MUR"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 87
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "13507.400000",
+        "currency": "IDR"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 88
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "22.016800",
+        "currency": "HNL"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 89
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "105.227550",
+        "currency": "XPF"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 90
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "2.105700",
+        "currency": "FJD"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 91
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "20.918970",
+        "currency": "ETB"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 92
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "3.244399",
+        "currency": "PEN"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 93
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "1.996005",
+        "currency": "BZD"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 94
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "3.832943",
+        "currency": "ILS"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 95
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "44.670100",
+        "currency": "DOP"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 96
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "0.647658",
+        "currency": "GGP"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 97
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "19.652990",
+        "currency": "MDL"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 98
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "0.000979",
+        "currency": "XPT"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 99
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "1.000000",
+        "currency": "BSD"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 100
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "8.245888",
+        "currency": "SEK"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 101
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "5252.024745",
+        "currency": "ZMK"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 102
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "0.647658",
+        "currency": "JEP"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 103
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "1.376239",
+        "currency": "AUD"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 104
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "3.287500",
+        "currency": "SRD"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 105
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "0.999713",
+        "currency": "CUP"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 106
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "0.024602",
+        "currency": "CLF"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 107
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "2.000000",
+        "currency": "BBD"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 108
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "432.852693",
+        "currency": "KMF"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 109
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "1130.150007",
+        "currency": "KRW"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 110
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "39.540490",
+        "currency": "GMD"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 111
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "6.320811",
+        "currency": "VEF"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 112
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "0.647658",
+        "currency": "IMP"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 113
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "1.000000",
+        "currency": "CUC"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 114
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "674.569294",
+        "currency": "CLP"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 115
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "11.851800",
+        "currency": "ZMW"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 116
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "0.881141",
+        "currency": "EUR"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 117
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "926.389500",
+        "currency": "CDF"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 118
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "2.701020",
+        "currency": "XCD"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 119
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "276.299791",
+        "currency": "KZT"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 120
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "61.387940",
+        "currency": "RUB"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 121
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "0.062182",
+        "currency": "XAG"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 122
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "6.347214",
+        "currency": "TTD"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 123
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "0.385100",
+        "currency": "OMR"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 124
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "3.902862",
+        "currency": "BRL"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 125
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "1081.108100",
+        "currency": "MMK"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 126
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "3.730975",
+        "currency": "PLN"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 127
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "5665.868333",
+        "currency": "PYG"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 128
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "102.565399",
+        "currency": "KES"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 129
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "8.771981",
+        "currency": "SVC"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 130
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "54.131790",
+        "currency": "MKD"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 131
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "0.647658",
+        "currency": "GBP"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 132
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "1.046913",
+        "currency": "AZN"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 133
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "2.238403",
+        "currency": "TOP"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 134
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "15.293733",
+        "currency": "MVR"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 135
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "111.532501",
+        "currency": "VUV"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 136
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "7096.370098",
+        "currency": "GNF"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 137
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "2.559235",
+        "currency": "WST"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 138
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "1164.840000",
+        "currency": "IQD"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 139
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "15.140000",
+        "currency": "ERN"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 140
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "1.722044",
+        "currency": "BAM"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 141
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "13.080100",
+        "currency": "SCR"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 142
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "1.291102",
+        "currency": "CAD"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 143
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "97.159012",
+        "currency": "CVE"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 144
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "0.301857",
+        "currency": "KWD"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 145
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "1566.592500",
+        "currency": "BIF"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 146
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "2.894400",
+        "currency": "PGK"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 147
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "641.724253",
+        "currency": "SOS"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 148
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "32.240860",
+        "currency": "TWD"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 149
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "1.383830",
+        "currency": "SGD"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 150
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "2635.859986",
+        "currency": "UZS"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 151
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "21528.550000",
+        "currency": "STD"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 152
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "29966.000000",
+        "currency": "IRR"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 153
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "6.352650",
+        "currency": "CNY"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 154
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "3744.625500",
+        "currency": "SLL"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 155
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "1.951979",
+        "currency": "TND"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 156
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "206.718502",
+        "currency": "GYD"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 157
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "0.683738",
+        "currency": "MTL"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 158
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "1.467040",
+        "currency": "NZD"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 159
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "0.647658",
+        "currency": "FKP"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 160
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "0.619327",
+        "currency": "LVL"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 161
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "1.000000",
+        "currency": "USD"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 162
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "68.711652",
+        "currency": "KGS"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 163
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "9.493496",
+        "currency": "ARS"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 164
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "3.890556",
+        "currency": "RON"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 165
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "7.668608",
+        "currency": "GTQ"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 166
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "105.580100",
+        "currency": "RSD"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 167
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "0.377155",
+        "currency": "BHD"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 168
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "119.392900",
+        "currency": "JPY"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 169
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "6.082135",
+        "currency": "SDG"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 170
+},
+{
+    "fields": {
+        "source": 1,
+        "value": "0.000849",
+        "currency": "XAU"
+    },
+    "model": "djmoney_rates.rate",
+    "pk": 171
+}
+]

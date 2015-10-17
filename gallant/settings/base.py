@@ -54,6 +54,7 @@ INSTALLED_APPS = (
     'breadcrumbs',
     'djangular',
     'rest_framework',
+    'djmoney_rates',
 
     'gallant',
     'briefs',
@@ -174,3 +175,10 @@ ACCOUNT_ADAPTER = 'gallant.utils.NoNewUsersAccountAdapter'
 
 
 BREADCRUMBS_AUTO_HOME=True
+
+DJANGO_MONEY_RATES = {
+    'DEFAULT_BACKEND': 'djmoney_rates.backends.OpenExchangeBackend',
+    'OPENEXCHANGE_URL': 'http://openexchangerates.org/api/latest.json',
+    'OPENEXCHANGE_APP_ID': '5b3c1669f5484c17bee817b8ff4c893d',
+    'OPENEXCHANGE_BASE_CURRENCY': 'USD',
+}
