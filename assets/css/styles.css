@@ -2423,6 +2423,32 @@ ul li {
 
 /* End Forms */
 
+/* Form Errors */
+
+.has-feedback.form-group {
+    position: relative;
+}
+
+.has-feedback.form-group .djng-form-control-feedback {
+    position: absolute;
+    top: 27px;
+    right: 27px;
+}
+
+ul.djng-form-control-feedback.djng-field-errors li.valid::before {
+    color: #00d706;
+    content: "\e084";
+    font-family: 'Glyphicons Halflings';
+}
+
+ul.djng-form-control-feedback.djng-field-errors li.invalid::before {
+    color: #FF6666;
+    content: "\e101";
+    font-family: 'Glyphicons Halflings';
+}
+
+/* End Form Errors*/
+
 /* Notices */
 
 /* End Notices*/
