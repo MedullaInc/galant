@@ -1,12 +1,25 @@
 import autofixture
 from django import test
-from quotes import models as q
+from django.core.urlresolvers import reverse
+from quotes import models as q, serializers, views
 from autofixture import AutoFixture
 from quotes import forms as qf
 from gallant import models as g
+from rest_framework import status
+from rest_framework.test import APIRequestFactory, force_authenticate
 
 
 class QuoteTest(test.TransactionTestCase):
+    def setUp(self):
+        self.user = autofixture.create_one(g.GallantUser)
+        client = autofixture.create_one(g.Client, generate_fk=True, field_values={'user': self.user})
+        self.quote = autofixture.create_one(q.Quote, generate_fk=True,
+                                            field_values={'sections': [], 'language': 'en',
+                                                          'user': self.user, 'client': client,
+                                                          'services': []})
+
+        return
+
     def test_save_load(self):
         fixture = AutoFixture(q.Quote, generate_fk=True)
         obj = fixture.create(1)[0]
@@ -27,11 +40,8 @@ class QuoteTest(test.TransactionTestCase):
 
     def test_quote_soft_delete(self):
         # Create Quote
-        user = autofixture.create_one(g.GallantUser)
-        client = autofixture.create_one(g.Client, generate_fk=True, field_values={'user': user})
-        quote = autofixture.create_one(q.Quote, generate_fk=True,
-                                       field_values={'sections': [], 'language': 'en', 'user': user, 'client': client,
-                                                     'services': []})
+        quote = self.quote
+        user = self.user
 
         # Add sections to Quote
         intro = q.TextSection.objects.create(user=user, name='intro', index=0)
@@ -59,6 +69,73 @@ class QuoteTest(test.TransactionTestCase):
         for service in quote.services.all_for(user):
             self.assertEqual(service.deleted, 1)
             self.assertEqual(service.deleted_by_parent, 1)
+
+    def test_quote_serialize(self):
+        factory = APIRequestFactory()
+        quote = self.quote
+        user = self.user
+
+        quote.projects.add(autofixture.create_one(g.Project, generate_fk=True, field_values={'user': user}))
+
+        request = factory.get(reverse('api_quote_detail', args=[quote.id]))
+        request.user = user
+        force_authenticate(request, user=user)
+        
+        serializer = serializers.QuoteSerializer(quote, context={'request': request})
+        self.assertIsNotNone(serializer.data)
+
+        parser = serializers.QuoteSerializer(quote, data=serializer.data, context={'request': request})
+        self.assertTrue(parser.is_valid())
+
+        self.assertEqual(parser.save(), quote)
+
+    def test_quote_serialize_create(self):
+        factory = APIRequestFactory()
+        quote = self.quote
+        user = self.user
+
+        request = factory.get(reverse('api_quote_detail', args=[quote.id]))
+        request.user = user
+        force_authenticate(request, user=user)
+
+        serializer = serializers.QuoteSerializer(quote, context={'request': request})
+        self.assertIsNotNone(serializer.data)
+
+        parser = serializers.QuoteSerializer(data=serializer.data, context={'request': request})
+        self.assertTrue(parser.is_valid())
+
+        self.assertNotEqual(parser.save(user=user).id, quote.id)
+
+    def test_access_api_quote(self):
+        factory = APIRequestFactory()
+        quote = self.quote
+        user = self.user
+
+        request = factory.get(reverse('api_quote_detail', args=[quote.id]))
+        request.user = user
+        force_authenticate(request, user=user)
+
+        response = views.QuoteDetailAPI.as_view()(request, pk=quote.id)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_update_api_quote(self):
+        factory = APIRequestFactory()
+        quote = self.quote
+        user = self.user
+
+        quote.projects.add(autofixture.create_one('gallant.Project', generate_fk=True,
+                                                  field_values={'user': user}))
+
+        data = {'projects': []}
+
+        request = factory.patch(reverse('api_quote_detail', args=[quote.id]), data=data, format='json')
+        force_authenticate(request, user=user)
+
+        response = views.QuoteDetailAPI.as_view()(request, pk=quote.id)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        quote.refresh_from_db()
+        self.assertEqual(quote.projects.count(), 0)
 
 
 class QuoteTemplateTest(test.TestCase):

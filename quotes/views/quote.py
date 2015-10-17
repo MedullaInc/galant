@@ -5,13 +5,15 @@ from django.http import HttpResponseRedirect
 from django.conf import settings
 from django.contrib import messages
 from django.core.urlresolvers import reverse
-from gallant.utils import get_one_or_404, url_to_pdf, get_site_from_host
+from gallant.utils import get_one_or_404, url_to_pdf, get_site_from_host, GallantObjectPermissions
 from quotes import models as q
 from quotes import forms as qf
+from quotes import serializers
 from django.utils.text import slugify
 from django.utils.translation import ugettext_lazy as _
 from django.core.mail import send_mail
 from uuid import uuid4
+from rest_framework import generics
 
 
 class QuoteUpdate(View):
@@ -184,3 +186,15 @@ class QuoteList(View):
                                 .filter(client__isnull=False),
                                          'template_list': q.QuoteTemplate.objects
                                 .all_for(request.user)})
+
+
+class QuoteDetailAPI(generics.RetrieveUpdateAPIView):
+    model = q.Quote
+    serializer_class = serializers.QuoteSerializer
+    permission_classes = [
+        GallantObjectPermissions
+    ]
+
+    def get_queryset(self):
+        return self.model.objects.all_for(self.request.user)
+

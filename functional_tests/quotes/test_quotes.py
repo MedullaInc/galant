@@ -213,6 +213,12 @@ class QuotesSignedInTest(browser.SignedInTest):
 
         self._submit_and_check(b)
 
+    def test_can_access_quote_endpoint(self):
+        q = get_blank_quote_autofixture(self.user)
+
+        response = self.client.get(self.live_server_url + reverse('api_quote_detail', args=[q.id]))
+        self.assertEqual(response.status_code, 200)
+
     def _submit_and_check(self, b):
         b.find_element_by_id('create_submit').click()
         self.disable_popups()
