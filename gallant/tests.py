@@ -236,6 +236,71 @@ class ClientTest(TransactionTestCase):
         self.assertEqual(client.notes.count(), 0)
 
 
+class NoteTest(TransactionTestCase):
+    def test_note_serialize(self):
+        factory = APIRequestFactory()
+        user = autofixture.create_one(g.GallantUser, generate_fk=True)
+        note = autofixture.create_one(g.Note, generate_fk=True, field_values={'user': user})
+
+        request = factory.get(reverse('api_note_detail', args=[note.id]))
+        request.user = user
+        force_authenticate(request, user=user)
+
+        serializer = serializers.NoteSerializer(note, context={'request': request})
+        self.assertIsNotNone(serializer.data)
+
+        parser = serializers.NoteSerializer(note, data=serializer.data, context={'request': request})
+        self.assertTrue(parser.is_valid())
+
+        self.assertEqual(parser.save(), note)
+
+    def test_note_serialize_create(self):
+        factory = APIRequestFactory()
+        user = autofixture.create_one(g.GallantUser, generate_fk=True)
+        note = autofixture.create_one(g.Note, generate_fk=True, field_values={'user': user})
+
+        request = factory.get(reverse('api_note_detail', args=[note.id]))
+        request.user = user
+        force_authenticate(request, user=user)
+
+        serializer = serializers.NoteSerializer(note, context={'request': request})
+        self.assertIsNotNone(serializer.data)
+
+        parser = serializers.NoteSerializer(data=serializer.data, context={'request': request})
+        self.assertTrue(parser.is_valid())
+
+        self.assertNotEqual(parser.save(user=user).id, note.id)
+
+    def test_access_api_note(self):
+        factory = APIRequestFactory()
+        user = autofixture.create_one('gallant.GallantUser', generate_fk=True)
+        note = autofixture.create_one('gallant.Note', generate_fk=True,
+                                         field_values={'user': user})
+
+        request = factory.get(reverse('api_note_detail', args=[note.id]))
+        request.user = user
+        force_authenticate(request, user=user)
+
+        response = views.NoteDetailAPI.as_view()(request, pk=note.id)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_update_api_note(self):
+        factory = APIRequestFactory()
+        user = autofixture.create_one('gallant.GallantUser', generate_fk=True)
+        note = autofixture.create_one('gallant.Note', generate_fk=True,
+                                        field_values={'user': user})
+        data = {'text': 'asdf'}
+
+        request = factory.patch(reverse('api_note_detail', args=[note.id]), data=data, format='json')
+        force_authenticate(request, user=user)
+
+        response = views.NoteDetailAPI.as_view()(request, pk=note.id)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        note.refresh_from_db()
+        self.assertEqual(note.text, 'asdf')
+
+
 class ProjectTest(TransactionTestCase):
     def test_save_load(self):
         fixture = AutoFixture(g.Project, generate_fk=True)

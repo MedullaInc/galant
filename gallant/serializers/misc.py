@@ -1,5 +1,6 @@
+from moneyed.classes import Money
 from rest_framework import serializers
-from moneyed import Money
+from gallant.models import Note
 
 
 class MoneyField(serializers.Field):
@@ -9,3 +10,11 @@ class MoneyField(serializers.Field):
     def to_internal_value(self, data):
         val = data.split(' ')
         return Money(val[0], val[1])
+
+
+class NoteSerializer(serializers.ModelSerializer):
+    user = serializers.PrimaryKeyRelatedField(read_only=True)
+
+    class Meta:
+        model = Note
+        fields = ('id', 'user', 'text', 'created')
