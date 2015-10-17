@@ -6,11 +6,12 @@ from django.views.generic import View
 from django.template.response import TemplateResponse
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
-from gallant import forms
+from gallant import forms, serializers
 from gallant import models as g
 from briefs import models as b
-from gallant.utils import get_one_or_404
+from gallant.utils import get_one_or_404, GallantObjectPermissions
 from django.utils.translation import ugettext_lazy as _
+from rest_framework import generics
 
 
 class ClientList(View):
@@ -122,3 +123,14 @@ class ClientDelete(View):
         client.soft_delete()
 
         return HttpResponseRedirect(reverse('clients'))
+
+
+class ClientDetailAPI(generics.RetrieveUpdateAPIView):
+    model = g.Client
+    serializer_class = serializers.ClientSerializer
+    permission_classes = [
+        GallantObjectPermissions
+    ]
+
+    def get_queryset(self):
+        return self.model.objects.all_for(self.request.user)

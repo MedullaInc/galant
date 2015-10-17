@@ -112,7 +112,38 @@ MESSAGE_TAGS = {
 
 WSGI_APPLICATION = 'gallant.wsgi.application'
 
+IGNORED_WARNINGS = {
+    'RemovedInDjango19Warning: django.utils.importlib',
+}
 
+
+def filter_warnings(record):
+    for ignored in IGNORED_WARNINGS:
+        if ignored in record.args[0]:
+            return False
+    return True
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'filters': {
+        'ignored_warnings': {
+            '()': 'django.utils.log.CallbackFilter',
+            'callback': filter_warnings,
+        },
+    },
+    'loggers': {
+        'py.warnings': {
+            'handlers': ['console', ],
+            'filters': ['ignored_warnings', ],
+        }
+    },
+}
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 

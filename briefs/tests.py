@@ -3,7 +3,6 @@ from django import test
 from briefs import models as b
 from autofixture import AutoFixture
 from gallant import models as g
-import warnings
 
 
 class BriefTest(test.TransactionTestCase):

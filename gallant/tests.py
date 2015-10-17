@@ -14,7 +14,6 @@ from quotes import models as q
 from autofixture import AutoFixture
 from rest_framework import status
 from rest_framework.test import APIRequestFactory, force_authenticate
-import warnings
 
 
 class ServiceTest(TransactionTestCase):
@@ -35,9 +34,6 @@ class ServiceTest(TransactionTestCase):
         self.assertTrue(form.is_valid())
 
     def test_sub_services(self):
-        import warnings
-        from django.utils.deprecation import RemovedInDjango19Warning
-        warnings.filterwarnings("ignore",category=RemovedInDjango19Warning)
         user = autofixture.create_one(g.GallantUser, generate_fk=True)
         fixture = AutoFixture(g.Service, generate_fk=True, field_values={'user': user})
         services = fixture.create(10)
@@ -84,9 +80,6 @@ class ServiceTest(TransactionTestCase):
             self.assertEqual(n.deleted_by_parent, 1)
 
     def test_service_serialize(self):
-        import warnings
-        from django.utils.deprecation import RemovedInDjango110Warning
-        warnings.filterwarnings("ignore",category=RemovedInDjango110Warning)
         user = autofixture.create_one(g.GallantUser, generate_fk=True)
         service = autofixture.create_one(g.Service, generate_fk=True, field_values={'user': user})
         service.notes.add(autofixture.create_one(g.Note, generate_fk=True, field_values={'user': user}))
@@ -100,9 +93,6 @@ class ServiceTest(TransactionTestCase):
         self.assertEqual(parser.save(), service)
 
     def test_service_serialize_create(self):
-        import warnings
-        from django.utils.deprecation import RemovedInDjango110Warning
-        warnings.filterwarnings("ignore",category=RemovedInDjango110Warning)
         user = autofixture.create_one(g.GallantUser, generate_fk=True)
         service = autofixture.create_one(g.Service, generate_fk=True, field_values={'user': user})
 
@@ -133,8 +123,6 @@ class ClientTest(TransactionTestCase):
         fixture = AutoFixture(g.Client, generate_fk=True)
         obj = fixture.create(1)[0]
         obj.language = 'zh-hans'
-
-        warnings.filterwarnings('error')
 
         obj.save()
 
@@ -177,6 +165,76 @@ class ClientTest(TransactionTestCase):
             self.assertEqual(quote.deleted, 1)
             self.assertEqual(quote.deleted_by_parent, 1)
 
+    def test_client_serialize(self):
+        factory = APIRequestFactory()
+        user = autofixture.create_one(g.GallantUser, generate_fk=True)
+        client = autofixture.create_one(g.Client, generate_fk=True, field_values={'user': user})
+        client.notes.add(autofixture.create_one(g.Note, generate_fk=True, field_values={'user': user}))
+
+        request = factory.get(reverse('api_client_detail', args=[client.id]))
+        request.user = user
+        force_authenticate(request, user=user)
+
+        serializer = serializers.ClientSerializer(client, context={'request': request})
+        self.assertIsNotNone(serializer.data)
+
+        parser = serializers.ClientSerializer(client, data=serializer.data, context={'request': request})
+        self.assertTrue(parser.is_valid())
+
+        self.assertEqual(parser.save(), client)
+
+    def test_client_serialize_create(self):
+        factory = APIRequestFactory()
+        user = autofixture.create_one(g.GallantUser, generate_fk=True)
+        client = autofixture.create_one(g.Client, generate_fk=True, field_values={'user': user})
+
+        request = factory.get(reverse('api_client_detail', args=[client.id]))
+        request.user = user
+        force_authenticate(request, user=user)
+
+        serializer = serializers.ClientSerializer(client, context={'request': request})
+        self.assertIsNotNone(serializer.data)
+
+        parser = serializers.ClientSerializer(data=serializer.data, context={'request': request})
+        self.assertTrue(parser.is_valid())
+
+        self.assertNotEqual(parser.save(user=user).id, client.id)
+
+    def test_access_api_client(self):
+        factory = APIRequestFactory()
+        user = autofixture.create_one('gallant.GallantUser', generate_fk=True)
+        client = autofixture.create_one('gallant.Client', generate_fk=True,
+                                         field_values={'user': user})
+
+        request = factory.get(reverse('api_client_detail', args=[client.id]))
+        request.user = user
+        force_authenticate(request, user=user)
+
+        response = views.ClientDetailAPI.as_view()(request, pk=client.id)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_update_api_client(self):
+        factory = APIRequestFactory()
+        user = autofixture.create_one('gallant.GallantUser', generate_fk=True)
+        client = autofixture.create_one('gallant.Client', generate_fk=True,
+                                        field_values={'user': user})
+
+        client.notes.add(autofixture.create_one('gallant.Note', generate_fk=True,
+                                                field_values={'user': user}))
+        client.notes.add(autofixture.create_one('gallant.Note', generate_fk=True,
+                                                field_values={'user': user}))
+        
+        data = {'notes': []}
+
+        request = factory.patch(reverse('api_client_detail', args=[client.id]), data=data, format='json')
+        force_authenticate(request, user=user)
+
+        response = views.ClientDetailAPI.as_view()(request, pk=client.id)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        client.refresh_from_db()
+        self.assertEqual(client.notes.count(), 0)
+
 
 class ProjectTest(TransactionTestCase):
     def test_save_load(self):
@@ -208,9 +266,6 @@ class ProjectTest(TransactionTestCase):
             self.assertEqual(note.deleted_by_parent, 1)
 
     def test_project_serialize(self):
-        import warnings
-        from django.utils.deprecation import RemovedInDjango110Warning
-        warnings.filterwarnings("ignore", category=RemovedInDjango110Warning)
         factory = APIRequestFactory()
         user = autofixture.create_one(g.GallantUser, generate_fk=True)
         project = autofixture.create_one(g.Project, generate_fk=True, field_values={'user': user})
@@ -229,9 +284,6 @@ class ProjectTest(TransactionTestCase):
         self.assertEqual(parser.save(), project)
 
     def test_project_serialize_create(self):
-        import warnings
-        from django.utils.deprecation import RemovedInDjango110Warning
-        warnings.filterwarnings("ignore",category=RemovedInDjango110Warning)
         factory = APIRequestFactory()
         user = autofixture.create_one(g.GallantUser, generate_fk=True)
         project = autofixture.create_one(g.Project, generate_fk=True, field_values={'user': user})

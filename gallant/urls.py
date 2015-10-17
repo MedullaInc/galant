@@ -21,9 +21,6 @@ from django.views.generic.base import TemplateView
 
 import gallant
 from gallant import views
-import warnings
-from django.utils.deprecation import RemovedInDjango110Warning
-warnings.filterwarnings("ignore",category=RemovedInDjango110Warning)
 import allauth.urls
 
 urlpatterns = i18n_patterns(
@@ -55,6 +52,7 @@ urlpatterns = i18n_patterns(
 
     url(r'^api/service/(?P<pk>[0-9]+)$', login_required(gallant.views.ServiceDetailAPI.as_view()), name='api_service_detail'),
     url(r'^api/project/(?P<pk>[0-9]+)$', login_required(gallant.views.ProjectDetailAPI.as_view()), name='api_project_detail'),
+    url(r'^api/client/(?P<pk>[0-9]+)$', login_required(gallant.views.ClientDetailAPI.as_view()), name='api_client_detail'),
 
     url(r'^register/(?P<pk>[0-9]+)', gallant.views.Register.as_view(), name='register'),
     url(r'^account/add/', login_required(gallant.views.AccountAdd.as_view()), name='add_account'),
