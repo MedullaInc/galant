@@ -21,4 +21,5 @@ urlpatterns = [
     url(r'^download/(?P<token>[a-f0-9]{32})?$', login_required(views.QuotePDF.as_view()), name='quote_pdf'),
 
     url(r'^api/quote/(?P<pk>[0-9]+)$', login_required(views.QuoteDetailAPI.as_view()), name='api_quote_detail'),
+    url(r'^api/template/(?P<pk>[0-9]+)$', login_required(views.QuoteTemplateDetailAPI.as_view()), name='api_quote_template_detail'),
 ]

@@ -118,6 +118,21 @@ class QuoteTemplatesTest(browser.SignedInTest):
         b.find_element_by_id('es_tab').click()
         self.assertEqual(intro.get_attribute('value'), 'titulo de intro prueba')
 
+    def test_can_access_quote_template_endpoint(self):
+        q = get_blank_quote_autofixture(self.user)
+        qt = autofixture.create_one('quotes.QuoteTemplate', generate_fk=False,
+                                    field_values={'quote': q, 'user': self.user})
+
+        response = self.client.get(self.live_server_url + reverse('api_quote_template_detail', args=[qt.id]))
+        self.assertEqual(response.status_code, 200)
+
+    def _submit_and_check(self, b):
+        b.find_element_by_id('create_submit').click()
+        self.disable_popups()
+
+        success_message = b.find_element_by_class_name('alert-success')
+        self.assertTrue(u'Quote saved.' in success_message.text)
+
     def _submit_and_check(self, b):
         b.find_element_by_id('create_submit').click()
 

@@ -5,11 +5,12 @@ from django.utils.translation import get_language
 from django.conf import settings
 from django.contrib import messages
 from django.core.urlresolvers import reverse
-from gallant.utils import get_one_or_404
-from quotes import models as q
+from gallant.utils import get_one_or_404, GallantObjectPermissions
+from quotes import models as q, serializers
 from quotes import forms as qf
 from gallant import forms as gf
 from django.utils.translation import ugettext_lazy as _
+from rest_framework import generics
 
 
 class QuoteTemplateList(View):
@@ -118,3 +119,14 @@ class QuoteTemplateView(View):
         return TemplateResponse(request=self.request,
                                 template="quotes/quote_template.html",
                                 context=context)
+
+
+class QuoteTemplateDetailAPI(generics.RetrieveUpdateAPIView):
+    model = q.QuoteTemplate
+    serializer_class = serializers.QuoteTemplateSerializer
+    permission_classes = [
+        GallantObjectPermissions
+    ]
+
+    def get_queryset(self):
+        return self.model.objects.all_for(self.request.user)

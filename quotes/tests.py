@@ -18,8 +18,6 @@ class QuoteTest(test.TransactionTestCase):
                                                           'user': self.user, 'client': client,
                                                           'services': []})
 
-        return
-
     def test_save_load(self):
         fixture = AutoFixture(q.Quote, generate_fk=True)
         obj = fixture.create(1)[0]
@@ -139,7 +137,7 @@ class QuoteTest(test.TransactionTestCase):
 
 
 class QuoteTemplateTest(test.TestCase):
-    def test_save_load(self):
+    def setUp(self):
         user = autofixture.create_one(g.GallantUser)
         client = autofixture.create_one(g.Client, generate_fk=True, field_values={'user': user})
 
@@ -149,22 +147,22 @@ class QuoteTemplateTest(test.TestCase):
         m = q.TextSection.objects.create(user=quote.user, name='important_notes', index=1)
         quote.sections.add(i)
         quote.sections.add(m)
+        quote_template = autofixture.create_one(q.QuoteTemplate, generate_fk=True,
+                                                field_values={'quote': quote, 'user': user})
 
+        self.user = user
+        self.quote = quote
+        self.quote_template = quote_template
+
+    def test_save_load(self):
+        quote = self.quote
         new_quote = q.Quote.objects.get_for(quote.user, id=quote.id)
 
         self.assertEqual(quote.id, new_quote.id)
 
     def test_quote_template_soft_delete(self):
-        # Create Quote
-        user = autofixture.create_one(g.GallantUser)
-        client = autofixture.create_one(g.Client, generate_fk=True, field_values={'user': user})
-        quote = autofixture.create_one(q.Quote, generate_fk=True,
-                                       field_values={'sections': [], 'language': 'en', 'user': user, 'client': client})
-        i = q.TextSection.objects.create(user=quote.user, name='intro', index=0)
-        m = q.TextSection.objects.create(user=quote.user, name='important_notes', index=1)
-        quote.sections.add(i)
-        quote.sections.add(m)
-
+        user = self.user
+        quote_template = self.quote_template
         # Create Quote with no Client
         quote_no_client = autofixture.create_one(q.Quote, generate_fk=True,
                                                  field_values={'sections': [], 'language': 'en', 'user': user,
@@ -174,9 +172,9 @@ class QuoteTemplateTest(test.TestCase):
         quote_no_client.sections.add(i)
         quote_no_client.sections.add(m)
 
+
+
         # Create Quote Templates
-        quote_template = autofixture.create_one(q.QuoteTemplate, generate_fk=True,
-                                                field_values={'quote': quote, 'user': user})
         quote_template_b = autofixture.create_one(q.QuoteTemplate, generate_fk=True,
                                                   field_values={'quote': quote_no_client, 'user': user})
 
@@ -197,6 +195,27 @@ class QuoteTemplateTest(test.TestCase):
         # Validate Quote without Client was deleted
         self.assertEqual(quote_template_b.quote.deleted, 1)
         self.assertEqual(quote_template_b.quote.deleted_by_parent, 1)
+
+    def test_quote_template_serialize(self):
+        quote_template = self.quote_template
+
+        serializer = serializers.QuoteTemplateSerializer(quote_template)
+        self.assertIsNotNone(serializer.data)
+
+        parser = serializers.QuoteTemplateSerializer(quote_template, data=serializer.data)
+        self.assertTrue(parser.is_valid())
+
+    def test_access_api_quote_template(self):
+        factory = APIRequestFactory()
+        quote_template = self.quote_template
+        user = self.user
+
+        request = factory.get(reverse('api_quote_template_detail', args=[quote_template.id]))
+        request.user = user
+        force_authenticate(request, user=user)
+
+        response = views.QuoteTemplateDetailAPI.as_view()(request, pk=quote_template.id)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
 
 
 class QuoteFormTest(test.TestCase):
