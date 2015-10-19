@@ -1,16 +1,17 @@
 from django.conf import settings
 from django.contrib import messages
 from django.core.urlresolvers import reverse
-from briefs import models as b
+from briefs import models as b, serializers
 from django.http import HttpResponseRedirect
 from django.template.response import TemplateResponse
 from django.utils.translation import get_language
 from django.views.generic import View
 from briefs import forms as bf
 from gallant import forms as gf
-from gallant.utils import get_one_or_404, query_url
+from gallant.utils import get_one_or_404, query_url, GallantObjectPermissions
 from django.utils.translation import ugettext_lazy as _
 from briefs.views.brief import _update_from_query
+from rest_framework import generics
 
 
 class BriefTemplateList(View):
@@ -134,4 +135,15 @@ class BriefTemplateDelete(View):
         brief.soft_delete()
 
         return HttpResponseRedirect(reverse('brief_templates'))
+
+
+class BriefTemplateDetailAPI(generics.RetrieveUpdateAPIView):
+    model = b.BriefTemplate
+    serializer_class = serializers.BriefTemplateSerializer
+    permission_classes = [
+        GallantObjectPermissions
+    ]
+
+    def get_queryset(self):
+        return self.model.objects.all_for(self.request.user)
 

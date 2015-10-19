@@ -206,3 +206,12 @@ class BriefsSignedInTest(browser.SignedInTest):
         # check that brief access returns 404
         response = self.client.get(self.live_server_url + reverse('brief_template_detail', args=[template.id]))
         self.assertEqual(response.status_code, 404)
+
+    def test_can_access_brief_endpoint(self):
+        client = autofixture.create_one('gallant.Client', generate_fk=True,
+                                   field_values={'user': self.user})
+        brief = autofixture.create_one('briefs.Brief', generate_fk=True,
+                                   field_values={'user': self.user, 'client': client})
+
+        response = self.client.get(self.live_server_url + reverse('api_brief_detail', args=[brief.id]))
+        self.assertEqual(response.status_code, 200)

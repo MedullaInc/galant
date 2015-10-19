@@ -14,4 +14,7 @@ urlpatterns = [
     url(r'^template/add/(?P<brief_id>[0-9]+)?$', login_required(views.BriefTemplateView.as_view()), name='add_brief_template'),
     url(r'^template/edit/(?P<pk>[0-9]+)$', login_required(views.BriefTemplateView.as_view()), name='edit_brief_template'),
     url(r'^template/delete/(?P<pk>[0-9]+)$', login_required(views.BriefTemplateDelete.as_view()),name='delete_brief_template'),
+
+    url(r'^api/brief/(?P<pk>[0-9]+)$', login_required(views.BriefDetailAPI.as_view()), name='api_brief_detail'),
+    url(r'^api/template/(?P<pk>[0-9]+)$', login_required(views.BriefTemplateDetailAPI.as_view()), name='api_brief_template_detail'),
 ]

@@ -2,15 +2,16 @@ from django.conf import settings
 from django.contrib import messages
 from django.core.mail import send_mail
 from django.core.urlresolvers import reverse
-from briefs import models as b
+from briefs import models as b, serializers
 from django.http import HttpResponseRedirect
 from django.template.response import TemplateResponse
 from gallant import models as g
 from quotes import models as q
 from django.views.generic import View
 from briefs import forms as bf
-from gallant.utils import get_one_or_404, query_url, get_site_from_host
+from gallant.utils import get_one_or_404, query_url, get_site_from_host, GallantObjectPermissions
 from django.utils.translation import ugettext_lazy as _
+from rest_framework import generics
 
 
 def _update_from_query(request, context):
@@ -218,3 +219,15 @@ class BriefDelete(View):
         brief.soft_delete()
 
         return HttpResponseRedirect(reverse('briefs'))
+
+
+class BriefDetailAPI(generics.RetrieveUpdateAPIView):
+    model = b.Brief
+    serializer_class = serializers.BriefSerializer
+    permission_classes = [
+        GallantObjectPermissions
+    ]
+
+    def get_queryset(self):
+        return self.model.objects.all_for(self.request.user)
+
