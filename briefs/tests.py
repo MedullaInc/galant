@@ -236,3 +236,78 @@ class BriefTemplateTest(test.TransactionTestCase):
 
         response = views.BriefTemplateDetailAPI.as_view()(request, pk=brief_template.id)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+
+class QuestionTest(test.TransactionTestCase):
+    def setUp(self):
+        user = autofixture.create_one(g.GallantUser)
+        question = b.TextQuestion.objects.create(user=user, question='What?')
+        multiple_choice_question = b.MultipleChoiceQuestion.objects.create(user=user, question='Huh?',
+                                                                           choices=['a', 'b', 'c'], index=1)
+        self.user = user
+        self.question = question
+        self.multiple_choice_question = multiple_choice_question
+    
+    def test_question_serialize(self):
+        question = self.question
+
+        serializer = serializers.QuestionSerializer(question)
+        self.assertIsNotNone(serializer.data)
+
+        parser = serializers.QuestionSerializer(question, data=serializer.data)
+        self.assertTrue(parser.is_valid())
+
+        self.assertEqual(parser.save(), question)
+
+    def test_question_serialize_create(self):
+        question = self.question
+
+        serializer = serializers.QuestionSerializer(question)
+        self.assertIsNotNone(serializer.data)
+
+        parser = serializers.QuestionSerializer(data=serializer.data)
+        self.assertTrue(parser.is_valid())
+    
+    def test_multiple_choice_question_serialize(self):
+        multiple_choice_question = self.multiple_choice_question
+        
+        serializer = serializers.QuestionSerializer(multiple_choice_question)
+        self.assertIsNotNone(serializer.data)
+
+        parser = serializers.QuestionSerializer(multiple_choice_question, data=serializer.data)
+        self.assertTrue(parser.is_valid())
+
+        self.assertEqual(parser.save(), multiple_choice_question)
+
+    def test_multiple_choice_question_serialize_create(self):
+        multiple_choice_question = self.multiple_choice_question
+
+        serializer = serializers.QuestionSerializer(multiple_choice_question)
+        self.assertIsNotNone(serializer.data)
+
+        parser = serializers.QuestionSerializer(data=serializer.data)
+        self.assertTrue(parser.is_valid())
+
+    def test_access_api_question(self):
+        factory = APIRequestFactory()
+        question = self.question
+        user = self.user
+
+        request = factory.get(reverse('api_question_detail', args=[question.id]))
+        request.user = user
+        force_authenticate(request, user=user)
+
+        response = views.QuestionDetailAPI.as_view()(request, pk=question.id)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_put_api_question(self):
+        factory = APIRequestFactory()
+        question = self.question
+        user = self.user
+
+        request = factory.patch(reverse('api_question_detail', args=[question.id]), {'is_long_answer': True})
+        request.user = user
+        force_authenticate(request, user=user)
+
+        response = views.QuestionDetailAPI.as_view()(request, pk=question.id)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)

@@ -33,3 +33,45 @@ class BriefTemplateSerializer(serializers.ModelSerializer):
     class Meta:
         model = BriefTemplate
         fields = ('id', 'user', 'brief')
+
+
+class QuestionSerializer(serializers.ModelSerializer):
+    user = serializers.PrimaryKeyRelatedField(read_only=True)
+
+    class Meta:
+        model = b.Question
+        fields = ('id', 'user', 'question', 'help_text', 'index')
+
+    def to_internal_value(self, data):
+        if 'type' not in data:
+            return super(QuestionSerializer, self).to_internal_value(data)
+        elif data['type'] == b.TextQuestion.__name__:
+            return TextQuestionSerializer(data=data, context=self.context).to_internal_value(data)
+        elif data['type'] == b.MultipleChoiceQuestion.__name__:
+            return MultipleChoiceQuestionSerializer(data=data, context=self.context).to_internal_value(data)
+
+    def to_representation(self, instance):
+        if isinstance(instance, b.TextQuestion):
+            dct = TextQuestionSerializer(instance, context=self.context).to_representation(instance)
+            dct['type'] = b.TextQuestion.__name__
+            return dct
+        elif isinstance(instance, b.MultipleChoiceQuestion):
+            dct = MultipleChoiceQuestionSerializer(instance, context=self.context).to_representation(instance)
+            dct['type'] = b.MultipleChoiceQuestion.__name__
+            return dct
+
+
+class TextQuestionSerializer(serializers.ModelSerializer):
+    user = serializers.PrimaryKeyRelatedField(read_only=True)
+
+    class Meta:
+        model = b.TextQuestion
+        fields = ('id', 'user', 'question', 'help_text', 'index', 'is_long_answer')
+
+
+class MultipleChoiceQuestionSerializer(serializers.ModelSerializer):
+    user = serializers.PrimaryKeyRelatedField(read_only=True)
+
+    class Meta:
+        model = b.MultipleChoiceQuestion
+        fields = ('id', 'user', 'question', 'help_text', 'index', 'can_select_multiple', 'choices')
