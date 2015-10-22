@@ -21,7 +21,30 @@
 
 {% endblock %}
 
+{% block tabs %}
+
+    <ul id="tabs" class="nav nav-tabs" style="margin-bottom: -1px;">
+        <li>
+            <a href="" class="active">
+                Overview
+            </a>
+        </li>
+        <li>
+            <a href="">
+                Projects
+            </a>
+        </li>
+        <li>
+            <a href="">
+                Financials
+            </a>
+        </li>
+    </ul>
+
+{% endblock %}
+
 {% block center_content %}
+
     <div class="row">
         <div class="col-lg-10 col-md-10 col-sm-9 col-xs-9">
             <h2 class="section_title">{{ object.name }}</h2>
@@ -47,12 +70,12 @@
             <br>
 
             {% if object.get_type_display %}
-            <p><span class="detail_title">{% trans "Type" %}:</span> {{ object.get_type_display }}</p>
+                <p><span class="detail_title">{% trans "Type" %}:</span> {{ object.get_type_display }}</p>
             {% endif %}
 
             {% if object.get_size_display %}
-            <p><span class="detail_title">{% trans "Size" %}:</span> {{ object.get_size_display }}</p>
-            <br/>
+                <p><span class="detail_title">{% trans "Size" %}:</span> {{ object.get_size_display }}</p>
+                <br/>
             {% endif %}
 
             <p><span class="detail_title">{% trans "Language" %}:</span> {{ object.get_language_display }}</p>
