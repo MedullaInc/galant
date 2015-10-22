@@ -87,7 +87,6 @@ class ClientCreate(ClientUpdate):
         form = forms.ClientForm(request.user)
         context = {'form': form,
                    'contact_form': forms.ContactInfoForm(),
-                   'note_form': forms.NoteForm(request.user),
                    'title': 'Add Client'}
         return TemplateResponse(request=self.request,
                                 template="gallant/client_form.html",
