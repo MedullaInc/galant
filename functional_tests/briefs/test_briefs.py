@@ -215,3 +215,9 @@ class BriefsSignedInTest(browser.SignedInTest):
 
         response = self.client.get(self.live_server_url + reverse('api_brief_detail', args=[brief.id]))
         self.assertEqual(response.status_code, 200)
+
+    def test_can_access_question_endpoint(self):
+        question = bm.TextQuestion.objects.create(user=self.user, question='What?')
+
+        response = self.client.get(self.live_server_url + reverse('api_question_detail', args=[question.id]))
+        self.assertEqual(response.status_code, 200)
