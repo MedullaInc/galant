@@ -1,45 +1,50 @@
-Setup for running and / or development environment:
+Development environment setup
+=============================
 
 - Requirements: python, pip, virtualenv, python-dev (Ubuntu), MySQL
-
-- Create virtual environment (this will be activated by autoenv from .env when you cd to the project directory,
-but since you're already there you need to activate it manually):
-$ virtualenv venv
 
 - Optionally instal autoenv:
 
 OSX
-$ brew install autoenv
-$ source /usr/local/opt/autoenv/activate.sh
-$ echo 'source /usr/local/opt/autoenv/activate.sh' >> ~/.bash_profile
+  $ brew install autoenv
+  $ source /usr/local/opt/autoenv/activate.sh
+  $ echo 'source /usr/local/opt/autoenv/activate.sh' >> ~/.bash_profile
 
 Linux:
-$ git clone git://github.com/kennethreitz/autoenv.git ~/.autoenv
-$ source ~/.autoenv/activate.sh
-$ echo 'source ~/.autoenv/activate.sh' >> ~/.bashrc
-
-- Install dependencies, run project setup:
-$ pip install -r requirements.txt 
-$ ./scripts/setup.sh
+  $ git clone git://github.com/kennethreitz/autoenv.git ~/.autoenv
+  $ source ~/.autoenv/activate.sh
+  $ echo 'source ~/.autoenv/activate.sh' >> ~/.bashrc
 
 - Default dev config is to have MySQL root user with no password, make sure to add "skip-networking" to your my.cnf if
   you do this. Create new database manually, named according to config (default gallant_dev). If your DB is set up
-  differently, create a different config file and point DJANGO_SETTINGS_MODULE to it.
+  differently, create a different config file and point the environment variable DJANGO_SETTINGS_MODULE to its path.
 
-- Run 'python manage.py makemigrations', 'python manage.py migrate'
+- Run ./scripts/setup.sh, or perform the following steps manually:
 
-- For testing, install PhantomJS (for OS X download binary and copy to somewhere in PATH, eg /usr/bin)
+  - Create virtual environment (this will be activated by autoenv from .env when you cd to the project directory,
+    but since you're already there you need to activate it manually):
+    $ virtualenv venv
 
-- For internationalization, install gettext & run 'python manage.py compilemessages'
+  - Install dependencies, run project setup:
+    $ pip install -r requirements.txt 
+    $ ./scripts/setup.sh
 
-- For Quote PDFs, install wkhtmltopdf 0.12.2.1 (binaries available for win / linux / osx)
+  - Run 'python manage.py makemigrations', 'python manage.py migrate'
 
-- To load example Quote & Brief templates, run 'python manage.py load_quote' and/or 'load_brief'
+  - For testing, install PhantomJS (for OS X download binary and copy to somewhere in PATH, eg /usr/bin)
 
-- For openexchangerates.org exchange rates, run 'python manage.py update_rates'
+  - For internationalization, install gettext & run 'python manage.py compilemessages'
+
+  - For Quote PDFs, install wkhtmltopdf 0.12.2.1 (binaries available for win / linux / osx)
+
+  - To load example Quote & Brief templates, run 'python manage.py load_quote' and/or 'load_brief'
+
+  - For openexchangerates.org exchange rates, run 'python manage.py update_rates'
 
 
-Server Setup:
+Server Setup
+============
+
 - Install ngninx and Supervisor, copy config from scripts/nginx.sites-available.gallant and scripts/supervisord.conf to
   their respective locations.
 - Install scripts/supervisord.init.d.script to /etc/init.d/supervisord
