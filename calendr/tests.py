@@ -1,7 +1,7 @@
 import autofixture
 from calendr.models import Task
 from calendr.serializers import TaskSerializer
-from calendr.views import TaskDetailAPI
+from calendr.views import TaskDetailAPI, TasksAPI
 from django.core.urlresolvers import reverse
 from gallant import models as g
 from django.test.testcases import TransactionTestCase
@@ -56,3 +56,34 @@ class TaskTest(TransactionTestCase):
 
         self.assertEqual(task.project_id, new_project.id)
         self.assertEqual(task.notes.count(), 0)
+
+    def test_access_api_tasks(self):
+        factory = APIRequestFactory()
+        user1 = autofixture.create_one('gallant.GallantUser', generate_fk=True, field_values={'is_superuser': False})
+        tasks1 = autofixture.create('calendr.Task', 10, generate_fk=True,
+                                      field_values={'user': user1})
+        user2 = autofixture.create_one('gallant.GallantUser', generate_fk=True, field_values={'is_superuser': False})
+        tasks2 = autofixture.create('calendr.Task', 20, generate_fk=True,
+                                      field_values={'user': user2})
+
+        tasks1ids = [t.id for t in tasks1]
+        tasks2ids = [t.id for t in tasks2]
+        self.assertTrue(len(set(tasks1ids) & set(tasks2ids)) == 0)
+
+        request1 = factory.get(reverse('api_tasks') + '?user=%s' % user1.id)
+        force_authenticate(request1, user=user1)
+
+        response = TasksAPI.as_view()(request1)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        for d in response.data:
+            self.assertTrue(int(d['id']) in tasks1ids)
+
+        request2 = factory.get(reverse('api_tasks') + '?user=%s' % user2.id)
+        force_authenticate(request2, user=user2)
+
+        response = TasksAPI.as_view()(request2)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        for d in response.data:
+            self.assertTrue(int(d['id']) in tasks2ids)
