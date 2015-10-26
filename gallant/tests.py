@@ -437,3 +437,21 @@ class GallantUserTest(TestCase):
         group = Group.objects.get(name='users')
 
         self.assertTrue(u in group.user_set.all())
+
+    def test_access_api_users(self):
+        factory = APIRequestFactory()
+        user = autofixture.create_one('gallant.GallantUser', generate_fk=True)
+        project = autofixture.create_one('gallant.Project', generate_fk=True,
+                                         field_values={'user': user})
+
+        request = factory.get(reverse('api_users') + '?project=%s' % project.id)
+        request.user = user
+        force_authenticate(request, user=user)
+
+        response = views.UsersAPI.as_view()(request)
+        d = response.data
+        for u in d:
+            if u['id'] == user.id:
+                self.assertEqual(u['email'], user.email)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)

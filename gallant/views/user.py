@@ -10,9 +10,11 @@ from django.views.generic import View
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.core.urlresolvers import reverse
-from gallant import forms
+from gallant import forms, serializers
 from gallant.utils import get_site_from_host
 from django.utils.translation import ugettext_lazy as _
+from rest_framework import generics
+from rest_framework.permissions import IsAuthenticated
 
 
 def _send_signup_request_email(form):
@@ -229,3 +231,15 @@ class PasswordReset(View):
             return render(request, 'gallant/base_form.html', {
                 'form': forms.EmailForm(),
             })
+
+
+class UsersAPI(generics.ListAPIView):
+    model = get_user_model()
+    serializer_class = serializers.UserModelSerializer
+    permission_classes = [
+        IsAuthenticated,
+    ]
+
+    def get_queryset(self):
+        return self.model.objects.all()
+
