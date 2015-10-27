@@ -3,6 +3,7 @@ from calendr.serializers import TaskSerializer
 from django.shortcuts import render
 from gallant.utils import GallantObjectPermissions
 from rest_framework import generics
+from rest_framework.permissions import IsAuthenticated
 
 
 def calendar(request):
@@ -18,4 +19,19 @@ class TaskDetailAPI(generics.RetrieveUpdateAPIView):
 
     def get_queryset(self):
         return self.model.objects.all_for(self.request.user)
+
+
+class TasksAPI(generics.ListAPIView):
+    model = Task
+    serializer_class = TaskSerializer
+    permission_classes = [
+        IsAuthenticated
+    ]
+
+    def get_queryset(self):
+        user = self.request.GET.get('user', None)
+        if user:
+            return self.model.objects.all_for(self.request.user).filter(user_id=user)
+        else:
+            return self.model.objects.all_for(self.request.user)
 
