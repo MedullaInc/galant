@@ -1912,15 +1912,13 @@ h3.area_title {
 
 .enclosed {
     border: 1px solid black;
-    -webkit-border-radius: 10px;
-    -moz-border-radius: 10px;
-    border-radius: 10px;
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 0px;
     padding: 25px;
     padding-top: 25px;
     padding-bottom: 30px;
     position: relative;
-    margin-left: 10px;
-    margin-right: 10px;
     margin-bottom: 35px;
 }
 
@@ -2630,3 +2628,11 @@ div.breadcrumbs span {
 }
 
 /* End logged in as */
+
+/* Client Profile */
+
+.profile_alert {
+    padding-bottom: 10px;
+}
+
+/* End Client Profile */
