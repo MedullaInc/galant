@@ -34,17 +34,20 @@
 
     <ul id="tabs" class="nav nav-tabs" style="margin-bottom: -1px;">
         <li>
-            <a href="" class="active">
+            {% url 'client_detail' object.id as client_detail %}
+            <a href="{{ client_detail }}" class="{% active request client_detail %}">
                 Overview
             </a>
         </li>
         <li>
-            <a href="">
+            {% url 'client_work_detail' object.id as client_work_detail %}
+            <a href="{{ client_work_detail }}" class="{% active request client_work_detail %}">
                 Work
             </a>
         </li>
         <li>
-            <a href="">
+            {% url 'client_money_detail' object.id as client_money_detail %}
+            <a href="{{ client_money_detail }}" class="{% active request client_money_detail %}">
                 Money
             </a>
         </li>
@@ -187,8 +190,7 @@
         </div>
     </div>
 
-    <hr>
-    <div id="notes">
+    <div id="notes" class="enclosed">
         <h2 class="section_title">Notes</h2>
 
         {% objects_for object.notes as notes %}

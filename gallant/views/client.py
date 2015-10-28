@@ -116,6 +116,52 @@ def client_detail(request, pk):
                                                        .all_for(request.user),'title': client.name })
 
 
+def client_work_detail(request, pk):
+    client = get_one_or_404(request.user, 'view_client', g.Client, pk=pk)
+
+    if request.method == 'POST' and request.user.has_perm('change_client', client):
+        form = forms.NoteForm(request.user, request.POST)
+        if form.is_valid():
+            note = g.Note.objects.create(text=form.cleaned_data['text'], user=request.user)
+            client.notes.add(note)
+            client.save()
+            return HttpResponseRedirect(reverse('client_detail', args=[client.id]))
+    else:
+        form = forms.NoteForm(request.user)  # An unbound form
+
+    request.breadcrumbs([(_('Clients'), reverse('clients')),
+                         (_(client.name), reverse('client_detail', args=[client.id]))])
+
+    return TemplateResponse(request=request,
+                            template="gallant/client_detail.html",
+                            context={'object': client, 'form': form,
+                                     'template_list': b.BriefTemplate.objects
+                                                       .all_for(request.user),'title': client.name })
+
+
+def client_money_detail(request, pk):
+    client = get_one_or_404(request.user, 'view_client', g.Client, pk=pk)
+
+    if request.method == 'POST' and request.user.has_perm('change_client', client):
+        form = forms.NoteForm(request.user, request.POST)
+        if form.is_valid():
+            note = g.Note.objects.create(text=form.cleaned_data['text'], user=request.user)
+            client.notes.add(note)
+            client.save()
+            return HttpResponseRedirect(reverse('client_detail', args=[client.id]))
+    else:
+        form = forms.NoteForm(request.user)  # An unbound form
+
+    request.breadcrumbs([(_('Clients'), reverse('clients')),
+                         (_(client.name), reverse('client_detail', args=[client.id]))])
+
+    return TemplateResponse(request=request,
+                            template="gallant/client_detail.html",
+                            context={'object': client, 'form': form,
+                                     'template_list': b.BriefTemplate.objects
+                                                       .all_for(request.user),'title': client.name })
+
+
 class ClientDelete(View):
     def get(self, request, **kwargs):
         client = get_one_or_404(request.user, 'change_client', g.Client, id=kwargs['pk'])

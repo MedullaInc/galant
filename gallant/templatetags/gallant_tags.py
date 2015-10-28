@@ -26,3 +26,12 @@ def analytics(context):
 def custom_breadcrumb(request, breadcrumb_title):
     request.breadcrumbs((breadcrumb_title), request.path_info)
     return ''
+
+
+@register.simple_tag()
+def active(request, pattern):
+    path = request.path
+    if path == pattern:
+        return 'active'
+    else:
+        return ''
