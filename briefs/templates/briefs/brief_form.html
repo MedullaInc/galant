@@ -4,6 +4,7 @@
 {% block scripts %}
     {{ block.super }}
     <script src="{% static "js/angular.js" %}"></script>
+    <script src="{% static "js/angular-resource.js" %}"></script>
     <script src="{% static "djangular/js/django-angular.min.js" %}"></script>
     <script src="{% static "briefs/js/controllers/briefFormController.js" %}"></script>
     <script src="{% static "briefs/js/directives/brForm.js" %}"></script>
@@ -32,25 +33,16 @@
         </div>
     {% endif %}
 
-    <br-brief-form id="main_form" name="forms.brief" class="form" method="post" novalidate>
-
-        {% block form_help_text %}
-            {% if help_text %}
-                <p class="title">
-                    <i>
-                        {{ help_text }}
-                    </i>
-                </p>
-            {% endif %}
-        {% endblock %}
-
-        {% csrf_token %}
-        {{ form.as_div }}
-    </br-brief-form>
-    <hr>
-    <div ng-repeat="question in questions">
-        <div br-question question="question" language="currentLanguage", forms="forms"></div>
-    </div>
+    {% block form_help_text %}
+        {% if help_text %}
+            <p class="title">
+                <i>
+                    {{ help_text }}
+                </i>
+            </p>
+        {% endif %}
+    {% endblock %}
+    <div br-brief-form brief-id="{{ object.pk }}" brief="brief" language="currentLanguage" forms="forms"></div>
 
     <div id="form_actions">
         <div class="row">

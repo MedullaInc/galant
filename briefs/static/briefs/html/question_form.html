@@ -1,4 +1,4 @@
-<ng-form name="forms.__question__{{ question.index }}_">
+<ng-form name="forms.question{{ question.index }}">
     <div class="row">
         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
             <label for="" class="form_label">
@@ -19,7 +19,10 @@
 
     <div class="question_text row">
         <div class="col-lg-12">
-            <div br-ultext-input text="question.question" language="{{ language }}">
+            <ng-form name="innerForm">
+                <div br-ultext-input name="question" text="question.question" language="language" required="true"></div>
+                <div br-required-errors field="innerForm.question"></div>
+            </ng-form>
         </div>
    </div>
 </ng-form>

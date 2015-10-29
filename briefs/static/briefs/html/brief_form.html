@@ -1,14 +1,23 @@
-<form id="main_form" name="forms.brief" class="form" method="post" novalidate>
-    {% block form_help_text %}
-        {% if help_text %}
-            <p class="title">
-                <i>
-                    {{ help_text }}
-                </i>
-            </p>
-        {% endif %}
-    {% endblock %}
+<ng-form name="forms.brief" class="form" method="post" novalidate>
+    <div class="brief_title row has-feedback form-group">
 
-    {% csrf_token %}
-    {{ form.as_div }}
-</form>
+        <div class="col-lg-12">
+            <label class="control-label" for="id_title">Title</label>
+            <div br-ultext-input name="title" text="brief.title" language="language" required="true"></div>
+            <div br-required-errors field="forms.brief.title"></div>
+        </div>
+    </div>
+    <div class="brief_greeting row has-feedback form-group">
+
+        <div class="col-lg-12">
+            <label class="control-label" for="id_title">Greeting</label>
+
+            <div br-ultext-area name="greeting" text="brief.greeting" language="language" required="true"></div>
+            <div br-required-errors field="forms.brief.greeting"></div>
+        </div>
+    </div>
+    <hr>
+    <div ng-repeat="question in brief.questions">
+        <div br-question-form question="question" language="language" forms="forms"></div>
+    </div>
+</ng-form>

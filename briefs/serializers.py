@@ -1,7 +1,6 @@
-from gallant.serializers.misc import ULTextField
+from gallant.serializers.misc import ULTextField, ULTextArrayField
 from rest_framework import serializers
 from briefs.models import Brief, BriefTemplate
-from gallant.serializers import misc
 from gallant import models as g
 from briefs import models as b
 from quotes import models as q
@@ -46,6 +45,7 @@ class TextQuestionSerializer(serializers.ModelSerializer):
 class MultipleChoiceQuestionSerializer(serializers.ModelSerializer):
     user = serializers.PrimaryKeyRelatedField(read_only=True)
     question = ULTextField()
+    choices = ULTextArrayField()
 
     class Meta:
         model = b.MultipleChoiceQuestion
@@ -55,6 +55,8 @@ class MultipleChoiceQuestionSerializer(serializers.ModelSerializer):
 class BriefSerializer(serializers.ModelSerializer):
     user = serializers.PrimaryKeyRelatedField(read_only=True)
     questions = QuestionSerializer(many=True)
+    title = ULTextField()
+    greeting = ULTextField()
 
     def get_fields(self, *args, **kwargs):
         fields = super(BriefSerializer, self).get_fields(*args, **kwargs)

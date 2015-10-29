@@ -1,0 +1,11 @@
+<ul class="djng-form-control-feedback djng-field-errors"
+    ng-show="field.$dirty">
+    <li ng-show="field.$error.required"
+        class="invalid ng-hide">This field is required.
+    </li>
+    <li ng-show="field.$valid" class="valid"></li>
+</ul>
+<ul class="djng-form-control-feedback djng-field-errors"
+    ng-show="field.$pristine">
+    <li ng-show="field.$valid" class="valid"></li>
+</ul>
