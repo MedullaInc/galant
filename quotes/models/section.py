@@ -61,8 +61,17 @@ class TextSection(Section):
     objects = PolyUserModelManager()
 
 
+class ServiceStatus(gf.ChoiceEnum):
+    On_Hold = 0
+    Pending_Assignment = 1
+    Active = 2
+    Overdue = 3
+    Completed = 4
+
+
 class ServiceSection(Section):
     service = g.UnsavedForeignKey(g.Service)
+    status = m.CharField(max_length=2, choices=ServiceStatus.choices(), default=ServiceStatus.Pending_Assignment.value)
 
     class Meta:
         permissions = _get_section_perms(('view_servicesection', 'View servicesection'))
