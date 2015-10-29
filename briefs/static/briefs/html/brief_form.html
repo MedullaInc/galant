@@ -1,0 +1,14 @@
+<form id="main_form" name="forms.brief" class="form" method="post" novalidate>
+    {% block form_help_text %}
+        {% if help_text %}
+            <p class="title">
+                <i>
+                    {{ help_text }}
+                </i>
+            </p>
+        {% endif %}
+    {% endblock %}
+
+    {% csrf_token %}
+    {{ form.as_div }}
+</form>

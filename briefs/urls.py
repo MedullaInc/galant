@@ -18,4 +18,5 @@ urlpatterns = [
     url(r'^api/brief/(?P<pk>[0-9]+)$', login_required(views.BriefDetailAPI.as_view()), name='api_brief_detail'),
     url(r'^api/template/(?P<pk>[0-9]+)$', login_required(views.BriefTemplateDetailAPI.as_view()), name='api_brief_template_detail'),
     url(r'^api/question/(?P<pk>[0-9]+)$', login_required(views.QuestionDetailAPI.as_view()), name='api_question_detail'),
+    url(r'^api/questions/$', login_required(views.QuestionsAPI.as_view()), name='api_questions'),
 ]
