@@ -3,6 +3,7 @@ from django.core.urlresolvers import reverse
 import autofixture
 from functional_tests import browser
 from selenium.common.exceptions import NoSuchElementException
+from quotes import models as qm
 
 
 def tearDown():
@@ -18,33 +19,53 @@ class GallantClientTest(browser.SignedInTest):
         self.assertEqual('Clients', app_title.text)
 
     def test_can_access_client_work(self):
+        # Create client
         client = autofixture.create_one('gallant.Client', generate_fk=True,
                                         field_values={'user': self.user})
 
-        services = autofixture.create('gallant.Service', 10, generate_fk=True, field_values={'user': self.user})
+        # Create quote & services
         quote = autofixture.create_one('quotes.Quote', generate_fk=True,
-                                       field_values={'client': client, 'user': self.user, 'status': 5})
+                                       field_values={'client': client, 'user': self.user, 'status': '5'})
+        services = autofixture.create('gallant.Service', 10, generate_fk=True, field_values={'user': self.user})
 
+        # Assign services to quote
         for s in services[0:9]:
-            s.quote = quote
-            s.save()
+            quote.services.add(
+                qm.ServiceSection.objects.create(index=0, user=self.user,
+                                                 name='service', service=s)
+            )
 
-        project = autofixture.create_one('gallant.Project', generate_fk=True, field_values={'user': self.user, 'status': 2})
-
-        project.quote = quote
-        project.save()
-
-        quote.project = project
         quote.save()
 
-        # check 'Client Work' h1
+        # Create project
+        project = autofixture.create_one('gallant.Project', generate_fk=True,
+                                         field_values={'user': self.user, 'status': '2'})
+
+        # Add quote to project
+        quote.projects.add(project)
+        quote.save()
+
+        # Check 'Client Work' h1
         browser.instance().get(self.live_server_url + reverse('client_work_detail', args=[client.id]))
 
         app_title = browser.instance().find_element_by_class_name('app_title')
         self.assertEqual('Client Work', app_title.text)
 
-        # validate templatetags
-        self.save_snapshot()
+        # Validate templatetags
+        project_work_data = browser.instance().execute_script("return project_work_data_%s;" % project.id)
+        self.assertTrue(len(project_work_data) > 0)
+
+        for work_data in project_work_data:
+            if work_data['label'] == 'On Hold':
+                self.assertTrue(work_data['value'] == 0)
+            elif work_data['label'] == 'Unassigned':
+                self.assertTrue(work_data['value'] == 9)
+            elif work_data['label'] == 'Active':
+                self.assertTrue(work_data['value'] == 0)
+            elif work_data['label'] == 'Overdue':
+                self.assertTrue(work_data['value'] == 0)
+            elif work_data['label'] == 'Completed':
+                self.assertTrue(work_data['value'] == 0)
 
     def test_can_access_client_money(self):
         # check 'Client Money' h1
