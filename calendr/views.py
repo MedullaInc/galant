@@ -4,11 +4,12 @@ from django.shortcuts import render
 from gallant.utils import GallantObjectPermissions
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework import status
 
 
 def calendar(request):
-    return render(request, 'calendr/calendr.html', {'title': 'Calendar'})
-
+    return render(request, 'calendr/calendr_3.html', {'title': 'Calendar'})
 
 class TaskDetailAPI(generics.RetrieveUpdateAPIView):
     model = Task
@@ -19,6 +20,27 @@ class TaskDetailAPI(generics.RetrieveUpdateAPIView):
 
     def get_queryset(self):
         return self.model.objects.all_for(self.request.user)
+
+
+class TaskCreateAPI(generics.ListCreateAPIView):
+    model = Task
+    serializer_class = TaskSerializer
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+
+        if  serializer.is_valid():
+            serializer.save()
+
+        return Response(serializer.data, 
+                        status=status.HTTP_201_CREATED)
+
+    def get_queryset(self):
+        user = self.request.GET.get('user', None)
+        if user:
+            return self.model.objects.all_for(self.request.user).filter(user_id=user)
+        else:
+            return self.model.objects.all_for(self.request.user)
 
 
 class TasksAPI(generics.ListAPIView):
@@ -34,4 +56,5 @@ class TasksAPI(generics.ListAPIView):
             return self.model.objects.all_for(self.request.user).filter(user_id=user)
         else:
             return self.model.objects.all_for(self.request.user)
+
 

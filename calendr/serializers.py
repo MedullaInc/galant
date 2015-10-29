@@ -4,8 +4,8 @@ from gallant import models as g
 
 
 class TaskSerializer(serializers.ModelSerializer):
-    user = serializers.PrimaryKeyRelatedField(read_only=True)
-    assignee = serializers.PrimaryKeyRelatedField(read_only=True)
+    #user = serializers.PrimaryKeyRelatedField(read_only=True)
+    #assignee = serializers.PrimaryKeyRelatedField(read_only=True)
 
     def get_fields(self, *args, **kwargs):
         fields = super(TaskSerializer, self).get_fields(*args, **kwargs)

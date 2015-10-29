@@ -1,0 +1,102 @@
+{% extends "base_body.html" %}
+{% load i18n staticfiles %}
+
+{% block css %}
+    <link href='{% static "css/fullcalendar-ng/fullcalendar.min.css" %}' rel='stylesheet' />
+    <link href='{% static "css/fullcalendar-ng/scheduler.min.css" %}' rel='stylesheet' />
+{% endblock %}
+
+{% block scripts %}
+    {{ block.super }}
+
+    
+
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script src="{% static "js/fullcalendar-ng/angular.min.js" %}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.0/angular-route.min.js"></script>
+    <script src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.13.0.js"></script>
+    <script src="{% static "djangular/js/django-angular.min.js" %}"></script>
+    <script src="{% static "js/fullcalendar-ng/moment.min.js" %}"></script>
+    <script src="{% static "js/fullcalendar-ng/fullcalendar.min.js" %}"></script>
+    <script src="{% static "js/fullcalendar-ng/scheduler.js" %}"></script>
+    <script src="{% static "js/fullcalendar-ng/calendar.js" %}"></script>
+    <!-- <script src="{% static "js/fullcalendar-ng/app.js" %}"></script>  -->
+    <script src="{% static "js/fullcalendar-ng/services.js" %}"></script>
+    <script src="{% static "js/fullcalendar-ng/controllers.js" %}"></script>
+    <script>
+    angular.module('gallant', [
+      'ui.calendar',
+       'ui.bootstrap',
+       'ng.django.forms',
+       'gallant.controllers',
+       'gallant.services',
+       ])
+    .config(['$httpProvider', function ($httpProvider) {
+        $httpProvider.defaults.headers.common['X-CSRFToken'] = '{{ csrf_token|escapejs }}';
+    }]);
+    </script>
+    <style>
+
+
+    </style>
+{% endblock %}
+
+{% block extra_head %}
+    {{ block.super }}
+    <div id="add_task" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h2 class="section_title">Add Task</h2>
+                    <p>Add a new task.</p>
+                </div>
+                <div class="modal-body" style="height: 500px; overflow: auto;">
+                    <button id="add_task_button" type="button" class="btn btn-default sidebar">Add
+                    </button>
+                </div>
+                <div class="modal-footer">  
+                </div>
+            </div>
+        </div>
+    </div>    
+    <script type="text/javascript">
+
+    </script>
+{% endblock %}
+
+{% block sub_header %}
+{% endblock %}
+
+{% block content_div %}
+
+    <div ng-app="gallant" id="calendar_container" class="">
+        <section id="directives-calendar" ng-controller="CalendrControl">
+            <div class="page-header">
+                <h1>UI-Calendar</h1>
+            </div>
+                <div class="row">
+                    <div class="col-md-12"  data-ng-init="renderCalender('myCalendar1');">
+                              <div class="alert-success calAlert" ng-show="alertMessage != undefined && alertMessage != ''">
+                                <h4>{{alertMessage}}</h4>
+                              </div>
+                              <div class="">
+                                <div class="btn-group">
+                                    <button class="btn btn-success" ng-click="changeView('timelineDay', 'myCalendar1')">TimeLine day</button>
+                                    <button class="btn btn-success" ng-click="changeView('timelineWeek', 'myCalendar1')">TimeLine week</button>
+                                    <button class="btn btn-success" ng-click="changeView('timelineYear', 'myCalendar1')">TimeLine year</button>
+                                </div>
+                              </div>
+                            <div class="col-md-12" class="calendar" ng-model="eventSources" resources="eventResources" calendar="myCalendar1" ui-calendar="uiConfig.calendar"></div>
+                    </div>
+                </div>
+        </section>
+    </div>
+
+{% endblock %}
+
+{% block footer_div %}
+{% endblock %}
+
+{% block extra_body %}
+{% endblock %}

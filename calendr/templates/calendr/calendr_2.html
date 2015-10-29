@@ -1,0 +1,205 @@
+{% extends "base_body.html" %}
+{% load i18n staticfiles %}
+
+{% block css %}
+<!--     <link rel="stylesheet" href="{% static "css/calendar.css" %}">
+ -->{% endblock %}
+
+{% block scripts %}
+    {{ block.super }}
+
+
+    <link href='{% static "js/fullcalendar/lib/fullcalendar.min.css" %}' rel='stylesheet' />
+    <link href='{% static "js/fullcalendar/lib/scheduler.min.css" %}' rel='stylesheet' />
+
+    <script src="{% static "js/angular.min.js" %}"></script>
+    <script src="{% static "djangular/js/django-angular.min.js" %}"></script>
+    <script src="{% static "js/fullcalendar/lib/moment.min.js" %}"></script>
+    <script src="{% static "js/fullcalendar/lib/fullcalendar.min.js" %}"></script>
+    <script src="{% static "js/fullcalendar/lib/scheduler.js" %}"></script>
+    <script>
+
+        $(function() { // document ready
+
+            $('#calendar').fullCalendar({
+                schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
+                now: '2015-08-07',
+                editable: true, // enable draggable events
+                aspectRatio: 1.8,
+                scrollTime: '00:00', // undo default 6am scrollTime
+                header: {
+                    left: 'today prev,next',
+                    center: 'title',
+                    right: 'timelineDay,timelineThreeDays,timelineMonth,timelineYear'
+                },
+                defaultView: 'timelineDay',
+                views: {
+                    timelineThreeDays: {
+                        type: 'timeline',
+                        duration: { days: 3 }
+                    }
+                },
+                resourceLabelText: 'Rooms',
+
+                resources: function(callback) {
+                    $.ajax({
+                      dataType: "json",
+                      url: '/en/api/users/',
+                      data: {},
+                    success: function (d) {                        
+                    var listOfResources = [];
+                        for (var i = 0, len = d.length; i < len; i++) {
+                            var item = {};
+                            item.id = d[i].id;
+                            item.title = d[i].email;
+                            listOfResources.push(item);
+                            console.log(listOfResources)
+                            //console.log(listOfResources[i].email);
+                        }
+                        callback(listOfResources);
+                        
+                        }
+                    })
+                },
+                error: function() {
+                    $('#script-warning').show();
+                },
+                events: function(start, end, timezone, callback) {
+                    $.ajax({
+                      dataType: "json",
+                      url: '/en/calendar/api/tasks/',
+                      data: {},
+                    success: function (d) {                        
+                    var listOfEvents = [];
+                        for (var i = 0, len = d.length; i < len; i++) {
+                            var item = {};
+                            item.id = i;
+                            item.start = d[0].start;
+                            item.end = d[0].end;
+                            item.title = "event";
+                            item.resourceId = '1';
+                            listOfEvents.push(item);
+                            console.log(listOfEvents);
+                        }
+                        callback(listOfEvents);
+                        
+                        }
+                    })
+                },
+                error: function() {
+                        $('#script-warning').show();
+                },
+                dayClick: function(date, jsEvent, view, resource) {
+                    $('#add_task').modal('show');
+                    var myEvent = {
+                      title:"my new event",
+                      allDay: false,
+                      start: date.format(),
+                      end: date.format(),
+                      resourceId: resource.id
+                    };
+                    $('#calendar').fullCalendar('renderEvent', myEvent, true);
+
+
+                    // change the day's background color just for fun
+                    //$(this).css('background-color', 'red');
+
+                },
+                eventAfterRender: function(event, element, view) {
+                    }
+
+            });
+
+
+        });
+
+    </script>
+    <style>
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: "Lucida Grande",Helvetica,Arial,Verdana,sans-serif;
+            font-size: 14px;
+        }
+
+        #script-warning {
+            display: none;
+            background: #eee;
+            border-bottom: 1px solid #ddd;
+            padding: 0 10px;
+            line-height: 40px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 12px;
+            color: red;
+        }
+
+        #loading {
+            display: none;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+
+        #calendar {
+/*            max-width: 900px;
+*/            margin: 50px auto;
+        }
+
+    </style>
+{% endblock %}
+
+{% block extra_head %}
+    {{ block.super }}
+    <div id="add_task" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h2 class="section_title">Add Task</h2>
+                    <p>Add a new task.</p>
+                </div>
+                <div class="modal-body" style="height: 500px; overflow: auto;">
+                    <button id="add_task_button" type="button" class="btn btn-default sidebar">Add
+                    </button>
+                </div>
+                <div class="modal-footer">  
+                </div>
+            </div>
+        </div>
+    </div>    
+    <script type="text/javascript">
+        app = angular.module('gallant', ['ng.django.forms']);
+
+        app.config(['$httpProvider', function ($httpProvider) {
+            $httpProvider.defaults.headers.common['X-CSRFToken'] = '{{ csrf_token|escapejs }}';
+        }]);
+
+        app.controller('CalendrControl', ['$scope', '$http',
+            function ($scope, $http) {
+                $http.get('/en/api/service/1').then(function (result) {
+                    $scope.service = result.data;
+                });
+
+                $scope.update = function () {
+                    $http.put('/en/api/service/1', $scope.service);
+                };
+            }
+        ]);
+    </script>
+{% endblock %}
+
+{% block sub_header %}
+{% endblock %}
+
+{% block content_div %}
+        <div id='calendar'></div>
+{% endblock %}
+
+{% block footer_div %}
+{% endblock %}
+
+{% block extra_body %}
+
+{% endblock %}
