@@ -63,7 +63,7 @@ class SignedOutTest(LiveServerTestCase):
                              'delete_quote_template', 'delete_project', 'api_service_detail', 'api_task_detail',
                              'api_project_detail', 'api_client_detail', 'api_note_detail', 'api_quote_detail',
                              'api_quote_template_detail', 'api_brief_detail', 'api_brief_template_detail',
-                             'api_question_detail']:
+                             'api_question_detail','client_work_detail','client_money_detail']:
                 url = self.live_server_url + reverse(view_name, args=[0])
 
             # add double <pk>-requiring views here:

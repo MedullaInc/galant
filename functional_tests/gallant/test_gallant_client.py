@@ -17,6 +17,46 @@ class GallantClientTest(browser.SignedInTest):
         app_title = browser.instance().find_element_by_class_name('app_title')
         self.assertEqual('Clients', app_title.text)
 
+    def test_can_access_client_work(self):
+        client = autofixture.create_one('gallant.Client', generate_fk=True,
+                                        field_values={'user': self.user})
+
+        services = autofixture.create('gallant.Service', 10, generate_fk=True, field_values={'user': self.user})
+        quote = autofixture.create_one('quotes.Quote', generate_fk=True,
+                                       field_values={'client': client, 'user': self.user, 'status': 5})
+
+        for s in services[0:9]:
+            s.quote = quote
+            s.save()
+
+        project = autofixture.create_one('gallant.Project', generate_fk=True, field_values={'user': self.user})
+
+        project.quote = quote
+        project.save()
+
+        quote.project = project
+        quote.save()
+
+        # check 'Client Work' h1
+        browser.instance().get(self.live_server_url + reverse('client_work_detail', args=[client.id]))
+
+        app_title = browser.instance().find_element_by_class_name('app_title')
+        self.assertEqual('Client Work', app_title.text)
+
+        # validate templatetags
+        self.save_snapshot()
+
+    def test_can_access_client_money(self):
+        # check 'Client Money' h1
+        c = autofixture.create_one('gallant.Client', generate_fk=True,
+                                   field_values={'user': self.user})
+
+        c.save()
+        browser.instance().get(self.live_server_url + reverse('client_money_detail', args=[c.id]))
+
+        app_title = browser.instance().find_element_by_class_name('app_title')
+        self.assertEqual('Client Money', app_title.text)
+
     def test_add_client(self):
         b = browser.instance()
         b.get(self.live_server_url + reverse('add_client'))
@@ -132,5 +172,3 @@ class GallantClientTest(browser.SignedInTest):
 
         response = self.client.get(self.live_server_url + reverse('api_client_detail', args=[s.id]))
         self.assertEqual(response.status_code, 200)
-
-
