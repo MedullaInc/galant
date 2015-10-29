@@ -1,7 +1,9 @@
 import time
 from django.core.urlresolvers import reverse
 import autofixture
+from django.template import Context, Template
 from functional_tests import browser
+from rest_framework.test import APIRequestFactory
 from selenium.common.exceptions import NoSuchElementException
 from quotes import models as qm
 
@@ -11,6 +13,11 @@ def tearDown():
 
 
 class GallantClientTest(browser.SignedInTest):
+    def render_template(self, string, context=None):
+        context = context or {}
+        context = Context(context)
+        return Template(string).render(context)
+
     def test_can_access_clients(self):
         # check 'Clients' h1
         browser.instance().get(self.live_server_url + reverse('clients'))
@@ -39,7 +46,7 @@ class GallantClientTest(browser.SignedInTest):
 
         # Create project
         project = autofixture.create_one('gallant.Project', generate_fk=True,
-                                         field_values={'user': self.user, 'status': '2'})
+                                         field_values={'user': self.user, 'status': '2', 'quote': quote})
 
         # Add quote to project
         quote.projects.add(project)
@@ -51,7 +58,7 @@ class GallantClientTest(browser.SignedInTest):
         app_title = browser.instance().find_element_by_class_name('app_title')
         self.assertEqual('Client Work', app_title.text)
 
-        # Validate templatetags
+        # Validate templatetags javascript
         project_work_data = browser.instance().execute_script("return project_work_data_%s;" % project.id)
         self.assertTrue(len(project_work_data) > 0)
 
@@ -66,6 +73,43 @@ class GallantClientTest(browser.SignedInTest):
                 self.assertTrue(work_data['value'] == 0)
             elif work_data['label'] == 'Completed':
                 self.assertTrue(work_data['value'] == 0)
+
+        # Validate template Templatetags
+        factory = APIRequestFactory()
+        request = factory.patch(reverse('client_work_detail', args=[client.id]))
+        request.user = self.user
+
+        context = {'request': request, 'client': client, 'status': None}
+        rendered = self.render_template(
+            '{% load gallant_tags %}'
+            '{% get_client_services_count request client status=None %}', context
+        )
+
+        self.assertEqual(rendered, u'9')
+
+        context = {'request': request, 'client': client, 'status': 1}
+        rendered = self.render_template(
+            '{% load gallant_tags %}'
+            '{% get_client_services_count request client status=None %}', context
+        )
+
+        self.assertEqual(rendered, u'9')
+
+        context = {'request': request, 'project': project, 'status': None}
+        rendered = self.render_template(
+            '{% load gallant_tags %}'
+            '{% get_project_services request project status=None %}', context
+        )
+
+        self.assertNotEqual(rendered, u'[]')
+
+        context = {'request': request, 'project': project, 'status': None}
+        rendered = self.render_template(
+            '{% load gallant_tags %}'
+            '{% get_project_services_count request project status=None %}', context
+        )
+
+        self.assertEqual(rendered, u'9')
 
     def test_can_access_client_money(self):
         # check 'Client Money' h1
