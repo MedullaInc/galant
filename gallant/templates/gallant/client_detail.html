@@ -57,59 +57,62 @@
 
 {% block center_content %}
 
-    <div class="row">
-        <div class="col-lg-10 col-md-10 col-sm-9 col-xs-9">
-            <h2 class="section_title">{{ object.name }}</h2>
+    {% block client_detail %}
+        <div class="row">
+            <div class="col-lg-10 col-md-10 col-sm-9 col-xs-9">
+                <h2 class="section_title">{{ object.name }}</h2>
+            </div>
+            <div class="col-lg-2 col-md-2 col-sm-3 col-xs-3 action_box">
+                <a href="{% url 'edit_client' object.id %}" class="edit_button" title="{% trans "Edit" %}">
+                    <button id="section_edit" type="button" class="btn btn-default edit_button" aria-label="Edit">
+                        <span class="glyphicon glyphicon-edit"/>
+                    </button>
+                </a>
+                <a href="{% url 'delete_client' object.id %}" class="delete_button" title="{% trans "Delete" %}" onclick="return confirm('{% trans "Are you sure?" %}')"> 
+                    <button id="section_delete" type="button" class="btn btn-default delete_button" aria-label="Delete"> 
+                        <span class="glyphicon glyphicon-trash"/> 
+                    </button>
+                </a> 
+
+            </div>
         </div>
-        <div class="col-lg-2 col-md-2 col-sm-3 col-xs-3 action_box">
-            <a href="{% url 'edit_client' object.id %}" class="edit_button" title="{% trans "Edit" %}">
-                <button id="section_edit" type="button" class="btn btn-default edit_button" aria-label="Edit">
-                    <span class="glyphicon glyphicon-edit"/>
-                </button>
-            </a>
-            <a href="{% url 'delete_client' object.id %}" class="delete_button" title="{% trans "Delete" %}" onclick="return confirm('{% trans "Are you sure?" %}')"> 
-                <button id="section_delete" type="button" class="btn btn-default delete_button" aria-label="Delete"> 
-                    <span class="glyphicon glyphicon-trash"/> 
-                </button>
-            </a> 
 
-        </div>
-    </div>
+        <div class="row object_data">
+            <div class="col-lg-6">
+                <p><span class="label label-default">{{ object.get_status_display }}</span></p>
+                <br>
 
-    <div class="row object_data">
-        <div class="col-lg-6">
-            <p><span class="label label-default">{{ object.get_status_display }}</span></p>
-            <br>
+                {% if object.get_type_display %}
+                    <p><span class="detail_title">{% trans "Type" %}:</span> {{ object.get_type_display }}</p>
+                {% endif %}
 
-            {% if object.get_type_display %}
-                <p><span class="detail_title">{% trans "Type" %}:</span> {{ object.get_type_display }}</p>
-            {% endif %}
+                {% if object.get_size_display %}
+                    <p><span class="detail_title">{% trans "Size" %}:</span> {{ object.get_size_display }}</p>
+                    <br/>
+                {% endif %}
 
-            {% if object.get_size_display %}
-                <p><span class="detail_title">{% trans "Size" %}:</span> {{ object.get_size_display }}</p>
+                <p><span class="detail_title">{% trans "Language" %}:</span> {{ object.get_language_display }}</p>
+
+                <p><span class="detail_title">{% trans "Currency" %}:</span> {{ object.currency }}</p>
                 <br/>
-            {% endif %}
 
-            <p><span class="detail_title">{% trans "Language" %}:</span> {{ object.get_language_display }}</p>
+            </div>
+            <div class="col-lg-6">
 
-            <p><span class="detail_title">{% trans "Currency" %}:</span> {{ object.currency }}</p>
-            <br/>
+                <p><span class="detail_title">{% trans "Email" %}:</span> {{ object.email }}</p>
+                {% with object.contact_info as object %}
+                    {% include 'gallant/contact_info.html' %}
+                {% endwith %}
 
-        </div>
-        <div class="col-lg-6">
-
-            <p><span class="detail_title">{% trans "Email" %}:</span> {{ object.email }}</p>
-            {% with object.contact_info as object %}
-                {% include 'gallant/contact_info.html' %}
-            {% endwith %}
+            </div>
 
         </div>
 
-    </div>
+        <br/>
+    {% endblock %}
 
-    <br/>
-
-    <div class="row">
+    {% block main_client_data %}
+        <div class="row">
         <div class="col-lg-6">
             <div class="enclosed chart_box">
                 <h2 class="chart_title">{% trans 'Work Summary' %}</h2>
@@ -119,6 +122,9 @@
                 </div>
 
                 <div class="chart_labels" id="work_chart_labels">
+                    <p>
+                        Deliverables:
+                    </p>
                 </div>
             </div>
         </div>
@@ -136,17 +142,19 @@
             </div>
         </div>
     </div>
+    {% endblock %}
 
-    <div class="row">
+    {% block client_alerts %}
+        <div class="row">
         <div class="col-lg-12">
             <div class="enclosed">
                 <h2 class="section_title">{% trans 'Alerts' %}</h2>
 
                 <div class="profile_alert row">
-                    <div class="col-lg-3">
+                    <div class="col-lg-4">
                         <span class="label label-default">Deliverable past due</span>
                     </div>
-                    <div class="col-lg-9">
+                    <div class="col-lg-8">
                         <p>
                             The deliverable 'Logo' was due on October 3rd, 2015.
                         </p>
@@ -154,10 +162,10 @@
                 </div>
 
                 <div class="profile_alert row">
-                    <div class="col-lg-3">
+                    <div class="col-lg-4">
                         <span class="label label-default">Upcoming deliverable</span>
                     </div>
-                    <div class="col-lg-9">
+                    <div class="col-lg-8">
                         <p>
                             Deliverable 'Name' is due tomorrow.
                         </p>
@@ -165,10 +173,10 @@
                 </div>
 
                 <div class="profile_alert row">
-                    <div class="col-lg-3">
+                    <div class="col-lg-4">
                         <span class="label label-default">Payment due</span>
                     </div>
-                    <div class="col-lg-9">
+                    <div class="col-lg-8">
                         <p>
                             The payment for $1,000 was due last month.
                         </p>
@@ -176,10 +184,10 @@
                 </div>
 
                 <div class="profile_alert row">
-                    <div class="col-lg-3">
+                    <div class="col-lg-4">
                         <span class="label label-default">Last contact date</span>
                     </div>
-                    <div class="col-lg-9">
+                    <div class="col-lg-8">
                         <p>
                             {{ object }} was last contacted on September 16th, 2015.
                         </p>
@@ -189,7 +197,9 @@
             </div>
         </div>
     </div>
+    {% endblock %}
 
+    {% block client_notes %}
     <div id="notes" class="enclosed">
         <h2 class="section_title">Notes</h2>
 
@@ -204,6 +214,8 @@
             {% include "gallant/add_note.html" %}
         </div>
     </div>
+    {% endblock %}
+
 {% endblock %}
 
 {% block extra_body %}
@@ -301,30 +313,42 @@
     <script>
 
         // TODO: Replace this sample data with real data
+        // On_Hold = 0
+        // Pending_Assignment = 1
+        // Active = 2
+        // Overdue = 3
+        // Completed = 4
+
         var work_data = [
             {
-                value: 300,
+                value: {% get_client_services_count request object 0 %},
                 color: "#999999",
                 highlight: "#5AFF70",
                 label: "Completed"
             },
             {
-                value: 50,
+                value: {% get_client_services_count request object 1 %},
                 color: "#666666",
                 highlight: "#FFC870",
-                label: "Delayed"
+                label: "Pending Assignment"
             },
             {
-                value: 100,
+                value: {% get_client_services_count request object 2 %},
                 color: "#333333",
                 highlight: "#5AD3D1",
                 label: "Active"
             },
             {
-                value: 10,
+                value: {% get_client_services_count request object 3 %},
                 color: "#999999",
                 highlight: "#FFC870",
-                label: "On Hold"
+                label: "Overdue"
+            },
+            {
+                value: {% get_client_services_count request object 4 %},
+                color: "#999999",
+                highlight: "#FFC870",
+                label: "Completed"
             }
         ]
 
@@ -364,7 +388,7 @@
         var money_pie_chart = new Chart(money).Doughnut(money_data, {animateRotate: false, animateScale: true});
 
         work_data.forEach(function (data) {
-            $('#work_chart_labels').append('<p>' + data.value + ' ' + data.label + ' deliverables</p>');
+            $('#work_chart_labels').append('<p>' + data.value + ' ' + data.label + '</p>');
         });
 
         money_data.forEach(function (data) {

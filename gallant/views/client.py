@@ -119,12 +119,15 @@ def client_detail(request, pk):
 def client_work_detail(request, pk):
     client = get_one_or_404(request.user, 'view_client', g.Client, pk=pk)
 
+    # TODO: add filter_for to usermodelmanager
+    projects = g.Project.objects.all_for(request.user).filter(quote__client=client)
+
     request.breadcrumbs([(_('Clients'), reverse('clients')),
                          (_(client.name), reverse('client_detail', args=[client.id]))])
 
     return TemplateResponse(request=request,
                             template="gallant/client_work_detail.html",
-                            context={'object': client,'title': client.name })
+                            context={'object': client,'title': client.name,'projects': projects })
 
 
 def client_money_detail(request, pk):

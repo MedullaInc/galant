@@ -2,9 +2,23 @@
 {% load bootstrap i18n gallant_tags staticfiles %}
 
 {% block section_title %}
-    {% trans "Client Work" %}
+    {% trans "Client Money" %}
 {% endblock %}
 
 {% block center_content %}
+
+    {% block client_detail %}
+        {{ block.super }}
+    {% endblock %}
+
+    {% block main_client_data %}
+    {% endblock %}
+
+    {% block client_alerts %}
+        {{ block.super }}
+    {% endblock %}
+
+    {% block client_notes %}
+    {% endblock %}
 
 {% endblock %}

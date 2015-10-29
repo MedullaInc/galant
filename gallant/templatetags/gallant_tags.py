@@ -1,6 +1,7 @@
 from analytical.templatetags.clicky import ClickyNode
 from analytical.templatetags.crazy_egg import CrazyEggNode
 from django import template
+from gallant import models as g
 
 register = template.Library()
 
@@ -35,3 +36,48 @@ def active(request, pattern):
         return 'active'
     else:
         return ''
+
+
+@register.simple_tag()
+def get_project_services(request, project, status=None):
+    services = []
+
+    for quote in project.quote_set.all_for(request.user):
+        if status is None:
+            for service in quote.services.all_for(request.user):
+                services.append(service)
+        else:
+            for service in quote.services.all_for(request.user).filter(status=status):
+                services.append(service)
+
+    return services
+
+@register.simple_tag()
+def get_project_services_count(request, project, status=None):
+    services = []
+
+    for quote in project.quote_set.all_for(request.user):
+        if status is None:
+            for service in quote.services.all_for(request.user):
+                services.append(service)
+        else:
+            for service in quote.services.all_for(request.user).filter(status=status):
+                services.append(service)
+
+    return len(services)
+
+@register.simple_tag()
+def get_client_services_count(request, client, status=None):
+    projects = g.Project.objects.all_for(request.user).filter(quote__client=client)
+    services = []
+
+    for project in projects:
+        for quote in project.quote_set.all_for(request.user):
+            if status is None:
+                for service in quote.services.all_for(request.user):
+                    services.append(service)
+            else:
+                for service in quote.services.all_for(request.user).filter(status=status):
+                    services.append(service)
+
+    return len(services)
