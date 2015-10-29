@@ -29,7 +29,7 @@ class GallantClientTest(browser.SignedInTest):
             s.quote = quote
             s.save()
 
-        project = autofixture.create_one('gallant.Project', generate_fk=True, field_values={'user': self.user})
+        project = autofixture.create_one('gallant.Project', generate_fk=True, field_values={'user': self.user, 'status': 2})
 
         project.quote = quote
         project.save()
