@@ -10,6 +10,23 @@ app.config(function ($httpProvider) {
     $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
 });
 
-app.factory("Briefs", function ($resource) {
+app.config(["$resourceProvider",function ($resourceProvider) {
+  // extend the default actions
+  angular.extend($resourceProvider.defaults.actions,{
+
+    // put your defaults here
+    update : {
+      method : "PUT",
+      isArray : false,
+    }
+
+  });
+}]);
+
+app.factory("Brief", function ($resource) {
     return $resource("/en/briefs/api/brief/:id");
+})
+
+app.factory("Question", function ($resource) {
+    return $resource("/en/briefs/api/question/:id");
 })

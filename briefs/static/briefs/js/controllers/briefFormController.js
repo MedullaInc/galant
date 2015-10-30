@@ -1,19 +1,39 @@
 angular.module('briefs.controllers.briefFormController', [])
-    .controller('briefFormController', ['$scope',
-        function ($scope) {
+    .controller('briefFormController', ['$scope', 'Brief',
+        function ($scope, Brief) {
+            var setFormsDirty = function (forms) {
+                valid = true;
+                inner = [];
+
+                angular.forEach(forms, function (form) {
+                        if (!form) {
+                            return;
+                        }
+                        angular.forEach(form, function (val, key) {
+                                if (key.match(/innerForm/)) { // support nested forms with this name
+                                    inner.push(val);
+                                } else if (!key.match(/\$/)) {
+                                    val.$setDirty();
+                                }
+                            }
+                        );
+                        valid = valid && !form.$invalid;
+                    }
+                );
+
+                if (inner.length > 0) {
+                    var ret = setFormsDirty(inner);
+                    valid = valid && ret;
+                }
+                return valid;
+            };
 
             $scope.submitForm = function () {
-                debugger;
-                var valid = true;
-                angular.forEach($scope.forms, function (form) {
-                    form.$setDirty();
-                    valid = valid && !form.$invalid;
-                });
-
-                // var data = {csrfmiddlewaretoken: '{{csrf_token}}'};
+                var valid = setFormsDirty($scope.forms);
 
                 if (valid) {
-                    $.post('', $scope.brief, function (response) {
+                    console.log($scope);
+                    Brief.update({id: $scope.brief.id}, $scope.brief, function (response) {
                         if (response.redirect) {
                             window.location.href = response.redirect;
                         } else {
@@ -21,11 +41,14 @@ angular.module('briefs.controllers.briefFormController', [])
                             var errors = response.errors[0];
                             console.log(errors);
                         }
+                    }, function (errorResponse) {
+                        console.log(errorResponse.data);
                     });
                 }
-            }
+            };
 
             $scope.init = function (currentLanguage) {
                 $scope.currentLanguage = currentLanguage;
-            }
-        }]);
+            };
+        }
+    ]);

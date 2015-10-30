@@ -3,6 +3,7 @@
 
         <div class="col-lg-12">
             <label class="control-label" for="id_title">Title</label>
+
             <div br-ultext-input name="title" text="brief.title" language="language" required="true"></div>
             <div br-required-errors field="forms.brief.title"></div>
         </div>
@@ -18,6 +19,12 @@
     </div>
     <hr>
     <div ng-repeat="question in brief.questions">
-        <div br-question-form question="question" language="language" forms="forms"></div>
+        <div br-question-form question="question" language="language" forms="forms" remove-question="removeQuestion"></div>
     </div>
+    <button type="button" id="add_question" class="btn btn-default pull-left margin-right-10" ng-click="addQuestion()">
+        Add Question
+    </button>
+    <button type="button" id="add_multiquestion" class="btn btn-default pull-left" ng-click="addQuestion('multi')">
+        Add Multiple Choice Question
+    </button>
 </ng-form>

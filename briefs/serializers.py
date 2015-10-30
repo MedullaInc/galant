@@ -7,12 +7,17 @@ from quotes import models as q
 
 
 class QuestionSerializer(serializers.ModelSerializer):
-    user = serializers.PrimaryKeyRelatedField(read_only=True)
     question = ULTextField()
+    type = serializers.CharField(read_only=False)
 
     class Meta:
         model = b.Question
-        fields = ('id', 'user', 'question', 'help_text', 'index')
+        fields = ('id', 'user', 'type', 'question', 'help_text', 'index')
+        extra_kwargs = {
+            'id': {'read_only': False, 'required': False},
+            'user': {'required': False},
+            'help_text': {'required': False},
+        }
 
     def to_internal_value(self, data):
         if 'type' not in data:
@@ -32,24 +37,42 @@ class QuestionSerializer(serializers.ModelSerializer):
             dct['type'] = b.MultipleChoiceQuestion.__name__
             return dct
 
+    def create(self, validated_data):
+        qtype = validated_data.pop('type', None)
+        if qtype == b.TextQuestion.__name__:
+            return TextQuestionSerializer(instance=self.instance).create(validated_data)
+        if qtype == b.MultipleChoiceQuestion.__name__:
+            return MultipleChoiceQuestionSerializer(instance=self.instance).create(validated_data)
+
+
 
 class TextQuestionSerializer(serializers.ModelSerializer):
-    user = serializers.PrimaryKeyRelatedField(read_only=True)
     question = ULTextField()
+    type = serializers.CharField(read_only=False, required=False)
 
     class Meta:
         model = b.TextQuestion
-        fields = ('id', 'user', 'question', 'help_text', 'index', 'is_long_answer')
+        fields = ('id', 'user', 'type', 'question', 'help_text', 'index', 'is_long_answer')
+        extra_kwargs = {
+            'id': {'read_only': False, 'required': False},
+            'user': {'required': False},
+            'help_text': {'required': False},
+        }
 
 
 class MultipleChoiceQuestionSerializer(serializers.ModelSerializer):
-    user = serializers.PrimaryKeyRelatedField(read_only=True)
     question = ULTextField()
     choices = ULTextArrayField()
+    type = serializers.CharField(read_only=False, required=False)
 
     class Meta:
         model = b.MultipleChoiceQuestion
-        fields = ('id', 'user', 'question', 'help_text', 'index', 'can_select_multiple', 'choices')
+        fields = ('id', 'user', 'type', 'question', 'help_text', 'index', 'can_select_multiple', 'choices')
+        extra_kwargs = {
+            'id': {'read_only': False, 'required': False},
+            'user': {'required': False},
+            'help_text': {'required': False},
+        }
 
 
 class BriefSerializer(serializers.ModelSerializer):
@@ -64,10 +87,35 @@ class BriefSerializer(serializers.ModelSerializer):
 
         def model_queryset(m): return m.objects.all_for(user)
 
-        fields['client'] = serializers.PrimaryKeyRelatedField(queryset=model_queryset(g.Client))
-        fields['quote'] = serializers.PrimaryKeyRelatedField(queryset=model_queryset(q.Quote))
+        fields['client'] = serializers.PrimaryKeyRelatedField(queryset=model_queryset(g.Client), allow_null=True)
+        fields['quote'] = serializers.PrimaryKeyRelatedField(queryset=model_queryset(q.Quote), allow_null=True)
 
         return fields
+
+    def update(self, instance, validated_data):
+        user = self.context['request'].user
+        init_questions = set(instance.questions.all_for(user))
+        new_questions = set()
+
+        questions_data = validated_data.pop('questions')
+        for question_data in questions_data:
+            question_id = question_data.get('id', None)
+            if question_id:
+                question_instance = b.Question.objects.get_for(user, 'change', pk=question_id)
+                qs = QuestionSerializer(data=question_data, instance=question_instance)
+                question = qs.update(question_instance, question_data)
+            else:
+                question_data.update({'user': self.context['request'].user})
+                qs = QuestionSerializer(data=question_data)
+                question = qs.create(question_data)
+
+            new_questions.add(question)
+
+        instance.questions = new_questions
+        for question in (init_questions - new_questions):
+            question.delete()
+
+        return super(BriefSerializer, self).update(instance, validated_data)
 
     class Meta:
         model = Brief

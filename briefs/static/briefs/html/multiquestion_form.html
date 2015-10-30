@@ -11,7 +11,8 @@
             </label></div>
         </div>
         <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
-            <button id="remove" type="button" class="close close_b" data-dismiss="alert" aria-label="Close">
+            <button id="remove" type="button" class="close close_b" data-dismiss="alert"
+                    aria-label="Close" ng-click="remove()">
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
@@ -19,9 +20,9 @@
 
     <div class="question_text row">
         <div class="col-lg-12">
-            <ng-form name="innerForm">
+            <ng-form name="innerFormQ">
                 <div br-ultext-input name="question" text="question.question" language="language" required="true"></div>
-                <div br-required-errors field="innerForm.question"></div>
+                <div br-required-errors field="innerFormQ.question"></div>
             </ng-form>
         </div>
     </div>
@@ -30,14 +31,14 @@
             <div class="row margin-bottom-10 choice">
                 <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11">
 
-                    <ng-form name="innerForm">
-                        <div br-ultext-input text="choice" language="language" required="true"></div>
-                        <div br-required-errors field="innerForm.question"></div>
+                    <ng-form name="innerFormC{{ $index }}">
+                        <div br-ultext-input name="choice" text="choice" language="language" required="true"></div>
+                        <div br-required-errors field="innerForm.choice"></div>
                     </ng-form>
                 </div>
                 <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
                     <button type="button" class="close close_b" data-dismiss="alert"
-                            aria-label="Close">
+                            aria-label="Close" ng-click="remove()">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>

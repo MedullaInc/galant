@@ -1,4 +1,5 @@
 import json
+from gallant.fields import ULTextDict, ULTextDictArray
 from moneyed.classes import Money
 from rest_framework import serializers
 from gallant.models import Note
@@ -26,7 +27,7 @@ class ULTextField(serializers.Field):
         return obj
 
     def to_internal_value(self, data):
-        return json.dumps(data)
+        return ULTextDict(data)
 
 
 class ULTextArrayField(serializers.Field):
@@ -34,4 +35,4 @@ class ULTextArrayField(serializers.Field):
         return obj
 
     def to_internal_value(self, data):
-        return json.dumps(data)
+        return ULTextDictArray(data)
