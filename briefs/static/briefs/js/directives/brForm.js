@@ -46,6 +46,9 @@ angular.module('briefs.directives.brForm', [])
                     id: $attrs.briefId
                 }, function (result) {
                     $scope.brief = result;
+                }, function (errorResult) {
+                    $scope.brief = new Brief();
+                    $scope.brief.questions = [];
                 });
 
                 $scope.addQuestion = function (type) {

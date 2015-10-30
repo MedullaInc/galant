@@ -12,6 +12,8 @@ from briefs import forms as bf
 from gallant.utils import get_one_or_404, query_url, get_site_from_host, GallantObjectPermissions
 from django.utils.translation import ugettext_lazy as _
 from rest_framework import generics
+from rest_framework.response import Response
+from rest_framework.status import HTTP_200_OK
 
 
 def _update_from_query(request, context):
@@ -231,3 +233,10 @@ class BriefDetailAPI(generics.RetrieveUpdateAPIView):
     def get_queryset(self):
         return self.model.objects.all_for(self.request.user)
 
+    def put(self, request, *args, **kwargs):
+        response = self.update(request, *args, **kwargs)
+        if response.status_code == HTTP_200_OK:
+            self.request._messages.add(messages.SUCCESS, 'Brief saved')
+            return Response({'status': 0, 'redirect': reverse('brief_detail', args=[response.data['id']])})
+        else:
+            return response

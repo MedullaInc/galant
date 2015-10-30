@@ -1,6 +1,6 @@
 angular.module('briefs.controllers.briefFormController', [])
-    .controller('briefFormController', ['$scope', 'Brief',
-        function ($scope, Brief) {
+    .controller('briefFormController', ['$scope', '$window', 'Brief',
+        function ($scope, $window, Brief) {
             var setFormsDirty = function (forms) {
                 valid = true;
                 inner = [];
@@ -38,8 +38,7 @@ angular.module('briefs.controllers.briefFormController', [])
                             window.location.href = response.redirect;
                         } else {
                             // handle errors
-                            var errors = response.errors[0];
-                            console.log(errors);
+                            console.log(response.data);
                         }
                     }, function (errorResponse) {
                         console.log(errorResponse.data);
@@ -50,5 +49,22 @@ angular.module('briefs.controllers.briefFormController', [])
             $scope.init = function (currentLanguage) {
                 $scope.currentLanguage = currentLanguage;
             };
+
+            $scope.$watch('brief.title', function (newValue, oldValue) {
+                if (oldValue != null && newValue != oldValue) {
+                    $window.onbeforeunload = function (e) {
+                        // If we haven't been passed the event get the window.event
+                        e = e || $window.event;
+
+                        var message = 'You have unsaved changes. If you leave this page they will be lost.';
+
+                        // For IE6-8 and Firefox prior to version 4
+                        if (e) {
+                            e.returnValue = message;
+                        }
+                        return message;
+                    };
+                }
+            }, true);
         }
     ]);
