@@ -93,11 +93,29 @@ class BriefSerializer(serializers.ModelSerializer):
         return fields
 
     def update(self, instance, validated_data):
+        self._write_questions(self.context['request'].user, self.instance, validated_data.pop('questions'))
+
+        return super(BriefSerializer, self).update(instance, validated_data)
+
+    def create(self, validated_data):
         user = self.context['request'].user
+        questions_data = validated_data.pop('questions')
+        validated_data.update({'user': user})
+
+        instance = super(BriefSerializer, self).create(validated_data)
+
+        self._write_questions(user, instance, questions_data)
+        return instance
+
+    class Meta:
+        model = Brief
+        fields = ('id', 'user', 'name', 'title', 'greeting', 'status', 'token',
+                  'modified', 'questions', 'language', 'client', 'quote')
+
+    def _write_questions(self, user, instance, questions_data):
         init_questions = set(instance.questions.all_for(user))
         new_questions = set()
 
-        questions_data = validated_data.pop('questions')
         for question_data in questions_data:
             question_id = question_data.get('id', None)
             if question_id:
@@ -114,13 +132,6 @@ class BriefSerializer(serializers.ModelSerializer):
         instance.questions = new_questions
         for question in (init_questions - new_questions):
             question.delete()
-
-        return super(BriefSerializer, self).update(instance, validated_data)
-
-    class Meta:
-        model = Brief
-        fields = ('id', 'user', 'name', 'title', 'greeting', 'status', 'token',
-                  'modified', 'questions', 'language', 'client', 'quote')
 
 
 class BriefTemplateSerializer(serializers.ModelSerializer):

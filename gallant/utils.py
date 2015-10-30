@@ -32,8 +32,16 @@ class GallantObjectPermissions(DjangoModelPermissions):
 
     def has_permission(self, request, view):
         perms = self.get_required_permissions(request.method, view.get_queryset().model)
-        if hasattr(view, 'get_object'):
-            obj = view.get_object()
+
+        if view.action == 'list' or view.action == 'create':
+            return request.user.is_authenticated()
+        elif hasattr(view, 'get_object'):
+            lookup_url_kwarg = view.lookup_url_kwarg or view.lookup_field
+
+            if lookup_url_kwarg in view.kwargs:
+                obj = view.get_object()
+            else:
+                return False
         else:
             return False
 

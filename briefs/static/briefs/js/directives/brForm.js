@@ -42,14 +42,18 @@ angular.module('briefs.directives.brForm', [])
             },
             templateUrl: '/static/briefs/html/brief_form.html',
             controller: function ($scope, $element, $attrs) {
-                Brief.get({
-                    id: $attrs.briefId
-                }, function (result) {
-                    $scope.brief = result;
-                }, function (errorResult) {
+                if ($attrs.briefId) {
+                    Brief.get({
+                        id: $attrs.briefId
+                    }, function (result) {
+                        $scope.brief = result;
+                    });
+                } else {
                     $scope.brief = new Brief();
                     $scope.brief.questions = [];
-                });
+                    $scope.brief.quote = $attrs.quoteId;
+                    $scope.brief.client = $attrs.clientId;
+                }
 
                 $scope.addQuestion = function (type) {
                     var question = new Question();

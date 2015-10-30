@@ -32,8 +32,15 @@ angular.module('briefs.controllers.briefFormController', [])
                 var valid = setFormsDirty($scope.forms);
 
                 if (valid) {
-                    console.log($scope);
-                    Brief.update({id: $scope.brief.id}, $scope.brief, function (response) {
+                    $window.onbeforeunload = null;
+                    var method = null;
+                    if ($scope.brief.id) {
+                        method = Brief.update;
+                    } else {
+                        method = Brief.save;
+                    }
+
+                    method({id: $scope.brief.id}, $scope.brief, function (response) {
                         if (response.redirect) {
                             window.location.href = response.redirect;
                         } else {
@@ -50,12 +57,11 @@ angular.module('briefs.controllers.briefFormController', [])
                 $scope.currentLanguage = currentLanguage;
             };
 
-            $scope.$watch('brief.title', function (newValue, oldValue) {
+            $scope.$watch('brief', function (newValue, oldValue) {
                 if (oldValue != null && newValue != oldValue) {
                     $window.onbeforeunload = function (e) {
                         // If we haven't been passed the event get the window.event
                         e = e || $window.event;
-
                         var message = 'You have unsaved changes. If you leave this page they will be lost.';
 
                         // For IE6-8 and Firefox prior to version 4

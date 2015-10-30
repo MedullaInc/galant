@@ -1,0 +1,63 @@
+{% extends "base_sidebar_enclosed.html" %}
+{% load staticfiles i18n question_javascript gallant_tags %}
+
+{% block scripts %}
+    {{ block.super }}
+    <script src="{% static "js/angular.js" %}"></script>
+    <script src="{% static "js/angular-resource.js" %}"></script>
+    <script src="{% static "djangular/js/django-angular.min.js" %}"></script>
+    <script src="{% static "briefs/js/controllers/briefFormController.js" %}"></script>
+    <script src="{% static "briefs/js/directives/brForm.js" %}"></script>
+    <script src="{% static "briefs/js/apps/briefs.js" %}"></script>
+{% endblock %}
+
+{% block center_content %}
+    <div ng-app="brief" ng-controller="briefFormController" ng-init="init('{{ LANGUAGE_CODE }}')">
+    {% if project %}
+        <div class="row">
+            <div class="col-lg-9" align="right">
+                <p>{% trans "Linked to project" %}:</p>
+            </div>
+            <div class="col-lg-3 project_link" align="right">
+                <p><a href="{% url 'project_detail' project.id %}">{{ project }}</a></p>
+            </div>
+        </div>
+        {% elif quote %}
+        <div class="row">
+            <div class="col-lg-9" align="right">
+                <p>{% trans "Linked to quote" %}:</p>
+            </div>
+            <div class="col-lg-3 quote_link" align="right">
+                <p><a href="{% url 'quote_detail' quote.id %}">{{ quote }}</a></p>
+            </div>
+        </div>
+    {% endif %}
+
+    {% block form_help_text %}
+        {% if help_text %}
+            <p class="title">
+                <i>
+                    {{ help_text }}
+                </i>
+            </p>
+        {% endif %}
+    {% endblock %}
+    <div br-brief-form brief-id="{{ object.pk }}" brief="brief" language="currentLanguage" forms="forms"
+         client-id="{{ client.id }}" project-id="{{ project.id }}" quote-id="{{ quote.id }}">
+    </div>
+
+    <div id="form_actions">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="form-actions">
+                    {% block form_actions %}
+                        <button id="create_submit" class="btn btn-default pull-left" type="submit"
+                                ng-click="submitForm()">
+                            {{ submit_text|default:_("Save") }}
+                        </button>
+                    {% endblock %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
