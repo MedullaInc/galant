@@ -269,6 +269,7 @@ angular.module('ui.calendar', [])
           calendar.fullCalendar(options);
           if(attrs.calendar) {
             uiCalendarConfig.calendars[attrs.calendar] = calendar;
+            window.calendar = calendar;
           }          
         };
         scope.$on('$destroy', function() {
@@ -303,7 +304,7 @@ angular.module('ui.calendar', [])
 
         eventsWatcher.onAdded = function(event) {
           if (calendar && calendar.fullCalendar) {
-            calendar.fullCalendar('renderEvent', event, (event.stick ? true : false));
+            calendar.fullCalendar('renderEvent', event, true);
           }
         };
 
@@ -314,13 +315,18 @@ angular.module('ui.calendar', [])
         };
 
         eventsWatcher.onChanged = function(event) {
-          if (calendar && calendar.fullCalendar) {
-            var clientEvents = calendar.fullCalendar('clientEvents', event._id);
-            for (var i = 0; i < clientEvents.length; i++) {
-              var clientEvent = clientEvents[i];
-              clientEvent = angular.extend(clientEvent, event);
-              calendar.fullCalendar('updateEvent', clientEvent);
+          var fcEventSlots = scope.calendar.fullCalendar('clientEvents', event.id);
+          for (var i = 0; i < fcEventSlots.length; i++) {
+            fcEventSlot = fcEventSlots[i];
+            event._start = $.fullCalendar.moment(fcEventSlot.start);
+            event._end = $.fullCalendar.moment(fcEventSlot.end);
+            event._resourceId = fcEventSlot._resourceId;
+
+            event._allDay = fcEventSlot._allDay;
+            if (typeof event.allDay === 'undefined') {
+                event.allDay = fcEventSlot.allDay;
             }
+            scope.calendar.fullCalendar('updateEvent', event);  
           }
         };
 

@@ -18,6 +18,16 @@ class TaskDetailAPI(generics.RetrieveUpdateAPIView):
         GallantObjectPermissions
     ]
 
+    def update(self, request, *args, **kwargs):
+        task = Task.objects.get_for(self.request.user, pk=request.data['id'])
+        serializer = self.get_serializer(task, data=request.data, partial=True)
+
+        if  serializer.is_valid():
+            serializer.save()
+
+        return Response(serializer.data, 
+                        status=status.HTTP_201_CREATED)
+
     def get_queryset(self):
         return self.model.objects.all_for(self.request.user)
 

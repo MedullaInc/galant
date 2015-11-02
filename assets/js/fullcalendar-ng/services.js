@@ -21,7 +21,19 @@ angular.module('gallant.services', [])
       });
     }
 
-    /* POST Events */
+    /* UPDATE Task */
+    gallantAPI.updateTask = function(data) {
+
+      var url = '/en/calendar/api/task/'+data.id;
+      console.log(data);
+      return $http({
+        method: 'PUT', 
+          url: url,
+          data: data,
+      });
+    }
+
+    /* POST Tasks */
     gallantAPI.postTask = function(data) {
       var url = '/en/calendar/api/task/add/';
       return $http({

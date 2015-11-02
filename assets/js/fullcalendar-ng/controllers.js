@@ -4,27 +4,105 @@ angular.module('gallant.controllers', ['ui.calendar', 'ui.bootstrap','ng.django.
 
 
 .controller('CalendrControl',
-   function($scope, gallantAPIservice, $compile, $timeout, uiCalendarConfig) {
+   function($scope, gallantAPIservice, $compile, $timeout, uiCalendarConfig, $uibModal) {
     var date = new Date();
     var d = date.getDate();
     var m = date.getMonth();
     var y = date.getFullYear();
 
-    $scope.changeTo = 'Hungarian';
-
     /* event source that contains custom events on the scope */
-    $scope.events = [
-
-    ];
-
-
+    $scope.events = [];
     $scope.eventResources = []
 
 
+    /* Retrieve users from API service */
+    $scope.getResources = function() {
+      gallantAPIservice.getUsers().success(function(response) {
+        angular.forEach(response, function(value, key) {
+          $scope.eventResources.push({id:value.id, title:value.email});
+        });
+    });
+    }
+    
+    /* Retrieve all Tasks from API service */
+    $scope.getTasks = function() {
+      gallantAPIservice.getTasks().success(function(response) {
+
+        angular.forEach(response, function(value, key) {
+          $scope.renderEvent( 
+                              value.id,
+                              value.start,
+                              value.end,
+                              value.assignee,
+                              value.name);
+        });     
+      });
+    }
+
+    $scope.getResources();
+    $scope.getTasks();
+
+
+    /* Open edit Modal */
+    $scope.open = function (event) {
+        $scope.event = event;
+        $uibModal.open({
+            templateUrl: 'myModalContent.html',
+            backdrop: true,
+            windowClass: 'modal',
+            controller: function ($scope, $modalInstance, $log, event, resources, updateEvent) {
+                $scope.event = event;
+
+                $scope.resources = resources;
+                $scope.updateEvent = updateEvent;
+                $scope.submit = function () {
+                    $modalInstance.dismiss('cancel');
+                    $scope.updateEvent(event);
+                }
+                $scope.cancel = function () {
+                    $modalInstance.dismiss('cancel');
+                };
+            },
+            resolve: {
+                event: function () {
+                    return $scope.event;
+                },
+                resources: function () {
+                    return $scope.eventResources;
+                },
+                updateEvent: function () {
+                    return $scope.updateEvent;
+                },
+            }
+        });
+    };
+
+    /* update on Calendar */
+    $scope.updateEvent = function(event, element){
+        var task = {
+        "id": event.id,
+        "user": 1,
+        "name": event.title,
+        "start": event.start,
+        "end": event.end,
+        "daily_estimate": "10.0",
+        "project": 1,
+        "services": [],
+        "assignee": String(event.resourceId),
+        "notes": []
+        }
+
+
+      $scope.updateTask(task);
+
+      //alert(event.title);
+    };
+
     /* alert on eventClick */
-    $scope.alertOnEventClick = function( date, jsEvent, view){
-        $scope.alertMessage = (date.title + ' was clicked ');
-        alert($scope.alertMessage);
+    $scope.alertOnEventClick = function( event, jsEvent, view){
+        //$scope.alertMessage = (event.title + ' was clicked ');
+        $scope.open(event, $scope.eventResources);
+        //alert($scope.alertMessage);
     };
 
     /* alert on Drop */
@@ -33,120 +111,158 @@ angular.module('gallant.controllers', ['ui.calendar', 'ui.bootstrap','ng.django.
     };
     /* alert on Resize */
     $scope.alertOnResize = function(event, delta, revertFunc, jsEvent, ui, view ){
+        var task = {
+        "id": event.id,
+        "user": 1,
+        "name": event.title,
+        "start": event.start,
+        "end": event.end,
+        "daily_estimate": "10.0",
+        "project": 1,
+        "services": [],
+        "assignee": String(event.resourceId),
+        "notes": []
+        }
+
+       $scope.updateTask(task);
        $scope.alertMessage = ('Event Resized to make dayDelta ' + delta);
     };
 
     /* add and removes an event source of choice */
-    $scope.addRemoveEventSource = function(sources,source) {
-      var canAdd = 0;
-      angular.forEach(sources,function(value, key){
-        if(sources[key] === source){
-          sources.splice(key,1);
-          canAdd = 1;
-        }
-      });
-      if(canAdd === 0){
-        sources.push(source);
-      }
-    };
+    // $scope.addRemoveEventSource = function(sources,source) {
+    //   var canAdd = 0;
+    //   angular.forEach(sources,function(value, key){
+    //     if(sources[key] === source){
+    //       sources.splice(key,1);
+    //       canAdd = 1;
+    //     }
+    //   });
+    //   if(canAdd === 0){
+    //     sources.push(source);
+    //   }
+    // };
 
     /* add custom event*/
-    $scope.renderEvent = function(start,end,resource) {
+    $scope.renderEvent = function(id,start,end,resource,title) {
 
       var event = {
-          title: 'Some Event',
+          id: id,
+          title: title || 'Some event',
           start: start,
           end: end,
-          className: ['openSesame'],
-          resourceId: resource,
+          resourceId: String(resource),
           allDay: false
       }
 
       $scope.events.push(event);
+      // $scope.eventRender(event);
 
     };
 
-    $scope.alertOnDayClick = function(date, jsEvent, view, resource) {
-        // $scope.alertMessage = (date + ' was clicked ');
-        
-        var event = {
-        "id": 7,
+
+    /* Event fired on day click */
+    $scope.dayClick = function(date, jsEvent, view, resource) {
+        var task = {
+        "id": "",
         "user": 1,
-        "name": "Some test",
+        "name": "New Task",
         "start": date,
         "end": moment(date).add(2, 'hours'),
         "daily_estimate": "10.0",
         "project": 1,
         "services": [],
-        "assignee": resource.id,
+        "assignee": String(resource.id),
         "notes": []
         }
 
-        gallantAPIservice.postTask(event).success(function(response) {
-        $scope.renderEvent( response.start,
-                            response.end,
-                            response.assignee
-                            );
-            
-        });
-
-        // $('#add_task').modal('show');
-        // var myEvent = {
-        //   title:"my new event",
-        //   allDay: false,
-        //   start: date.format(),
-        //   end: date.format(),
-        //   resourceId: resource.id
-        // };
-        // $('#calendar').fullCalendar('renderEvent', myEvent, true);
+        // Create new task in calendar
+        $scope.createTask(task);
 
     };
 
-    /* remove event */
+
+    /* remove event from calendar */
     $scope.remove = function(index) {
       $scope.events.splice(index,1);
     };
 
-    $scope.getResources = function() {
-      gallantAPIservice.getUsers().success(function(response) {
-        angular.forEach(response, function(value, key) {
-          $scope.eventResources.push({id:value.id, title:value.email});
-        });
-    });
-    }
-      
-    $scope.getTasks = function() {
-      gallantAPIservice.getTasks().success(function(response) {
 
-        angular.forEach(response, function(value, key) {
-          $scope.renderEvent(value.start,value.end,value.assignee);
-        });     
+    
+    /* postTask controller Wrapper */
+    $scope.postTask = function(task){
+      gallantAPIservice.postTask(task).success(function(response) {
+      $scope.renderEvent( 
+                          response.id,
+                          response.start,
+                          response.end,
+                          response.assignee,
+                          response.name);
+          
       });
+    }
+
+    /* Create a new Task using API Service */
+    $scope.createTask = function(task) {
+      $scope.postTask(task);
+    }
+
+    /* Update an existing Task using API Service */
+    $scope.updateTask = function(task) {
+
+
+      gallantAPIservice.updateTask(task).success(function(response) {
+
+        for(i = 0; i< $scope.events.length; i++){
+          //console.log($scope.events[i]);
+          if ($scope.events[i].id == response.id){
+            $scope.events.splice(i, 1);
+          }
+        }
+
+        $scope.renderEvent( 
+                    response.id,
+                    response.start,
+                    response.end,
+                    response.assignee,
+                    response.name);
+      
+      });
+
     }
 
     /* Change View */
     $scope.changeView = function(view,calendar) {
+
       uiCalendarConfig.calendars[calendar].fullCalendar('changeView',view);
+
     };
 
     /* Change View */
     $scope.renderCalender = function(calendar) {
-      $scope.getResources();
-      $scope.getTasks();
-
       $timeout(function() {
         if(uiCalendarConfig.calendars[calendar]){
           uiCalendarConfig.calendars[calendar].fullCalendar('render');
         }
       });
     };
-    
+
      /* Render Tooltip */
     $scope.eventRender = function( event, element, view ) {
         // element.attr({'tooltip': event.title,
         //               'tooltip-append-to-body': true});
         // $compile(element)($scope);
     };
+
+    $scope.refetchEvents = function() {
+        
+
+        // element.attr({'tooltip': event.title,
+        //               'tooltip-append-to-body': true});
+        // $compile(element)($scope);
+    };
+
+
+
 
     /* config object */
     $scope.uiConfig = {
@@ -161,24 +277,29 @@ angular.module('gallant.controllers', ['ui.calendar', 'ui.bootstrap','ng.django.
           right: 'today prev,next'
         },
         eventClick: $scope.alertOnEventClick,
-        dayClick: $scope.alertOnDayClick,
+        updateEvent: $scope.updateEvent,
+        dayClick: $scope.dayClick,
         eventDrop: $scope.alertOnDrop,
         eventResize: $scope.alertOnResize,
-        eventRender: $scope.eventRender
+        eventRender: $scope.eventRender,
       }
     };
 
-    $scope.changeLang = function() {
-      if($scope.changeTo === 'Hungarian'){
-        $scope.uiConfig.calendar.dayNames = ["Vasárnap", "Hétfő", "Kedd", "Szerda", "Csütörtök", "Péntek", "Szombat"];
-        $scope.uiConfig.calendar.dayNamesShort = ["Vas", "Hét", "Kedd", "Sze", "Csüt", "Pén", "Szo"];
-        $scope.changeTo= 'English';
-      } else {
-        $scope.uiConfig.calendar.dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-        $scope.uiConfig.calendar.dayNamesShort = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-        $scope.changeTo = 'Hungarian';
-      }
-    };
+
+
+
+
+    // $scope.changeLang = function() {
+    //   if($scope.changeTo === 'Hungarian'){
+    //     $scope.uiConfig.calendar.dayNames = ["Vasárnap", "Hétfő", "Kedd", "Szerda", "Csütörtök", "Péntek", "Szombat"];
+    //     $scope.uiConfig.calendar.dayNamesShort = ["Vas", "Hét", "Kedd", "Sze", "Csüt", "Pén", "Szo"];
+    //     $scope.changeTo= 'English';
+    //   } else {
+    //     $scope.uiConfig.calendar.dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    //     $scope.uiConfig.calendar.dayNamesShort = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    //     $scope.changeTo = 'Hungarian';
+    //   }
+    // };
     /* event sources array*/
     
 
