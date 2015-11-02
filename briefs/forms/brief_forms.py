@@ -20,7 +20,7 @@ class BriefForm(gf.UserModelNgForm):
         else:
             self.fields['client'].queryset = g.Client.objects.all_for(self.user)
 
-    def clean_client(self):
+    def clean_client(self):  # pragma: no cover
         client = self.cleaned_data['client']
         if client is None:
             raise ValidationError('Please select a client.')

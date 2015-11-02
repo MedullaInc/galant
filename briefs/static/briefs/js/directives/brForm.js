@@ -92,6 +92,10 @@ angular.module('briefs.directives.brForm', [])
                     var index = $scope.brief.questions.indexOf(question);
                     $scope.brief.questions.splice(index, 1);
                 }
+
+                $scope.showButtons = function() {
+                    return (typeof $scope.addQuestion === 'function');
+                }
             }
         };
     }]).directive('brUltextInput', function () {

@@ -93,7 +93,9 @@ class BriefTemplatesTest(browser.SignedInTest):
 
         question = b.find_element_by_id('question0_question')
         self.assertEqual(quest.question.get_text(), question.get_attribute('value'))
-        b.find_element_by_xpath('//button[@type="submit"]').click()
+
+        with browser.wait_for_page_load():
+            b.find_element_by_xpath('//button[@type="submit"]').click()
 
         success_message = b.find_element_by_class_name('alert-success')
         self.assertTrue(u'Brief saved.' in success_message.text)

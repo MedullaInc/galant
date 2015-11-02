@@ -10,6 +10,7 @@ from gallant import forms as gallant_forms
 from briefs import models as b
 from gallant import serializers
 from gallant import views
+from gallant.fields import ULTextDictArray, _ultext_array_to_python
 from quotes import models as q
 from autofixture import AutoFixture
 from rest_framework import status
@@ -428,6 +429,13 @@ class ULTextTest(TestCase):
         self.assertEqual(d[0].__class__, gf.ULTextDict)
         self.assertEqual(d[0].get_text(), 'choice 1')
         self.assertEqual(d[1].get_text('es'), 'opcion 2')
+
+    def test_ultextarray_text(self):
+        ulta = ULTextDictArray([{"en": "choice 1", "es": "opcion 1"},
+                                {"en": "choice 2", "es": "opcion 2"}])
+        ulta2 = _ultext_array_to_python('[{"en": "choice 1", "es": "opcion 1"},'
+                                        '{"en": "choice 2", "es": "opcion 2"}]')
+        self.assertEqual(ulta, ulta2)
 
 
 class GallantUserTest(TestCase):

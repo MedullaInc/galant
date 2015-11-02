@@ -1,8 +1,10 @@
+from contextlib import contextmanager
+import time
 from django.test import LiveServerTestCase
 from selenium import webdriver
 import autofixture
 from django.contrib.auth import hashers
-
+from selenium.common.exceptions import NoSuchElementException, WebDriverException
 
 browser = []
 
@@ -29,6 +31,42 @@ def instance():
 def close():
     instance().quit()
     browser.pop(0)
+
+
+def wait_for(condition_function, timeout=3):
+    start_time = time.time()
+    while time.time() < start_time + timeout:
+        if condition_function():
+            return True
+        else:
+            time.sleep(0.1)
+    raise Exception('Timeout waiting for {}'.format(condition_function.__name__))
+
+
+@contextmanager
+def wait_for_page_load():
+    browser = instance()
+    old_page = browser.find_element_by_tag_name('html')
+
+    yield
+
+    def page_has_loaded():
+        new_page = browser.find_element_by_tag_name('html')
+        return new_page.id != old_page.id
+
+    wait_for(page_has_loaded)
+
+
+def wait_for_element(search_function, *args):
+    def element_exists():
+        try:
+            search_function(*args)
+        except NoSuchElementException:
+            return False
+
+        return True
+
+    wait_for(element_exists)
 
 
 class BrowserTest(LiveServerTestCase):

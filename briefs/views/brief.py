@@ -97,7 +97,7 @@ class BriefUpdate(View):
 
         return self.render_to_response(context)
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request, *args, **kwargs): # pragma: no cover
         if 'pk' in kwargs:
             brief = get_one_or_404(request.user, 'change_brief', b.Brief, pk=kwargs['pk'])
         else:

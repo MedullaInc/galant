@@ -34,10 +34,13 @@ class BriefsSignedInTest(browser.SignedInTest):
         # fill out brief & save
         b.find_element_by_id('id_title').send_keys('Brief test')
         b.find_element_by_id('id_greeting').send_keys('Brief test')
-        b.find_element_by_xpath('//button[@type="submit"]').click()
+        with browser.wait_for_page_load():
+            b.find_element_by_xpath('//button[@type="submit"]').click()
 
         success_message = b.find_element_by_class_name('alert-success')
+
         self.assertTrue(u'Brief saved.' in success_message.text)
+
 
     def test_edit_client_brief(self):
         b = browser.instance()
@@ -52,7 +55,8 @@ class BriefsSignedInTest(browser.SignedInTest):
         b.find_element_by_id('id_title').clear()
         b.find_element_by_id('id_title').send_keys('modified title')
 
-        b.find_element_by_xpath('//button[@type="submit"]').click()
+        with browser.wait_for_page_load():
+            b.find_element_by_xpath('//button[@type="submit"]').click()
 
         success_message = b.find_element_by_class_name('alert-success')
         self.assertTrue(u'Brief saved.' in success_message.text)
@@ -78,7 +82,8 @@ class BriefsSignedInTest(browser.SignedInTest):
         b.find_element_by_id('question1_add_choice').click()
         b.find_element_by_id('question1_choice3').send_keys('foo')
 
-        b.find_element_by_xpath('//button[@type="submit"]').click()
+        with browser.wait_for_page_load():
+            b.find_element_by_xpath('//button[@type="submit"]').click()
 
         success_message = b.find_element_by_class_name('alert-success')
         self.assertTrue(u'Brief saved.' in success_message.text)
@@ -93,15 +98,15 @@ class BriefsSignedInTest(browser.SignedInTest):
         brief.questions.add(q)
 
         b.get(self.live_server_url + reverse('edit_brief', args=[brief.id]))
-        time.sleep(0.5)
 
+        browser.wait_for_element(b.find_element_by_id, 'question0_question')
         b.find_element_by_id('add_multiquestion').click()
         b.find_element_by_id('question1_question').send_keys('Who is your daddy, and what does he do?')
         b.find_element_by_id('question1_choice0').send_keys('foo')
         b.find_element_by_id('question1_choice1').send_keys('bar')
 
-        b.find_element_by_xpath('//button[@type="submit"]').click()
-        self.save_snapshot()
+        with browser.wait_for_page_load():
+            b.find_element_by_xpath('//button[@type="submit"]').click()
 
         success_message = b.find_element_by_class_name('alert-success')
         self.assertTrue(u'Brief saved.' in success_message.text)
@@ -135,7 +140,8 @@ class BriefsSignedInTest(browser.SignedInTest):
         b.find_element_by_id('id_title').send_keys('modified title')
         b.find_element_by_id('id_greeting').send_keys('modified greeting')
 
-        b.find_element_by_xpath('//button[@type="submit"]').click()
+        with browser.wait_for_page_load():
+            b.find_element_by_xpath('//button[@type="submit"]').click()
 
         success_message = b.find_element_by_class_name('alert-success')
         self.assertTrue(u'Brief saved.' in success_message.text)
@@ -155,7 +161,8 @@ class BriefsSignedInTest(browser.SignedInTest):
         b.find_element_by_id('id_title').send_keys('modified title')
         b.find_element_by_id('id_greeting').send_keys('Brief test')
 
-        b.find_element_by_xpath('//button[@type="submit"]').click()
+        with browser.wait_for_page_load():
+            b.find_element_by_xpath('//button[@type="submit"]').click()
 
         success_message = b.find_element_by_class_name('alert-success')
         self.assertTrue(u'Brief saved.' in success_message.text)
@@ -224,4 +231,13 @@ class BriefsSignedInTest(browser.SignedInTest):
         question = bm.TextQuestion.objects.create(user=self.user, question='What?')
 
         response = self.client.get(self.live_server_url + reverse('api_question_detail', args=[question.id]))
+        self.assertEqual(response.status_code, 200)
+
+    def test_can_access_question_list(self):
+        brief = autofixture.create_one('briefs.Brief', generate_fk=True,
+                                       field_values={'user': self.user, 'client': None, 'quote': None})
+        q = bm.TextQuestion.objects.create(user=brief.user, question='What?')
+        brief.questions.add(q)
+
+        response = self.client.get(self.live_server_url + reverse('api_questions') + '?brief_id=%d' % brief.id)
         self.assertEqual(response.status_code, 200)

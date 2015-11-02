@@ -25,10 +25,10 @@
     <div ng-repeat="question in brief.questions">
         <div br-question-form question="question" language="language" forms="forms" remove-question="removeQuestion"></div>
     </div>
-    <button type="button" id="add_question" class="btn btn-default pull-left margin-right-10" ng-click="addQuestion()">
+    <button type="button" id="add_question" class="btn btn-default pull-left margin-right-10" ng-click="addQuestion()" ng-show="showButtons()">
         Add Question
     </button>
-    <button type="button" id="add_multiquestion" class="btn btn-default pull-left" ng-click="addQuestion('multi')">
+    <button type="button" id="add_multiquestion" class="btn btn-default pull-left" ng-click="addQuestion('multi')" ng-show="showButtons()">
         Add Multiple Choice Question
     </button>
 </ng-form>

@@ -29,7 +29,6 @@ angular.module('briefs.controllers.briefFormController', [])
             };
 
             $scope.submitForm = function () {
-                debugger;
                 var valid = setFormsDirty($scope.forms);
 
                 if (valid) {
