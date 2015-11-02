@@ -21,10 +21,10 @@
     <div class="question_text row">
         <div class="col-lg-12">
             <ng-form name="innerFormQ">
-                <div br-ultext-input eid="question{{ question.index }}_question" name="question"
+                <div gl-ultext-input eid="question{{ question.index }}_question" name="question"
                      text="question.question" language="language" required="true">
                 </div>
-                <div br-required-errors field="innerFormQ.question"></div>
+                <div gl-required-errors field="innerFormQ.question"></div>
             </ng-form>
         </div>
     </div>
@@ -34,10 +34,10 @@
                 <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11">
 
                     <ng-form name="innerFormC{{ $index }}">
-                        <div br-ultext-input eid="question{{ question.index }}_choice{{ $index }}"
+                        <div gl-ultext-input eid="question{{ question.index }}_choice{{ $index }}"
                              name="choice" text="choice" language="language" required="true">
                         </div>
-                        <div br-required-errors field="this['innerFormC' + $index].choice"></div>
+                        <div gl-required-errors field="this['innerFormC' + $index].choice"></div>
                     </ng-form>
                 </div>
                 <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">

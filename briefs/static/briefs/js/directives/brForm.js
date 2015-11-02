@@ -1,14 +1,7 @@
-app = angular.module('briefs.directives.brForm', ['briefs.services.brServices']);
-
-app.directive('brRequiredErrors', function () {
-    return {
-        restrict: 'A',
-        scope: {
-            field: '=',
-        },
-        templateUrl: '/static/briefs/html/br_required_errors.html',
-    };
-});
+app = angular.module('briefs.directives.brForm', [
+    'briefs.services.brServices',
+    'gallant.directives.glForm'
+]);
 
 app.directive('brQuestionForm', function () {
     return {
@@ -103,36 +96,3 @@ app.directive('brBriefForm', ['Question', function (Question) {
         }
     };
 }]);
-
-app.directive('brUltextInput', function () {
-    return {
-        restrict: 'A',
-        scope: {
-            name: '@',
-            eid: '@',
-            text: '=',
-            language: '=',
-            required: '@',
-        },
-        template: function ($scope, $element) {
-            return '<input id="{{ eid }}" class="form-control" name="{{ name }}" maxlength="512"' +
-                'type="text" ng-model="text[language]" ng-required="{{ required }}"/>';
-        }
-    };
-})
-
-app.directive('brUltextArea', function () {
-    return {
-        restrict: 'A',
-        scope: {
-            name: '@',
-            eid: '@',
-            text: '=',
-            language: '=',
-        },
-        template: function ($scope, $element, $attrs) {
-            return '<textarea id="{{ eid }}" class="form-control" cols="40" name="{{ name }}" rows="3" ' +
-                'ng-model="text[language]"></textarea>';
-        }
-    };
-});
