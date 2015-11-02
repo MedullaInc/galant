@@ -1,6 +1,6 @@
 angular.module('briefs.controllers.briefFormController', [])
-    .controller('briefFormController', ['$scope', '$window', 'Brief',
-        function ($scope, $window, Brief) {
+    .controller('briefFormController', ['$scope', '$http', '$window', 'Brief',
+        function ($scope, $http, $window, Brief) {
             var setFormsDirty = function (forms) {
                 valid = true;
                 inner = [];
@@ -29,6 +29,7 @@ angular.module('briefs.controllers.briefFormController', [])
             };
 
             $scope.submitForm = function () {
+                debugger;
                 var valid = setFormsDirty($scope.forms);
 
                 if (valid) {
@@ -45,32 +46,35 @@ angular.module('briefs.controllers.briefFormController', [])
                             window.location.href = response.redirect;
                         } else {
                             // handle errors
-                            console.log(response.data);
+                            console.log(JSON.stringify(response.data));
                         }
                     }, function (errorResponse) {
-                        console.log(errorResponse.data);
+                        console.log(JSON.stringify(errorResponse.data));
                     });
                 }
             };
 
-            $scope.init = function (currentLanguage) {
+            $scope.init = function (currentLanguage, csrftoken) {
                 $scope.currentLanguage = currentLanguage;
+                $http.defaults.headers.post['X-CSRFToken'] = csrftoken;
             };
-
+/*
             $scope.$watch('brief', function (newValue, oldValue) {
                 if (oldValue != null && newValue != oldValue) {
-                    $window.onbeforeunload = function (e) {
-                        // If we haven't been passed the event get the window.event
-                        e = e || $window.event;
-                        var message = 'You have unsaved changes. If you leave this page they will be lost.';
+                    if (!$window.onbeforeunload) {
+                        $window.onbeforeunload = function (e) {
+                            // If we haven't been passed the event get the window.event
+                            e = e || $window.event;
+                            var message = 'You have unsaved changes. If you leave this page they will be lost.';
 
-                        // For IE6-8 and Firefox prior to version 4
-                        if (e) {
-                            e.returnValue = message;
-                        }
-                        return message;
-                    };
+                            // For IE6-8 and Firefox prior to version 4
+                            if (e) {
+                                e.returnValue = message;
+                            }
+                            return message;
+                        };
+                    }
                 }
-            }, true);
+            }, true); */
         }
     ]);

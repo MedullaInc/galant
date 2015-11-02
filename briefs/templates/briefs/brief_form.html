@@ -103,7 +103,7 @@
         $('#add_multiquestion').click(function () {
             counter++;
             var m = $.parseHTML(multiquestion(counter));
-            $('#question_table > div:last').before(m);
+            $('#question_table > div:last').before(m)
             $(m).find('.add_choice').click();
             $(m).find('.add_choice').click();
             reindexQuestions();

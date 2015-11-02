@@ -33,6 +33,32 @@ class GallantObjectPermissions(DjangoModelPermissions):
     def has_permission(self, request, view):
         perms = self.get_required_permissions(request.method, view.get_queryset().model)
 
+        if hasattr(view, 'get_object'):
+            obj = view.get_object()
+        else:
+            return False
+
+        return (
+            request.user and
+            request.user.is_authenticated() and
+            request.user.has_perms(perms, obj)
+        )
+
+
+class GallantViewSetPermissions(DjangoModelPermissions):
+    perms_map = {
+        'GET': ['view_%(model_name)s'],
+        'OPTIONS': [],
+        'HEAD': [],
+        'POST': ['add_%(model_name)s'],
+        'PUT': ['change_%(model_name)s'],
+        'PATCH': ['change_%(model_name)s'],
+        'DELETE': ['delete_%(model_name)s'],
+    }
+
+    def has_permission(self, request, view):
+        perms = self.get_required_permissions(request.method, view.get_queryset().model)
+
         if view.action == 'list' or view.action == 'create':
             return request.user.is_authenticated()
         elif hasattr(view, 'get_object'):

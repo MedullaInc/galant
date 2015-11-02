@@ -136,8 +136,23 @@ class BriefSerializer(serializers.ModelSerializer):
 
 class BriefTemplateSerializer(serializers.ModelSerializer):
     user = serializers.PrimaryKeyRelatedField(read_only=True)
-    brief = serializers.PrimaryKeyRelatedField(read_only=True)
+    brief = BriefSerializer()
 
     class Meta:
         model = BriefTemplate
         fields = ('id', 'user', 'brief')
+
+    def create(self, validated_data):
+        user = self.context['request'].user
+        brief_data = validated_data.pop('brief')
+        validated_data.update({'user': user})
+        brief_data.update({'user': user})
+
+        instance = super(BriefSerializer, self).create(validated_data)
+
+        instance.brief = BriefSerializer(data=brief_data)
+        return instance
+
+    def update(self, instance, validated_data):
+        validated_data.pop('brief')
+        return super(BriefTemplateSerializer, self).update(instance, validated_data)

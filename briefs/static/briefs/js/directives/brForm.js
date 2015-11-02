@@ -5,7 +5,7 @@ angular.module('briefs.directives.brForm', [])
             scope: {
                 field: '=',
             },
-            templateUrl: '/static/briefs/html/required_errors.html',
+            templateUrl: '/static/briefs/html/br_required_errors.html',
         };
     })
     .directive('brQuestionForm', function () {
@@ -18,9 +18,9 @@ angular.module('briefs.directives.brForm', [])
                 removeQuestion: '&'
             },
             link: function ($scope, $element) {
-                var template = '/static/briefs/html/question_form.html';
+                var template = '/static/briefs/html/br_question_form.html';
                 if ($scope.question.type == 'MultipleChoiceQuestion') {
-                    template = '/static/briefs/html/multiquestion_form.html';
+                    template = '/static/briefs/html/br_multiquestion_form.html';
                 }
                 $scope.myTemplate = template;
 
@@ -28,33 +28,54 @@ angular.module('briefs.directives.brForm', [])
                     $element.remove();
                     $scope.removeQuestion()($scope.question);
                 }
+
+                $scope.addChoice = function () {
+                    if ($scope.question.choices) {
+                        $scope.question.choices.push(null);
+                    }
+                }
             },
             template: "<div ng-include='myTemplate'></div>",
         };
-    }).directive('brBriefForm', ['Brief', 'Question', function (Brief, Question) {
+    }).directive('brBriefForm', ['Question', function (Question) {
         return {
             restrict: 'A',
-            require: 'brQuestionForm',
             scope: {
                 brief: '=',
                 language: '=',
                 forms: '=',
             },
-            templateUrl: '/static/briefs/html/brief_form.html',
-            controller: function ($scope, $element, $attrs) {
-                if ($attrs.briefId) {
-                    Brief.get({
-                        id: $attrs.briefId
-                    }, function (result) {
-                        $scope.brief = result;
-                    });
-                } else {
-                    $scope.brief = new Brief();
-                    $scope.brief.questions = [];
-                    $scope.brief.quote = $attrs.quoteId;
-                    $scope.brief.client = $attrs.clientId;
-                }
-
+            controller: ['$scope', '$attrs', 'Brief', 'BriefTemplate',
+                function ($scope, $attrs, Brief, BriefTemplate) {
+                    if ($attrs.briefId) {
+                        Brief.get({
+                            id: $attrs.briefId
+                        }).$promise.then(function (brief) {
+                                $scope.brief = brief;
+                            });
+                    } else {
+                        if ($attrs.templateId) {
+                            BriefTemplate.get({
+                                id: $attrs.templateId
+                            }).$promise.then(function (briefTemplate) {
+                                    $scope.brief = briefTemplate.brief;
+                                    delete $scope.brief.id;
+                                    angular.forEach($scope.brief.questions, function (q) {
+                                        delete q.id;
+                                    });
+                                    $scope.brief.quote = $attrs.quoteId;
+                                    $scope.brief.client = $attrs.clientId;
+                                });
+                        } else {
+                            $scope.brief = new Brief();
+                            $scope.brief.questions = [];
+                            $scope.brief.quote = $attrs.quoteId;
+                            $scope.brief.client = $attrs.clientId;
+                        }
+                    }
+                }],
+            templateUrl: '/static/briefs/html/br_brief_form.html',
+            link: function ($scope) {
                 $scope.addQuestion = function (type) {
                     var question = new Question();
                     if (type == 'multi') {
@@ -78,12 +99,13 @@ angular.module('briefs.directives.brForm', [])
             restrict: 'A',
             scope: {
                 name: '@',
+                eid: '@',
                 text: '=',
                 language: '=',
                 required: '@',
             },
-            template: function ($scope) {
-                return '<input class="form-control" name="{{ name }}" maxlength="512"' +
+            template: function ($scope, $element) {
+                return '<input id="{{ eid }}" class="form-control" name="{{ name }}" maxlength="512"' +
                     'type="text" ng-model="text[language]" ng-required="{{ required }}"/>';
             }
         };
@@ -92,11 +114,12 @@ angular.module('briefs.directives.brForm', [])
             restrict: 'A',
             scope: {
                 name: '@',
+                eid: '@',
                 text: '=',
                 language: '=',
             },
-            template: function ($scope) {
-                return '<textarea class="form-control" cols="40" name="{{ name }}" rows="3" ' +
+            template: function ($scope, $element, $attrs) {
+                return '<textarea id="{{ eid }}" class="form-control" cols="40" name="{{ name }}" rows="3" ' +
                     'ng-model="text[language]"></textarea>';
             }
         };

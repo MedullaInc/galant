@@ -9,7 +9,8 @@ from gallant import models as g
 from quotes import models as q
 from django.views.generic import View
 from briefs import forms as bf
-from gallant.utils import get_one_or_404, query_url, get_site_from_host, GallantObjectPermissions
+from gallant.utils import get_one_or_404, query_url, get_site_from_host, GallantObjectPermissions, \
+    GallantViewSetPermissions
 from django.utils.translation import ugettext_lazy as _
 from rest_framework import generics, viewsets
 from rest_framework.response import Response
@@ -61,8 +62,8 @@ class BriefList(View):
             context.update({'object_list': briefs, 'title': 'Briefs'})
         else:
             context.update({'object_list': b.Brief.objects
-                                            .all_for(request.user)
-                                            .filter(client__isnull=False), 'title': 'Briefs'})
+                           .all_for(request.user)
+                           .filter(client__isnull=False), 'title': 'Briefs'})
 
         return TemplateResponse(request=request,
                                 template="briefs/brief_list.html",
@@ -153,7 +154,8 @@ class BriefCreate(BriefUpdate):
             template = get_one_or_404(request.user, 'view_brieftemplate', b.BriefTemplate, pk=template_id)
             brief = template.brief
             question_forms = bf.question_forms_brief(brief, clear_pk=True)
-            context.update({'questions': question_forms})
+            context.update({'questions': question_forms,
+                            'template_id': template_id})
             brief.pk = None
 
             instance = brief
@@ -165,16 +167,16 @@ class BriefCreate(BriefUpdate):
 
         form = bf.BriefForm(request.user, instance=instance, initial=initial)
 
-        context.update({'title': 'Create Brief', 'form': form})
+        context.update({'title': 'Create Brief', 'form': form, 'object': None})
         request.breadcrumbs(_('Add'), request.path_info + query_url(request))
-        return TemplateResponse(request=self.request, template="briefs/brief_form.html", context=context, **kwargs)
+        return TemplateResponse(request=self.request, template="briefs/brief_form_ng.html", context=context, **kwargs)
 
 
 def _send_brief_email(email, from_name, link, site):
-    message = '%s has sent you a %s questionnaire.\n\n Click this link to answer:\n %s' %\
-        (from_name, site, link)
+    message = '%s has sent you a %s questionnaire.\n\n Click this link to answer:\n %s' % \
+              (from_name, site, link)
     send_mail('Client Questionnaire', message,
-              '%s via %s <%s>' % (from_name, site,  settings.EMAIL_HOST_USER),
+              '%s via %s <%s>' % (from_name, site, settings.EMAIL_HOST_USER),
               [email], fail_silently=False)
 
 
@@ -188,14 +190,14 @@ class BriefDetail(View):
             brief_answers = answers_q.last()
             context.update({'answer_set': brief_answers,
                             'answers': brief_answers.answers
-                                                    .all_for(request.user)
-                                                    .order_by('question__index')})
+                           .all_for(request.user)
+                           .order_by('question__index')})
 
         _update_from_query(request, context)
         context.update({'object': brief,
                         'questions': brief.questions
-                                          .all_for(request.user)\
-                                          .order_by('index')})
+                       .all_for(request.user) \
+                       .order_by('index')})
 
         request.breadcrumbs(_('Brief: ') + brief.name, request.path_info + query_url(request))
         return TemplateResponse(request=request,
@@ -209,7 +211,7 @@ class BriefDetail(View):
 
         _send_brief_email(brief.client.email, request.user.name,
                           (request.build_absolute_uri(
-                                           reverse('brief_answer', args=[brief.token.hex]))),
+                              reverse('brief_answer', args=[brief.token.hex]))),
                           get_site_from_host(request))
         messages.success(request, 'Brief link sent to %s.' % brief.client.email)
         return self.get(request, **kwargs)
@@ -227,7 +229,7 @@ class BriefViewSet(viewsets.ModelViewSet):
     model = b.Brief
     serializer_class = serializers.BriefSerializer
     permission_classes = [
-        GallantObjectPermissions
+        GallantViewSetPermissions
     ]
 
     def get_queryset(self):
@@ -236,15 +238,15 @@ class BriefViewSet(viewsets.ModelViewSet):
     def update(self, request, *args, **kwargs):
         response = super(BriefViewSet, self).update(request, *args, **kwargs)
         if response.status_code == HTTP_200_OK or response.status_code == HTTP_201_CREATED:
-            self.request._messages.add(messages.SUCCESS, 'Brief saved')
+            self.request._messages.add(messages.SUCCESS, 'Brief saved.')
             return Response({'status': 0, 'redirect': reverse('brief_detail', args=[response.data['id']])})
         else:
             return response
-        
+
     def create(self, request, *args, **kwargs):
         response = super(BriefViewSet, self).create(request, *args, **kwargs)
         if response.status_code == HTTP_201_CREATED:
-            self.request._messages.add(messages.SUCCESS, 'Brief saved')
+            self.request._messages.add(messages.SUCCESS, 'Brief saved.')
             return Response({'status': 0, 'redirect': reverse('brief_detail', args=[response.data['id']])})
         else:
             return response

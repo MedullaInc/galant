@@ -12,7 +12,7 @@
 {% endblock %}
 
 {% block center_content %}
-    <div ng-app="brief" ng-controller="briefFormController" ng-init="init('{{ LANGUAGE_CODE }}')">
+    <div ng-app="brief" ng-controller="briefFormController" ng-init="init('{% firstof language LANGUAGE_CODE %}', '{{ csrf_token }}')">
     {% if project %}
         <div class="row">
             <div class="col-lg-9" align="right">
@@ -43,7 +43,8 @@
         {% endif %}
     {% endblock %}
     <div br-brief-form brief-id="{{ object.pk }}" brief="brief" language="currentLanguage" forms="forms"
-         client-id="{{ client.id }}" project-id="{{ project.id }}" quote-id="{{ quote.id }}">
+         client-id="{{ client.id }}" project-id="{{ project.id }}" quote-id="{{ quote.id }}"
+            template-id="{{ template_id }}">
     </div>
 
     <div id="form_actions">

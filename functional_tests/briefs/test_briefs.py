@@ -1,4 +1,5 @@
 # coding=utf-8
+import time
 from django.core.urlresolvers import reverse
 from functional_tests import browser
 from briefs import models as bm
@@ -31,7 +32,8 @@ class BriefsSignedInTest(browser.SignedInTest):
         b.find_element_by_css_selector('.popover-content .from_scratch_button').click()
 
         # fill out brief & save
-        b.find_element_by_name('title').send_keys('Brief test')
+        b.find_element_by_id('id_title').send_keys('Brief test')
+        b.find_element_by_id('id_greeting').send_keys('Brief test')
         b.find_element_by_xpath('//button[@type="submit"]').click()
 
         success_message = b.find_element_by_class_name('alert-success')
@@ -42,7 +44,7 @@ class BriefsSignedInTest(browser.SignedInTest):
         c = autofixture.create_one('gallant.Client', generate_fk=True,
                                    field_values={'user': self.user})
         q = autofixture.create_one('briefs.Brief', generate_fk=True,
-                                   field_values={'user': self.user, 'client': c})
+                                   field_values={'user': self.user, 'client': c, 'quote': None})
         q.save()
 
         b.get(self.live_server_url + reverse('edit_brief', args=[q.id]) + '?client_id=%d' % c.id)
@@ -60,7 +62,7 @@ class BriefsSignedInTest(browser.SignedInTest):
         c = autofixture.create_one('gallant.Client', generate_fk=True,
                                    field_values={'user': self.user})
         brief = autofixture.create_one('briefs.Brief', generate_fk=True,
-                                       field_values={'user': self.user, 'client': c})
+                                       field_values={'user': self.user, 'client': c, 'quote': None})
         q = bm.TextQuestion.objects.create(user=brief.user, question='What?')
         mq = bm.MultipleChoiceQuestion.objects.create(user=brief.user, question='Huh?',
                                                       choices=['a', 'b', 'c'], index=1)
@@ -72,9 +74,9 @@ class BriefsSignedInTest(browser.SignedInTest):
         b.find_element_by_id('id_title').clear()
         b.find_element_by_id('id_title').send_keys('modified title')
 
-        b.find_element_by_id('id_-question-0-question').send_keys('Who is your daddy, and what does he do?')
-        b.find_element_by_id('id_-multiquestion-1-add_choice').click()
-        b.find_elements_by_class_name('ultext_array_target')[0].send_keys('foo')
+        b.find_element_by_id('question0_question').send_keys('Who is your daddy, and what does he do?')
+        b.find_element_by_id('question1_add_choice').click()
+        b.find_element_by_id('question1_choice3').send_keys('foo')
 
         b.find_element_by_xpath('//button[@type="submit"]').click()
 
@@ -86,20 +88,20 @@ class BriefsSignedInTest(browser.SignedInTest):
         c = autofixture.create_one('gallant.Client', generate_fk=True,
                                    field_values={'user': self.user})
         brief = autofixture.create_one('briefs.Brief', generate_fk=True,
-                                       field_values={'user': self.user, 'client': c})
+                                       field_values={'user': self.user, 'client': c, 'quote': None})
         q = bm.TextQuestion.objects.create(user=brief.user, question='What?')
         brief.questions.add(q)
 
         b.get(self.live_server_url + reverse('edit_brief', args=[brief.id]))
+        time.sleep(0.5)
 
         b.find_element_by_id('add_multiquestion').click()
-        b.find_element_by_id('id_-multiquestion-1-question').send_keys('Who is your daddy, and what does he do?')
-        b.find_element_by_id('id_-multiquestion-1-add_choice').click()
-        b.find_element_by_id('id_-multiquestion-1-add_choice').click()
-        b.find_elements_by_class_name('ultext_array_target')[0].send_keys('foo')
-        b.find_elements_by_class_name('ultext_array_target')[1].send_keys('bar')
+        b.find_element_by_id('question1_question').send_keys('Who is your daddy, and what does he do?')
+        b.find_element_by_id('question1_choice0').send_keys('foo')
+        b.find_element_by_id('question1_choice1').send_keys('bar')
 
         b.find_element_by_xpath('//button[@type="submit"]').click()
+        self.save_snapshot()
 
         success_message = b.find_element_by_class_name('alert-success')
         self.assertTrue(u'Brief saved.' in success_message.text)
@@ -131,6 +133,7 @@ class BriefsSignedInTest(browser.SignedInTest):
 
         b.find_element_by_id('id_title').clear()
         b.find_element_by_id('id_title').send_keys('modified title')
+        b.find_element_by_id('id_greeting').send_keys('modified greeting')
 
         b.find_element_by_xpath('//button[@type="submit"]').click()
 
@@ -150,6 +153,7 @@ class BriefsSignedInTest(browser.SignedInTest):
 
         b.find_element_by_id('id_title').clear()
         b.find_element_by_id('id_title').send_keys('modified title')
+        b.find_element_by_id('id_greeting').send_keys('Brief test')
 
         b.find_element_by_xpath('//button[@type="submit"]').click()
 
@@ -213,7 +217,7 @@ class BriefsSignedInTest(browser.SignedInTest):
         brief = autofixture.create_one('briefs.Brief', generate_fk=True,
                                    field_values={'user': self.user, 'client': client})
 
-        response = self.client.get(self.live_server_url + reverse('api_brief_detail', args=[brief.id]))
+        response = self.client.get(self.live_server_url + reverse('api-brief-detail', args=[brief.id]))
         self.assertEqual(response.status_code, 200)
 
     def test_can_access_question_endpoint(self):

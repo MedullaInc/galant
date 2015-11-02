@@ -91,8 +91,8 @@ class BriefTemplatesTest(browser.SignedInTest):
         b.get(self.live_server_url +
               reverse('add_brief') + '?template_id=%d&lang=en&client_id=%d' % (bt.id, client.id))
 
-        question = b.find_element_by_id('id_-question-0-question_hidden')
-        self.assertEqual(quest.question.json(), question.get_attribute('value'))
+        question = b.find_element_by_id('question0_question')
+        self.assertEqual(quest.question.get_text(), question.get_attribute('value'))
         b.find_element_by_xpath('//button[@type="submit"]').click()
 
         success_message = b.find_element_by_class_name('alert-success')
