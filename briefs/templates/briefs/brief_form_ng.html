@@ -44,18 +44,6 @@
                     </i>
                 </p>
             {% endif %}
-            {% verbatim %}
-                <div ng-repeat="form in forms">
-            <ul>
-
-                    <li ng-repeat="(key, errors) in form.$error track by $index"><strong>{{ key }}</strong> errors
-                        <ul>
-                            <li ng-repeat="e in errors">{{ e.$name }} has an error: <strong>{{ key }}</strong>.</li>
-                        </ul>
-                    </li>
-            </ul>
-            </div>
-            {% endverbatim %}
         {% endblock %}
     <div br-brief-form brief-id="{{ object.pk }}" brief="object" endpoint="objectEndpoint"
          language="currentLanguage" forms="forms"
