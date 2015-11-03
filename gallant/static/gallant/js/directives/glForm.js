@@ -20,12 +20,10 @@ app.directive('glUltextInput', function () {
             language: '=',
             required: '@',
         },
-        template: function ($scope, $element) {
-            return '<input id="{{ eid }}" class="form-control" name="{{ name }}" maxlength="512"' +
-                'type="text" ng-model="text[language]" ng-required="{{ required }}"/>';
-        }
+        template: '<input id="{{ eid }}" class="form-control" name="{{ name }}" maxlength="512"' +
+                'type="text" ng-model="text[language]" ng-required="{{ required }}"/>',
     };
-})
+});
 
 app.directive('glUltextArea', function () {
     return {
@@ -36,9 +34,7 @@ app.directive('glUltextArea', function () {
             text: '=',
             language: '=',
         },
-        template: function ($scope, $element, $attrs) {
-            return '<textarea id="{{ eid }}" class="form-control" cols="40" name="{{ name }}" rows="3" ' +
-                'ng-model="text[language]"></textarea>';
-        }
+        template: '<textarea id="{{ eid }}" class="form-control" cols="40" name="{{ name }}" rows="3" ' +
+                'ng-model="text[language]"></textarea>',
     };
 });
