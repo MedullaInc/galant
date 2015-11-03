@@ -57,7 +57,7 @@ angular.module('briefs.controllers.briefFormController', [])
                 $scope.currentLanguage = currentLanguage;
                 $http.defaults.headers.post['X-CSRFToken'] = csrftoken;
             };
-/*
+
             $scope.$watch('brief', function (newValue, oldValue) {
                 if (oldValue != null && newValue != oldValue) {
                     if (!$window.onbeforeunload) {
@@ -74,6 +74,6 @@ angular.module('briefs.controllers.briefFormController', [])
                         };
                     }
                 }
-            }, true); */
+            }, true);
         }
     ]);
