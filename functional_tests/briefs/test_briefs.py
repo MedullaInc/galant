@@ -1,9 +1,7 @@
 # coding=utf-8
-import time
 from django.core.urlresolvers import reverse
 from functional_tests import browser
 from briefs import models as bm
-from gallant import models as g
 import autofixture
 
 
@@ -99,7 +97,7 @@ class BriefsSignedInTest(browser.SignedInTest):
 
         b.get(self.live_server_url + reverse('edit_brief', args=[brief.id]))
 
-        browser.wait_for_element(b.find_element_by_id, 'question0_question')
+        browser.wait().until(lambda driver: driver.find_element_by_id('question0_question'))
         b.find_element_by_id('add_multiquestion').click()
         b.find_element_by_id('question1_question').send_keys('Who is your daddy, and what does he do?')
         b.find_element_by_id('question1_choice0').send_keys('foo')
