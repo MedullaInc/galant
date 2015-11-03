@@ -29,7 +29,7 @@
         </div>
     </div>
     <div class="choice_table">
-        <div ng-repeat="choice in question.choices">
+        <div ng-repeat="choice in question.choices track by $index">
             <div class="row margin-bottom-10 choice">
                 <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11">
 
