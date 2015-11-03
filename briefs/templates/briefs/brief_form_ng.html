@@ -7,46 +7,60 @@
     <script src="{% static "js/angular-resource.js" %}"></script>
     <script src="{% static "djangular/js/django-angular.min.js" %}"></script>
     <script src="{% static "briefs/js/services/brServices.js" %}"></script>
-    <script src="{% static "briefs/js/controllers/briefFormController.js" %}"></script>
     <script src="{% static "gallant/js/directives/glForm.js" %}"></script>
+    <script src="{% static "gallant/js/controllers/glFormController.js" %}"></script>
     <script src="{% static "briefs/js/directives/brForm.js" %}"></script>
     <script src="{% static "briefs/js/apps/briefs.js" %}"></script>
 {% endblock %}
 
 {% block center_content %}
-    <div ng-app="brief" ng-controller="briefFormController" ng-init="init('{% firstof language LANGUAGE_CODE %}', '{{ csrf_token }}')">
-    {% if project %}
-        <div class="row">
-            <div class="col-lg-9" align="right">
-                <p>{% trans "Linked to project" %}:</p>
+    <div ng-app="brief" ng-controller="glFormController"
+         ng-init="init('{% firstof language LANGUAGE_CODE %}', '{{ csrf_token }}')">
+        {% if project %}
+            <div class="row">
+                <div class="col-lg-9" align="right">
+                    <p>{% trans "Linked to project" %}:</p>
+                </div>
+                <div class="col-lg-3 project_link" align="right">
+                    <p><a href="{% url 'project_detail' project.id %}">{{ project }}</a></p>
+                </div>
             </div>
-            <div class="col-lg-3 project_link" align="right">
-                <p><a href="{% url 'project_detail' project.id %}">{{ project }}</a></p>
+            {% elif quote %}
+            <div class="row">
+                <div class="col-lg-9" align="right">
+                    <p>{% trans "Linked to quote" %}:</p>
+                </div>
+                <div class="col-lg-3 quote_link" align="right">
+                    <p><a href="{% url 'quote_detail' quote.id %}">{{ quote }}</a></p>
+                </div>
             </div>
-        </div>
-        {% elif quote %}
-        <div class="row">
-            <div class="col-lg-9" align="right">
-                <p>{% trans "Linked to quote" %}:</p>
-            </div>
-            <div class="col-lg-3 quote_link" align="right">
-                <p><a href="{% url 'quote_detail' quote.id %}">{{ quote }}</a></p>
-            </div>
-        </div>
-    {% endif %}
-
-    {% block form_help_text %}
-        {% if help_text %}
-            <p class="title">
-                <i>
-                    {{ help_text }}
-                </i>
-            </p>
         {% endif %}
-    {% endblock %}
-    <div br-brief-form brief-id="{{ object.pk }}" brief="brief" language="currentLanguage" forms="forms"
+
+        {% block form_help_text %}
+            {% if help_text %}
+                <p class="title">
+                    <i>
+                        {{ help_text }}
+                    </i>
+                </p>
+            {% endif %}
+            {% verbatim %}
+                <div ng-repeat="form in forms">
+            <ul>
+
+                    <li ng-repeat="(key, errors) in form.$error track by $index"><strong>{{ key }}</strong> errors
+                        <ul>
+                            <li ng-repeat="e in errors">{{ e.$name }} has an error: <strong>{{ key }}</strong>.</li>
+                        </ul>
+                    </li>
+            </ul>
+            </div>
+            {% endverbatim %}
+        {% endblock %}
+    <div br-brief-form brief-id="{{ object.pk }}" brief="object" endpoint="objectEndpoint"
+         language="currentLanguage" forms="forms"
          client-id="{{ client.id }}" project-id="{{ project.id }}" quote-id="{{ quote.id }}"
-            template-id="{{ template_id }}">
+         template-id="{{ template_id }}">
     </div>
 
     <div id="form_actions">
@@ -62,5 +76,6 @@
                 </div>
             </div>
         </div>
+    </div>
     </div>
 {% endblock %}

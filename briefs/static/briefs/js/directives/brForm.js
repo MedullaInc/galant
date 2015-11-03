@@ -46,11 +46,13 @@ app.directive('brBriefForm', ['Question', function (Question) {
         restrict: 'A',
         scope: {
             brief: '=',
+            endpoint: '=',
             language: '=',
             forms: '=',
         },
         controller: ['$scope', '$attrs', 'Brief', 'BriefTemplate',
             function ($scope, $attrs, Brief, BriefTemplate) {
+                $scope.endpoint = Brief;
                 if ($attrs.briefId) {
                     Brief.get({
                         id: $attrs.briefId

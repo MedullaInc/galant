@@ -1,7 +1,7 @@
 var app = angular.module('brief', [
     'ngResource',
     'briefs.directives.brForm',
-    'briefs.controllers.briefFormController',
+    'gallant.controllers.glFormController',
 ]);
 
 app.config(function ($httpProvider) {

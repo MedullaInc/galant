@@ -98,6 +98,8 @@ class BriefsSignedInTest(browser.SignedInTest):
 
         with browser.wait_for_page_load():
             b.find_element_by_xpath('//button[@type="submit"]').click()
+            import time; time.sleep(1)
+            self.save_snapshot()
 
         success_message = b.find_element_by_class_name('alert-success')
         self.assertTrue(u'Brief saved.' in success_message.text)
