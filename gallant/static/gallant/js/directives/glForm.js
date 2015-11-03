@@ -20,7 +20,7 @@ app.directive('glUltextInput', function () {
             language: '=',
             required: '@',
         },
-        template: '<input id="{{ eid }}" class="form-control" name="{{ name }}" maxlength="512"' +
+        template: '<input id="{{ eid }}" class="form-control" name="{{ name }}"' +
                 'type="text" ng-model="text[language]" ng-required="{{ required }}"/>',
     };
 });
