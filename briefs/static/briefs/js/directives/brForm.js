@@ -20,13 +20,20 @@ app.directive('brQuestionForm', function () {
             $scope.myTemplate = template;
 
             $scope.remove = function () {
-                $element.remove();
-                $scope.removeQuestion()($scope.question);
+                if (confirm('Remove question?')) {
+                    $element.remove();
+                    $scope.removeQuestion()($scope.question);
+                }
             }
 
             $scope.addChoice = function () {
                 if ($scope.question.choices) {
                     $scope.question.choices.push(null);
+                }
+            }
+            $scope.removeChoice = function ($index) {
+                if (confirm('Remove choice?')) {
+                    $scope.question.choices.splice($index, 1);
                 }
             }
         },
