@@ -2,6 +2,15 @@
 
 angular.module('gallant.controllers', ['ui.calendar', 'ui.bootstrap','ng.django.forms'])
 
+.filter('inArray', function($filter){
+    return function(list, arrayFilter, element){
+        if(arrayFilter){
+            return $filter("filter")(list, function(listItem){
+                return arrayFilter.indexOf(listItem[element]) != -1;
+            });
+        }
+    };
+})
 
 .controller('CalendrControl',
    function($scope, gallantAPIservice, $compile, $timeout, uiCalendarConfig, $uibModal) {
@@ -13,6 +22,7 @@ angular.module('gallant.controllers', ['ui.calendar', 'ui.bootstrap','ng.django.
     /* event source that contains custom events on the scope */
     $scope.events = [];
     $scope.eventResources = []
+    $scope.projects = []
 
 
     /* Retrieve users from API service */
@@ -34,13 +44,29 @@ angular.module('gallant.controllers', ['ui.calendar', 'ui.bootstrap','ng.django.
                               value.start,
                               value.end,
                               value.assignee,
-                              value.name);
+                              value.name,
+                              value.project);
         });     
       });
     }
 
+    /* Retrieve all Tasks from API service */
+    $scope.getProjects = function() {
+      gallantAPIservice.getProjects().success(function(response) {
+        $scope.projects = response;
+      //   angular.forEach(response, function(value, key) {
+      //     var project = {}
+      //     project.id = va
+      //       //some code
+
+
+      });
+    }
+
+
     $scope.getResources();
     $scope.getTasks();
+    $scope.getProjects();
 
 
     /* Open edit Modal */
@@ -50,11 +76,14 @@ angular.module('gallant.controllers', ['ui.calendar', 'ui.bootstrap','ng.django.
             templateUrl: 'myModalContent.html',
             backdrop: true,
             windowClass: 'modal',
-            controller: function ($scope, $modalInstance, $log, event, resources, updateEvent) {
+            controller: function ($scope, $modalInstance, $log, event, events, resources, projects, updateEvent) {
                 $scope.event = event;
-
+                $scope.events = events;
                 $scope.resources = resources;
+                $scope.projects = projects;
                 $scope.updateEvent = updateEvent;
+                $scope.filterArr = [99999]
+
                 $scope.submit = function () {
                     $modalInstance.dismiss('cancel');
                     $scope.updateEvent(event);
@@ -62,13 +91,41 @@ angular.module('gallant.controllers', ['ui.calendar', 'ui.bootstrap','ng.django.
                 $scope.cancel = function () {
                     $modalInstance.dismiss('cancel');
                 };
+                $scope.projectChanged = function (proy) {
+                  var users = [];
+                  var proy = proy;
+
+                  function isInArray(value, array) {
+                    return array.indexOf(value) > -1;
+                  }
+                  
+                  $.each($scope.events, function (i, o) {
+                    if(o.projectId == String(proy) && !(isInArray(o.resourceId, users))){
+                      users.push(parseInt(o.resourceId));
+                      }
+                  });
+                  // $scope.eventsOfproy = $scope.events.filter(function (event) {
+                  //   return (event.project_id == proy);
+                  // });
+                  if(users.length >= 1){
+                  $scope.filterArr = users
+                }else{
+                  $scope.filterArr = [99999];
+                }
+                };
             },
             resolve: {
                 event: function () {
                     return $scope.event;
                 },
+                events: function () {
+                    return $scope.events;
+                },
                 resources: function () {
                     return $scope.eventResources;
+                },
+                projects: function () {
+                    return $scope.projects;
                 },
                 updateEvent: function () {
                     return $scope.updateEvent;
@@ -86,7 +143,7 @@ angular.module('gallant.controllers', ['ui.calendar', 'ui.bootstrap','ng.django.
         "start": event.start,
         "end": event.end,
         "daily_estimate": "10.0",
-        "project": 1,
+        "project": event.projectId,
         "services": [],
         "assignee": String(event.resourceId),
         "notes": []
@@ -143,14 +200,14 @@ angular.module('gallant.controllers', ['ui.calendar', 'ui.bootstrap','ng.django.
     // };
 
     /* add custom event*/
-    $scope.renderEvent = function(id,start,end,resource,title) {
-
+    $scope.renderEvent = function(id,start,end,resource,title,project) {
       var event = {
           id: id,
-          title: title || 'Some event',
+          title: title || 'n/a',
           start: start,
           end: end,
           resourceId: String(resource),
+          projectId: String(project),
           allDay: false
       }
 
@@ -191,12 +248,14 @@ angular.module('gallant.controllers', ['ui.calendar', 'ui.bootstrap','ng.django.
     /* postTask controller Wrapper */
     $scope.postTask = function(task){
       gallantAPIservice.postTask(task).success(function(response) {
+      console.log(response);
       $scope.renderEvent( 
                           response.id,
                           response.start,
                           response.end,
                           response.assignee,
-                          response.name);
+                          response.name,
+                          response.project);
           
       });
     }
@@ -224,7 +283,8 @@ angular.module('gallant.controllers', ['ui.calendar', 'ui.bootstrap','ng.django.
                     response.start,
                     response.end,
                     response.assignee,
-                    response.name);
+                    response.name,
+                    response.project);
       
       });
 

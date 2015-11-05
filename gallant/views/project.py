@@ -10,6 +10,7 @@ from gallant import models as g
 from gallant.serializers.project import ProjectSerializer
 from quotes import models as q
 from gallant.utils import get_one_or_404, GallantObjectPermissions
+from rest_framework.permissions import IsAuthenticated
 from django.utils.translation import ugettext_lazy as _
 from rest_framework import generics
 
@@ -162,6 +163,7 @@ def project_detail(request, pk):
         'title': 'Project Detail',
     })
 
+
 class ProjectDetailAPI(generics.RetrieveUpdateAPIView):
     model = g.Project
     serializer_class = ProjectSerializer
@@ -171,4 +173,20 @@ class ProjectDetailAPI(generics.RetrieveUpdateAPIView):
 
     def get_queryset(self):
         return self.model.objects.all_for(self.request.user)
+
+
+class ProjectsAPI(generics.ListAPIView):
+    model = g.Project
+    serializer_class = ProjectSerializer
+    permission_classes = [
+        IsAuthenticated
+    ]
+
+    def get_queryset(self):
+        user = self.request.GET.get('user', None)
+        if user:
+            return self.model.objects.all_for(self.request.user).filter(user_id=user)
+        else:
+            return self.model.objects.all_for(self.request.user)
+
 

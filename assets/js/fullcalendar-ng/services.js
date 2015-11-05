@@ -3,6 +3,17 @@ angular.module('gallant.services', [])
 
     var gallantAPI = {};
 
+
+
+    /* GET Users */
+    gallantAPI.getProjects = function() {
+      var url = '/en/api/projects/';
+      return $http({
+        method: 'GET', 
+          url: url
+      });
+    }
+
     /* GET Users */
     gallantAPI.getUsers = function() {
       var url = '/en/api/users/';
