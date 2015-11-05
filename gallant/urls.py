@@ -55,6 +55,7 @@ urlpatterns = i18n_patterns(
     url(r'^api/client/(?P<pk>[0-9]+)$', login_required(gallant.views.ClientDetailAPI.as_view()), name='api_client_detail'),
     url(r'^api/note/(?P<pk>[0-9]+)$', login_required(gallant.views.NoteDetailAPI.as_view()), name='api_note_detail'),
     url(r'^api/users/$', login_required(gallant.views.UsersAPI.as_view()), name='api_users'),
+    url(r'^api/users/(?P<project_id>[0-9]+)$', login_required(gallant.views.UsersAPI.as_view()), name='api_users'),
     url(r'^api/projects/$', login_required(gallant.views.ProjectsAPI.as_view()), name='api_projects'),
 
     url(r'^register/(?P<pk>[0-9]+)', gallant.views.Register.as_view(), name='register'),

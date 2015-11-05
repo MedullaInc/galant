@@ -15,8 +15,12 @@ angular.module('gallant.services', [])
     }
 
     /* GET Users */
-    gallantAPI.getUsers = function() {
-      var url = '/en/api/users/';
+    gallantAPI.getUsers = function(project) {      
+      if(project){
+       var url = '/en/api/users/?project_id='+project.id;
+      }else{
+       var url = '/en/api/users/';
+      }
       return $http({
         method: 'GET', 
           url: url

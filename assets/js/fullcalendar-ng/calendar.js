@@ -35,6 +35,7 @@ angular.module('ui.calendar', [])
           };
 
       var eventSerialId = 1;
+      var resourceSerialId = 1;
       // @return {String} fingerprint of the event object and its properties
       this.eventFingerprint = function(e) {
         if (!e._id) {
@@ -48,6 +49,16 @@ angular.module('ui.calendar', [])
         // This extracts all the information we need from the event. http://jsperf.com/angular-calendar-events-fingerprint/3
         return "" + e._id + (e.id || '') + (e.title || '') + (e.url || '') + start + end +
           (e.allDay || '') + (e.className || '') + extraSignature;
+      };
+
+      // @return {String} fingerprint of the event object and its properties
+      this.resourceFingerprint = function(r) {
+        if (!r._id) {
+          r._id = resourceSerialId++;
+        }
+        
+        // This extracts all the information we need from the resource. http://jsperf.com/angular-calendar-events-fingerprint/3
+        return r.id
       };
 
       var sourceSerialId = 1, sourceEventsSerialId = 1;
@@ -98,6 +109,7 @@ angular.module('ui.calendar', [])
       this.changeWatcher = function(arraySource, tokenFn) {
         var self;
         var getTokens = function() {
+          // console.log(arraySource);
           var array = angular.isFunction(arraySource) ? arraySource() : arraySource;
           var result = [], token, el;
           for (var i = 0, n = array.length; i < n; i++) {
@@ -217,16 +229,14 @@ angular.module('ui.calendar', [])
       scope: {eventSources:'=ngModel',calendarWatchEvent: '&', resources: '='},
       controller: 'uiCalendarCtrl',
       link: function(scope, elm, attrs, controller) {
-
         var sources = scope.eventSources,
             evResources = scope.resources,
             sourcesChanged = false,
             calendar,
             eventSourcesWatcher = controller.changeWatcher(sources, controller.sourceFingerprint),
             eventsWatcher = controller.changeWatcher(controller.allEvents, controller.eventFingerprint),
+            resourceWatcher = controller.changeWatcher(scope.resources, controller.resourceFingerprint),
             options = null;
-
-        console.log(evResources);
 
         function getOptions(){
           var calendarSettings = attrs.uiCalendar ? scope.$parent.$eval(attrs.uiCalendar) : {},
@@ -314,6 +324,19 @@ angular.module('ui.calendar', [])
           }
         };
 
+        resourceWatcher.onAdded = function(resource) {
+          if (calendar && calendar.fullCalendar) {
+            calendar.fullCalendar('addResource', resource);
+          }
+        };
+
+        resourceWatcher.onRemoved = function(resource) {
+          if (calendar && calendar.fullCalendar) {
+            calendar.fullCalendar('removeResource', resource);
+          }
+        };
+
+
         eventsWatcher.onChanged = function(event) {
           var fcEventSlots = scope.calendar.fullCalendar('clientEvents', event.id);
           for (var i = 0; i < fcEventSlots.length; i++) {
@@ -330,6 +353,7 @@ angular.module('ui.calendar', [])
           }
         };
 
+        resourceWatcher.subscribe(scope);
         eventSourcesWatcher.subscribe(scope);
         eventsWatcher.subscribe(scope, function() {
           if (sourcesChanged === true) {

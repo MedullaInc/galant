@@ -183,10 +183,9 @@ class ProjectsAPI(generics.ListAPIView):
     ]
 
     def get_queryset(self):
-        user = self.request.GET.get('user', None)
-        if user:
-            return self.model.objects.all_for(self.request.user).filter(user_id=user)
-        else:
+        if self.request.user.is_superuser:
             return self.model.objects.all_for(self.request.user)
+        else:
+            return self.model.objects.all_for(self.request.user).filter(user_id=self.request.user)
 
 

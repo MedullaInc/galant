@@ -74,13 +74,18 @@
     <div ng-app="gallant" id="calendar_container" class="">
         <section id="directives-calendar" ng-controller="CalendrControl">
             <div class="page-header">
-                <h1>UI-Calendar</h1>
+                <h1>Calendar</h1>
             </div>
                 <div class="row">
                     <div class="col-md-12"  data-ng-init="renderCalender('myCalendar1');">
                               <div class="alert-success calAlert" ng-show="alertMessage != undefined && alertMessage != ''">
                                 <h4>{{alertMessage}}</h4>
                               </div>
+                              <select ng-change="projectChanged(event.projectId)" ng-model="event.projectId">
+                                 <option value="">------</option>
+                                 <option ng-selected="{{project.id == event.projectId}}"  ng-repeat="project in projects" value="{{project.id}}"> {{project.name}}
+                              </option>
+                              </select>
                               <div class="">
                                 <div class="btn-group">
                                     <button class="btn btn-success" ng-click="changeView('timelineDay', 'myCalendar1')">TimeLine day</button>
@@ -102,14 +107,14 @@
                 <label>Title</label>
                 <input type="text" ng-model="event.id" /><br>
                 <label>Project</label>
-                <select  ng-init="projectChanged(event.projectId)" ng-change="projectChanged(event.projectId)" ng-model="event.projectId">
+                <select ng-model="event.projectId">
                  <option value="">------</option>
                 <option ng-selected="{{project.id == event.projectId}}"  ng-repeat="project in projects" value="{{project.id}}"> {{project.name}}
                 </option>
                 </select><br>
                 <label>Assignee</label>
                 <select ng-model="event.resourceId">
-                <option ng-selected="{{resource.id == event.resourceId}}"  ng-repeat="resource in resources | inArray: ((filterArr.length >=0) || '') && filterArr:'id'" value="{{resource.id}}"> {{resource.title}}
+                <option ng-selected="{{resource.id == event.resourceId}}"  ng-repeat="resource in resources" value="{{resource.id}}"> {{resource.title}}
                 </option>
                 </select><br>
                 <label>Title</label>
