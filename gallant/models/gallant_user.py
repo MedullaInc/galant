@@ -43,9 +43,8 @@ class GallantUser(AbstractEmailUser):
     contact_info = m.ForeignKey(ContactInfo, null=True)
 
     """
-    To allow multiple users from a same agency access to the same objects, manually create group
-    for agency (eg agency_xxx) and assign users from the agency to this group, then set
-    user.agency_group foreign key to register group permissions for the agency on object creation.
+    To allow multiple users from a same agency access to the same objects, use the management
+    command manage_agency to create an agency group and add users to it.
     """
     agency_group = m.ForeignKey(Group, null=True)
 
