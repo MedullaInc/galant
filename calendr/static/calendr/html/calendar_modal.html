@@ -1,0 +1,34 @@
+<div class="modal-header">
+    <h3>Edit Task</h3>
+</div>
+<form ng-submit="submit()">
+    <div class="modal-body">
+        <label>Title</label>
+        <input type="text" ng-model="event.id" />
+        <br>
+        <label>Project</label>
+        <select ng-model="event.projectId">
+            <option value="">------</option>
+            <option ng-selected="{{project.id == event.projectId}}" ng-repeat="project in projects" value="{{project.id}}"> {{project.name}}
+            </option>
+        </select>
+        <br>
+        <label>Assignee</label>
+        <select ng-model="event.resourceId">
+            <option ng-selected="{{resource.id == event.resourceId}}" ng-repeat="resource in resources" value="{{resource.id}}"> {{resource.title}}
+            </option>
+        </select>
+        <br>
+        <label>Title</label>
+        <input type="text" ng-model="event.title" />
+        <br>
+        <label>Start</label>
+        <input type="text" ng-model="event.start" />
+        <br>
+        <label>End</label>
+        <input type="text" ng-model="event.end" />
+        <br>
+        <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+        <input type="submit" class="btn primary-btn" value="Submit" />
+    </div>
+</form>
