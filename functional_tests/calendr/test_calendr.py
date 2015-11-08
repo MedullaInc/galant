@@ -25,4 +25,3 @@ class CalendrTest(browser.SignedInTest):
 
         response = self.client.get(self.live_server_url + reverse('api_task_detail', args=[s.id]))
         self.assertEqual(response.status_code, 200)
-

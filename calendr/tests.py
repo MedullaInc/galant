@@ -1,7 +1,8 @@
 import autofixture
+from django.utils import timezone
 from calendr.models import Task
 from calendr.serializers import TaskSerializer
-from calendr.views import TaskDetailAPI, TasksAPI
+from calendr.views import TaskCreateAPI,TaskDetailAPI, TasksAPI
 from django.core.urlresolvers import reverse
 from gallant import models as g
 from django.test.testcases import TransactionTestCase
@@ -12,7 +13,7 @@ from rest_framework.test import APIRequestFactory, force_authenticate
 class TaskTest(TransactionTestCase):
     def test_save_load(self):
         user = autofixture.create_one(g.GallantUser, generate_fk=True)
-        task = Task.objects.create(user=user, assignee=user)
+        task = Task.objects.create(user=user, assignee=user, start=timezone.now(),end=timezone.now())
 
         self.assertIsNotNone(task)
 
@@ -27,6 +28,19 @@ class TaskTest(TransactionTestCase):
 
         response = TaskDetailAPI.as_view()(request, pk=task.id)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_create_api_task(self):
+        factory = APIRequestFactory()
+        user = autofixture.create_one('gallant.GallantUser', generate_fk=True)
+
+        task = autofixture.create_one('calendr.Task', generate_fk=True,
+                                      field_values={'user': user})
+        serialized_task = {"id":task.id, "start": task.start, "end":task.end, "name":task.name, "daily_estimate":task.daily_estimate}
+
+        request = factory.post(reverse('api_task_create', args=[]), data=serialized_task, format='json')
+
+        response = TaskCreateAPI.as_view()(request)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
     def test_update_api_task(self):
         factory = APIRequestFactory()
@@ -61,10 +75,10 @@ class TaskTest(TransactionTestCase):
         factory = APIRequestFactory()
         user1 = autofixture.create_one('gallant.GallantUser', generate_fk=True, field_values={'is_superuser': False})
         tasks1 = autofixture.create('calendr.Task', 10, generate_fk=True,
-                                      field_values={'user': user1})
+                                    field_values={'user': user1})
         user2 = autofixture.create_one('gallant.GallantUser', generate_fk=True, field_values={'is_superuser': False})
         tasks2 = autofixture.create('calendr.Task', 20, generate_fk=True,
-                                      field_values={'user': user2})
+                                    field_values={'user': user2})
 
         tasks1ids = [t.id for t in tasks1]
         tasks2ids = [t.id for t in tasks2]

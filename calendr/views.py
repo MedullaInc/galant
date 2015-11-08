@@ -19,14 +19,14 @@ class TaskDetailAPI(generics.RetrieveUpdateAPIView):
     ]
 
     def update(self, request, *args, **kwargs):
-        task = Task.objects.get_for(self.request.user, pk=request.data['id'])
+        task = Task.objects.get_for(self.request.user, pk=kwargs['pk'])
         serializer = self.get_serializer(task, data=request.data, partial=True)
 
-        if  serializer.is_valid():
+        if serializer.is_valid():
             serializer.save()
 
-        return Response(serializer.data, 
-                        status=status.HTTP_201_CREATED)
+        return Response(serializer.data,
+                        status=status.HTTP_200_OK)
 
     def get_queryset(self):
         return self.model.objects.all_for(self.request.user)
@@ -39,10 +39,10 @@ class TaskCreateAPI(generics.ListCreateAPIView):
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
 
-        if  serializer.is_valid():
+        if serializer.is_valid():
             serializer.save()
 
-        return Response(serializer.data, 
+        return Response(serializer.data,
                         status=status.HTTP_201_CREATED)
 
     def get_queryset(self):
@@ -66,5 +66,3 @@ class TasksAPI(generics.ListAPIView):
             return self.model.objects.all_for(self.request.user).filter(user_id=user)
         else:
             return self.model.objects.all_for(self.request.user)
-
-
