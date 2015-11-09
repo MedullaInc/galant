@@ -15,8 +15,12 @@ angular.module('gallant.controllers', ['ui.calendar', 'ui.bootstrap', 'ng.django
 
 
     /* Retrieve users from API service */
-    $scope.getResources = function(proyect) {
-      User.query().$promise.then(function(response) {
+    $scope.getResources = function(project) {
+      options = {};
+      if (project) {
+        options = {project_id: project.id};
+      }
+      User.query(options).$promise.then(function(response) {
         angular.forEach(response, function(value, key) {
           $scope.eventResources.push({
             id: value.id,
@@ -97,16 +101,16 @@ angular.module('gallant.controllers', ['ui.calendar', 'ui.bootstrap', 'ng.django
     };
 
     /* event triggered on project change */
-    $scope.projectChanged = function(proyect_id) {
-      var proy = {
-        id: proyect_id
+    $scope.projectChanged = function(project_id) {
+      var proj = {
+        id: project_id
       };
 
       // Remove existing resources in calendar.
       $scope.eventResources.splice(0, $scope.eventResources.length);
 
       // Fetch selected project resources
-      $scope.getResources(proy);
+      $scope.getResources(proj);
     };
 
     /* update on Calendar */

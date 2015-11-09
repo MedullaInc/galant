@@ -244,8 +244,8 @@ class UsersAPI(generics.ListAPIView):
     def get_queryset(self):
         project = self.request.GET.get('project_id', None)
         if project:
-            task_ids = Task.objects.filter(project_id=project).values('user_id').distinct()
-            return self.model.objects.filter(pk__in=task_ids)
+            assignee_ids = Task.objects.filter(project_id=project).values('assignee').distinct()
+            return self.model.objects.filter(pk__in=assignee_ids)
         else:
             return self.model.objects.all()
 
