@@ -1,17 +1,17 @@
 app = angular.module('gallant.services', [])
 
 app.factory('Project', function($resource) {
-  return $resource('/en/api/projects/');
+  return $resource('/en/api/projects');
 });
 
 app.factory('User', function($resource) {
 
-  return $resource('/en/api/users/');
+  return $resource('/en/api/users');
 
 });
 
 app.factory('Task', function($resource) {
-  return $resource('/en/calendar/api/tasks/ ', {}, {
+  return $resource('/en/calendar/api/task ', {}, {
     query: {
       method: 'GET',
       params: {},
