@@ -1,8 +1,7 @@
 import autofixture
+from calendr.views import TasksAPI
 from django.utils import timezone
 from calendr.models import Task
-from calendr.serializers import TaskSerializer
-from calendr.views import TaskCreateAPI,TaskDetailAPI, TasksAPI
 from django.core.urlresolvers import reverse
 from gallant import models as g
 from django.test.testcases import TransactionTestCase
@@ -23,23 +22,28 @@ class TaskTest(TransactionTestCase):
         task = autofixture.create_one('calendr.Task', generate_fk=True,
                                       field_values={'user': user})
 
-        request = factory.get(reverse('api_task_detail', args=[task.id]))
+        request = factory.get(reverse('api-task-detail', args=[task.id]))
         force_authenticate(request, user=user)
 
-        response = TaskDetailAPI.as_view()(request, pk=task.id)
+        response = TasksAPI.as_view({'get': 'retrieve'})(request, pk=task.id)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_create_api_task(self):
         factory = APIRequestFactory()
         user = autofixture.create_one('gallant.GallantUser', generate_fk=True)
-
+        project = autofixture.create_one('gallant.Project', generate_fk=True,
+                                              field_values={'user': user})
         task = autofixture.create_one('calendr.Task', generate_fk=True,
-                                      field_values={'user': user})
-        serialized_task = {"id":task.id, "start": task.start, "end":task.end, "name":task.name, "daily_estimate":task.daily_estimate}
+                                      field_values={'user': user, 'project': project})
+        serialized_task = {"id":task.id, "start": task.start, "end": task.end,
+                           "name": task.name, "daily_estimate": task.daily_estimate,
+                           "user": task.user_id, "assignee": task.assignee_id,
+                           "project": task.project_id}
 
-        request = factory.post(reverse('api_task_create', args=[]), data=serialized_task, format='json')
+        request = factory.post(reverse('api-task-list', args=[]), data=serialized_task, format='json')
+        force_authenticate(request, user=user)
 
-        response = TaskCreateAPI.as_view()(request)
+        response = TasksAPI.as_view({'post': 'create'})(request)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
     def test_update_api_task(self):
@@ -60,10 +64,10 @@ class TaskTest(TransactionTestCase):
         
         data = {'project': new_project.id, 'notes': []}
 
-        request = factory.patch(reverse('api_task_detail', args=[task.id]), data=data, format='json')
+        request = factory.patch(reverse('api-task-detail', args=[task.id]), data=data, format='json')
         force_authenticate(request, user=user)
 
-        response = TaskDetailAPI.as_view()(request, pk=task.id)
+        response = TasksAPI.as_view({'patch': 'partial_update'})(request, pk=task.id)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         task.refresh_from_db()
@@ -84,19 +88,19 @@ class TaskTest(TransactionTestCase):
         tasks2ids = [t.id for t in tasks2]
         self.assertTrue(len(set(tasks1ids) & set(tasks2ids)) == 0)
 
-        request1 = factory.get(reverse('api_tasks') + '?user=%s' % user1.id)
+        request1 = factory.get(reverse('api-task-list') + '?user=%s' % user1.id)
         force_authenticate(request1, user=user1)
 
-        response = TasksAPI.as_view()(request1)
+        response = TasksAPI.as_view({'get': 'list'})(request1)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         for d in response.data:
             self.assertTrue(int(d['id']) in tasks1ids)
 
-        request2 = factory.get(reverse('api_tasks') + '?user=%s' % user2.id)
+        request2 = factory.get(reverse('api-task-list') + '?user=%s' % user2.id)
         force_authenticate(request2, user=user2)
 
-        response = TasksAPI.as_view()(request2)
+        response = TasksAPI.as_view({'get': 'list'})(request2)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         for d in response.data:
