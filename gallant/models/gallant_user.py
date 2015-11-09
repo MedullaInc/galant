@@ -42,6 +42,12 @@ class GallantUser(AbstractEmailUser):
     company_name = m.CharField(max_length=255, blank=True)
     contact_info = m.ForeignKey(ContactInfo, null=True)
 
+    """
+    To allow multiple users from a same agency access to the same objects, use the management
+    command manage_agency to create an agency group and add users to it.
+    """
+    agency_group = m.ForeignKey(Group, null=True)
+
     objects = GalantUserManager()
 
     @property
@@ -65,6 +71,8 @@ class UserModel(m.Model):
         super(UserModel, self).save(*args, **kwargs)
         for perm in get_perms_for_model(self):
             assign_perm(perm.codename, self.user, self)
+            if self.user.agency_group:
+                assign_perm(perm.codename, self.user.agency_group, self)
 
     def soft_delete(self, deleted_by_parent=False):
         if deleted_by_parent is True:
@@ -87,6 +95,8 @@ class PolyUserModel(PolymorphicModel):
         super(PolyUserModel, self).save(*args, **kwargs)
         for perm in get_perms_for_model(self):
             assign_perm(perm.codename, self.user, self)
+            if self.user.agency_group:
+                assign_perm(perm.codename, self.user.agency_group, self)
 
     def soft_delete(self, deleted_by_parent=False):
         if deleted_by_parent is True:

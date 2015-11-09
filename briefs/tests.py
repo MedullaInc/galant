@@ -57,7 +57,7 @@ class BriefTest(test.TransactionTestCase):
         brief = self.brief
         user = self.user
 
-        request = factory.get(reverse('api_brief_detail', args=[brief.id]))
+        request = factory.get(reverse('api-brief-detail', args=[brief.id]))
         request.user = user
         force_authenticate(request, user=user)
         
@@ -74,7 +74,7 @@ class BriefTest(test.TransactionTestCase):
         brief = self.brief
         user = self.user
 
-        request = factory.get(reverse('api_brief_detail', args=[brief.id]))
+        request = factory.get(reverse('api-brief-detail', args=[brief.id]))
         request.user = user
         force_authenticate(request, user=user)
 
@@ -91,11 +91,11 @@ class BriefTest(test.TransactionTestCase):
         brief = self.brief
         user = self.user
 
-        request = factory.get(reverse('api_brief_detail', args=[brief.id]))
+        request = factory.get(reverse('api-brief-detail', args=[brief.id]))
         request.user = user
         force_authenticate(request, user=user)
 
-        response = views.BriefDetailAPI.as_view()(request, pk=brief.id)
+        response = views.BriefViewSet.as_view({'get': 'retrieve'})(request, pk=brief.id)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_update_api_brief(self):
@@ -105,10 +105,15 @@ class BriefTest(test.TransactionTestCase):
 
         data = {'questions': []}
 
-        request = factory.patch(reverse('api_brief_detail', args=[brief.id]), data=data, format='json')
+        request = factory.patch(reverse('api-brief-detail', args=[brief.id]), data=data, format='json')
         force_authenticate(request, user=user)
 
-        response = views.BriefDetailAPI.as_view()(request, pk=brief.id)
+        class Object(object):
+            def add(self, a, b):
+                pass
+        request._messages = Object()
+
+        response = views.BriefViewSet.as_view({'patch': 'partial_update'})(request, pk=brief.id)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         brief.refresh_from_db()

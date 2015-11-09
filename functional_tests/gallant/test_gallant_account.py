@@ -1,9 +1,9 @@
 from django.contrib.auth import hashers, get_user_model
 from django.contrib.auth.models import Group
 from django.contrib.auth.tokens import default_token_generator
+from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from django.core.urlresolvers import reverse
 import autofixture
-from django.test.testcases import LiveServerTestCase
 from functional_tests import browser
 
 
@@ -11,7 +11,7 @@ def tearDown():
     browser.close()
 
 
-class GallantAccountTest(LiveServerTestCase):
+class GallantAccountTest(StaticLiveServerTestCase):
     def test_add_account(self):
         b = browser.instance()
         Group.objects.get_or_create(name='users')  # not in the DB sometimes for some unknown reason

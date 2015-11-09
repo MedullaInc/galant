@@ -39,6 +39,8 @@ urlpatterns = i18n_patterns(
     url(r'^client/edit/(?P<pk>[0-9]+)$', login_required(gallant.views.ClientUpdate.as_view()), name='edit_client'),
     url(r'^client/delete/(?P<pk>[0-9]+)$', login_required(gallant.views.ClientDelete.as_view()), name='delete_client'),
     url(r'^client/(?P<pk>[0-9]+)?$', login_required(gallant.views.client_detail), name='client_detail'),
+    url(r'^client/(?P<pk>[0-9]+)/work/$', login_required(gallant.views.client_work_detail), name='client_work_detail'),
+    url(r'^client/(?P<pk>[0-9]+)/money/$', login_required(gallant.views.client_money_detail), name='client_money_detail'),
 
     url(r'^projects/$', login_required(gallant.views.ProjectList.as_view()), name='projects'),
     url(r'^project/add/quote/(?P<quote_id>[0-9]+)?$', login_required(gallant.views.ProjectCreate.as_view()), name='add_project'),

@@ -1,0 +1,42 @@
+{% extends "../templates/gallant/client_detail.html" %}
+{% load bootstrap i18n gallant_tags staticfiles %}
+
+{% block section_title %}
+    {% trans "Client Work" %}
+{% endblock %}
+
+{% block center_content %}
+
+    {% block client_detail %}
+        {{ block.super }}
+    {% endblock %}
+
+    {% block main_client_data %}
+        <div class="projects enclosed">
+            <h2 class="section_title">{% trans 'Projects' %}</h2>
+            {% if projects|length > 0 %}
+                {% for project in projects %}
+                    {% include "gallant/project.html" %}
+                {% endfor %}
+            {% else %}
+                <div class="project enclosed">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <p>
+                                {% trans "This client has no active projects." %}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    {% endblock %}
+
+    {% block client_alerts %}
+        {{ block.super }}
+    {% endblock %}
+
+    {% block client_notes %}
+    {% endblock %}
+
+{% endblock %}

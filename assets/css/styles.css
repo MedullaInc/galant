@@ -1912,15 +1912,13 @@ h3.area_title {
 
 .enclosed {
     border: 1px solid black;
-    -webkit-border-radius: 10px;
-    -moz-border-radius: 10px;
-    border-radius: 10px;
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 0px;
     padding: 25px;
     padding-top: 25px;
     padding-bottom: 30px;
     position: relative;
-    margin-left: 10px;
-    margin-right: 10px;
     margin-bottom: 35px;
 }
 
@@ -2258,7 +2256,7 @@ div.modal-dialog div.modal-footer {
 /* Tabs */
 
 ul.nav-tabs li {
-    margin-bottom: -2px;
+    margin-bottom: -1px;
 }
 
 ul.nav-tabs li.active a:hover {
@@ -2272,10 +2270,19 @@ ul.nav-tabs li a {
     -moz-border-radius: 0px;
     border-radius: 0px;
     border: 1px solid #666666;
-    border-bottom: 1px solid #ffffff;
+    border-bottom: 0px;
     padding-left: 40px;
     padding-right: 40px;
     margin-right: -1px;
+}
+
+.nav-tabs > li > a {
+    margin-bottom: 0px;
+}
+
+.nav-tabs > li > a:hover, .nav-tabs > li > a.active {
+    padding-bottom: 9px;
+    background: #efefef;
 }
 
 ul.nav-tabs li a:hover {
@@ -2285,7 +2292,7 @@ ul.nav-tabs li a:hover {
     -moz-border-radius: 0px;
     border-radius: 0px;
     border: 1px solid #666666;
-    border-bottom: 1px solid #ffffff;
+    border-bottom: 0px;
     padding-top: 10px;
     padding-left: 40px;
     padding-right: 40px;
@@ -2621,3 +2628,11 @@ div.breadcrumbs span {
 }
 
 /* End logged in as */
+
+/* Client Profile */
+
+.profile_alert {
+    padding-bottom: 10px;
+}
+
+/* End Client Profile */

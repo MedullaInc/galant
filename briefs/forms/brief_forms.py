@@ -5,13 +5,13 @@ from gallant import models as g
 from gallant import forms as gf
 
 
-class BriefForm(gf.UserModelForm):
+class BriefForm(gf.UserModelNgForm):
     class Meta:
         model = b.Brief
         fields = ['title', 'greeting', 'client', 'quote']
 
     def __init__(self, user, *args, **kwargs):
-        super(BriefForm, self).__init__(user, *args, **kwargs)
+        super(BriefForm, self).__init__(user, form_name='brief', prefix='brief', *args, **kwargs)
         self.fields['quote'].widget = forms.HiddenInput()
         self.fields['quote'].required = False
         self.fields['greeting'].widget = forms.Textarea(attrs={'rows': 3})
@@ -20,7 +20,7 @@ class BriefForm(gf.UserModelForm):
         else:
             self.fields['client'].queryset = g.Client.objects.all_for(self.user)
 
-    def clean_client(self):
+    def clean_client(self):  # pragma: no cover
         client = self.cleaned_data['client']
         if client is None:
             raise ValidationError('Please select a client.')

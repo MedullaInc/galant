@@ -87,7 +87,6 @@ class ClientCreate(ClientUpdate):
         form = forms.ClientForm(request.user)
         context = {'form': form,
                    'contact_form': forms.ContactInfoForm(),
-                   'note_form': forms.NoteForm(request.user),
                    'title': 'Add Client'}
         return TemplateResponse(request=self.request,
                                 template="gallant/client_form.html",
@@ -115,6 +114,31 @@ def client_detail(request, pk):
                             context={'object': client, 'form': form,
                                      'template_list': b.BriefTemplate.objects
                                                        .all_for(request.user),'title': client.name })
+
+
+def client_work_detail(request, pk):
+    client = get_one_or_404(request.user, 'view_client', g.Client, pk=pk)
+
+    # TODO: add filter_for to usermodelmanager
+    projects = g.Project.objects.all_for(request.user).filter(quote__client=client)
+
+    request.breadcrumbs([(_('Clients'), reverse('clients')),
+                         (_(client.name), reverse('client_detail', args=[client.id]))])
+
+    return TemplateResponse(request=request,
+                            template="gallant/client_work_detail.html",
+                            context={'object': client,'title': client.name,'projects': projects })
+
+
+def client_money_detail(request, pk):
+    client = get_one_or_404(request.user, 'view_client', g.Client, pk=pk)
+
+    request.breadcrumbs([(_('Clients'), reverse('clients')),
+                         (_(client.name), reverse('client_detail', args=[client.id]))])
+
+    return TemplateResponse(request=request,
+                            template="gallant/client_money_detail.html",
+                            context={'object': client, 'title': client.name})
 
 
 class ClientDelete(View):
