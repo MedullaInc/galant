@@ -16,12 +16,12 @@ class CalendrTest(browser.SignedInTest):
         s = autofixture.create_one('calendr.Task', generate_fk=True,
                                    field_values={'user': self.user})
 
-        response = self.client.get(self.live_server_url + reverse('api_task_detail', args=[s.id]))
+        response = self.client.get(self.live_server_url + reverse('api-task-detail', args=[s.id]))
         self.assertEqual(response.status_code, 200)
 
     def test_can_edit_project(self):
         s = autofixture.create_one('calendr.Task', generate_fk=True,
                                    field_values={'user': self.user})
 
-        response = self.client.get(self.live_server_url + reverse('api_task_detail', args=[s.id]))
+        response = self.client.get(self.live_server_url + reverse('api-task-detail', args=[s.id]))
         self.assertEqual(response.status_code, 200)
