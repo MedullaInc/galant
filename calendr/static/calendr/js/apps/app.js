@@ -7,6 +7,7 @@ angular.module('gallant', [
    'ui.bootstrap',
    'ng.django.forms',
    'ngResource',
+   'gallant.directives',
    'gallant.controllers',
    'gallant.services',
    ])

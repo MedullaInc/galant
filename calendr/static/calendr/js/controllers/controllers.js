@@ -1,8 +1,8 @@
 
-angular.module('gallant.controllers', ['ui.calendar', 'ui.bootstrap', 'ng.django.forms'])
+angular.module('gallant.controllers', ['ui.calendar', 'ui.bootstrap', 'ng.django.forms','ngAside'])
 
 .controller('CalendrControl',
-  function($scope, Project, User, Task, $compile, $timeout, uiCalendarConfig, $uibModal, $filter) {
+  function($scope, Project, User, Task, $compile, $timeout, uiCalendarConfig, $uibModal, $filter, $aside) {
     var date = new Date();
     var d = date.getDate();
     var m = date.getMonth();
@@ -13,6 +13,38 @@ angular.module('gallant.controllers', ['ui.calendar', 'ui.bootstrap', 'ng.django
     $scope.projects = [];
     $scope.eventResources = []
 
+    $scope.openAsideModal = function(){
+      if($scope.asideInstance){
+        $scope.asideInstance.close();
+        delete $scope.asideInstance;
+      }else{
+
+        $scope.asideInstance = $aside.open({
+          templateUrl: asideTemplateUrl,
+          backdrop: false,
+          controller: function($scope, $modalInstance, userEvents) {
+            $scope.events = userEvents;
+            $scope.ok = function(e) {
+              $modalInstance.close();
+              e.stopPropagation();
+            };
+            $scope.cancel = function(e) {
+              $modalInstance.dismiss();
+              e.stopPropagation();
+            };
+          },
+          placement: 'right',
+          size: 'sm',
+          resolve:{
+              userEvents: function() {
+                // Return current user tasks
+                return $filter('filter')($scope.events, {resourceId: currentUserId});
+              },
+          }
+        });
+      }
+
+    }
 
     /* Retrieve users from API service */
     $scope.getResources = function(project) {
@@ -58,10 +90,10 @@ angular.module('gallant.controllers', ['ui.calendar', 'ui.bootstrap', 'ng.django
 
 
     /* Open edit Modal */
-    $scope.open = function(event) {
+    $scope.openEditModal = function(event) {
       $scope.event = event;
       $uibModal.open({
-        templateUrl: '/static/calendr/html/calendar_modal.html',
+        templateUrl: taskModalUrl,
         backdrop: true,
         windowClass: 'modal',
         controller: function($scope, $modalInstance, $log, event, events, resources, projects, updateEvent) {
@@ -137,7 +169,7 @@ angular.module('gallant.controllers', ['ui.calendar', 'ui.bootstrap', 'ng.django
     /* alert on eventClick */
     $scope.alertOnEventClick = function(event, jsEvent, view) {
       //$scope.alertMessage = (event.title + ' was clicked ');
-      $scope.open(event, $scope.eventResources);
+      $scope.openEditModal(event, $scope.eventResources);
       //alert($scope.alertMessage);
     };
 

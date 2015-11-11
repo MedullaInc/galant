@@ -336,20 +336,14 @@ angular.module('ui.calendar', [])
           }
         };
 
-
         eventsWatcher.onChanged = function(event) {
-          var fcEventSlots = scope.calendar.fullCalendar('clientEvents', event.id);
-          for (var i = 0; i < fcEventSlots.length; i++) {
-            fcEventSlot = fcEventSlots[i];
-            event._start = $.fullCalendar.moment(fcEventSlot.start);
-            event._end = $.fullCalendar.moment(fcEventSlot.end);
-            event._resourceId = fcEventSlot._resourceId;
-
-            event._allDay = fcEventSlot._allDay;
-            if (typeof event.allDay === 'undefined') {
-                event.allDay = fcEventSlot.allDay;
+          if (calendar && calendar.fullCalendar) {
+            var clientEvents = calendar.fullCalendar('clientEvents', event._id);
+            for (var i = 0; i < clientEvents.length; i++) {
+              var clientEvent = clientEvents[i];
+              clientEvent = angular.extend(clientEvent, event);
+              calendar.fullCalendar('updateEvent', clientEvent);
             }
-            scope.calendar.fullCalendar('updateEvent', event);  
           }
         };
 
