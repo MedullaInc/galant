@@ -1,9 +1,13 @@
 from django.conf.urls import url
 from django.contrib.auth.decorators import login_required
 from calendr import views
+from rest_framework.routers import DefaultRouter
+
+router = DefaultRouter(trailing_slash=False)
+router.register(r'api/task', views.TasksAPI, 'api-task')
 
 urlpatterns = [
     url(r'^$', login_required(views.calendar), name='calendr'),
-    url(r'^api/task/(?P<pk>[0-9]+)$', login_required(views.TaskDetailAPI.as_view()), name='api_task_detail'),
-    url(r'^api/tasks/', login_required(views.TasksAPI.as_view()), name='api_tasks'),
 ]
+
+urlpatterns += router.urls

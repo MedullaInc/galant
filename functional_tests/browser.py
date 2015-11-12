@@ -1,11 +1,10 @@
 from contextlib import contextmanager
-import time
-from django.test import LiveServerTestCase
+
+from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium import webdriver
 import selenium.webdriver.support.ui as ui
 import autofixture
 from django.contrib.auth import hashers
-from selenium.common.exceptions import NoSuchElementException, WebDriverException
 
 browser = []
 
@@ -52,7 +51,7 @@ def wait_for_page_load(timeout=5):
     wait(timeout).until(page_has_loaded)
 
 
-class BrowserTest(LiveServerTestCase):
+class BrowserTest(StaticLiveServerTestCase):
     def disable_popups(self):
         '''
         Call this method to disable alerts and popups.

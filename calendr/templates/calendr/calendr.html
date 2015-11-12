@@ -1,5 +1,6 @@
 {% extends "base_body.html" %}
 {% load i18n staticfiles %}
+{% load djangular_tags %}
 
 {% block css %}
     <link rel="stylesheet" href="{% static "css/calendar.css" %}">
@@ -9,6 +10,9 @@
     {{ block.super }}
     <script src="{% static "js/angular.min.js" %}"></script>
     <script src="{% static "djangular/js/django-angular.min.js" %}"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/interact.js/1.2.6/interact.min.js"></script>   
+    <script src="{% static "js/calendar_scripts.js" %}"></script>
+     
 {% endblock %}
 
 {% block extra_head %}
@@ -16,14 +20,54 @@
     <script type="text/javascript">
         app = angular.module('gallant', ['ng.django.forms']);
 
+        app.filter('slice', function() {
+          return function(arr, start, end) {
+            return arr.slice(start, end);
+          };
+        });
+
         app.config(['$httpProvider', function ($httpProvider) {
             $httpProvider.defaults.headers.common['X-CSRFToken'] = '{{ csrf_token|escapejs }}';
         }]);
 
         app.controller('CalendrControl', ['$scope', '$http',
+
             function ($scope, $http) {
+                $scope.total_months = 3;
+                $scope.total_weeks = 4;
+                
+                $scope.day_of_week = 7;
+
+                $scope.months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+                $scope.weekdays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+
+                $scope.range = function(n) {
+                    return new Array(n);
+                };          
+
+                $scope.getTotalDays = function() {
+                    $scope.total_days = $('#calendar_dates').find('.day').length;
+                    return new Array($scope.total_days);
+                }; 
+
+                $scope.dayType= function(type){
+                     if(type=='Sat' || type=='Sun')
+                        return "day weekend";
+                     else
+                        return "day weekday";
+                }
+
+                $scope.addTask = function ($index) {
+                    $('#add_task').modal('show');
+                }
+
+
                 $http.get('/en/api/service/1').then(function (result) {
                     $scope.service = result.data;
+                });
+
+                $http.get('/en/api/users/').then(function (result) {
+                    $scope.users = result.data;
                 });
 
                 $scope.update = function () {
@@ -38,20 +82,45 @@
 {% endblock %}
 
 {% block content_div %}
+    {% angularjs %}
     <div id="calendar">
         <div ng-app="gallant" ng-controller="CalendrControl" id="calendar_container">
             <div id="calendar_top_left_corner">
             </div>
             <div id="calendar_dates" class="scroll_fixed">
+                <div ng-repeat="m in months | slice:0:3" class="month" id="month_' + m + '">
+                    <div ng-repeat="w in [1,2,3,4]" class="week" id="week_' + m + '_' + w + '"><p>{{m}}  — Week ({{w}}) </p>
+                        <div ng-repeat="d in weekdays" ng-class='dayType(d)' id="week_' + m + '_' + w + d '"><p>{{d}}</p></div>
+                    </div>
+                </div>
             </div>
             <div id="calendar_main">
                 <div id="calendar_sidebar" class="scroll_fixed">
+                    <div class="resource name" ng-repeat="u in users">
+                        <p>{{u.email}}
+                        </p>
+                    </div>   
                 </div>
                 <div id="calendar_tasks">
+                    <div ng-repeat="u in users">
+                        <div ng-repeat="d in getTotalDays() track by $index" class="day weekday" ng-click="addTask($index)"></div>
+                    </div>
+                    <div class="live-demo">
+                        <div id="grid-snap" class="draggable">
+                            
+                        </div> 
+                    </div>
+                    <div class="live-demo">
+                        <div id="grid-snap" class="draggable">
+                            
+                        </div> 
+                    </div>
                 </div>
             </div>
-        </div>
+        </div>       
     </div>
+
+    {% endangularjs %}
 
 {% endblock %}
 
@@ -59,12 +128,30 @@
 {% endblock %}
 
 {% block extra_body %}
-
+    <div id="add_task" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h2 class="section_title">Add Task</h2>
+                    <p>Add a new task.</p>
+                </div>
+                <div class="modal-body" style="height: 500px; overflow: auto;">
+                    <button id="add_task_button" type="button" class="btn btn-default sidebar">Add
+                    </button>
+                </div>
+                <div class="modal-footer">  
+                </div>
+            </div>
+        </div>
+    </div>
     <script>
         $(document).ready(function () {
 
-            populate_calendar_elements();
+            //populate_calendar_elements();
             set_calendar_sizes();
+            interactJsInit();
+
 
         });
 
@@ -72,27 +159,31 @@
             set_calendar_sizes();
         })
 
+        /*
         function populate_calendar_elements() {
 
             var total_months = 3;
+            
             var resources = ['Gustavo', 'David', 'Sebastian', 'Gustavo', 'David', 'Sebastian', 'Gustavo', 'David', 'Sebastian', 'Gustavo', 'David', 'Sebastian', 'Gustavo', 'David', 'Sebastian', 'Gustavo', 'David', 'Sebastian', 'Gustavo', 'David', 'Sebastian', 'Gustavo', 'David', 'Sebastian'];
+            
+
             var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
             var weekdays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
             for (var i = 0; i < total_months; i++) {
-                $('#calendar_dates').append('<div class="month" id="month_' + i + '"></div>');
+                 $('#calendar_dates').append('<div class="month" id="month_' + i + '"></div>'); 
                 for (var w = 0; w < 4; w++) {
-                    $('#month_' + i).append('<div class="week" id="week_' + i + '_' + w + '"><p>'+ months[i] +' — Week ' + (w + 1) + '</p></div>');
+                     $('#month_' + i).append('<div class="week" id="week_' + i + '_' + w + '"><p>'+ months[i] +' — Week ' + (w + 1) + '</p></div>'); 
                     for (var d = 0; d < 7; d++) {
-                        $('#week_' + i + '_' + w).append('<div class="day"><p>' + weekdays[d] + '</p></div>');
+                         $('#week_' + i + '_' + w).append('<div class="day id="week_' + i + '_' + w + '"><p>' + weekdays[d] + '</p></div>'); 
                     }
                 }
             }
-
+            
             for (var r = 0; r < resources.length; r++) {
                 $('#calendar_sidebar').append('<div class="resource name"><p>' + resources[r] + '</p></div>');
             }
-
+            
             $('#calendar_sidebar').append('<div class="resource bottom"></div>');
 
             $('#calendar_sidebar').find('.resource').each(function () {
@@ -110,9 +201,9 @@
                 day_of_week += 1;
                 $('#calendar_tasks').find('.resource').each(function () {
                     if (day_of_week == 6 || day_of_week == 7) {
-                        $(this).append('<div class="day weekend"></div>');
+                        $(this).append('<div class="day weekend" id=' + day_of_week + '"></div>');
                     } else {
-                        $(this).append('<div class="day weekday"></div>');
+                        $(this).append('<div class="day weekday" id=' + day_of_week + '"></div>');
                     }
                 });
 
@@ -123,6 +214,7 @@
             }
 
         }
+        */
 
         function set_calendar_sizes() {
 
@@ -142,6 +234,78 @@
             $('#calendar_main').css({'width': calendar_dates_width + 1 });
             $('#calendar_dates').css({'width': calendar_dates_width + 1 });
             $('#calendar').height($(window).height() - $('#calendar_dates').offset().top);
+
+        }
+
+        function interactJsInit(){
+            // target elements with the "draggable" class
+            interact('.draggable')
+              .draggable({
+                // enable inertial throwing
+                inertia: true,
+                // keep the element within the area of it's parent
+                restrict: {
+                  restriction: "parent",
+                  endOnly: true,
+                  elementRect: { top: 0, left: 0, bottom: 1, right: 1 }
+                },
+                // enable autoScroll
+                autoScroll: true,
+
+                // call this function on every dragmove event
+                onmove: dragMoveListener,
+                // call this function on every dragend event
+                onend: function (event) {
+                  var textEl = event.target.querySelector('p');
+
+                  textEl && (textEl.textContent =
+                    'moved a distance of '
+                    + (Math.sqrt(event.dx * event.dx +
+                                 event.dy * event.dy)|0) + 'px');
+                }
+              })  
+              .resizable({
+                edges: { left: true, right: true}
+              })  
+              .on('resizemove', function (event) {
+                var target = event.target,
+                    x = (parseFloat(target.getAttribute('data-x')) || 0),
+                    y = (parseFloat(target.getAttribute('data-y')) || 0);
+
+                // update the element's style
+                target.style.width  = event.rect.width + 'px';
+                target.style.height = event.rect.height + 'px';
+
+                // translate when resizing from top or left edges
+                x += event.deltaRect.left;
+                y += event.deltaRect.top;
+
+                target.style.webkitTransform = target.style.transform =
+                    'translate(' + x + 'px,' + y + 'px)';
+
+                target.setAttribute('data-x', x);
+                target.setAttribute('data-y', y);
+                target.textContent = Math.round(event.rect.width) + '×' + Math.round(event.rect.height);
+              });
+
+              function dragMoveListener (event) {
+                var target = event.target,
+                    // keep the dragged position in the data-x/data-y attributes
+                    x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx,
+                    y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
+
+                // translate the element
+                target.style.webkitTransform =
+                target.style.transform =
+                  'translate(' + x + 'px, ' + y + 'px)';
+
+                // update the posiion attributes
+                target.setAttribute('data-x', x);
+                target.setAttribute('data-y', y);
+              }
+
+              // this is used later in the resizing and gesture demos
+              window.dragMoveListener = dragMoveListener;
 
         }
 

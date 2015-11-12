@@ -1,14 +1,15 @@
 # -*- coding: utf-8 -*-
 import time
 from unittest.case import skip
-from django.test import LiveServerTestCase
+
+from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException
 from django.utils.translation import activate, get_language
 from django.core.urlresolvers import reverse, get_resolver
 
 
-class SignedOutTest(LiveServerTestCase):
+class SignedOutTest(StaticLiveServerTestCase):
     # fixtures = ['functional_tests/fixtures/ft_one_user.json']
 
     def setUp(self):

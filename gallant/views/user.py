@@ -15,6 +15,7 @@ from gallant.utils import get_site_from_host
 from django.utils.translation import ugettext_lazy as _
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
+from calendr.models import Task
 
 
 def _send_signup_request_email(form):
@@ -241,5 +242,10 @@ class UsersAPI(generics.ListAPIView):
     ]
 
     def get_queryset(self):
-        return self.model.objects.all()
+        project = self.request.GET.get('project_id', None)
+        if project:
+            assignee_ids = Task.objects.filter(project_id=project).values('assignee').distinct()
+            return self.model.objects.filter(pk__in=assignee_ids)
+        else:
+            return self.model.objects.all()
 

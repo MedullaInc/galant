@@ -205,7 +205,7 @@ class ClientTest(TransactionTestCase):
         factory = APIRequestFactory()
         user = autofixture.create_one('gallant.GallantUser', generate_fk=True)
         client = autofixture.create_one('gallant.Client', generate_fk=True,
-                                         field_values={'user': user})
+                                        field_values={'user': user})
 
         request = factory.get(reverse('api_client_detail', args=[client.id]))
         request.user = user
@@ -276,7 +276,7 @@ class NoteTest(TransactionTestCase):
         factory = APIRequestFactory()
         user = autofixture.create_one('gallant.GallantUser', generate_fk=True)
         note = autofixture.create_one('gallant.Note', generate_fk=True,
-                                         field_values={'user': user})
+                                    field_values={'user': user})
 
         request = factory.get(reverse('api_note_detail', args=[note.id]))
         request.user = user
@@ -289,7 +289,7 @@ class NoteTest(TransactionTestCase):
         factory = APIRequestFactory()
         user = autofixture.create_one('gallant.GallantUser', generate_fk=True)
         note = autofixture.create_one('gallant.Note', generate_fk=True,
-                                        field_values={'user': user})
+                                    field_values={'user': user})
         data = {'text': 'asdf'}
 
         request = factory.patch(reverse('api_note_detail', args=[note.id]), data=data, format='json')
