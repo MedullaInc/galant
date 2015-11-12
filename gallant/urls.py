@@ -22,6 +22,10 @@ import gallant
 from gallant import views
 import allauth.urls
 import experiments.urls
+from rest_framework.routers import SimpleRouter
+
+router = SimpleRouter(trailing_slash=False)
+router.register(r'api/client', views.ClientsAPI, 'api-client')
 
 urlpatterns = i18n_patterns(
     # Experiments
@@ -82,3 +86,5 @@ urlpatterns = i18n_patterns(
 urlpatterns += patterns('',
     url(r'^experiments/', include(experiments.urls)),
 )
+
+urlpatterns += router.urls

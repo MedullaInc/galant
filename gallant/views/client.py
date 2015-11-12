@@ -9,9 +9,10 @@ from django.core.urlresolvers import reverse
 from gallant import forms, serializers
 from gallant import models as g
 from briefs import models as b
-from gallant.utils import get_one_or_404, GallantObjectPermissions
+from gallant.utils import get_one_or_404, GallantObjectPermissions, GallantViewSetPermissions
 from django.utils.translation import ugettext_lazy as _
 from rest_framework import generics
+from rest_framework.viewsets import ModelViewSet
 
 
 class ClientList(View):
@@ -158,3 +159,18 @@ class ClientDetailAPI(generics.RetrieveUpdateAPIView):
 
     def get_queryset(self):
         return self.model.objects.all_for(self.request.user)
+
+
+class ClientsAPI(ModelViewSet):
+    model = g.Client
+    serializer_class = serializers.ClientSerializer
+    permission_classes = [
+        GallantViewSetPermissions
+    ]
+
+    def get_queryset(self):
+        user = self.request.GET.get('user', None)
+        if user:
+            return self.model.objects.all_for(self.request.user).filter(user_id=user)
+        else:
+            return self.model.objects.all_for(self.request.user)
