@@ -1,16 +1,213 @@
-{% load experiments %}
-{% load staticfiles %}
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Experiment Test Page</title>
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js" type="text/javascript"></script>
+{% extends "base_body.html" %}
+
+{% load bootstrap i18n experiments staticfiles gallant_tags %}
+
+{% block head_title %}
+    Manage clients, send quotes, track projects.
+{% endblock %}
+
+{% block custom_css %}
+    <link rel="stylesheet" href="{% static "css/frontend.css" %}">
+{% endblock %}
+
+{% block extra_head %}
+{% endblock %}
+
+{% block scripts %}
+    {{ block.super }}
     <script src="{% static "experiments/js/jquery.cookie.js" %}"></script>
     <script src="{% static "experiments/js/experiments.js" %}"></script>
+{% endblock %}
+
+{% block header_div %}
+
+    <header class="header-5">
+        <div class="container">
+            <div class="row">
+                <nav class="navbar col-sm-12" role="navigation">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle"></button>
+                        <a class="brand" href="{% url 'landing' %}"><img id="logo" src="{% static "img/galant/galant_logo.png" %}"></a>
+                    </div>
+
+                    <div id="menu" class="collapse navbar-collapse">
+                        <ul class="nav pull-right">
+                            <li><a href="">{% trans 'Features' %}</a></li>
+                            <li><a href="">{% trans 'Pricing' %}</a></li>
+                            <li><a href="{% url 'contact' %}">{% trans 'Contact' %}</a></li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+{% endblock %}
+
+{% block footer_div %}
+    <footer class="footer-3">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-3 col-xs-12">
+                    {% trans 'Home' %}<br>
+                    <a href="{% url 'contact' %}">{% trans 'Contact' %}</a><br/>
+                </div>
+                <div class="col-sm-3 col-xs-12">
+                    {% trans 'Features' %}<br>
+                    {% trans 'Pricing' %}<br>
+                </div>
+
+                <div class="col-sm-3 col-xs-12">
+                    <a href="https://www.facebook.com/galant.co" target="_blank">{% trans 'Facebook' %}</a><br>
+                    <a href="https://www.twitter.com/galantapp" target="_blank">{% trans 'Twitter' %}</a><br>
+                    {% trans 'Blog' %}
+                </div>
+
+                <div class="col-sm-3 col-xs-12">
+                    {% trans 'Copyright Medulla Inc.' %} © {% now "Y" %}<br>
+                    {% trans 'Terms & Conditions' %}<br>
+                    {% trans 'Privacy Policy' %}
+                </div>
+
+            </div>
+        </div>
+    </footer>
+{% endblock %}
+
+{% block sub_header %}
+{% endblock %}
+
+{% block content_div %}
+
+    <section class="content-1">
+        <div class="holder v-center">
+            <div class="container">
+                <h1>
+                    Manage clients, send quotes,<br/>
+                    track projects — <span class="purple">all in one place.</span>
+                </h1>
+
+                <h2>
+                    The perfect agency workflow.
+                </h2>
+
+                <div class="row">
+                    <div class="col-lg-3 feature">
+                        <img src="{% static 'img/galant/communication_icon.png' %}">
+                        <p>
+                            <b>Client Management</b>
+                        </p>
+
+                        <p>
+                            — Contact information.
+                        </p>
+
+                        <p>
+                            — Follow-up history.
+                        </p>
+                    </div>
+                    <div class="col-lg-3 feature">
+                        <img src="{% static 'img/galant/quotes_icon.png' %}">
+                        <p>
+                            <b>Quotes</b>
+                        </p>
+
+                        <p>
+                            — Pricing & timing insights.
+                        </p>
+
+                        <p>
+                            — Client viewing analytics.
+                        </p>
+                    </div>
+                    <div class="col-lg-3 feature">
+                        <img src="{% static 'img/galant/brief_icon.png' %}">
+                        <p>
+                            <b>Briefs</b>
+                        </p>
+
+                        <p>
+                            — Client briefing.
+                        </p>
+
+                        <p>
+                            — Deliverables briefing.
+                        </p>
+                    </div>
+                    <div class="col-lg-3 feature">
+                        <img src="{% static 'img/galant/calendar_icon.png' %}">
+                        <p>
+                            <b>Calendar</b>
+                        </p>
+
+                        <p>
+                            — Simple drag & drop.
+                        </p>
+
+                        <p>
+                            — Project & people filtering.
+                        </p>
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-3 feature">
+                        <img src="{% static 'img/galant/checklist_icon.png' %}">
+                        <p>
+                            <b>Work Assignments</b>
+                        </p>
+
+                        <p>
+                            — Work load tracking.
+                        </p>
+
+                        <p>
+                            — Multiple project assignments.
+                        </p>
+
+                    </div>
+                    <div class="col-lg-3 feature">
+                        <img src="{% static 'img/galant/invoice_icon.png' %}">
+                        <p>
+                            <b>Income</b>
+                        </p>
+
+                        <p>
+                            — Deliverables & payments.
+                        </p>
+
+                        <p>
+                            — Invoicing & reports.
+                        </p>
+
+                    </div>
+                    <div class="col-lg-3 feature">
+                        <img src="{% static 'img/galant/clock_icon.png' %}">
+                        <p>
+                            <b>Reminders</b>
+                        </p>
+
+                        <p>
+                            — Agency workflow reminders.
+                        </p>
+
+                        <p>
+                            — Client responsibilities.
+                        </p>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}
+
+{% block extra_body %}
 
     <script>
         {# Standard Django AJAX CSRF support #}
-        jQuery(document).ajaxSend(function(event, xhr, settings) {
+        jQuery(document).ajaxSend(function (event, xhr, settings) {
             function getCookie(name) {
                 var cookieValue = null;
                 if (document.cookie && document.cookie != '') {
@@ -26,6 +223,7 @@
                 }
                 return cookieValue;
             }
+
             function sameOrigin(url) {
                 // url could be relative or scheme relative or absolute
                 var host = document.location.host; // host + port
@@ -35,38 +233,18 @@
                 // Allow absolute or scheme relative URLs to same origin
                 return (url == origin || url.slice(0, origin.length + 1) == origin + '/') ||
                         (url == sr_origin || url.slice(0, sr_origin.length + 1) == sr_origin + '/') ||
-                    // or any other URL that isn't scheme relative or absolute i.e relative.
+                            // or any other URL that isn't scheme relative or absolute i.e relative.
                         !(/^(\/\/|http:|https:).*/.test(url));
             }
+
             function safeMethod(method) {
                 return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
             }
+
             if (!safeMethod(settings.type) && sameOrigin(settings.url)) {
                 xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
             }
         });
     </script>
 
-</head>
-<body>
-    {% csrf_token %}
-
-    {% experiment helloworld control %}
-        <a href="{% url 'experiment_goal' %}">Click Me (Control)</a>
-    {% endexperiment %}
-
-    {% experiment helloworld test %}
-        <a href="{% url 'experiment_goal' %}">Don't Click Me (test)</a>
-    {% endexperiment %}
-
-    {% experiment_enroll "helloworld" "control" "test" as alternative %}
-    {% if alternative == "test" %}
-        You're in the "test" alternative!
-    {% endif %}
-
-    <span onclick="experiments.goal('js_goal')">JS GOAL</span>
-    <span data-experiments-goal="cookie_goal">COOKIE GOAL</span>
-
-    {% experiments_confirm_human %}
-</body>
-</html>
+{% endblock %}
