@@ -87,4 +87,7 @@ urlpatterns += patterns('',
     url(r'^experiments/', include(experiments.urls)),
 )
 
+urlpatterns += url(r'^api/client/fields',
+                   login_required(gallant.views.client_fields_json),
+                   name='api-client-fields'),
 urlpatterns += router.urls

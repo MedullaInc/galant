@@ -1,7 +1,7 @@
 from itertools import chain
 import json
 from django.contrib import messages
-from django.http.response import HttpResponse
+from django.http.response import HttpResponse, JsonResponse
 from django.views.generic import View
 from django.template.response import TemplateResponse
 from django.http import HttpResponseRedirect
@@ -9,7 +9,7 @@ from django.core.urlresolvers import reverse
 from gallant import forms, serializers
 from gallant import models as g
 from briefs import models as b
-from gallant.utils import get_one_or_404, GallantObjectPermissions, GallantViewSetPermissions
+from gallant.utils import get_one_or_404, GallantObjectPermissions, GallantViewSetPermissions, get_field_choices
 from django.utils.translation import ugettext_lazy as _
 from rest_framework import generics
 from rest_framework.viewsets import ModelViewSet
@@ -21,6 +21,7 @@ class ClientList(View):
         return TemplateResponse(request=request,
                                 template="gallant/client_list.html",
                                 context={'title': 'Clients',
+                                         'field_choices_json': get_field_choices_json(g.Client),
                                          'object_list': g.Client.objects.all_for(request.user)})
 
 
@@ -159,6 +160,10 @@ class ClientDetailAPI(generics.RetrieveUpdateAPIView):
 
     def get_queryset(self):
         return self.model.objects.all_for(self.request.user)
+
+
+def client_fields_json(request):
+    return JsonResponse(get_field_choices(g.Client), safe=False)
 
 
 class ClientsAPI(ModelViewSet):
