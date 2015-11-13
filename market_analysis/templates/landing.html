@@ -50,11 +50,11 @@
             <div class="row">
                 <div class="col-sm-3 col-xs-12">
                     {% trans 'Home' %}<br>
-                    <a href="{% url 'contact' %}">{% trans 'Contact' %}</a><br/>
                 </div>
                 <div class="col-sm-3 col-xs-12">
                     {% trans 'Features' %}<br>
                     {% trans 'Pricing' %}<br>
+                    <a href="{% url 'contact' %}">{% trans 'Contact' %}</a><br/>
                 </div>
 
                 <div class="col-sm-3 col-xs-12">
@@ -84,18 +84,19 @@
             <div class="container">
                 <h1>
                     Manage clients, send quotes,<br/>
-                    track projects — <span class="purple">all in one place.</span>
+                    track projects <span class="purple">— all in one place</span>
                 </h1>
 
                 <h2>
-                    The perfect agency workflow.
+                    <span class="blue">The perfect agency workflow</span>
                 </h2>
 
                 <div class="row">
-                    <div class="col-lg-3 feature">
+                    <div class="col-lg-3 col-md-4 col-sm-6 feature">
                         <img src="{% static 'img/galant/communication_icon.png' %}">
+
                         <p>
-                            <b>Client Management</b>
+                            <b><span class="blue">Client Management</span></b>
                         </p>
 
                         <p>
@@ -106,10 +107,11 @@
                             — Follow-up history.
                         </p>
                     </div>
-                    <div class="col-lg-3 feature">
+                    <div class="col-lg-3 col-md-4 col-sm-6 feature">
                         <img src="{% static 'img/galant/quotes_icon.png' %}">
+
                         <p>
-                            <b>Quotes</b>
+                            <b><span class="blue">Quotes</span></b>
                         </p>
 
                         <p>
@@ -120,10 +122,11 @@
                             — Client viewing analytics.
                         </p>
                     </div>
-                    <div class="col-lg-3 feature">
+                    <div class="col-lg-3 col-md-4 col-sm-6 feature">
                         <img src="{% static 'img/galant/brief_icon.png' %}">
+
                         <p>
-                            <b>Briefs</b>
+                            <b><span class="blue">Briefs</span></b>
                         </p>
 
                         <p>
@@ -134,10 +137,11 @@
                             — Deliverables briefing.
                         </p>
                     </div>
-                    <div class="col-lg-3 feature">
+                    <div class="col-lg-3 col-md-4 col-sm-6 feature">
                         <img src="{% static 'img/galant/calendar_icon.png' %}">
+
                         <p>
-                            <b>Calendar</b>
+                            <b><span class="blue">Calendar</span></b>
                         </p>
 
                         <p>
@@ -149,12 +153,11 @@
                         </p>
 
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-3 feature">
+                    <div class="col-lg-3 col-md-4 col-sm-6 feature">
                         <img src="{% static 'img/galant/checklist_icon.png' %}">
+
                         <p>
-                            <b>Work Assignments</b>
+                            <b><span class="blue">Work Assignments</span></b>
                         </p>
 
                         <p>
@@ -166,10 +169,27 @@
                         </p>
 
                     </div>
-                    <div class="col-lg-3 feature">
-                        <img src="{% static 'img/galant/invoice_icon.png' %}">
+                    <div class="col-lg-3 col-md-4 col-sm-6 feature">
+                        <img src="{% static 'img/galant/clock_icon.png' %}">
+
                         <p>
-                            <b>Income</b>
+                            <b><span class="blue">Reminders</span></b>
+                        </p>
+
+                        <p>
+                            — Agency workflow reminders.
+                        </p>
+
+                        <p>
+                            — Client responsibilities.
+                        </p>
+
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-sm-6 feature">
+                        <img src="{% static 'img/galant/invoice_icon.png' %}">
+
+                        <p>
+                            <b><span class="blue">Income</span></b>
                         </p>
 
                         <p>
@@ -181,19 +201,54 @@
                         </p>
 
                     </div>
-                    <div class="col-lg-3 feature">
-                        <img src="{% static 'img/galant/clock_icon.png' %}">
-                        <p>
-                            <b>Reminders</b>
-                        </p>
+                </div>
+            </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <h2>
+                            <span class="blue">What agencies are saying</span>
+                        </h2>
 
-                        <p>
-                            — Agency workflow reminders.
-                        </p>
+                        <h3>
+                            "Galant has helped us focus on the things we are best at."<br/><br/>
+                            Anagrama.<br/>
+                            <a href="http://www.anagrama.com" target="_blank">www.anagrama.com</a>
+                        </h3>
+                    </div>
+                    <div class="col-lg-6">
+                        <h2>
+                            <span class="purple_g purple_pulse">Sign up for our waiting list</span>
+                        </h2>
 
-                        <p>
-                            — Client responsibilities.
-                        </p>
+                        <form class="form" method="POST" action="{% url 'account_login' %}">
+                            {% csrf_token %}
+                            <div class="login">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <input class="form-control" placeholder="Name"
+                                               type="text" value="" id="id_name" name="name" />
+                                        <input class="form-control" placeholder="Email"
+                                               type="email" value="" id="id_email" name="email"/>
+                                        <input class="form-control" placeholder="Website"
+                                               type="email" value="" id="id_web" name="web"/>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-5">
+                                        <button type="submit" class="btn btn-default" id="submit_signup" name="submit_signup">
+                                            {% trans 'Sign up' %}
+                                        </button>
+                                    </div>
+                                    <div class="col-sm-7">
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
 
                     </div>
                 </div>
