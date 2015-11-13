@@ -1,3 +1,4 @@
+from collections import OrderedDict
 from subprocess import check_output
 from allauth.account.adapter import DefaultAccountAdapter
 from django.conf import settings
@@ -6,6 +7,7 @@ from django.http.response import Http404
 from django.db import models as m
 from django.contrib.sites.models import Site
 from rest_framework.permissions import DjangoModelPermissions
+import json
 
 LANG_DICT = dict(settings.LANGUAGES)
 SITE_CACHE = {}
@@ -125,3 +127,15 @@ def query_url(request):
         return '?%s' % request.META['QUERY_STRING']
     else:
         return ''
+
+
+def get_field_choices(model):
+    fields_to_choices = {}
+    fields = model._meta.get_all_field_names()
+    for f in fields:
+        field = model._meta.get_field(f)
+        if hasattr(field, 'choices'):
+            if len(field.choices) > 0:
+                fields_to_choices[f] = OrderedDict(field.choices)
+
+    return fields_to_choices
