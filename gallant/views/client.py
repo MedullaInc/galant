@@ -21,7 +21,6 @@ class ClientList(View):
         return TemplateResponse(request=request,
                                 template="gallant/client_list.html",
                                 context={'title': 'Clients',
-                                         'field_choices_json': get_field_choices_json(g.Client),
                                          'object_list': g.Client.objects.all_for(request.user)})
 
 

@@ -5,6 +5,10 @@ app.controller('glClientListController', ['$scope', '$http', '$window', 'Client'
         Client.query().$promise.then(function (clients) {
             $scope.clients = clients;
         });
+        
+        Client.fields().$promise.then(function (fields) {
+            $scope.clientFields = fields;
+        });
 
         $scope.init = function(clientDetailURL) {
             $scope.clientDetailURL = clientDetailURL;

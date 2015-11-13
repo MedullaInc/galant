@@ -1,6 +1,6 @@
 <tr ng-repeat="client in clients" ng-click="redirect(client.id)" style="cursor: pointer">
     <td>{{ client.name }}</td>
-    <td>{{ client.type }}</td>
-    <td>{{ client.size }}</td>
-    <td>{{ client.status }}</td>
+    <td>{{ clientFields.type[client.type] }}</td>
+    <td>{{ clientFields.size[client.size] }}</td>
+    <td>{{ clientFields.status[client.status] }}</td>
 </tr>

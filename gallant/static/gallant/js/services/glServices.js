@@ -11,7 +11,11 @@ app.factory('Client', function ($resource) {
             method: 'GET',
             params: {},
             isArray: true,
-            url: '/api/client/:id '
+            url: '/api/client/:id'
+        },
+        fields: {
+            method: 'GET',
+            url: '/api/client/fields'
         },
         // the following are untested
         save: {
@@ -25,7 +29,7 @@ app.factory('Client', function ($resource) {
             params: {
                 id: '@id'
             },
-            url: '/api/client/:id '
+            url: '/api/client/:id'
         }
     });
 

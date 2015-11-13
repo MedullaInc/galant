@@ -1,3 +1,4 @@
+from collections import OrderedDict
 from subprocess import check_output
 from allauth.account.adapter import DefaultAccountAdapter
 from django.conf import settings
@@ -135,6 +136,6 @@ def get_field_choices(model):
         field = model._meta.get_field(f)
         if hasattr(field, 'choices'):
             if len(field.choices) > 0:
-                fields_to_choices[f] = field.choices
+                fields_to_choices[f] = OrderedDict(field.choices)
 
     return fields_to_choices
