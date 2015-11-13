@@ -81,15 +81,14 @@ var currentUserId               = "{{user.id}}";
                     <h4>{{alertMessage}}</h4>
                 </div>
                 <select ng-change="projectChanged(event.projectId)" ng-model="event.projectId">
-                    <option value="">------</option>
                     <option ng-selected="{{project.id == event.projectId}}" ng-repeat="project in projects" value="{{project.id}}"> {{project.name}}
                     </option>
                 </select>
                 <div>
                     <div class="btn-group">
-                        <button class="btn btn-success" ng-click="changeView('timelineDay', 'myCalendar1')">TimeLine day</button>
-                        <button class="btn btn-success" ng-click="changeView('timelineWeek', 'myCalendar1')">TimeLine week</button>
-                        <button class="btn btn-success" ng-click="changeView('timelineYear', 'myCalendar1')">TimeLine year</button>
+                        <button id="timelineDay" class="btn btn-success" ng-click="changeView('timelineDay', 'myCalendar1')">TimeLine day</button>
+                        <button id="timelineWeek" class="btn btn-success" ng-click="changeView('timelineWeek', 'myCalendar1')">TimeLine week</button>
+                        <button id="timelineYear" class="btn btn-success" ng-click="changeView('timelineYear', 'myCalendar1')">TimeLine year</button>
                     </div>
                 </div>
                 <button class="btn btn-success" ng-click="openAsideModal()">Filter Task</button>

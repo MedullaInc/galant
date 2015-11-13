@@ -5,8 +5,7 @@
 	<input ng-model="searchText"></input>
     <li ng-repeat="e in filteredEvents = (events | filter: searchText)">
         <div class="alert">
-            <a class="close" ng-click="remove($index)"><i class="icon-remove"></i></a>
-            <b>{{e.title}} </b> {{e.start | date:"MMM dd"}} - {{e.end | date:"MMM dd"}}
+            <a ng-click="openEditModal(e)"><b>{{e.title}} </b> {{e.start | date:"MMM dd"}} - {{e.end | date:"MMM dd"}}</a>
         </div>
     </li>
     <button class="btn btn-primary" ng-click="ok($event)">OK</button>
