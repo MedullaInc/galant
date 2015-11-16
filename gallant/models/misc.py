@@ -1,4 +1,6 @@
 from django.db import models as m
+from django.utils import timezone
+from djmoney.models.fields import MoneyField
 from gallant_user import UserModel, UserModelManager
 
 
@@ -20,3 +22,12 @@ class Note(UserModel):
         )
 
     objects = UserModelManager()
+
+
+class Payment(UserModel):
+    submitted_on = m.DateTimeField(default=timezone.now)
+    amount = MoneyField(max_digits=16, decimal_places=2)
+    note = m.ForeignKey(Note, null=True, blank=True)
+
+    def __unicode__(self):
+        return '%s: %s' % (self.submitted_on, self.amount)
