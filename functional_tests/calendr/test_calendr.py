@@ -32,7 +32,6 @@ class CalendrTest(browser.SignedInTest):
         response = self.client.get(self.live_server_url + reverse('api-task-detail', args=[s.id]))
         self.assertEqual(response.status_code, 200)
 
-    """
     def test_can_edit_task(self):
         b = self.browser
 
@@ -42,8 +41,6 @@ class CalendrTest(browser.SignedInTest):
 
         submit_task = b.find_element_by_css_selector('#submitTask')
         self.assertTrue(submit_task)
-
-    """
     
     def test_can_edit_project(self):
         s = autofixture.create_one('calendr.Task', generate_fk=True,

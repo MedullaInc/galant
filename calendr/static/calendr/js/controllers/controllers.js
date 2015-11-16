@@ -1,5 +1,4 @@
-
-angular.module('gallant.controllers', ['ui.calendar', 'ui.bootstrap', 'ng.django.forms','ngAside'])
+angular.module('gallant.controllers', ['ui.calendar', 'ui.bootstrap', 'ng.django.forms', 'ngAside'])
 
 .controller('CalendrControl',
   function($scope, Project, User, Task, $compile, $timeout, uiCalendarConfig, $uibModal, $filter, $aside) {
@@ -13,11 +12,11 @@ angular.module('gallant.controllers', ['ui.calendar', 'ui.bootstrap', 'ng.django
     $scope.projects = [];
     $scope.eventResources = []
 
-    $scope.openAsideModal = function(){
-      if($scope.asideInstance){
+    $scope.openAsideModal = function() {
+      if ($scope.asideInstance) {
         $scope.asideInstance.close();
         delete $scope.asideInstance;
-      }else{
+      } else {
 
         $scope.asideInstance = $aside.open({
           templateUrl: asideTemplateUrl,
@@ -36,26 +35,71 @@ angular.module('gallant.controllers', ['ui.calendar', 'ui.bootstrap', 'ng.django
           },
           placement: 'right',
           size: 'sm',
-          resolve:{
-              userEvents: function() {
-                // Return current user tasks
-                return $filter('filter')($scope.events, {resourceId: currentUserId});
-              },
-              openEditModal: function() {
-                // Return current user tasks
-                return $scope.openEditModal;
-              },
+          resolve: {
+            userEvents: function() {
+              // Return current user tasks
+              return $filter('filter')($scope.events, {
+                resourceId: currentUserId
+              });
+            },
+            openEditModal: function() {
+              // Return current user tasks
+              return $scope.openEditModal;
+            },
           }
         });
       }
 
     }
 
+    $scope.gotoDate = function(date) {
+      uiCalendarConfig.calendars['myCalendar1'].fullCalendar('gotoDate', date);
+    }
+
+    $scope.today = function() {
+      $scope.dt = new Date();
+      $scope.gotoDate($scope.dt);
+    };
+
+    // $scope.today();
+
+
+
+    // Disable weekend selection
+    $scope.disabled = function(date, mode) {
+      return (mode === 'day' && (date.getDay() === 0 || date.getDay() === 6));
+    };
+
+    $scope.toggleMin = function() {
+      $scope.minDate = $scope.minDate ? null : new Date();
+    };
+    $scope.toggleMin();
+    $scope.maxDate = new Date(2020, 5, 22);
+
+    $scope.open = function($event) {
+      $scope.status.opened = true;
+    };
+
+    $scope.setDate = function(year, month, day) {
+      $scope.dt = new Date(year, month, day);
+    };
+
+    $scope.dateOptions = {
+      formatYear: 'yy',
+      startingDay: 1
+    };
+
+    $scope.status = {
+      opened: false
+    };
+
     /* Retrieve users from API service */
     $scope.getResources = function(project) {
       options = {};
       if (project) {
-        options = {project_id: project.id};
+        options = {
+          project_id: project.id
+        };
       }
       User.query(options).$promise.then(function(response) {
         angular.forEach(response, function(value, key) {
@@ -73,7 +117,7 @@ angular.module('gallant.controllers', ['ui.calendar', 'ui.bootstrap', 'ng.django
         angular.forEach(response, function(value, key) {
           $scope.renderEvent(value);
         });
-        
+
       });
     }
 
@@ -105,13 +149,11 @@ angular.module('gallant.controllers', ['ui.calendar', 'ui.bootstrap', 'ng.django
           $scope.createTask = createTask;
 
           $scope.submit = function(e) {
-            console.log(e);
             $modalInstance.dismiss('cancel');
             // var found = $filter('filter')($scope.events, {id: $scope.event.id}, true)
-            // console.log(found);
-            if (e.id){
+            if (e.id) {
               $scope.updateEvent($scope.event);
-            }else{
+            } else {
 
               var task = {
                 "id": "",
@@ -258,7 +300,6 @@ angular.module('gallant.controllers', ['ui.calendar', 'ui.bootstrap', 'ng.django
 
     /* Create a new Task using API Service */
     $scope.createTask = function(task) {
-      console.log(task);
       // Event to task
       var task = {
         "id": "",
@@ -328,20 +369,20 @@ angular.module('gallant.controllers', ['ui.calendar', 'ui.bootstrap', 'ng.django
 
     $scope.refetchEvents = function() {};
 
-    $scope.selectFunction = function(start, end, x, y, z) {
-    var event;
-    event = {
-       daily_estimate: 0.0,
-       resourceId: z.id,
-       start: start,
-       end: end,
-       title: "New Task",
+    $scope.selectFunction = function(start, end, x, y, resource) {
+      var event;
+      event = {
+        daily_estimate: 0.0,
+        resourceId: resource.id,
+        start: start,
+        end: end,
+        title: "New Task",
+      }
+
+      $scope.openEditModal(event);
+      uiCalendarConfig.calendars['myCalendar1'].fullCalendar('unselect');
     }
 
-    $scope.openEditModal(event);
-      uiCalendarConfig.calendars['myCalendar1'].fullCalendar('unselect')
-      }
-      
     /* config object */
     $scope.uiConfig = {
       calendar: {
@@ -350,7 +391,7 @@ angular.module('gallant.controllers', ['ui.calendar', 'ui.bootstrap', 'ng.django
         header: {
           left: 'title',
           center: '',
-          right: 'today prev,next'
+          right: ''
         },
         height: 450,
         editable: true,
@@ -362,6 +403,7 @@ angular.module('gallant.controllers', ['ui.calendar', 'ui.bootstrap', 'ng.django
         eventDrop: $scope.alertOnDrop,
         eventResize: $scope.alertOnResize,
         eventRender: $scope.eventRender,
+        gotoDate: $scope.gotoDate,
       }
     };
 

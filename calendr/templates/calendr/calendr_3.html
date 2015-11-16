@@ -92,9 +92,24 @@ var currentUserId               = "{{user.id}}";
                     </div>
                 </div>
                 <button id="filterTask" class="btn btn-success" ng-click="openAsideModal()">Filter Task</button>
+                <div class="row">
+                 <div class="col-md-6">
 
+                </div>
+                </div>
+                <h4>Go to date</h4>
+                <div class="row">
+                 <div class="col-md-2">
+                    <p class="input-group">
+                      <input type="date" class="form-control" uib-datepicker-popup ng-model="dt" is-open="status.opened" min-date="minDate" max-date="maxDate" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" ng-change="gotoDate(dt)" />
+                    </p>
+                </div>
+                <div class="col-md-2">
+                    <button type="button" class="btn btn-sm btn-info" ng-click="today()">Today</button>
+
+                </div>
                 <div class="col-md-12" class="calendar" ng-model="eventSources" resources="eventResources" calendar="myCalendar1" ui-calendar="uiConfig.calendar"></div>              
-            </div>
+            
         </div>
     </section>
 </div>
