@@ -91,7 +91,7 @@ var currentUserId               = "{{user.id}}";
                         <button id="timelineYear" class="btn btn-success" ng-click="changeView('timelineYear', 'myCalendar1')">TimeLine year</button>
                     </div>
                 </div>
-                <button class="btn btn-success" ng-click="openAsideModal()">Filter Task</button>
+                <button id="filterTask" class="btn btn-success" ng-click="openAsideModal()">Filter Task</button>
 
                 <div class="col-md-12" class="calendar" ng-model="eventSources" resources="eventResources" calendar="myCalendar1" ui-calendar="uiConfig.calendar"></div>              
             </div>

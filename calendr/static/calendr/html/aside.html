@@ -2,7 +2,7 @@
     <h3 class="modal-title">My Tasks {{filteredEvents.length}}</h3>
 </div>
 <div class="modal-body">
-	<input ng-model="searchText"></input>
+	<input id="searchText" ng-model="searchText"></input>
     <li ng-repeat="e in filteredEvents = (events | filter: searchText)">
         <div class="alert">
             <a ng-click="openEditModal(e)"><b>{{e.title}} </b> {{e.start | date:"MMM dd"}} - {{e.end | date:"MMM dd"}}</a>
