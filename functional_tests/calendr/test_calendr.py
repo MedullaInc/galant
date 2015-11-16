@@ -32,6 +32,20 @@ class CalendrTest(browser.SignedInTest):
         response = self.client.get(self.live_server_url + reverse('api-task-detail', args=[s.id]))
         self.assertEqual(response.status_code, 200)
 
+    def test_can_change_date(self):
+        b = self.browser
+
+        b.get(self.live_server_url + reverse('calendr'))
+        b.find_element_by_id('id_date').send_keys('2015-11-09')
+
+        date = b.find_element_by_css_selector('.fc-toolbar h2')
+        self.assertTrue(u'November 9, 2015' in date.text)
+
+        b.find_element_by_id('id_today').click()
+
+        date = b.find_element_by_css_selector('.fc-toolbar h2')
+        self.assertFalse(u'November 9, 2015' in date.text)
+
     def test_can_edit_task(self):
         b = self.browser
 
