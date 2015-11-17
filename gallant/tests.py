@@ -226,7 +226,7 @@ class ClientTest(TransactionTestCase):
         force_authenticate(request, user=user)
 
         serializer = serializers.ClientSerializer(client, context={'request': request})
-        self.assertEqual(serializer.data['money_owed'], u'200 USD')
+        self.assertEqual(serializer.data['money_owed']['amount'], 200)
 
     def test_access_api_client(self):
         factory = APIRequestFactory()

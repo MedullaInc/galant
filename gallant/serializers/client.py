@@ -14,7 +14,7 @@ class ClientSerializer(serializers.ModelSerializer):
             amt += q.get_total_cost()
             for p in q.payments.all_for(self.context['request'].user):
                 amt -= p.amount
-        return '%d %s' % (amt.amount, amt.currency)
+        return {'amount': amt.amount, 'currency': str(amt.currency)}
 
     def get_fields(self, *args, **kwargs):
         fields = super(ClientSerializer, self).get_fields(*args, **kwargs)
