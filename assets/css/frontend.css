@@ -6,7 +6,11 @@
 }
 
 body, html, .page-wrapper {
-    background: #ededed;
+    background-color: #ededed;
+}
+
+body.body {
+    background: transparent;
 }
 
 /* End Galant Brand*/
@@ -87,6 +91,10 @@ body, html, .page-wrapper {
 .header-5 .navbar .nav > li.active > a:focus,
 .header-5 .navbar .nav > li.active > a.active {
     color: rgba(255, 255, 255, 1);
+}
+
+.header-5 .navbar-header {
+    padding-left: 0px;
 }
 
 .header-5 .navbar-header .brand {
@@ -190,7 +198,7 @@ body, html, .page-wrapper {
     padding: 0;
     width: 30px;
     height: 30px;
-    background: black url("/static/img/menu-icon@2x.png") 50% no-repeat;
+    background: #5a40f8 url("/static/img/menu-icon@2x.png") 50% no-repeat;
     -webkit-background-size: 17px 12px;
     -moz-background-size: 17px 12px;
     -o-background-size: 17px 12px;
@@ -246,6 +254,98 @@ body, html, .page-wrapper {
 #menu a {
     font-weight: 100;
     font-size: 14px;
+}
+
+body #header-5.navbar-collapse {
+    width: 220px;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    height: 100% !important;
+    z-index: 1;
+    border: none;
+    padding-top: 10px;
+    background: #a1d7e1;
+}
+
+#header-5 li {
+    border: none;
+    text-align: left;
+    width: 100%;
+}
+
+ul.nav li a#menu, ul.nav li a#menu:hover {
+    width: 100%;
+    color: #000000;
+    font-family: "Courier New";
+    background: transparent;
+}
+
+ul.nav li a#menu:hover {
+    color: #999999;
+}
+
+.loaded .page-wrapper,
+.loaded .header-antiflicker,
+.loaded body > header .header-background {
+    -webkit-transform: translate3d(0, 0, 0);
+    -moz-transform: translate3d(0, 0, 0);
+    -o-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+    -webkit-transition: all 0.33s cubic-bezier(0.694, 0.0482, 0.335, 1);
+    -moz-transition: all 0.33s cubic-bezier(0.694, 0.0482, 0.335, 1);
+    -o-transition: all 0.33s cubic-bezier(0.694, 0.0482, 0.335, 1);
+    transition: all 0.33s cubic-bezier(0.694, 0.0482, 0.335, 1);
+}
+
+.loaded.nav-visible .page-wrapper,
+.loaded.nav-visible .navbar.navbar-fixed-top,
+.loaded.nav-visible .header-antiflicker,
+.loaded.nav-visible body > header .header-background {
+    -webkit-transform: translate3d(-230px, 0, 0);
+    -moz-transform: translate3d(-230px, 0, 0);
+    -o-transform: translate3d(-230px, 0, 0);
+    transform: translate3d(-230px, 0, 0);
+}
+
+.loaded.no-csstransitions .page-wrapper,
+.loaded.no-csstransitions .header-antiflicker {
+    left: 0;
+}
+
+.loaded.no-csstransitions.nav-visible .page-wrapper,
+.loaded.no-csstransitions.nav-visible .navbar.navbar-fixed-top,
+.loaded.no-csstransitions.nav-visible .header-antiflicker {
+    left: -230px !important;
+    right: auto;
+}
+
+.carousel-indicators {
+    width: 100%;
+}
+
+[class^="fui-"] {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+body > section,
+header,
+footer {
+    position: relative;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+@media (max-width: 767px) {
+    body > section,
+    header,
+    footer {
+        padding-right: 5px;
+        padding-left: 5px;
+    }
 }
 
 /* End Menu */
@@ -383,34 +483,6 @@ div.alert.alert-info {
     body > .collapse.navbar-collapse {
         display: none !important;
     }
-}
-
-@media (max-width: 1200px) {
-    body #header-5.navbar-collapse {
-        width: 220px;
-        position: fixed;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        height: 100% !important;
-        z-index: 1;
-        border: 1px solid #666666;
-        margin: 10px;
-        padding-top: 10px;
-    }
-
-    #header-5 li {
-        border: 1px solid #666666;
-        margin-left: 10px;
-        margin-right: 10px;
-        margin-bottom: 10px;
-        text-align: center;
-    }
-
-    #menu li a {
-        width: 100px;
-    }
-
 }
 
 @media (min-width: 950px) and (max-width: 1200px) {
