@@ -42,6 +42,7 @@ class Client(UserModel):
 
     language = m.CharField(max_length=7, choices=settings.LANGUAGES)
     currency = m.CharField(max_length=3, choices=CURRENCY_CHOICES, default='USD',)
+    last_contacted = m.DateTimeField(null=True, blank=True)
 
     notes = m.ManyToManyField(Note)
 

@@ -7,6 +7,7 @@ class ClientSerializer(serializers.ModelSerializer):
     user = serializers.PrimaryKeyRelatedField(read_only=True)
     contact_info = serializers.PrimaryKeyRelatedField(read_only=True)
     money_owed = serializers.SerializerMethodField()
+    status = serializers.SerializerMethodField()
 
     def get_money_owed(self, client):
         amt = Money(0.00, client.currency)
@@ -15,6 +16,9 @@ class ClientSerializer(serializers.ModelSerializer):
             for p in q.payments.all_for(self.context['request'].user):
                 amt -= p.amount
         return {'amount': amt.amount, 'currency': str(amt.currency)}
+
+    def get_status(self, client):
+        client.quote_set.all_for(self.context['request'].user)
 
     def get_fields(self, *args, **kwargs):
         fields = super(ClientSerializer, self).get_fields(*args, **kwargs)
@@ -26,4 +30,4 @@ class ClientSerializer(serializers.ModelSerializer):
     class Meta:
         model = g.Client
         fields = ('id', 'user', 'name', 'email', 'contact_info', 'type', 'size',
-                  'status', 'language', 'currency', 'notes', 'money_owed')
+                  'status', 'language', 'currency', 'notes', 'money_owed', 'last_contacted')
