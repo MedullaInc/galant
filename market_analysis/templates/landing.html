@@ -48,22 +48,22 @@
     <footer class="footer-3">
         <div class="container">
             <div class="row">
-                <div class="col-sm-3 col-xs-12">
+                <div class="col-sm-3 col-xs-12 column">
                     {% trans 'Home' %}<br>
                 </div>
-                <div class="col-sm-3 col-xs-12">
+                <div class="col-sm-3 col-xs-12 column">
                     {% trans 'Features' %}<br>
                     {% trans 'Pricing' %}<br>
                     <a href="{% url 'contact' %}">{% trans 'Contact' %}</a><br/>
                 </div>
 
-                <div class="col-sm-3 col-xs-12">
+                <div class="col-sm-3 col-xs-12 column">
                     <a href="https://www.facebook.com/galant.co" target="_blank">{% trans 'Facebook' %}</a><br>
                     <a href="https://www.twitter.com/galantapp" target="_blank">{% trans 'Twitter' %}</a><br>
                     {% trans 'Blog' %}
                 </div>
 
-                <div class="col-sm-3 col-xs-12">
+                <div class="col-sm-3 col-xs-12 column">
                     {% trans 'Copyright Medulla Inc.' %} © {% now "Y" %}<br>
                     {% trans 'Terms & Conditions' %}<br>
                     {% trans 'Privacy Policy' %}
@@ -92,7 +92,7 @@
                 </h2>
 
                 <div class="row">
-                    <div class="col-lg-3 col-md-4 col-sm-6 feature">
+                    <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12  feature">
                         <img src="{% static 'img/galant/communication_icon.png' %}">
 
                         <p>
@@ -107,7 +107,7 @@
                             — Follow-up history.
                         </p>
                     </div>
-                    <div class="col-lg-3 col-md-4 col-sm-6 feature">
+                    <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12  feature">
                         <img src="{% static 'img/galant/quotes_icon.png' %}">
 
                         <p>
@@ -122,7 +122,7 @@
                             — Client viewing analytics.
                         </p>
                     </div>
-                    <div class="col-lg-3 col-md-4 col-sm-6 feature">
+                    <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12  feature">
                         <img src="{% static 'img/galant/brief_icon.png' %}">
 
                         <p>
@@ -137,7 +137,7 @@
                             — Deliverables briefing.
                         </p>
                     </div>
-                    <div class="col-lg-3 col-md-4 col-sm-6 feature">
+                    <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12  feature">
                         <img src="{% static 'img/galant/calendar_icon.png' %}">
 
                         <p>
@@ -153,7 +153,7 @@
                         </p>
 
                     </div>
-                    <div class="col-lg-3 col-md-4 col-sm-6 feature">
+                    <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12  feature">
                         <img src="{% static 'img/galant/checklist_icon.png' %}">
 
                         <p>
@@ -169,7 +169,7 @@
                         </p>
 
                     </div>
-                    <div class="col-lg-3 col-md-4 col-sm-6 feature">
+                    <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 feature">
                         <img src="{% static 'img/galant/clock_icon.png' %}">
 
                         <p>
@@ -185,7 +185,7 @@
                         </p>
 
                     </div>
-                    <div class="col-lg-3 col-md-4 col-sm-6 feature">
+                    <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12  feature">
                         <img src="{% static 'img/galant/invoice_icon.png' %}">
 
                         <p>
@@ -205,18 +205,7 @@
             </div>
             <div class="container">
                 <div class="row">
-                    <div class="col-lg-6">
-                        <h2>
-                            <span class="blue">What agencies are saying</span>
-                        </h2>
-
-                        <h3>
-                            "Galant has helped us focus on the things we are best at."<br/><br/>
-                            Anagrama.<br/>
-                            <a href="http://www.anagrama.com" target="_blank">www.anagrama.com</a>
-                        </h3>
-                    </div>
-                    <div class="col-lg-6">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pull-right">
                         <h2>
                             <span class="purple_g purple_pulse">Sign up for our waiting list</span>
                         </h2>
@@ -227,7 +216,7 @@
                                 <div class="row">
                                     <div class="col-sm-12">
                                         <input class="form-control" placeholder="Name"
-                                               type="text" value="" id="id_name" name="name" />
+                                               type="text" value="" id="id_name" name="name"/>
                                         <input class="form-control" placeholder="Email"
                                                type="email" value="" id="id_email" name="email"/>
                                         <input class="form-control" placeholder="Website"
@@ -251,6 +240,22 @@
                         </form>
 
                     </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pull-left">
+                        <h2>
+                            <span class="blue">What agencies are saying</span>
+                        </h2>
+
+                        <h3>
+                            "Galant has helped us focus on the things we are best at."<br/><br/>
+                            Anagrama.<br/>
+                            <a href="http://www.anagrama.com" target="_blank">www.anagrama.com</a>
+                        </h3>
+
+                        <br/>
+                        <br/>
+
+                    </div>
+
                 </div>
             </div>
         </div>
