@@ -36,6 +36,7 @@ class Quote(g.UserModel):
 
     parent = m.ForeignKey('self', null=True, blank=True, related_name='versions')
     projects = m.ManyToManyField(g.Project, blank=True)
+    payments = m.ManyToManyField(g.Payment, blank=True)
 
     def get_languages(self):
         language_set = set()
