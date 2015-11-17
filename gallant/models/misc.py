@@ -31,3 +31,10 @@ class Payment(UserModel):
 
     def __unicode__(self):
         return '%s: %s' % (self.submitted_on, self.amount)
+
+    class Meta:
+        permissions = (
+            ('view_payment', 'View payment'),
+        )
+
+    objects = UserModelManager()
