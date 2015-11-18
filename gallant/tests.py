@@ -11,6 +11,7 @@ from briefs import models as b
 from gallant import serializers
 from gallant import views
 from gallant.fields import ULTextDictArray, _ultext_array_to_python
+from moneyed.classes import Money
 from quotes import models as q
 from autofixture import AutoFixture
 from rest_framework import status
@@ -200,6 +201,32 @@ class ClientTest(TransactionTestCase):
         self.assertTrue(parser.is_valid())
 
         self.assertNotEqual(parser.save(user=user).id, client.id)
+
+    def test_client_serialize_owed_amount(self):
+        factory = APIRequestFactory()
+        user = autofixture.create_one(g.GallantUser, generate_fk=True)
+        client = autofixture.create_one(g.Client, generate_fk=True, field_values={
+            'user': user, 'currency': 'USD'})
+        quote = autofixture.create_one(q.Quote, generate_fk=True, field_values={
+            'user': user, 'client': client, 'services': []})
+        service = autofixture.create_one(g.Service, generate_fk=True, field_values={
+            'user': user, 'quantity': 1})
+        service.cost = Money(500, 'USD')
+        service.save()
+        service_section = q.ServiceSection.objects.create(user=user, index=0, service=service)
+        quote.services.add(service_section)
+
+        payment = autofixture.create_one(g.Payment, generate_fk=True, field_values={'user': user})
+        payment.amount = Money(300, 'USD')
+        payment.save()
+        quote.payments.add(payment)
+
+        request = factory.get(reverse('api_client_detail', args=[client.id]))
+        request.user = user
+        force_authenticate(request, user=user)
+
+        serializer = serializers.ClientSerializer(client, context={'request': request})
+        self.assertEqual(serializer.data['money_owed'], u'200 USD')
 
     def test_access_api_client(self):
         factory = APIRequestFactory()

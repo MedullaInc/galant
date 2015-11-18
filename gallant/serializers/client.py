@@ -1,11 +1,20 @@
+from moneyed.classes import Money
 from rest_framework import serializers
-from gallant.models import Client
 from gallant import models as g
 
 
 class ClientSerializer(serializers.ModelSerializer):
     user = serializers.PrimaryKeyRelatedField(read_only=True)
     contact_info = serializers.PrimaryKeyRelatedField(read_only=True)
+    money_owed = serializers.SerializerMethodField()
+
+    def get_money_owed(self, client):
+        amt = Money(0.00, client.currency)
+        for q in client.quote_set.all_for(self.context['request'].user):
+            amt += q.get_total_cost()
+            for p in q.payments.all_for(self.context['request'].user):
+                amt -= p.amount
+        return '%d %s' % (amt.amount, amt.currency)
 
     def get_fields(self, *args, **kwargs):
         fields = super(ClientSerializer, self).get_fields(*args, **kwargs)
@@ -15,6 +24,6 @@ class ClientSerializer(serializers.ModelSerializer):
         return fields
 
     class Meta:
-        model = Client
+        model = g.Client
         fields = ('id', 'user', 'name', 'email', 'contact_info', 'type', 'size',
-                  'status', 'language', 'currency', 'notes')
+                  'status', 'language', 'currency', 'notes', 'money_owed')

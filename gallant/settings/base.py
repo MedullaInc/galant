@@ -60,6 +60,9 @@ INSTALLED_APPS = (
     'briefs',
     'quotes',
     'calendr',
+
+    'market_analysis',
+    'experiments',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -73,6 +76,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'breadcrumbs.middleware.BreadcrumbsMiddleware',
+    'experiments.middleware.ExperimentsRetentionMiddleware',
 )
 
 AUTHENTICATION_BACKENDS = (
@@ -214,3 +218,22 @@ DJANGO_MONEY_RATES = {
     'OPENEXCHANGE_APP_ID': '5b3c1669f5484c17bee817b8ff4c893d',
     'OPENEXCHANGE_BASE_CURRENCY': 'USD',
 }
+
+
+# EXPERIMENTS
+
+# Settings
+EXPERIMENTS_GOALS = (
+    'page_goal',
+    'js_goal',
+    'cookie_goal',
+)
+
+EXPERIMENTS_AUTO_CREATE = True
+
+EXPERIMENTS_VERIFY_HUMAN = True #Careful with this setting, if it is toggled then participant counters will not increment accordingly
+
+# Redis Settings
+EXPERIMENTS_REDIS_HOST = 'localhost'
+EXPERIMENTS_REDIS_PORT = 6379
+EXPERIMENTS_REDIS_DB = 0
