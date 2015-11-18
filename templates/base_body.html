@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 {% load staticfiles bootstrap i18n gallant_tags %}
 
-
 {% block extra_head %}
 
     <script>
@@ -18,6 +17,7 @@
 
     <div class="page-wrapper">
 
+        {% block header_div %}
         <header class="header-5">
             <div class="container">
                 <div class="row">
@@ -63,6 +63,7 @@
                 </div>
             </div>
         </header>
+        {% endblock %}
 
         {% block messages %}
             {% for message in messages %}
@@ -129,8 +130,8 @@
                         </div>
 
                         <div class="col-sm-4 col-xs-12">
-                            {% trans 'Facebook' %}<br>
-                            {% trans 'Twitter' %}<br>
+                            <a href="https://www.facebook.com/galant.co" target="_blank">{% trans 'Facebook' %}</a><br>
+                            <a href="https://www.twitter.com/galantapp" target="_blank">{% trans 'Twitter' %}</a><br>
                             {% trans 'Blog' %}
                         </div>
 
@@ -146,6 +147,7 @@
         {% endblock %}
 
     </div>
+
     <div id="base_modal" class="modal fade" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">

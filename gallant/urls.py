@@ -28,20 +28,27 @@ router = SimpleRouter(trailing_slash=False)
 router.register(r'api/client', views.ClientsAPI, 'api-client')
 
 urlpatterns = i18n_patterns(
-    # Experiments
-    url(r'^landing', TemplateView.as_view(template_name='landing.html'),
-        name='experiment_landing'),
+    # ==============
+    # FRONTEND EXPERIMENTS
+
+    # Landing page
+    url(r'^home', TemplateView.as_view(template_name='landing.html'),
+        name='landing'),
+
+    # Experiment goal
     url(r'^goal', TemplateView.as_view(template_name='goal.html'), name='experiment_goal'),
+
+    # ==============
+    # Rest of Galant
+    url(r'^$', TemplateView.as_view(template_name='index.html'), name='home'),
+    url(r'^signup/', gallant.views.SignUpRequest.as_view(), name='signup'),
+    url(r'^contact/', gallant.views.contact, name='contact'),
 
     url(r'^accounts/', include(allauth.urls)),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^quote/', include('quotes.urls')),
     url(r'^briefs/', include('briefs.urls')),
     url(r'^calendar/', include('calendr.urls')),
-
-    url(r'^$', TemplateView.as_view(template_name='index.html'), name='home'),
-    url(r'^signup/', gallant.views.SignUpRequest.as_view(), name='signup'),
-    url(r'^contact/', gallant.views.contact, name='contact'),
 
     url(r'^clients/$', login_required(gallant.views.ClientList.as_view()), name='clients'),
     url(r'^client/add/$', login_required(gallant.views.ClientCreate.as_view()), name='add_client'),
