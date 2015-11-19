@@ -5,12 +5,27 @@
 {% block css %}
 <link href='{% static "css/fullcalendar-ng/fullcalendar.min.css" %}' rel='stylesheet' />
 <link href='{% static "css/fullcalendar-ng/scheduler.min.css" %}' rel='stylesheet' /> 
+<link href='{% static "css/angular-aside.min.css" %}' rel='stylesheet' /> 
+
+<style>
+select {
+    max-width: 120px;
+}
+.ng-aside {
+    pointer-events:none;
+}
+.modal-dialog{
+    pointer-events:auto;
+}
+
+</style>
 {% endblock %} 
 
 {% block scripts %} 
 {{ block.super }}
 <script src="{% static "js/angular.min.js" %}"></script>
 <script src="{% static "js/angular-resource.min.js" %}"></script>
+<script src="{% static "js/angular-aside.min.js" %}"></script>
 <script src="{% static "js/fullcalendar-ng/ui-bootstrap-tpls-0.14.0.js" %}"></script>
 <script src="{% static "djangular/js/django-angular.min.js" %}"></script>
 <script src="{% static "js/fullcalendar-ng/moment.min.js" %}"></script>
@@ -19,8 +34,14 @@
 <script src="{% static "js/fullcalendar-ng/calendar.js" %}"></script>
 <script src="{% static "calendr/js/apps/app.js" %}"></script>
 <script src="{% static "calendr/js/services/services.js" %}"></script>
+<script src="{% static "calendr/js/directives/directives.js" %}"></script>
 <script src="{% static "calendr/js/controllers/controllers.js" %}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<script>
+var asideTemplateUrl            = "{% static '/static/calendr/html/aside.html' %}";
+var taskModalUrl                = "{% static '/static/calendr/html/calendar_modal.html' %}";
+var currentUserId               = "{{user.id}}";
+</script>
 {% endblock %} 
 
 {% block extra_head %} 
@@ -42,8 +63,6 @@
         </div>
     </div>
 </div>
-<script type="text/javascript">
-</script>
 {% endblock %} 
 
 {% block sub_header %} 
@@ -62,22 +81,41 @@
                     <h4>{{alertMessage}}</h4>
                 </div>
                 <select ng-change="projectChanged(event.projectId)" ng-model="event.projectId">
-                    <option value="">------</option>
                     <option ng-selected="{{project.id == event.projectId}}" ng-repeat="project in projects" value="{{project.id}}"> {{project.name}}
                     </option>
                 </select>
-                <div class="">
+                <div>
                     <div class="btn-group">
-                        <button class="btn btn-success" ng-click="changeView('timelineDay', 'myCalendar1')">TimeLine day</button>
-                        <button class="btn btn-success" ng-click="changeView('timelineWeek', 'myCalendar1')">TimeLine week</button>
-                        <button class="btn btn-success" ng-click="changeView('timelineYear', 'myCalendar1')">TimeLine year</button>
+                        <button id="timelineDay" class="btn btn-success" ng-click="changeView('timelineDay', 'myCalendar1')">TimeLine day</button>
+                        <button id="timelineWeek" class="btn btn-success" ng-click="changeView('timelineWeek', 'myCalendar1')">TimeLine week</button>
+                        <button id="timelineYear" class="btn btn-success" ng-click="changeView('timelineYear', 'myCalendar1')">TimeLine year</button>
                     </div>
                 </div>
-                <div class="col-md-12" class="calendar" ng-model="eventSources" resources="eventResources" calendar="myCalendar1" ui-calendar="uiConfig.calendar"></div>
-            </div>
+                <button id="filterTask" class="btn btn-success" ng-click="openAsideModal()">Filter Task</button>
+                <div class="row">
+                 <div class="col-md-6">
+
+                </div>
+                </div>
+                <h4>Go to date</h4>
+                <div class="row">
+                 <div class="col-md-2">
+                    <p class="input-group">
+                      <input id="id_date" type="date" class="form-control" uib-datepicker-popup ng-model="dt" is-open="status.opened" min-date="minDate" max-date="maxDate" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" ng-change="gotoDate(dt)" />
+                    </p>
+                </div>
+                <div class="col-md-2">
+                    <button id="id_today" type="button" class="btn btn-sm btn-info" ng-click="today()">Today</button>
+
+                </div>
+                <div class="col-md-12" class="calendar" ng-model="eventSources" resources="eventResources" calendar="myCalendar1" ui-calendar="uiConfig.calendar"></div>              
+            
         </div>
     </section>
 </div>
+
+    
+
 {% endverbatim %} 
 {% endblock %} 
 

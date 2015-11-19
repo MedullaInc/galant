@@ -22,7 +22,6 @@ app.factory('Task', function($resource) {
       params: {
         task: '@task'
       },
-      url: '/en/calendar/api/task/add/ '
     },
     update: {
       method: 'PUT',
