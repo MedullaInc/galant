@@ -34,10 +34,23 @@
         <table st-table="clients" st-safe-src="clientsSafe"
                class="table table-striped table-bordered">
             <thead>
-            <th st-sort="name">{% trans "Name" %}</th>
-            <th st-sort="money_owed.amount">{% trans "$ Owed" %}</th>
-            <th st-sort="last_contacted">{% trans "Last Contacted" %}</th>
-            <th st-sort="status">{% trans "Status" %}</th>
+            <tr>
+                <th st-sort="name">{% trans "Name" %}</th>
+                <th st-sort="money_owed.amount">{% trans "$ Owed" %}</th>
+                <th st-sort="last_contacted">{% trans "Last Contacted" %}</th>
+                <th st-sort="status">{% trans "Status" %}</th>
+            </tr>
+
+            <tr>
+                <th>
+                    <input placeholder="search client name" st-search="name"/>
+                </th>
+                <th></th>
+                <th></th>
+                <th>
+                    <input placeholder="search status" st-search="status"/>
+                </th>
+            </tr>
             </thead>
             <tbody ng-include src="'{% static "gallant/html/gl_client_rows.html" %}'">
             </tbody>

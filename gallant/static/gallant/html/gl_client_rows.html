@@ -1,6 +1,6 @@
 <tr ng-repeat="client in clients" ng-click="redirect(client.id)" style="cursor: pointer">
     <td>{{ client.name }}</td>
     <td>${{ client.money_owed.amount }} {{ client.money_owed.currency }}</td>
-    <td>{{ client.last_contacted }}</td>
+    <td>{{ client.last_contacted  | date:'yyyy-MM-dd h:mm a' }}</td>
     <td>{{ client.status.join(', ') }}</td>
 </tr>
