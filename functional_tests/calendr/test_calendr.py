@@ -1,8 +1,6 @@
-from datetime import timedelta
-
 from django.core.urlresolvers import reverse
 from django.utils import timezone
-from django.utils.timezone import activate
+import autofixture
 from functional_tests import browser
 import autofixture
 
@@ -14,12 +12,11 @@ def tearDown():
 class CalendrTest(browser.SignedInTest):
     def setUp(self):
         super(CalendrTest, self).setUp()
-        start = timezone.now() - timedelta(hours=+8)  # hack to account for browser timezone
 
         p = autofixture.create_one('gallant.Project', generate_fk=True,
                                    field_values={'user': self.user})
         t = autofixture.create_one('calendr.Task',
-                                   field_values={'user':self.user,'project':p,'daily_estimate':0.0, 'assignee':self.user, 'start':start, 'end':start})
+                                   field_values={'user':self.user,'project':p,'daily_estimate':0.0, 'assignee':self.user, 'start':timezone.now(), 'end':timezone.now()})
 
         self.browser = browser.instance()
         self.disable_popups()
@@ -53,6 +50,7 @@ class CalendrTest(browser.SignedInTest):
         b = self.browser
 
         b.get(self.live_server_url + reverse('calendr'))
+
         b.find_element_by_css_selector('.fc-event').click()
 
         submit_task = b.find_element_by_css_selector('#submitTask')
