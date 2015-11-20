@@ -1,18 +1,16 @@
 <div class="modal-header">
     <h3>Edit Task</h3>
 </div>
-<form ng-submit="submit()">
+<form ng-submit="submit(event)">
     <div class="modal-body">
-        <label>Title</label>
-        <input type="text" ng-model="event.id" />
-        <br>
         <label>Project</label>
         <select ng-model="event.projectId">
-            <option value="">------</option>
             <option ng-selected="{{project.id == event.projectId}}" ng-repeat="project in projects" value="{{project.id}}"> {{project.name}}
             </option>
         </select>
         <br>
+        <label>Daily Estimate</label>
+        <input type="number" ng-model="event.daily_estimate" /><br>       
         <label>Assignee</label>
         <select ng-model="event.resourceId">
             <option ng-selected="{{resource.id == event.resourceId}}" ng-repeat="resource in resources" value="{{resource.id}}"> {{resource.title}}
@@ -29,6 +27,6 @@
         <input type="text" ng-model="event.end" />
         <br>
         <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
-        <input type="submit" class="btn primary-btn" value="Submit" />
+        <input id="submitTask" type="submit" class="btn primary-btn" value="Submit" />
     </div>
 </form>
