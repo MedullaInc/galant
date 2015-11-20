@@ -1,11 +1,50 @@
+{% extends "landing.html" %}
 {% load experiments %}
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Goal Page</title>
-</head>
-<body>
+{% load bootstrap i18n staticfiles gallant_tags experiments %}
+
+{% block head_title %}
+    Thank you for subscribing!
+{% endblock %}
+
+{% block custom_css %}
+    <link rel="stylesheet" href="{% static "css/frontend.css" %}">
+{% endblock %}
+
+{% block extra_head %}
+{% endblock %}
+
+{% block scripts %}
+    {{ block.super }}
+    <script src="{% static "experiments/js/jquery.cookie.js" %}"></script>
+    <script src="{% static "experiments/js/experiments.js" %}"></script>
+{% endblock %}
+
+
+{% block sub_header %}
+{% endblock %}
+
+{% block content_div %}
+
     {% experiment_goal "page_goal" %}
-    <a href="{% url 'experiment_landing' %}">Back</a>
-</body>
-</html>
+
+    <section class="content-1">
+        <div class="holder v-center">
+            <div class="container">
+                <h1 class="thank_you">
+                    <span class="red_a">Thank you</span><br/>
+                    <span data-experiments-goal="cookie_goal">{{ response.registration.name }}</span>
+                </h1>
+
+                <h3 class="thank_you">
+                    You have been added to our waiting list,<br/>
+                    we will let you know once your place is ready!
+                </h3>
+
+                <h3 class="thank_you">
+                    ˚◡˚
+                </h3>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

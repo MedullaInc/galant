@@ -19,6 +19,8 @@ from django.contrib.auth.decorators import login_required
 from django.conf.urls.i18n import i18n_patterns
 from django.views.generic.base import TemplateView
 import gallant
+import market_analysis
+from market_analysis import views
 from gallant import views
 import allauth.urls
 import experiments.urls
@@ -32,11 +34,11 @@ urlpatterns = i18n_patterns(
     # FRONTEND EXPERIMENTS
 
     # Landing page
-    url(r'^home', TemplateView.as_view(template_name='landing.html'),
+    url(r'^home', market_analysis.views.LandingPage.as_view(),
         name='landing'),
 
-    # Experiment goal
-    url(r'^goal', TemplateView.as_view(template_name='goal.html'), name='experiment_goal'),
+    url(r'^waiting_list', market_analysis.views.LandingPageSubmit.as_view(),
+        name='waiting_list'),
 
     # ==============
     # Rest of Galant
@@ -91,8 +93,8 @@ urlpatterns = i18n_patterns(
 )
 
 urlpatterns += patterns('',
-    url(r'^experiments/', include(experiments.urls)),
-)
+                        url(r'^experiments/', include(experiments.urls)),
+                        )
 
 urlpatterns += url(r'^api/client/fields',
                    login_required(gallant.views.client_fields_json),

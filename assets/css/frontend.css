@@ -5,12 +5,18 @@
     padding-top: 11px;
 }
 
-body, html, .page-wrapper {
+body, html {
     background-color: #ededed;
+    height:100%;
 }
 
 body.body {
     background: transparent;
+}
+
+.page-wrapper {
+    min-height: 100%;
+    position: relative;
 }
 
 /* End Galant Brand*/
@@ -123,6 +129,9 @@ body.body {
     width: 100%;
     margin-top: 10px;
     border-top: 1px dotted black;
+    position: absolute;
+    bottom: 0;
+    left:0;
 }
 
 .footer-3 a {
@@ -596,14 +605,9 @@ div.alert.alert-info {
     border-radius: 0px;
     padding: 7px;
     width: 100%;
-    background: #5a40f8;
+    background: #da026c;
     color: #ffffff;
     margin-bottom: 40px;
-
-    -webkit-animation: pulse 10s infinite;
-    -moz-animation: pulse 10s infinite;
-    -o-animation: pulse 10s infinite;
-    animation: pulse 10s infinite;
 }
 
 .purple_pulse {
@@ -613,58 +617,82 @@ div.alert.alert-info {
     animation: pulse_color 10s infinite;
 }
 
-h1 .purple {
-    -webkit-animation: pulse_b_to_p 5s 1;
-    -moz-animation: pulse_b_to_p 5s 1;
-    -o-animation: pulse_b_to_p 5s 1;
-    animation: pulse_b_to_p 5s 1;
+h1 .red_a {
+    -webkit-animation: pulse_color 5s infinite;
+    -moz-animation: pulse_color 5s infinite;
+    -o-animation: pulse_color 5s infinite;
+    animation: pulse_color 5s infinite;
 }
 
 @keyframes pulse {
     0% {
-        background-color: #5a40f8;
+        background-color: #00fcff;
+    }
+    25% {
+        background-color: #00a1ff;
     }
     50% {
-        background-color: #666666;
+        background-color: #0029fe;
+    }
+    75% {
+        background-color: #ee0260;
     }
     100% {
-        background-color: #5a40f8;
+        background-color: #00fcff;
     }
 }
 
 @-webkit-keyframes pulse {
     0% {
-        background-color: #5a40f8;
+        background-color: #00fcff;
+    }
+    25% {
+        background-color: #00a1ff;
     }
     50% {
-        background-color: #666666;
+        background-color: #0029fe;
+    }
+    75% {
+        background-color: #ee0260;
     }
     100% {
-        background-color: #5a40f8;
+        background-color: #00fcff;
     }
 }
 
 @keyframes pulse_color {
     0% {
-        color: #5a40f8;
+        color: #00fcff;
+    }
+    25% {
+        color: #00a1ff;
     }
     50% {
-        color: #666666;
+        color: #0029fe;
+    }
+    75% {
+        color: #ee0260;
     }
     100% {
-        color: #5a40f8;
+        color: #00fcff;
     }
 }
 
 @-webkit-keyframes pulse_color {
     0% {
-        color: #5a40f8;
+        color: #00fcff;
+    }
+    25% {
+        color: #00a1ff;
     }
     50% {
-        color: #666666;
+        color: #0029fe;
+    }
+    75% {
+        color: #ee0260;
     }
     100% {
-        color: #5a40f8;
+        color: #00fcff;
     }
 }
 
@@ -726,7 +754,7 @@ span.purple_g {
 }
 
 span.purple {
-    color: #5a40f8;
+    color: #8108a8;
 }
 
 span.blue {
@@ -734,7 +762,55 @@ span.blue {
 }
 
 span.blue_a {
-    color: #a1d7e1;
+    color: #00afff;
+}
+
+span.red_a {
+    color: #da026c
+}
+
+span.purple_red_a {
+    color: #8108a8;
+}
+
+.required p {
+    font-family: "Courier New";
+    font-size: 12px;
+}
+
+.content-1 .holder.v-center .container input.form-error {
+    border: 1px dotted #ff0000;
+    color: #ff0000;
+}
+
+p.form-error {
+    color: #ff0000;
+    font-family: "Courier New";
+    font-size: 14px;
+    line-height: 20px;
+    margin-bottom: 10px;
+}
+
+ul.errorlist {
+    list-style: none;
+    margin-left: 0px;
+    padding-left: 0px;
+    color: #ff0000;
+    font-family: "Courier New";
+    font-size: 14px;
+    margin-bottom: 0px;
+}
+
+ul.errolist li {
+    color: #ff0000;
+    font-family: "Courier New";
+    font-size: 14px;
+}
+
+.content-1 .holder.v-center .container h1.thank_you, .content-1 .holder.v-center .container h3.thank_you {
+    text-align: center;
+    padding-right: 0px;
+    margin-bottom: 40px;
 }
 
 /* End Landing */

@@ -63,6 +63,7 @@ INSTALLED_APPS = (
 
     'market_analysis',
     'experiments',
+    'django.contrib.humanize',
 )
 
 MIDDLEWARE_CLASSES = (
