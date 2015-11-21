@@ -1,6 +1,7 @@
 {% extends "base_body.html" %}
 
-{% load bootstrap i18n experiments staticfiles gallant_tags %}
+{% load experiments %}
+{% load bootstrap i18n staticfiles gallant_tags experiments %}
 
 {% block head_title %}
     Manage clients, send quotes, track projects.
@@ -11,262 +12,13 @@
 {% endblock %}
 
 {% block extra_head %}
-{% endblock %}
-
-{% block scripts %}
-    {{ block.super }}
-    <script src="{% static "experiments/js/jquery.cookie.js" %}"></script>
-    <script src="{% static "experiments/js/experiments.js" %}"></script>
-{% endblock %}
-
-{% block header_div %}
-
-    <header class="header-5">
-        <div class="container">
-            <div class="row">
-                <nav class="navbar col-sm-12" role="navigation">
-                    <div class="navbar-header col-lg-6 col-md-6 col-sm-6">
-                        <button type="button" class="navbar-toggle"></button>
-                        <a class="brand" href="{% url 'landing' %}"><img id="logo" src="{% static "img/galant/galant_logo.png" %}"></a>
-                    </div>
-
-                    <div id="menu" class="collapse navbar-collapse col-lg-6 col-md-6 col-sm-6">
-                        <ul class="nav">
-                            <li><a id="menu" href="">{% trans 'Features' %}</a></li>
-                            <li><a id="menu" href="">{% trans 'Pricing' %}</a></li>
-                            <li><a id="menu" href="{% url 'contact' %}">{% trans 'Contact' %}</a></li>
-                        </ul>
-                    </div>
-                </nav>
-            </div>
-        </div>
-    </header>
-
-{% endblock %}
-
-{% block footer_div %}
-    <footer class="footer-3">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-3 col-xs-12 column">
-                    {% trans 'Home' %}<br>
-                </div>
-                <div class="col-sm-3 col-xs-12 column">
-                    {% trans 'Features' %}<br>
-                    {% trans 'Pricing' %}<br>
-                    <a href="{% url 'contact' %}">{% trans 'Contact' %}</a><br/>
-                </div>
-
-                <div class="col-sm-3 col-xs-12 column">
-                    <a href="https://www.facebook.com/galant.co" target="_blank">{% trans 'Facebook' %}</a><br>
-                    <a href="https://www.twitter.com/galantapp" target="_blank">{% trans 'Twitter' %}</a><br>
-                    {% trans 'Blog' %}
-                </div>
-
-                <div class="col-sm-3 col-xs-12 column">
-                    {% trans 'Copyright Medulla Inc.' %} © {% now "Y" %}<br>
-                    {% trans 'Terms & Conditions' %}<br>
-                    {% trans 'Privacy Policy' %}
-                </div>
-
-            </div>
-        </div>
-    </footer>
-{% endblock %}
-
-{% block sub_header %}
-{% endblock %}
-
-{% block content_div %}
-
-    <section class="content-1">
-        <div class="holder v-center">
-            <div class="container">
-                <h1>
-                    Manage clients, send quotes,<br/>
-                    track projects <span class="purple">— all in one place</span>
-                </h1>
-
-                <h2>
-                    <span class="blue">The perfect agency workflow</span>
-                </h2>
-
-                <div class="row">
-                    <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12  feature">
-                        <img src="{% static 'img/galant/communication_icon.png' %}">
-
-                        <p>
-                            <b><span class="blue">Client Management</span></b>
-                        </p>
-
-                        <p>
-                            — Contact information.
-                        </p>
-
-                        <p>
-                            — Follow-up history.
-                        </p>
-                    </div>
-                    <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12  feature">
-                        <img src="{% static 'img/galant/quotes_icon.png' %}">
-
-                        <p>
-                            <b><span class="blue">Quotes</span></b>
-                        </p>
-
-                        <p>
-                            — Pricing & timing insights.
-                        </p>
-
-                        <p>
-                            — Client viewing analytics.
-                        </p>
-                    </div>
-                    <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12  feature">
-                        <img src="{% static 'img/galant/brief_icon.png' %}">
-
-                        <p>
-                            <b><span class="blue">Briefs</span></b>
-                        </p>
-
-                        <p>
-                            — Client briefing.
-                        </p>
-
-                        <p>
-                            — Deliverables briefing.
-                        </p>
-                    </div>
-                    <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12  feature">
-                        <img src="{% static 'img/galant/calendar_icon.png' %}">
-
-                        <p>
-                            <b><span class="blue">Calendar</span></b>
-                        </p>
-
-                        <p>
-                            — Simple drag & drop.
-                        </p>
-
-                        <p>
-                            — Project & people filtering.
-                        </p>
-
-                    </div>
-                    <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12  feature">
-                        <img src="{% static 'img/galant/checklist_icon.png' %}">
-
-                        <p>
-                            <b><span class="blue">Work Assignments</span></b>
-                        </p>
-
-                        <p>
-                            — Work load tracking.
-                        </p>
-
-                        <p>
-                            — Multiple project assignments.
-                        </p>
-
-                    </div>
-                    <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 feature">
-                        <img src="{% static 'img/galant/clock_icon.png' %}">
-
-                        <p>
-                            <b><span class="blue">Reminders</span></b>
-                        </p>
-
-                        <p>
-                            — Agency workflow reminders.
-                        </p>
-
-                        <p>
-                            — Client responsibilities.
-                        </p>
-
-                    </div>
-                    <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12  feature">
-                        <img src="{% static 'img/galant/invoice_icon.png' %}">
-
-                        <p>
-                            <b><span class="blue">Income</span></b>
-                        </p>
-
-                        <p>
-                            — Deliverables & payments.
-                        </p>
-
-                        <p>
-                            — Invoicing & reports.
-                        </p>
-
-                    </div>
-                </div>
-            </div>
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pull-right">
-                        <h2>
-                            <span class="purple_g purple_pulse">Sign up for our waiting list</span>
-                        </h2>
-
-                        <form class="form" method="POST" action="{% url 'account_login' %}">
-                            {% csrf_token %}
-                            <div class="login">
-                                <div class="row">
-                                    <div class="col-sm-12">
-                                        <input class="form-control" placeholder="Name"
-                                               type="text" value="" id="id_name" name="name"/>
-                                        <input class="form-control" placeholder="Email"
-                                               type="email" value="" id="id_email" name="email"/>
-                                        <input class="form-control" placeholder="Website"
-                                               type="email" value="" id="id_web" name="web"/>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm-5">
-                                        <button type="submit" class="btn btn-default" id="submit_signup" name="submit_signup">
-                                            {% trans 'Sign up' %}
-                                        </button>
-                                    </div>
-                                    <div class="col-sm-7">
-                                        <div class="row">
-                                            <div class="col-sm-12">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-
-                    </div>
-                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pull-left">
-                        <h2>
-                            <span class="blue">What agencies are saying</span>
-                        </h2>
-
-                        <h3>
-                            "Galant has helped us focus on the things we are best at."<br/><br/>
-                            Anagrama.<br/>
-                            <a href="http://www.anagrama.com" target="_blank">www.anagrama.com</a>
-                        </h3>
-
-                        <br/>
-                        <br/>
-
-                    </div>
-
-                </div>
-            </div>
-        </div>
-    </section>
-
-{% endblock %}
-
-{% block extra_body %}
 
     <script>
-        {# Standard Django AJAX CSRF support #}
+
+        $('#submit_signup').click(function () {
+            experiments.goal('js_goal');
+        });
+
         jQuery(document).ajaxSend(function (event, xhr, settings) {
             function getCookie(name) {
                 var cookieValue = null;
@@ -305,6 +57,300 @@
                 xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
             }
         });
+    </script>
+
+{% endblock %}
+
+{% block scripts %}
+    {{ block.super }}
+    <script src="{% static "experiments/js/jquery.cookie.js" %}"></script>
+    <script src="{% static "experiments/js/experiments.js" %}"></script>
+{% endblock %}
+
+{% block header_div %}
+
+    <header class="header-5">
+        <div class="container">
+            <div class="row">
+                <nav class="navbar col-sm-12" role="navigation">
+                    <div class="navbar-header col-lg-6 col-md-6 col-sm-6">
+                        <button type="button" class="navbar-toggle"></button>
+                        <a class="brand" href="{% url 'landing' %}"><img id="logo" src="{% static "img/galant/galant_logo.png" %}"></a>
+                    </div>
+
+                    <div id="menu" class="collapse navbar-collapse col-lg-6 col-md-6 col-sm-6">
+                        <ul class="nav">
+                            <li><a id="menu" href="">{% trans 'Features' %}</a></li>
+                            <li><a id="menu" href="">{% trans 'Pricing' %}</a></li>
+                            <li><a id="menu" href="{% url 'contact' %}">{% trans 'Contact' %}</a></li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+{% endblock %}
+
+{% block sub_header %}
+{% endblock %}
+
+{% block content_div %}
+
+    <section class="content-1">
+        <div class="holder v-center">
+            <div class="container">
+                <h1>
+                    {% csrf_token %}
+
+                    {% experiment waiting_list control %}
+                        Manage clients, send quotes,<br/>
+                        track projects <span class="red_a">— all in one place</span>
+                    {% endexperiment %}
+
+                    {% experiment waiting_list test_a %}
+                        Focus on the creative,<br/>
+                        we'll solve the administrative<br/>
+                        <span class="red_a">— all in one place</span>
+                    {% endexperiment %}
+
+                </h1>
+
+                <h2>
+                    <span class="purple_red_a">The perfect agency workflow</span>
+                </h2>
+
+                <div class="row">
+                    <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12  feature">
+                        <img src="{% static 'img/galant/communication_icon.png' %}">
+
+                        <p>
+                            <b><span class="purple_red_a">Client Management</span></b>
+                        </p>
+
+                        <p>
+                            — Contact information.
+                        </p>
+
+                        <p>
+                            — Follow-up history.
+                        </p>
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12  feature">
+                        <img src="{% static 'img/galant/quotes_icon.png' %}">
+
+                        <p>
+                            <b><span class="purple_red_a">Quotes</span></b>
+                        </p>
+
+                        <p>
+                            — Pricing & timing insights.
+                        </p>
+
+                        <p>
+                            — Client viewing analytics.
+                        </p>
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12  feature">
+                        <img src="{% static 'img/galant/brief_icon.png' %}">
+
+                        <p>
+                            <b><span class="purple_red_a">Briefs</span></b>
+                        </p>
+
+                        <p>
+                            — Client briefing.
+                        </p>
+
+                        <p>
+                            — Deliverables briefing.
+                        </p>
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12  feature">
+                        <img src="{% static 'img/galant/calendar_icon.png' %}">
+
+                        <p>
+                            <b><span class="purple_red_a">Calendar</span></b>
+                        </p>
+
+                        <p>
+                            — Simple drag & drop.
+                        </p>
+
+                        <p>
+                            — Project & people filtering.
+                        </p>
+
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12  feature">
+                        <img src="{% static 'img/galant/checklist_icon.png' %}">
+
+                        <p>
+                            <b><span class="purple_red_a">Work Assignments</span></b>
+                        </p>
+
+                        <p>
+                            — Work load tracking.
+                        </p>
+
+                        <p>
+                            — Multiple project assignments.
+                        </p>
+
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 feature">
+                        <img src="{% static 'img/galant/clock_icon.png' %}">
+
+                        <p>
+                            <b><span class="purple_red_a">Reminders</span></b>
+                        </p>
+
+                        <p>
+                            — Agency workflow reminders.
+                        </p>
+
+                        <p>
+                            — Client responsibilities.
+                        </p>
+
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12  feature">
+                        <img src="{% static 'img/galant/invoice_icon.png' %}">
+
+                        <p>
+                            <b><span class="purple_red_a">Income</span></b>
+                        </p>
+
+                        <p>
+                            — Deliverables & payments.
+                        </p>
+
+                        <p>
+                            — Invoicing & reports.
+                        </p>
+
+                    </div>
+                </div>
+            </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pull-right">
+                        <h2>
+                            <span class="red_a">Sign up for our waiting list</span>
+                        </h2>
+
+                        {% if response.errors %}
+                            <p class="form-error">
+                                Your subscription could not be saved:<br/>
+                            </p>
+
+                            {% if response.errors.name %}{{ response.errors.name }}{% endif %}
+                            {% if response.errors.email %}{{ response.errors.email }}{% endif %}
+                            {% if response.errors.website %}{{ response.errors.website }}{% endif %}
+                            <br/>
+
+                        {% endif %}
+
+                        <form class="form" method="POST" action="{% url 'waiting_list' %}">
+                            {% csrf_token %}
+                            <div class="login">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <input class="{% if response and response.errors.name %}form-error{% endif %} form-control" placeholder="Name"
+                                               type="text" id="id_name" name="name" {% if response and response.data.name %}value="{{ response.data.name }}"{% endif %}/>
+                                        <input class="{% if response and response.errors.email %}form-error{% endif %} form-control" placeholder="Email"
+                                               type="email" id="id_email" name="email" {% if response and response.data.email %}value="{{ response.data.email }}"{% endif %}/>
+                                        <input class="{% if response and response.errors.website %}form-error{% endif %} form-control" placeholder="Website"
+                                               type="email" id="id_web" name="website" {% if response and response.data.website %}value="{{ response.data.website }}"{% endif %}/>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-5">
+                                        <button type="submit" class="btn btn-default" id="submit_signup" name="submit_signup">
+                                            {% trans 'Sign up' %}
+                                        </button>
+                                    </div>
+                                    <div class="col-sm-7">
+                                        <div class="row">
+                                            <div class="col-sm-12 required purple">
+                                                <p>All fields are required</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pull-left">
+                        <h2>
+                            <span class="blue">What agencies are saying</span>
+                        </h2>
+
+                        <h3>
+                            "Galant has helped us focus on the things we are best at."<br/><br/>
+                            Anagrama.<br/>
+                            <a href="http://www.anagrama.com" target="_blank">www.anagrama.com</a>
+                        </h3>
+
+                        <br/>
+                        <br/>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {% experiments_confirm_human %}
+
+{% endblock %}
+
+{% block footer_div %}
+    <footer class="footer-3">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-3 col-xs-12 column">
+                    {% trans 'Home' %}<br>
+                </div>
+                <div class="col-sm-3 col-xs-12 column">
+                    {% trans 'Features' %}<br>
+                    {% trans 'Pricing' %}<br>
+                    <a href="{% url 'contact' %}">{% trans 'Contact' %}</a><br/>
+                </div>
+
+                <div class="col-sm-3 col-xs-12 column">
+                    <a href="https://www.facebook.com/galant.co" target="_blank">{% trans 'Facebook' %}</a><br>
+                    <a href="https://www.twitter.com/galantapp" target="_blank">{% trans 'Twitter' %}</a><br>
+                    {% trans 'Blog' %}
+                </div>
+
+                <div class="col-sm-3 col-xs-12 column">
+                    {% trans 'Copyright Medulla Inc.' %} © {% now "Y" %}<br>
+                    {% trans 'Terms & Conditions' %}<br>
+                    {% trans 'Privacy Policy' %}
+                </div>
+
+            </div>
+        </div>
+    </footer>
+{% endblock %}
+
+{% block extra_body %}
+
+    <script>
+        $(document).ready(function () {
+            reposition_footer();
+        });
+
+        $(window).resize(function () {
+            reposition_footer();
+        });
+
+        function reposition_footer() {
+            $('.page-wrapper').css({'padding-bottom': $('footer.footer-3').height() + 50});
+        }
     </script>
 
 {% endblock %}
