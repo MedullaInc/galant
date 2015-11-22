@@ -25,6 +25,13 @@ app.factory('Client', function ($resource) {
             },
         },
         update: {
+            method: 'PATCH',
+            params: {
+                id: '@id'
+            },
+            url: '/api/client/:id'
+        },
+        replace: {
             method: 'PUT',
             params: {
                 id: '@id'

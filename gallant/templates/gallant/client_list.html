@@ -37,7 +37,7 @@
             <tr>
                 <th st-sort="name">{% trans "Name" %}</th>
                 <th st-sort="money_owed.amount">{% trans "$ Owed" %}</th>
-                <th st-sort="last_contacted">{% trans "Last Contacted" %}</th>
+                <th colspan="2" st-sort="last_contacted">{% trans "Last Contacted" %}</th>
                 <th st-sort="status">{% trans "Status" %}</th>
             </tr>
 
@@ -46,7 +46,7 @@
                     <input placeholder="search client name" st-search="name"/>
                 </th>
                 <th></th>
-                <th></th>
+                <th colspan="2"></th>
                 <th>
                     <input placeholder="search status" st-search="status"/>
                 </th>

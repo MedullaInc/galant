@@ -174,6 +174,16 @@ angular.module('gallant.controllers', ['ui.calendar', 'ui.bootstrap', 'ng.django
           $scope.cancel = function() {
             $modalInstance.dismiss('cancel');
           };
+          $scope.deleteTask = function(event) {
+              if (confirm('Are you sure you want to permanently delete this task?')) {
+                  Task.delete({id:event.id}).$promise.then(function (response) {
+                      var index = $scope.events.indexOf(event);
+                      $scope.events.splice(index, 1);
+                      $modalInstance.dismiss('cancel');
+                  });
+              }
+
+          };
         },
         resolve: {
           event: function() {
