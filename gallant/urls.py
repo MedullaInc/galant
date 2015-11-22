@@ -37,6 +37,15 @@ urlpatterns = i18n_patterns(
     url(r'^home', market_analysis.views.LandingPage.as_view(),
         name='landing'),
 
+    url(r'^features', TemplateView.as_view(template_name='features.html'),
+        name='features'),
+
+    url(r'^about', TemplateView.as_view(template_name='about.html'),
+        name='about'),
+
+    url(r'^contact', TemplateView.as_view(template_name='contact.html'),
+        name='contact'),
+
     url(r'^waiting_list', market_analysis.views.LandingPageSubmit.as_view(),
         name='waiting_list'),
 
@@ -44,7 +53,7 @@ urlpatterns = i18n_patterns(
     # Rest of Galant
     url(r'^$', TemplateView.as_view(template_name='index.html'), name='home'),
     url(r'^signup/', gallant.views.SignUpRequest.as_view(), name='signup'),
-    url(r'^contact/', gallant.views.contact, name='contact'),
+    # url(r'^contact/', gallant.views.contact, name='contact'),
 
     url(r'^accounts/', include(allauth.urls)),
     url(r'^admin/', include(admin.site.urls)),

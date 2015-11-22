@@ -86,9 +86,12 @@ class SignedOutTest(StaticLiveServerTestCase):
             self.assertTrue(self.live_server_url + reverse('account_login') in self.browser.current_url)
 
     def test_can_access_contact(self):
-        self.browser.get(self.live_server_url + reverse('contact'))
+        b = self.browser
+        b.get(self.live_server_url + reverse('contact'))
 
-        self.assertIsNotNone(self.browser.find_element_by_class_name('sub-main'))
+        title = b.find_element_by_css_selector('h1 span.red_a')
+
+        self.assertEqual(u'CONTACT', title.text)
 
     def test_can_request_signup(self):
         b = self.browser

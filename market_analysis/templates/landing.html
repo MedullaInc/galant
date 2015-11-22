@@ -80,8 +80,8 @@
 
                     <div id="menu" class="collapse navbar-collapse col-lg-6 col-md-6 col-sm-6">
                         <ul class="nav">
-                            <li><a id="menu" href="">{% trans 'Features' %}</a></li>
-                            <li><a id="menu" href="">{% trans 'Pricing' %}</a></li>
+                            <li><a id="menu" href="{% url 'about' %}">{% trans 'About' %}</a></li>
+                            <li><a id="menu" href="{% url 'features' %}">{% trans 'Features' %}</a></li>
                             <li><a id="menu" href="{% url 'contact' %}">{% trans 'Contact' %}</a></li>
                         </ul>
                     </div>
@@ -104,8 +104,8 @@
                     {% csrf_token %}
 
                     {% experiment waiting_list control %}
-                        Manage clients, send quotes,<br/>
-                        track projects <span class="red_a">— all in one place</span>
+                        <span class="red_a">Manage clients, send quotes,<br/>
+                        track projects — all in one place</span>
                     {% endexperiment %}
 
                     {% experiment waiting_list test_a %}
@@ -115,126 +115,112 @@
                     {% endexperiment %}
 
                 </h1>
-
-                <h2>
-                    <span class="purple_red_a">The perfect agency workflow</span>
-                </h2>
-
-                <div class="row">
-                    <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12  feature">
-                        <img src="{% static 'img/galant/communication_icon.png' %}">
-
-                        <p>
-                            <b><span class="purple_red_a">Client Management</span></b>
-                        </p>
-
-                        <p>
-                            — Contact information.
-                        </p>
-
-                        <p>
-                            — Follow-up history.
-                        </p>
-                    </div>
-                    <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12  feature">
-                        <img src="{% static 'img/galant/quotes_icon.png' %}">
-
-                        <p>
-                            <b><span class="purple_red_a">Quotes</span></b>
-                        </p>
-
-                        <p>
-                            — Pricing & timing insights.
-                        </p>
-
-                        <p>
-                            — Client viewing analytics.
-                        </p>
-                    </div>
-                    <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12  feature">
-                        <img src="{% static 'img/galant/brief_icon.png' %}">
-
-                        <p>
-                            <b><span class="purple_red_a">Briefs</span></b>
-                        </p>
-
-                        <p>
-                            — Client briefing.
-                        </p>
-
-                        <p>
-                            — Deliverables briefing.
-                        </p>
-                    </div>
-                    <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12  feature">
-                        <img src="{% static 'img/galant/calendar_icon.png' %}">
-
-                        <p>
-                            <b><span class="purple_red_a">Calendar</span></b>
-                        </p>
-
-                        <p>
-                            — Simple drag & drop.
-                        </p>
-
-                        <p>
-                            — Project & people filtering.
-                        </p>
-
-                    </div>
-                    <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12  feature">
-                        <img src="{% static 'img/galant/checklist_icon.png' %}">
-
-                        <p>
-                            <b><span class="purple_red_a">Work Assignments</span></b>
-                        </p>
-
-                        <p>
-                            — Work load tracking.
-                        </p>
-
-                        <p>
-                            — Multiple project assignments.
-                        </p>
-
-                    </div>
-                    <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 feature">
-                        <img src="{% static 'img/galant/clock_icon.png' %}">
-
-                        <p>
-                            <b><span class="purple_red_a">Reminders</span></b>
-                        </p>
-
-                        <p>
-                            — Agency workflow reminders.
-                        </p>
-
-                        <p>
-                            — Client responsibilities.
-                        </p>
-
-                    </div>
-                    <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12  feature">
-                        <img src="{% static 'img/galant/invoice_icon.png' %}">
-
-                        <p>
-                            <b><span class="purple_red_a">Income</span></b>
-                        </p>
-
-                        <p>
-                            — Deliverables & payments.
-                        </p>
-
-                        <p>
-                            — Invoicing & reports.
-                        </p>
-
-                    </div>
-                </div>
             </div>
             <div class="container">
                 <div class="row">
-                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pull-right">
+                    <div class="col-lg-6 col-md-8 col-sm-6 col-xs-12">
+                        <h2>
+                            <span class="purple_red_a">The perfect agency workflow</span>
+                        </h2>
+
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12  feature">
+                                <img src="{% static 'img/galant/communication_icon.png' %}">
+
+                                <p>
+                                    <b><span class="purple_red_a">Client Management</span></b>
+                                </p>
+
+                                <p>
+                                    — Contact information.
+                                </p>
+
+                                <p>
+                                    — Follow-up history.
+                                </p>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12  feature">
+                                <img src="{% static 'img/galant/quotes_icon.png' %}">
+
+                                <p>
+                                    <b><span class="purple_red_a">Quotes</span></b>
+                                </p>
+
+                                <p>
+                                    — Pricing & timing insights.
+                                </p>
+
+                                <p>
+                                    — Invoicing & reports.
+                                </p>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12  feature">
+                                <img src="{% static 'img/galant/brief_icon.png' %}">
+
+                                <p>
+                                    <b><span class="purple_red_a">Briefs</span></b>
+                                </p>
+
+                                <p>
+                                    — Client briefing.
+                                </p>
+
+                                <p>
+                                    — Deliverables briefing.
+                                </p>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12  feature">
+                                <img src="{% static 'img/galant/calendar_icon.png' %}">
+
+                                <p>
+                                    <b><span class="purple_red_a">Calendar</span></b>
+                                </p>
+
+                                <p>
+                                    — Simple drag & drop.
+                                </p>
+
+                                <p>
+                                    — Project & people filtering.
+                                </p>
+
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12  feature">
+                                <img src="{% static 'img/galant/checklist_icon.png' %}">
+
+                                <p>
+                                    <b><span class="purple_red_a">Work Assignments</span></b>
+                                </p>
+
+                                <p>
+                                    — Work load tracking.
+                                </p>
+
+                                <p>
+                                    — Multiple project assignments.
+                                </p>
+
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 feature">
+                                <img src="{% static 'img/galant/clock_icon.png' %}">
+
+                                <p>
+                                    <b><span class="purple_red_a">Reminders</span></b>
+                                </p>
+
+                                <p>
+                                    — Agency workflow reminders.
+                                </p>
+
+                                <p>
+                                    — Client responsibilities.
+                                </p>
+
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-lg-6 col-md-4 col-sm-6 col-xs-12 pull-right">
                         <h2>
                             <span class="red_a">Sign up for our waiting list</span>
                         </h2>
@@ -282,13 +268,13 @@
                         </form>
 
                     </div>
-                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pull-left">
+                    <div class="col-lg-6 col-md-4 col-sm-6 col-xs-12 pull-left">
                         <h2>
                             <span class="blue">What agencies are saying</span>
                         </h2>
 
                         <h3>
-                            "Galant has helped us focus on the things we are best at."<br/><br/>
+                            "Galant has helped us focus on the things we're best at."<br/><br/>
                             Anagrama.<br/>
                             <a href="http://www.anagrama.com" target="_blank">www.anagrama.com</a>
                         </h3>
@@ -312,18 +298,17 @@
         <div class="container">
             <div class="row">
                 <div class="col-sm-3 col-xs-12 column">
-                    {% trans 'Home' %}<br>
+                    <a href="{% url 'landing' %}">{% trans 'Home' %}</a><br/>
+                    <a href="{% url 'contact' %}">{% trans 'Contact' %}</a><br>
                 </div>
                 <div class="col-sm-3 col-xs-12 column">
-                    {% trans 'Features' %}<br>
-                    {% trans 'Pricing' %}<br>
-                    <a href="{% url 'contact' %}">{% trans 'Contact' %}</a><br/>
+                    <a href="{% url 'about' %}">{% trans 'About' %}</a><br/>
+                    <a href="{% url 'features' %}">{% trans 'Features' %}</a><br/>
                 </div>
 
                 <div class="col-sm-3 col-xs-12 column">
                     <a href="https://www.facebook.com/galant.co" target="_blank">{% trans 'Facebook' %}</a><br>
                     <a href="https://www.twitter.com/galantapp" target="_blank">{% trans 'Twitter' %}</a><br>
-                    {% trans 'Blog' %}
                 </div>
 
                 <div class="col-sm-3 col-xs-12 column">

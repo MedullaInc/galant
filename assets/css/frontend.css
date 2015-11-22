@@ -7,7 +7,7 @@
 
 body, html {
     background-color: #ededed;
-    height:100%;
+    height: 100%;
 }
 
 body.body {
@@ -131,7 +131,7 @@ body.body {
     border-top: 1px dotted black;
     position: absolute;
     bottom: 0;
-    left:0;
+    left: 0;
 }
 
 .footer-3 a {
@@ -275,7 +275,7 @@ body #header-5.navbar-collapse {
     z-index: 1;
     border: none;
     padding-top: 10px;
-    background: #a1d7e1;
+    background: #5d76f6;
 }
 
 #header-5 li {
@@ -292,7 +292,7 @@ ul.nav li a#menu, ul.nav li a#menu:hover {
 }
 
 ul.nav li a#menu:hover {
-    color: #999999;
+    color: #666666;
 }
 
 .loaded .page-wrapper,
@@ -419,7 +419,7 @@ div.alert.alert-info {
         margin-top: 50px;
         margin-bottom: 18px;
         font-size: 21px;
-        font-weight: 500;
+        font-weight: 600;
         padding-bottom: 10px;
     }
 
@@ -428,6 +428,13 @@ div.alert.alert-info {
         font-size: 14px;
         line-height: 24px;
         font-weight: 500;
+    }
+
+    .content-1 .holder.v-center .container h4 {
+        font-family: "Courier New";
+        font-size: 14px;
+        line-height: 18px;
+        margin-bottom: 40px;
     }
 
     .feature {
@@ -447,16 +454,20 @@ div.alert.alert-info {
         margin-top: 20px;
         margin-bottom: 40px;
         font-size: 36px;
-        font-weight: 500;
+        font-weight: 800;
         letter-spacing: -1px;
     }
 
     .content-1 .holder.v-center .container h2 {
-        margin-top: 50px;
+        margin-top: 10px;
         margin-bottom: 18px;
         font-size: 21px;
-        font-weight: 500;
+        font-weight: 600;
         padding-bottom: 10px;
+    }
+
+    .content-1 .holder.v-center .container h2 span.red_a {
+        padding-right: 200px;
     }
 
     .content-1 .holder.v-center .container h3 {
@@ -464,6 +475,13 @@ div.alert.alert-info {
         font-size: 14px;
         line-height: 24px;
         font-weight: 500;
+    }
+
+    .content-1 .holder.v-center .container h4 {
+        font-family: "Courier New";
+        font-size: 14px;
+        line-height: 18px;
+        margin-bottom: 40px;
     }
 
     .feature {
@@ -497,19 +515,23 @@ div.alert.alert-info {
 @media (min-width: 950px) and (max-width: 1200px) {
 
     .content-1 .holder.v-center .container h1 {
-        margin-top: 40px;
-        margin-bottom: 80px;
-        font-size: 46px;
-        font-weight: 500;
+        margin-top: 20px;
+        margin-bottom: 40px;
+        font-size: 36px;
+        font-weight: 800;
         letter-spacing: -1px;
     }
 
     .content-1 .holder.v-center .container h2 {
-        margin-top: 50px;
+        margin-top: 20px;
         margin-bottom: 18px;
         font-size: 26px;
-        font-weight: 500;
+        font-weight: 600;
         padding-bottom: 10px;
+    }
+
+    .content-1 .holder.v-center .container h2 span.purple_red_a {
+        padding-right: 200px;
     }
 
     .content-1 .holder.v-center .container h3 {
@@ -517,6 +539,13 @@ div.alert.alert-info {
         font-size: 18px;
         line-height: 24px;
         font-weight: 500;
+    }
+
+    .content-1 .holder.v-center .container h4 {
+        font-family: "Courier New";
+        font-size: 16px;
+        line-height: 18px;
+        margin-bottom: 40px;
     }
 
     .feature {
@@ -529,18 +558,18 @@ div.alert.alert-info {
 @media ( min-width: 1201px ) {
 
     .content-1 .holder.v-center .container h1 {
-        margin-top: 40px;
-        margin-bottom: 80px;
+        margin-top: 30px;
+        margin-bottom: 60px;
         font-size: 48px;
-        font-weight: 500;
+        font-weight: 800;
         letter-spacing: -1px;
     }
 
     .content-1 .holder.v-center .container h2 {
-        margin-top: 50px;
+        margin-top: 0px;
         margin-bottom: 18px;
         font-size: 29px;
-        font-weight: 500;
+        font-weight: 600;
         padding-bottom: 10px;
     }
 
@@ -549,6 +578,13 @@ div.alert.alert-info {
         font-size: 20px;
         line-height: 24px;
         font-weight: 500;
+    }
+
+    .content-1 .holder.v-center .container h4 {
+        font-family: "Courier New";
+        font-size: 16px;
+        line-height: 18px;
+        margin-bottom: 40px;
     }
 
     .feature {
@@ -576,7 +612,7 @@ div.alert.alert-info {
     font-family: "Courier New";
     text-transform: uppercase;
     color: #333333;
-    padding-right: 100px;
+    padding-right: 0px;
 }
 
 .content-1 .holder.v-center .container input {

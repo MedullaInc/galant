@@ -1,0 +1,80 @@
+{% extends "landing.html" %}
+{% load bootstrap i18n staticfiles gallant_tags %}
+
+{% block head_title %}
+    Contact
+{% endblock %}
+
+{% block custom_css %}
+    <link rel="stylesheet" href="{% static "css/frontend.css" %}">
+{% endblock %}
+
+{% block extra_head %}
+{% endblock %}
+
+{% block sub_header %}
+{% endblock %}
+
+{% block content_div %}
+
+    <section class="content-1">
+        <div class="holder v-center">
+            <div class="container">
+                <h1>
+                    <span class="red_a">Contact</span>
+                </h1>
+            </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <h2>
+                            <span style="color: #00e0ff;">
+                                Blog
+                            </span>
+                        </h2>
+                        <h4>
+                            We publish weekly insights from creative agencies around the world. Don't forget to subscribe to receive updates.<br/><br/>
+                            <a href="">Visit our blog</a>.
+                        </h4>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <h2>
+                            <span style="color: #0043ff;">
+                                Twitter
+                            </span>
+                        </h2>
+                        <h4>
+                            For service status updates, new features and good new-fashioned conversation, follow @galantapp on Twitter.<br/><br/>
+                            <a href="http://www.twitter.com/galantapp" target="_blank">Follow @galantapp</a>.
+
+                        </h4>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <h2>
+                            <span style="color: #6f09b6;">
+                                Facebook
+                            </span>
+                        </h2>
+                        <h4>
+                            If you like Galant and want fancy feature updates plus our blog publications to share, click the like button!<br/><br/>
+                            <a href="http://www.facebook.com/galant.co" target="_blank">Like our page</a>.
+                        </h4>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <h2>
+                            <span style="color: #df0369;">
+                                Partnership Inquiries
+                            </span>
+                        </h2>
+                        <h4>
+                            If you have a proposal you think we may be interested in, we are available for a meeting.<br/><br/>
+                            <a href="mailto:partnerships@galant.co">Contact us here</a>.
+                        </h4>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

@@ -1,0 +1,113 @@
+{% extends "landing.html" %}
+{% load bootstrap i18n staticfiles gallant_tags %}
+
+{% block head_title %}
+    Features
+{% endblock %}
+
+{% block custom_css %}
+    <link rel="stylesheet" href="{% static "css/frontend.css" %}">
+{% endblock %}
+
+{% block extra_head %}
+{% endblock %}
+
+{% block sub_header %}
+{% endblock %}
+
+{% block content_div %}
+
+    <section class="content-1">
+        <div class="holder v-center">
+            <div class="container">
+                <h1>
+                    <span class="red_a">Features</span>
+                </h1>
+            </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-4 col-md-6 col-sm-6">
+                        <h2>
+                            <span style="color: #00e0ff;">
+                                Client Management
+                            </span>
+                        </h2>
+                        <h4>
+                            Allows you to register clients and center all relevant information:<br/><br/>
+                           — Past agency & client interactions<br/>
+                           — Project work advancement<br/>
+                           — Payments follow-up
+                        </h4>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-sm-6">
+                        <h2>
+                            <span style="color: #0043ff;">
+                                Quotes
+                            </span>
+                        </h2>
+                        <h4>
+                            You'll save time by building quotes in a matter of minutes:<br/><br/>
+                           — Pricing recommendations<br/>
+                           — Past work cost analysis<br/>
+                           — Quote review analysis
+                        </h4>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-sm-6">
+                        <h2>
+                            <span style="color: #6f09b6;">
+                                Briefs
+                            </span>
+                        </h2>
+                        <h4>
+                            Get the information you need to understand your assignments:<br/><br/>
+                           — Customized for services<br/>
+                           — Delivery and response tools<br/>
+                           — Availability throughout process
+                        </h4>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-sm-6">
+                        <h2>
+                            <span style="color: #004dff;">
+                                Calendar
+                            </span>
+                        </h2>
+                        <h4>
+                            Assign tasks directly from quotes to each resource in the agency:<br/><br/>
+                           — Project filtering<br/>
+                           — Resource filtering<br/>
+                           — Easy as Drag & drop
+                        </h4>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-sm-6">
+                        <h2>
+                            <span style="color: #6f09b6;">
+                                Work Assignments
+                            </span>
+                        </h2>
+                        <h4>
+                            Allow each resource in the agency to have work information:<br/><br/>
+                           — Multiple assignments<br/>
+                           — Work load tracking<br/>
+                           — Reminders
+                        </h4>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-sm-6">
+                        <h2>
+                            <span style="color: #df0369;">
+                                Reminders
+                            </span>
+                        </h2>
+                        <h4>
+                            We'll help you remind clients & resource about important events:<br/><br/>
+                           — Client brief & payment reminders<br/>
+                           — Resource work due dates<br/>
+                           — Alerts & issues
+                        </h4>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

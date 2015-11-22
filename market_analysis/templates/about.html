@@ -1,0 +1,42 @@
+{% extends "landing.html" %}
+{% load bootstrap i18n staticfiles gallant_tags %}
+
+{% block head_title %}
+    About
+{% endblock %}
+
+{% block custom_css %}
+    <link rel="stylesheet" href="{% static "css/frontend.css" %}">
+{% endblock %}
+
+{% block extra_head %}
+{% endblock %}
+
+{% block sub_header %}
+{% endblock %}
+
+{% block content_div %}
+
+    <section class="content-1">
+        <div class="holder v-center">
+            <div class="container">
+                <h1>
+                    <span class="red_a">About</span>
+                </h1>
+
+                <h3>
+                    Galant was brewed in the heart of Silicon Valley, in close collaboration with internationally acclaimed creative agencies.
+                </h3>
+
+                <h3>
+                    Our sole purpose is to help agencies and freelancers operate their business.
+                </h3>
+
+                <h3>
+                    We hope you can focus on what you do best: create.
+                </h3>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}
