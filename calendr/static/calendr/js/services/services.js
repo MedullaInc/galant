@@ -29,6 +29,13 @@ app.factory('Task', function($resource) {
         id: '@id'
       },
       url: '/en/calendar/api/task/:id '
+    },
+    delete: {
+      method: 'DELETE',
+      params: {
+        id: '@id'
+      },
+      url: '/en/calendar/api/task/:id '
     }
   });
 

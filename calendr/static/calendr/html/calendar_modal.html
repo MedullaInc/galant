@@ -1,4 +1,6 @@
 <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal"
+    ng-click="cancel()"><h3>&times;</h3></button>
     <h3>Edit Task</h3>
 </div>
 <form ng-submit="submit(event)">
@@ -26,7 +28,8 @@
         <label>End</label>
         <input type="text" ng-model="event.end" />
         <br>
-        <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+        <button type="button" class="delete" ng-click="deleteTask(event)">Delete Task</button>
+        <br>
         <input id="submitTask" type="submit" class="btn primary-btn" value="Submit" />
     </div>
 </form>
