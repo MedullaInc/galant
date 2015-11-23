@@ -16,14 +16,14 @@ class QuoteSerializer(serializers.ModelSerializer):
 
         fields['client'] = serializers.PrimaryKeyRelatedField(queryset=model_queryset(g.Client))
         fields['sections'] = serializers.PrimaryKeyRelatedField(many=True, queryset=model_queryset(q.Section))
-        fields['services'] = serializers.PrimaryKeyRelatedField(many=True, queryset=model_queryset(q.ServiceSection))
+        fields['service_sections'] = serializers.PrimaryKeyRelatedField(many=True, queryset=model_queryset(q.ServiceSection))
         fields['projects'] = serializers.PrimaryKeyRelatedField(many=True, queryset=model_queryset(g.Project))
 
         return fields
 
     class Meta:
         model = Quote
-        fields = ('id', 'user', 'name', 'client', 'sections', 'services', 'language', 'status',
+        fields = ('id', 'user', 'name', 'client', 'sections', 'service_sections', 'language', 'status',
                   'modified', 'token', 'parent', 'projects')
 
 

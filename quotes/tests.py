@@ -64,7 +64,7 @@ class QuoteTest(test.TransactionTestCase):
             self.assertEqual(section.deleted_by_parent, 1)
 
         # Validate Quote Services deleted & deleted_by_parent fields are 1
-        for service in quote.services.all_for(user):
+        for service in quote.service_sections.all_for(user):
             self.assertEqual(service.deleted, 1)
             self.assertEqual(service.deleted_by_parent, 1)
 
@@ -279,7 +279,7 @@ class QuoteFormTest(test.TestCase):
         obj = qf.create_quote(f, s)
         obj.save()
 
-        self.assertEquals(obj.services.count(), 1)
+        self.assertEquals(obj.service_sections.count(), 1)
 
     def test_same_sections(self):
         new_data = {'-section-2-title': 'title123', '-section-2-text': 'text123',
@@ -332,7 +332,7 @@ class QuoteFormTest(test.TestCase):
 
         obj = qf.create_quote(f, s)
         obj.save()
-        service_ids = [s.id for s in obj.services.all_for(self.request.user)]
+        service_ids = [s.id for s in obj.service_sections.all_for(self.request.user)]
 
         new_data['-service-2-id'] = service_ids[0]
         new_data['-service-3-id'] = service_ids[1]
@@ -341,7 +341,7 @@ class QuoteFormTest(test.TestCase):
 
         new_obj = qf.create_quote(f, s)
         new_obj.save()
-        new_service_ids = [s.id for s in new_obj.services.all_for(self.request.user)]
+        new_service_ids = [s.id for s in new_obj.service_sections.all_for(self.request.user)]
 
         self.assertEquals(service_ids, new_service_ids)
 

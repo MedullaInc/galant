@@ -78,7 +78,7 @@ class QuoteUpdate(View):
 
             # Delete preview quote / services / sections
             quote.sections.all_for(self.request.user, 'delete').delete()
-            quote.services.all_for(self.request.user, 'delete').delete()
+            quote.service_sections.all_for(self.request.user, 'delete').delete()
             quote.delete()
 
             return response

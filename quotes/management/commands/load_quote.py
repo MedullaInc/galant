@@ -90,7 +90,7 @@ def load_quote():
     )
 
     quote.sections.add(*sections)
-    quote.services.add(*services)
+    quote.service_sections.add(*services)
 
     set_quote_perms(quote_template)
 

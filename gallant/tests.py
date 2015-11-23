@@ -214,7 +214,7 @@ class ClientTest(TransactionTestCase):
         service.cost = Money(500, 'USD')
         service.save()
         service_section = q.ServiceSection.objects.create(user=user, index=0, service=service)
-        quote.services.add(service_section)
+        quote.service_sections.add(service_section)
 
         payment = autofixture.create_one(g.Payment, generate_fk=True, field_values={'user': user})
         payment.amount = Money(300, 'USD')

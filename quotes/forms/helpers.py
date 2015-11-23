@@ -8,13 +8,13 @@ from section import SectionForm, ServiceSectionForm
 def create_quote(quote_form, section_forms):
     obj = quote_form.save(commit=True)
     obj.sections.clear()
-    obj.services.clear()
+    obj.service_sections.clear()
 
     for s in section_forms:
         if type(s) is SectionForm:
             obj.sections.add(s.save())
         elif type(s) is ServiceSectionForm:
-            obj.services.add(s.save())
+            obj.service_sections.add(s.save())
 
     obj.save()
     return obj
