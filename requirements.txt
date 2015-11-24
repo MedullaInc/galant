@@ -29,4 +29,4 @@ django-countries>=3.3
 django-analytical>=0.22.0
 django-breadcrumbs>=1.1.3
 -e git://github.com/david12341235/django-angular.git#egg=django-angular
--e git://github.com/bustavo/django-experiments#egg=django-experiments
+-e git://github.com/mixcloud/django-experiments#egg=django-experiments
