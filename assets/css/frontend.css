@@ -849,4 +849,12 @@ ul.errolist li {
     margin-bottom: 40px;
 }
 
+a#features:hover {
+    text-decoration: none;
+}
+
+a#landing:hover {
+    text-decoration: none;
+}
+
 /* End Landing */
