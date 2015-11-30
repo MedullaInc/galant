@@ -25,9 +25,10 @@ class Note(UserModel):
 
 
 class Payment(UserModel):
-    submitted_on = m.DateTimeField(default=timezone.now)
+    due = m.DateTimeField(default=timezone.now, null=True, blank=True)
+    paid_on = m.DateTimeField(null=True, blank=True)
     amount = MoneyField(max_digits=16, decimal_places=2)
-    note = m.ForeignKey(Note, null=True, blank=True)
+    notes = m.ManyToManyField(Note)
 
     def __unicode__(self):
         return '%s: %s' % (self.submitted_on, self.amount)

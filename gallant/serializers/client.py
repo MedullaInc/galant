@@ -1,6 +1,7 @@
 import datetime
 
 from django.db.models.query import Prefetch
+from django.utils import timezone
 from moneyed.classes import Money
 from rest_framework import serializers
 from gallant import models as g
@@ -14,24 +15,23 @@ class ClientSerializer(serializers.ModelSerializer):
 
     def get_money_owed(self, client):
         amt = Money(0.00, client.currency)
+        current_time = timezone.now()
         for q in client.quote_set.all_for(self.context['request'].user)\
                 .prefetch_related(Prefetch('payments', to_attr='payments_arr')):
-            amt += q.get_total_cost()
             for p in q.payments_arr:
-                amt -= p.amount
+                if p.paid_on is None or p.paid_on > current_time:
+                    amt += p.amount
         return {'amount': amt.amount, 'currency': str(amt.currency)}
 
     def get_status(self, client):
         status = [client.get_status_display()]
+        current_time = timezone.now()
         for q in client.quote_set.all_for(self.context['request'].user)\
                 .prefetch_related(Prefetch('payments', to_attr='payments_arr')):
-            owed = q.get_total_cost()
             for p in q.payments_arr:
-                owed -= p.amount
-            if owed > Money(0, owed.currency) and q.payment_due \
-                    and q.payment_due < datetime.date.today():
-                status.append('Overdue')
-                break
+                if p.due < current_time and p.paid_on is None or p.paid_on > current_time:
+                    status.append('Overdue')
+                    break
 
         return status
 
