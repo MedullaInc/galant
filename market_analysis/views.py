@@ -20,7 +20,6 @@ class LandingPageFlow(View):
     def get(self, request, **kwargs):
         # Enroll user in Flow experiment
         participant(request).enroll('waiting_list', ['flow'], 'flow')
-        participant(request).goal('page_goal')
 
         # Redirect
         return redirect(reverse('landing'))
@@ -30,7 +29,6 @@ class LandingPageTool(View):
     def get(self, request, **kwargs):
         # Enroll user in Flow experiment
         participant(request).enroll('waiting_list', ['control'], 'control')
-        participant(request).goal('page_goal')
 
         # Redirect
         return redirect(reverse('landing'))
