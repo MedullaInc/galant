@@ -26,7 +26,7 @@ class LandingPageTest(browser.BrowserTest):
         browser.instance().delete_all_cookies()
         browser.instance().get(self.live_server_url + reverse('workflow_test'))
         title = browser.instance().find_element_by_css_selector('h1 span.red_a')
-        self.assertIn(u'Get workflow tools & best practices<br/>proven by agencies worldwide', title.text)
+        self.assertIn(u'Use the proven workflow\nfrom creative agencies worldwide', title.text)
 
     def test_can_access_tool_experiment(self):
         browser.instance().delete_all_cookies()
