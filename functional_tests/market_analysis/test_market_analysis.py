@@ -9,7 +9,7 @@ def tearDown():
 
 
 @override_settings(EXPERIMENTS_VERIFY_HUMAN=False)
-class LandingPageTest(browser.SignedInTest):
+class LandingPageTest(browser.BrowserTest):
     def setUp(self):
         super(LandingPageTest, self).setUp()
         self.browser = browser.instance()
@@ -20,11 +20,13 @@ class LandingPageTest(browser.SignedInTest):
         self.assertIn('Sign up for our waiting list', title.text)
 
     def test_can_access_workflow_experiment(self):
+        browser.instance().delete_all_cookies()
         browser.instance().get(self.live_server_url + reverse('workflow_test'))
         title = browser.instance().find_element_by_css_selector('h1 span.red_a')
         self.assertIn(u'Do great creative work<br/>like great agencies', title.text)
 
     def test_can_access_tool_experiment(self):
+        browser.instance().delete_all_cookies()
         browser.instance().get(self.live_server_url + reverse('tool_test'))
         title = browser.instance().find_element_by_css_selector('h1 span.red_a')
         self.assertIn(u'Manage clients, send quotes,\ntrack projects \u2014 all in one place', title.text)
