@@ -4,6 +4,7 @@ from django.contrib.auth.models import Group
 from django.core.urlresolvers import reverse
 from django.test import TransactionTestCase, TestCase
 from django import forms
+from django.utils import timezone
 from gallant import models as g
 from gallant import fields as gf
 from gallant import forms as gallant_forms
@@ -216,10 +217,16 @@ class ClientTest(TransactionTestCase):
         service_section = q.ServiceSection.objects.create(user=user, index=0, service=service)
         quote.service_sections.add(service_section)
 
-        payment = autofixture.create_one(g.Payment, generate_fk=True, field_values={'user': user})
-        payment.amount = Money(300, 'USD')
-        payment.save()
-        quote.payments.add(payment)
+        payment1 = autofixture.create_one(g.Payment, generate_fk=True, field_values=
+                                          {'user': user, 'due': timezone.now(), 'paid_on': timezone.now()})
+        payment2 = autofixture.create_one(g.Payment, generate_fk=True, field_values=
+                                          {'user': user, 'due': timezone.now(), 'paid_on': None})
+        payment1.amount = Money(300, 'USD')
+        payment2.amount = Money(200, 'USD')
+        payment1.save()
+        payment2.save()
+        quote.payments.add(payment1)
+        quote.payments.add(payment2)
 
         request = factory.get(reverse('api_client_detail', args=[client.id]))
         request.user = user
