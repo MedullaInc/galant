@@ -1,5 +1,6 @@
 # coding=utf-8
 from django.core.urlresolvers import reverse
+from experiments.models import Experiment, ENABLED_STATE, Enrollment
 from functional_tests import browser
 from django.test.utils import override_settings
 
@@ -13,6 +14,8 @@ class LandingPageTest(browser.BrowserTest):
     def setUp(self):
         super(LandingPageTest, self).setUp()
         self.browser = browser.instance()
+        self.experiment = Experiment(name='waiting_list', state=ENABLED_STATE)
+        self.experiment.save()
 
     def test_can_access_landing_pages(self):
         browser.instance().get(self.live_server_url + reverse('landing'))
@@ -23,7 +26,7 @@ class LandingPageTest(browser.BrowserTest):
         browser.instance().delete_all_cookies()
         browser.instance().get(self.live_server_url + reverse('workflow_test'))
         title = browser.instance().find_element_by_css_selector('h1 span.red_a')
-        self.assertIn(u'Do great creative work<br/>like great agencies', title.text)
+        self.assertIn(u'Do great creative work\nlike great agencies', title.text)
 
     def test_can_access_tool_experiment(self):
         browser.instance().delete_all_cookies()
