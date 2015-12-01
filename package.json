@@ -1,0 +1,23 @@
+{
+  "name": "gallant",
+  "version": "1.0.0",
+  "description": "Development environment setup =============================",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MedullaInc/gallant.git"
+  },
+  "author": "David Garcia",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/MedullaInc/gallant/issues"
+  },
+  "homepage": "https://github.com/MedullaInc/gallant#readme",
+  "devDependencies": {
+    "gulp": "^3.9.0"
+  },
+  "private": true
+}
