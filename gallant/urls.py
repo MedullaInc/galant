@@ -49,6 +49,13 @@ urlpatterns = i18n_patterns(
     url(r'^waiting_list', market_analysis.views.LandingPageSubmit.as_view(),
         name='waiting_list'),
 
+    # Landing page experiments
+    url(r'^tool', market_analysis.views.LandingPageTool.as_view(),
+        name='tool_test'),
+
+    url(r'^workflow', market_analysis.views.LandingPageFlow.as_view(),
+        name='workflow_test'),
+
     # ==============
     # Rest of Galant
     url(r'^$', TemplateView.as_view(template_name='index.html'), name='home'),

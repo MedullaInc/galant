@@ -11,6 +11,10 @@
 {% endblock %}
 
 {% block extra_head %}
+    {{ block.super }}
+    <script>
+        fbq('track', 'CompleteRegistration');
+    </script>
 {% endblock %}
 
 {% block scripts %}

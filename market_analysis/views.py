@@ -1,12 +1,11 @@
-from itertools import chain
-from django.contrib import messages
-from django.http import HttpResponse
 from django.views.generic import View
 from django.core.urlresolvers import reverse
 from market_analysis import forms
-from market_analysis import models
 from django.template.response import TemplateResponse
-from django.shortcuts import get_object_or_404
+from django.shortcuts import redirect
+from experiments.utils import participant
+from django.contrib.auth.models import AnonymousUser
+from django.contrib.sessions.backends.db import SessionStore as DatabaseSession, SessionStore
 
 
 class LandingPage(View):
@@ -15,6 +14,26 @@ class LandingPage(View):
         return TemplateResponse(request=request,
                                 template="landing.html",
                                 context={'form': form})
+
+
+class LandingPageFlow(View):
+    def get(self, request, **kwargs):
+        # Enroll user in Flow experiment
+        participant(request).enroll('waiting_list', ['flow'], 'flow')
+        participant(request).goal('page_goal')
+
+        # Redirect
+        return redirect(reverse('landing'))
+
+
+class LandingPageTool(View):
+    def get(self, request, **kwargs):
+        # Enroll user in Flow experiment
+        participant(request).enroll('waiting_list', ['control'], 'control')
+        participant(request).goal('page_goal')
+
+        # Redirect
+        return redirect(reverse('landing'))
 
 
 class LandingPageSubmit(View):

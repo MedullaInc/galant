@@ -1,21 +1,38 @@
 # coding=utf-8
 from django.core.urlresolvers import reverse
+from experiments.models import Experiment, ENABLED_STATE, Enrollment
 from functional_tests import browser
+from django.test.utils import override_settings
 
 
 def tearDown():
     browser.close()
 
 
-class LandingPageTest(browser.SignedInTest):
+@override_settings(EXPERIMENTS_VERIFY_HUMAN=False)
+class LandingPageTest(browser.BrowserTest):
     def setUp(self):
         super(LandingPageTest, self).setUp()
         self.browser = browser.instance()
+        self.experiment = Experiment(name='waiting_list', state=ENABLED_STATE)
+        self.experiment.save()
 
     def test_can_access_landing_pages(self):
         browser.instance().get(self.live_server_url + reverse('landing'))
         title = browser.instance().find_element_by_css_selector('h2 span.red_a')
         self.assertIn('Sign up for our waiting list', title.text)
+
+    def test_can_access_workflow_experiment(self):
+        browser.instance().delete_all_cookies()
+        browser.instance().get(self.live_server_url + reverse('workflow_test'))
+        title = browser.instance().find_element_by_css_selector('h1 span.red_a')
+        self.assertIn(u'Use the proven workflow\nfrom creative agencies worldwide', title.text)
+
+    def test_can_access_tool_experiment(self):
+        browser.instance().delete_all_cookies()
+        browser.instance().get(self.live_server_url + reverse('tool_test'))
+        title = browser.instance().find_element_by_css_selector('h1 span.red_a')
+        self.assertIn(u'Manage clients, send quotes,\ntrack projects \u2014 all in one place', title.text)
 
     def test_waiting_list_registration_error(self):
         b = self.browser
