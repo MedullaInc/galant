@@ -137,17 +137,11 @@
                 <h1>
                     {% csrf_token %}
                     {% experiment waiting_list flow %}
-                        <span class="red_a">
-                            Do great creative work<br/>
-                            like great agencies do
-                        </span>
+                        <span class="red_a">Do great creative work<br/>like great agencies</span>
                     {% endexperiment %}
 
                     {% experiment waiting_list control %}
-                        <span class="red_a">
-                            Manage clients, send quotes,<br/>
-                            track projects — all in one place
-                        </span>
+                        <span class="red_a">Manage clients, send quotes,<br/>track projects — all in one place</span>
                     {% endexperiment %}
 
                 </h1>
