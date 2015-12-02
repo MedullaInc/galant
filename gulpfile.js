@@ -17,12 +17,12 @@ gulp.task('lint', function() {
 
 gulp.task('copy-js-assets', function() {
    return gulp.src(assets.js)
-       .pipe(gulp.dest('./static/js'));
+       .pipe(gulp.dest('./build/js'));
 });
 
 gulp.task('copy-css-assets', function() {
    return gulp.src(assets.css)
-       .pipe(gulp.dest('./static/css'));
+       .pipe(gulp.dest('./build/css'));
 });
 
 gulp.task('default', ['lint', 'copy-js-assets', 'copy-css-assets']);
