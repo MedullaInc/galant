@@ -29,4 +29,10 @@ echo 'creating example quote / brief templates...'
 python manage.py load_quote || exit 1
 python manage.py load_brief || exit 1
 
+echo 'running npm install'
+npm install || exit 1
+
+echo 'running gulp tasks'
+gulp || exit 1
+
 echo 'done'

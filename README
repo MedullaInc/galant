@@ -1,7 +1,7 @@
 Development environment setup
 =============================
 
-- Requirements: python, pip, virtualenv, python-dev (Ubuntu), MySQL
+- Requirements: python, pip, virtualenv, python-dev (Ubuntu), MySQL, npm
 
 - Optionally instal autoenv:
 
@@ -30,6 +30,8 @@ Linux:
     $ ./scripts/setup.sh
 
   - Run 'python manage.py makemigrations', 'python manage.py migrate'
+
+  - Run 'npm install', then 'gulp' to load JS dependencies and copy static JS assets
 
   - For testing, install PhantomJS (for OS X download binary and copy to somewhere in PATH, eg /usr/bin)
 
