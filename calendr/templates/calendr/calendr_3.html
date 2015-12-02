@@ -3,8 +3,8 @@
 {% load djangular_tags %} 
 
 {% block css %}
-<link href='{% static "css/fullcalendar-ng/fullcalendar.min.css" %}' rel='stylesheet' />
-<link href='{% static "css/fullcalendar-ng/scheduler.min.css" %}' rel='stylesheet' /> 
+<link href='{% static "css/fullcalendar.min.css" %}' rel='stylesheet' />
+<link href='{% static "css/scheduler.min.css" %}' rel='stylesheet' />
 <link href='{% static "css/angular-aside.min.css" %}' rel='stylesheet' /> 
 
 <style>
@@ -26,12 +26,12 @@ select {
 <script src="{% static "js/angular.min.js" %}"></script>
 <script src="{% static "js/angular-resource.min.js" %}"></script>
 <script src="{% static "js/angular-aside.min.js" %}"></script>
-<script src="{% static "js/fullcalendar-ng/ui-bootstrap-tpls-0.14.0.js" %}"></script>
+<script src="{% static "js/ui-bootstrap-tpls.js" %}"></script>
 <script src="{% static "djangular/js/django-angular.min.js" %}"></script>
-<script src="{% static "js/fullcalendar-ng/moment.min.js" %}"></script>
-<script src="{% static "js/fullcalendar-ng/fullcalendar.min.js" %}"></script>
-<script src="{% static "js/fullcalendar-ng/scheduler.js" %}"></script>
-<script src="{% static "js/fullcalendar-ng/calendar.js" %}"></script>
+<script src="{% static "js/moment.min.js" %}"></script>
+<script src="{% static "js/fullcalendar.min.js" %}"></script>
+<script src="{% static "js/scheduler.js" %}"></script>
+<script src="{% static "js/calendar.js" %}"></script>
 <script src="{% static "calendr/js/apps/app.js" %}"></script>
 <script src="{% static "calendr/js/services/services.js" %}"></script>
 <script src="{% static "calendr/js/directives/directives.js" %}"></script>

@@ -7,10 +7,18 @@
         "./node_modules/angular-route/angular-route?(.min).js",
         "./node_modules/bootstrap/dist/js/bootstrap?(.min).js",
         "./node_modules/chart.js/Chart?(.min).js",
-        "./node_modules/flat-ui/dist/js/flat-ui?(.min).js"
+        "./node_modules/flat-ui/dist/js/flat-ui?(.min).js",
+        "./node_modules/fullcalendar/dist/fullcalendar?(.min).js",
+        "./node_modules/moment/moment.js",
+        "./node_modules/moment/min/moment.min.js",
+        "./node_modules/angular-ui-bootstrap/ui-bootstrap-tpls?(.min).js",
+        "./node_modules/angular-ui-calendar/src/calendar.js",
+        "./node_modules/fullcalendar-scheduler/dist/scheduler?(.min).js"
     ],
     "css": [
         "./node_modules/bootstrap/dist/css/bootstrap.*",
-        "./node_modules/flat-ui/dist/css/flat-ui.*"
+        "./node_modules/flat-ui/dist/css/flat-ui.*",
+        "./node_modules/fullcalendar/dist/fullcalendar?(.min).css",
+        "./node_modules/fullcalendar-scheduler/dist/scheduler?(.min).css"
     ]
 }
