@@ -17,6 +17,12 @@
   },
   "homepage": "https://github.com/MedullaInc/gallant#readme",
   "devDependencies": {
+    "angular": "^1.4.8",
+    "angular-aside": "^1.3.2",
+    "angular-cookies": "^1.4.8",
+    "angular-resource": "^1.4.8",
+    "angular-route": "^1.4.8",
+    "angular-ui-bootstrap": "^0.14.3",
     "gulp": "^3.9.0",
     "gulp-jshint": "^2.0.0",
     "jshint": "^2.8.0"
