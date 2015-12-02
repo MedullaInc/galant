@@ -228,8 +228,6 @@ DJANGO_MONEY_RATES = {
 # Settings
 EXPERIMENTS_GOALS = (
     'page_goal',
-    'js_goal',
-    'cookie_goal',
 )
 
 EXPERIMENTS_AUTO_CREATE = True

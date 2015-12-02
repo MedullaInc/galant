@@ -45,6 +45,7 @@ class LandingPageSubmit(View):
         form = forms.CustomerLeadModelForm(request.POST)
 
         if form.is_valid():
+            participant(request).goal('page_goal')
             return self.form_valid(form)
         else:
             response = form
