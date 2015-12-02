@@ -1,7 +1,7 @@
 Development environment setup
 =============================
 
-- Requirements: python, pip, virtualenv, python-dev (Ubuntu), MySQL, npm
+- Requirements: python, pip, virtualenv, python-dev (Ubuntu), MySQL, npm, gulp (npm install -g gulp)
 
 - Optionally instal autoenv:
 
