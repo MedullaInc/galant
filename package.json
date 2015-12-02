@@ -25,6 +25,7 @@
     "angular-ui-bootstrap": "^0.14.3",
     "bootstrap": "^3.3.6",
     "chart.js": "^1.0.2",
+    "flat-ui": "git+https://github.com/designmodo/Flat-UI.git",
     "gulp": "^3.9.0",
     "gulp-jshint": "^2.0.0",
     "jshint": "^2.8.0"
