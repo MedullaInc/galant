@@ -25,4 +25,6 @@ gulp.task('copy-css-assets', function() {
        .pipe(gulp.dest('./build/css'));
 });
 
-gulp.task('default', ['lint', 'copy-js-assets', 'copy-css-assets']);
+gulp.task('copy-assets', ['copy-js-assets', 'copy-css-assets'])
+
+gulp.task('default', ['lint', 'copy-assets']);

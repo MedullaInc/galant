@@ -9,7 +9,11 @@
         "./node_modules/angular-resource/angular-resource.js",
         "./node_modules/angular-resource/angular-resource.min.js",
         "./node_modules/angular-route/angular-route.js",
-        "./node_modules/angular-route/angular-route.min.js"
+        "./node_modules/angular-route/angular-route.min.js",
+        "./node_modules/bootstrap/dist/js/bootstrap.js",
+        "./node_modules/bootstrap/dist/js/bootstrap.min.js"
     ],
-    "css": []
+    "css": [
+        "./node_modules/bootstrap/dist/css/bootstrap.*"
+    ]
 }
