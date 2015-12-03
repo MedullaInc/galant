@@ -151,8 +151,9 @@ class ChoiceEnum(Enum):
         return choices
 
 
-PHONE_REGEX = RegexValidator(regex=r'^\+?\d{0,3}\(?\d{1,3}\)\d+\-\d{1,10}$|^\+?\d{0,3}\-?\d{1,3}\-\d+\-\d{1,10}$',
-                             message="Phone number must be entered in the format: '+999999999'. Up to 16 digits allowed.")
+PHONE_REGEX = RegexValidator(regex=r'^\+?\d{0,3} ?(\(\d{1,3}\))?[\- \d]+$',
+                             message="Phone number must be entered in the format: '+99 (999) 999-9999'."
+                                     " Up to 16 digits allowed.")
 
 
 ZIP_REGEX = RegexValidator(regex=r'^\d{5}(?:[-\s]\d{4})?$',

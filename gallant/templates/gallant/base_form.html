@@ -1,12 +1,6 @@
 {% extends "base_sidebar_enclosed.html" %}
 {% load staticfiles bootstrap i18n %}
 
-{% block extra_head %}
-    <script src="{% static "js/input_mask/jquery.inputmask.js" %}"></script>
-    <script src="{% static "js/input_mask/jquery.bind-first.min.js" %}"></script>
-    <script src="{% static "js/input_mask/jquery.inputmask-multi.js" %}"></script>
-{% endblock extra_head %}
-
 {% block section_title %}
     {{ title }}
 {% endblock %}
@@ -98,34 +92,6 @@
 
         $('.form').submit(function () {
             window.onbeforeunload = null;
-        });
-
-        // Input mask for phone numbers
-        $(document).ready(function () {
-            if ($('.form').find("#id_contact_info\\.phone_number").length > 0) {
-
-                var maskList = $.masksSort($.masksLoad("{% static "js/input_mask/phone-codes.json" %}"), ['#'], /[0-9]|#/, "mask");
-                var maskOpts = {
-                    inputmask: {
-                        definitions: {
-                            '#': {
-                                validator: "[0-9]",
-                                cardinality: 1
-                            }
-                        },
-                        //clearIncomplete: true,
-                        showMaskOnHover: false,
-                        autoUnmask: true
-                    },
-                    match: /[0-9]/,
-                    replace: '#',
-                    list: maskList,
-                    listKey: "mask",
-                };
-
-                $('#id_contact_info\\.phone_number').inputmasks(maskOpts);
-
-            }
         });
     </script>
 {% endblock %}
