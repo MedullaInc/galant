@@ -31,6 +31,7 @@
     "fullcalendar-scheduler": "^1.1.0",
     "gulp": "^3.9.0",
     "gulp-jshint": "^2.0.0",
+    "jquery": "^2.1.4",
     "jshint": "^2.8.0",
     "moment": "^2.10.6"
   },
