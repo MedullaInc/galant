@@ -14,6 +14,7 @@
     "./node_modules/angular-ui-bootstrap/ui-bootstrap-tpls?(.min).js",
     "./node_modules/angular-ui-calendar/src/calendar.js",
     "./node_modules/jquery/dist/*",
+    "./node_modules/angular-smart-table/dist/*",
     "./node_modules/fullcalendar-scheduler/dist/scheduler?(.min).js"
   ],
   "css": [

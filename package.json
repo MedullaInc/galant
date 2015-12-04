@@ -22,6 +22,7 @@
     "angular-cookies": "^1.4.8",
     "angular-resource": "^1.4.8",
     "angular-route": "^1.4.8",
+    "angular-smart-table": "^2.1.5",
     "angular-ui-bootstrap": "^0.14.3",
     "angular-ui-calendar": "git+https://github.com/gusreyes01/ui-calendar.git",
     "bootstrap": "^3.3.6",
