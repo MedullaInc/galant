@@ -21,6 +21,7 @@
     "./node_modules/bootstrap/dist/css/bootstrap.*",
     "./node_modules/flat-ui/dist/css/flat-ui.*",
     "./node_modules/fullcalendar/dist/fullcalendar?(.min).css",
-    "./node_modules/fullcalendar-scheduler/dist/scheduler?(.min).css"
+    "./node_modules/fullcalendar-scheduler/dist/scheduler?(.min).css",
+    "./node_modules/angular-aside/dist/css/angular-aside?(.min).css"
   ]
 }
