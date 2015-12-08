@@ -14,12 +14,14 @@
     "./node_modules/angular-ui-bootstrap/ui-bootstrap-tpls?(.min).js",
     "./node_modules/angular-ui-calendar/src/calendar.js",
     "./node_modules/jquery/dist/*",
+    "./node_modules/angular-smart-table/dist/*",
     "./node_modules/fullcalendar-scheduler/dist/scheduler?(.min).js"
   ],
   "css": [
-    "./node_modules/bootstrap/dist/css/bootstrap.*",
+    "./node_modules/bootstrap/dist/css/*",
     "./node_modules/flat-ui/dist/css/flat-ui.*",
     "./node_modules/fullcalendar/dist/fullcalendar?(.min).css",
-    "./node_modules/fullcalendar-scheduler/dist/scheduler?(.min).css"
+    "./node_modules/fullcalendar-scheduler/dist/scheduler?(.min).css",
+    "./node_modules/angular-aside/dist/css/angular-aside?(.min).css"
   ]
 }

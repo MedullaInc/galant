@@ -37,7 +37,8 @@ class BriefAnswer(View):
             messages.success(request, 'Brief answered.')
             obj.status = b.BriefStatus.Answered.value
             obj.save()
-            remove_perm('change_brief', request.user, obj)
+            
+            remove_perm('change_brief', obj.user, obj)
             return HttpResponseRedirect(reverse('home'))
 
         return TemplateResponse(request=request,

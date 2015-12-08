@@ -121,6 +121,7 @@ WSGI_APPLICATION = 'gallant.wsgi.application'
 
 IGNORED_WARNINGS = {
     'RemovedInDjango19Warning: django.utils.importlib',
+    'RemovedInDjango110Warning'
 }
 
 

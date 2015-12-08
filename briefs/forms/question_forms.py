@@ -159,6 +159,7 @@ class MultipleChoiceAnswerForm(forms.Form):
             self.base_fields['answer'].widget = forms.CheckboxSelectMultiple(attrs={'class': 'form-control'},
                                                                              renderer=gfields.BootstrapCheckboxFieldRenderer)
         else:
+            self.base_fields['answer'] = forms.ChoiceField(label='')
             self.base_fields['answer'].widget = forms.RadioSelect(attrs={'class': 'form-control'},
                                                                   renderer=gfields.BootstrapRadioFieldRenderer)
 
