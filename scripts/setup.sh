@@ -16,6 +16,8 @@ echo 'running localization...'
 python manage.py compilemessages || exit 1
 
 echo 'updating exchange rates...'
+python manage.py makemigrations djmoney_rates || exit 1  # bug in package, this shouldn't be necessary
+python manage.py migrate || exit 1
 python manage.py update_rates || exit 1
 
 echo 'creating example quote / brief templates...'
