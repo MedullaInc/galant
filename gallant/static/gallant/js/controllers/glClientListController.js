@@ -14,11 +14,11 @@ app.controller('glClientListController', ['$scope', '$http', '$window', 'Client'
 
         $scope.init = function(clientDetailURL) {
             $scope.clientDetailURL = clientDetailURL;
-        }
+        };
 
         $scope.redirect = function(clientID) {
             $window.location.href = $scope.clientDetailURL + clientID;
-        }
+        };
 
         $scope.updateLastContacted = function(rowIndex) {
             var client = $scope.clients[rowIndex];
@@ -27,6 +27,6 @@ app.controller('glClientListController', ['$scope', '$http', '$window', 'Client'
                 .$promise.then(function (response) {
                 client.last_contacted = last_contacted;
             });
-        }
+        };
     }
 ]);

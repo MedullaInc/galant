@@ -10,7 +10,7 @@ angular.module('gallant.controllers', ['ui.calendar', 'ui.bootstrap', 'ng.django
     /* event source that contains custom events on the scope */
     $scope.events = [];
     $scope.projects = [];
-    $scope.eventResources = []
+    $scope.eventResources = [];
 
     $scope.openAsideModal = function() {
       if ($scope.asideInstance) {
@@ -50,11 +50,11 @@ angular.module('gallant.controllers', ['ui.calendar', 'ui.bootstrap', 'ng.django
         });
       }
 
-    }
+    };
 
     $scope.gotoDate = function(date) {
-      uiCalendarConfig.calendars['myCalendar1'].fullCalendar('gotoDate', date);
-    }
+      uiCalendarConfig.calendars.myCalendar1.fullCalendar('gotoDate', date);
+    };
 
     $scope.today = function() {
       $scope.dt = new Date();
@@ -109,7 +109,7 @@ angular.module('gallant.controllers', ['ui.calendar', 'ui.bootstrap', 'ng.django
           });
         });
       });
-    }
+    };
 
     /* Retrieve all Tasks from API service */
     $scope.getTasks = function() {
@@ -119,14 +119,14 @@ angular.module('gallant.controllers', ['ui.calendar', 'ui.bootstrap', 'ng.django
         });
 
       });
-    }
+    };
 
     /* Retrieve all Tasks from API service */
     $scope.getProjects = function() {
       Project.query().$promise.then(function(response) {
         $scope.projects = response;
       });
-    }
+    };
 
     $scope.getResources();
     $scope.getProjects();
@@ -166,11 +166,11 @@ angular.module('gallant.controllers', ['ui.calendar', 'ui.bootstrap', 'ng.django
                 "services": [],
                 "assignee": String(e.resourceId),
                 "notes": []
-              }
+              };
 
               $scope.createTask(task);
             }
-          }
+          };
           $scope.cancel = function() {
             $modalInstance.dismiss('cancel');
           };
@@ -234,7 +234,7 @@ angular.module('gallant.controllers', ['ui.calendar', 'ui.bootstrap', 'ng.django
         "services": [],
         "assignee": String(event.resourceId),
         "notes": []
-      }
+      };
 
 
       $scope.updateTask(task);
@@ -267,7 +267,7 @@ angular.module('gallant.controllers', ['ui.calendar', 'ui.bootstrap', 'ng.django
         "services": [],
         "assignee": String(event.resourceId),
         "notes": []
-      }
+      };
 
       $scope.updateTask(task);
       $scope.alertMessage = ('Event Resized to make dayDelta ' + delta);
@@ -285,7 +285,7 @@ angular.module('gallant.controllers', ['ui.calendar', 'ui.bootstrap', 'ng.django
         projectId: e.project,
         allDay: false,
         daily_estimate: parseFloat(e.daily_estimate),
-      }
+      };
 
       $scope.events.push(event);
       // $scope.eventRender(event);
@@ -311,7 +311,7 @@ angular.module('gallant.controllers', ['ui.calendar', 'ui.bootstrap', 'ng.django
     /* Create a new Task using API Service */
     $scope.createTask = function(task) {
       // Event to task
-      var task = {
+      var myTask = {
         "id": "",
         "user": currentUserId,
         "name": task.name,
@@ -322,10 +322,10 @@ angular.module('gallant.controllers', ['ui.calendar', 'ui.bootstrap', 'ng.django
         "services": [],
         "assignee": task.assignee,
         "notes": []
-      }
+      };
 
-      $scope.postTask(task);
-    }
+      $scope.postTask(myTask);
+    };
 
     /* remove event from calendar */
     $scope.remove = function(index) {
@@ -338,7 +338,7 @@ angular.module('gallant.controllers', ['ui.calendar', 'ui.bootstrap', 'ng.django
         $scope.renderEvent(response);
 
       });
-    }
+    };
 
 
 
@@ -357,7 +357,7 @@ angular.module('gallant.controllers', ['ui.calendar', 'ui.bootstrap', 'ng.django
         $scope.renderEvent(response);
       });
 
-    }
+    };
 
     /* Change View */
     $scope.changeView = function(view, calendar) {
@@ -387,11 +387,11 @@ angular.module('gallant.controllers', ['ui.calendar', 'ui.bootstrap', 'ng.django
         start: start,
         end: end,
         title: "New Task",
-      }
+      };
 
       $scope.openEditModal(event);
-      uiCalendarConfig.calendars['myCalendar1'].fullCalendar('unselect');
-    }
+      uiCalendarConfig.calendars.myCalendar1.fullCalendar('unselect');
+    };
 
     /* config object */
     $scope.uiConfig = {
