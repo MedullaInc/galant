@@ -3,11 +3,18 @@ var gulp = require('gulp');
 
 // Include Our Plugins
 var jshint = require('gulp-jshint');
+var concat = require('gulp-concat');
+var uglify = require('gulp-uglify');
+var rename = require('gulp-rename');
 
 var scripts = ['**/static/**/*.js',
     '!static/**', '!venv/**', '!node_modules/**'];
 
 var assets = require('./assets.json');
+
+var outdir = 'build';
+var jsout = outdir + '/js';
+var cssout = outdir + '/css';
 
 gulp.task('lint', function() {
     return gulp.src(scripts)
@@ -17,14 +24,29 @@ gulp.task('lint', function() {
 
 gulp.task('copy-js-assets', function() {
    return gulp.src(assets.js)
-       .pipe(gulp.dest('./build/js'));
+       .pipe(gulp.dest(jsout));
 });
 
 gulp.task('copy-css-assets', function() {
    return gulp.src(assets.css)
-       .pipe(gulp.dest('./build/css'));
+       .pipe(gulp.dest(cssout));
 });
 
-gulp.task('copy-assets', ['copy-js-assets', 'copy-css-assets'])
+var concatAndMinModule = function (module) {
+    return gulp.src(module + '/static/**/*.js')
+        .pipe(concat(module + '.js'))
+        .pipe(gulp.dest(jsout))
+        .pipe(rename(module + '.min.js'))
+        .pipe(uglify())
+        .pipe(gulp.dest(jsout));
+};
+
+gulp.task('concat-and-min', function() {
+    concatAndMinModule('briefs');
+    concatAndMinModule('gallant');
+    return;
+});
+
+gulp.task('static', ['copy-js-assets', 'copy-css-assets', 'concat-and-min'])
 
 gulp.task('default', ['lint', 'copy-assets']);
