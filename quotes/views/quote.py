@@ -1,11 +1,11 @@
-from django.http.response import HttpResponse
+from django.http.response import HttpResponse, JsonResponse
 from django.views.generic import View
 from django.template.response import TemplateResponse
 from django.http import HttpResponseRedirect
 from django.conf import settings
 from django.contrib import messages
 from django.core.urlresolvers import reverse
-from gallant.utils import get_one_or_404, url_to_pdf, get_site_from_host, GallantObjectPermissions
+from gallant.utils import get_one_or_404, url_to_pdf, get_site_from_host, GallantObjectPermissions, get_field_choices
 from quotes import models as q
 from quotes import forms as qf
 from quotes import serializers
@@ -14,6 +14,9 @@ from django.utils.translation import ugettext_lazy as _
 from django.core.mail import send_mail
 from uuid import uuid4
 from rest_framework import generics
+from rest_framework.viewsets import ModelViewSet
+from rest_framework.response import Response
+from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED
 
 
 class QuoteUpdate(View):
@@ -152,6 +155,16 @@ class QuoteTemplateDelete(View):
         return HttpResponseRedirect(reverse('quote_templates'))
 
 
+# class QuoteDetail(View):
+#     def get(self, request, **kwargs):
+#         quote = get_one_or_404(request.user, 'view_quote', q.Quote, pk=kwargs['pk'])
+
+#         request.breadcrumbs([(_('Quotes'), reverse('quotes')),
+#                              (_('Quote: %s' % quote.name), request.path_info)])
+#         return TemplateResponse(request=request,
+#                                 template="quotes/quote_detail.html",
+#                                 context={'title': 'Quote', 'object': quote})
+
 class QuoteDetail(View):
     def get(self, request, **kwargs):
         quote = get_one_or_404(request.user, 'view_quote', q.Quote, pk=kwargs['pk'])
@@ -159,7 +172,7 @@ class QuoteDetail(View):
         request.breadcrumbs([(_('Quotes'), reverse('quotes')),
                              (_('Quote: %s' % quote.name), request.path_info)])
         return TemplateResponse(request=request,
-                                template="quotes/quote_detail.html",
+                                template="quotes/quote_form_ng.html",
                                 context={'title': 'Quote', 'object': quote})
 
     def post(self, request, **kwargs):
@@ -188,6 +201,37 @@ class QuoteList(View):
                                 .all_for(request.user)})
 
 
+def quote_fields_json(request):
+    return JsonResponse(get_field_choices(q.Quote), safe=False)
+
+
+class QuotesAPI(ModelViewSet):
+    model = q.Quote
+    serializer_class = serializers.QuoteSerializer
+    # permission_classes = [
+    #     GallantObjectPermissions
+    # ]
+
+    def get_queryset(self):
+        return self.model.objects.all_for(self.request.user)
+
+    def update(self, request, *args, **kwargs):
+        response = super(QuotesAPI, self).update(request, *args, **kwargs)
+        if response.status_code == HTTP_200_OK or response.status_code == HTTP_201_CREATED:
+            self.request._messages.add(messages.SUCCESS, 'Quote saved.')
+            return Response({'status': 0, 'redirect': reverse('quote_detail', args=[response.data['id']])})
+        else:
+            return response
+
+    def create(self, request, *args, **kwargs):
+        response = super(QuotesAPI, self).create(request, *args, **kwargs)
+        if response.status_code == HTTP_201_CREATED:
+            self.request._messages.add(messages.SUCCESS, 'Quote saved.')
+            return Response({'status': 0, 'redirect': reverse('quote_detail', args=[response.data['id']])})
+        else:
+            return response
+
+
 class QuoteDetailAPI(generics.RetrieveUpdateAPIView):
     model = q.Quote
     serializer_class = serializers.QuoteSerializer
@@ -197,4 +241,3 @@ class QuoteDetailAPI(generics.RetrieveUpdateAPIView):
 
     def get_queryset(self):
         return self.model.objects.all_for(self.request.user)
-

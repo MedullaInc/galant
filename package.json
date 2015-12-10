@@ -36,5 +36,8 @@
     "jshint": "^2.8.0",
     "moment": "^2.10.6"
   },
-  "private": true
+  "private": true,
+  "dependencies": {
+    "angular-ui-sortable": "^0.13.4"
+  }
 }

@@ -1,12 +1,13 @@
 from django.contrib import messages
 from django.views.generic import View
 from django.template.response import TemplateResponse
+from django.http.response import JsonResponse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.core.urlresolvers import reverse
 from gallant import forms, serializers
 from gallant import models as g
-from gallant.utils import get_one_or_404, GallantObjectPermissions
+from gallant.utils import get_one_or_404, GallantObjectPermissions, get_field_choices
 from django.utils.translation import ugettext_lazy as _
 from rest_framework import generics
 
@@ -106,6 +107,10 @@ def service_detail(request, *args, **kwargs):
         'project': project,
         'form': form,
     })
+
+
+def service_fields_json(request):
+    return JsonResponse(get_field_choices(g.Service), safe=False)
 
 
 class ServiceDetailAPI(generics.RetrieveUpdateAPIView):

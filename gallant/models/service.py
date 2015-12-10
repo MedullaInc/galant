@@ -63,4 +63,3 @@ class Service(UserModel):
                 service.soft_delete(deleted_by_parent=True)
 
             super(Service, self).soft_delete(deleted_by_parent)
-

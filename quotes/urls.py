@@ -1,7 +1,10 @@
 from django.conf.urls import url
 from django.contrib.auth.decorators import login_required
 from quotes import views
+from rest_framework.routers import DefaultRouter
 
+router = DefaultRouter(trailing_slash=False)
+router.register(r'api/quote', views.QuotesAPI, 'api-quote')
 
 urlpatterns = [
     url(r'^$', login_required(views.QuoteList.as_view()), name='quotes'),
@@ -20,6 +23,11 @@ urlpatterns = [
     url(r'^download/(?P<pk>[0-9]+)?$', login_required(views.QuotePDF.as_view()), name='quote_pdf'),
     url(r'^download/(?P<token>[a-f0-9]{32})?$', login_required(views.QuotePDF.as_view()), name='quote_pdf'),
 
-    url(r'^api/quote/(?P<pk>[0-9]+)$', login_required(views.QuoteDetailAPI.as_view()), name='api_quote_detail'),
+    # url(r'^api/quote/(?P<pk>[0-9]+)$', login_required(views.QuoteDetailAPI.as_view()), name='api_quote_detail'),
     url(r'^api/template/(?P<pk>[0-9]+)$', login_required(views.QuoteTemplateDetailAPI.as_view()), name='api_quote_template_detail'),
 ]
+urlpatterns += router.urls
+
+urlpatterns += url(r'^api/quote/fields',
+                   login_required(views.quote_fields_json),
+                   name='api-quote-fields'),

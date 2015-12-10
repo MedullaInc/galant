@@ -7,10 +7,11 @@ from gallant.models import Note
 
 class MoneyField(serializers.Field):
     def to_representation(self, obj):
-        return json.dumps({'amount': str(obj.amount), 'currency': str(obj.currency)})
+        return {'amount': str(obj.amount), 'currency': str(obj.currency)}
 
     def to_internal_value(self, data):
-        val = json.loads(data)
+        json_val = json.dumps(data)
+        val = json.loads(json_val)
         return Money(val['amount'], val['currency'])
 
 
