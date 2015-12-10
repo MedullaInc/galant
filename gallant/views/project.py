@@ -187,5 +187,3 @@ class ProjectsAPI(generics.ListAPIView):
             return self.model.objects.all_for(self.request.user)
         else:
             return self.model.objects.all_for(self.request.user).filter(user_id=self.request.user)
-
-

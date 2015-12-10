@@ -5,7 +5,7 @@ DATABASES = {
         'NAME': 'gallant_dev',
         'ENGINE': 'django.db.backends.mysql',
         'USER': 'root',
-        'PASSWORD': '',
+        'PASSWORD': 'siavdb',
         'OPTIONS': {
           'autocommit': True,
         },

@@ -13,6 +13,8 @@ angular.module('gallant', [
     ])
     .config(['$httpProvider', /* istanbul ignore next  */ function ($httpProvider) {
         $httpProvider.defaults.headers.common['X-CSRFToken'] = $.cookie("csrftoken");
+        $httpProvider.defaults.xsrfCookieName = 'csrftoken';
+        $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
     }]);
 
 /* EOF */
