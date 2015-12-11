@@ -2,19 +2,19 @@ from quotes import models as q
 from gallant import models as g
 import operator
 import re
-from section import SectionForm, ServiceSectionForm
+from section import SectionForm, ServiceForm
 
 
 def create_quote(quote_form, section_forms):
     obj = quote_form.save(commit=True)
     obj.sections.clear()
-    obj.service_sections.clear()
+    obj.services.clear()
 
     for s in section_forms:
         if type(s) is SectionForm:
             obj.sections.add(s.save())
-        elif type(s) is ServiceSectionForm:
-            obj.service_sections.add(s.save())
+        elif type(s) is ServiceForm:
+            obj.services.add(s.save())
 
     obj.save()
     return obj
@@ -29,9 +29,9 @@ def section_forms_request(request):
         else:
             m = re.match('(-service-\d+)-name', key)
             if m is not None:
-                sf.append(ServiceSectionForm(request.user, request.POST, prefix=m.group(1)))
+                sf.append(ServiceForm(request.user, request.POST, prefix=m.group(1)))
 
-    sf.sort(key=lambda x: x.index)
+    #sf.sort(key=lambda x: x.index)
     return sf
 
 
@@ -43,7 +43,7 @@ def section_forms_quote(quote, clear_pk=False):
         if type(section) is q.TextSection:
             sf.append(SectionForm(section.user, instance=section, prefix='-section-%d' % section.index))
         elif type(section) is q.ServiceSection:
-            sf.append(ServiceSectionForm(section.user, instance=section, prefix='-service-%d' % section.index))
+            sf.append(ServiceForm(section.user, instance=section, prefix='-service-%d' % section.index))
 
     return sf
 
@@ -51,7 +51,7 @@ def section_forms_quote(quote, clear_pk=False):
 def section_forms_initial(user):
     return [SectionForm(user, instance=q.TextSection(name='intro', index=0), prefix='-section-0'),
             SectionForm(user, instance=q.TextSection(name='important_notes', index=2), prefix='-section-1'),
-            ServiceSectionForm(user, instance=q.ServiceSection(name='section_1',
+            ServiceForm(user, instance=q.ServiceSection(name='section_1',
                                                                index=1,
                                                                service=g.Service()),
                                prefix='-service-2')]

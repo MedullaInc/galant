@@ -17,7 +17,7 @@ app.directive('qtQuoteForm', ['Quote', 'Service','$filter', function (Quote, Ser
         controller: ['$scope', '$attrs', '$filter', 'Quote', 'Service', 'QuoteTemplate',
             function ($scope, $attrs, $filter, Quote, Service, QuoteTemplate) {
 
-                $scope.isCollapsed = false;
+                $scope.isCollapsed = true;
                 $scope.quoteFields = [];
                 $scope.serviceFields = [];
 
@@ -36,7 +36,6 @@ app.directive('qtQuoteForm', ['Quote', 'Service','$filter', function (Quote, Ser
                               tempObj[key] = fields.type[key];
                               $scope.serviceFields.push({value: key, text: tempObj[key]});
                             }
-                            console.log($scope.serviceFields)
 
                     });
                 } else {
@@ -46,37 +45,33 @@ app.directive('qtQuoteForm', ['Quote', 'Service','$filter', function (Quote, Ser
             }],
         templateUrl: '/static/quotes/html/qt_quote_form.html',
           link: function($scope) {
-            console.log($filter);
-              $scope.addServiceSection = function() {
+              $scope.addService = function() {
                   $scope.inserted = {
-                      status: "1",
-                      service: { 
-                          cost: {
-                              amount: "0",
-                              currency: "AFN",
-                          },
-                          description: "Some service",
-                          user: 1,
-                          name: "",
-                          notes: Array[0],
-                          parent: null,
-                          quantity: "",
-                          type: "",
-                          user: "1",
-                      }
+                      cost: {
+                          amount: "0",
+                          currency: "AFN",
+                      },
+                      description: "Some service",
+                      user: 1,
+                      name: "",
+                      notes: Array[0],
+                      parent: null,
+                      quantity: "",
+                      type: "",
+                      user: "1",
                   };
-                  $scope.quote.service_sections.push($scope.inserted);
+                  $scope.quote.services.push($scope.inserted);
               };
 
               $scope.removeServiceSection = function(index) {
-                  $scope.quote.service_sections.splice(index, 1);
+                  $scope.quote.services.splice(index, 1);
               };
 
               $scope.showType = function(service) {
 
-                if(service.service) {
+                if(service) {
                   var selected = [];
-                  selected = $filter('filter')($scope.serviceFields, {value: service.service.type});
+                  selected = $filter('filter')($scope.serviceFields, {value: service.type});
                   return selected.length ? selected[0].text : 'Not set';
                   }
               };
@@ -84,10 +79,10 @@ app.directive('qtQuoteForm', ['Quote', 'Service','$filter', function (Quote, Ser
               $scope.getTotal = function(){
                   if($scope.quote){
                     var total = 0;
-                    for(var i = 0; i < $scope.quote.service_sections.length; i++){
-                        var service = $scope.quote.service_sections[i];
-                        if(service.service){
-                          total += (service.service.cost.amount * service.service.quantity);
+                    for(var i = 0; i < $scope.quote.services.length; i++){
+                        var service = $scope.quote.services[i];
+                        if(service){
+                          total += (service.cost.amount * service.quantity);
                         }else{
                           total += 0;
                         }
@@ -99,12 +94,10 @@ app.directive('qtQuoteForm', ['Quote', 'Service','$filter', function (Quote, Ser
               $scope.addSection = function() {
                 var counter = $scope.quote.sections.length;
                 $scope.inserted = {
-                textsection: {
                   title: "",
                   text: "",
                   name: "section_"+(counter++),
-                  index: counter
-                },
+                  index: counter,
               }
                 $scope.quote.sections.push($scope.inserted);
               };              
@@ -115,9 +108,13 @@ app.directive('qtQuoteForm', ['Quote', 'Service','$filter', function (Quote, Ser
 
 
               $scope.dragControlListeners = {
+              	/*
                   accept: function (sourceItemHandleScope, destSortableScope) {return boolean},//override to determine drag is allowed or not. default is true.
                   itemMoved: function (event) {},//Do what you want},
-                  orderChanged: function(event) {},//Do what you want},
+                */
+                  orderChanged: function(event) {
+
+                  },//Do what you want},
               };
         }
     };
