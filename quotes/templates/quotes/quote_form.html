@@ -30,6 +30,10 @@
 
     <div id="section_table">
 
+        {% for s in services %}
+            {{ s }}
+            <hr>
+        {% endfor %}
         {% for s in sections %}
             {{ s }}
             <hr>

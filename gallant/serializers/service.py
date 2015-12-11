@@ -15,5 +15,3 @@ class ServiceSerializer(serializers.ModelSerializer):
             'id': {'read_only': False, 'required': False},
         }
         
-    def to_internal_value(self, data):
-            return super(ServiceSerializer, self).to_internal_value(data)

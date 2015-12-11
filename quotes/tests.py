@@ -42,8 +42,8 @@ class QuoteTest(test.TransactionTestCase):
         user = self.user
 
         # Add sections to Quote
-        intro = q.TextSection.objects.create(user=user, name='intro', index=0)
-        important_notes = q.TextSection.objects.create(user=user, name='important_notes', index=1)
+        intro = q.Text.objects.create(user=user, name='intro', index=0)
+        important_notes = q.Text.objects.create(user=user, name='important_notes', index=1)
         quote.sections.add(intro)
         quote.sections.add(important_notes)
 
@@ -64,7 +64,7 @@ class QuoteTest(test.TransactionTestCase):
             self.assertEqual(section.deleted_by_parent, 1)
 
         # Validate Quote Services deleted & deleted_by_parent fields are 1
-        for service in quote.service_sections.all_for(user):
+        for service in quote.services.all_for(user):
             self.assertEqual(service.deleted, 1)
             self.assertEqual(service.deleted_by_parent, 1)
 
@@ -75,7 +75,7 @@ class QuoteTest(test.TransactionTestCase):
 
         quote.projects.add(autofixture.create_one(g.Project, generate_fk=True, field_values={'user': user}))
 
-        request = factory.get(reverse('api_quote_detail', args=[quote.id]))
+        request = factory.get(reverse('api-quote-detail', args=[quote.id]))
         request.user = user
         force_authenticate(request, user=user)
         
@@ -92,7 +92,7 @@ class QuoteTest(test.TransactionTestCase):
         quote = self.quote
         user = self.user
 
-        request = factory.get(reverse('api_quote_detail', args=[quote.id]))
+        request = factory.get(reverse('api-quote-detail', args=[quote.id]))
         request.user = user
         force_authenticate(request, user=user)
 
@@ -109,11 +109,12 @@ class QuoteTest(test.TransactionTestCase):
         quote = self.quote
         user = self.user
 
-        request = factory.get(reverse('api_quote_detail', args=[quote.id]))
+        request = factory.get(reverse('api-quote-detail', args=[quote.id]))
         request.user = user
         force_authenticate(request, user=user)
 
-        response = views.QuoteDetailAPI.as_view()(request, pk=quote.id)
+        response = views.QuoteViewSet.as_view({'get': 'retrieve'})(request, pk=quote.id)
+
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_update_api_quote(self):
@@ -124,12 +125,13 @@ class QuoteTest(test.TransactionTestCase):
         quote.projects.add(autofixture.create_one('gallant.Project', generate_fk=True,
                                                   field_values={'user': user}))
 
-        data = {'projects': []}
+        data = {'projects': [],'services':{}}
 
-        request = factory.patch(reverse('api_quote_detail', args=[quote.id]), data=data, format='json')
+        request = factory.patch(reverse('api-quote-detail', args=[quote.id]), data=data, format='json')
         force_authenticate(request, user=user)
 
-        response = views.QuoteDetailAPI.as_view()(request, pk=quote.id)
+        response = views.QuoteViewSet.as_view({'patch': 'partial_update'})(request, pk=quote.id)
+
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         quote.refresh_from_db()
@@ -143,8 +145,8 @@ class QuoteTemplateTest(test.TestCase):
 
         quote = autofixture.create_one(q.Quote, generate_fk=True,
                                        field_values={'sections': [], 'language': 'en', 'user': user, 'client': client})
-        i = q.TextSection.objects.create(user=quote.user, name='intro', index=0)
-        m = q.TextSection.objects.create(user=quote.user, name='important_notes', index=1)
+        i = q.Text.objects.create(user=quote.user, name='intro', index=0)
+        m = q.Text.objects.create(user=quote.user, name='important_notes', index=1)
         quote.sections.add(i)
         quote.sections.add(m)
         quote_template = autofixture.create_one(q.QuoteTemplate, generate_fk=True,
@@ -167,8 +169,8 @@ class QuoteTemplateTest(test.TestCase):
         quote_no_client = autofixture.create_one(q.Quote, generate_fk=True,
                                                  field_values={'sections': [], 'language': 'en', 'user': user,
                                                                'client': None})
-        i = q.TextSection.objects.create(user=quote_no_client.user, name='intro', index=0)
-        m = q.TextSection.objects.create(user=quote_no_client.user, name='important_notes', index=1)
+        i = q.Text.objects.create(user=quote_no_client.user, name='intro', index=0)
+        m = q.Text.objects.create(user=quote_no_client.user, name='important_notes', index=1)
         quote_no_client.sections.add(i)
         quote_no_client.sections.add(m)
 
@@ -279,7 +281,7 @@ class QuoteFormTest(test.TestCase):
         obj = qf.create_quote(f, s)
         obj.save()
 
-        self.assertEquals(obj.service_sections.count(), 1)
+        self.assertEquals(obj.services.count(), 1)
 
     def test_same_sections(self):
         new_data = {'-section-2-title': 'title123', '-section-2-text': 'text123',
@@ -332,7 +334,7 @@ class QuoteFormTest(test.TestCase):
 
         obj = qf.create_quote(f, s)
         obj.save()
-        service_ids = [s.id for s in obj.service_sections.all_for(self.request.user)]
+        service_ids = [s.id for s in obj.services.all_for(self.request.user)]
 
         new_data['-service-2-id'] = service_ids[0]
         new_data['-service-3-id'] = service_ids[1]
@@ -341,7 +343,7 @@ class QuoteFormTest(test.TestCase):
 
         new_obj = qf.create_quote(f, s)
         new_obj.save()
-        new_service_ids = [s.id for s in new_obj.service_sections.all_for(self.request.user)]
+        new_service_ids = [s.id for s in new_obj.services.all_for(self.request.user)]
 
         self.assertEquals(service_ids, new_service_ids)
 

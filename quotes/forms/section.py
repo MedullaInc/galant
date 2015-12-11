@@ -8,7 +8,7 @@ from django.template.loader import get_template
 
 class SectionForm(gf.UserModelForm):
     class Meta:
-        model = q.TextSection
+        model = q.Text
         fields = ['name', 'title', 'text', 'index']
 
     def __init__(self, user, data=None, prefix=None, *args, **kwargs):
@@ -16,8 +16,8 @@ class SectionForm(gf.UserModelForm):
         prefix = prefix or ''
         data = data or {}
         if prefix + '-id' in data:
-            section = get_one_or_404(user, 'change_textsection',
-                                     q.TextSection, pk=data[prefix + '-id'])
+            section = get_one_or_404(user, 'change_text',
+                                     q.Text, pk=data[prefix + '-id'])
             super(SectionForm, self).__init__(user, data=data, prefix=prefix, instance=section, *args, **kwargs)
         else:
             super(SectionForm, self).__init__(user, data=data, prefix=prefix, *args, **kwargs)
@@ -42,28 +42,29 @@ class SectionForm(gf.UserModelForm):
         return t.render(context)
 
 
-class ServiceSectionForm(gf.UserModelForm):
+class ServiceForm(gf.UserModelForm):
     class Meta:
         model = g.Service  # make sure to call with ServiceSection instance, not Service
         fields = ['name', 'description', 'cost', 'quantity', 'type']
 
     def __init__(self, user, data=None, instance=None, *args, **kwargs):
-        super(ServiceSectionForm, self).__init__(user=user, data=data, instance=instance, *args, **kwargs)
-        self.section = None
+        super(ServiceForm, self).__init__(user=user, data=data, instance=instance, *args, **kwargs)
+        self.service = None
 
         # check to see if we were called with an instance param
         if instance:
-            self.section = instance
-            self.instance = self.section.service
+            self.service = instance
+            self.instance = self.service
         elif self.prefix + '-id' in self.data:
-            self.section = get_one_or_404(user, 'change_servicesection',
-                                          q.ServiceSection, pk=self.data[self.prefix + '-id'])
-            self.instance = self.section.service
+            self.service = get_one_or_404(user, 'change_service',
+                                          g.Service, pk=self.data[self.prefix + '-id'])
+            self.instance = self.service
         else:
-            name = self.data[self.prefix + '-section_name']
+            name = self.data[self.prefix]
             index = self.data[self.prefix + '-index']
-            self.section = q.ServiceSection(user=user, name=name, index=index)
-        self.index = self.section.index
+            quantity = self.data[self.prefix + '-quantity']
+            self.service = g.Service(user=user, name=name, quantity=quantity)
+        #self.index = self.section.index
 
     def as_table(self):
         t = get_template('quotes/service_section_form.html')
@@ -73,7 +74,7 @@ class ServiceSectionForm(gf.UserModelForm):
                          'extra_class': 'dynamic_section'})
 
     def save(self, commit=True):
-        super(ServiceSectionForm, self).save(commit)
+        super(ServiceForm, self).save(commit)
         self.section.service = self.instance
 
         if commit:

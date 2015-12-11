@@ -4,7 +4,7 @@ from quotes import views
 from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter(trailing_slash=False)
-router.register(r'api/quote', views.QuotesAPI, 'api-quote')
+router.register(r'api/quote', views.QuoteViewSet, 'api-quote')
 
 urlpatterns = [
     url(r'^$', login_required(views.QuoteList.as_view()), name='quotes'),
