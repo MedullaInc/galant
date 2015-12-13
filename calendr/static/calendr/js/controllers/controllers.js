@@ -53,8 +53,8 @@ angular.module('gallant.controllers', ['ui.calendar', 'ui.bootstrap', 'ng.django
     };
 
     $scope.gotoDate = function(date) {
-      uiCalendarConfig.calendars['myCalendar1'].fullCalendar('gotoDate', date);
-    }
+      uiCalendarConfig.calendars.myCalendar1.fullCalendar('gotoDate', date);
+    };
 
     $scope.today = function() {
       $scope.dt = new Date();
@@ -311,7 +311,7 @@ angular.module('gallant.controllers', ['ui.calendar', 'ui.bootstrap', 'ng.django
     /* Create a new Task using API Service */
     $scope.createTask = function(task) {
       // Event to task
-      var task = {
+      var myTask = {
         "id": "",
         "user": currentUserId,
         "name": task.name,
@@ -324,7 +324,7 @@ angular.module('gallant.controllers', ['ui.calendar', 'ui.bootstrap', 'ng.django
         "notes": []
       };
 
-      $scope.postTask(task);
+      $scope.postTask(myTask);
     };
 
     /* remove event from calendar */
@@ -390,8 +390,8 @@ angular.module('gallant.controllers', ['ui.calendar', 'ui.bootstrap', 'ng.django
       };
 
       $scope.openEditModal(event);
-      uiCalendarConfig.calendars['myCalendar1'].fullCalendar('unselect');
-    }
+      uiCalendarConfig.calendars.myCalendar1.fullCalendar('unselect');
+    };
 
     /* config object */
     $scope.uiConfig = {

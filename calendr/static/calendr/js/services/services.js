@@ -1,4 +1,4 @@
-app = angular.module('gallant.services', [])
+app = angular.module('gallant.services', []);
 
 app.factory('Project', function($resource) {
   return $resource('/en/api/projects');

@@ -1,5 +1,9 @@
 {% extends "gallant/base_form_ultext.html" %}
-{% load bootstrap i18n section_javascript gallant_tags %}
+{% load bootstrap i18n section_javascript gallant_tags static %}
+
+{% block extra_head %}
+        <script src="{% static "gallant/js/gallant.js" %}"></script>
+{% endblock extra_head %}
 
 {% block sidebar %}
 {% endblock %}

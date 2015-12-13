@@ -1,4 +1,4 @@
-app = angular.module('gallant.directives', [])
+app = angular.module('gallant.directives', []);
 
 app.directive('sidebarDirective', function() {
     return {

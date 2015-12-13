@@ -23,7 +23,7 @@ window.gallant = {
             el_dest.val(el.val());
         }
     }
-}
+};
 
 String.prototype.format = function () {
     var num = arguments.length;
@@ -34,4 +34,4 @@ String.prototype.format = function () {
         str = str.replace(re, arguments[i]);
     }
     return str;
-}
+};

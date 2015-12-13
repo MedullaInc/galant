@@ -24,18 +24,18 @@ app.directive('brQuestionForm', function () {
                     $element.remove();
                     $scope.removeQuestion()($scope.question);
                 }
-            }
+            };
 
             $scope.addChoice = function () {
                 if ($scope.question.choices) {
                     $scope.question.choices.push(null);
                 }
-            }
+            };
             $scope.removeChoice = function ($index) {
                 if (confirm('Remove choice?')) {
                     $scope.question.choices.splice($index, 1);
                 }
-            }
+            };
         },
         template: "<div ng-include='myTemplate'></div>",
     };
@@ -86,22 +86,22 @@ app.directive('brBriefForm', ['Question', function (Question) {
                 var question = new Question();
                 if (type == 'multi') {
                     question.type = 'MultipleChoiceQuestion';
-                    question.choices = [{}, {}]
+                    question.choices = [{}, {}];
                 } else {
                     question.type = 'TextQuestion';
                 }
                 question.index = $scope.brief.questions.length;
                 $scope.brief.questions.push(question);
-            }
+            };
 
             $scope.removeQuestion = function (question) {
                 var index = $scope.brief.questions.indexOf(question);
                 $scope.brief.questions.splice(index, 1);
-            }
+            };
 
             $scope.showButtons = function () {
                 return (typeof $scope.addQuestion === 'function');
-            }
+            };
         }
     };
 }]);
