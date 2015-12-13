@@ -122,7 +122,7 @@ class QuoteCreate(QuoteUpdate):
                 context.update({'language': lang, 'form': qf.QuoteForm(request.user, instance=quote), 'object': quote})
         else:
             context.update({'form': qf.QuoteForm(request.user, instance=q.Quote()),
-                            'sections': qf.section_forms_initial(request.user)})
+                            'sections': []})
 
         request.breadcrumbs([(_('Quotes'), reverse('quotes')),
                              (_('Add'), request.path_info)])

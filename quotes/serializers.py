@@ -11,7 +11,7 @@ class SectionSerializer(serializers.ModelSerializer):
     title = ULTextField()
     text = ULTextField()
     class Meta:
-        model = q.Text
+        model = q.Section
         fields = ('title','text','name','index') 
 
 
