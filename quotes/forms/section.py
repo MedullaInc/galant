@@ -8,7 +8,7 @@ from django.template.loader import get_template
 
 class SectionForm(gf.UserModelForm):
     class Meta:
-        model = q.Text
+        model = q.Section
         fields = ['name', 'title', 'text', 'index']
 
     def __init__(self, user, data=None, prefix=None, *args, **kwargs):
@@ -16,8 +16,8 @@ class SectionForm(gf.UserModelForm):
         prefix = prefix or ''
         data = data or {}
         if prefix + '-id' in data:
-            section = get_one_or_404(user, 'change_text',
-                                     q.Text, pk=data[prefix + '-id'])
+            section = get_one_or_404(user, 'change_section',
+                                     q.Section, pk=data[prefix + '-id'])
             super(SectionForm, self).__init__(user, data=data, prefix=prefix, instance=section, *args, **kwargs)
         else:
             super(SectionForm, self).__init__(user, data=data, prefix=prefix, *args, **kwargs)

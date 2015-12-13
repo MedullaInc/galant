@@ -7,7 +7,7 @@ from django.conf import settings
 from gallant import utils
 from gallant.models import UserModelManager
 from moneyed import Money
-from section import Text
+from section import Section
 
 
 class QuoteStatus(gf.ChoiceEnum):
@@ -23,7 +23,7 @@ class QuoteStatus(gf.ChoiceEnum):
 class Quote(g.UserModel):
     name = m.CharField(max_length=512, default='New Quote')
     client = m.ForeignKey(g.Client, null=True)
-    sections = m.ManyToManyField(Text, blank=True)
+    sections = m.ManyToManyField(Section, blank=True)
     services = m.ManyToManyField(g.Service, blank=True)
 
     language = m.CharField(max_length=7, null=True, choices=settings.LANGUAGES,
