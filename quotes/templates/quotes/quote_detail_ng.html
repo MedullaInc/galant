@@ -1,5 +1,5 @@
 {% extends "base_sidebar_enclosed.html" %}
-{% load bootstrap i18n section_javascript gallant_tags static %}
+{% load bootstrap i18n %}
 {% load static %}
 
 {% block scripts %}
@@ -83,55 +83,94 @@
 
 {% endblock %}
 
+{% block section_title %}
+    {% trans "Quote" %}
+{% endblock %}
+
+{% block sidebar %}
+
+    {% if object.client.email and object.status == '1' %}
+        <form method="post">
+            {% csrf_token %}
+            <a>
+                <button type="submit" class="btn btn-default sidebar" id="send_quote">
+                    {% trans "Send to Client" %}
+                </button>
+            </a>
+        </form>
+    {% endif %}
+
+    <a href="{% url 'quote_pdf' object.id %}">
+        <button type="button" class="btn btn-default sidebar">
+            {% trans "Download Quote" %}
+        </button>
+    </a>
+    <a href="{% url 'add_quote_template' quote_id=object.id %}">
+        <button type="button" class="btn btn-default sidebar" title="Create template from this quote.">
+            {% trans "Use as Template" %}
+        </button>
+    </a>
+{% endblock %}
+
 {% block center_content %}
 
     <div class="row">
         <div class="col-lg-10 col-md-10 col-sm-9 col-xs-9">
-            <h2 class="section_title">{{ form.name.value }}</h2>
+            <h2 class="section_title">{{ object.name }}</h2>
         </div>
+        <div class="col-lg-2 col-md-2 col-sm-3 col-xs-3 action_box">
+            <a href="{% url 'edit_quote' object.id %}" class="edit_button" title="{% trans "Edit" %}">
+                <button id="section_edit" type="button" class="btn btn-default edit_button" aria-label="Edit">
+                    <span class="glyphicon glyphicon-edit"/>
+                </button>
+            </a>
+            <a href="{% url 'delete_quote' object.id %}" class="delete_button" title="{% trans "Delete" %}" onclick="return confirm('{% trans "Are you sure?" %}')"> 
+                <button id="section_delete" type="button" class="btn btn-default delete_button" aria-label="Delete"> 
+                    <span class="glyphicon glyphicon-trash"/> 
+                </button>
+            </a> 
+        </div>
+    </div>
 
-        <br>
+    <div class="row object_data">
+        <div class="col-lg-6">
+            <p id="client" class="data"><span class="detail_title">{% trans "Client" %}:</span> {{ object.client.name }}</p>
+            <br>
+            <p id="status" class="data"><span class="label label-default">{{ object.get_status_display }}</span></p>
+        </div>
+    </div>
 
-        <div ng-app="quote" ng-controller="glFormController"
-             ng-init="init('{% firstof language LANGUAGE_CODE %}', '{{ csrf_token }}')">
-            <div qt-quote-form quote-id="{{ object.pk }}" quote="object" endpoint="objectEndpoint"
-                 language="currentLanguage" forms="forms"
-                 client-id="{{ client.id }}" project-id="{{ project.id }}" quote-id="{{ quote.id }}"
-                 template-id="{{ template_id }}">
-            </div> 
+    <h2 class="section_title">
+        Services
+    </h2>
+
+    <hr>    
+
+    <div ng-app="quote" ng-controller="glFormController"
+         ng-init="init('{% firstof language LANGUAGE_CODE %}', '{{ csrf_token }}')">
+        <div qt-quote-form quote-id="{{ object.pk }}" quote="object" endpoint="objectEndpoint"
+             language="currentLanguage" forms="forms"
+             client-id="{{ client.id }}" project-id="{{ project.id }}" quote-id="{{ quote.id }}"
+             template-id="{{ template_id }}">
+        </div> 
 
         <div id="form_actions">
           <div class="row">
               <div class="col-lg-12">
                   <div class="form-actions">
+                      {% block form_actions %}
                           <button id="create_submit" class="btn btn-default pull-left" type="submit"
                                   ng-click="submitForm()">
                               {{ submit_text|default:_("Save") }}
                           </button>
+                      {% endblock %}
                   </div>
               </div>
           </div>
           </div>
 
-        </div>
-
-
-
     </div>
 
 
-
-
-{% endblock %}
-
-
-
-{% block form_actions %}
-
-
-
-{% endblock %}
-
-{% block extra_body %}
 
 {% endblock %}

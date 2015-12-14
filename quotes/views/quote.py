@@ -116,21 +116,18 @@ class QuoteCreate(QuoteUpdate):
         if template_id is not None:
             template = get_one_or_404(request.user, 'view_quotetemplate', q.QuoteTemplate, pk=template_id)
             quote = template.quote
-            section_forms = qf.section_forms_quote(quote, clear_pk=True)
-            context.update({'sections': section_forms})
+            #section_forms = qf.section_forms_quote(quote, clear_pk=True)
+            #context.update({'sections': section_forms})
             quote.pk = None
             if lang is not None:
                 quote.language = lang
-                context.update({'language': lang, 'form': qf.QuoteForm(request.user, instance=quote), 'object': quote})
-        else:
-            context.update({'form': qf.QuoteForm(request.user, instance=q.Quote()),
-                            'sections': []})
+                context.update({'language': lang, 'object': quote})
 
         request.breadcrumbs([(_('Quotes'), reverse('quotes')),
                              (_('Add'), request.path_info)])
 
         return TemplateResponse(request=self.request,
-                                template="quotes/quote_form.html",
+                                template="quotes/quote_form_ng.html",
                                 context=context)
 
 
@@ -175,7 +172,7 @@ class QuoteDetail(View):
         request.breadcrumbs([(_('Quotes'), reverse('quotes')),
                              (_('Quote: %s' % quote.name), request.path_info)])
         return TemplateResponse(request=request,
-                                template="quotes/quote_form_ng.html",
+                                template="quotes/quote_detail_ng.html",
                                 context={'title': 'Quote', 'object': quote})
 
     def post(self, request, **kwargs):

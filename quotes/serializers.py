@@ -43,12 +43,12 @@ class QuoteSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         user = self.context['request'].user
-
+        services_data = validated_data.pop('services')
+        sections_data = validated_data.pop('sections')
         validated_data.update({'user': user})
 
         instance = super(QuoteSerializer, self).create(validated_data)
-        services_data = validated_data.pop('services')
-        sections_data = validated_data.pop('sections')
+
         self._write_services(user, instance, services_data)
         self._write_sections(user, instance, sections_data)
         return instance
