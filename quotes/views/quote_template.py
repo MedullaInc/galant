@@ -44,7 +44,7 @@ class QuoteTemplateView(View):
         if 'pk' in kwargs:
             self.object = get_one_or_404(request.user, 'view_quotetemplate', q.QuoteTemplate, pk=kwargs['pk'])
             form = qf.QuoteTemplateForm(request.user, instance=self.object.quote)
-            section_forms = qf.section_forms_quote(self.object.quote)
+            #section_forms = qf.section_forms_quote(self.object.quote)
 
             if not request.user.has_perm('change_quotetemplate', self.object):
                 messages.warning(request, 'Warning: you don\'t have permission to change this template. '
@@ -60,12 +60,12 @@ class QuoteTemplateView(View):
             if kwargs['quote_id'] is not None:
                 quote = get_one_or_404(request.user, 'view_quote', q.Quote, pk=kwargs['quote_id'])
                 form = qf.QuoteTemplateForm(request.user, instance=quote)
-                section_forms = qf.section_forms_quote(quote)
+                #section_forms = qf.section_forms_quote(quote)
             else:
                 form = qf.QuoteTemplateForm(request.user)
-                section_forms = qf.section_forms_initial(request.user)
+                #section_forms = qf.section_forms_initial(request.user)
 
-        return self.render_to_response({'form': form, 'sections': section_forms}, request)
+        return self.render_to_response({'form': form}, request)
 
     def post(self, request, **kwargs):
         section_forms = qf.section_forms_request(request)

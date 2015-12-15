@@ -34,24 +34,24 @@ def section_forms_request(request):
     #sf.sort(key=lambda x: x.index)
     return sf
 
-
+"""
 def section_forms_quote(quote, clear_pk=False):
     sf = []
     for section in quote.all_sections():
         if clear_pk:
             section.pk = None
-        if type(section) is q.TextSection:
+        if type(section) is q.Section:
             sf.append(SectionForm(section.user, instance=section, prefix='-section-%d' % section.index))
-        elif type(section) is q.ServiceSection:
+        elif type(section) is q.Service:
             sf.append(ServiceForm(section.user, instance=section, prefix='-service-%d' % section.index))
 
     return sf
 
 
 def section_forms_initial(user):
-    return [SectionForm(user, instance=q.TextSection(name='intro', index=0), prefix='-section-0'),
-            SectionForm(user, instance=q.TextSection(name='important_notes', index=2), prefix='-section-1'),
-            ServiceForm(user, instance=q.ServiceSection(name='section_1',
-                                                               index=1,
+    return [SectionForm(user, instance=q.Section(name='intro', index=0), prefix='-section-0'),
+            SectionForm(user, instance=q.Section(name='important_notes', index=2), prefix='-section-1'),
+            ServiceForm(user, instance=g.Service(name='section_1',
                                                                service=g.Service()),
                                prefix='-service-2')]
+"""

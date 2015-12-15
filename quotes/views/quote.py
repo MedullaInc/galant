@@ -190,7 +190,7 @@ class QuoteList(View):
     def get(self, request):
         self.request.breadcrumbs(_('Quotes'), request.path_info)
         return TemplateResponse(request=request,
-                                template="quotes/quote_list.html",
+                                template="quotes/quote_list_ng.html",
                                 context={'title': 'Quotes',
                                          'object_list': q.Quote.objects
                                 .all_for(request.user)
