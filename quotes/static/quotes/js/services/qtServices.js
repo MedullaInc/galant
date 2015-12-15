@@ -9,6 +9,12 @@ app.factory("Quote", function ($resource) {
 		  params: {},
 		  isArray: true
 		},
+		all: {
+		  method: 'GET',
+		  params: {},
+		  isArray: true,
+		  url: '/en/quote/api/quote/'			
+		}
 	});
 
 });

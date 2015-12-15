@@ -1,8 +1,8 @@
 var app = angular.module('quote', [
     'ngResource',
-    'quotes.controllers.quoteFormController',
     'gallant.controllers.glFormController',
     'quotes.directives.qtForm',
+    'quotes.directives.qtList',
     'xeditable'
 ]);
 
