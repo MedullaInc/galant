@@ -14,13 +14,16 @@ app.factory("Quote", function ($resource) {
 		  params: {},
 		  isArray: true,
 		  url: '/en/quote/api/quote/'			
-		}
+		},
+        fields: {
+          method: 'GET',
+          url: '/en/quote/api/quote/fields/ '
+        },
 	});
 
 });
 
 app.factory("Service", function ($resource) {
-    // TODO: this shouldn't start with /en/
 
 	return $resource("/api/service/fields", {}, {
         fields: {
@@ -29,6 +32,19 @@ app.factory("Service", function ($resource) {
 	});
 
 });
+
+app.factory("Client", function ($resource) {
+    // TODO: this shouldn't start with /en/
+
+	return $resource("/api/client ", {}, {
+        all: {
+            method: 'GET',
+            isArray: true,
+        },
+	});
+
+});
+
 
 app.factory("QuoteTemplate", function ($resource) {
     return $resource("/en/quote/api/template/:id");
