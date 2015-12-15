@@ -5,6 +5,8 @@
     "./node_modules/angular-cookies/angular-cookies?(.min).js",
     "./node_modules/angular-resource/angular-resource?(.min).js",
     "./node_modules/angular-route/angular-route?(.min).js",
+    "./node_modules/angular-mocks/angular-mocks.js",
+    "./node_modules/angular-mocks/ngMock.js",
     "./node_modules/bootstrap/dist/js/bootstrap?(.min).js",
     "./node_modules/chart.js/Chart?(.min).js",
     "./node_modules/flat-ui/dist/js/flat-ui?(.min).js",

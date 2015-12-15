@@ -41,3 +41,21 @@ app.factory('Client', function ($resource) {
     });
 
 });
+
+angular.module('mocks', []).service('ClientMock', function ($q) {
+    this.query = function () {
+        var deferred = $q.defer();
+        deferred.resolve({});
+        return {
+            $promise: deferred.promise
+        };
+    };
+
+    this.fields = function () {
+        var deferred = $q.defer();
+        deferred.resolve({});
+        return {
+            $promise: deferred.promise
+        };
+    };
+});
