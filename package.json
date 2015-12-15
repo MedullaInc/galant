@@ -27,6 +27,7 @@
     "angular-ui-calendar": "git+https://github.com/gusreyes01/ui-calendar.git",
     "bootstrap": "^3.3.6",
     "chart.js": "^1.0.2",
+    "del": "^2.2.0",
     "flat-ui": "git+https://github.com/designmodo/Flat-UI.git",
     "fullcalendar": "^2.5.0",
     "fullcalendar-scheduler": "^1.1.0",
