@@ -39,25 +39,53 @@ describe('glClientListController', function () {
         $scope.clients = $scope.clientsSafe;
     });
 
-    describe('glClientListController', function () {
-        it('sets clientDetailURL', function () {
-            expect($scope.clientDetailURL).toEqual(url);
-        });
+    it('sets clientDetailURL', function () {
+        expect($scope.clientDetailURL).toEqual(url);
+    });
 
-        it('generates clientDetail redirect URL', function () {
-            $scope.redirect(4);
-            expect($window.location.href).toEqual(url + '4');
-        });
+    it('generates clientDetail redirect URL', function () {
+        $scope.redirect(4);
+        expect($window.location.href).toEqual(url + '4');
+    });
 
-        it('gets client list', function () {
-            expect($scope.clients.length).toEqual(1);
-        });
+    it('gets client list', function () {
+        expect($scope.clients.length).toEqual(1);
+    });
 
-        it('updates client last_modified', function () {
-            expect($scope.clients[0].last_contacted).toBeNull();
-            $scope.updateLastContacted(0);
-            $rootScope.$apply();
-            expect($scope.clients[0].last_contacted).not.toBeNull();
+    it('updates client last_modified', function () {
+        expect($scope.clients[0].last_contacted).toBeNull();
+        $scope.updateLastContacted(0);
+        $rootScope.$apply();
+        expect($scope.clients[0].last_contacted).not.toBeNull();
+    });
+});
+
+describe('glFormController', function () {
+    var $rootScope;
+    var $controller;
+
+    beforeEach(function () {
+        module('gallant.controllers.glFormController');
+
+        inject(function (_$rootScope_, _$controller_) {
+            // The injector unwraps the underscores (_) from around the parameter names when matching
+            $rootScope = _$rootScope_;
+            $controller = _$controller_;
         });
+    });
+
+    var $scope;
+    var lang = 'es';
+
+    beforeEach(function () {
+        $scope = $rootScope.$new();
+        $controller('glFormController', {$scope: $scope});
+        $scope.init(lang, 'csrftoken');
+        $rootScope.$apply();
+        $scope.object = {};
+    });
+
+    it('sets currentLanguage', function () {
+        expect($scope.currentLanguage).toEqual(lang);
     });
 });
