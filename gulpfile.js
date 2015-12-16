@@ -21,20 +21,20 @@ var outdir = 'build';
 var jsout = outdir + '/js';
 var cssout = outdir + '/css';
 
-gulp.task('lint', function() {
+gulp.task('lint', function () {
     return gulp.src(scripts)
         .pipe(jshint())
         .pipe(jshint.reporter('default'));
 });
 
-gulp.task('copy-js-assets', function() {
-   return gulp.src(assets.js)
-       .pipe(gulp.dest(jsout));
+gulp.task('copy-js-assets', function () {
+    return gulp.src(assets.js)
+        .pipe(gulp.dest(jsout));
 });
 
-gulp.task('copy-css-assets', function() {
-   return gulp.src(assets.css)
-       .pipe(gulp.dest(cssout));
+gulp.task('copy-css-assets', function () {
+    return gulp.src(assets.css)
+        .pipe(gulp.dest(cssout));
 });
 
 var concatAndMinModule = function (module) {
@@ -46,23 +46,31 @@ var concatAndMinModule = function (module) {
         .pipe(gulp.dest(jsout));
 };
 
-gulp.task('concat-and-min', function() {
+gulp.task('concat-and-min', function () {
     concatAndMinModule('briefs');
     concatAndMinModule('gallant');
     return;
 });
 
 gulp.task('test', function (done) {
-  new Server({
-    configFile: __dirname + '/karma.conf.js',
-  }, done).start();
+    new Server({
+        configFile: __dirname + '/karma.conf.js',
+    }, done).start();
 });
 
-gulp.task('clean', function() {
+gulp.task('karma', function (done) {
+    new Server({
+        configFile: __dirname + '/karma.conf.js',
+        singleRun: false,
+        autoWatch: true,
+    }, done).start();
+});
+
+gulp.task('clean', function () {
     return del(['coverage', 'build']);
 });
 
-gulp.task('clean-coverage', function() {
+gulp.task('clean-coverage', function () {
     return del(['coverage']);
 });
 

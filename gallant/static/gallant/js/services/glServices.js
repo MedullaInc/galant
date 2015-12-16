@@ -1,5 +1,6 @@
 app = angular.module('gallant.services.glServices', ['ngResource']);
 
+/* istanbul ignore next */
 app.factory('Client', function ($resource) {
     return $resource('/api/client', {}, {
         query: {
@@ -40,30 +41,4 @@ app.factory('Client', function ($resource) {
         }
     });
 
-});
-
-angular.module('mocks', []).service('ClientMock', function ($q) {
-    this.query = function () {
-        var deferred = $q.defer();
-        deferred.resolve([{id: 0, last_contacted: null}]);
-        return {
-            $promise: deferred.promise
-        };
-    };
-
-    this.fields = function () {
-        var deferred = $q.defer();
-        deferred.resolve({});
-        return {
-            $promise: deferred.promise
-        };
-    };
-
-    this.update = function () {
-        var deferred = $q.defer();
-        deferred.resolve({});
-        return {
-            $promise: deferred.promise
-        };
-    };
 });

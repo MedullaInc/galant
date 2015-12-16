@@ -43,7 +43,6 @@ app.controller('glFormController', ['$scope', '$http', '$window',
 
                 method({id: $scope.object.id}, $scope.object, function (response) {
                     if (response.redirect) {
-                        console.log('redirecting');
                         window.location.href = response.redirect;
                     } else {
                         // handle errors
