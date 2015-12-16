@@ -63,19 +63,22 @@ describe('glClientListController', function () {
 describe('glFormController', function () {
     var $rootScope;
     var $controller;
+    var window;
 
     beforeEach(function () {
         module('gallant.controllers.glFormController');
 
-        inject(function (_$rootScope_, _$controller_) {
+        inject(function (_$rootScope_, _$controller_, _$window_) {
             // The injector unwraps the underscores (_) from around the parameter names when matching
             $rootScope = _$rootScope_;
             $controller = _$controller_;
+            $window = _$window_;
         });
     });
 
     var $scope;
     var lang = 'es';
+    var url = 'http://foo.com/';
 
     beforeEach(function () {
         $scope = $rootScope.$new();
@@ -83,9 +86,61 @@ describe('glFormController', function () {
         $scope.init(lang, 'csrftoken');
         $rootScope.$apply();
         $scope.object = {};
+
+        $scope.objectEndpoint = {};
+        $scope.objectEndpoint.save = function (a, b, callback) {
+            callback({ redirect: url });
+        };
+        $scope.objectEndpoint.update = function (a, b, callback) {
+            callback({ redirect: url });
+        };
+
+        spyOn($scope.objectEndpoint, 'save').and.callThrough();
+        spyOn($scope.objectEndpoint, 'update').and.callThrough();
+
+        $scope.forms = [{
+            $invalid: false, field: {
+                $dirty: false, $setDirty: function () {
+                    this.$dirty = true;
+                }
+            },
+            innerForm: {
+                $invalid: false
+            }
+        }];
     });
 
     it('sets currentLanguage', function () {
         expect($scope.currentLanguage).toEqual(lang);
+    });
+
+    it('sets forms dirty', function () {
+        $scope.submitForm();
+        expect($scope.forms[0].field.$dirty).toEqual(true);
+    });
+
+    it('saves on submit', function () {
+        $scope.submitForm();
+        expect($scope.objectEndpoint.save).toHaveBeenCalled();
+    });
+
+    it('updates on submit', function () {
+        $scope.object = {id: 1};
+        $scope.submitForm();
+        expect($scope.objectEndpoint.update).toHaveBeenCalled();
+    });
+
+    it('skips when forms invalid', function () {
+        $scope.forms[0].$invalid = true;
+        $scope.submitForm();
+        expect($scope.objectEndpoint.save).not.toHaveBeenCalled();
+    });
+
+    it('adds onbeforeunload when object changes', function () {
+        $scope.object = {id: 1};
+        $rootScope.$apply();
+        expect($window.onbeforeunload).not.toBeNull();
+        expect($window.onbeforeunload().length).not.toEqual(0);
+        $window.onbeforeunload = null; // remove so browser doesn't get stuck
     });
 });
