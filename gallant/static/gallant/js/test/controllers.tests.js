@@ -2,23 +2,23 @@ describe('glClientListController', function () {
     var $rootScope;
     var $controller;
     var $window;
-    var ClientMock;
     var url = 'http://foo.com/';
 
     beforeEach(function () {
-        module('mocks');
         angular.module('gallant.services.glServices', []);
         module('gallant.services.glServices', function ($provide) {
-            $provide.factory('Client', function () {
-                return ClientMock;
+            $provide.factory('Client', function ($q) {
+                var Client = jasmine.createSpyObj('Client', ['query', 'fields', 'update']);
+
+                Client.query.and.returnValue({$promise: $q.when([{id: 0, last_contacted: null}])});
+                Client.fields.and.returnValue({$promise: $q.when({})});
+                Client.update.and.returnValue({$promise: $q.when({})});
+
+                return Client;
             });
         });
         module('gallant.controllers.glClientListController', function ($provide) {
             $provide.value('$window', {location: {href: null}});
-        });
-
-        inject(function (_ClientMock_) {
-            ClientMock = _ClientMock_;
         });
 
         inject(function (_$rootScope_, _$controller_, _$window_) {
