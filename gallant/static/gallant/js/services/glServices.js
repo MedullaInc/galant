@@ -1,5 +1,6 @@
 app = angular.module('gallant.services.glServices', ['ngResource']);
 
+/* istanbul ignore next */
 app.factory('Client', function ($resource) {
     return $resource('/api/client', {}, {
         query: {
