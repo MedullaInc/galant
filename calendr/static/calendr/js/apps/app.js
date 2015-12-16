@@ -11,7 +11,7 @@ angular.module('gallant', [
    'gallant.controllers',
    'gallant.services',
    ])
-.config(['$httpProvider', function ($httpProvider) {
+.config(['$httpProvider', /* istanbul ignore next  */ function ($httpProvider) {
     $httpProvider.defaults.headers.common['X-CSRFToken'] = $.cookie("csrftoken");
 }]);
 
