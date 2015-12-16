@@ -1,6 +1,7 @@
 describe('glClientListController', function () {
     var $rootScope;
     var $controller;
+    var $window;
     var ClientMock;
     var url = 'http://foo.com/';
 
@@ -12,25 +13,51 @@ describe('glClientListController', function () {
                 return ClientMock;
             });
         });
-        module('gallant.controllers.glClientListController');
+        module('gallant.controllers.glClientListController', function ($provide) {
+            $provide.value('$window', {location: {href: null}});
+        });
 
         inject(function (_ClientMock_) {
             ClientMock = _ClientMock_;
         });
 
-        inject(function (_$rootScope_, _$controller_) {
+        inject(function (_$rootScope_, _$controller_, _$window_) {
             // The injector unwraps the underscores (_) from around the parameter names when matching
             $rootScope = _$rootScope_;
             $controller = _$controller_;
+            $window = _$window_;
         });
     });
 
-    describe('$scope.init', function () {
+    var $scope;
+
+    beforeEach(function () {
+        $scope = $rootScope.$new();
+        $controller('glClientListController', {$scope: $scope});
+        $scope.init(url);
+        $rootScope.$apply();
+        $scope.clients = $scope.clientsSafe;
+    });
+
+    describe('glClientListController', function () {
         it('sets clientDetailURL', function () {
-            var $scope = $rootScope.$new();
-            var controller = $controller('glClientListController', {$scope: $scope});
-            $scope.init(url);
             expect($scope.clientDetailURL).toEqual(url);
+        });
+
+        it('generates clientDetail redirect URL', function () {
+            $scope.redirect(4);
+            expect($window.location.href).toEqual(url + '4');
+        });
+
+        it('gets client list', function () {
+            expect($scope.clients.length).toEqual(1);
+        });
+
+        it('updates client last_modified', function () {
+            expect($scope.clients[0].last_contacted).toBeNull();
+            $scope.updateLastContacted(0);
+            $rootScope.$apply();
+            expect($scope.clients[0].last_contacted).not.toBeNull();
         });
     });
 });
