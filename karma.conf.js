@@ -69,6 +69,11 @@ module.exports = function (config) {
         // how many browser should be started simultanous
         concurrency: Infinity,
 
+        coverageReporter: {
+            type: 'html',
+            dir: 'coverage/'
+        },
+
         thresholdReporter: {
             statements: 90,
             branches: 90,
