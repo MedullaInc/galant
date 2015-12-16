@@ -3,24 +3,10 @@
 {% load djangular_tags %}
 
 {% block css %}
+    <link href='{% static "/static/calendr/css/calendar.css" %}' rel='stylesheet'/>
     <link href='{% static "css/fullcalendar.min.css" %}' rel='stylesheet'/>
     <link href='{% static "css/scheduler.min.css" %}' rel='stylesheet'/>
     <link href='{% static "css/angular-aside.min.css" %}' rel='stylesheet'/>
-
-    <style>
-        select {
-            max-width: 120px;
-        }
-
-        .ng-aside {
-            pointer-events: none;
-        }
-
-        .modal-dialog {
-            pointer-events: auto;
-        }
-
-    </style>
 {% endblock %}
 
 {% block scripts %}
@@ -75,6 +61,7 @@
     {% verbatim %}
         <div ng-app="gallant" id="calendar_container">
             <section id="directives-calendar" ng-controller="CalendrControl">
+
                 <div class="row">
                     <div class="col-lg-12" data-ng-init="renderCalender('myCalendar1');">
                         <div class="alert-success calAlert" ng-show="alertMessage != undefined && alertMessage != ''">
@@ -84,43 +71,41 @@
                 </div>
 
                 <div class="row">
-                    <div class="has-feedback form-group col-lg-12">
+                    <div class="has-feedback form-group col-lg-3">
                         <label class="control-label">Project Filter</label>
                         <select ng-change="projectChanged(event.projectId)" ng-model="event.projectId" class="form-control">
                             <option ng-selected="{{ project.id == event.projectId }}" ng-repeat="project in projects" value="{{ project.id }}"> {{ project.name }}</option>
                         </select>
                     </div>
-                </div>
 
-                <div class="row">
-                    <div class="col-lg-12">
+                    <div class="form-group col-lg-4">
+                        <label class="control-label">Dates Filter</label>
+                        <br/>
+
+                        <div class="btn-group date-buttons">
+                            <button id="timelineWeek" class="btn btn-default" ng-click="changeView('timelineWeek', 'myCalendar1')">Week</button>
+                            <button id="timelineMonth" class="btn btn-default" ng-click="changeView('timelineMonth', 'myCalendar1')">Month</button>
+                            <button id="timelineThreeMonths" class="btn btn-default" ng-click="changeView('timelineThreeMonths', 'myCalendar1')">3 Months</button>
+                        </div>
+                    </div>
+
+                    <div class="form-group col-lg-3">
+                        <label class="control-label">Go to date</label>
+                        <br/>
+                        <input id="id_date" class="form-control pull-left" type="date" uib-datepicker-popup ng-model="dt" is-open="status.opened" min-date="minDate" max-date="maxDate" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" ng-change="gotoDate(dt)"/>
+                    </div>
+
+                    <div class="form-group col-lg-2 col-lg-pull-right">
+                        <label class="control-label">My Tasks</label>
+                        <br/>
+
                         <div class="btn-group">
-                            <button id="timelineDay" class="btn btn-success" ng-click="changeView('timelineDay', 'myCalendar1')">Today</button>
-                            <button id="timelineWeek" class="btn btn-success" ng-click="changeView('timelineWeek', 'myCalendar1')">This Week</button>
-                            <button id="timelineMonth" class="btn btn-success" ng-click="changeView('timelineMonth', 'myCalendar1')">This Month</button>
-                            <button id="timelineThreeMonths" class="btn btn-success" ng-click="changeView('timelineThreeMonths', 'myCalendar1')">Next Three Months</button>
+                            <button id="filterTask" class="btn btn-default" ng-click="openAsideModal()">My Task List</button>
                         </div>
                     </div>
                 </div>
 
-                <div class="row">
-                    <div class="col-lg-12">
-                        <button id="filterTask" class="btn btn-success" ng-click="openAsideModal()">Filter Task</button>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-2">
-                        <p class="input-group">
-                            <input id="id_date" type="date" class="form-control" uib-datepicker-popup ng-model="dt" is-open="status.opened" min-date="minDate" max-date="maxDate" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" ng-change="gotoDate(dt)"/>
-                        </p>
-                    </div>
-                    <div class="col-md-2">
-                        <button id="id_today" type="button" class="btn btn-sm btn-info" ng-click="today()">Today</button>
-                    </div>
-                </div>
-
-                <div class="row">
+                <div class="row calendar_container">
                     <div class="col-lg-12" class="calendar" ng-model="eventSources" resources="eventResources" calendar="myCalendar1" ui-calendar="uiConfig.calendar">
                     </div>
                 </div>
