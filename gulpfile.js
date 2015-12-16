@@ -38,7 +38,7 @@ gulp.task('copy-css-assets', function() {
 });
 
 var concatAndMinModule = function (module) {
-    return gulp.src(module + '/static/**/*.js')
+    return gulp.src([module + '/static/**/*.js', '!**/*test*.js'])
         .pipe(concat(module + '.js'))
         .pipe(gulp.dest(jsout))
         .pipe(rename(module + '.min.js'))
