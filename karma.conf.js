@@ -18,19 +18,21 @@ module.exports = function (config) {
             'build/js/angular.js',
             'build/js/angular-mocks.js',
             'build/js/jQuery.js',
-            '**/static/**/*.js'
+            '**/static/**/*.js',
+            'static/**/*.html'
         ],
 
         // list of files to exclude
         exclude: [
-            'static/**', 'venv/**', 'node_modules/**/static/**'
+            'static/**/*.js', 'venv/**', 'node_modules/**/static/**'
         ],
 
 
         // preprocess matching files before serving them to the browser
         // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
         preprocessors: {
-            '**/static/**/*.js': ['coverage']
+            '**/static/**/*.js': ['coverage'],
+            'static/**/*.html': ['ng-html2js']
         },
 
 
@@ -72,6 +74,11 @@ module.exports = function (config) {
         coverageReporter: {
             type: 'html',
             dir: 'coverage/'
+        },
+
+        ngHtml2JsPreprocessor: {
+            prependPrefix: '/',
+            moduleName: 'staticNgTemplates'
         },
 
         thresholdReporter: {
