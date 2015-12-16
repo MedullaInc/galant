@@ -91,6 +91,7 @@ class BriefTemplatesTest(browser.SignedInTest):
         b.get(self.live_server_url +
               reverse('add_brief') + '?template_id=%d&lang=en&client_id=%d' % (bt.id, client.id))
 
+        browser.wait().until(lambda driver: driver.find_element_by_id('question0_question'))
         question = b.find_element_by_id('question0_question')
         self.assertEqual(quest.question.get_text(), question.get_attribute('value'))
 
