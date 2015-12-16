@@ -58,6 +58,14 @@ gulp.task('test', function (done) {
     }, done).start();
 });
 
+gulp.task('karma', function (done) {
+    new Server({
+        configFile: __dirname + '/karma.conf.js',
+        singleRun: false,
+        autoWatch: true,
+    }, done).start();
+});
+
 gulp.task('clean', function () {
     return del(['coverage', 'build']);
 });
