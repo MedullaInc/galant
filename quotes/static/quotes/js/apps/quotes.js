@@ -1,8 +1,12 @@
 var app = angular.module('quote', [
     'ngResource',
     'gallant.controllers.glFormController',
+    'quotes.controllers.qtPopoverController',
     'quotes.directives.qtForm',
     'quotes.directives.qtList',
+    'quotes.directives.qtTemplateList',
+    'ui.bootstrap',
+    'ngAnimate',
     'xeditable'
 ]);
 

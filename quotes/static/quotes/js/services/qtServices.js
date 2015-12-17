@@ -47,7 +47,22 @@ app.factory("Client", function ($resource) {
 
 
 app.factory("QuoteTemplate", function ($resource) {
-    return $resource("/en/quote/api/template/:id");
+    // TODO: this shouldn't start with /en/
+
+	return $resource("/en/quote/api/quote/:id", {}, {
+		query: {
+		  method: 'GET',
+		  params: {},
+		  isArray: true
+		},
+		all: {
+		  method: 'GET',
+		  params: {},
+		  isArray: true,
+		  url: '/en/quote/api/quote_template/'			
+		}
+	});
+
 });
 
 

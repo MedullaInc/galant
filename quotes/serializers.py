@@ -5,7 +5,7 @@ from gallant import models as g
 from quotes import models as q
 from gallant import serializers as s
 from django.http import HttpResponse
-
+import json
 
 class SectionSerializer(serializers.ModelSerializer):
     title = ULTextField()
@@ -105,7 +105,12 @@ class QuoteSerializer(serializers.ModelSerializer):
 class QuoteTemplateSerializer(serializers.ModelSerializer):
     user = serializers.PrimaryKeyRelatedField(read_only=True)
     quote = serializers.PrimaryKeyRelatedField(read_only=True)
+    language_list = serializers.SerializerMethodField()
 
     class Meta:
         model = QuoteTemplate
-        fields = ('id', 'user', 'quote')
+        fields = ('id', 'user', 'quote', 'language_list')
+
+    def get_language_list(self, obj):
+        lan_list = QuoteTemplate.objects.all_for(obj.user).get(pk=obj.id).language_list()
+        return lan_list
