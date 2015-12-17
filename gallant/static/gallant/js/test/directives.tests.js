@@ -33,6 +33,14 @@ describe('glForm', function () {
             $scope.$digest();
             expect(element.html().substring(0, 3)).toEqual('<in');
         });
+
+        it('sets text', function () {
+            var element = $compile('<div gl-ultext-input text="text" language="language"></div>')($scope);
+            $scope.$digest();
+            var inp = element.find('input');
+            inp.val('hello').triggerHandler('input');
+            expect($scope.text[$scope.language]).toEqual('hello');
+        });
     });
 
     describe('glUltextArea', function () {
@@ -40,6 +48,14 @@ describe('glForm', function () {
             var element = $compile('<div gl-ultext-area></div>')($scope);
             $scope.$digest();
             expect(element.html().substring(0, 3)).toEqual('<te');
+        });
+
+        it('sets text', function () {
+            var element = $compile('<div gl-ultext-area text="text" language="language"></div>')($scope);
+            $scope.$digest();
+            var inp = element.find('textarea');
+            inp.val('hello').triggerHandler('input');
+            expect($scope.text[$scope.language]).toEqual('hello');
         });
     });
 });
