@@ -5,13 +5,15 @@ from django.utils.translation import get_language
 from django.conf import settings
 from django.contrib import messages
 from django.core.urlresolvers import reverse
-from gallant.utils import get_one_or_404, GallantObjectPermissions
+from gallant.utils import get_one_or_404, GallantObjectPermissions, GallantViewSetPermissions
 from quotes import models as q, serializers
 from quotes import forms as qf
 from gallant import forms as gf
 from django.utils.translation import ugettext_lazy as _
 from rest_framework import generics
-
+from rest_framework.viewsets import ModelViewSet
+from rest_framework.response import Response
+from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED
 
 class QuoteTemplateList(View):
     def get(self, request):
@@ -120,7 +122,8 @@ class QuoteTemplateView(View):
                                 template="quotes/quote_template.html",
                                 context=context)
 
-
+# DEPRECATED
+"""
 class QuoteTemplateDetailAPI(generics.RetrieveUpdateAPIView):
     model = q.QuoteTemplate
     serializer_class = serializers.QuoteTemplateSerializer
@@ -130,3 +133,30 @@ class QuoteTemplateDetailAPI(generics.RetrieveUpdateAPIView):
 
     def get_queryset(self):
         return self.model.objects.all_for(self.request.user)
+"""
+
+class QuoteTemplateViewSet(ModelViewSet):
+    model = q.QuoteTemplate
+    serializer_class = serializers.QuoteTemplateSerializer
+    permission_classes = [
+         GallantViewSetPermissions
+     ]
+
+    def get_queryset(self):
+        return self.model.objects.all_for(self.request.user)
+
+    def update(self, request, *args, **kwargs):
+        response = super(QuoteTemplateViewSet, self).update(request, *args, **kwargs)
+        if response.status_code == HTTP_200_OK or response.status_code == HTTP_201_CREATED:
+            self.request._messages.add(messages.SUCCESS, 'Quote Template saved.')
+            return Response({'status': 0, 'redirect': reverse('quote_detail', args=[response.data['id']])})
+        else:
+            return response
+
+    def create(self, request, *args, **kwargs):
+        response = super(QuoteTemplateViewSet, self).create(request, *args, **kwargs)
+        if response.status_code == HTTP_201_CREATED:
+            self.request._messages.add(messages.SUCCESS, 'Quote Template saved.')
+            return Response({'status': 0, 'redirect': reverse('quote_detail', args=[response.data['id']])})
+        else:
+            return response

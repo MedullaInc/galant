@@ -1,8 +1,8 @@
-app = angular.module('quotes.directives.qtList', [
+app = angular.module('quotes.directives.qtTemplateList', [
     'quotes.services.qtServices',
 ]);
 
-app.directive('qtQuoteList', ['Quote', 'QuoteTemplate', 'Service', 'Client', '$filter', function (Quote, QuoteTemplate, Service, Client, $filter) {
+app.directive('qtQuoteTemplateList', ['Quote', 'QuoteTemplate', 'Service', 'Client', '$filter', function (Quote, QuoteTemplate, Service, Client, $filter) {
     return {
         restrict: 'A',
         scope: {
@@ -15,11 +15,12 @@ app.directive('qtQuoteList', ['Quote', 'QuoteTemplate', 'Service', 'Client', '$f
             function ($scope, $attrs, $filter, $window, Quote, QuoteTemplate, Service, Client) {
                 $scope.isCollapsed = true;
                 $scope.quoteStatus = [];
+                $scope.selectedItem = "";
 
                 $scope.endpoint = Quote;
 
-                $scope.goToUrl = function(quote) {
-                    $window.location.href = "/en/quote/" + quote.id;
+                $scope.goToUrl = function(template) {
+                    $window.location.href = '/en/quote/add/' + '?template_id=' + template.id + '&lang=' + template.languageSelection;
                 };
 
                 Quote.fields({
@@ -35,6 +36,7 @@ app.directive('qtQuoteList', ['Quote', 'QuoteTemplate', 'Service', 'Client', '$f
                 Quote.all({
                 }).$promise.then(function (quotes) {
                     $scope.quotes = quotes;
+                    console.log($scope.quotes);
                 });
 
                 QuoteTemplate.all({
@@ -42,15 +44,15 @@ app.directive('qtQuoteList', ['Quote', 'QuoteTemplate', 'Service', 'Client', '$f
                     $scope.quoteTemplates = quoteTemplates;
                 });
 
-                Client.all({
-                }).$promise.then(function (clients) {
-                    $scope.clients = clients;
-                });
-
             }],
-        templateUrl: '/static/quotes/html/qt_quote_list.html',
+        templateUrl: '/static/quotes/html/qt_quote_template_list.html',
           link: function($scope, $window) {
-            
+
+          $scope.languageSelection = function(template, lang) {
+			template.languageSelection = lang;             	
+
+          };
+
         }
     };
 }]);

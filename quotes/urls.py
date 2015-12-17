@@ -5,6 +5,7 @@ from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter(trailing_slash=False)
 router.register(r'api/quote', views.QuoteViewSet, 'api-quote')
+router.register(r'api/quote_template', views.QuoteTemplateViewSet, 'api-quote-template')
 
 urlpatterns = [
     url(r'^$', login_required(views.QuoteList.as_view()), name='quotes'),
@@ -24,7 +25,8 @@ urlpatterns = [
     url(r'^download/(?P<token>[a-f0-9]{32})?$', login_required(views.QuotePDF.as_view()), name='quote_pdf'),
 
     # url(r'^api/quote/(?P<pk>[0-9]+)$', login_required(views.QuoteDetailAPI.as_view()), name='api_quote_detail'),
-    url(r'^api/template/(?P<pk>[0-9]+)$', login_required(views.QuoteTemplateDetailAPI.as_view()), name='api_quote_template_detail'),
+    # url(r'^api/template/$', login_required(views.QuoteTemplateDetailAPI.as_view()), name='api_quote_template_list'),
+    # url(r'^api/template/(?P<pk>[0-9]+)$', login_required(views.QuoteTemplateDetailAPI.as_view()), name='api_quote_template_detail'),
 ]
 urlpatterns += router.urls
 

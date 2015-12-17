@@ -6,11 +6,11 @@
     <th><b>Status</b></th>
     </thead>
     
-    <tr ng-repeat="quote in quotes" style="cursor: pointer" class="quote_row" ng-click="quoteDetail(quote)">
+    <tr ng-repeat="quote in quotes" style="cursor: pointer" class="quote_row" ng-click="goToUrl(quote)">
         <td>{{ quote.modified|date:'y-M-d h:m' }}</td>
-        <td>{{ getQuoteClient(quote) }}</td>
+        <td>{{ (clients | filter:{id: quote.client})[0].name }}</td>
         <td>{{ quote.name }}</td>
-        <td>{{ getQuoteStatus(quote) }}</td>
+        <td>{{ quoteStatus[quote.status].text  }}</td>
     </tr>
     <tr ng-if="quotes.length == 0">
         <td colspan="4">
