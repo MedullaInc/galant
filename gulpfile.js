@@ -6,8 +6,13 @@ var jshint = require('gulp-jshint');
 var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
 var rename = require('gulp-rename');
+var del = require('del');
+var Server = require('karma').Server;
 
 var scripts = ['**/static/**/*.js',
+    '!**/static/**/*test*.js', '!static/**', '!venv/**', '!node_modules/**'];
+
+var tests = ['**/static/**/*test*.js',
     '!static/**', '!venv/**', '!node_modules/**'];
 
 var assets = require('./assets.json');
@@ -16,24 +21,24 @@ var outdir = 'build';
 var jsout = outdir + '/js';
 var cssout = outdir + '/css';
 
-gulp.task('lint', function() {
+gulp.task('lint', function () {
     return gulp.src(scripts)
         .pipe(jshint())
         .pipe(jshint.reporter('default'));
 });
 
-gulp.task('copy-js-assets', function() {
-   return gulp.src(assets.js)
-       .pipe(gulp.dest(jsout));
+gulp.task('copy-js-assets', function () {
+    return gulp.src(assets.js)
+        .pipe(gulp.dest(jsout));
 });
 
-gulp.task('copy-css-assets', function() {
-   return gulp.src(assets.css)
-       .pipe(gulp.dest(cssout));
+gulp.task('copy-css-assets', function () {
+    return gulp.src(assets.css)
+        .pipe(gulp.dest(cssout));
 });
 
 var concatAndMinModule = function (module) {
-    return gulp.src(module + '/static/**/*.js')
+    return gulp.src([module + '/static/**/*.js', '!**/*test*.js'])
         .pipe(concat(module + '.js'))
         .pipe(gulp.dest(jsout))
         .pipe(rename(module + '.min.js'))
@@ -41,12 +46,34 @@ var concatAndMinModule = function (module) {
         .pipe(gulp.dest(jsout));
 };
 
-gulp.task('concat-and-min', function() {
+gulp.task('concat-and-min', function () {
     concatAndMinModule('briefs');
     concatAndMinModule('gallant');
     return;
 });
 
+gulp.task('test', function (done) {
+    new Server({
+        configFile: __dirname + '/karma.conf.js',
+    }, done).start();
+});
+
+gulp.task('karma', function (done) {
+    new Server({
+        configFile: __dirname + '/karma.conf.js',
+        singleRun: false,
+        autoWatch: true,
+    }, done).start();
+});
+
+gulp.task('clean', function () {
+    return del(['coverage', 'build']);
+});
+
+gulp.task('clean-coverage', function () {
+    return del(['coverage']);
+});
+
 gulp.task('static', ['copy-js-assets', 'copy-css-assets', 'concat-and-min'])
 
-gulp.task('default', ['lint', 'copy-assets']);
+gulp.task('default', ['lint', 'copy-assets', 'test']);

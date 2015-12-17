@@ -63,3 +63,4 @@ venv/
 static/**
 
 node_modules/**
+coverage/**

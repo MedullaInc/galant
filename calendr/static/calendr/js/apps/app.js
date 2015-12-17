@@ -1,5 +1,5 @@
 /**
- * calendarApp 
+ * calendarApp
  */
 
 angular.module('gallant', [
