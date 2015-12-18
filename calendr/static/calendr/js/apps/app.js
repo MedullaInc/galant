@@ -7,7 +7,6 @@ angular.module('gallant', [
         'ui.bootstrap',
         'ng.django.forms',
         'ngResource',
-        'gallant.directives',
         'calendr.controllers.clCalendrController',
         'gallant.services',
     ])
