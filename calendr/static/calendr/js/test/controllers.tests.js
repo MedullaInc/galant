@@ -63,4 +63,9 @@ describe('CalendrControl', function () {
         $scope.today();
         expect(uiCalendarConfig.calendars.myCalendar1.fullCalendar).toHaveBeenCalled();
     });
+
+    it('disables weekend selection', function () {
+        expect($scope.disabled({getDay: function() { return 0; }}, 'day')).toBeTruthy();
+        expect($scope.disabled({getDay: function() { return 3; }}, 'day')).toBeFalsy();
+    });
 });
