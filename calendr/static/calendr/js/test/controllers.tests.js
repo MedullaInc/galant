@@ -79,4 +79,12 @@ describe('CalendrControl', function () {
         $scope.setDate();
         expect($scope.dt).toBeDefined();
     });
+
+    it('updates tasks on project change', function () {
+        $scope.eventResources = [{}, {}];
+        expect($scope.eventResources.length).toEqual(2);
+        $scope.projectChanged(0);
+        $scope.$apply();
+        expect($scope.eventResources.length).toEqual(1);
+    });
 });
