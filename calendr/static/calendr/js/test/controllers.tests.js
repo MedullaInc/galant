@@ -120,4 +120,10 @@ describe('CalendrControl', function () {
         $scope.$apply();
         expect($uibModal.open).toHaveBeenCalled();
     });
+
+    it('alerts on event drop', function () {
+        $scope.alertOnDrop({});
+        $scope.$apply();
+        expect($scope.alertMessage).toBeDefined();
+    });
 });
