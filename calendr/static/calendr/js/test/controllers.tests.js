@@ -1,3 +1,7 @@
+beforeEach(function() {
+    currentUserId = 0;
+});
+
 describe('CalendrControl', function () {
     var $rootScope;
     var $controller;
@@ -11,6 +15,7 @@ describe('CalendrControl', function () {
                 var MockResource = function () { return {id: 0}; };
                 MockResource.get = function () { return {$promise: $q.when({id: 0})}; };
                 MockResource.update = function (t) { return {$promise: $q.when({id: 0})}; };
+                MockResource.save = function (t) { return {$promise: $q.when({id: 0})}; };
                 MockResource.query = function () { return {$promise: $q.when([{id: 0}])}; };
                 return MockResource;
             }
@@ -94,5 +99,11 @@ describe('CalendrControl', function () {
         $scope.updateEvent({}, {});
         $scope.$apply();
         expect($scope.events.length).toEqual(1);
+    });
+
+    it('creates task', function () {
+        $scope.createTask({});
+        $scope.$apply();
+        expect($scope.events.length).toEqual(2);
     });
 });
