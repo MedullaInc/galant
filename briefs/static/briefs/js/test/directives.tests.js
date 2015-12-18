@@ -135,5 +135,27 @@ describe('brForm', function () {
             $scope.$digest();
             expect(element.html().substring(0, 8)).toEqual('<ng-form');
         });
+
+        it('adds question', function () {
+            $scope.brief = {};
+            var element = $compile('<div br-brief-form brief="brief"></div>')($scope);
+            $scope.$digest();
+
+            element.isolateScope().addQuestion();
+            element.isolateScope().addQuestion('multi');
+            expect($scope.brief.questions.length).toEqual(2);
+        });
+
+        it('adds question', function () {
+            $scope.brief = {};
+            var element = $compile('<div br-brief-form brief="brief"></div>')($scope);
+            $scope.$digest();
+
+            element.isolateScope().addQuestion();
+            element.isolateScope().addQuestion('multi');
+            expect($scope.brief.questions.length).toEqual(2);
+            element.isolateScope().removeQuestion($scope.brief.questions[0]);
+            expect($scope.brief.questions.length).toEqual(1);
+        });
     });
 });
