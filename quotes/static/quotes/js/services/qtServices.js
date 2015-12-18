@@ -4,12 +4,12 @@ app.factory("Quote", function ($resource) {
     // TODO: this shouldn't start with /en/
 
 	return $resource("/en/quote/api/quote/:id", {}, {
-		query: {
+		retrieve: {
 		  method: 'GET',
 		  params: {},
 		  isArray: true
 		},
-		all: {
+		query: {
 		  method: 'GET',
 		  params: {},
 		  isArray: true,
@@ -24,6 +24,7 @@ app.factory("Quote", function ($resource) {
 });
 
 app.factory("Service", function ($resource) {
+	//
 
 	return $resource("/api/service/fields", {}, {
         fields: {
@@ -37,7 +38,7 @@ app.factory("Client", function ($resource) {
     // TODO: this shouldn't start with /en/
 
 	return $resource("/api/client ", {}, {
-        all: {
+        query: {
             method: 'GET',
             isArray: true,
         },
@@ -50,12 +51,12 @@ app.factory("QuoteTemplate", function ($resource) {
     // TODO: this shouldn't start with /en/
 
 	return $resource("/en/quote/api/quote/:id", {}, {
-		query: {
+		retrieve: {
 		  method: 'GET',
 		  params: {},
 		  isArray: true
 		},
-		all: {
+		query: {
 		  method: 'GET',
 		  params: {},
 		  isArray: true,

@@ -5,7 +5,7 @@ app = angular.module('quotes.directives.qtForm', [
   'as.sortable',
 ]);
 
-app.directive('qtQuoteForm', ['Quote', 'Service', '$filter', function(Quote, Service, $filter) {
+app.directive('qtQuoteForm', ['Quote', 'Service','Client', '$filter', function(Quote, Service, Client, $filter) {
   return {
     restrict: 'A',
     scope: {
@@ -14,15 +14,14 @@ app.directive('qtQuoteForm', ['Quote', 'Service', '$filter', function(Quote, Ser
       language: '=',
       forms: '=',
     },
-    controller: ['$scope', '$attrs', '$filter', '$location', 'Quote', 'Service', 'QuoteTemplate',
-      function($scope, $attrs, $filter, $location, Quote, Service, QuoteTemplate) {
+    controller: ['$scope', '$attrs', '$filter', 'Quote', 'Service', 'QuoteTemplate', 'Client',
+      function($scope, $attrs, $filter, Quote, Service, QuoteTemplate, Client) {
         $scope.isCollapsed = true;
         $scope.quoteFields = [];
+        $scope.quoteStatus = [];
         $scope.serviceFields = [];
 
         $scope.endpoint = Quote;
-
-        $scope.location = $location.search();
 
         $scope.addSection = function(section_name) {
           var name = "";
@@ -48,7 +47,7 @@ app.directive('qtQuoteForm', ['Quote', 'Service', '$filter', function(Quote, Ser
               amount: "0",
               currency: "USD",
             },
-            description: "Some service",
+            description: "N/A",
             user: 1,
             name: "",
             notes: Array[0],
@@ -59,6 +58,23 @@ app.directive('qtQuoteForm', ['Quote', 'Service', '$filter', function(Quote, Ser
           };
           $scope.quote.services.push($scope.inserted);
         };
+
+
+        Client.query({
+        }).$promise.then(function (clients) {
+            $scope.clients = clients;
+        });
+
+
+        Quote.fields({
+        }).$promise.then(function (fields) {
+                for (var key in fields.status) {
+                  // must create a temp object to set the key using a variable
+                  var tempObj = {};
+                  tempObj[key] = fields.status[key];
+                  $scope.quoteStatus.push({value: key, text: tempObj[key]});
+                }
+        });
 
         Service.fields({}).$promise.then(function(fields) {
           for (var key in fields.type) {
@@ -73,7 +89,6 @@ app.directive('qtQuoteForm', ['Quote', 'Service', '$filter', function(Quote, Ser
 
         });
         if ($attrs.quoteId) {
-          console.log($attrs);
           Quote.get({
             id: $attrs.quoteId
           }).$promise.then(function(quote) {
@@ -87,9 +102,9 @@ app.directive('qtQuoteForm', ['Quote', 'Service', '$filter', function(Quote, Ser
           } else {
           $scope.quote = {
             "id": "",
-            "user": "",
+            "user": $attrs.userId,
             "name": "New Quote",
-            "client": "1",
+            "client": $attrs.clientId,
             "sections": [],
             "services": [],
             "status": "0",
@@ -127,16 +142,16 @@ app.directive('qtQuoteForm', ['Quote', 'Service', '$filter', function(Quote, Ser
 
       $scope.getTotal = function() {
         if ($scope.quote) {
-          var total = 0;
+          $scope.total = 0;
           for (var i = 0; i < $scope.quote.services.length; i++) {
             var service = $scope.quote.services[i];
             if (service) {
-              total += (service.cost.amount * service.quantity);
+              $scope.total += (service.cost.amount * service.quantity);
             } else {
-              total += 0;
+              $scope.total += 0;
             }
           }
-          return total;
+          return $scope.total;
         }
       }
 

@@ -14,11 +14,9 @@
     <script src="{% static "djangular/js/django-angular.min.js" %}"></script>
     <script src="{% static "gallant/js/directives/glForm.js" %}"></script>
     <script src="{% static "gallant/js/controllers/glFormController.js" %}"></script>
-    <script src="{% static "quotes/js/controllers/qtPopoverController.js" %}"></script>    
+    <script src="{% static "quotes/js/controllers/qtQuoteListController.js" %}"></script>    
     <script src="{% static "quotes/js/services/qtServices.js" %}"></script>
     <script src="{% static "quotes/js/directives/qtForm.js" %}"></script>
-    <script src="{% static "quotes/js/directives/qtList.js" %}"></script>
-    <script src="{% static "quotes/js/directives/qtTemplateList.js" %}"></script>
     <script src="{% static "quotes/js/apps/quotes.js" %}"></script>
     <script src="{% static "js/ng-sortable/ng-sortable.min.js" %}"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular-animate.js"></script>
@@ -42,51 +40,7 @@
            width: 70px;
         }
     </style>
-    <style>
-    
-    .list {
-        list-style: none outside none;
-        margin: 10px 0 30px;
-    }
 
-    .item {
-        width: 200px;
-        padding: 5px 10px;
-        margin: 5px 0;
-        border: 2px solid #444;
-        border-radius: 5px;
-        background-color: #EA8A8A;
-
-        font-size: 1.1em;
-        font-weight: bold;
-        text-align: center;
-        cursor: move;
-    }
-
-
-    /***  Extra ***/
-
-
-
-    .logList {
-        margin-top: 20px;
-        width: 250px;
-        min-height: 200px;
-        padding: 5px 15px;
-        border: 5px solid #000;
-        border-radius: 15px;
-    }
-
-    .logList:before {
-        content: 'log';
-        padding: 0 5px;
-        position: relative;
-        top: -1.1em;
-        background-color: #FFF;
-    }
-
-
-    </style>
 
 {% endblock %}
 
@@ -120,38 +74,6 @@
 {% endblock %}
 
 {% block center_content %}
-
-    <div class="row">
-        <div class="col-lg-10 col-md-10 col-sm-9 col-xs-9">
-            <h2 class="section_title">{{ object.name }}</h2>
-        </div>
-        <div class="col-lg-2 col-md-2 col-sm-3 col-xs-3 action_box">
-            <a href="{% url 'edit_quote' object.id %}" class="edit_button" title="{% trans "Edit" %}">
-                <button id="section_edit" type="button" class="btn btn-default edit_button" aria-label="Edit">
-                    <span class="glyphicon glyphicon-edit"/>
-                </button>
-            </a>
-            <a href="{% url 'delete_quote' object.id %}" class="delete_button" title="{% trans "Delete" %}" onclick="return confirm('{% trans "Are you sure?" %}')"> 
-                <button id="section_delete" type="button" class="btn btn-default delete_button" aria-label="Delete"> 
-                    <span class="glyphicon glyphicon-trash"/> 
-                </button>
-            </a> 
-        </div>
-    </div>
-
-    <div class="row object_data">
-        <div class="col-lg-6">
-            <p id="client" class="data"><span class="detail_title">{% trans "Client" %}:</span> {{ object.client.name }}</p>
-            <br>
-            <p id="status" class="data"><span class="label label-default">{{ object.get_status_display }}</span></p>
-        </div>
-    </div>
-
-    <h2 class="section_title">
-        Services
-    </h2>
-
-    <hr>    
 
     <div ng-controller="glFormController"
          ng-init="init('{% firstof language LANGUAGE_CODE %}', '{{ csrf_token }}')">
