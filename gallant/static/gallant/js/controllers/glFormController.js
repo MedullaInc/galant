@@ -51,8 +51,6 @@ app.controller('glFormController', ['$scope', '$http', '$window',
                 }, function (errorResponse) {
                     console.log(JSON.stringify(errorResponse.data));
                 });
-            } else {
-                console.log('forms invalid');
             }
         };
 
