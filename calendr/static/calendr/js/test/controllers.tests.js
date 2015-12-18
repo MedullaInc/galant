@@ -14,8 +14,8 @@ describe('CalendrControl', function () {
             var getMockResource = function ($q) {
                 var MockResource = function () { return {id: 0}; };
                 MockResource.get = function () { return {$promise: $q.when({id: 0})}; };
-                MockResource.update = function (t) { return {$promise: $q.when({id: 0})}; };
-                MockResource.save = function (t) { return {$promise: $q.when({id: 0})}; };
+                MockResource.update = function (t) { return {$promise: $q.when(t)}; };
+                MockResource.save = function (t) { return {$promise: $q.when(t)}; };
                 MockResource.query = function () { return {$promise: $q.when([{id: 0}])}; };
                 return MockResource;
             }
@@ -96,9 +96,9 @@ describe('CalendrControl', function () {
     });
 
     it('updates event', function () {
-        $scope.updateEvent({}, {});
+        $scope.updateEvent({id:0, title: 'foo'}, {});
         $scope.$apply();
-        expect($scope.events.length).toEqual(1);
+        expect($scope.events[0].title).toEqual('foo');
     });
 
     it('creates task', function () {
