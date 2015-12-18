@@ -25,6 +25,7 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
             delete $scope.asideInstance;
         } else {
 
+            /* istanbul ignore next */
             $scope.asideInstance = $aside.open({
                 templateUrl: '/static/calendr/html/aside.html',
                 backdrop: false,

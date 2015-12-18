@@ -1,7 +1,6 @@
 describe('CalendrControl', function () {
     var $rootScope;
     var $controller;
-    var controller;
     var $window;
     var $scope;
 
@@ -26,7 +25,7 @@ describe('CalendrControl', function () {
         module('calendr.controllers.clCalendrController', function ($provide) {
             $provide.value('uiCalendarConfig', {});
             $provide.value('$uibModal', {});
-            $provide.value('$aside', {});
+            $provide.value('$aside', {open: function() { return {close: function () {}}; }});
             $provide.value('FC', {views: {}});
         });
 
@@ -42,11 +41,19 @@ describe('CalendrControl', function () {
     beforeEach(function () {
         var FC = {views: []};
         $scope = $rootScope.$new();
-        controller = $controller('clCalendrController', {$scope: $scope});
+        $controller('clCalendrController', {$scope: $scope});
         $scope.$apply();
     });
 
     it('loads', function () {
         expect($scope).not.toBeNull();
+    });
+
+    it('opens and closes aside', function () {
+        expect($scope.asideInstance).not.toBeDefined();
+        $scope.openAsideModal();
+        expect($scope.asideInstance).toBeDefined();
+        $scope.openAsideModal();
+        expect($scope.asideInstance).not.toBeDefined();
     });
 });
