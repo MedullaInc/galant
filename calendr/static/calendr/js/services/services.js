@@ -43,3 +43,8 @@ app.factory('Task', function ($resource) {
     });
 
 });
+
+/* istanbul ignore next  */
+app.factory('FC', function () {
+    return $.fullCalendar;
+});

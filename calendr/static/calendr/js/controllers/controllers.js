@@ -1,14 +1,11 @@
 app = angular.module('calendr.controllers.clCalendrController', ['ui.calendar', 'ui.bootstrap', 'ng.django.forms', 'ngAside']);
 
 app.controller('clCalendrController', function ($scope, Project, User, Task, $compile,
-                                           $timeout, uiCalendarConfig, $uibModal, $filter, $aside) {
+                                           $timeout, uiCalendarConfig, $uibModal, $filter, $aside, FC) {
     var date = new Date();
     var d = date.getDate();
     var m = date.getMonth();
     var y = date.getFullYear();
-
-    //  custom views
-    FC = $.fullCalendar;
 
     FC.views.timelineThreeMonths = {
         type: 'timeline',
