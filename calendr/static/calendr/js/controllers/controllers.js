@@ -26,7 +26,7 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
         } else {
 
             $scope.asideInstance = $aside.open({
-                templateUrl: asideTemplateUrl,
+                templateUrl: '/static/calendr/html/aside.html',
                 backdrop: false,
                 controller: function ($scope, $modalInstance, userEvents, openEditModal) {
                     $scope.events = userEvents;
