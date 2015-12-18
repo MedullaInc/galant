@@ -1,7 +1,7 @@
 describe('CalendrControl', function () {
     var $rootScope;
     var $controller;
-    var $window;
+    var $injector;
     var $scope;
 
     beforeEach(function () {
@@ -23,17 +23,17 @@ describe('CalendrControl', function () {
         angular.module('ng.django.forms', []);
         angular.module('ngAside', []);
         module('calendr.controllers.clCalendrController', function ($provide) {
-            $provide.value('uiCalendarConfig', {});
+            $provide.value('uiCalendarConfig', {calendars:{myCalendar1: {fullCalendar: function (a, b) {}}}});
             $provide.value('$uibModal', {});
-            $provide.value('$aside', {open: function() { return {close: function () {}}; }});
+            $provide.value('$aside', {open: function () { return {close: function () {}}; }});
             $provide.value('FC', {views: {}});
         });
 
-        inject(function (_$rootScope_, _$controller_, _$window_) {
+        inject(function (_$rootScope_, _$controller_, _$injector_) {
             // The injector unwraps the underscores (_) from around the parameter names when matching
             $rootScope = _$rootScope_;
             $controller = _$controller_;
-            $window = _$window_;
+            $injector = _$injector_;
         });
     });
 
@@ -55,5 +55,12 @@ describe('CalendrControl', function () {
         expect($scope.asideInstance).toBeDefined();
         $scope.openAsideModal();
         expect($scope.asideInstance).not.toBeDefined();
+    });
+
+    it('calls fullcalendar via today()', function () {
+        var uiCalendarConfig = $injector.get('uiCalendarConfig');
+        spyOn(uiCalendarConfig.calendars.myCalendar1, 'fullCalendar');
+        $scope.today();
+        expect(uiCalendarConfig.calendars.myCalendar1.fullCalendar).toHaveBeenCalled();
     });
 });
