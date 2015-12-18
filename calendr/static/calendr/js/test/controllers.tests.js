@@ -132,4 +132,25 @@ describe('CalendrControl', function () {
         $scope.$apply();
         expect($scope.events.length).toEqual(0);
     });
+
+    it('selectFunction', function () {
+        var uiCalendarConfig = $injector.get('uiCalendarConfig');
+        spyOn(uiCalendarConfig.calendars.myCalendar1, 'fullCalendar');
+        $scope.selectFunction({}, {}, {}, {}, {});
+        expect(uiCalendarConfig.calendars.myCalendar1.fullCalendar).toHaveBeenCalled();
+    });
+
+    it('changeView', function () {
+        var uiCalendarConfig = $injector.get('uiCalendarConfig');
+        spyOn(uiCalendarConfig.calendars.myCalendar1, 'fullCalendar');
+        $scope.changeView({}, 'myCalendar1');
+        expect(uiCalendarConfig.calendars.myCalendar1.fullCalendar).toHaveBeenCalled();
+    });
+
+    it('renderCalendar', function () {
+        var uiCalendarConfig = $injector.get('uiCalendarConfig');
+        spyOn(uiCalendarConfig.calendars.myCalendar1, 'fullCalendar');
+        $scope.renderCalendar('myCalendar1');
+        expect(uiCalendarConfig.calendars.myCalendar1.fullCalendar).toHaveBeenCalled();
+    });
 });

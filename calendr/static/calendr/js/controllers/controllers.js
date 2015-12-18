@@ -375,12 +375,10 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
     };
 
     /* Change View */
-    $scope.renderCalender = function (calendar) {
-        $timeout(function () {
-            if (uiCalendarConfig.calendars[calendar]) {
-                uiCalendarConfig.calendars[calendar].fullCalendar('render');
-            }
-        });
+    $scope.renderCalendar = function (calendar) {
+        if (uiCalendarConfig.calendars[calendar]) {
+            uiCalendarConfig.calendars[calendar].fullCalendar('render');
+        }
     };
 
     $scope.eventRender = function (event, element, view) {
