@@ -10,6 +10,7 @@ describe('CalendrControl', function () {
             var getMockResource = function ($q) {
                 var MockResource = function () { return {id: 0}; };
                 MockResource.get = function () { return {$promise: $q.when({id: 0})}; };
+                MockResource.update = function (t) { return {$promise: $q.when({id: 0})}; };
                 MockResource.query = function () { return {$promise: $q.when([{id: 0}])}; };
                 return MockResource;
             }
@@ -27,6 +28,7 @@ describe('CalendrControl', function () {
             $provide.value('$uibModal', {});
             $provide.value('$aside', {open: function () { return {close: function () {}}; }});
             $provide.value('FC', {views: {}});
+            $provide.value('moment', function () { return {format: function () {}}; });
         });
 
         inject(function (_$rootScope_, _$controller_, _$injector_) {
@@ -86,5 +88,11 @@ describe('CalendrControl', function () {
         $scope.projectChanged(0);
         $scope.$apply();
         expect($scope.eventResources.length).toEqual(1);
+    });
+
+    it('updates event', function () {
+        $scope.updateEvent({}, {});
+        $scope.$apply();
+        expect($scope.events.length).toEqual(1);
     });
 });

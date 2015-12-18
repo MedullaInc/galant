@@ -48,3 +48,7 @@ app.factory('Task', function ($resource) {
 app.factory('FC', function () {
     return $.fullCalendar;
 });
+/* istanbul ignore next  */
+app.factory('moment', function () {
+    return moment;
+});

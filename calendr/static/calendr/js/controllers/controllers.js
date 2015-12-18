@@ -1,7 +1,7 @@
 app = angular.module('calendr.controllers.clCalendrController', ['ui.calendar', 'ui.bootstrap', 'ng.django.forms', 'ngAside']);
 
 app.controller('clCalendrController', function ($scope, Project, User, Task, $compile,
-                                           $timeout, uiCalendarConfig, $uibModal, $filter, $aside, FC) {
+                                           $timeout, uiCalendarConfig, $uibModal, $filter, $aside, FC, moment) {
     var date = new Date();
     var d = date.getDate();
     var m = date.getMonth();
