@@ -141,6 +141,7 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
 
 
     /* Open edit Modal */
+    /* istanbul ignore next */
     $scope.openEditModal = function (event) {
         $scope.event = event;
         $uibModal.open({
