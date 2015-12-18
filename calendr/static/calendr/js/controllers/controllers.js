@@ -145,7 +145,7 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
     $scope.openEditModal = function (event) {
         $scope.event = event;
         $uibModal.open({
-            templateUrl: taskModalUrl,
+            templateUrl: '/static/calendr/html/calendar_modal.html',
             backdrop: true,
             windowClass: 'modal',
             controller: function ($scope, $modalInstance, $log, event, events, resources, projects, updateEvent, createTask) {

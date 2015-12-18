@@ -30,7 +30,7 @@ describe('CalendrControl', function () {
         angular.module('ngAside', []);
         module('calendr.controllers.clCalendrController', function ($provide) {
             $provide.value('uiCalendarConfig', {calendars:{myCalendar1: {fullCalendar: function (a, b) {}}}});
-            $provide.value('$uibModal', {});
+            $provide.value('$uibModal', {open: function () {}});
             $provide.value('$aside', {open: function () { return {close: function () {}}; }});
             $provide.value('FC', {views: {}});
             $provide.value('moment', function () { return {format: function () {}}; });
@@ -111,5 +111,13 @@ describe('CalendrControl', function () {
         $scope.alertOnResize({id:0, title: 'bar'});
         $scope.$apply();
         expect($scope.events[0].title).toEqual('bar');
+    });
+
+    it('alerts on event click', function () {
+        var $uibModal = $injector.get('$uibModal');
+        spyOn($uibModal, 'open');
+        $scope.alertOnEventClick({id:0, title: 'bar'});
+        $scope.$apply();
+        expect($uibModal.open).toHaveBeenCalled();
     });
 });
