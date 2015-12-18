@@ -68,4 +68,15 @@ describe('CalendrControl', function () {
         expect($scope.disabled({getDay: function() { return 0; }}, 'day')).toBeTruthy();
         expect($scope.disabled({getDay: function() { return 3; }}, 'day')).toBeFalsy();
     });
+
+    it('sets open', function () {
+        $scope.status = {opened: false};
+        $scope.open();
+        expect($scope.status.opened).toBeTruthy();
+    });
+
+    it('sets date', function () {
+        $scope.setDate();
+        expect($scope.dt).toBeDefined();
+    });
 });
