@@ -106,4 +106,10 @@ describe('CalendrControl', function () {
         $scope.$apply();
         expect($scope.events.length).toEqual(2);
     });
+
+    it('alerts on resize', function () {
+        $scope.alertOnResize({id:0, title: 'bar'});
+        $scope.$apply();
+        expect($scope.events[0].title).toEqual('bar');
+    });
 });
