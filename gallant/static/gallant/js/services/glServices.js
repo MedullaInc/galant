@@ -42,3 +42,15 @@ app.factory('Client', function ($resource) {
     });
 
 });
+
+/* istanbul ignore next  */
+app.factory('Project', function ($resource) {
+    return $resource('/en/api/projects');
+});
+
+/* istanbul ignore next  */
+app.factory('User', function ($resource) {
+
+    return $resource('/en/api/users');
+
+});

@@ -1,18 +1,6 @@
 app = angular.module('calendr.services.clServices', ['ngResource']);
 
 /* istanbul ignore next  */
-app.factory('Project', function ($resource) {
-    return $resource('/en/api/projects');
-});
-
-/* istanbul ignore next  */
-app.factory('User', function ($resource) {
-
-    return $resource('/en/api/users');
-
-});
-
-/* istanbul ignore next  */
 app.factory('Task', function ($resource) {
     return $resource('/en/calendar/api/task ', {}, {
         query: {
