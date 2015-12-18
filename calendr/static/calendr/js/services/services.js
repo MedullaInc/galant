@@ -1,4 +1,4 @@
-app = angular.module('gallant.services', []);
+app = angular.module('calendr.services.clServices', ['ngResource']);
 
 /* istanbul ignore next  */
 app.factory('Project', function ($resource) {
