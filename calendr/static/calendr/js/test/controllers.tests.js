@@ -126,4 +126,10 @@ describe('CalendrControl', function () {
         $scope.$apply();
         expect($scope.alertMessage).toBeDefined();
     });
+
+    it('removes event', function () {
+        $scope.remove(0);
+        $scope.$apply();
+        expect($scope.events.length).toEqual(0);
+    });
 });
