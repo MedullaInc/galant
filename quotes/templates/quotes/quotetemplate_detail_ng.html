@@ -1,25 +1,33 @@
 {% extends "base_sidebar_enclosed.html" %}
-{% load bootstrap i18n section_javascript gallant_tags static %}
+{% load bootstrap i18n %}
 {% load static %}
 
 {% block ng_app %} ng-app="quote" {% endblock %}
 
+{% block section_title %}
+    {% trans "Quote Template" %}
+{% endblock %}
+
+{% block sidebar %}
+{% endblock %}
 
 {% block scripts %}
     {{ block.super }}
     <script src="{% static "js/angular.js" %}"></script>
     <script src="{% static "js/angular-resource.js" %}"></script>
     <script src="{% static "js/xeditable/xeditable.min.js" %}"></script>
-    <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.14.3.js"></script>
+    <script src="{% static "js/ui-bootstrap-tpls.js" %}"></script>
     <script src="{% static "djangular/js/django-angular.min.js" %}"></script>
     <script src="{% static "gallant/js/directives/glForm.js" %}"></script>
     <script src="{% static "gallant/js/controllers/glFormController.js" %}"></script>
     <script src="{% static "quotes/js/controllers/qtQuoteListController.js" %}"></script>
     <script src="{% static "quotes/js/services/qtServices.js" %}"></script>
     <script src="{% static "quotes/js/directives/qtForm.js" %}"></script>
+    <script src="{% static "quotes/js/directives/qtList.js" %}"></script>
     <script src="{% static "quotes/js/apps/quotes.js" %}"></script>
     <script src="{% static "js/ng-sortable/ng-sortable.min.js" %}"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular-animate.js"></script> 
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular-animate.js"></script>
+
 {% endblock %}
 
 {% block css %}
@@ -39,52 +47,35 @@
            width: 70px;
         }
     </style>
-    
+
+
 {% endblock %}
 
 {% block center_content %}
 
-    <div class="row">
-        <div class="col-lg-10 col-md-10 col-sm-9 col-xs-9">
-            <h2 class="section_title">{{ form.name.value }}</h2>
-        </div>
-
-        <br>
-
-        <div ng-controller="glFormController"
-             ng-init="init('{% firstof language LANGUAGE_CODE %}', '{{ csrf_token }}')">
-            <div qt-quote-form quote-id="{{ object.pk |default_if_none:"" }}"  quote="object" endpoint="objectEndpoint"
-                 language="currentLanguage" forms="forms"
-                 client-id="{{ client.id }}" project-id="{{ project.id }}" quote-id="{{ quote.id|default_if_none:"" }}"
-                 template-id="{{ template_id }}" user-id="{{user.id}}">
-            </div> 
+    <div ng-controller="glFormController"
+         ng-init="init('{% firstof language LANGUAGE_CODE %}', '{{ csrf_token }}')">
+        <div qt-quote-template-form quote-id="{{ object.pk }}" quote="object" endpoint="objectEndpoint"
+             language="currentLanguage" forms="forms"
+             client-id="{{ client.id }}" project-id="{{ project.id }}" quote-id="{{ quote.id }}"
+             template-id="{{ template_id }}">
+        </div> 
 
         <div id="form_actions">
-          <div class="row">
+            <div class="row">
               <div class="col-lg-12">
                   <div class="form-actions">
+                      {% block form_actions %}
                           <button id="create_submit" class="btn btn-default pull-left" type="submit"
                                   ng-click="submitForm()">
                               {{ submit_text|default:_("Save") }}
                           </button>
+                      {% endblock %}
                   </div>
               </div>
-          </div>
-          </div>
-
+            </div>
         </div>
+
     </div>
-
-{% endblock %}
-
-
-
-{% block form_actions %}
-
-
-
-{% endblock %}
-
-{% block extra_body %}
 
 {% endblock %}

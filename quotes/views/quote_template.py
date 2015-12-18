@@ -34,7 +34,7 @@ class QuoteTemplateDetail(View):
                              (_('Quote Templates'), reverse('quote_templates')),
                              (_('Quote: %s' % quote.quote.name), request.path_info)])
         return TemplateResponse(request=request,
-                                template="quotes/quotetemplate_detail.html",
+                                template="quotes/quotetemplate_detail_ng.html",
                                 context={'title': 'Quote Template', 'object': quote})
 
 

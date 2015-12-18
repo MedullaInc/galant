@@ -9,20 +9,17 @@
     <script src="{% static "js/angular.js" %}"></script>
     <script src="{% static "js/angular-resource.js" %}"></script>
     <script src="{% static "js/xeditable/xeditable.min.js" %}"></script>
-    <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.14.3.js"></script>
+    <script src="{% static "js/ui-bootstrap-tpls.js" %}"></script>
     <script src="{% static "djangular/js/django-angular.min.js" %}"></script>
     <script src="{% static "gallant/js/directives/glForm.js" %}"></script>
     <script src="{% static "gallant/js/controllers/glFormController.js" %}"></script>
-    <script src="{% static "quotes/js/controllers/qtPopoverController.js" %}"></script>
+    <script src="{% static "quotes/js/controllers/qtQuoteListController.js" %}"></script>
     <script src="{% static "quotes/js/services/qtServices.js" %}"></script>
     <script src="{% static "quotes/js/directives/qtForm.js" %}"></script>
-    <script src="{% static "quotes/js/directives/qtList.js" %}"></script>
-    <script src="{% static "quotes/js/directives/qtTemplateList.js" %}"></script>
     <script src="{% static "quotes/js/apps/quotes.js" %}"></script>
     <script src="{% static "js/ng-sortable/ng-sortable.min.js" %}"></script>
+    <script src="{% static "js/smart-table.js" %}"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular-animate.js"></script>
-
-
 
 {% endblock %}
 
@@ -31,7 +28,8 @@
 {% endblock %}
 
 {% block sidebar %}
-    <div ng-controller="qtPopoverController">
+    <div ng-controller="qtQuoteListController"
+         ng-init="init('{% url 'quote_detail' %}', '{% url 'add_quote' %}')">
         <a>
             <button popover-placement="bottom" uib-popover-template="dynamicPopover.templateUrl" type="button" class="btn btn-default sidebar">{% trans "Add New Quotes" %}</button>
         </a>
@@ -46,39 +44,68 @@
 {% endblock %}
 
 {% block center_content %}
-    <div ng-controller="glFormController"
-         ng-init="init('{% firstof language LANGUAGE_CODE %}', '{{ csrf_token }}')">
-        <div qt-quote-list quote-id="{{ object.pk }}" quote="object" endpoint="objectEndpoint"
-             language="currentLanguage" forms="forms"
-             client-id="{{ client.id }}" project-id="{{ project.id }}" quote-id="{{ quote.id }}"
-             template-id="{{ template_id }}">
-        </div> 
+    <div ng-controller="qtQuoteListController"
+         ng-init="init('{% url 'quote_detail' %}', '{% url 'add_quote' %}')">
+        <table st-table="quotes" st-safe-src="quotesSafe"
+               class="table table-striped table-bordered">
+            <thead>
+            <tr>
+                <th st-sort="last_modified">{% trans "Last Modified" %}</th>
+                <th st-sort="client">{% trans "Client" %}</th>
+                <th st-sort="name">{% trans "Quote" %}</th>
+                <th st-sort="status">{% trans "Status" %}</th>
+            </tr>
+            <tr>
+                <th></th>
+                <th>
+                    <input placeholder="search client name" st-search="name"/>
+                </th>
+                <th></th>
+                <th>
+                    <input placeholder="search status" st-search="status"/>
+                </th>
+            </tr>
+            </thead>
+            <tbody ng-include src="'{% static "quotes/html/qt_quote_rows.html" %}'">
+            </tbody>
+        </table>
     </div>
-
 {% endblock %}
 
 {% block extra_body %}
 
-    <script type="text/ng-template" id="myPopoverTemplate.html">
-        <a class="from_template_button" ng-click="open()">
-            <button type="button" class="btn btn-default from_template_button sidebar">From Template</button>
-        </a>
-        <a ng-click="goToUrl('{% url 'add_quote' %}')">
-            <button type="button" class="btn btn-default from_scratch_button sidebar">From Scratch</button>
-        </a>
-    </script>
-
-    <script type="text/ng-template" id="myModalContent.html">
-        <div class="modal-body">
-            <div ng-controller="glFormController"
-                 ng-init="init('{% firstof language LANGUAGE_CODE %}', '{{ csrf_token }}')">
-                <div qt-quote-template-list quote-id="{{ object.pk }}" quote="object" endpoint="objectEndpoint"
-                     language="currentLanguage" forms="forms"
-                     client-id="{{ client.id }}" project-id="{{ project.id }}" quote-id="{{ quote.id }}"
-                     template-id="{{ template_id }}" addquoteurl="'{% url 'add_quote' %}'">
+    <div ng-controller="qtQuoteListController"
+         ng-init="init('{% url 'quote_detail' %}', '{% url 'add_quote' %}')">
+        <script type="text/ng-template" id="myPopoverTemplate.html">
+            <a class="from_template_button" ng-click="open()">
+                <button type="button" class="btn btn-default from_template_button sidebar">From Template</button>
+            </a>
+            <a ng-click="addQuoteRedirect()">
+                <button type="button" class="btn btn-default from_scratch_button sidebar">From Scratch</button>
+            </a>
+        </script>
+        <script type="text/ng-template" id="myModalContent.html">
+            <div id="template_select" class="modal fade" role="dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">×</button>
+                        <h2 class="section_title">Select Template</h2>
+                    </div>
+                    <div class="modal-body" style="height: 500px; overflow: auto;">
+                        <table st-table="templates" st-safe-src="quoteTemplateSafe" class="table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th st-sort="name">{% trans "Name" %}</th>
+                                    <th st-sort="date">{% trans "Date" %}</th>
+                                    <th st-sort="language">{% trans "Language" %}</th>
+                                </tr>
+                            </thead>
+                            <tbody ng-include src="'{% static "quotes/html/qt_quotetemplate_modal_rows.html" %}'"></tbody>
+                        </table>
+                    <div class="modal-footer">
+                    </div>
                 </div> 
-            </div>
-        </div>
-    </script>
+            </div>                   
+        </script>
 
 {% endblock %}
