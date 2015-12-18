@@ -8,7 +8,7 @@ angular.module('gallant', [
         'ng.django.forms',
         'ngResource',
         'gallant.directives',
-        'gallant.controllers',
+        'calendr.controllers.clCalendrController',
         'gallant.services',
     ])
     .config(['$httpProvider', /* istanbul ignore next  */ function ($httpProvider) {

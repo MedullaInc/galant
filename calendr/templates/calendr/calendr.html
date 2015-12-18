@@ -11,7 +11,7 @@
 
 {% block scripts %}
     {{ block.super }}
-    <script src="{% static "js/angular.min.js" %}"></script>
+    <script src="{% static "js/angular.js" %}"></script>
     <script src="{% static "js/angular-resource.min.js" %}"></script>
     <script src="{% static "js/angular-aside.min.js" %}"></script>
     <script src="{% static "js/ui-bootstrap-tpls.js" %}"></script>
@@ -60,7 +60,7 @@
 {% block content_div %}
     {% verbatim %}
         <div ng-app="gallant" id="calendar_container">
-            <section id="directives-calendar" ng-controller="CalendrControl">
+            <section id="directives-calendar" ng-controller="clCalendrController">
 
                 <div class="row">
                     <div class="col-lg-12" data-ng-init="renderCalender('myCalendar1');">
