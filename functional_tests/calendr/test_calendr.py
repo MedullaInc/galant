@@ -42,12 +42,7 @@ class CalendrTest(browser.SignedInTest):
         b.find_element_by_id('id_date').send_keys('2015-11-09')
 
         date = b.find_element_by_css_selector('.fc-toolbar h2')
-        self.assertTrue(u'November 9, 2015' in date.text)
-
-        b.find_element_by_id('id_today').click()
-
-        date = b.find_element_by_css_selector('.fc-toolbar h2')
-        self.assertFalse(u'November 9, 2015' in date.text)
+        self.assertTrue(u'November 2015' in date.text)
 
     def test_can_edit_task(self):
         b = self.browser
