@@ -1,16 +1,4 @@
-app = angular.module('gallant.services', []);
-
-/* istanbul ignore next  */
-app.factory('Project', function ($resource) {
-    return $resource('/en/api/projects');
-});
-
-/* istanbul ignore next  */
-app.factory('User', function ($resource) {
-
-    return $resource('/en/api/users');
-
-});
+app = angular.module('calendr.services.clServices', ['ngResource']);
 
 /* istanbul ignore next  */
 app.factory('Task', function ($resource) {
@@ -42,4 +30,13 @@ app.factory('Task', function ($resource) {
         }
     });
 
+});
+
+/* istanbul ignore next  */
+app.factory('FC', function () {
+    return $.fullCalendar;
+});
+/* istanbul ignore next  */
+app.factory('moment', function () {
+    return moment;
 });

@@ -49,6 +49,7 @@ var concatAndMinModule = function (module) {
 gulp.task('concat-and-min', function () {
     concatAndMinModule('briefs');
     concatAndMinModule('gallant');
+    concatAndMinModule('calendr');
     return;
 });
 

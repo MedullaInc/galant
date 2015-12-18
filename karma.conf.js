@@ -39,7 +39,7 @@ module.exports = function (config) {
         // test results reporter to use
         // possible values: 'dots', 'progress'
         // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-        reporters: ['progress', 'coverage', 'threshold'],
+        reporters: ['progress', 'coverage'],
 
 
         // web server port
@@ -73,19 +73,20 @@ module.exports = function (config) {
 
         coverageReporter: {
             type: 'html',
-            dir: 'coverage/'
+            dir: 'coverage/',
+            check: {
+                each: {
+                    statements: 90,
+                    branches: 0,
+                    functions: 90,
+                    lines: 90
+                }
+            }
         },
 
         ngHtml2JsPreprocessor: {
             prependPrefix: '/',
             moduleName: 'staticNgTemplates'
         },
-
-        thresholdReporter: {
-            statements: 90,
-            branches: 0,
-            functions: 90,
-            lines: 90
-        }
     })
 };

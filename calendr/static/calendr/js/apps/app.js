@@ -19,4 +19,5 @@ angular.module('gallant', [
 
 }]);
 
+
 /* EOF */
