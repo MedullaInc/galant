@@ -38,246 +38,9 @@ angular.module('gallant.controllers', ['ui.calendar', 'ui.bootstrap', 'ng.django
                                 $modalInstance.close();
                                 e.stopPropagation();
                             };
-
-                            /* event source that contains custom events on the scope */
-                            $scope.events = [];
-                            $scope.projects = [];
-                            $scope.eventResources = []
-
-                            $scope.openAsideModal = function () {
-                                if ($scope.asideInstance) {
-                                    $scope.asideInstance.close();
-                                    delete $scope.asideInstance;
-                                } else {
-
-                                    $scope.asideInstance = $aside.open({
-                                        templateUrl: asideTemplateUrl,
-                                        backdrop: false,
-                                        controller: function ($scope, $modalInstance, userEvents, openEditModal) {
-                                            $scope.events = userEvents;
-                                            $scope.openEditModal = openEditModal;
-                                            $scope.ok = function (e) {
-                                                $modalInstance.close();
-                                                e.stopPropagation();
-                                            };
-                                            $scope.cancel = function (e) {
-                                                $modalInstance.dismiss();
-                                                e.stopPropagation();
-                                            };
-                                        },
-                                        placement: 'right',
-                                        size: 'sm',
-                                        resolve: {
-                                            userEvents: function () {
-                                                // Return current user tasks
-                                                return $filter('filter')($scope.events, {
-                                                    resourceId: currentUserId
-                                                });
-                                            },
-                                            openEditModal: function () {
-                                                // Return current user tasks
-                                                return $scope.openEditModal;
-                                            },
-                                        }
-                                    });
-                                }
-
-                            }
-
-                            $scope.gotoDate = function (date) {
-                                uiCalendarConfig.calendars['myCalendar1'].fullCalendar('gotoDate', date);
-                            }
-
-                            $scope.today = function () {
-                                $scope.dt = new Date();
-                                $scope.gotoDate($scope.dt);
-                            };
-
-                            // $scope.today();
-
-
-                            // Disable weekend selection
-                            $scope.disabled = function (date, mode) {
-                                return (mode === 'day' && (date.getDay() === 0 || date.getDay() === 6));
-                            };
-
-                            $scope.toggleMin = function () {
-                                $scope.minDate = $scope.minDate ? null : new Date();
-                            };
-                            $scope.toggleMin();
-                            $scope.maxDate = new Date(2020, 5, 22);
-
-                            $scope.open = function ($event) {
-                                $scope.status.opened = true;
-                            };
-
-                            $scope.setDate = function (year, month, day) {
-                                $scope.dt = new Date(year, month, day);
-                            };
-
-                            $scope.dateOptions = {
-                                formatYear: 'yy',
-                                startingDay: 1
-                            };
-
-                            $scope.status = {
-                                opened: false
-                            };
-
-                            /* Retrieve users from API service */
-                            $scope.getResources = function (project) {
-                                options = {};
-                                if (project) {
-                                    options = {
-                                        project_id: project.id
-                                    };
-                                }
-                                User.query(options).$promise.then(function (response) {
-                                    angular.forEach(response, function (value, key) {
-                                        $scope.eventResources.push({
-                                            id: value.id,
-                                            title: value.email
-                                        });
-                                    });
-                                });
-                            }
-
-                            /* Retrieve all Tasks from API service */
-                            $scope.getTasks = function () {
-                                Task.query().$promise.then(function (response) {
-                                    angular.forEach(response, function (value, key) {
-                                        $scope.renderEvent(value);
-                                    });
-
-                                });
-                            }
-
-                            /* Retrieve all Tasks from API service */
-                            $scope.getProjects = function () {
-                                Project.query().$promise.then(function (response) {
-                                    $scope.projects = response;
-                                });
-                            }
-
-                            $scope.getResources();
-                            $scope.getProjects();
-                            $scope.getTasks();
-
-
-                            /* Open edit Modal */
-                            $scope.openEditModal = function (event) {
-                                $scope.event = event;
-                                $uibModal.open({
-                                    templateUrl: taskModalUrl,
-                                    backdrop: true,
-                                    windowClass: 'modal',
-                                    controller: function ($scope, $modalInstance, $log, event, events, resources, projects, updateEvent, createTask) {
-                                        $scope.event = event;
-                                        $scope.events = events;
-                                        $scope.resources = resources;
-                                        $scope.projects = projects;
-                                        $scope.updateEvent = updateEvent;
-                                        $scope.createTask = createTask;
-
-                                        $scope.submit = function (e) {
-                                            $modalInstance.dismiss('cancel');
-                                            // var found = $filter('filter')($scope.events, {id: $scope.event.id}, true)
-                                            if (e.id) {
-                                                $scope.updateEvent($scope.event);
-                                            } else {
-
-                                                var task = {
-                                                    "id": "",
-                                                    "user": currentUserId,
-                                                    "name": e.title,
-                                                    "start": e.start,
-                                                    "end": e.end,
-                                                    "daily_estimate": e.daily_estimate,
-                                                    "project": e.projectId,
-                                                    "services": [],
-                                                    "assignee": String(e.resourceId),
-                                                    "notes": []
-                                                }
-
-                                                $scope.createTask(task);
-                                            }
-                                        }
-                                        $scope.cancel = function () {
-                                            $modalInstance.dismiss('cancel');
-                                        };
-                                        $scope.deleteTask = function (event) {
-                                            if (confirm('Are you sure you want to permanently delete this task?')) {
-                                                Task.delete({id: event.id}).$promise.then(function (response) {
-                                                    var index = $scope.events.indexOf(event);
-                                                    $scope.events.splice(index, 1);
-                                                    $modalInstance.dismiss('cancel');
-                                                });
-                                            }
-
-                                        };
-                                    },
-                                    resolve: {
-                                        event: function () {
-                                            return $scope.event;
-                                        },
-                                        events: function () {
-                                            return $scope.events;
-                                        },
-                                        projects: function () {
-                                            return $scope.projects;
-                                        },
-                                        updateEvent: function () {
-                                            return $scope.updateEvent;
-                                        },
-                                        createTask: function () {
-                                            return $scope.createTask;
-                                        },
-                                        resources: function () {
-                                            return $scope.eventResources;
-                                        },
-                                    }
-                                });
-                            };
-
-                            /* event triggered on project change */
-                            $scope.projectChanged = function (project_id) {
-                                var proj = {
-                                    id: project_id
-                                };
-
-                                // Remove existing resources in calendar.
-                                $scope.eventResources.splice(0, $scope.eventResources.length);
-
-                                // Fetch selected project resources
-                                $scope.getResources(proj);
-                            };
-
-                            /* update on Calendar */
-                            $scope.updateEvent = function (event, element) {
-                                var task = {
-                                    "id": event.id,
-                                    "user": event.user,
-                                    "name": event.title,
-                                    "start": moment(event.start).format(),
-                                    "end": moment(event.end).format(),
-                                    "daily_estimate": event.daily_estimate,
-                                    "project": event.projectId,
-                                    "services": [],
-                                    "assignee": String(event.resourceId),
-                                    "notes": []
-                                }
-
-
-                                $scope.updateTask(task);
-
-                                //alert(event.title);
-                            };
-
-                            /* alert on eventClick */
-                            $scope.alertOnEventClick = function (event, jsEvent, view) {
-                                //$scope.alertMessage = (event.title + ' was clicked ');
-                                $scope.openEditModal(event, $scope.eventResources);
-                                //alert($scope.alertMessage);
+                            $scope.cancel = function (e) {
+                                $modalInstance.dismiss();
+                                e.stopPropagation();
                             };
                         },
                         placement: 'right',
@@ -484,6 +247,7 @@ angular.module('gallant.controllers', ['ui.calendar', 'ui.bootstrap', 'ng.django
 
 
                 $scope.updateTask(task);
+                $scope.alertMessage = ('Task "'+ event.title + '" has been relocated.');
 
                 //alert(event.title);
             };
@@ -516,7 +280,7 @@ angular.module('gallant.controllers', ['ui.calendar', 'ui.bootstrap', 'ng.django
                 };
 
                 $scope.updateTask(task);
-                $scope.alertMessage = ('Event Resized to make dayDelta ' + delta);
+                $scope.alertMessage = ('Task "'+ event.title + '" has been resized.');
             };
 
             /* add custom event*/
@@ -644,21 +408,20 @@ angular.module('gallant.controllers', ['ui.calendar', 'ui.bootstrap', 'ng.django
             $scope.uiConfig = {
                 calendar: {
                     schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
-                    defaultView: 'timelineThreeMonths',
-                    defaultDate: new Date(),
+                    defaultView: 'timelineMonth',
                     header: {
                         left: 'title',
                         center: '',
                         right: 'prev, next'
                     },
-                    height: 450,
+                    height: 'auto',
                     editable: true,
                     selectable: true,
                     select: $scope.selectFunction,
                     eventClick: $scope.alertOnEventClick,
                     updateEvent: $scope.updateEvent,
                     dayClick: $scope.dayClick,
-                    eventDrop: $scope.alertOnDrop,
+                    eventDrop: $scope.updateEvent,
                     eventResize: $scope.alertOnResize,
                     eventRender: $scope.eventRender,
                     gotoDate: $scope.gotoDate,

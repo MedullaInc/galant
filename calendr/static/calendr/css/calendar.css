@@ -1,203 +1,29 @@
-body {
-    overflow-y: hidden;
-    height: 100%;
-}
-
-.page-wrapper {
-    width: auto;
-    height: auto;
-}
-
-div#calendar_loading {
-    background: #ffffff;
-    top: 0px;
-    left: 0px;
-    width: 100%;
-    height: 100%;
-    z-index: 3;
-}
-
-div#calendar {
-    overflow: scroll;
-    white-space: nowrap;
-}
-
-div#calendar_container {
-}
-
-div#calendar_main {
-    position: relative;
-}
-
-div#calendar_top_left_corner {
-    position: fixed;
-    left: 0px;
-    top: 126px;
-    width: 300px;
-    height: 100px;
-    background: #ffffff;
-    z-index: 4;
-}
-
-div#calendar_dates {
-    overflow: hidden;
-    border-left: 1px solid #666666;
-    z-index: 3;
-}
-
-div#calendar_dates.scroll_fixed {
-    position: absolute;
-    top: 126px;
-    left: 300px;
-}
-
-div#calendar_dates.scroll_fixed.fixed {
-    position: fixed;
-    top: 126px;
-    transform: translateZ(2);
-    -webkit-transform: translateZ(2);
-}
-
-div#calendar_sidebar {
-    width: 300px;
-    background: #ffffff;
-    border-bottom: 1px solid #666666;
-    z-index: 2;
-}
-
-div#calendar_sidebar.scroll_fixed {
-    position: absolute;
-    left: 0px;
-    top: 100px;
-}
-
-div#calendar_sidebar.scroll_fixed.fixed {
-    position: fixed;
-    left: 0px;
-    top: 100px;
-    transform: translateZ(1);
-    -webkit-transform: translateZ(1);
-}
-
-div#calendar_tasks {
-    overflow: hidden;
-    border-left: 1px solid #666666;
-    border-bottom: 1px solid #666666;
-    float: left;
-    position: absolute;
-    left: 300px;
-    top: 100px;
-}
-
-div.days {
-    overflow: hidden;
-}
-
-div.month, div.week, div.day {
-    float: left;
-}
-
-div.month {
-    background: #f9f9f9 linear-gradient(to right, #efefef, white);
-    border-top: none;
-}
-
-div.month p {
-    padding: 17px 10px 3px 20px;
-    font-size: 12px;
-    color: #999999;
-}
-
-div.week {
-    background: #f9f9f9 linear-gradient(to right, #efefef, white);
-    border-top: 1px solid #666666;
-}
-
-div.week p {
-    padding: 17px 10px 3px 20px;
-    font-size: 12px;
-    color: #999999;
-}
-
-div.week .day {
-    border-bottom: 1px solid #666666;
-}
-
-div.day {
-    width: 80px;
-    height: 50px;
-    padding: 5px;
-    border: 1px solid #666666;
-    border-bottom: none;
-    border-left: none;
-    text-align: center;
-}
-
-div.day:hover {
-    background: #efefef;
-}
-
-div.day p {
-    padding: 10px;
-    font-size: 12px;
-    color: #666666;
-}
-
-div.day.weekend {
-    background: #efefef;
-}
-
-div.resource {
-    overflow: hidden;
-}
-
-div.resource.name {
-    height: 50px;
-    border: 1px solid #666666;
-    border-right: none;
-    border-bottom: none;
-    background: #efefef;
-}
-
-div.resource.name p {
-    padding: 15px 10px 10px 20px;
-    font-size: 12px;
-    color: #666666;
-}
-
-div.resource.bottom, div.resource.bottom * {
-    border: none;
-    background: #efefef;
-}
-
-div#calendar_tasks .resource.bottom {
-    border-top: 1px solid #666666;
-}
-
-#grid-snap {
-
-  background-color: #29e;
-
-  width:70px;
-  height:50px;
-  color: #fff;
-  font-size: 1.2em;
-  border-radius: 4px;
-/*  padding: 1%;
-  margin: 1%;*/
-  z-index: 1; position:relative
-}
-
-.live-demo {
-    height:50px;
-    background-color: #e8e9e8;
-}
-
 /* CALENDAR */
+
+#calendar_container {
+    margin-top: 30px;
+}
+
+* { outline: none; }
+
+.alert-success {
+    padding: 10px;
+    margin-bottom: 25px;
+}
+
+.alert-success h4 {
+    font-weight: 100;
+}
 
 #id_date {
     border: 1px solid #666666;
     height: 36px;
+    font-size: 14px;
+}
+
+.calendar_container {
+    position: relative;
+    z-index: 1;
 }
 
 .calendar_container .fc-resource-area {
@@ -206,12 +32,18 @@ div#calendar_tasks .resource.bottom {
 
 .calendar_container .fc-toolbar {
     background: #efefef;
+    margin: 0px;
+    margin-bottom: 10px;
     padding: 10px;
+}
+
+.calendar_container .fc-timeline {
+    padding: 0px;
 }
 
 .calendar_container .fc-toolbar h2 {
     font-weight: 100;
-    font-size: 20px;
+    font-size: 22px;
     padding-top: 4px;
 }
 
@@ -221,17 +53,16 @@ div#calendar_tasks .resource.bottom {
     padding: 10px;
 }
 
-.calendar_container .fc-timeline .fc-head .fc-cell-content {
-    padding-top: 10px;
-    padding-bottom: 10px;
-}
-
 .calendar_container .fc-resource-area .fc-cell-content, .fc-timeline .fc-cell-text {
     font-size: 14px;
 }
 
 .calendar_container .fc-widget-header {
     background: #efefef;
+}
+
+#form label.control-label, .form-group label.control-label {
+    font-size: 12px;
 }
 
 div.btn-group.date-buttons {
@@ -255,6 +86,12 @@ button.btn.btn-default {
     }
 }
 
+@media (max-width: 1000px) {
+    .calendar_container .fc-resource-area {
+        width: 40%;
+    }
+}
+
 .calendar_container .fc-event {
     font-size: 12px;
     font-weight: 100;
@@ -265,6 +102,37 @@ button.btn.btn-default {
 
 .calendar_container .fc-time {
     display: none;
+}
+
+.form-group {
+    margin-bottom: 0px;
+}
+
+.input-group-btn .btn {
+    height: 36px;
+}
+
+.popup-calendr ul.dropdown-menu.ng-pristine.ng-untouched.ng-valid.ng-scope.ng-valid-date-disabled {
+    display:none;
+    border-radius: 0px;
+}
+
+.popup-calendr .btn.btn-default {
+    padding-left: 10px;
+    padding-right: 10px;
+    font-size: 12px;
+}
+
+.popup-calendr .dropdown-menu {
+    padding: 10px;
+}
+
+.popup-calendr .ng-binding {
+    font-weight: 100;
+}
+
+#popup-calendr .dropdown-menu ul.dropdown-menu li.ng-scope {
+    padding:10px 0px 0px;
 }
 
 /* END CALENDAR */

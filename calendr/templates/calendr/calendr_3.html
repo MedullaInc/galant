@@ -72,14 +72,15 @@
 
                 <div class="row">
                     <div class="has-feedback form-group col-lg-3">
-                        <label class="control-label">Project Filter</label>
+                        <label class="control-label">Filter Resources by Project</label>
                         <select ng-change="projectChanged(event.projectId)" ng-model="event.projectId" class="form-control">
+                            <option ng-selected="" value="">All Projects</option>
                             <option ng-selected="{{ project.id == event.projectId }}" ng-repeat="project in projects" value="{{ project.id }}"> {{ project.name }}</option>
                         </select>
                     </div>
 
                     <div class="form-group col-lg-4">
-                        <label class="control-label">Dates Filter</label>
+                        <label class="control-label">Filter by Date</label>
                         <br/>
 
                         <div class="btn-group date-buttons">
@@ -90,13 +91,19 @@
                     </div>
 
                     <div class="form-group col-lg-3">
-                        <label class="control-label">Go to date</label>
+                        <label class="control-label">&nbsp;</label>
                         <br/>
-                        <input id="id_date" class="form-control pull-left" type="date" uib-datepicker-popup ng-model="dt" is-open="status.opened" min-date="minDate" max-date="maxDate" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" ng-change="gotoDate(dt)"/>
+
+                        <p class="input-group popup-calendr" id="popup-calendr">
+                            <input id="id_date" class="form-control" type="date" uib-datepicker-popup ng-model="dt" is-open="status.opened" min-date="minDate" max-date="maxDate" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" ng-change="gotoDate(dt)"/>
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                        </p>
                     </div>
 
                     <div class="form-group col-lg-2 col-lg-pull-right">
-                        <label class="control-label">My Tasks</label>
+                        <label class="control-label">&nbsp;</label>
                         <br/>
 
                         <div class="btn-group">
