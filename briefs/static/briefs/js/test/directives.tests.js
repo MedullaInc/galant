@@ -7,6 +7,30 @@ describe('brForm', function () {
         module('briefs.directives.brForm');
         module('staticNgTemplates');
 
+        angular.module('brief.services.brServices', []);
+        module('brief.services.brServices', function ($provide) {
+            $provide.factory('Question', function ($q) {
+                var Question = function () { return {id: 0}; };
+                Question.get = function () { return {$promise: $q.when([{id: 0}])}; };
+                return Question;
+            });
+
+            $provide.factory('Brief', function ($q) {
+                var Brief = function () { return {id: 0}; };
+                Brief.get = function () { return {$promise: $q.when({id: 0})}; };
+                return Brief;
+            });
+
+            $provide.factory('BriefTemplate', function ($q) {
+                var BriefTemplate = function () {};
+                BriefTemplate.get = function () { return {$promise: $q.when({id: 0, brief: {
+                    id: 0,
+                    questions: [{}]
+                }})}; };
+                return BriefTemplate;
+            });
+        });
+
         inject(function (_$rootScope_, _$compile_) {
             // The injector unwraps the underscores (_) from around the parameter names when matching
             $rootScope = _$rootScope_;
@@ -14,11 +38,14 @@ describe('brForm', function () {
         });
 
         $scope = $rootScope.$new();
-        $scope.question = {type: 'TextQuestion'};
-        $scope.language = 'en';
     });
 
     describe('brQuestionForm', function () {
+        beforeEach(function () {
+            $scope.question = {type: 'TextQuestion'};
+            $scope.language = 'en';
+        });
+
         it('compiles', function () {
             var element = $compile('<div br-question-form question="question"></div>')($scope);
             $scope.$digest();
@@ -87,6 +114,26 @@ describe('brForm', function () {
             element.isolateScope().removeChoice(0);
             window.confirm = tmp;
             expect($scope.question.choices.length).toEqual(0);
+        });
+    });
+
+    describe('brBriefForm', function () {
+        it('compiles', function () {
+            var element = $compile('<div br-brief-form></div>')($scope);
+            $scope.$digest();
+            expect(element.html().substring(0, 8)).toEqual('<ng-form');
+        });
+
+        it('compiles with brief id', function () {
+            var element = $compile('<div br-brief-form brief-id="0"></div>')($scope);
+            $scope.$digest();
+            expect(element.html().substring(0, 8)).toEqual('<ng-form');
+        });
+
+        it('compiles with brief template id', function () {
+            var element = $compile('<div br-brief-form template-id="0" quote-id="0" client-id="0"></div>')($scope);
+            $scope.$digest();
+            expect(element.html().substring(0, 8)).toEqual('<ng-form');
         });
     });
 });
