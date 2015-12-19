@@ -1,30 +1,33 @@
 app = angular.module('quotes.controllers.qtQuoteListController', ['quotes.services.qtServices']);
 
 app.controller('qtQuoteListController', ['$scope', '$http', '$window', '$uibModal', 'Quote', 'QuoteTemplate', 'Client',
-    function ($scope, $http, $window, $uibModal, Quote, QuoteTemplate, Client) {
+    function($scope, $http, $window, $uibModal, Quote, QuoteTemplate, Client) {
         $scope.quotes = [];
         $scope.quoteStatus = [];
         $scope.quoteTemplates = [];
         $scope.clients = [];
 
-        Quote.query().$promise.then(function (quotes) {
+        Quote.query().$promise.then(function(quotes) {
             $scope.quotes = quotes;
         });
 
-        Client.query().$promise.then(function (clients) {
+        Client.query().$promise.then(function(clients) {
             $scope.clients = clients;
         });
 
-        QuoteTemplate.query().$promise.then(function (quoteTemplates) {
-        	$scope.quoteTemplates = quoteTemplates;
+        QuoteTemplate.query().$promise.then(function(quoteTemplates) {
+            $scope.quoteTemplates = quoteTemplates;
         });
 
-        Quote.fields().$promise.then(function (fields) {
+        Quote.fields().$promise.then(function(fields) {
             for (var key in fields.status) {
-              // must create a temp object to set the key using a variable
-              var tempObj = {};
-              tempObj[key] = fields.status[key];
-              $scope.quoteStatus.push({value: key, text: tempObj[key]});
+                // must create a temp object to set the key using a variable
+                var tempObj = {};
+                tempObj[key] = fields.status[key];
+                $scope.quoteStatus.push({
+                    value: key,
+                    text: tempObj[key]
+                });
             }
         });
 
@@ -47,7 +50,7 @@ app.controller('qtQuoteListController', ['$scope', '$http', '$window', '$uibModa
         };
 
         $scope.addQuoteRedirect = function() {
-            $window.location.href = $scope.addQuoteURL;    
+            $window.location.href = $scope.addQuoteURL;
         };
 
         $scope.languageSelection = function(quoteTemplate, lang) {
@@ -61,7 +64,7 @@ app.controller('qtQuoteListController', ['$scope', '$http', '$window', '$uibModa
 
         $scope.animationsEnabled = true;
 
-        $scope.open = function (size) {
+        $scope.open = function(size) {
             // Modal
             var modalInstance = $uibModal.open({
                 animation: $scope.animationsEnabled,
@@ -69,27 +72,27 @@ app.controller('qtQuoteListController', ['$scope', '$http', '$window', '$uibModa
                 controller: 'qtQuoteListController',
                 size: size,
                 resolve: {
-                items: function () {
-                  return $scope.items;
+                    items: function() {
+                        return $scope.items;
+                    }
                 }
-              }
             });
 
-            modalInstance.result.then(function (selectedItem) {
+            modalInstance.result.then(function(selectedItem) {
                 $scope.selected = selectedItem;
             });
 
         };
 
-        $scope.toggleAnimation = function () {
+        $scope.toggleAnimation = function() {
             $scope.animationsEnabled = !$scope.animationsEnabled;
         };
 
-        $scope.ok = function () {
+        $scope.ok = function() {
             $uibModalInstance.close($scope.selected.item);
         };
 
-        $scope.cancel = function () {
+        $scope.cancel = function() {
             $uibModalInstance.dismiss('cancel');
         };
 

@@ -2,30 +2,16 @@
     <div class="col-lg-10 col-md-10 col-sm-9 col-xs-9">
         <h2 id="name" editable-text="quote.name" class="section_title" e-form="quoteform" e-required>{{ quote.name }}</h2>
     </div>
-
     <!-- form -->
     <form editable-form name="quoteform" ng-show="quoteform.$visible" class="form-buttons form-inline" shown="False">
-      <button type="submit" ng-disabled="quoteform.$waiting" class="btn btn-default save_button">
-        <span class="glyphicon glyphicon-floppy-disk">
+        <button type="submit" ng-disabled="quoteform.$waiting" class="btn btn-default save_button">
+            <span class="glyphicon glyphicon-floppy-disk"></span>
         </button>
-        <button type="button" ng-disabled="quoteform.$waiting" ng-click="quoteform.$cancel()" class="btn btn-default save_button">
-            <span class="glyphicon glyphicon-remove">
-            </button>
-        </form>
-        <div class="buttons" ng-show="!quoteform.$visible">
-          <button class="btn btn-default edit_button" ng-click="quoteform.$show()">
-            <span class="glyphicon glyphicon-edit"/>
-        </button>
-        <a href="{% url 'delete_quote' object.id %}" class="delete_button" title="Delete" onclick="return confirm('Are you sure?')"> 
-            <button id="section_delete" type="button" class="btn btn-default delete_button" aria-label="Delete"> 
-                <span class="glyphicon glyphicon-trash"/> 
-            </button>
-        </a> 
-    </div> 
-
-    </div>
+    <button type="button" ng-disabled="quoteform.$waiting" ng-click="quoteform.$cancel()" class="btn btn-default save_button">
+        <span class="glyphicon glyphicon-remove"></span>
+    </button>
+    </form>
 </div>
- 
 <div class="row object_data">
     <div class="col-lg-6">
         <p id="client" class="data" editable-select="quote.client"  e-form="quoteform" e-required e-ng-options="s.id as s.name for s in clients"><span class="detail_title">Client</span> {{ (clients | filter:{id: quote.client})[0].name }} </p>
@@ -33,7 +19,6 @@
         <p id="status" class="data" editable-select="quote.status"  e-form="quoteform" e-required e-ng-options="s.value as s.text for s in quoteStatus"><span class="label label-default">{{ quoteStatus[quote.status].text  }}</span></p>
     </div>
 </div>
-
 <br>
 <h2 class="section_title">
     Services

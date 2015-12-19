@@ -1,5 +1,6 @@
 app = angular.module('quotes.services.qtServices', []);
 
+/* istanbul ignore next  */
 app.factory("Quote", function ($resource) {
     // TODO: this shouldn't start with /en/
 
@@ -23,6 +24,7 @@ app.factory("Quote", function ($resource) {
 
 });
 
+/* istanbul ignore next  */
 app.factory("Service", function ($resource) {
 	//
 
@@ -34,6 +36,7 @@ app.factory("Service", function ($resource) {
 
 });
 
+/* istanbul ignore next  */
 app.factory("Client", function ($resource) {
     // TODO: this shouldn't start with /en/
 
@@ -46,7 +49,7 @@ app.factory("Client", function ($resource) {
 
 });
 
-
+/* istanbul ignore next  */
 app.factory("QuoteTemplate", function ($resource) {
     // TODO: this shouldn't start with /en/
 
