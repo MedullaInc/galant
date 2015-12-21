@@ -16,10 +16,12 @@ app.directive('qtQuoteForm', ['Quote', 'Service', 'Client', '$filter', function(
         },
     controller: ['$scope', '$attrs', '$filter', 'Quote', 'Service', 'QuoteTemplate', 'Client',
         function($scope, $attrs, $filter, Quote, Service, QuoteTemplate, Client) {
-            $scope.isCollapsed = true;
+            $scope.isCollapsed = false;
             $scope.quoteFields = [];
             $scope.quoteStatus = [];
+            $scope.quoteLanguage = [];
             $scope.serviceFields = [];
+            $scope.language_list  = [];
 
             $scope.endpoint = Quote;
 
@@ -73,6 +75,18 @@ app.directive('qtQuoteForm', ['Quote', 'Service', 'Client', '$filter', function(
                         text: tempObj[key]
                     });
                 }
+
+                for (var key in fields.language) {
+                    // must create a temp object to set the key using a variable
+                    var tempObj = {};
+                    tempObj[key] = fields.language[key];
+                    $scope.quoteLanguage.push({
+                        value: key,
+                        text: tempObj[key]
+                    });
+                }
+
+
             });
 
             Service.fields({}).$promise.then(function(fields) {
@@ -91,8 +105,14 @@ app.directive('qtQuoteForm', ['Quote', 'Service', 'Client', '$filter', function(
                     $scope.quote = quote;
                 });
             } else {
-                if ($attrs.quoteTemplateId) {
-                
+                if ($attrs.templateId) {
+                    QuoteTemplate.get({
+                        id: $attrs.templateId
+                    }).$promise.then(function (quoteTemplate) {
+                            $scope.quote = quoteTemplate.quote;
+                            $scope.language_list = quoteTemplate.language_list;
+                            console.log(quoteTemplate.language_list);
+                        });  
                 } else {
                     $scope.quote = {
                         "id": "",
@@ -116,7 +136,23 @@ app.directive('qtQuoteForm', ['Quote', 'Service', 'Client', '$filter', function(
         ],
         templateUrl: '/static/quotes/html/qt_quote_form.html',
         link: function($scope) {
-            $scope.removeServiceSection = function(index) {
+
+            $scope.dynamicPopover = {
+                templateUrl: 'myPopoverTemplate.html',
+            };
+
+            $scope.changeLanguage = function(lang){
+                console.log(lang);
+                $scope.language = lang;
+            }
+            $scope.addLanguage = function(lang){
+                console.log($scope.quoteLanguage);
+                selected = $filter('filter')($scope.quoteLanguage, {
+                        value: lang,
+                    }, true);
+                $scope.language_list.push([selected[0].value,selected[0].text]);
+            }
+            $scope.removeService = function(index) {
                 $scope.quote.services.splice(index, 1);
             };
             $scope.showType = function(service) {
@@ -127,8 +163,7 @@ app.directive('qtQuoteForm', ['Quote', 'Service', 'Client', '$filter', function(
                     });
                     return selected.length ? selected[0].text : 'Not set';
                 }
-            };
-
+            }
             $scope.getTotal = function() {
                 if ($scope.quote) {
                     $scope.total = 0;
@@ -147,8 +182,7 @@ app.directive('qtQuoteForm', ['Quote', 'Service', 'Client', '$filter', function(
             $scope.removeSection = function(index) {
                 $scope.quote.sections.splice(index, 1);
             };
-
-
+            
             $scope.dragControlListeners = {
                 orderChanged: function(event) {
             },

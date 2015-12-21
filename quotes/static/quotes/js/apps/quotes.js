@@ -2,6 +2,7 @@ var app = angular.module('quote', [
     'ngResource',
     'gallant.controllers.glFormController',
     'quotes.controllers.qtQuoteListController',
+    'quotes.controllers.qtPopoverController',
     'quotes.directives.qtForm',
     'ui.bootstrap',
     'ngAnimate',
@@ -19,7 +20,6 @@ app.config(function ($httpProvider) {
 app.config(["$resourceProvider",function ($resourceProvider) {
   // extend the default actions
   angular.extend($resourceProvider.defaults.actions,{
-
 
     // put your defaults here
     update : {

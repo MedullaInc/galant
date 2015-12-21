@@ -104,12 +104,27 @@ class QuoteSerializer(serializers.ModelSerializer):
 
 class QuoteTemplateSerializer(serializers.ModelSerializer):
     user = serializers.PrimaryKeyRelatedField(read_only=True)
-    quote = serializers.PrimaryKeyRelatedField(read_only=True)
+    quote = QuoteSerializer()
     language_list = serializers.SerializerMethodField()
 
     class Meta:
         model = QuoteTemplate
         fields = ('id', 'user', 'quote', 'language_list')
+
+    def create(self, validated_data):
+        user = self.context['request'].user
+        quote_data = validated_data.pop('quote')
+        validated_data.update({'user': user})
+        quote_data.update({'user': user})
+
+        instance = super(QuoteTemplateSerializer, self).create(validated_data)
+
+        instance.quote = QuoteTemplateSerializer(data=quote_data)
+        return instance
+
+    def update(self, instance, validated_data):
+        validated_data.pop('quote')
+        return super(QuoteTemplateSerializer, self).update(instance, validated_data)
 
     def get_language_list(self, obj):
         lan_list = QuoteTemplate.objects.all_for(obj.user).get(pk=obj.id).language_list()

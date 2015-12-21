@@ -4,6 +4,11 @@
 
 {% block ng_app %} ng-app="quote" {% endblock %}
 
+<a>
+    <button type="button" class="btn btn-default sidebar" id="add_quote">
+        {% trans "Use For New Quote" %}
+    </button>
+</a>
 
 {% block scripts %}
     {{ block.super }}
@@ -46,11 +51,7 @@
 {% block center_content %}
 
     <div class="row">
-        <div class="col-lg-10 col-md-10 col-sm-9 col-xs-9">
-            <h2 class="section_title">{{ form.name.value }}</h2>
-        </div>
 
-        <br>
         <div ng-controller="glFormController"
              ng-init="init('{% firstof language LANGUAGE_CODE %}', '{{ csrf_token }}')">
             <div qt-quote-form quote-id="{{ object.pk |default_if_none:"" }}"  quote="object" endpoint="objectEndpoint"
