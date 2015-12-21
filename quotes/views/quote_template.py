@@ -20,7 +20,7 @@ class QuoteTemplateList(View):
         self.request.breadcrumbs([(_('Quotes'), reverse('quotes')),
                                   (_('Templates'), request.path_info)])
         return TemplateResponse(request=request,
-                                template="quotes/quotetemplate_list.html",
+                                template="quotes/quotetemplate_list_ng.html",
                                 context={'title': 'Quote Templates',
                                          'object_list': q.QuoteTemplate.objects
                                 .all_for(request.user)})
@@ -62,10 +62,8 @@ class QuoteTemplateView(View):
             if kwargs['quote_id'] is not None:
                 quote = get_one_or_404(request.user, 'view_quote', q.Quote, pk=kwargs['quote_id'])
                 form = qf.QuoteTemplateForm(request.user, instance=quote)
-                #section_forms = qf.section_forms_quote(quote)
             else:
                 form = qf.QuoteTemplateForm(request.user)
-                #section_forms = qf.section_forms_initial(request.user)
 
         return self.render_to_response({'form': form}, request)
 
@@ -119,21 +117,9 @@ class QuoteTemplateView(View):
                         'language': language,
                         'quote_type': 'template'})
         return TemplateResponse(request=self.request,
-                                template="quotes/quote_template.html",
+                                template="quotes/quotetemplate_form_ng.html",
                                 context=context)
 
-# DEPRECATED
-"""
-class QuoteTemplateDetailAPI(generics.RetrieveUpdateAPIView):
-    model = q.QuoteTemplate
-    serializer_class = serializers.QuoteTemplateSerializer
-    permission_classes = [
-        GallantObjectPermissions
-    ]
-
-    def get_queryset(self):
-        return self.model.objects.all_for(self.request.user)
-"""
 
 class QuoteTemplateViewSet(ModelViewSet):
     model = q.QuoteTemplate

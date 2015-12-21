@@ -56,9 +56,10 @@ describe('qtQuoteListController', function () {
     beforeEach(function () {
         $scope = $rootScope.$new();
         $controller('qtQuoteListController', {$scope: $scope});
-        $scope.init(url);
+        $scope.init(url, url);
         $rootScope.$apply();
-        $scope.quotes = $scope.quotesSafe;
+        $scope.quotes = $scope.quotes;
+        $scope.quote = $scope.quotes[0];
     });
  
     it('sets quoteDetailURL', function () {
@@ -69,9 +70,93 @@ describe('qtQuoteListController', function () {
         $scope.redirect(4);
         expect($window.location.href).toEqual(url + '4');
     });
- 
+
     it('gets quote list', function () {
-        expect($scope.quote.length).toEqual(1);
+        expect($scope.quotes.length).toEqual(1);
     });
+
+    it('gets quote status list', function () {
+        expect($scope.quoteStatus.length).toEqual(0);
+    });
+ 
+});
+
+
+describe('qtPopoverController', function () {
+    var $rootScope;
+    var $controller;
+    var $window;
+    var url = 'http://foo.com/';
+ 
+    beforeEach(function () {
+        angular.module('quotes.services.qtServices', []);
+        module('quotes.services.qtServices', function ($provide) {
+            $provide.factory('Quote', function ($q) {
+                var Quote = jasmine.createSpyObj('Quote', ['query', 'fields']);
+ 
+                Quote.query.and.returnValue({$promise: $q.when([{id: 1}])});
+                Quote.fields.and.returnValue({$promise: $q.when({})});
+ 
+                return Quote;
+            });
+            $provide.factory('QuoteTemplate', function ($q) {
+                var QuoteTemplate = jasmine.createSpyObj('QuoteTemplate', ['query', 'fields']);
+ 
+                QuoteTemplate.query.and.returnValue({$promise: $q.when([{id: 1}])});
+                QuoteTemplate.fields.and.returnValue({$promise: $q.when({})});
+ 
+                return QuoteTemplate;
+            });
+        });
+        module('quotes.controllers.qtPopoverController', function ($provide) {
+            $provide.value('$uibModal', {open: function () {}});
+            $provide.value('$window', {location: {href: null}});
+        });
+ 
+        inject(function (_$rootScope_, _$controller_, _$window_) {
+            // The injector unwraps the underscores (_) from around the parameter names when matching
+            $rootScope = _$rootScope_;
+            $controller = _$controller_;
+            $window = _$window_;
+        });
+    });
+ 
+    var $scope;
+ 
+    beforeEach(function () {
+        $scope = $rootScope.$new();
+        $controller('qtPopoverController', {$scope: $scope});
+        $scope.init(url, url);
+        $rootScope.$apply();
+        $scope.quotes = $scope.quotes;
+        $scope.quote = $scope.quotes[0];
+    });
+ 
+    it('sets addQuoteURL', function () {
+        expect($scope.addQuoteURL).toEqual(url);
+    });
+ 
+    it('generates addQuoteRedirect redirect URL', function () {
+        $scope.addQuoteRedirect();
+        expect($window.location.href);
+    });
+
+    it('generates redirectTemplate redirect URL', function () {
+        $scope.redirectTemplate({id:0, languageSelection: "en"});
+        expect($window.location.href);
+    });
+
+    it('opens and closes modal', function () {
+        expect($scope.modalInstance).not.toBeDefined();
+        $scope.open();
+        expect($scope.modalInstance).toBeDefined();
+        $scope.open();
+        expect($scope.modalInstance).not.toBeDefined();
+    });
+
+    it('changes language', function () {
+        $scope.languageSelection({id: 0}, "en");
+    });
+
  
 });

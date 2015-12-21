@@ -3,6 +3,7 @@
 
 
 {% block post_form %}
+
     <ul id="tabs" class="nav nav-tabs" style="margin-bottom: -1px; border-bottom: 0">
         {% for language_code, language in languages %}
         <li id="{{ language_code }}_tab" {% if forloop.first %}class="active"{% endif %} data="{{ language_code }}"><a>
@@ -20,6 +21,15 @@
         {{ language_form|bootstrap }}
         <button id="language_add" type="button" class="btn btn-default">Add</button>
     </div>
+
+
+    <div ng-controller="glFormController"
+         ng-init="init('{% firstof language LANGUAGE_CODE %}', '{{ csrf_token }}')">
+        <div qt-quote-form quote-id="{{ object.pk |default_if_none:"" }}"  quote="object" endpoint="objectEndpoint"
+             language="currentLanguage" forms="forms"
+             client-id="{{ client.id }}" project-id="{{ project.id }}" quote-id="{{ quote.id|default_if_none:"" }}"
+             template-id="{{ template_id }}" user-id="{{user.id}}">
+        </div> 
 
 {% endblock %}
 

@@ -9,13 +9,12 @@ describe('qtForm', function () {
         angular.module('as.sortable', []);
         angular.module('ui.bootstrap', []); 
 
-
         angular.module('quotes.services.qtServices', []);
         module('quotes.services.qtServices', function ($provide) { 
             $provide.factory('Quote', function ($q) {
                 var Quote = jasmine.createSpyObj('Quote', ['query', 'fields']);
 
-                Quote.query.and.returnValue({$promise: $q.when([{id: 0, last_modified: null}])});
+                Quote.query.and.returnValue({$promise: $q.when([{id: 0}])});
                 Quote.fields.and.returnValue({$promise: $q.when({})});
 
                 return Quote;
@@ -24,7 +23,7 @@ describe('qtForm', function () {
             $provide.factory('QuoteTemplate', function ($q) {
                 var QuoteTemplate = jasmine.createSpyObj('QuoteTemplate', ['query', 'fields']);
  
-                QuoteTemplate.query.and.returnValue({$promise: $q.when([{id: 0, last_modified: null}])});
+                QuoteTemplate.query.and.returnValue({$promise: $q.when([{id: 0}])});
                 QuoteTemplate.fields.and.returnValue({$promise: $q.when({})});
  
                 return QuoteTemplate;
@@ -68,13 +67,13 @@ describe('qtForm', function () {
         });
  
         it('compiles with quote id', function () {
-            var element = $compile('<div qt-quote-form quote="quote" quote-id="0"></div>')($scope);
+            var element = $compile('<div qt-quote-form quote="quote"></div>')($scope);
             $scope.$digest();
             expect(element.html().substring(0, 8)).toEqual('<div cla');
         });
  
         it('compiles with quote template id', function () {
-            var element = $compile('<div qt-quote-form quote="quote" template-id="0" quote-id="0" client-id=""></div>')($scope);
+            var element = $compile('<div qt-quote-form quote="quote" language="language"></div>')($scope);
             $scope.$digest();
             expect(element.html().substring(0, 8)).toEqual('<div cla');
         });
@@ -88,6 +87,15 @@ describe('qtForm', function () {
             expect($scope.quote.services.length).toEqual(2);
         });
  
+        it('remove service', function () {
+            $scope.quote = {};
+            var element = $compile('<div qt-quote-form quote="quote"></div>')($scope);
+            $scope.$digest();
+ 
+            element.isolateScope().removeService();
+            expect($scope.quote.services.length).toEqual(0);
+        });
+ 
         it('adds section', function () {
             $scope.quote = {};
             var element = $compile('<div qt-quote-form quote="quote"></div>')($scope);
@@ -96,6 +104,16 @@ describe('qtForm', function () {
             element.isolateScope().addSection();
             expect($scope.quote.sections.length).toEqual(3);
         });
+
+        it('remove section', function () {
+            $scope.quote = {};
+            var element = $compile('<div qt-quote-form quote="quote"></div>')($scope);
+            $scope.$digest();
+ 
+            element.isolateScope().removeSection();
+            expect($scope.quote.sections.length).toEqual(1);
+        });
+
     });
 });
  

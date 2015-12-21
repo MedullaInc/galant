@@ -116,9 +116,8 @@ class QuoteCreate(QuoteUpdate):
         if template_id is not None:
             template = get_one_or_404(request.user, 'view_quotetemplate', q.QuoteTemplate, pk=template_id)
             quote = template.quote
-            #section_forms = qf.section_forms_quote(quote, clear_pk=True)
-            #context.update({'sections': section_forms})
             quote.pk = None
+            context.update({'template_id': template_id})
             if lang is not None:
                 quote.language = lang
                 context.update({'language': lang, 'object': quote})

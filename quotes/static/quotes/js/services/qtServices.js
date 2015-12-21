@@ -53,7 +53,7 @@ app.factory("Client", function ($resource) {
 app.factory("QuoteTemplate", function ($resource) {
     // TODO: this shouldn't start with /en/
 
-	return $resource("/en/quote/api/quote/:id", {}, {
+	return $resource("/en/quote/api/quote_template/:id", {}, {
 		retrieve: {
 		  method: 'GET',
 		  params: {},
