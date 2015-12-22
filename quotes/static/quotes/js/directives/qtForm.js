@@ -110,8 +110,11 @@ app.directive('qtQuoteForm', ['Quote', 'Service', 'Client', '$filter', function(
                         id: $attrs.templateId
                     }).$promise.then(function (quoteTemplate) {
                             $scope.quote = quoteTemplate.quote;
-                            $scope.language_list = quoteTemplate.language_list;
-                            console.log(quoteTemplate.language_list);
+                            if (!($scope.language)){
+                                $scope.language_list = quoteTemplate.language_list;
+                            }else{
+                                $scope.addLanguage($scope.language);
+                            }
                         });  
                 } else {
                     $scope.quote = {
@@ -142,15 +145,15 @@ app.directive('qtQuoteForm', ['Quote', 'Service', 'Client', '$filter', function(
             };
 
             $scope.changeLanguage = function(lang){
-                console.log(lang);
                 $scope.language = lang;
             }
             $scope.addLanguage = function(lang){
-                console.log($scope.quoteLanguage);
                 selected = $filter('filter')($scope.quoteLanguage, {
                         value: lang,
                     }, true);
-                $scope.language_list.push([selected[0].value,selected[0].text]);
+                if(selected){
+                    $scope.language_list.push([selected[0].value,selected[0].text]);
+                }
             }
             $scope.removeService = function(index) {
                 $scope.quote.services.splice(index, 1);
@@ -166,13 +169,15 @@ app.directive('qtQuoteForm', ['Quote', 'Service', 'Client', '$filter', function(
             }
             $scope.getTotal = function() {
                 if ($scope.quote) {
-                    $scope.total = 0;
-                    for (var i = 0; i < $scope.quote.services.length; i++) {
-                        var service = $scope.quote.services[i];
-                        if (service) {
-                            $scope.total += (service.cost.amount * service.quantity);
-                        } else {
-                            $scope.total += 0;
+                    if($scope.quote.services){
+                        $scope.total = 0;
+                        for (var i = 0; i < $scope.quote.services.length; i++) {
+                            var service = $scope.quote.services[i];
+                            if (service) {
+                                $scope.total += (service.cost.amount * service.quantity);
+                            } else {
+                                $scope.total += 0;
+                            }
                         }
                     }
                 return $scope.total;

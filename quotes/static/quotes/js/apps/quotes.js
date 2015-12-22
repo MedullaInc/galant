@@ -5,7 +5,6 @@ var app = angular.module('quote', [
     'quotes.controllers.qtPopoverController',
     'quotes.directives.qtForm',
     'ui.bootstrap',
-    'ngAnimate',
     'xeditable'
 ]);
 

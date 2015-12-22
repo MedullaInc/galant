@@ -31,22 +31,13 @@ app.controller('qtPopoverController', ['$scope', '$http', '$window', '$uibModal'
         quoteTemplate.languageSelection = lang;
     };
 
-	$scope.animationsEnabled = true;
-
-	$scope.open = function (size) {
-
-		var modalInstance = $uibModal.open({
-			animation: $scope.animationsEnabled,
+	$scope.open = function () {
+		$scope.modalInstance = $uibModal.open({
+			animation: true,
 			templateUrl: 'myModalContent.html',
 			controller: 'qtPopoverController',
-			size: size,
 			resolve: {}
 		});
-	};
-
-	/* istanbul ignore next  */
-	$scope.toggleAnimation = function () {
-		$scope.animationsEnabled = !$scope.animationsEnabled;
 	};
 
 }

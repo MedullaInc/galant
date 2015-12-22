@@ -1,6 +1,6 @@
 from django.views.generic import View
 from django.template.response import TemplateResponse
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.utils.translation import get_language
 from django.conf import settings
 from django.contrib import messages
@@ -35,7 +35,7 @@ class QuoteTemplateDetail(View):
                              (_('Quote: %s' % quote.quote.name), request.path_info)])
         return TemplateResponse(request=request,
                                 template="quotes/quotetemplate_detail_ng.html",
-                                context={'title': 'Quote Template', 'object': quote})
+                                context={'title': 'Quote Template', 'object': quote, 'template_id': kwargs['pk'] })
 
 
 class QuoteTemplateView(View):
@@ -46,7 +46,6 @@ class QuoteTemplateView(View):
         if 'pk' in kwargs:
             self.object = get_one_or_404(request.user, 'view_quotetemplate', q.QuoteTemplate, pk=kwargs['pk'])
             form = qf.QuoteTemplateForm(request.user, instance=self.object.quote)
-            #section_forms = qf.section_forms_quote(self.object.quote)
 
             if not request.user.has_perm('change_quotetemplate', self.object):
                 messages.warning(request, 'Warning: you don\'t have permission to change this template. '
