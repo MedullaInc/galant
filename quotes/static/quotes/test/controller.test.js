@@ -150,8 +150,7 @@ describe('qtPopoverController', function () {
         expect($scope.modalInstance).not.toBeDefined();
         $scope.open();
         expect($scope.modalInstance).toBeDefined();
-        $scope.open();
-        expect($scope.modalInstance).not.toBeDefined();
+
     });
 
     it('changes language', function () {

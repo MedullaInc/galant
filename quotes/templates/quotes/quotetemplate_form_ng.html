@@ -25,7 +25,6 @@
     <script src="{% static "quotes/js/directives/qtForm.js" %}"></script>
     <script src="{% static "quotes/js/apps/quotes.js" %}"></script>
     <script src="{% static "js/ng-sortable/ng-sortable.min.js" %}"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular-animate.js"></script> 
 {% endblock %}
 
 {% block css %}
@@ -49,14 +48,13 @@
 {% endblock %}
 
 {% block center_content %}
-
     <div class="row">
 
         <div ng-controller="glFormController"
              ng-init="init('{% firstof language LANGUAGE_CODE %}', '{{ csrf_token }}')">
-            <div qt-quote-form quote-id="{{ object.pk |default_if_none:"" }}"  quote="object" endpoint="objectEndpoint"
+            <div qt-quote-form quote-id=""  quote="object" endpoint="objectEndpoint"
                  language="currentLanguage" forms="forms"
-                 client-id="{{ client.id }}" project-id="{{ project.id }}" quote-id="{{ quote.id|default_if_none:"" }}"
+                 client-id="{{ client.id }}" project-id="{{ project.id }}" 
                  template-id="{{ template_id }}" user-id="{{user.id}}">
             </div> 
 
