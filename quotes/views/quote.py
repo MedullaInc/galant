@@ -228,15 +228,4 @@ class QuoteViewSet(ModelViewSet):
         else:
             return response
 
-# DEPRECATED
-"""
-class QuoteDetailAPI(generics.RetrieveUpdateAPIView):
-    model = q.Quote
-    serializer_class = serializers.QuoteSerializer
-    permission_classes = [
-        GallantObjectPermissions
-    ]
 
-    def get_queryset(self):
-        return self.model.objects.all_for(self.request.user)
-"""
