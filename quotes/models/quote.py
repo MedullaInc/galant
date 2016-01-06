@@ -40,7 +40,7 @@ class Quote(g.UserModel):
 
     def get_languages(self):
         language_set = set()
-        for s in list(self.sections.all_for(self.user)):
+        for s in list(self.all_sections()):
             if s is not None:
                 language_set.update(s.get_languages())
 

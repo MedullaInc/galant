@@ -9,6 +9,7 @@
     {{ block.super }}
     <script src="{% static "js/angular.js" %}"></script>
     <script src="{% static "js/angular-resource.js" %}"></script>
+    <script src="{% static "js/angular-animate.js" %}"></script>
     <script src="{% static "js/xeditable/xeditable.min.js" %}"></script>
     <script src="{% static "js/ui-bootstrap-tpls.js" %}"></script>
     <script src="{% static "djangular/js/django-angular.min.js" %}"></script>
@@ -55,7 +56,7 @@
             <div qt-quote-form quote-id="{{ object.pk |default_if_none:"" }}"  quote="object" endpoint="objectEndpoint"
                  language="currentLanguage" forms="forms"
                  client-id="{{ client.id }}" project-id="{{ project.id }}" quote-id="{{ quote.id|default_if_none:"" }}"
-                 template-id="{{ template_id }}" user-id="{{user.id}}">
+                 bool-template="False" template-id="{{ template_id }}" user-id="{{user.id}}">
             </div> 
 
         <div id="form_actions">

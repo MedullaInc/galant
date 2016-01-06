@@ -1,10 +1,16 @@
-app = angular.module('quotes.controllers.qtQuoteListController', ['quotes.services.qtServices']);
+app = angular.module('quotes.controllers.qtQuoteListController', ['quotes.services.qtServices','ngAnimate']);
 
 app.controller('qtQuoteListController', ['$scope', '$http', '$window', '$uibModal', 'Quote', 'QuoteTemplate', 'Client',
     function($scope, $http, $window, $uibModal, Quote, QuoteTemplate, Client) {
         $scope.quotes = [];
         $scope.quoteStatus = [];
         $scope.clients = [];
+
+        $scope.init = function(quoteDetailURL, currentLanguage) {
+            $scope.quoteDetailURL = quoteDetailURL;
+            $scope.currentLanguage = currentLanguage;
+
+        };
 
         Quote.query().$promise.then(function(quotes) {
             $scope.quotes = quotes;
@@ -30,13 +36,11 @@ app.controller('qtQuoteListController', ['$scope', '$http', '$window', '$uibModa
             }
         });
 
-        $scope.init = function(quoteDetailURL) {
-            $scope.quoteDetailURL = quoteDetailURL;
-        };
-
         $scope.redirect = function(id) {
             $window.location.href = $scope.quoteDetailURL + id
         };
+
+        
 
     }
 

@@ -13,6 +13,7 @@ app.directive('qtQuoteForm', ['Quote', 'Service', 'Client', '$filter', function(
           endpoint: '=',
           language: '=',
           forms: '=',
+          boolTemplate : '=',
         },
     controller: ['$scope', '$attrs', '$filter', 'Quote', 'Service', 'QuoteTemplate', 'Client',
         function($scope, $attrs, $filter, Quote, Service, QuoteTemplate, Client) {
@@ -22,8 +23,6 @@ app.directive('qtQuoteForm', ['Quote', 'Service', 'Client', '$filter', function(
             $scope.quoteLanguage = [];
             $scope.serviceFields = [];
             $scope.language_list  = [];
-
-            $scope.endpoint = Quote;
 
             $scope.addSection = function(section_name) {
                 var name = "";
@@ -100,9 +99,20 @@ app.directive('qtQuoteForm', ['Quote', 'Service', 'Client', '$filter', function(
                     });
                 }
             });
+
+            if($attrs.boolTemplate != 'False'){
+                console.log($attrs.boolTemplate);
+                $scope.endpoint = QuoteTemplate;
+            }else{
+                $scope.endpoint = Quote;
+            }
+
             if ($attrs.quoteId) {
                 Quote.get({id: $attrs.quoteId}).$promise.then(function(quote) {
                     $scope.quote = quote;
+                    if($attrs.language){
+                        $scope.addLanguage($scope.language);
+                    }
                 });
             } else {
                 if ($attrs.templateId) {
@@ -110,12 +120,8 @@ app.directive('qtQuoteForm', ['Quote', 'Service', 'Client', '$filter', function(
                         id: $attrs.templateId
                     }).$promise.then(function (quoteTemplate) {
                             $scope.quote = quoteTemplate.quote;
-                            if (!($scope.language)){
-                                $scope.language_list = quoteTemplate.language_list;
-                            }else{
-                                $scope.addLanguage($scope.language);
-                            }
-                        });  
+                            $scope.language_list = quoteTemplate.language_list;
+                        });
                 } else {
                     $scope.quote = {
                         "id": "",
@@ -145,7 +151,7 @@ app.directive('qtQuoteForm', ['Quote', 'Service', 'Client', '$filter', function(
             };
 
             $scope.changeLanguage = function(lang){
-                $scope.language = lang;
+                $scope.language = lang[0];
             }
             $scope.addLanguage = function(lang){
                 selected = $filter('filter')($scope.quoteLanguage, {

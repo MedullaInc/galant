@@ -1,7 +1,17 @@
-app = angular.module('quotes.controllers.qtPopoverController', ['ui.bootstrap', 'quotes.services.qtServices']);
+app = angular.module('quotes.controllers.qtPopoverController', ['ngAnimate','ui.bootstrap', 'quotes.services.qtServices']);
 
 app.controller('qtPopoverController', ['$scope', '$http', '$window', '$uibModal', 'Quote', 'QuoteTemplate',
     function($scope, $http, $window, $uibModal, Quote, QuoteTemplate) {
+
+    $scope.init = function(addQuoteURL, currentLanguage) {
+        $scope.addQuoteURL = addQuoteURL;
+        $scope.currentLanguage = currentLanguage;
+
+        console.log(currentLanguage);
+
+
+        $scope.selectedLanguage = currentLanguage;
+    };
 
     Quote.query().$promise.then(function(quotes) {
         $scope.quotes = quotes;
@@ -15,12 +25,8 @@ app.controller('qtPopoverController', ['$scope', '$http', '$window', '$uibModal'
 		templateUrl: 'myPopoverTemplate.html',
 	};
 
-    $scope.init = function(addQuoteURL, quoteTemplateDetailURL) {
-        $scope.addQuoteURL = addQuoteURL;
-    };
-
     $scope.redirectTemplate = function(quoteTemplate) {
-        $window.location.href = '/en/quote/add/' + "?template_id=" + quoteTemplate.id + "&lang=" + quoteTemplate.languageSelection;
+        $window.location.href = $scope.addQuoteURL + "?template_id=" + quoteTemplate.id + "&lang=" + quoteTemplate.languageSelection;
     };
 
     $scope.addQuoteRedirect = function() {
@@ -29,14 +35,16 @@ app.controller('qtPopoverController', ['$scope', '$http', '$window', '$uibModal'
 
     $scope.languageSelection = function(quoteTemplate, lang) {
         quoteTemplate.languageSelection = lang;
+        console.log($scope.selectedLanguage);
     };
 
 	$scope.open = function () {
 		$scope.modalInstance = $uibModal.open({
+            scope: $scope,
 			animation: true,
 			templateUrl: 'myModalContent.html',
 			controller: 'qtPopoverController',
-			resolve: {}
+            scope:$scope, //Refer to parent scope here
 		});
 	};
 
