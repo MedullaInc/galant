@@ -136,3 +136,77 @@ button.btn.btn-default {
 }
 
 /* END CALENDAR */
+
+/* CALENDAR MODAL */
+
+#calendar_modal {
+    max-width: 100%;
+}
+
+#calendar_modal .form-group select {
+    margin-bottom: 10px;
+}
+
+#calendar_modal .form-group label {
+    margin-top: 8px;
+}
+
+#calendar_modal .form-group input {
+    font-size: 14px;
+}
+
+#calendar_modal h3 {
+    padding-left: 15px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    font-weight: 800;
+}
+
+#calendar_modal button.close {
+    position: absolute;
+    top: 15px;
+    right: 25px;
+    font-size: 24px;
+}
+
+#calendar_modal .form-group .btn {
+    margin-left: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+#calendar_modal .well {
+    margin-top: 10px;
+    margin-bottom: 0px;
+}
+
+#calendar_modal .margin-top-10 {
+    margin-top: 10px;
+}
+
+#calendar_modal .margin-left-10 {
+    margin-left: 10px;
+}
+
+#calendar_modal span.date {
+    font-size: 12px;
+    cursor: pointer;
+}
+
+#calendar_modal .well p {
+    margin-bottom: 0px;
+    line-height: 1.2;
+    cursor: pointer;
+}
+
+#calendar_modal .well a {
+    color: #333333;
+    cursor: pointer;
+}
+
+#calendar_modal .well a:hover {
+    text-decoration: none;
+}
+
+/* END CALENDAR MODAL */
