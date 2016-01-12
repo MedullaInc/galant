@@ -6,6 +6,7 @@ describe('qtQuoteListController', function () {
  
     beforeEach(function () {
         angular.module('quotes.services.qtServices', []);
+        angular.module('ngAnimate', []);
         module('quotes.services.qtServices', function ($provide) {
             $provide.factory('Quote', function ($q) {
                 var Quote = jasmine.createSpyObj('Quote', ['query', 'fields']);
@@ -55,6 +56,7 @@ describe('qtQuoteListController', function () {
  
     beforeEach(function () {
         $scope = $rootScope.$new();
+        angular.module('ngAnimate', []);
         $controller('qtQuoteListController', {$scope: $scope});
         $scope.init(url, url);
         $rootScope.$apply();
@@ -90,6 +92,7 @@ describe('qtPopoverController', function () {
  
     beforeEach(function () {
         angular.module('quotes.services.qtServices', []);
+        angular.module('ngAnimate', []);
         module('quotes.services.qtServices', function ($provide) {
             $provide.factory('Quote', function ($q) {
                 var Quote = jasmine.createSpyObj('Quote', ['query', 'fields']);

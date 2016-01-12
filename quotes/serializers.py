@@ -16,12 +16,17 @@ class SectionSerializer(serializers.ModelSerializer):
 
 
 class QuoteSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(read_only=False)
     user = serializers.PrimaryKeyRelatedField(read_only=True)
     parent = serializers.PrimaryKeyRelatedField(read_only=True)
 
     def get_fields(self, *args, **kwargs):
         fields = super(QuoteSerializer, self).get_fields(*args, **kwargs)
-        user = self.context['request'].user
+
+        if self.context.has_key('request'):
+            user = self.context['request'].user
+        else:
+            user = self.context.get("user")
 
         def model_queryset(m): return m.objects.all_for(user)
 
@@ -36,13 +41,30 @@ class QuoteSerializer(serializers.ModelSerializer):
         services_data = validated_data.pop('services')
         sections_data = validated_data.pop('sections')
 
-        self._write_services(self.context['request'].user, self.instance, services_data)
-        self._write_sections(self.context['request'].user, self.instance, sections_data)
+        if self.context.has_key('request'):
+            user = self.context['request'].user
+        else:
+            user = self.context.get("user")
 
-        return super(QuoteSerializer, self).update(self.instance, validated_data)
+        if self.instance is None:
+            quote_instance = instance
+        else:
+            quote_instance = self.instance
+
+
+        self._write_services(user, instance, services_data)
+        self._write_sections(user, instance, sections_data)
+
+        return super(QuoteSerializer, self).update(instance, validated_data)
 
     def create(self, validated_data):
-        user = self.context['request'].user
+
+
+        if self.context.has_key('request'):
+            user = self.context['request'].user
+        else:
+            user = self.context.get("user")
+
         services_data = validated_data.pop('services')
         sections_data = validated_data.pop('sections')
         validated_data.update({'user': user})
@@ -69,7 +91,7 @@ class QuoteSerializer(serializers.ModelSerializer):
                 ss = s.ServiceSerializer(data=service_data, instance=service_instance)
                 service = ss.update(service_instance, service_data)
             else:
-                service_data.update({'user': self.context['request'].user})
+                service_data.update({'user': user})
                 ss = s.ServiceSerializer(data=service_data)
                 service = ss.create(service_data)
 
@@ -91,7 +113,7 @@ class QuoteSerializer(serializers.ModelSerializer):
                 ss = SectionSerializer(data=section_data, instance=section_instance)
                 section = ss.update(section_instance, section_data)
             else:
-                section_data.update({'user': self.context['request'].user})
+                section_data.update({'user': user})
                 ss = SectionSerializer(data=section_data)
                 section = ss.create(section_data)
 
@@ -101,6 +123,7 @@ class QuoteSerializer(serializers.ModelSerializer):
 
         for section in (init_sections- new_sections):
             section.delete()
+
 
 class QuoteTemplateSerializer(serializers.ModelSerializer):
     user = serializers.PrimaryKeyRelatedField(read_only=True)
@@ -117,13 +140,33 @@ class QuoteTemplateSerializer(serializers.ModelSerializer):
         validated_data.update({'user': user})
         quote_data.update({'user': user})
 
+        qs = QuoteSerializer(data=quote_data, context={'user': self.context['request'].user})
+        quote = qs.create(quote_data);
+
+        validated_data.update({'quote': quote})
+
         instance = super(QuoteTemplateSerializer, self).create(validated_data)
 
-        instance.quote = QuoteTemplateSerializer(data=quote_data)
         return instance
 
     def update(self, instance, validated_data):
-        validated_data.pop('quote')
+        
+        user = self.context['request'].user
+
+        quote_data = validated_data.pop('quote')
+        quote_id = quote_data.get('id', None)
+
+        quote_data.update({'user': user})
+
+        qs = QuoteSerializer(data=quote_data, context={'user': self.context['request'].user})
+
+        quote_instance = q.Quote.objects.get_for(user, 'change', pk=quote_id)
+
+        print quote_instance
+        quote = qs.update(quote_instance, quote_data)
+
+        validated_data.update({'quote': quote})
+
         return super(QuoteTemplateSerializer, self).update(instance, validated_data)
 
     def get_language_list(self, obj):
