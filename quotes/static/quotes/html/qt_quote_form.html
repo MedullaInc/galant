@@ -38,7 +38,7 @@
 
 <br>
 
-<uib-tabset ng-if="boolTemplate == True" id="tabs" class="nav nav-tabs" style="margin-bottom: -1px; border-bottom: 0">
+<uib-tabset ng-if="boolTemplate == 'True'" id="tabs" class="nav nav-tabs" style="margin-bottom: -1px; border-bottom: 0">
     <uib-tab ng-click="changeLanguage(language)" id="en_tab" ng-repeat="language in language_list" heading="{{language[1]}}" active="tab.active"></uib-tab>
     <uib-tab id="add_translation_button" popover-placement="bottom" uib-popover-template="dynamicPopover.templateUrl" heading="Add Translation" active="tab.active"></uib-tab>
 </uib-tabset>

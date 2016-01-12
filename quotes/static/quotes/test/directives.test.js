@@ -6,6 +6,7 @@ describe('qtForm', function () {
     beforeEach(function () {
         module('quotes.directives.qtForm');
         module('staticNgTemplates');
+        angular.module('ngAnimate', []);
         angular.module('as.sortable', []);
         angular.module('ui.bootstrap', []); 
 

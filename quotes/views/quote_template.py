@@ -134,7 +134,7 @@ class QuoteTemplateViewSet(ModelViewSet):
         response = super(QuoteTemplateViewSet, self).update(request, *args, **kwargs)
         if response.status_code == HTTP_200_OK or response.status_code == HTTP_201_CREATED:
             self.request._messages.add(messages.SUCCESS, 'Quote Template saved.')
-            return Response({'status': 0, 'redirect': reverse('quote_detail', args=[response.data['id']])})
+            return Response({'status': 0, 'redirect': reverse('quote_template_detail', args=[response.data['id']])})
         else:
             return response
 
@@ -142,6 +142,6 @@ class QuoteTemplateViewSet(ModelViewSet):
         response = super(QuoteTemplateViewSet, self).create(request, *args, **kwargs)
         if response.status_code == HTTP_201_CREATED:
             self.request._messages.add(messages.SUCCESS, 'Quote Template saved.')
-            return Response({'status': 0, 'redirect': reverse('quote_detail', args=[response.data['id']])})
+            return Response({'status': 0, 'redirect': reverse('quote_template_detail', args=[response.data['id']])})
         else:
             return response
