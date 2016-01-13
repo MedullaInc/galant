@@ -47,10 +47,10 @@
 
         <div ng-controller="glFormController"
              ng-init="init('{% firstof language LANGUAGE_CODE %}', '{{ csrf_token }}')">
-            <div qt-quote-form quote-template="object" endpoint="objectEndpoint"
+            <div qt-quote-form quote-id="{{ object.pk |default_if_none:"" }}" quote-template="object" endpoint="objectEndpoint"
                  language="currentLanguage" forms="forms"
                  client-id="{{ client.id }}" project-id="{{ project.id }}" 
-                 bool-template="'True'" template-id="{{ template_id }}" user-id="{{user.id}}">
+                 bool-template="True" template-id="{{ template_id }}" user-id="{{user.id}}">
             </div> 
 
         <div id="form_actions">

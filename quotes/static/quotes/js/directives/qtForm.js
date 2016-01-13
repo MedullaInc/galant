@@ -113,10 +113,11 @@ app.directive('qtQuoteForm', ['Quote', 'Service', 'Client', '$filter', function(
                 }
             });
 
-            if($attrs.boolTemplate != 'False'){
-                $scope.endpoint = QuoteTemplate;
-            }else{
+            $scope.boolTemplate = $attrs.boolTemplate;
+            if($attrs.boolTemplate == "False"){
                 $scope.endpoint = Quote;
+            }else{
+                $scope.endpoint = QuoteTemplate;
             }
 
             if ($attrs.quoteId) {
@@ -125,7 +126,15 @@ app.directive('qtQuoteForm', ['Quote', 'Service', 'Client', '$filter', function(
                     if($scope.language){
                         $scope.addLanguage($scope.language);
                     }
+                    if($attrs.boolTemplate == "True"){
+                        $scope.quoteTemplate = {
+                            "quote": $scope.quote,
+                        };
+                        $scope.quoteTemplate.quote.id = null;          
+                    }
+
                 });
+
             } else {
                 if ($attrs.templateId) {
                     QuoteTemplate.get({
@@ -134,10 +143,14 @@ app.directive('qtQuoteForm', ['Quote', 'Service', 'Client', '$filter', function(
                             $scope.quote = quoteTemplate.quote;
                             $scope.quoteTemplate = quoteTemplate;
                             $scope.language_list = quoteTemplate.language_list;
+                            if($attrs.boolTemplate != "True"){
+                                $scope.quote.id = null;
+                            }
+
                         });
                 } else {
                     $scope.quote = {
-                        "id": "",
+                        "id": null,
                         "user": $attrs.userId,
                         "name": "New Quote",
                         "client": $attrs.clientId,
