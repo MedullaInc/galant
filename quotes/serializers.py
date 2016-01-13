@@ -16,7 +16,6 @@ class SectionSerializer(serializers.ModelSerializer):
 
 
 class QuoteSerializer(serializers.ModelSerializer):
-    id = serializers.IntegerField(read_only=False)
     user = serializers.PrimaryKeyRelatedField(read_only=True)
     parent = serializers.PrimaryKeyRelatedField(read_only=True)
 
@@ -79,6 +78,10 @@ class QuoteSerializer(serializers.ModelSerializer):
         model = Quote
         fields = ('id', 'user', 'name', 'client', 'sections', 'services', 'language', 'status',
                   'modified', 'token', 'parent', 'projects')
+        extra_kwargs = {
+            'id': {'read_only': False, 'required': False, 'allow_null':True},
+            'user': {'required': False},
+        }
 
     def _write_services(self, user, instance, services_data):
         init_services = set(instance.services.all_for(user))
