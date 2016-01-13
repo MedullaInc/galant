@@ -2428,6 +2428,10 @@ ul li {
     margin-left: 0px;
 }
 
+input.medium-text {
+    font-size: 14px;
+}
+
 /* End Forms */
 
 /* Form Errors */
