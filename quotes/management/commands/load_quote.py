@@ -6,7 +6,7 @@ from django.core.management.base import BaseCommand
 from gallant.models import Service
 from guardian.shortcuts import assign_perm
 from moneyed.classes import Money
-from quotes.models import Quote, QuoteTemplate, TextSection, ServiceSection
+from quotes.models import Quote, QuoteTemplate, Section
 
 
 class Command(BaseCommand):
@@ -27,7 +27,7 @@ def load_quote():
     quote_template = QuoteTemplate.objects.create(quote=quote, user=user)
 
     sections.append(
-        TextSection.objects.create(
+        Section.objects.create(
             index=0, user=user, name='intro',
             title={'en': 'Hello!'},
             text={
@@ -36,7 +36,7 @@ def load_quote():
     )
 
     sections.append(
-        TextSection.objects.create(
+        Section.objects.create(
             index=1, user=user, name='important_notes',
             title={'en': 'Notes'},
             text={
@@ -45,7 +45,7 @@ def load_quote():
     )
 
     sections.append(
-        TextSection.objects.create(
+        Section.objects.create(
             index=5, user=user, name='section_4',
             title={'en': 'Payments'},
             text={
@@ -60,10 +60,7 @@ def load_quote():
         description={
             'en': u'A logo is a central part of the identity of a company, product, or service. Our identity development package includes:\n\n\u2013 Logo creation\n\u2013 Institutional logo palette\n\u2013 Textures or patterns upon request\n\u2013 Typeface selection (custom made typeface upon request)\n\n\u2013 Mood-boards:\nAt the beginning of the project, we\'ll develop \'mood-boards\' which will explore several different directions the project could take. These boards will help us involve you in the creative process, and ensures that the solution we choose to develop meets your expectations.'}
     )
-    services.append(
-        ServiceSection.objects.create(index=2, user=user,
-                                      name='section_1', service=s)
-    )
+    services.append(s)
 
     s = Service.objects.create(
         name={'en': 'Stationery Set'},
@@ -72,10 +69,7 @@ def load_quote():
         description={
             'en': u'The following stationery elements are included in this project. Elements are interchangeable. We recommend the following:\n\n\u2013 Business card\n\u2013 Email signature\n\u2013 Letterhead\n\u2013 Envelope\n\u2013 Folder'}
     )
-    services.append(
-        ServiceSection.objects.create(index=3, user=user,
-                                      name='section_2', service=s)
-    )
+    services.append(s)
 
     s = Service.objects.create(
         name={'en': 'Product Packaging'},
@@ -84,13 +78,10 @@ def load_quote():
         description={
             'en': u'We\'ll design brand adaptations to the following packaging elements:\n\n\u2013 Boutique bag (3 sizes)\n\u2013 Product packaging design (2 sizes)'}
     )
-    services.append(
-        ServiceSection.objects.create(index=4, user=user,
-                                      name='section_3', service=s)
-    )
+    services.append(s)
 
     quote.sections.add(*sections)
-    quote.service_sections.add(*services)
+    quote.services.add(*services)
 
     set_quote_perms(quote_template)
 
@@ -104,4 +95,7 @@ def set_quote_perms(quote_template):
     assign_perm('view_quote', users_group, quote)
 
     for s in quote.all_sections():
-        assign_perm('view_section', users_group, s)
+        if isinstance(s, Section):
+            assign_perm('view_section', users_group, s)
+        else:
+            assign_perm('view_service', users_group, s)

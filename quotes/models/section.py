@@ -32,7 +32,7 @@ class Section(g.UserModel):
 
     class Meta:
         permissions = (
-            ('view_text', 'View text'),
+            ('view_section', 'View section'),
         )
 
     objects = UserModelManager()

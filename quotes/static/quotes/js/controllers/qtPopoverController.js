@@ -51,6 +51,7 @@ app.controller('qtPopoverController', ['$scope', '$http', '$window', '$uibModal'
 			controller: 'qtPopoverController',
             scope:$scope, //Refer to parent scope here
 		});
+        return {};
 	};
 
 }
