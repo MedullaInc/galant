@@ -29,15 +29,15 @@ describe('qtForm', function () {
             });
 
             $provide.factory('Client', function ($q) {
-                var Client = jasmine.createSpyObj('Client', ['query', 'fields']);
+                var Client = jasmine.createSpyObj('Client', ['get', 'fields']);
 
-                Client.query.and.returnValue({$promise: $q.when([{id: 0}])});
+                Client.get.and.returnValue({$promise: $q.when([{id: 0}])});
 
                 return Client;
             });
 
             $provide.factory('Service', function ($q) {
-                var Service = jasmine.createSpyObj('Service', ['query', 'fields']);
+                var Service = jasmine.createSpyObj('Service', ['get', 'fields']);
 
                 Service.fields.and.returnValue({$promise: $q.when({})});
 
@@ -72,7 +72,7 @@ describe('qtForm', function () {
         });
  
         it('compiles with quote template id', function () {
-            var element = $compile('<div qt-quote-form quote="quote" language="language" template-id="0" quote-id="0"></div>')($scope);
+            var element = $compile('<div qt-quote-form quote-template="quote" language="language" template-id="0" quote-id="0"></div>')($scope);
             $scope.$digest();
             expect(element.html().substring(0, 8)).toEqual('<div cla');
         });

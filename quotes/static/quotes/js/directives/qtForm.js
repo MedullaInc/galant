@@ -70,7 +70,7 @@ app.directive('qtQuoteForm', ['Quote', 'Service', 'Client', '$filter', function(
             }
 
 
-            Client.query().$promise.then(function(clients) {
+            Client.get().$promise.then(function(clients) {
                 $scope.clients = clients;
             });
 
