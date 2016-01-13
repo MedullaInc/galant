@@ -1,7 +1,7 @@
 app = angular.module('quotes.controllers.qtQuoteListController', ['quotes.services.qtServices','ngAnimate']);
 
-app.controller('qtQuoteListController', ['$scope', '$http', '$window', '$uibModal', 'Quote', 'QuoteTemplate', 'Client',
-    function($scope, $http, $window, $uibModal, Quote, QuoteTemplate, Client) {
+app.controller('qtQuoteListController', ['$scope', '$http', '$window', 'Quote', 'QuoteTemplate', 'Client',
+    function($scope, $http, $window, Quote, QuoteTemplate, Client) {
         $scope.quotes = [];
         $scope.quoteStatus = [];
         $scope.clients = [];
@@ -39,8 +39,6 @@ app.controller('qtQuoteListController', ['$scope', '$http', '$window', '$uibModa
         $scope.redirect = function(id) {
             $window.location.href = $scope.quoteDetailURL + id
         };
-
-        
 
     }
 

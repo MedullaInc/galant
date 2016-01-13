@@ -41,7 +41,7 @@ app.factory("Client", function ($resource) {
     // TODO: this shouldn't start with /en/
 
 	return $resource("/api/client ", {}, {
-        query: {
+        get: {
             method: 'GET',
             isArray: true,
         },
