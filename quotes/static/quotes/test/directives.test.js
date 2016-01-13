@@ -15,14 +15,14 @@ describe('qtForm', function () {
             $provide.factory('Quote', function ($q) {
                 var Quote = function () { return {id: 0}; };
                 Quote.get = function () { return {$promise: $q.when({id: 0})}; };
-                Quote.fields = function () { return {$promise: $q.when({id: 0})}; };
+                Quote.fields = function () { return {$promise: $q.when({status: ['status', 'status'], language: ['language', 'language']})}; };
                 return Quote;
             });
 
             $provide.factory('QuoteTemplate', function ($q) {
-                var QuoteTemplate = jasmine.createSpyObj('QuoteTemplate', ['query', 'fields']);
+                var QuoteTemplate = jasmine.createSpyObj('QuoteTemplate', ['get', 'fields']);
  
-                QuoteTemplate.query.and.returnValue({$promise: $q.when([{id: 0}])});
+                QuoteTemplate.get.and.returnValue({$promise: $q.when([{quote: {id:0}}])});
                 QuoteTemplate.fields.and.returnValue({$promise: $q.when({})});
  
                 return QuoteTemplate;
@@ -39,7 +39,7 @@ describe('qtForm', function () {
             $provide.factory('Service', function ($q) {
                 var Service = jasmine.createSpyObj('Service', ['get', 'fields']);
 
-                Service.fields.and.returnValue({$promise: $q.when({})});
+                Service.fields.and.returnValue({$promise: $q.when({type: ['type', 'type']})});
 
                 return Service;
             });
@@ -57,8 +57,23 @@ describe('qtForm', function () {
         $scope = $rootScope.$new();
     });
  
+     
  
+
+
   describe('qtQuoteForm', function () {
+
+        var $scope;
+
+        beforeEach(function () {
+            $scope = $rootScope.$new();
+            $controller('qtPopoverController', {$scope: $scope});
+            $scope.init(url, url);
+            $rootScope.$apply();
+            $scope.quotes = $scope.quotes;
+            $scope.quote = $scope.quotes[0];
+        });
+
         it('compiles', function () {
             var element = $compile('<div qt-quote-form></div>')($scope);
             $scope.$digest();
@@ -72,7 +87,7 @@ describe('qtForm', function () {
         });
  
         it('compiles with quote template id', function () {
-            var element = $compile('<div qt-quote-form quote-template="quote" language="language" template-id="0" quote-id="0"></div>')($scope);
+            var element = $compile('<div qt-quote-form quote-template="quote" language="language" template-id="0" ></div>')($scope);
             $scope.$digest();
             expect(element.html().substring(0, 8)).toEqual('<div cla');
         });
@@ -111,6 +126,10 @@ describe('qtForm', function () {
  
             element.isolateScope().removeSection();
             expect($scope.quote.sections.length).toEqual(1);
+        });
+
+        it('changes language', function () {
+            $scope.changeLanguage({id: 0}, "en");
         });
 
     });

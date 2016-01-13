@@ -150,11 +150,9 @@ describe('qtPopoverController', function () {
     });
 
     it('opens and closes modal', function () {
-        // TODO TEST NOT PASSING
-        //expect($scope.modalInstance).not.toBeDefined();
-        //$scope.open();
-        //expect($scope.modalInstance).toBeDefined();
-
+        expect($scope.modalInstance).not.toBeDefined();
+        $scope.open();
+        expect($scope.modalInstance).toBeDefined();
     });
 
     it('changes language', function () {
