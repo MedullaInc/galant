@@ -12,7 +12,7 @@ describe('qtQuoteListController', function () {
                 var Quote = jasmine.createSpyObj('Quote', ['query', 'fields']);
  
                 Quote.query.and.returnValue({$promise: $q.when([{id: 0, last_modified: null}])});
-                Quote.fields.and.returnValue({$promise: $q.when({})});
+                Quote.fields.and.returnValue({$promise: $q.when({status: ['bla','bla']})});
  
                 return Quote;
             });
@@ -78,7 +78,7 @@ describe('qtQuoteListController', function () {
     });
 
     it('gets quote status list', function () {
-        expect($scope.quoteStatus.length).toEqual(0);
+        expect($scope.quoteStatus.length).toEqual(2);
     });
  
 });
@@ -151,7 +151,7 @@ describe('qtPopoverController', function () {
 
     it('opens and closes modal', function () {
         expect($scope.modalInstance).not.toBeDefined();
-        $scope.open();
+        $scope.modalInstance = $scope.open();
         expect($scope.modalInstance).toBeDefined();
     });
 
