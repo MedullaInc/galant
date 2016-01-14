@@ -8,7 +8,6 @@ from gallant import models as g
 
 class PaymentSerializer(serializers.ModelSerializer):
     user = serializers.PrimaryKeyRelatedField(read_only=True)
-    money_owed = serializers.SerializerMethodField()
 
     def get_payments(self, client, quote=None):
         total_amount = Money(0.00, client.currency)
@@ -51,4 +50,3 @@ class PaymentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = g.Client
-        fields = ('money_owed')
