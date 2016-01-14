@@ -9,6 +9,8 @@ from gallant.utils import get_one_or_404, url_to_pdf, get_site_from_host, Gallan
 from quotes import models as q
 from quotes import forms as qf
 from quotes import serializers
+from gallant.serializers import payment
+from gallant import models as g
 from django.utils.text import slugify
 from django.utils.translation import ugettext_lazy as _
 from django.core.mail import send_mail
@@ -198,3 +200,13 @@ class QuoteDetailAPI(generics.RetrieveUpdateAPIView):
     def get_queryset(self):
         return self.model.objects.all_for(self.request.user)
 
+
+class QuotePaymentsAPI(generics.RetrieveUpdateAPIView):
+    model = g.Client
+    serializer_class = payment.PaymentSerializer
+    permission_classes = [
+        GallantObjectPermissions
+    ]
+
+    def get_queryset(self):
+        return self.model.objects.all_for(self.request.user)
