@@ -46,8 +46,8 @@ class QuoteTest(test.TransactionTestCase):
         user = self.user
 
         # Add sections to Quote
-        intro = q.Text.objects.create(user=user, name='intro', index=0)
-        important_notes = q.Text.objects.create(user=user, name='important_notes', index=1)
+        intro = q.Section.objects.create(user=user, name='intro', index=0)
+        important_notes = q.Section.objects.create(user=user, name='important_notes', index=1)
         quote.sections.add(intro)
         quote.sections.add(important_notes)
 
@@ -259,12 +259,12 @@ class QuoteTemplateTest(test.TestCase):
 
         quote = autofixture.create_one(q.Quote, generate_fk=True,
                                        field_values={'sections': [], 'language': 'en', 'user': user, 'client': client})
-        i = q.Text.objects.create(user=quote.user, name='intro', index=0)
-        m = q.Text.objects.create(user=quote.user, name='important_notes', index=1)
+        i = q.Section.objects.create(user=quote.user, name='intro', index=0)
+        m = q.Section.objects.create(user=quote.user, name='important_notes', index=1)
         quote.sections.add(i)
         quote.sections.add(m)
         quote_template = autofixture.create_one(q.QuoteTemplate, generate_fk=True,
-                                                field_values={'quote': quote, 'user': user})
+                                                field_values={'quote': quote, 'user': user, 'client':user})
 
         self.user = user
         self.quote = quote
@@ -283,8 +283,8 @@ class QuoteTemplateTest(test.TestCase):
         quote_no_client = autofixture.create_one(q.Quote, generate_fk=True,
                                                  field_values={'sections': [], 'language': 'en', 'user': user,
                                                                'client': None})
-        i = q.Text.objects.create(user=quote_no_client.user, name='intro', index=0)
-        m = q.Text.objects.create(user=quote_no_client.user, name='important_notes', index=1)
+        i = q.Section.objects.create(user=quote_no_client.user, name='intro', index=0)
+        m = q.Section.objects.create(user=quote_no_client.user, name='important_notes', index=1)
         quote_no_client.sections.add(i)
         quote_no_client.sections.add(m)
 
@@ -324,14 +324,17 @@ class QuoteTemplateTest(test.TestCase):
         quote_template = self.quote_template
         user = self.user
 
-        request = factory.get(reverse('api_quote_template_detail', args=[quote_template.id]))
+        request = factory.get(reverse('api-quote-template-detail', args=[quote_template.id]))
         request.user = user
         force_authenticate(request, user=user)
 
-        response = views.QuoteTemplateDetailAPI.as_view()(request, pk=quote_template.id)
+        response = views.QuoteTemplateViewSet.as_view({'get': 'retrieve'})(request, pk=quote_template.id)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
 
+### DEPRECATED TEST FORMS ARE NO LONGER USED #########
+######################################################
+"""
 class QuoteFormTest(test.TestCase):
     def setUp(self):
         client = AutoFixture(g.Client, generate_fk=True).create(1)
@@ -482,3 +485,4 @@ class QuoteFormTest(test.TestCase):
         new_section_ids = [s.id for s in new_obj.sections.all_for(self.request.user)]
 
         self.assertNotEquals(section_ids, new_section_ids)
+"""
