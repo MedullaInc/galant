@@ -217,37 +217,37 @@ class QuoteTest(test.TransactionTestCase):
         self.assertEqual(total_quotes_payment_data['on_hold_amount'], 800)
 
 
-def test_access_api_quote(self):
-    factory = APIRequestFactory()
-    quote = self.quote
-    user = self.user
+    def test_access_api_quote(self):
+        factory = APIRequestFactory()
+        quote = self.quote
+        user = self.user
 
-    request = factory.get(reverse('api_quote_detail', args=[quote.id]))
-    request.user = user
-    force_authenticate(request, user=user)
+        request = factory.get(reverse('api_quote_detail', args=[quote.id]))
+        request.user = user
+        force_authenticate(request, user=user)
 
-    response = views.QuoteDetailAPI.as_view()(request, pk=quote.id)
-    self.assertEqual(response.status_code, status.HTTP_200_OK)
+        response = views.QuoteDetailAPI.as_view()(request, pk=quote.id)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
 
 
-def test_update_api_quote(self):
-    factory = APIRequestFactory()
-    quote = self.quote
-    user = self.user
+    def test_update_api_quote(self):
+        factory = APIRequestFactory()
+        quote = self.quote
+        user = self.user
 
-    quote.projects.add(autofixture.create_one('gallant.Project', generate_fk=True,
-                                              field_values={'user': user}))
+        quote.projects.add(autofixture.create_one('gallant.Project', generate_fk=True,
+                                                  field_values={'user': user}))
 
-    data = {'projects': []}
+        data = {'projects': []}
 
-    request = factory.patch(reverse('api_quote_detail', args=[quote.id]), data=data, format='json')
-    force_authenticate(request, user=user)
+        request = factory.patch(reverse('api_quote_detail', args=[quote.id]), data=data, format='json')
+        force_authenticate(request, user=user)
 
-    response = views.QuoteDetailAPI.as_view()(request, pk=quote.id)
-    self.assertEqual(response.status_code, status.HTTP_200_OK)
+        response = views.QuoteDetailAPI.as_view()(request, pk=quote.id)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-    quote.refresh_from_db()
-    self.assertEqual(quote.projects.count(), 0)
+        quote.refresh_from_db()
+        self.assertEqual(quote.projects.count(), 0)
 
 
 class QuoteTemplateTest(test.TestCase):
