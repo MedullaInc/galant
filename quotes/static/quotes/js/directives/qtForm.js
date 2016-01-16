@@ -5,7 +5,7 @@ app = angular.module('quotes.directives.qtForm', [
   'as.sortable',
 ]);
 
-app.directive('qtQuoteForm', ['Quote', 'Service', 'Client', '$filter', function(Quote, Service, Client, $filter) {
+app.directive('qtQuoteForm', ['Quote', 'Service', 'Client', '$filter', '$uibModal', function(Quote, Service, Client, $filter, $uibModal) {
     return {
         restrict: 'A',
         scope: {
@@ -22,6 +22,7 @@ app.directive('qtQuoteForm', ['Quote', 'Service', 'Client', '$filter', function(
             $scope.quoteFields = [];
             $scope.quoteStatus = [];
             $scope.quoteLanguage = [];
+            $scope.services = [];
             $scope.serviceFields = [];
             $scope.language_list  = [];
 
@@ -34,30 +35,34 @@ app.directive('qtQuoteForm', ['Quote', 'Service', 'Client', '$filter', function(
                     name = "section_" + (counter++);
               }
               $scope.inserted = {
-                  title: "",
-                  text: "",
-                  name: name,
-                  index: counter,
+                    title: "",
+                    text: "",
+                    name: name,
+                    index: counter,
               }
               $scope.quote.sections.push($scope.inserted);
             };
 
-            $scope.addService = function() {
-                $scope.inserted = {
-                    cost: {
-                        amount: "0",
-                        currency: "USD",
-                    },
-                    description: "N/A",
-                    user: 1,
-                    name: "",
-                    notes: Array[0],
-                    parent: null,
-                    quantity: "",
-                    type: "",
-                    user: "1",
-              };
-              $scope.quote.services.push($scope.inserted);
+            $scope.addService = function(service) {
+                if(service){
+                    $scope.insertedService = service;
+                    $scope.modalInstance.close();
+                }else{
+                    $scope.insertedService = {
+                        cost: {
+                            amount: "0",
+                            currency: "USD",
+                            },
+                        description: "N/A",
+                        user: 1,
+                        name: "",
+                        notes: Array[0],
+                        parent: null,
+                        quantity: "",
+                        type: "",
+                    };              
+              }
+              $scope.quote.services.push($scope.insertedService);
             };
 
             $scope.addLanguage = function(lang){
@@ -95,10 +100,11 @@ app.directive('qtQuoteForm', ['Quote', 'Service', 'Client', '$filter', function(
                         text: tempObj[key]
                     });
                 }
-
                 $scope.addLanguage($scope.language);
+            });
 
-
+            Service.get().$promise.then(function(services) {
+                $scope.services = services;
             });
 
             Service.fields({}).$promise.then(function(fields) {
@@ -215,6 +221,16 @@ app.directive('qtQuoteForm', ['Quote', 'Service', 'Client', '$filter', function(
 
             $scope.removeSection = function(index) {
                 $scope.quote.sections.splice(index, 1);
+            };
+
+            $scope.open = function () {
+                $scope.modalInstance = $uibModal.open({
+                    scope: $scope,
+                    animation: true,
+                    templateUrl: 'myModalContent.html',
+                    scope:$scope, //Refer to parent scope here
+                });
+                return 0;
             };
             
             $scope.dragControlListeners = {

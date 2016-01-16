@@ -27,10 +27,14 @@ app.factory("Quote", function ($resource) {
 /* istanbul ignore next  */
 app.factory("Service", function ($resource) {
 	//
-
 	return $resource("/api/service/fields", {}, {
         fields: {
             method: 'GET',
+        },
+        get: {
+          method: 'GET',
+          url: '/api/service ',
+          isArray: true
         },
 	});
 

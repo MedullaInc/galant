@@ -6,10 +6,6 @@ app.controller('qtPopoverController', ['$scope', '$http', '$window', '$uibModal'
     $scope.init = function(addQuoteURL, currentLanguage) {
         $scope.addQuoteURL = addQuoteURL;
         $scope.currentLanguage = currentLanguage;
-
-        console.log(currentLanguage);
-
-
         $scope.selectedLanguage = currentLanguage;
     };
 
@@ -26,12 +22,10 @@ app.controller('qtPopoverController', ['$scope', '$http', '$window', '$uibModal'
 	};
 
     $scope.redirectTemplate = function(quoteTemplate) {
-
         // In case there was no selection
         if(! quoteTemplate.languageSelection){
             quoteTemplate.languageSelection = $scope.currentLanguage;
         }       
-
         $window.location.href = $scope.addQuoteURL + "?template_id=" + quoteTemplate.id + "&lang=" + quoteTemplate.languageSelection;
     };
 

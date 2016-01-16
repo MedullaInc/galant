@@ -7,9 +7,10 @@ from django.shortcuts import render
 from django.core.urlresolvers import reverse
 from gallant import forms, serializers
 from gallant import models as g
-from gallant.utils import get_one_or_404, GallantObjectPermissions, get_field_choices
+from gallant.utils import get_one_or_404, GallantObjectPermissions, GallantViewSetPermissions, get_field_choices
 from django.utils.translation import ugettext_lazy as _
 from rest_framework import generics
+from rest_framework.viewsets import ModelViewSet
 
 
 class ServiceUpdate(View):
@@ -123,3 +124,12 @@ class ServiceDetailAPI(generics.RetrieveUpdateAPIView):
     def get_queryset(self):
         return self.model.objects.all_for(self.request.user)
 
+class ServiceAPI(ModelViewSet):
+    model = g.Service
+    serializer_class = serializers.ServiceSerializer
+    permission_classes = [
+         GallantViewSetPermissions
+     ]
+
+    def get_queryset(self):
+        return self.model.objects.all_for(self.request.user).distinct()

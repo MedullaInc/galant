@@ -28,6 +28,7 @@ from rest_framework.routers import SimpleRouter
 
 router = SimpleRouter(trailing_slash=False)
 router.register(r'api/client', views.ClientsAPI, 'api-client')
+router.register(r'api/service', views.ServiceAPI, 'api-service')
 
 urlpatterns = i18n_patterns(
     # ==============
