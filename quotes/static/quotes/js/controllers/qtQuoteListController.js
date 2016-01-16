@@ -9,7 +9,6 @@ app.controller('qtQuoteListController', ['$scope', '$http', '$window', 'Quote', 
         $scope.init = function(quoteDetailURL, currentLanguage) {
             $scope.quoteDetailURL = quoteDetailURL;
             $scope.currentLanguage = currentLanguage;
-
         };
 
         Quote.query().$promise.then(function(quotes) {

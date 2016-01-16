@@ -54,6 +54,10 @@ class Service(UserModel):
 
         return total
 
+    def get_quote_template_services(self):
+        return self.services.all_for(self.user)
+
+
     def __unicode__(self):
         return self.name.get_text()
 

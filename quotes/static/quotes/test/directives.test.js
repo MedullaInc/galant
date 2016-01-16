@@ -21,30 +21,28 @@ describe('qtForm', function () {
 
             $provide.factory('QuoteTemplate', function ($q) {
                 var QuoteTemplate = function () { return {id: 0}; };
- 
                 QuoteTemplate.get = function () { return {$promise: $q.when({id: 0})}; };
- 
                 return QuoteTemplate;
             });
 
             $provide.factory('Client', function ($q) {
                 var Client = jasmine.createSpyObj('Client', ['get', 'fields']);
-
                 Client.get.and.returnValue({$promise: $q.when([{id: 0}])});
-
                 return Client;
             });
 
             $provide.factory('Service', function ($q) {
                 var Service = jasmine.createSpyObj('Service', ['get', 'fields']);
-
+                Service.get.and.returnValue({$promise: $q.when([{id: 0}])});
                 Service.fields.and.returnValue({$promise: $q.when({type: ['type', 'type']})});
-
                 return Service;
             });
 
         });
-
+        module('quotes.directives.qtForm', function ($provide) {
+            $provide.value('$uibModal', {open: function () {}});
+            $provide.value('$window', {location: {href: null}});
+        });
         inject(function (_$rootScope_, _$compile_) {
             // The injector unwraps the underscores (_) from around the parameter names when matching
             $rootScope = _$rootScope_;
