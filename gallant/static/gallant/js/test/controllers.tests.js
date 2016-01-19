@@ -139,6 +139,8 @@ describe('glFormController', function () {
     it('adds onbeforeunload when object changes', function () {
         $scope.object = {id: 1};
         $rootScope.$apply();
+        $scope.object = {id: 2};
+        $rootScope.$apply();
         expect($window.onbeforeunload).not.toBeNull();
         expect($window.onbeforeunload().length).not.toEqual(0);
         $window.onbeforeunload = null; // remove so browser doesn't get stuck
