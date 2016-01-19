@@ -2,8 +2,7 @@ app = angular.module('quotes.directives.qtForm', [
   'quotes.services.qtServices',
   'gallant.directives.glForm',
   'ui.bootstrap',
-  'as.sortable',
-]);
+  'as.sortable']);
 
 app.directive('qtQuoteForm', ['Quote', 'Service', 'Client', '$filter', '$uibModal', function(Quote, Service, Client, $filter, $uibModal) {
     return {
@@ -184,7 +183,8 @@ app.directive('qtQuoteForm', ['Quote', 'Service', 'Client', '$filter', '$uibModa
         link: function($scope) {
 
             $scope.dynamicPopover = {
-                templateUrl: 'myPopoverTemplate.html',
+                translationTemplateUrl: 'translationTemplate.html',
+                serviceTemplateUrl: 'serviceTemplate.html',
             };
 
             $scope.changeLanguage = function(lang){

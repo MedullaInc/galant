@@ -11,6 +11,7 @@ from gallant.utils import get_one_or_404, GallantObjectPermissions, GallantViewS
 from django.utils.translation import ugettext_lazy as _
 from rest_framework import generics
 from rest_framework.viewsets import ModelViewSet
+from quotes import models as q
 
 
 class ServiceUpdate(View):
@@ -132,4 +133,6 @@ class ServiceAPI(ModelViewSet):
      ]
 
     def get_queryset(self):
-        return self.model.objects.all_for(self.request.user).distinct()
+        quoteTemplates_qs = q.QuoteTemplate.objects.all_for(self.request.user).values_list('quote_id', flat=True)
+        quotes_qs = q.Quote.objects.filter(pk__in=quoteTemplates_qs)
+        return self.model.objects.all_for(self.request.user).filter(quote__in=quotes_qs)

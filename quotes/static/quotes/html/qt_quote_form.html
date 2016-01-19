@@ -40,12 +40,12 @@
 
 <uib-tabset ng-show="boolTemplate == 'True'" id="tabs" class="nav nav-tabs" style="margin-bottom: -1px; border-bottom: 0">
     <uib-tab ng-click="changeLanguage(language)" id="en_tab" ng-repeat="language in language_list" heading="{{language[1]}}" active="tab.active"></uib-tab>
-    <uib-tab id="add_translation_button" popover-placement="bottom" uib-popover-template="dynamicPopover.templateUrl" heading="Add Translation" active="tab.active"></uib-tab>
+    <uib-tab id="add_translation_button" popover-placement="bottom" uib-popover-template="dynamicPopover.translationTemplateUrl" heading="Add Translation" active="tab.active"></uib-tab>
 </uib-tabset>
 
 <div id="center_content_enclosed">
 
-    <script type="text/ng-template" id="myPopoverTemplate.html">
+    <script type="text/ng-template" id="translationTemplate.html">
         <select class="form-control" ng-model="language" ng-options="lang.value as lang.text for lang in quoteLanguage"></select>
         <button ng-click="addLanguage(language)" id="language_add" type="button" class="btn btn-default">Add</button>
     </script>
@@ -216,13 +216,13 @@
 
 <div class="row">
    <div class="col-lg-12">
-      <button type="button" id="add_service" class="btn btn-default pull-right margin-left-10" popover-placement="right" uib-popover-template="dynamicPopover.templateUrl" >Add Service</button>
+      <button type="button" id="add_service" class="btn btn-default pull-right margin-left-10" popover-placement="right" uib-popover-template="dynamicPopover.serviceTemplateUrl" >Add Service</button>
 
       <button type="button" id="add_section" class="btn btn-default pull-right" ng-click="addSection()">Add Section</button>
    </div>
 </div>
 
-<script type="text/ng-template" id="myPopoverTemplate.html">
+<script type="text/ng-template" id="serviceTemplate.html">
     <a ng-click="open()">
         <button type="button" class="btn btn-default from_scratch_button sidebar">From Template</button>
     </a>
@@ -233,7 +233,7 @@
 
 <script type="text/ng-template" id="myModalContent.html">
     <div class="modal-header">
-        <h2 class="section_title">Select Service</h2>
+        <h2 class="section_title">Select a Service</h2>
     </div>
     <div class="modal-body">
         <table st-table="templates" st-safe-src="quoteTemplates" class="table table-striped table-bordered">

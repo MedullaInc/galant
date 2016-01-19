@@ -3,6 +3,7 @@ app = angular.module('quotes.controllers.qtQuoteListController', ['quotes.servic
 app.controller('qtQuoteListController', ['$scope', '$http', '$window', 'Quote', 'QuoteTemplate', 'Client',
     function($scope, $http, $window, Quote, QuoteTemplate, Client) {
         $scope.quotes = [];
+        $scope.quotesSafe = [];
         $scope.quoteStatus = [];
         $scope.clients = [];
 
@@ -13,6 +14,7 @@ app.controller('qtQuoteListController', ['$scope', '$http', '$window', 'Quote', 
 
         Quote.query().$promise.then(function(quotes) {
             $scope.quotes = quotes;
+            $scope.quotesSafe = quotes;
         });
 
         QuoteTemplate.query().$promise.then(function(quoteTemplates) {
