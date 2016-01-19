@@ -2079,6 +2079,9 @@ i.note {
 
 pre {
     background-color: white;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    font-weight: 200;
 }
 
 .label.label-default {

@@ -1,5 +1,37 @@
-<div class="row">
-    <div class="col-lg-10 col-md-10 col-sm-9 col-xs-9">
-        <h2 class="section_title">{{ brief.title[language] }}</h2>
+<div class="col-lg-10 col-md-10 col-sm-9 col-xs-9">
+    <p id="title" class="data">Title: {{ brief.title[language] }}</p>
+
+    <p id="status" class="data">Status: {{ brief.status }}</p>
+
+    <p id="status" class="data">Greeting: <br/>
+    <pre>{{ brief.greeting[language] }}</pre>
+    </p>
+</div>
+
+<br/>
+
+<div class="col-lg-10 col-md-10 col-sm-9 col-xs-9">
+    <h2 class="section_title">
+        Questions
+    </h2>
+    <hr>
+
+    <div ng-repeat="question in brief.questions">
+        <div id="question_{{ question.index }}" class="question">
+            {{ $index }} ) {{ question.question[language] }}
+            <div class="multiquestion_choices">
+                <div ng-repeat="choice in question.choices">
+                    <div>
+                        — {{ choice[language] }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <hr>
+
+    <div ng-show="questions.length == 0">
+        No questions have been added yet.<br/>
     </div>
 </div>
