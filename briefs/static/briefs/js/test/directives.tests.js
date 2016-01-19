@@ -5,6 +5,7 @@ describe('brForm', function () {
 
     beforeEach(function () {
         module('briefs.directives.brForm');
+        module('briefs.directives.brDetail');
         module('staticNgTemplates');
 
         angular.module('brief.services.brServices', []);
@@ -149,6 +150,48 @@ describe('brForm', function () {
         it('adds question', function () {
             $scope.brief = {};
             var element = $compile('<div br-brief-form brief="brief"></div>')($scope);
+            $scope.$digest();
+
+            element.isolateScope().addQuestion();
+            element.isolateScope().addQuestion('multi');
+            expect($scope.brief.questions.length).toEqual(2);
+            element.isolateScope().removeQuestion($scope.brief.questions[0]);
+            expect($scope.brief.questions.length).toEqual(1);
+        });
+    });
+
+    describe('brBriefDetail', function () {
+        it('compiles', function () {
+            var element = $compile('<div br-brief-detail></div>')($scope);
+            $scope.$digest();
+            expect(element.html().substring(0, 8)).toEqual('<div cla');
+        });
+
+        it('compiles with brief id', function () {
+            var element = $compile('<div br-brief-detail brief-id="0"></div>')($scope);
+            $scope.$digest();
+            expect(element.html().substring(0, 8)).toEqual('<div cla');
+        });
+
+        it('compiles with brief template id', function () {
+            var element = $compile('<div br-brief-detail template-id="0" quote-id="0" client-id="0"></div>')($scope);
+            $scope.$digest();
+            expect(element.html().substring(0, 8)).toEqual('<div cla');
+        });
+
+        it('adds question', function () {
+            $scope.brief = {};
+            var element = $compile('<div br-brief-detail brief="brief"></div>')($scope);
+            $scope.$digest();
+
+            element.isolateScope().addQuestion();
+            element.isolateScope().addQuestion('multi');
+            expect($scope.brief.questions.length).toEqual(2);
+        });
+
+        it('adds question', function () {
+            $scope.brief = {};
+            var element = $compile('<div br-brief-detail brief="brief"></div>')($scope);
             $scope.$digest();
 
             element.isolateScope().addQuestion();
