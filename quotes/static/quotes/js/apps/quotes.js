@@ -1,5 +1,6 @@
 var app = angular.module('quote', [
     'ngResource',
+    'smart-table',
     'gallant.controllers.glFormController',
     'quotes.controllers.qtQuoteListController',
     'quotes.controllers.qtPopoverController',

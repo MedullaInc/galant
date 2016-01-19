@@ -3,7 +3,6 @@ app = angular.module('quotes.controllers.qtQuoteListController', ['quotes.servic
 app.controller('qtQuoteListController', ['$scope', '$http', '$window', 'Quote', 'QuoteTemplate', 'Client',
     function($scope, $http, $window, Quote, QuoteTemplate, Client) {
         $scope.quotes = [];
-        $scope.quotesSafe = [];
         $scope.quoteStatus = [];
         $scope.clients = [];
 
@@ -11,19 +10,6 @@ app.controller('qtQuoteListController', ['$scope', '$http', '$window', 'Quote', 
             $scope.quoteDetailURL = quoteDetailURL;
             $scope.currentLanguage = currentLanguage;
         };
-
-        Quote.query().$promise.then(function(quotes) {
-            $scope.quotes = quotes;
-            $scope.quotesSafe = quotes;
-        });
-
-        QuoteTemplate.query().$promise.then(function(quoteTemplates) {
-            $scope.quoteTemplates = quoteTemplates;
-        });    
-
-        Client.query().$promise.then(function(clients) {
-            $scope.clients = clients;
-        });
 
         Quote.fields().$promise.then(function(fields) {
             for (var key in fields.status) {
@@ -37,10 +23,41 @@ app.controller('qtQuoteListController', ['$scope', '$http', '$window', 'Quote', 
             }
         });
 
+        Quote.query().$promise.then(function(quotes) {
+            $scope.quotesSafe = quotes;
+        });
+
+        QuoteTemplate.query().$promise.then(function(quoteTemplates) {
+            $scope.quoteTemplates = quoteTemplates;
+        });    
+
+        Client.query().$promise.then(function(clients) {
+            $scope.clients = clients;
+        });
+
         $scope.redirect = function(id) {
             $window.location.href = $scope.quoteDetailURL + id
         };
 
     }
 
-]);
+])
+
+app.filter('myStrictFilter', function($filter){
+    return function(input, predicate){
+        return $filter('filter')(input, predicate, true);
+    }
+});
+
+app.filter('unique', function() {
+    return function (arr, field) {
+        var o = {}, i, l = arr.length, r = [];
+        for(i=0; i<l;i+=1) {
+            o[arr[i][field]] = arr[i];
+        }
+        for(i in o) {
+            r.push(o[i]);
+        }
+        return r;
+    };
+  });
