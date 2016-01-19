@@ -1,7 +1,11 @@
+from datetime import timedelta
 import autofixture
 from django import test
 from django.core.urlresolvers import reverse
+from django.utils import timezone
+from moneyed import Money
 from quotes import models as q, serializers, views
+from gallant.serializers import payment
 from autofixture import AutoFixture
 from quotes import forms as qf
 from gallant import models as g
@@ -78,7 +82,7 @@ class QuoteTest(test.TransactionTestCase):
         request = factory.get(reverse('api-quote-detail', args=[quote.id]))
         request.user = user
         force_authenticate(request, user=user)
-        
+
         serializer = serializers.QuoteSerializer(quote, context={'request': request})
         self.assertIsNotNone(serializer.data)
 
@@ -104,6 +108,115 @@ class QuoteTest(test.TransactionTestCase):
 
         self.assertNotEqual(parser.save(user=user).id, quote.id)
 
+    def test_quote_payment_serializer(self):
+        factory = APIRequestFactory()
+        user = autofixture.create_one(g.GallantUser, generate_fk=True)
+        client = autofixture.create_one(g.Client, generate_fk=True, field_values={
+            'user': user, 'currency': 'USD'})
+        quote = autofixture.create_one(q.Quote, generate_fk=True, field_values={
+            'user': user, 'client': client, 'services': []})
+        quote_two = autofixture.create_one(q.Quote, generate_fk=True, field_values={
+            'user': user, 'client': client, 'services': []})
+        service = autofixture.create_one(g.Service, generate_fk=True, field_values={
+            'user': user, 'quantity': 1})
+        service.cost = Money(500, 'USD')
+        service.save()
+        service_section = q.ServiceSection.objects.create(user=user, index=0, service=service)
+        quote.service_sections.add(service_section)
+
+        # Q1 Paid
+        payment1 = autofixture.create_one(g.Payment, generate_fk=True, field_values=
+        {'user': user, 'due': timezone.now(), 'paid_on': timezone.now()})
+
+        # Q1 Overdue
+        payment2 = autofixture.create_one(g.Payment, generate_fk=True, field_values=
+        {'user': user, 'due': timezone.now() - timedelta(days=1), 'paid_on': None})
+
+        # Q1 Pending
+        payment3 = autofixture.create_one(g.Payment, generate_fk=True, field_values=
+        {'user': user, 'due': timezone.now() + timedelta(days=1), 'paid_on': None})
+
+        # Q1 On Hold
+        payment4 = autofixture.create_one(g.Payment, generate_fk=True, field_values=
+        {'user': user, 'due': None, 'paid_on': None})
+
+        # Q2 Paid
+        payment5 = autofixture.create_one(g.Payment, generate_fk=True, field_values=
+        {'user': user, 'due': timezone.now(), 'paid_on': timezone.now()})
+
+        # Q2 Overdue
+        payment6 = autofixture.create_one(g.Payment, generate_fk=True, field_values=
+        {'user': user, 'due': timezone.now() - timedelta(days=1), 'paid_on': None})
+
+        # Q2 Pending
+        payment7 = autofixture.create_one(g.Payment, generate_fk=True, field_values=
+        {'user': user, 'due': timezone.now() + timedelta(days=1), 'paid_on': None})
+
+        # Q2 On Hold
+        payment8 = autofixture.create_one(g.Payment, generate_fk=True, field_values=
+        {'user': user, 'due': None, 'paid_on': None})
+
+        payment1.amount = Money(100, 'USD')
+        payment2.amount = Money(200, 'USD')
+        payment3.amount = Money(300, 'USD')
+        payment4.amount = Money(400, 'USD')
+
+        payment1.save()
+        payment2.save()
+        payment3.save()
+        payment4.save()
+
+        quote.payments.add(payment1)
+        quote.payments.add(payment2)
+        quote.payments.add(payment3)
+        quote.payments.add(payment4)
+
+        quote.save()
+
+        payment5.amount = Money(100, 'USD')
+        payment6.amount = Money(200, 'USD')
+        payment7.amount = Money(300, 'USD')
+        payment8.amount = Money(400, 'USD')
+
+        payment5.save()
+        payment6.save()
+        payment7.save()
+        payment8.save()
+
+        quote_two.payments.add(payment1)
+        quote_two.payments.add(payment2)
+        quote_two.payments.add(payment3)
+        quote_two.payments.add(payment4)
+
+        quote_two.save()
+
+        request = factory.get(reverse('api_quote_payments', args=[client.id, quote.id]))
+        request.user = user
+        force_authenticate(request, user=user)
+
+        serializer = payment.PaymentSerializer(client, context={'request': request})
+
+        single_quote_payment_data = serializer.get_payments(client, quote)
+
+        self.assertEqual(single_quote_payment_data['quote'], 'New Quote')
+        self.assertEqual(single_quote_payment_data['currency'], 'USD')
+        self.assertEqual(single_quote_payment_data['total_amount'], 1000)
+        self.assertEqual(single_quote_payment_data['paid_amount'], 100)
+        self.assertEqual(single_quote_payment_data['overdue_amount'], 200)
+        self.assertEqual(single_quote_payment_data['pending_amount'], 300)
+        self.assertEqual(single_quote_payment_data['on_hold_amount'], 400)
+
+        total_quotes_payment_data = serializer.get_payments(client)
+
+        self.assertEqual(total_quotes_payment_data['quote'], 'All quotes')
+        self.assertEqual(total_quotes_payment_data['currency'], 'USD')
+        self.assertEqual(total_quotes_payment_data['total_amount'], 2000)
+        self.assertEqual(total_quotes_payment_data['paid_amount'], 200)
+        self.assertEqual(total_quotes_payment_data['overdue_amount'], 400)
+        self.assertEqual(total_quotes_payment_data['pending_amount'], 600)
+        self.assertEqual(total_quotes_payment_data['on_hold_amount'], 800)
+
+
     def test_access_api_quote(self):
         factory = APIRequestFactory()
         quote = self.quote
@@ -116,6 +229,7 @@ class QuoteTest(test.TransactionTestCase):
         response = views.QuoteViewSet.as_view({'get': 'retrieve'})(request, pk=quote.id)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+
 
     def test_update_api_quote(self):
         factory = APIRequestFactory()
@@ -173,8 +287,6 @@ class QuoteTemplateTest(test.TestCase):
         m = q.Section.objects.create(user=quote_no_client.user, name='important_notes', index=1)
         quote_no_client.sections.add(i)
         quote_no_client.sections.add(m)
-
-
 
         # Create Quote Templates
         quote_template_b = autofixture.create_one(q.QuoteTemplate, generate_fk=True,

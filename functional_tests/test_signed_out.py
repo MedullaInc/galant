@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 import time
 from unittest.case import skip
-
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException
@@ -38,7 +37,7 @@ class SignedOutTest(StaticLiveServerTestCase):
     def test_can_signup_int(self):
         language = get_language()
         for lang, e_text in [('en', u'Get organized.'),
-                             #('es', u'Regístrate!')
+                             # ('es', u'Regístrate!')
                              ]:
             activate(lang)
             self.browser.get(self.live_server_url + reverse('home'))
@@ -65,12 +64,12 @@ class SignedOutTest(StaticLiveServerTestCase):
                              'delete_quote_template', 'delete_project', 'api_service_detail', 'api_task_detail',
                              'api_project_detail', 'api_client_detail', 'api_note_detail', 'api_quote_detail',
                              'api_quote_template_detail', 'api_brief_template_detail',
-                             'api_question_detail','client_work_detail','client_money_detail']:
+                             'api_question_detail', 'client_work_detail', 'client_money_detail']:
                 url = self.live_server_url + reverse(view_name, args=[0])
 
             # add double <pk>-requiring views here:
-            elif view_name in ['edit_service', 'service_detail']:
-                url = self.live_server_url + reverse(view_name, args=[0,0])
+            elif view_name in ['edit_service', 'service_detail', 'api_quote_payments']:
+                url = self.live_server_url + reverse(view_name, args=[0, 0])
 
             else:
                 url = self.live_server_url + reverse(view_name)
