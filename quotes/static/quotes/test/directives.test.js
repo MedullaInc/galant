@@ -61,6 +61,7 @@ describe('qtForm', function () {
             $scope.quoteTemplate = {type: 'QuoteTemplate'};
             $scope.language = 'en';
             $scope.endpoint = $scope.quote;
+            $scope.modalInstance = {};
         });
 
         it('compiles', function () {
@@ -87,15 +88,15 @@ describe('qtForm', function () {
             expect(element.html().substring(0, 8)).toEqual('<div cla');
         });
 
-        it('adds service', function () {
+        it('adds service (scratch)', function () {
             $scope.quote = {};
             var element = $compile('<div qt-quote-form quote="quote" ></div>')($scope);
             $scope.$digest();
- 
+            element.isolateScope().open();
             element.isolateScope().addService();
             expect($scope.quote.services.length).toEqual(2);
         });
- 
+
         it('remove service', function () {
             $scope.quote = {};
             var element = $compile('<div qt-quote-form quote="quote"></div>')($scope);

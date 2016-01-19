@@ -14,4 +14,3 @@ class ServiceSerializer(serializers.ModelSerializer):
         extra_kwargs = {
             'id': {'read_only': False, 'required': False},
         }
-        
