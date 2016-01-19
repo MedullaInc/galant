@@ -2077,6 +2077,10 @@ i.note {
     color: #999999;
 }
 
+pre {
+    background-color: white;
+}
+
 .label.label-default {
     padding: 10px;
     font-weight: 200;
