@@ -121,8 +121,8 @@ class QuoteTest(test.TransactionTestCase):
             'user': user, 'quantity': 1})
         service.cost = Money(500, 'USD')
         service.save()
-        service_section = q.ServiceSection.objects.create(user=user, index=0, service=service)
-        quote.service_sections.add(service_section)
+        service = g.Service.objects.create(user=user, service=service)
+        quote.quote_services.add(service)
 
         # Q1 Paid
         payment1 = autofixture.create_one(g.Payment, generate_fk=True, field_values=
