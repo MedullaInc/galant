@@ -62,7 +62,8 @@ app.controller('glFormController', ['$scope', '$http', '$window',
         };
 
         $scope.$watch('object', function (newValue, oldValue) {
-            if ((oldValue !== null && typeof(oldValue) !== 'undefined') && newValue != oldValue) {
+            if (oldValue &&
+                newValue != oldValue) {
                 if (!$window.onbeforeunload) {
                     $window.onbeforeunload = function (e) {
                         // If we haven't been passed the event get the window.event
