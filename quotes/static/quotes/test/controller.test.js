@@ -74,7 +74,7 @@ describe('qtQuoteListController', function () {
     });
 
     it('gets quote list', function () {
-        expect($scope.quotes.length).toEqual(1);
+        expect($scope.quotesSafe.length).toEqual(1);
     });
 
     it('gets quote status list', function () {
