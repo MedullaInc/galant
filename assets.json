@@ -28,6 +28,8 @@
     "./node_modules/fullcalendar/dist/fullcalendar?(.min).css",
     "./node_modules/fullcalendar-scheduler/dist/scheduler?(.min).css",
     "./node_modules/angular-aside/dist/css/angular-aside?(.min).css",
-    "./node_modules/angular-xeditable/dist/css/xeditable.css"
+    "./node_modules/ng-sortable/dist/ng-sortable?(.min).css",
+    "./node_modules/ng-sortable/dist/ng-sortable.style?(.min).css",
+    "./node_modules/angular-xeditable/dist/css/xeditable?(.min).css"
   ]
 }

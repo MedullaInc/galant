@@ -9,9 +9,9 @@
     <script src="{% static "js/angular.js" %}"></script>
     <script src="{% static "js/angular-resource.js" %}"></script>
     <script src="{% static "js/angular-animate.js" %}"></script>
-    <script src="{% static "js/xeditable/xeditable.min.js" %}"></script>
+    <script src="{% static "js/xeditable.min.js" %}"></script>
     <script src="{% static "js/ui-bootstrap-tpls.js" %}"></script>
-    <script src="{% static "js/ng-sortable/ng-sortable.min.js" %}"></script>
+    <script src="{% static "js/ng-sortable.min.js" %}"></script>
     <script src="{% static "js/smart-table.js" %}"></script>
     <script src="{% static "djangular/js/django-angular.min.js" %}"></script>
     <script src="{% static "gallant/js/directives/glForm.js" %}"></script>
@@ -47,7 +47,7 @@
 {% block center_content %}
     <div ng-controller="qtQuoteListController"
          ng-init="init('{% url 'quote_detail' %}', '{% firstof language LANGUAGE_CODE %}')">
-        <table st-table="quotes" st-set-filter="myStrictFilter" st-safe-src="quotesSafe"
+        <table st-table="quotes" st-safe-src="quotesSafe"
                class="table table-striped table-bordered">
             <thead>
             <tr>
