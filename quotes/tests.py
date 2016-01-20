@@ -121,8 +121,7 @@ class QuoteTest(test.TransactionTestCase):
             'user': user, 'quantity': 1})
         service.cost = Money(500, 'USD')
         service.save()
-        service = g.Service.objects.create(user=user, service=service)
-        quote.quote_services.add(service)
+        quote.services.add(service)
 
         # Q1 Paid
         payment1 = autofixture.create_one(g.Payment, generate_fk=True, field_values=
@@ -244,8 +243,8 @@ class QuoteTest(test.TransactionTestCase):
         request = factory.patch(reverse('api-quote-detail', args=[quote.id]), data=data, format='json')
         force_authenticate(request, user=user)
 
-        response = views.QuoteViewSet.as_view({'patch': 'partial_update'})(request, pk=quote.id)
 
+        response = views.QuoteViewSet.as_view({'patch': 'partial_update'})(request, pk=quote.id)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         quote.refresh_from_db()
@@ -311,12 +310,20 @@ class QuoteTemplateTest(test.TestCase):
         self.assertEqual(quote_template_b.quote.deleted_by_parent, 1)
 
     def test_quote_template_serialize(self):
+        factory = APIRequestFactory()
         quote_template = self.quote_template
+        user = self.user
+        quote_template.user = user
 
-        serializer = serializers.QuoteTemplateSerializer(quote_template)
+        request = factory.get(reverse('api-quote-template-detail', args=[quote_template.id]))
+        request.user = self.user
+        force_authenticate(request, user=user)
+
+        serializer = serializers.QuoteTemplateSerializer(quote_template, context={'request': request})
+
         self.assertIsNotNone(serializer.data)
 
-        parser = serializers.QuoteTemplateSerializer(quote_template, data=serializer.data)
+        parser = serializers.QuoteTemplateSerializer(quote_template, data=serializer.data, context={'request': request})
         self.assertTrue(parser.is_valid())
 
     def test_access_api_quote_template(self):
