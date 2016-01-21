@@ -56,7 +56,7 @@
     {% if object.client.email and object.status == '1' %}
         <form method="post">
             {% csrf_token %}
-            <a>
+            <a href="{% url 'send_quote' quote_id=object.id %}">
                 <button type="submit" class="btn btn-default sidebar" id="send_quote">
                     {% trans "Send to Client" %}
                 </button>
