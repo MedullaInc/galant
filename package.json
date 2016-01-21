@@ -27,7 +27,7 @@
     "angular-smart-table": "^2.1.5",
     "angular-ui-bootstrap": "^0.14.3",
     "angular-ui-calendar": "git+https://github.com/gusreyes01/ui-calendar.git",
-    "angular-xeditable": "0.0.1",
+    "angular-xeditable": "git+https://github.com/vitalets/angular-xeditable.git",
     "bootstrap": "^3.3.6",
     "chart.js": "^1.0.2",
     "del": "^2.2.0",
