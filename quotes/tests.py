@@ -238,9 +238,15 @@ class QuoteTest(test.TransactionTestCase):
         quote.projects.add(autofixture.create_one('gallant.Project', generate_fk=True,
                                                   field_values={'user': user}))
 
-        data = {'projects': [],'services':{}}
+        data = {'projects': [], 'services': [], 'sections': []}
 
         request = factory.patch(reverse('api-quote-detail', args=[quote.id]), data=data, format='json')
+
+        class Object(object):
+            def add(self, a, b):
+                pass
+        request._messages = Object()
+
         force_authenticate(request, user=user)
 
 
