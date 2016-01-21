@@ -22,7 +22,6 @@ class QuoteTemplatesTest(browser.SignedInTest):
         b.find_element_by_id('quote_name').send_keys('Quote test')
         b.find_element_by_xpath('//select[@name="client"]/option[@value="number:1"]').click()
         b.find_element_by_id('save_quote').click()
-
         b.find_element_by_id('edit_service_0').click()
         b.find_element_by_id('service_name_0').send_keys('1234')
         b.find_element_by_id('quantity_0').send_keys('1')
@@ -42,9 +41,13 @@ class QuoteTemplatesTest(browser.SignedInTest):
 
         c = autofixture.create_one('gallant.Client', generate_fk=True,
                                    field_values={'user': self.user})
-        c.save()     
+        c.save()
 
         b.get(self.live_server_url + reverse('add_quote_template'))
+
+        b.find_element_by_id('edit_quote').click()
+        b.find_element_by_xpath('//select[@name="client"]/option[@value="number:1"]').click()
+        b.find_element_by_id('save_quote').click()
 
         b.find_element_by_id('edit_service_0').click()
         b.find_element_by_id('service_name_0').send_keys('1234')
@@ -108,6 +111,7 @@ class QuoteTemplatesTest(browser.SignedInTest):
 
         b.get(self.live_server_url + reverse('quote_template_detail', args=[qt.id]))
 
+
         self._add_language_and_text(b)
 
         self._submit_and_check(b)
@@ -131,6 +135,7 @@ class QuoteTemplatesTest(browser.SignedInTest):
                                    field_values={'user': self.user})
         c.save()
         b.get(self.live_server_url + reverse('add_quote') + '?template_id=%d&lang=en' % qt.id)
+        browser.wait().until(lambda driver: driver.find_element_by_id('edit_section_0'))
         b.find_element_by_id('edit_section_0').click()
         intro_title = b.find_element_by_id('title_0')
 
@@ -141,6 +146,7 @@ class QuoteTemplatesTest(browser.SignedInTest):
         self.assertTrue(u'Quote saved.' in success_message.text)
 
     def _add_language_and_text(self, b):
+        browser.wait().until(lambda driver: driver.find_element_by_id('edit_section_0'))
         b.find_element_by_id('edit_section_0').click()
         b.find_element_by_id('title_0').clear()
         b.find_element_by_id('title_0').send_keys('test intro title')
@@ -174,7 +180,8 @@ class QuoteTemplatesTest(browser.SignedInTest):
 
     def _submit_and_check(self, b):
         with browser.wait_for_page_load():
-            b.find_element_by_id('create_submit').click()        
+            b.find_element_by_id('create_submit').click()  
+            self.save_snapshot()      
         self.disable_popups()
         success_message = b.find_element_by_class_name('alert-success')
         self.assertTrue(u'Quote Template saved.' in success_message.text)
