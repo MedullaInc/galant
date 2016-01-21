@@ -8,7 +8,7 @@
     "./node_modules/angular-route/angular-route?(.min).js",
     "./node_modules/angular-mocks/angular-mocks.js",
     "./node_modules/angular-mocks/ngMock.js",
-    "./node_modules/angular-xeditable/angular-xeditable?(.min).js",
+    "./node_modules/angular-xeditable/xeditable?(.min).js",
     "./node_modules/bootstrap/dist/js/bootstrap?(.min).js",
     "./node_modules/chart.js/Chart?(.min).js",
     "./node_modules/flat-ui/dist/js/flat-ui?(.min).js",
