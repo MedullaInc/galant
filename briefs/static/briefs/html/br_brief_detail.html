@@ -1,11 +1,39 @@
+<div class="col-lg-2 col-md-2 col-sm-3 col-xs-3 action_box"> 
+    <button id="section_edit" type="button" class="btn btn-default edit_button" aria-label="Edit"
+            ng-click="briefForm.$show()"> 
+        <span class="glyphicon glyphicon-edit"/> 
+    </button>
+    <button id="section_delete" type="button" class="btn btn-default delete_button"
+            aria-label="Delete"> 
+        <span class="glyphicon glyphicon-trash"/> 
+    </button>
+</div> 
+
 <div class="col-lg-10 col-md-10 col-sm-9 col-xs-9">
-    <p id="title" class="data">Title: {{ brief.title[language] }}</p>
+    <form editable-form name="briefForm">
+        <div id="title" class="data">
+            <span>Title:</span>
+            <span editable-text="brief.title[language]">{{ brief.title[language] || 'empty' }}</span>
+        </div>
+        <div id="title" class="data">
+            <span>Status:</span>
+            <span editable-text="brief.status">{{ brief.status || 'empty' }}</span>
+        </div>
+        <div id="title" class="data">
+            <span>Greeting:</span>
+            <pre editable-text="brief.greeting[language]">{{ brief.greeting[language] || 'empty '}}</pre>
+        </div>
 
-    <p id="status" class="data">Status: {{ brief.status }}</p>
-
-    <p id="status" class="data">Greeting: <br/>
-    <pre>{{ brief.greeting[language] }}</pre>
-    </p>
+        <span ng-show="briefForm.$visible">
+            <button type="submit" class="btn btn-primary" ng-disabled="briefForm.$waiting">
+                Save
+            </button>
+            <button type="button" class="btn btn-default" ng-disabled="briefForm.$waiting"
+                    ng-click="briefForm.$cancel()">
+                Cancel
+            </button>
+        </span>
+    </form>
 </div>
 
 <br/>

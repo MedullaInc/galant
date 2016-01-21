@@ -5,9 +5,15 @@
     {{ block.super }}
     <script src="{% static "js/angular.js" %}"></script>
     <script src="{% static "js/angular-resource.js" %}"></script>
+    <script src="{% static "js/xeditable.js" %}"></script>
     <script src="{% static "djangular/js/django-angular.min.js" %}"></script>
     <script src="{% static "js/gallant.js" %}"></script>
     <script src="{% static "js/briefs.js" %}"></script>
+{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static "css/xeditable.css" %}">
+    <link rel="stylesheet" href="{% static "briefs/css/briefs.css" %}">
 {% endblock %}
 
 {% block section_title %}
@@ -52,28 +58,6 @@
                 <h2 class="section_title">{{ object.client }}</h2>
             </div>
 
-            {% if not answer_set %}
-                <div class="col-lg-2 col-md-2 col-sm-3 col-xs-3 action_box"> 
-                    <a href="
-
-                            {% url 'edit_brief' object.id %}{% if request.GET.urlencode %}?{% endif %}{{ request.GET.urlencode }}"
-                       class="edit_button" title="{% trans "Edit" %}"> 
-                        <button id="section_edit" type="button" class="btn btn-default edit_button" aria-label="Edit"> 
-                            <span class="glyphicon glyphicon-edit"/> 
-                        </button>
-                          </a> 
-                    <a href="
-
-                            {% url 'delete_brief' object.id %}{% if request.GET.urlencode %}?{% endif %}{{ request.GET.urlencode }}"
-                       class="delete_button" title="{% trans "Delete" %}"
-                       onclick="return confirm('{% trans "Are you sure?" %}')"> 
-                        <button id="section_delete" type="button" class="btn btn-default delete_button"
-                                aria-label="Delete"> 
-                            <span class="glyphicon glyphicon-trash"/> 
-                        </button>
-                          </a> 
-                </div> 
-            {% endif %}
         <div br-brief-detail brief-id="{{ object.pk }}" brief="object" endpoint="objectEndpoint"
              language="currentLanguage" forms="forms"
              client-id="{{ client.id }}" project-id="{{ project.id }}" quote-id="{{ quote.id }}"
