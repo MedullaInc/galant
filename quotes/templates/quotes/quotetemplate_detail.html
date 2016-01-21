@@ -95,7 +95,7 @@
                                 </p>
                             </div>
                             <div class="col-lg-10 col-md-10 col-sm-8 col-xs-8">
-                                <p class="service_cost">
+                                <p id="cost" class="service_cost">
                                     {{ service.cost }} &times; {{ service.quantity }}
                                 </p>
                             </div>
@@ -106,14 +106,14 @@
 
                     <div class="row">
                         <div class="col-lg-12">
-                            <h2 class="section_subtitle">
+                            <h2 id="title" class="section_subtitle">
                                 {{ section.title.get_text }}
                             </h2>
                         </div>
                     </div>
 
                     <div class="row">
-                        <div class="col-lg-12">
+                        <div id="text" class="col-lg-12">
                             <p>
                                 {{ section.text.get_text|linebreaks }}
                             </p>

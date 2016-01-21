@@ -22,20 +22,23 @@ app.directive('qtQuoteForm', ['Quote', 'Service', 'Client', '$filter', '$uibModa
             $scope.quoteStatus = [];
             $scope.quoteLanguage = [];
             $scope.services = [];
+            $scope.sections = [];
             $scope.serviceFields = [];
             $scope.language_list  = [];
 
             $scope.addSection = function(section_name) {
                 var name = "";
+                                
                 if (section_name) {
                     name = section_name;
                 } else {
                     var counter = $scope.quote.sections.length;
                     name = "section_" + (counter++);
-              }
+                }
+
               $scope.inserted = {
-                    title: "",
-                    text: "",
+                    title: {},
+                    text: {},
                     name: name,
                     index: counter,
               }
