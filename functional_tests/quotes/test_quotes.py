@@ -57,16 +57,12 @@ class QuotesSignedInTest(browser.SignedInTest):
         c = autofixture.create_one('gallant.Client', generate_fk=True,
                                    field_values={'user': self.user, 'status': '1'})
         c.save()
-        c = autofixture.create_one('gallant.Client', generate_fk=True,
-                                   field_values={'user': self.user, 'status': '1'})
-        c.save()
         b.get(self.live_server_url + reverse('add_quote'))
-        with browser.wait_for_page_load(15):
-            b.find_element_by_id('edit_quote').click()
-            b.find_element_by_id('quote_name').send_keys('Quote test')
-            self.save_snapshot()
-            browser.wait(15).until(lambda driver: driver.find_element_by_xpath('//select[@name="client"]/option[@value="number:1"]'))
-            b.find_element_by_xpath('//select[@name="client"]/option[@value="number:1"]').click()
+        b.find_element_by_id('edit_quote').click()
+        b.find_element_by_id('quote_name').send_keys('Quote test')
+        self.save_snapshot()
+        browser.wait(15).until(lambda driver: driver.find_element_by_xpath('//select[@name="client"]/option[2]'))
+        b.find_element_by_xpath('//select[@name="client"]/option[2]').click()
         b.find_element_by_id('save_quote').click()
         b.find_element_by_id('edit_section_0').click()
         b.find_element_by_id('title_0').send_keys('test intro title')
