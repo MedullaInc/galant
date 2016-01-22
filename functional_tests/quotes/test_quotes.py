@@ -63,7 +63,7 @@ class QuotesSignedInTest(browser.SignedInTest):
         b.get(self.live_server_url + reverse('add_quote'))
         b.find_element_by_id('edit_quote').click()
         b.find_element_by_id('quote_name').send_keys('Quote test')
-        browser.wait().until(lambda driver: driver.find_element_by_xpath('//select[@name="client"]/option[@value="number:1"]'))
+        browser.wait(20).until(lambda driver: driver.find_element_by_xpath('//select[@name="client"]/option[@value="number:1"]'))
         b.find_element_by_xpath('//select[@name="client"]/option[@value="number:1"]').click()
         b.find_element_by_id('save_quote').click()
         b.find_element_by_id('edit_section_0').click()
