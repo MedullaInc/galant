@@ -25,7 +25,7 @@ class QuoteTemplatesTest(browser.SignedInTest):
         b.find_element_by_id('edit_service_0').click()
         b.find_element_by_id('service_name_0').send_keys('1234')
         b.find_element_by_id('quantity_0').send_keys('1')
-        b.find_element_by_xpath('//select[@id="type_0"]/option[@value="string:1"]').click()
+        b.find_element_by_xpath('//select[@id="type_0"]/option[2]').click()
         b.find_element_by_id('save_service_0').click()
 
         b.find_element_by_id('text_1').send_keys('test intro text')
@@ -52,7 +52,7 @@ class QuoteTemplatesTest(browser.SignedInTest):
         b.find_element_by_id('edit_service_0').click()
         b.find_element_by_id('service_name_0').send_keys('1234')
         b.find_element_by_id('quantity_0').send_keys('1')
-        b.find_element_by_xpath('//select[@id="type_0"]/option[@value="string:1"]').click()
+        b.find_element_by_xpath('//select[@id="type_0"]/option[2]').click()
         b.find_element_by_id('save_service_0').click()
 
         #b.find_element_by_xpath('//select[@e-name="-service-2-type"]/option[@value="3"]').click()
