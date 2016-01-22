@@ -181,7 +181,6 @@ class QuoteTemplatesTest(browser.SignedInTest):
     def _submit_and_check(self, b):
         with browser.wait_for_page_load():
             b.find_element_by_id('create_submit').click()  
-            self.save_snapshot()      
         self.disable_popups()
         success_message = b.find_element_by_class_name('alert-success')
         self.assertTrue(u'Quote Template saved.' in success_message.text)
