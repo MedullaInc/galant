@@ -1,13 +1,12 @@
-<div class="col-lg-2 col-md-2 col-sm-3 col-xs-3 action_box"> 
+<div class="col-lg-2 col-md-2 col-sm-3 col-xs-3 action_box">
     <button id="section_edit" type="button" class="btn btn-default edit_button" aria-label="Edit"
-            ng-click="briefForm.$show()"> 
-        <span class="glyphicon glyphicon-edit"/> 
+            ng-click="briefForm.$show()">
+        <span class="glyphicon glyphicon-edit"/>
     </button>
-    <button id="section_delete" type="button" class="btn btn-default delete_button"
-            aria-label="Delete"> 
-        <span class="glyphicon glyphicon-trash"/> 
+    <button id="section_edit" type="button" class="btn btn-default edit_button" aria-label="Delete">
+        <span class="glyphicon glyphicon-trash"/>
     </button>
-</div> 
+</div>
 
 <div class="col-lg-10 col-md-10 col-sm-9 col-xs-9">
     <form editable-form name="briefForm">
@@ -21,7 +20,7 @@
         </div>
         <div id="title" class="data">
             <span>Greeting:</span>
-            <pre editable-text="brief.greeting[language]">{{ brief.greeting[language] || 'empty '}}</pre>
+            <pre editable-text="brief.greeting[language]">{{ brief.greeting[language] || 'empty' }}</pre>
         </div>
 
         <span ng-show="briefForm.$visible">
