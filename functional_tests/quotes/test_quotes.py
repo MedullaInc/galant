@@ -84,8 +84,8 @@ class QuotesSignedInTest(browser.SignedInTest):
         b.get(self.live_server_url + reverse('quote_detail', args=[q.id]))
         b.find_element_by_id('edit_quote').click()
         b.find_element_by_id('quote_name').send_keys('Quote test')
-        browser.wait().until(lambda driver: driver.find_element_by_xpath('//select[@name="client"]/option[@value="number:1"]'))
-        b.find_element_by_xpath('//select[@name="client"]/option[@value="number:1"]').click()
+        browser.wait(15).until(lambda driver: driver.find_element_by_xpath('//select[@name="client"]/option[2]'))
+        b.find_element_by_xpath('//select[@name="client"]/option[2]').click()
         b.find_element_by_id('save_quote').click()
         b.find_element_by_id('edit_section_0').click()
         b.find_element_by_id('title_0').clear()
@@ -150,7 +150,7 @@ class QuotesSignedInTest(browser.SignedInTest):
 
         b.find_element_by_id('edit_quote').click()
         b.find_element_by_id('quote_name').send_keys('Quote test')
-        b.find_element_by_xpath('//select[@name="client"]/option[@value="number:1"]').click()
+        b.find_element_by_xpath('//select[@name="client"]/option[2]').click()
         b.find_element_by_id('save_quote').click()
 
         b.find_element_by_id('add_service').click()
