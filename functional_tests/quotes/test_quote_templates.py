@@ -69,7 +69,8 @@ class QuoteTemplatesTest(browser.SignedInTest):
 
         b.find_element_by_id('edit_quote').click()
         b.find_element_by_id('quote_name').send_keys('Quote test')
-        b.find_element_by_xpath('//select[@name="client"]/option[2]').click()
+        browser.wait().until(lambda driver: driver.find_element_by_xpath('//select[@name="client"]/option[1]'))
+        b.find_element_by_xpath('//select[@name="client"]/option[1]').click()
         b.find_element_by_id('save_quote').click()
         
         b.find_element_by_id('edit_section_0').click()
@@ -182,6 +183,5 @@ class QuoteTemplatesTest(browser.SignedInTest):
     def _submit_and_check(self, b):
         with browser.wait_for_page_load():
             b.find_element_by_id('create_submit').click()  
-        self.disable_popups()
         success_message = b.find_element_by_class_name('alert-success')
         self.assertTrue(u'Quote Template saved.' in success_message.text)
