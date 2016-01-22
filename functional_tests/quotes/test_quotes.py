@@ -60,7 +60,6 @@ class QuotesSignedInTest(browser.SignedInTest):
         b.get(self.live_server_url + reverse('add_quote'))
         b.find_element_by_id('edit_quote').click()
         b.find_element_by_id('quote_name').send_keys('Quote test')
-        self.save_snapshot()
         browser.wait(15).until(lambda driver: driver.find_element_by_xpath('//select[@name="client"]/option[2]'))
         b.find_element_by_xpath('//select[@name="client"]/option[2]').click()
         b.find_element_by_id('save_quote').click()
