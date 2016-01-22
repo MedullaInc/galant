@@ -18,7 +18,8 @@ from rest_framework import generics
 class ProjectList(View):
     def get(self, request):
         projects = g.Project.objects.all_for(request.user)
-        quotes = q.Quote.objects.all_for(request.user).annotate(projects_count=Count('projects')).filter(projects_count=0, status=5)
+        quotes = q.Quote.objects.all_for(request.user).annotate(projects_count=Count('projects')).filter(
+            projects_count=0, status=5)
 
         request.breadcrumbs(_('Projects'), request.path_info)
 
@@ -183,9 +184,11 @@ class ProjectsAPI(generics.ListAPIView):
     ]
 
     def get_queryset(self):
-        if self.request.user.is_superuser:
+        client = self.request.GET.get('client_id', None)
+        if client:
+            quotes = q.Quote.objects.all_for(self.request.user).filter(status=5, client_id=client)
+            return self.model.objects.all_for(self.request.user).filter(user_id=self.request.user, quote__in=quotes)
+        elif self.request.user.is_superuser:
             return self.model.objects.all_for(self.request.user)
         else:
             return self.model.objects.all_for(self.request.user).filter(user_id=self.request.user)
-
-

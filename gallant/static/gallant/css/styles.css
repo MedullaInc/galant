@@ -2640,3 +2640,117 @@ div.breadcrumbs span {
 }
 
 /* End Client Profile */
+
+/* Modal Box */
+
+#modal_form {
+    max-width: 100%;
+    padding-right: 20px;
+    padding-left: 20px;
+}
+
+#modal_form .form-group select {
+    margin-bottom: 10px;
+}
+
+#modal_form .form-group label {
+    margin-top: 8px;
+}
+
+#modal_form .form-group input {
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+#modal_form span.input-group-btn {
+    vertical-align: top;
+}
+
+#modal_form h3 {
+    padding-left: 10px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    font-weight: 800;
+}
+
+#modal_form button.close {
+    position: absolute;
+    top: 15px;
+    right: 25px;
+    font-size: 24px;
+}
+
+#modal_form .form-group .btn {
+    font-size: 14px;
+}
+
+#modal_form .form-group .btn.btn-default {
+    margin-top: 0px;
+    height: 34px;
+}
+
+#modal_form .well {
+    margin-top: 10px;
+    margin-bottom: 0px;
+}
+
+#modal_form .margin-top-10 {
+    margin-top: 10px;
+}
+
+#modal_form .margin-left-10 {
+    margin-left: 10px;
+}
+
+#modal_form span.date {
+    font-size: 12px;
+    cursor: pointer;
+}
+
+#modal_form .well p {
+    margin-bottom: 0px;
+    line-height: 1.2;
+    cursor: pointer;
+}
+
+#modal_form .well a {
+    color: #333333;
+    cursor: pointer;
+}
+
+#modal_form .well a:hover {
+    text-decoration: none;
+}
+
+#modal_form #submitForm {
+    margin-top: 5px;
+}
+
+/* End Modal Box */
+
+/* CALENDAR */
+
+.popup-calendr ul.dropdown-menu.ng-pristine.ng-untouched.ng-valid.ng-scope.ng-valid-date-disabled {
+    display:none;
+    border-radius: 0px;
+}
+
+.popup-calendr .btn.btn-default {
+    padding-left: 10px;
+    padding-right: 10px;
+    font-size: 12px;
+}
+
+.popup-calendr .dropdown-menu {
+    padding: 10px;
+}
+
+.popup-calendr .ng-binding {
+    font-weight: 100;
+}
+
+#popup-calendr .dropdown-menu ul.dropdown-menu li.ng-scope {
+    padding:10px 0px 0px;
+}
+
+/* END CALENDAR */

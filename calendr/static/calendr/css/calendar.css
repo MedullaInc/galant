@@ -141,6 +141,8 @@ button.btn.btn-default {
 
 #calendar_modal {
     max-width: 100%;
+    padding-right: 20px;
+    padding-left: 20px;
 }
 
 #calendar_modal .form-group select {
@@ -156,7 +158,7 @@ button.btn.btn-default {
 }
 
 #calendar_modal h3 {
-    padding-left: 15px;
+    padding-left: 10px;
     margin-top: 15px;
     margin-bottom: 15px;
     font-weight: 800;

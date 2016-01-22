@@ -1,5 +1,16 @@
 {% extends "../templates/gallant/client_detail.html" %}
-{% load bootstrap i18n gallant_tags staticfiles %}
+{% load bootstrap i18n gallant_tags staticfiles static djangular_tags %}
+
+{% block scripts %}
+    {{ block.super }}
+    <script src="{% static "js/angular.js" %}"></script>
+    <script src="{% static "js/angular-resource.js" %}"></script>
+    <script src="{% static "js/ui-bootstrap-tpls.js" %}"></script>
+    <script src="{% static "djangular/js/django-angular.min.js" %}"></script>
+    <script src="{% static "gallant/js/apps/glClientPayments.js" %}"></script>
+    <script src="{% static "gallant/js/controllers/glClientPaymentController.js" %}"></script>
+    <script src="{% static "gallant/js/services/glServices.js" %}"></script>
+{% endblock %}
 
 {% block section_title %}
     {% trans "Client Money" %}
@@ -12,9 +23,19 @@
     {% endblock %}
 
     {% block main_client_data %}
-        <div class="projects enclosed">
-            <h2 class="section_title">{% trans 'Payments' %}</h2>
+        <div class="projects enclosed" ng-app="glClientPayments" ng-controller="glClientPaymentController" client_id="{{ object.id }}">
+            <div class="row">
+                <div class="col-lg-10 col-md-10 col-sm-9 col-xs-9">
+                    <h2 class="section_title">{% trans 'Payments' %}</h2>
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-3 col-xs-3 action_box">
+                    <button id="section_edit" type="button" class="btn btn-default edit_button" aria-label="Edit" ng-click="openEditModal()">
+                        <span class="glyphicon glyphicon-plus-sign"/>
+                    </button>
+                </div>
+            </div>
         </div>
+
     {% endblock %}
 
     {% block client_alerts %}
@@ -24,4 +45,7 @@
     {% block client_notes %}
     {% endblock %}
 
+{% endblock %}
+
+{% block extra_body %}
 {% endblock %}
