@@ -139,10 +139,10 @@ def project_detail(request, pk):
     project = get_one_or_404(request.user, 'view_project', g.Project, pk=pk)
 
     # TODO: This should be refactored!
-    service_sections = []
+    services = []
     for quote in project.quote_set.all_for(request.user):
-        for service in quote.service_sections.all_for(request.user):
-            service_sections.append(service)
+        for service in quote.services.all_for(request.user):
+            services.append(service)
 
     if request.method == 'POST' and request.user.has_perm('change_project', project):
         form = forms.NoteForm(request.user, request.POST)
@@ -158,7 +158,7 @@ def project_detail(request, pk):
                          (_('Project: %s' % project.name), request.path_info)])
     return render(request, 'gallant/project_detail.html', {
         'object': project,
-        'service_sections': service_sections,
+        'services': services,
         'form': form,
         'title': 'Project Detail',
     })

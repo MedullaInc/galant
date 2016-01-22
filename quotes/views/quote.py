@@ -230,10 +230,6 @@ class QuoteViewSet(ModelViewSet):
         else:
             return response
 
-    def get_queryset(self):
-        return self.model.objects.all_for(self.request.user)
-
-
 class QuotePaymentsAPI(generics.RetrieveUpdateAPIView):
     model = g.Client
     serializer_class = payment.PaymentSerializer

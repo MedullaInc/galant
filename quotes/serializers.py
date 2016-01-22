@@ -97,6 +97,7 @@ class QuoteSerializer(serializers.ModelSerializer):
             else:
                 service_data.update({'user': user})
                 ss = s.ServiceSerializer(data=service_data)
+
                 service = ss.create(service_data)
 
             new_services.add(service)

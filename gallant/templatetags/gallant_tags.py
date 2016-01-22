@@ -44,10 +44,10 @@ def get_project_services(request, project, status=None):
 
     for quote in project.quote_set.all_for(request.user):
         if status is None:
-            for service in quote.service_sections.all_for(request.user):
+            for service in quote.services.all_for(request.user):
                 services.append(service)
         else:
-            for service in quote.service_sections.all_for(request.user).filter(status=status):
+            for service in quote.services.all_for(request.user).filter(status=status):
                 services.append(service)
 
     return services
@@ -58,10 +58,10 @@ def get_project_services_count(request, project, status=None):
 
     for quote in project.quote_set.all_for(request.user):
         if status is None:
-            for service in quote.service_sections.all_for(request.user):
+            for service in quote.services.all_for(request.user):
                 services.append(service)
         else:
-            for service in quote.service_sections.all_for(request.user).filter(status=status):
+            for service in quote.services.all_for(request.user).filter(status=status):
                 services.append(service)
 
     return len(services)
@@ -74,10 +74,10 @@ def get_client_services_count(request, client, status=None):
     for project in projects:
         for quote in project.quote_set.all_for(request.user):
             if status is None:
-                for service in quote.service_sections.all_for(request.user):
+                for service in quote.services.all_for(request.user):
                     services.append(service)
             else:
-                for service in quote.service_sections.all_for(request.user).filter(status=status):
+                for service in quote.services.all_for(request.user).filter(status=status):
                     services.append(service)
 
     return len(services)
