@@ -64,6 +64,7 @@ class QuotesSignedInTest(browser.SignedInTest):
         with browser.wait_for_page_load(15):
             b.find_element_by_id('edit_quote').click()
             b.find_element_by_id('quote_name').send_keys('Quote test')
+            self.save_snapshot()
             browser.wait(15).until(lambda driver: driver.find_element_by_xpath('//select[@name="client"]/option[@value="number:1"]'))
             b.find_element_by_xpath('//select[@name="client"]/option[@value="number:1"]').click()
         b.find_element_by_id('save_quote').click()
