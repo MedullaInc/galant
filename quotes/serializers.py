@@ -154,7 +154,7 @@ class QuoteTemplateSerializer(serializers.ModelSerializer):
         return instance
 
     def update(self, instance, validated_data):
-        
+
         user = self.context['request'].user
 
         quote_data = validated_data.pop('quote')
@@ -166,7 +166,6 @@ class QuoteTemplateSerializer(serializers.ModelSerializer):
 
         quote_instance = q.Quote.objects.get_for(user, 'change', pk=quote_id)
 
-        print quote_instance
         quote = qs.update(quote_instance, quote_data)
 
         validated_data.update({'quote': quote})
