@@ -44,10 +44,9 @@
 
     <hr>
 
-    {% for section in service_sections %}
+    {% for service in services %}
         <div id="{{ section.name }}">
             <div>
-                {% with service=section.service %}
                     <div class="row">
                         <div class="col-lg-12">
                             <a href="{% url 'service_detail' object.id service.id %}">
@@ -98,7 +97,6 @@
                         </div>
                     </div>
 
-                {% endwith %}
             </div>
         </div>
     {% endfor %}

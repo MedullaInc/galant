@@ -121,6 +121,7 @@ class QuoteTemplatesTest(browser.SignedInTest):
 
         q = get_blank_quote_autofixture(self.user)
         b.get(self.live_server_url + reverse('add_quote_template', kwargs={'quote_id': q.id}))
+        browser.wait().until(lambda driver: driver.find_element_by_id('edit_section_0'))
         b.find_element_by_id('edit_section_0').click()
         intro_title = b.find_element_by_id('title_0')
         self.assertEqual(q.intro().title, {})

@@ -214,8 +214,7 @@ class ClientTest(TransactionTestCase):
             'user': user, 'quantity': 1})
         service.cost = Money(500, 'USD')
         service.save()
-        service_section = q.Service.objects.create(user=user, index=0, service=service)
-        quote.service_sections.add(service_section)
+        quote.services.add(service)
 
         payment1 = autofixture.create_one(g.Payment, generate_fk=True, field_values=
                                           {'user': user, 'due': timezone.now(), 'paid_on': timezone.now()})
@@ -476,7 +475,7 @@ class GallantUserTest(TestCase):
     def test_create_user(self):
         UserModel = get_user_model()
         u = UserModel.objects.create_user(email='foo@bar.com')
-        group = Group.objects.get(name='users')
+        group, created = Group.objects.get_or_create(name='users')
 
         self.assertTrue(u in group.user_set.all())
 
