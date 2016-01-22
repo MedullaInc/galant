@@ -67,6 +67,7 @@ class QuoteSerializer(serializers.ModelSerializer):
         services_data = validated_data.pop('services')
         sections_data = validated_data.pop('sections')
         validated_data.update({'user': user})
+        validated_data.pop('id', None)
 
         instance = super(QuoteSerializer, self).create(validated_data)
 
