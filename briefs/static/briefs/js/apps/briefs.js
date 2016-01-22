@@ -27,6 +27,7 @@ app.config(["$resourceProvider", function ($resourceProvider) {
     });
 }]);
 
+/* istanbul ignore next */
 app.run(function(editableOptions) {
   editableOptions.theme = 'bs3'; // bootstrap3 theme. Can be also 'bs2', 'default'
 });
