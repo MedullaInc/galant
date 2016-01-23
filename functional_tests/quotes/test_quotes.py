@@ -75,12 +75,12 @@ class QuotesSignedInTest(browser.SignedInTest):
         b = browser.instance()
         q = get_blank_quote_autofixture(self.user)
         b.get(self.live_server_url + reverse('quote_detail', args=[q.id]))
-        browser.wait().until(lambda driver: driver.find_element_by_id('edit_section_0'))
         b.find_element_by_id('edit_quote').click()
         b.find_element_by_id('quote_name').send_keys('Quote test')
         browser.wait().until(lambda driver: driver.find_element_by_xpath('//select[@name="client"]/option[1]'))
         b.find_element_by_xpath('//select[@name="client"]/option[1]').click()
         b.find_element_by_id('save_quote').click()
+        browser.wait().until(lambda driver: driver.find_element_by_id('edit_section_0'))
         b.find_element_by_id('edit_section_0').click()
         b.find_element_by_id('title_0').clear()
         b.find_element_by_id('title_0').send_keys('modified intro title')
@@ -88,6 +88,7 @@ class QuotesSignedInTest(browser.SignedInTest):
 
         self._submit_and_check(b)
 
+        browser.wait().until(lambda driver: driver.find_element_by_id('edit_section_0'))
         b.find_element_by_id('edit_section_0').click()
 
         intro = b.find_element_by_id('title_0')
@@ -130,7 +131,7 @@ class QuotesSignedInTest(browser.SignedInTest):
 
         self._submit_and_check(b)
 
-        
+        browser.wait().until(lambda driver: driver.find_element_by_id('edit_section_1'))
         b.find_element_by_id('edit_section_1').click()
 
         self.assertEqual(b.find_element_by_id('title_1').get_attribute('value'), '1234')
@@ -189,7 +190,7 @@ class QuotesSignedInTest(browser.SignedInTest):
 
         browser.wait().until(lambda driver: driver.find_element_by_id('edit_section_1'))
         b.find_element_by_id('edit_section_1').click()
-        
+
         el = b.find_element_by_id('text_1')
         self.assertEqual(el.get_attribute('value'), 's3title')
 
@@ -222,6 +223,7 @@ class QuotesSignedInTest(browser.SignedInTest):
 
         self._submit_and_check(b)
 
+        browser.wait().until(lambda driver: driver.find_element_by_id('edit_section_0'))
         b.find_element_by_id('edit_section_0').click()
 
         el = b.find_element_by_id('title_0')
