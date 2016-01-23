@@ -23,7 +23,6 @@ def get_blank_quote_autofixture(user):
 
 
 class QuotesSignedInTest(browser.SignedInTest):
-        
     def test_can_access_quotes(self):
         # check 'Quotes' h1
         browser.instance().get(self.live_server_url + reverse('quotes'))
@@ -76,6 +75,7 @@ class QuotesSignedInTest(browser.SignedInTest):
         b = browser.instance()
         q = get_blank_quote_autofixture(self.user)
         b.get(self.live_server_url + reverse('quote_detail', args=[q.id]))
+        browser.wait().until(lambda driver: driver.find_element_by_id('edit_section_0'))
         b.find_element_by_id('edit_quote').click()
         b.find_element_by_id('quote_name').send_keys('Quote test')
         browser.wait().until(lambda driver: driver.find_element_by_xpath('//select[@name="client"]/option[1]'))
@@ -146,10 +146,11 @@ class QuotesSignedInTest(browser.SignedInTest):
         c.save()
         b.get(self.live_server_url + reverse('quote_detail', args=[q.id]))
 
+        browser.wait().until(lambda driver: driver.find_element_by_id('edit_section_0'))
         b.find_element_by_id('edit_quote').click()
         b.find_element_by_id('quote_name').send_keys('Quote test')
-        browser.wait().until(lambda driver: driver.find_element_by_xpath('//select[@name="client"]/option[2]'))
-        b.find_element_by_xpath('//select[@name="client"]/option[2]').click()
+        browser.wait().until(lambda driver: driver.find_element_by_xpath('//select[@name="client"]/option[1]'))
+        b.find_element_by_xpath('//select[@name="client"]/option[1]').click()
         b.find_element_by_id('save_quote').click()
 
         b.find_element_by_id('add_service').click()
@@ -161,11 +162,12 @@ class QuotesSignedInTest(browser.SignedInTest):
         browser.wait().until(lambda driver: driver.find_element_by_xpath('//select[@id="type_0"]/option[2]'))       
         b.find_element_by_xpath('//select[@id="type_0"]/option[2]').click()
         b.find_element_by_id('save_service_0').click()
+
         self._submit_and_check(b)
 
-        b.find_element_by_id('edit_service_0').click()
-        name = b.find_element_by_id('service_name_0')
-        self.assertEqual(name.get_attribute('value'), '1234')
+        browser.wait().until(lambda driver: driver.find_element_by_id('edit_section_0'))
+        name = b.find_element_by_css_selector('div[e-id="service_name_0"]')
+        self.assertEqual(name.text, '1234')
 
     def test_section_order(self):
         b = browser.instance()
@@ -197,8 +199,8 @@ class QuotesSignedInTest(browser.SignedInTest):
         b = browser.instance()
         q = get_blank_quote_autofixture(self.user)
         b.get(self.live_server_url + reverse('quote_detail', args=[q.id]))
-        self.disable_popups()
 
+        browser.wait().until(lambda driver: driver.find_element_by_id('add_section'))
         add_section = b.find_element_by_id('add_section')
         add_section.click()
         add_section.click()
@@ -229,19 +231,15 @@ class QuotesSignedInTest(browser.SignedInTest):
     def test_add_to_existing_sections(self):
         b = browser.instance()
         q = get_blank_quote_autofixture(self.user)
-        b.get(self.live_server_url + reverse('quote_detail', args=[q.id]))
-
-        add_section = b.find_element_by_id('add_section')
-        add_section.click()
-        b.find_element_by_id('edit_section_0').click()
 
         b.get(self.live_server_url + reverse('quote_detail', args=[q.id]))
 
+        browser.wait().until(lambda driver: driver.find_element_by_id('edit_section_0'))
         add_section = b.find_element_by_id('add_section')
         add_section.click()
-        b.find_element_by_id('edit_section_1').click()
+        b.find_element_by_id('save_section_2').click()
 
-        self.assertEqual(len(b.find_elements_by_id('title_1')), 1)
+        self.assertEqual(len(b.find_elements_by_css_selector('h2[e-id="title_2"]')), 1)
 
         self._submit_and_check(b)
 

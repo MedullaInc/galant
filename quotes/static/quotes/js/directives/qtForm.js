@@ -56,7 +56,7 @@ app.directive('qtQuoteForm', ['Quote', 'Service', 'Client', '$filter', '$uibModa
                             currency: "USD",
                             },
                         description: "N/A",
-                        user: 1,
+                        user: $scope.quote.user,
                         name: "",
                         notes: Array[0],
                         parent: null,
