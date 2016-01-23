@@ -179,7 +179,7 @@ class QuotesSignedInTest(browser.SignedInTest):
         add_section.click()
         add_section.click()
 
-        browser.wait().until(lambda driver: driver.find_element_by_id('edit_section_0'))
+        browser.wait().until(lambda driver: driver.find_element_by_id('edit_section_1'))
         b.find_element_by_id('edit_section_1').click()
         b.find_element_by_id('title_1').send_keys('s3title')
         b.find_element_by_id('text_1').send_keys('s3title')
@@ -187,8 +187,9 @@ class QuotesSignedInTest(browser.SignedInTest):
 
         self._submit_and_check(b)
 
+        browser.wait().until(lambda driver: driver.find_element_by_id('edit_section_1'))
         b.find_element_by_id('edit_section_1').click()
-
+        
         el = b.find_element_by_id('text_1')
         self.assertEqual(el.get_attribute('value'), 's3title')
 
@@ -205,6 +206,7 @@ class QuotesSignedInTest(browser.SignedInTest):
         add_section.click()
         add_section.click()
         add_section.click()
+        browser.wait().until(lambda driver: driver.find_element_by_id('edit_section_0'))
         b.find_element_by_id('edit_section_0').click()
         b.find_element_by_id('edit_section_1').click()
         b.find_element_by_id('title_0').send_keys('s2title')

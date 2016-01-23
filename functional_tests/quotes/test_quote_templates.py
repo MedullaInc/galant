@@ -72,7 +72,8 @@ class QuoteTemplatesTest(browser.SignedInTest):
         browser.wait().until(lambda driver: driver.find_element_by_xpath('//select[@name="client"]/option[1]'))
         b.find_element_by_xpath('//select[@name="client"]/option[1]').click()
         b.find_element_by_id('save_quote').click()
-        
+
+        browser.wait().until(lambda driver: driver.find_element_by_id('edit_section_0'))
         b.find_element_by_id('edit_section_0').click()
         b.find_element_by_id('title_0').clear()
         b.find_element_by_id('title_0').send_keys('modified intro title')
@@ -164,6 +165,7 @@ class QuoteTemplatesTest(browser.SignedInTest):
 
         self._submit_and_check(b)
 
+        browser.wait().until(lambda driver: driver.find_element_by_xpath('//*[@id="es_tab"]'))
         new_tab = b.find_element_by_xpath('//*[@id="es_tab"]')
         self.assertEqual(u'Spanish', new_tab.text)
 
