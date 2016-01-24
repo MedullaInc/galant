@@ -20,6 +20,7 @@ class QuoteTemplatesTest(browser.SignedInTest):
 
         b.find_element_by_id('edit_quote').click()
         b.find_element_by_id('quote_name').send_keys('Quote test')
+        browser.wait().until(lambda driver: driver.find_element_by_xpath('//select[@name="client"]/option[2]'))
         b.find_element_by_xpath('//select[@name="client"]/option[2]').click()
         b.find_element_by_id('save_quote').click()
         b.find_element_by_id('edit_service_0').click()
@@ -46,7 +47,8 @@ class QuoteTemplatesTest(browser.SignedInTest):
         b.get(self.live_server_url + reverse('add_quote_template'))
 
         b.find_element_by_id('edit_quote').click()
-        b.find_element_by_xpath('//select[@name="client"]/option[2]').click()
+        browser.wait().until(lambda driver: driver.find_element_by_xpath('//select[@name="client"]/option[1]'))
+        b.find_element_by_xpath('//select[@name="client"]/option[1]').click()
         b.find_element_by_id('save_quote').click()
 
         b.find_element_by_id('edit_service_0').click()
@@ -116,7 +118,6 @@ class QuoteTemplatesTest(browser.SignedInTest):
         c.save()     
 
         b.get(self.live_server_url + reverse('quote_template_detail', args=[qt.id]))
-
 
         self._add_language_and_text(b)
 
