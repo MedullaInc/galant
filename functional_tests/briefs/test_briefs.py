@@ -58,6 +58,7 @@ class BriefsSignedInTest(browser.SignedInTest):
         b.get(self.live_server_url + reverse('edit_brief', args=[self.brief.id]) +
               '?client_id=%d' % self.brief.client.id)
 
+        browser.wait().until(lambda driver: driver.find_element_by_id('question1_question'))
         b.find_element_by_id('id_title').clear()
         b.find_element_by_id('id_title').send_keys('modified title')
 
@@ -72,6 +73,7 @@ class BriefsSignedInTest(browser.SignedInTest):
         b.get(self.live_server_url + reverse('edit_brief', args=[self.brief.id]) +
               '?client_id=%d' % self.brief.client.id)
 
+        browser.wait().until(lambda driver: driver.find_element_by_id('question1_question'))
         b.find_element_by_id('id_title').clear()
         b.find_element_by_id('id_title').send_keys('modified title')
 
@@ -118,6 +120,7 @@ class BriefsSignedInTest(browser.SignedInTest):
         b.get(self.live_server_url + reverse('edit_brief', args=[self.brief.id]) +
               '?client_id=%d' % self.brief.client.id)
 
+        browser.wait().until(lambda driver: driver.find_element_by_id('question1_question'))
         b.find_element_by_id('id_title').clear()
         b.find_element_by_id('id_title').send_keys('modified title')
         b.find_element_by_id('id_greeting').send_keys('modified greeting')
@@ -201,3 +204,4 @@ class BriefsSignedInTest(browser.SignedInTest):
         response = self.client.get(self.live_server_url + reverse('api_questions') +
                                    '?brief_id=%d' % self.brief.id)
         self.assertEqual(response.status_code, 200)
+

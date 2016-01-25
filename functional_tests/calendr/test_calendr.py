@@ -39,6 +39,7 @@ class CalendrTest(browser.SignedInTest):
         b = self.browser
 
         b.get(self.live_server_url + reverse('calendr'))
+        browser.wait().until(lambda driver: driver.find_element_by_id('id_date'))
         b.find_element_by_id('id_date').send_keys('2015-11-09')
 
         date = b.find_element_by_css_selector('.fc-toolbar h2')
@@ -48,6 +49,8 @@ class CalendrTest(browser.SignedInTest):
         b = self.browser
 
         b.get(self.live_server_url + reverse('calendr'))
+
+        browser.wait().until(lambda driver: driver.find_element_by_css_selector('.fc-event'))
         b.find_element_by_css_selector('.fc-event').click()
 
         submit_task = b.find_element_by_css_selector('#submitTask')
@@ -64,6 +67,7 @@ class CalendrTest(browser.SignedInTest):
         b = self.browser
 
         b.get(self.live_server_url + reverse('calendr'))
+        browser.wait().until(lambda driver: driver.find_element_by_id('timelineWeek'))
         b.find_element_by_id('timelineWeek').click()
 
         timeline_view = b.find_element_by_class_name('fc-timelineWeek-view')
@@ -73,6 +77,7 @@ class CalendrTest(browser.SignedInTest):
         b = self.browser
 
         b.get(self.live_server_url + reverse('calendr'))
+        browser.wait().until(lambda driver: driver.find_element_by_id('filterTask'))
         b.find_element_by_id('filterTask').click()
 
         search_task = b.find_element_by_id('searchText')
