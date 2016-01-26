@@ -157,7 +157,7 @@ class QuoteDetail(View):
                               reverse('quote_pdf', args=[quote.token.hex]))),
                           get_site_from_host(request))
         messages.success(request, 'Quote link sent to %s.' % quote.client.email)
-        return self.get(request, **kwargs
+        return self.get(request, **kwargs)
 
 
 class QuoteList(View):
