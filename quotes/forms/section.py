@@ -6,42 +6,6 @@ from django.utils.translation import ugettext_lazy as _
 from django.template.loader import get_template
 
 
-class SectionForm(gf.UserModelForm):
-    class Meta:
-        model = q.Section
-        fields = ['name', 'title', 'text', 'index']
-
-    def __init__(self, user, data=None, prefix=None, *args, **kwargs):
-        # see if update or create
-        prefix = prefix or ''
-        data = data or {}
-        if prefix + '-id' in data:
-            section = get_one_or_404(user, 'change_section',
-                                     q.Section, pk=data[prefix + '-id'])
-            super(SectionForm, self).__init__(user, data=data, prefix=prefix, instance=section, *args, **kwargs)
-        else:
-            super(SectionForm, self).__init__(user, data=data, prefix=prefix, *args, **kwargs)
-
-        self.index = self.instance.index
-
-    def as_table(self):
-        t = get_template('quotes/section_form.html')
-        if self.instance:
-            section = self.instance
-        else:
-            section = self.save(commit=False)
-        context = {'prefix': self.prefix + '-', 'name': section.name,
-                   'section': section, 'form': self}
-
-        if section.name == 'important_notes':
-            context.update({'help_text': _('This section appears last, in the final page.')})
-        elif section.name == 'intro':
-            context.update({'help_text': _('This section appears first, with special formatting.')})
-        else:
-            context.update({'extra_class': 'dynamic_section'})
-        return t.render(context)
-
-
 class ServiceForm(gf.UserModelForm):
     class Meta:
         model = g.Service  # make sure to call with ServiceSection instance, not Service
