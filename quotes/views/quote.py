@@ -83,7 +83,7 @@ class QuoteUpdate(View):
 
 
 class QuoteCreate(QuoteUpdate):
-    def get(self, request):
+    def get(self, request): 
         context = {'title': 'Add Quote'}
         template_id = request.GET.get('template_id', None)
         lang = request.GET.get('lang', None)
@@ -148,7 +148,7 @@ class QuoteDetail(View):
                                 template="quotes/quote_detail_ng.html",
                                 context={'title': 'Quote', 'object': quote})  
 
-class QuoteSend(View):
+class QuoteSend(View): # pragma: no cover
     def post(self, request, **kwargs):
         quote = get_one_or_404(request.user, 'view_quote', q.Quote, id=kwargs['pk'])
         quote.status = q.QuoteStatus.Sent.value
