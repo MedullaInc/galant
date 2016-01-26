@@ -7,7 +7,7 @@ from django.conf import settings
 from gallant import utils
 from gallant.models import UserModelManager
 from moneyed import Money
-from section import TextSection, ServiceSection
+from section import Section
 
 
 class QuoteStatus(gf.ChoiceEnum):
@@ -23,8 +23,8 @@ class QuoteStatus(gf.ChoiceEnum):
 class Quote(g.UserModel):
     name = m.CharField(max_length=512, default='New Quote')
     client = m.ForeignKey(g.Client, null=True)
-    sections = m.ManyToManyField(TextSection, blank=True)
-    service_sections = m.ManyToManyField(ServiceSection, blank=True)
+    sections = m.ManyToManyField(Section, blank=True)
+    services = m.ManyToManyField(g.Service, blank=True)
 
     language = m.CharField(max_length=7, null=True, choices=settings.LANGUAGES,
                            help_text='Language of quote, or null for template.')
@@ -40,9 +40,10 @@ class Quote(g.UserModel):
 
     def get_languages(self):
         language_set = set()
-        for s in list(self.sections.all_for(self.user)):
+        for s in list(self.all_sections()):
             if s is not None:
-                language_set.update(s.get_languages())
+                if isinstance(s, Section):
+                    language_set.update(s.get_languages())
 
         return language_set
 
@@ -54,14 +55,14 @@ class Quote(g.UserModel):
 
     def all_sections(self):
         sections = list(self.sections.all_for(self.user)) + \
-                   list(self.service_sections.all_for(self.user))
-        sections.sort(lambda a, b: cmp(a.index, b.index))
+                   list(self.services.all_for(self.user))
+        #sections.sort(lambda a, b: cmp(a.index, b.index))
         return sections
 
     def get_total_cost(self):
         total = Money(0, "USD")
-        for service_section in self.service_sections.all_for(self.user):
-            total += service_section.service.get_total_cost()
+        for service in self.services.all_for(self.user):
+            total += service.service.get_total_cost()
 
         return total
 
@@ -80,8 +81,8 @@ class Quote(g.UserModel):
             for section in self.sections.all_for(self.user, 'change'):
                 section.soft_delete(deleted_by_parent=True)
 
-            for service_section in self.service_sections.all_for(self.user, 'change'):
-                service_section.soft_delete(deleted_by_parent=True)
+            for service in self.services.all_for(self.user, 'change'):
+                service.soft_delete(deleted_by_parent=True)
 
             super(Quote, self).soft_delete(deleted_by_parent)
 

@@ -1,0 +1,264 @@
+<div class="row">
+
+    <div class="col-lg-10 col-md-10 col-sm-9 col-xs-9">
+        <h2 e-class="form-control" e-id="quote_name" editable-text="quote.name" class="section_title" e-form="quoteform" e-required>{{ quote.name }}</h2>
+    </div>
+
+    <!-- form -->
+    <form editable-form name="quoteform" ng-show="quoteform.$visible" class="form-buttons form-inline" shown="False">
+        <button id="save_quote" type="submit" ng-disabled="quoteform.$waiting" class="btn btn-default save_button">
+            <span class="glyphicon glyphicon-floppy-disk" </span>
+        </button>
+        <button id="cancel_quote" type="button" ng-disabled="quoteform.$waiting" ng-click="quoteform.$cancel()" class="btn btn-default save_button">
+            <span class="glyphicon glyphicon-remove"></span>
+        </button>
+    </form>
+
+    <div class="buttons" ng-show="!quoteform.$visible">
+        <button id="edit_quote" class="btn btn-default edit_button" ng-click="quoteform.$show()">
+            <span class="glyphicon glyphicon-edit" />
+        </button>
+        <a href="{% url 'delete_quote' object.id %}" class="delete_button" title="Delete" onclick="return confirm('Are you sure?')">
+            <button id="section_delete" type="button" class="btn btn-default delete_button" aria-label="Delete">
+                <span class="glyphicon glyphicon-trash"></span>
+            </button>
+        </a>
+    </div>
+
+</div>
+
+<div class="row object_data">
+    <div class="col-lg-6">
+        <p e-class="form-control" e-name="client" class="data" editable-select="quote.client" e-form="quoteform" e-required e-ng-options="s.id as s.name for s in clients"><span class="detail_title">Client</span> {{ (clients | filter:{id: quote.client})[0].name }} </p>
+        <br>
+        <p e-class="form-control" id="status" class="data" editable-select="quote.status" e-form="quoteform" e-required e-ng-options="s.value as s.text for s in quoteStatus"><span class="label label-default">{{ quoteStatus[quote.status].text  }}</span>
+        </p>
+    </div>
+</div>
+
+<br>
+
+<uib-tabset ng-show="boolTemplate == 'True'" id="tabs" class="nav nav-tabs" style="margin-bottom: -1px; border-bottom: 0">
+    <uib-tab ng-click="changeLanguage(language)" id="{{language[0]}}_tab" ng-repeat="language in language_list" heading="{{language[1]}}" active="tab.active"></uib-tab>
+    <uib-tab id="add_translation_button" popover-placement="bottom" uib-popover-template="dynamicPopover.translationTemplateUrl" heading="Add Translation" active="tab.active"></uib-tab>
+</uib-tabset>
+
+<div id="center_content_enclosed">
+
+    <script type="text/ng-template" id="translationTemplate.html">
+        <select id="id_language" class="form-control" ng-model="language" ng-options="lang.value as lang.text for lang in quoteLanguage"></select>
+        <button ng-click="addLanguage(language)" id="language_add" type="button" class="btn btn-default">Add</button>
+    </script>
+
+    <div class="enclosed">
+        <h2 class="section_title">
+            Services
+        </h2>
+        <div class="row">
+            <div class="col-xs-offset-0 col-xs-2 section_content">
+                <p>
+                    <strong>Service</strong>
+                </p>
+            </div>
+            <div class="col-xs-2 section_content">
+                <p>
+                    <strong>Quantity</strong>
+                </p>
+            </div>
+            <div class="col-xs-2 section_content">
+                <p>
+                    <strong>Type</strong>
+                </p>
+            </div>
+            <div class="col-xs-2 section_content">
+                <p>
+                    <strong>Unit Price</strong>
+                </p>
+            </div>
+            <div class="col-xs-2 section_content">
+                <p>
+                    <strong>Subtotal</strong>
+                </p>
+            </div>
+            <div class="col-xs-2 section_content">
+                <p>
+                    <strong></strong>
+                </p>
+            </div>
+        </div>
+
+        <div ng-repeat="service in quote.services">
+            <div class="row">
+                <span ng-click="rowform.$show()">
+                <div class="col-xs-offset-0 col-xs-2 section_content">
+                    <div name="name" e-class="form-control" editable-text="service.name[language]" e-id="service_name_{{$index}}" e-form="rowform" e-required>
+                        {{ service.name[language] || 'empty' }}
+                    </div>
+                </div>
+                <div class="col-xs-2 section_content">
+                    <div e-class="form-control" editable-text="service.quantity" e-id="quantity_{{$index}}" e-form="rowform" e-required>
+                        {{ service.quantity || 'empty' }}
+                    </div>
+                </div>
+                <div class="col-xs-2 section_content">
+                    <div e-class="form-control" editable-select="service.type" e-id="type_{{$index}}" e-form="rowform" e-ng-options="s.value as s.text for s in serviceFields">
+                        {{showType(service)}}
+                    </div>
+                </div>
+                <div class="col-xs-2 section_content">
+                    <div e-class="form-control" editable-text="service.cost.amount" e-id="amount_{{$index}}" e-form="rowform" e-required>
+                        {{ service.cost.amount || 'empty' }}
+                    </div>
+                </div>
+                <div class="col-xs-2 section_content">
+                    <p>
+                        {{ service.cost.amount * service.quantity | currency }}
+                    </p>
+                </div>
+                </span>
+
+                <!-- form -->
+                <form editable-form name="rowform" ng-show="rowform.$visible" class="form-buttons form-inline" shown="inserted == service">
+                    <button id="save_service_{{$index}}" type="submit" ng-disabled="rowform.$waiting" class="btn btn-default save_button">
+                        <span class="glyphicon glyphicon-floppy-disk">
+            </button>
+            <button id="cancel_service_{{$index}}" type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()" class="btn btn-default save_button">
+            <span class="glyphicon glyphicon-remove">
+            </button>
+         </form>
+
+         <div class="buttons" ng-show="!rowform.$visible">
+            <button id="edit_service_{{$index}}" class="btn btn-default edit_button" ng-click="rowform.$show()">
+            <span class="glyphicon glyphicon-edit"/>
+            </button>
+            <button id="remove_service_{{$index}}" class="btn btn-default delete_button" ng-click="removeService($index)">
+            <span class="glyphicon glyphicon-trash"/>
+            </button>
+         </div>
+
+      </div>
+
+   </div>
+
+   <div class="row">
+
+      <div class="col-xs-offset-6 col-xs-2 section_content">
+         <p>
+            <strong>Total</strong>
+         </p>
+      </div>
+
+      <div class="col-xs-2 section_content">
+         <p>
+            <strong>{{ getTotal() |currency }}</strong>
+         </p>
+      </div>
+
+   </div>
+
+</div>
+
+<div class="enclosed">
+
+   <h2 class="section_title">
+      Quote Sections
+   </h2>
+
+   <ul data-as-sortable="dragControlListeners" data-ng-model="quote.sections">
+      <li data-ng-repeat="section in quote.sections | orderBy:'textsection.index'" data-as-sortable-item>
+         <div id="section_{{$index}}" as-sortable-item-handle class="as-sortable-item-handle" >
+
+            <div class="row">
+               <div class="col-lg-12" ng-click="isCollapsed = !isCollapsed">
+                  <p id="name_{{$index}}">
+                     {{ section.name }}:
+                  </p>
+               </div>
+            </div>
+
+            <div class="row" uib-collapse="isCollapsed">
+               <div class="col-lg-8">
+                  <h2 e-id="title_{{$index}}" e-class="form-control" data-inputclass="form-control" class="section_subtitle" editable-text="section.title[language]" e-form="rowform" e-required>
+                     {{ section.title[language] || 'empty' }}
+                  </h2>
+                  <br>
+                  <p e-id="text_{{$index}}" e-class="form-control" data-inputclass="form-control" editable-text="section.text[language]" e-name="text" e-form="rowform" e-required>
+                     {{ section.text[language] || 'empty' }}
+                  </p>
+               </div>
+
+               <div class="col-lg-4">
+                  <form editable-form name="rowform" onbeforesave="saveUser($data, user.id)" ng-show="rowform.$visible" class="form-buttons form-inline" shown="inserted == section">
+                     <button id="save_section_{{$index}}" type="submit" ng-disabled="rowform.$waiting" class="btn btn-default save_button">
+                     <span class="glyphicon glyphicon-floppy-disk">
+                     </button>
+                     <button id="cancel_section_{{$index}}" type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()" class="btn btn-default save_button">
+                     <span class="glyphicon glyphicon-remove ">
+                     </button>
+                  </form>
+
+                  <div class="buttons" ng-show="!rowform.$visible">
+                     <button id="edit_section_{{$index}}" class="btn btn-default edit_button" ng-click="rowform.$show()">
+                     <span class="glyphicon glyphicon-edit"/>
+                     </button>
+                     <button id="remove_section_{{$index}}" class="btn btn-default delete_button" ng-click="removeSection($index)">
+                     <span class="glyphicon glyphicon-trash"/>
+                     </button>
+                  </div>
+               </div>
+
+            </div>
+
+         </div>
+      </li>
+   </ul>
+</div>
+
+<div class="row">
+   <div class="col-lg-12">
+      <button type="button" id="add_service" class="btn btn-default pull-right margin-left-10" popover-placement="bottom" uib-popover-template="dynamicPopover.serviceTemplateUrl" popover-trigger="focus" >Add Service</button>
+
+      <button type="button" id="add_section" class="btn btn-default pull-right" ng-click="addSection()">Add Section</button>
+   </div>
+</div>
+
+<script type="text/ng-template" id="serviceTemplate.html">
+    <a ng-click="open()">
+        <button id="service_from_template" type="button" class="btn btn-default from_scratch_button sidebar">From Template</button>
+    </a>
+    <a ng-click="addService()">
+        <button id="service_from_scratch" type="button" class="btn btn-default from_scratch_button sidebar">From Scratch</button>
+    </a>
+</script>
+
+<script type="text/ng-template" id="myModalContent.html">
+    <div class="modal-header">
+        <h2 class="section_title">Select a Service</h2>
+    </div>
+    <div class="modal-body">
+        <table st-table="templates" st-safe-src="quoteTemplates" class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th st-sort="name">Name</th>
+                    <th st-sort="quantity">Quantity</th>
+                    <th st-sort="language">Type</th>
+                    <th st-sort="language">Unit Price</th>
+                </tr>
+            </thead>
+            <tbody>
+               <tr ng-repeat="service in services" ng-click="addService(service)" style="cursor: pointer">
+                  <td>{{ service.name[language] }}</td>
+                  <td>{{ service.quantity  }}</td>
+                  <td>{{showType(service)}}</td>
+                  <td>{{ service.cost.amount  }}</td>
+              </tr>
+              <tr ng-if="services.length == 0">
+                  <td colspan="4">
+                      No services yet.
+                  </td>
+              </tr>
+            </tbody>
+        </table>
+    </div>
+</script>
+

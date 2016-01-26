@@ -201,7 +201,7 @@ class BriefDetail(View):
 
         request.breadcrumbs(_('Brief: ') + brief.name, request.path_info + query_url(request))
         return TemplateResponse(request=request,
-                                template="briefs/brief_detail.html",
+                                template="briefs/brief_detail_ng.html",
                                 context=context)
 
     def post(self, request, **kwargs):

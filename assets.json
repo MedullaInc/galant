@@ -2,11 +2,13 @@
   "js": [
     "./node_modules/angular/angular?(.min).js",
     "./node_modules/angular-aside/dist/js/angular-aside?(.min).js",
+    "./node_modules/angular-animate/angular-animate?(.min).js",
     "./node_modules/angular-cookies/angular-cookies?(.min).js",
     "./node_modules/angular-resource/angular-resource?(.min).js",
     "./node_modules/angular-route/angular-route?(.min).js",
     "./node_modules/angular-mocks/angular-mocks.js",
     "./node_modules/angular-mocks/ngMock.js",
+    "./node_modules/angular-xeditable/dist/js/xeditable?(.min).js",
     "./node_modules/bootstrap/dist/js/bootstrap?(.min).js",
     "./node_modules/chart.js/Chart?(.min).js",
     "./node_modules/flat-ui/dist/js/flat-ui?(.min).js",
@@ -17,6 +19,7 @@
     "./node_modules/angular-ui-calendar/src/calendar.js",
     "./node_modules/jquery/dist/*",
     "./node_modules/angular-smart-table/dist/*",
+    "./node_modules/ng-sortable/dist/ng-sortable?(.min).js",
     "./node_modules/fullcalendar-scheduler/dist/scheduler?(.min).js"
   ],
   "css": [
@@ -24,6 +27,9 @@
     "./node_modules/flat-ui/dist/css/flat-ui.*",
     "./node_modules/fullcalendar/dist/fullcalendar?(.min).css",
     "./node_modules/fullcalendar-scheduler/dist/scheduler?(.min).css",
-    "./node_modules/angular-aside/dist/css/angular-aside?(.min).css"
+    "./node_modules/angular-aside/dist/css/angular-aside?(.min).css",
+    "./node_modules/ng-sortable/dist/ng-sortable?(.min).css",
+    "./node_modules/ng-sortable/dist/ng-sortable.style?(.min).css",
+    "./node_modules/angular-xeditable/dist/css/xeditable?(.min).css"
   ]
 }

@@ -21,7 +21,7 @@ app.directive('glUltextInput', function () {
             required: '@',
         },
         template: '<input id="{{ eid }}" class="form-control" name="{{ name }}"' +
-                'type="text" ng-model="text[language]" ng-required="{{ required }}"/>',
+                'type="text" ng-model="text[language]" required="{{ required }}"/>',
     };
 });
 
@@ -33,8 +33,9 @@ app.directive('glUltextArea', function () {
             eid: '@',
             text: '=',
             language: '=',
+            required: '@',
         },
         template: '<textarea id="{{ eid }}" class="form-control" cols="40" name="{{ name }}" rows="3" ' +
-                'ng-model="text[language]"></textarea>',
+                'ng-model="text[language]" required="{{ required }}"></textarea>',
     };
 });

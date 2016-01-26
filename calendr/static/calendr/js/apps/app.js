@@ -2,7 +2,7 @@
  * calendarApp
  */
 
-angular.module('gallant', [
+var app = angular.module('gallant', [
         'ui.calendar',
         'ui.bootstrap',
         'ng.django.forms',

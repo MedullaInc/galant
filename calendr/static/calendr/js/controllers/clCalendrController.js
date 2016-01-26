@@ -12,7 +12,7 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
         duration: {
             months: 3
         }
-    }
+    };
 
     /* event source that contains custom events on the scope */
     $scope.events = [];

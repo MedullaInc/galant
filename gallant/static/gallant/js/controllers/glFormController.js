@@ -2,6 +2,7 @@ app = angular.module('gallant.controllers.glFormController', []);
 
 app.controller('glFormController', ['$scope', '$http', '$window',
     function ($scope, $http, $window) {
+
         var setFormsDirty = function (forms) {
             var valid = true;
             var inner = [];
@@ -30,6 +31,7 @@ app.controller('glFormController', ['$scope', '$http', '$window',
         };
 
         $scope.submitForm = function () {
+            
             var valid = setFormsDirty($scope.forms);
 
             if (valid) {
@@ -60,7 +62,7 @@ app.controller('glFormController', ['$scope', '$http', '$window',
         };
 
         $scope.$watch('object', function (newValue, oldValue) {
-            if (oldValue !== null && newValue != oldValue) {
+            if ((oldValue !== null && typeof(oldValue) !== 'undefined') && newValue != oldValue) {
                 if (!$window.onbeforeunload) {
                     $window.onbeforeunload = function (e) {
                         // If we haven't been passed the event get the window.event

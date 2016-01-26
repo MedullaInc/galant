@@ -1,14 +1,17 @@
 from django.contrib import messages
 from django.views.generic import View
 from django.template.response import TemplateResponse
+from django.http.response import JsonResponse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.core.urlresolvers import reverse
 from gallant import forms, serializers
 from gallant import models as g
-from gallant.utils import get_one_or_404, GallantObjectPermissions
+from gallant.utils import get_one_or_404, GallantObjectPermissions, GallantViewSetPermissions, get_field_choices
 from django.utils.translation import ugettext_lazy as _
 from rest_framework import generics
+from rest_framework.viewsets import ModelViewSet
+from quotes import models as q
 
 
 class ServiceUpdate(View):
@@ -108,6 +111,10 @@ def service_detail(request, *args, **kwargs):
     })
 
 
+def service_fields_json(request):
+    return JsonResponse(get_field_choices(g.Service), safe=False)
+
+
 class ServiceDetailAPI(generics.RetrieveUpdateAPIView):
     model = g.Service
     serializer_class = serializers.ServiceSerializer
@@ -118,3 +125,14 @@ class ServiceDetailAPI(generics.RetrieveUpdateAPIView):
     def get_queryset(self):
         return self.model.objects.all_for(self.request.user)
 
+class ServiceAPI(ModelViewSet):
+    model = g.Service
+    serializer_class = serializers.ServiceSerializer
+    permission_classes = [
+         GallantViewSetPermissions
+     ]
+
+    def get_queryset(self):
+        quoteTemplates_qs = q.QuoteTemplate.objects.all_for(self.request.user).values_list('quote_id', flat=True)
+        quotes_qs = q.Quote.objects.filter(pk__in=quoteTemplates_qs)
+        return self.model.objects.all_for(self.request.user).filter(quote__in=quotes_qs)

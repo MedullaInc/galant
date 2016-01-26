@@ -8,7 +8,7 @@ def tearDown():
 class LoginSignUpTest(browser.SignedInTest):
     def setUp(self):
         super(LoginSignUpTest, self).setUp()
-        browser.instance().get(self.live_server_url)
+        browser.instance().get(self.live_server_url+'/en/')
 
     def test_cant_login(self):
         body = browser.instance().find_element_by_tag_name('body')
