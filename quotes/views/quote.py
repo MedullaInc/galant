@@ -8,7 +8,6 @@ from django.core.urlresolvers import reverse
 from gallant.utils import get_one_or_404, url_to_pdf, get_site_from_host, GallantObjectPermissions, get_field_choices, \
     GallantViewSetPermissions
 from quotes import models as q
-from quotes import forms as qf
 from quotes import serializers
 from gallant.serializers import payment
 from gallant import models as g
@@ -23,36 +22,14 @@ from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED
 
 
 class QuoteUpdate(View):
-    def get(self, request, **kwargs):
+    def get(self, request, **kwargs): # pragma: no cover
         self.object = get_one_or_404(request.user, 'change_quote', q.Quote, pk=kwargs['pk'])
-        form = qf.QuoteForm(request.user, instance=self.object)
-        section_forms = qf.section_forms_quote(quote=self.object)
-        return self.render_to_response({'object': self.object, 'form': form, 'sections': section_forms,
+        return self.render_to_response({'object': self.object,
                                         'title': 'Edit Quote'})
 
-    def post(self, request, **kwargs):
-        if 'pk' in kwargs:
-            self.object = get_one_or_404(request.user, 'change_quote', q.Quote, pk=kwargs['pk'])
-        else:
-            self.object = None
 
-        if 'preview' in self.request.POST:
-            self.object.project_id = None
-
-        form = qf.QuoteForm(request.user, request.POST, instance=self.object)
-        section_forms = qf.section_forms_request(request)
-
-        valid = list([form.is_valid()] + [s.is_valid() for s in section_forms])
-
-        if all(valid):
-            return self.form_valid(form, section_forms)
-
-        else:
-            return self.render_to_response({'object': self.object, 'form': form, 'sections': section_forms,
-                                            'title': 'Edit Quote'})
-
-    def form_valid(self, form, section_forms):
-        if 'preview' in self.request.POST:  # pragma: no cover
+    def form_valid(self, form, section_forms): # pragma: no cover
+        if 'preview' in self.request.POST:  
             form.instance.pk = None
             form.instance.token = uuid4()
 
@@ -63,8 +40,6 @@ class QuoteUpdate(View):
                 if hasattr(section_form, 'section'):
                     section_form.section.pk = None
                     section_form.section.id = None
-
-            self.object = qf.create_quote(form, section_forms)
 
             quote = self.object
             url = '%s://%s%s' % (
@@ -90,11 +65,10 @@ class QuoteUpdate(View):
             return response
 
         else:
-            self.object = qf.create_quote(form, section_forms)
             messages.success(self.request, 'Quote saved.')
             return HttpResponseRedirect(reverse('quote_detail', args=[self.object.id]))
 
-    def render_to_response(self, context):
+    def render_to_response(self, context): # pragma: no cover
         self.request.breadcrumbs(_('Quotes'), reverse('quotes'))
         if self.object:
             self.request.breadcrumbs([(_('Quote: %s' % self.object.name),
@@ -130,7 +104,7 @@ class QuoteCreate(QuoteUpdate):
                                 context=context)
 
 
-def _send_quote_email(email, from_name, link, site):
+def _send_quote_email(email, from_name, link, site): # pragma: no cover
     message = '%s has sent you a Quote from %s.\n\n Click this link to view:\n %s' % \
               (from_name, site, link)
     send_mail('Client Quote', message,
@@ -172,8 +146,7 @@ class QuoteDetail(View):
                              (_('Quote: %s' % quote.name), request.path_info)])
         return TemplateResponse(request=request,
                                 template="quotes/quote_detail_ng.html",
-                                context={'title': 'Quote', 'object': quote})
-
+                                context={'title': 'Quote', 'object': quote})  
     def post(self, request, **kwargs):
         quote = get_one_or_404(request.user, 'view_quote', q.Quote, id=kwargs['pk'])
         quote.status = q.QuoteStatus.Sent.value

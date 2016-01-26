@@ -7,7 +7,6 @@ from django.contrib import messages
 from django.core.urlresolvers import reverse
 from gallant.utils import get_one_or_404, GallantObjectPermissions, GallantViewSetPermissions
 from quotes import models as q, serializers
-from quotes import forms as qf
 from gallant import forms as gf
 from django.utils.translation import ugettext_lazy as _
 from rest_framework import generics
@@ -43,9 +42,8 @@ class QuoteTemplateView(View):
         self.request.breadcrumbs([(_('Quotes'), reverse('quotes')),
                                   (_('Templates'), reverse('quote_templates'))])
 
-        if 'pk' in kwargs:
+        if 'pk' in kwargs:  # pragma: no cover
             self.object = get_one_or_404(request.user, 'view_quotetemplate', q.QuoteTemplate, pk=kwargs['pk'])
-            form = qf.QuoteTemplateForm(request.user, instance=self.object.quote)
 
             if not request.user.has_perm('change_quotetemplate', self.object):
                 messages.warning(request, 'Warning: you don\'t have permission to change this template. '
@@ -54,39 +52,12 @@ class QuoteTemplateView(View):
 
             self.request.breadcrumbs([(_('Quote: %s' % self.object.quote.name), reverse('quote_template_detail', args=[self.object.id])),
                                       (_('Edit Template'), request.path_info)])
-        else:
+        else: 
             self.object = None
             self.request.breadcrumbs([(_('Add'), request.path_info)])
 
-            if kwargs['quote_id'] is not None:
-                quote = get_one_or_404(request.user, 'view_quote', q.Quote, pk=kwargs['quote_id'])
-                form = qf.QuoteTemplateForm(request.user, instance=quote)
-            else:
-                form = qf.QuoteTemplateForm(request.user)
+        return self.render_to_response({}, request)
 
-        return self.render_to_response({'form': form}, request)
-
-    def post(self, request, **kwargs):
-        section_forms = qf.section_forms_request(request)
-        if 'pk' in kwargs:
-            self.object = get_one_or_404(request.user, 'change_quotetemplate', q.QuoteTemplate, pk=kwargs['pk'])
-            form = qf.QuoteTemplateForm(request.user, request.POST, instance=self.object.quote)
-        else:
-            self.object = None
-            form = qf.QuoteTemplateForm(request.user, request.POST)
-
-        valid = list([form.is_valid()] + [s.is_valid() for s in section_forms])
-        if all(valid):
-            return self.form_valid(form, section_forms)
-        else:
-            return self.render_to_response({'form': form, 'sections': section_forms}, request)
-
-    def form_valid(self, form, section_forms):
-        quote = qf.create_quote(form, section_forms)
-        if hasattr(self, 'object') and self.object is None:
-            self.object = q.QuoteTemplate.objects.create(user=quote.user, quote=quote)
-        messages.success(self.request, 'Template saved.')
-        return HttpResponseRedirect(reverse('edit_quote_template', args=[self.object.id]))
 
     def render_to_response(self, context, request):
         lang_dict = dict(settings.LANGUAGES)
