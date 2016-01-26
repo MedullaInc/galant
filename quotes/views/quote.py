@@ -8,7 +8,6 @@ from django.core.urlresolvers import reverse
 from gallant.utils import get_one_or_404, url_to_pdf, get_site_from_host, GallantObjectPermissions, get_field_choices, \
     GallantViewSetPermissions
 from quotes import models as q
-from quotes import forms as qf
 from quotes import serializers
 from gallant.serializers import payment
 from gallant import models as g
@@ -42,8 +41,6 @@ class QuoteUpdate(View):
                     section_form.section.pk = None
                     section_form.section.id = None
 
-            self.object = qf.create_quote(form, section_forms)
-
             quote = self.object
             url = '%s://%s%s' % (
             self.request.scheme, self.request.get_host(), reverse('quote_preview', args=[quote.id]))
@@ -68,7 +65,6 @@ class QuoteUpdate(View):
             return response
 
         else:
-            self.object = qf.create_quote(form, section_forms)
             messages.success(self.request, 'Quote saved.')
             return HttpResponseRedirect(reverse('quote_detail', args=[self.object.id]))
 

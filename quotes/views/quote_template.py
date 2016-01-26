@@ -7,7 +7,6 @@ from django.contrib import messages
 from django.core.urlresolvers import reverse
 from gallant.utils import get_one_or_404, GallantObjectPermissions, GallantViewSetPermissions
 from quotes import models as q, serializers
-from quotes import forms as qf
 from gallant import forms as gf
 from django.utils.translation import ugettext_lazy as _
 from rest_framework import generics
@@ -45,7 +44,6 @@ class QuoteTemplateView(View):
 
         if 'pk' in kwargs:
             self.object = get_one_or_404(request.user, 'view_quotetemplate', q.QuoteTemplate, pk=kwargs['pk'])
-            form = qf.QuoteTemplateForm(request.user, instance=self.object.quote)
 
             if not request.user.has_perm('change_quotetemplate', self.object):
                 messages.warning(request, 'Warning: you don\'t have permission to change this template. '
@@ -58,13 +56,7 @@ class QuoteTemplateView(View):
             self.object = None
             self.request.breadcrumbs([(_('Add'), request.path_info)])
 
-            if kwargs['quote_id'] is not None:
-                quote = get_one_or_404(request.user, 'view_quote', q.Quote, pk=kwargs['quote_id'])
-                form = qf.QuoteTemplateForm(request.user, instance=quote)
-            else:
-                form = qf.QuoteTemplateForm(request.user)
-
-        return self.render_to_response({'form': form}, request)
+        return self.render_to_response({}, request)
 
 
     def render_to_response(self, context, request):
