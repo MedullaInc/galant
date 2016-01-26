@@ -54,6 +54,11 @@ app.factory('ClientProjects', function ($resource) {
 });
 
 /* istanbul ignore next  */
+app.factory('ClientQuoteDetail', function ($resource) {
+    return $resource('/en/quote/api/payments/:client_id/:id', {client_id: '@client_id', id: '@id'});
+});
+
+/* istanbul ignore next  */
 app.factory('User', function ($resource) {
     return $resource('/en/api/users');
 });
