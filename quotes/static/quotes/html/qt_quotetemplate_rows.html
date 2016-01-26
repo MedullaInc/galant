@@ -1,0 +1,9 @@
+ <tr ng-repeat="template in quoteTemplates" ng-click="redirect(template.id)" style="cursor: pointer">
+    <td>{{ (quotes | filter:{id: template.quote.id})[0].name }}</td>
+    <td>{{ (quotes | filter:{id: template.quote.id})[0].modified | date:'y-M-d h:m'  }}</td>
+</tr>
+<tr ng-if="quotes.length == 0">
+    <td colspan="4">
+        No quotes yet.
+    </td>
+</tr>

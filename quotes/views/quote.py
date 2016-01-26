@@ -1,11 +1,12 @@
-from django.http.response import HttpResponse
+from django.http.response import HttpResponse, JsonResponse
 from django.views.generic import View
 from django.template.response import TemplateResponse
 from django.http import HttpResponseRedirect
 from django.conf import settings
 from django.contrib import messages
 from django.core.urlresolvers import reverse
-from gallant.utils import get_one_or_404, url_to_pdf, get_site_from_host, GallantObjectPermissions
+from gallant.utils import get_one_or_404, url_to_pdf, get_site_from_host, GallantObjectPermissions, get_field_choices, \
+    GallantViewSetPermissions
 from quotes import models as q
 from quotes import forms as qf
 from quotes import serializers
@@ -16,36 +17,18 @@ from django.utils.translation import ugettext_lazy as _
 from django.core.mail import send_mail
 from uuid import uuid4
 from rest_framework import generics
+from rest_framework.viewsets import ModelViewSet
+from rest_framework.response import Response
+from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED
 
 
 class QuoteUpdate(View):
     def get(self, request, **kwargs):
         self.object = get_one_or_404(request.user, 'change_quote', q.Quote, pk=kwargs['pk'])
         form = qf.QuoteForm(request.user, instance=self.object)
-        section_forms = qf.section_forms_quote(quote=self.object)
-        return self.render_to_response({'object': self.object, 'form': form, 'sections': section_forms,
+        return self.render_to_response({'object': self.object, 'form': form,
                                         'title': 'Edit Quote'})
-
-    def post(self, request, **kwargs):
-        if 'pk' in kwargs:
-            self.object = get_one_or_404(request.user, 'change_quote', q.Quote, pk=kwargs['pk'])
-        else:
-            self.object = None
-
-        if 'preview' in self.request.POST:
-            self.object.project_id = None
-
-        form = qf.QuoteForm(request.user, request.POST, instance=self.object)
-        section_forms = qf.section_forms_request(request)
-
-        valid = list([form.is_valid()] + [s.is_valid() for s in section_forms])
-
-        if all(valid):
-            return self.form_valid(form, section_forms)
-
-        else:
-            return self.render_to_response({'object': self.object, 'form': form, 'sections': section_forms,
-                                            'title': 'Edit Quote'})
+        
 
     def form_valid(self, form, section_forms):
         if 'preview' in self.request.POST:  # pragma: no cover
@@ -80,7 +63,7 @@ class QuoteUpdate(View):
 
             # Delete preview quote / services / sections
             quote.sections.all_for(self.request.user, 'delete').delete()
-            quote.service_sections.all_for(self.request.user, 'delete').delete()
+            quote.services.all_for(self.request.user, 'delete').delete()
             quote.delete()
 
             return response
@@ -112,21 +95,17 @@ class QuoteCreate(QuoteUpdate):
         if template_id is not None:
             template = get_one_or_404(request.user, 'view_quotetemplate', q.QuoteTemplate, pk=template_id)
             quote = template.quote
-            section_forms = qf.section_forms_quote(quote, clear_pk=True)
-            context.update({'sections': section_forms})
             quote.pk = None
+            context.update({'template_id': template_id})
             if lang is not None:
                 quote.language = lang
-                context.update({'language': lang, 'form': qf.QuoteForm(request.user, instance=quote), 'object': quote})
-        else:
-            context.update({'form': qf.QuoteForm(request.user, instance=q.Quote()),
-                            'sections': qf.section_forms_initial(request.user)})
+                context.update({'language': lang, 'object': quote})
 
         request.breadcrumbs([(_('Quotes'), reverse('quotes')),
                              (_('Add'), request.path_info)])
 
         return TemplateResponse(request=self.request,
-                                template="quotes/quote_form.html",
+                                template="quotes/quote_form_ng.html",
                                 context=context)
 
 
@@ -154,6 +133,16 @@ class QuoteTemplateDelete(View):
         return HttpResponseRedirect(reverse('quote_templates'))
 
 
+# class QuoteDetail(View):
+#     def get(self, request, **kwargs):
+#         quote = get_one_or_404(request.user, 'view_quote', q.Quote, pk=kwargs['pk'])
+
+#         request.breadcrumbs([(_('Quotes'), reverse('quotes')),
+#                              (_('Quote: %s' % quote.name), request.path_info)])
+#         return TemplateResponse(request=request,
+#                                 template="quotes/quote_detail.html",
+#                                 context={'title': 'Quote', 'object': quote})
+
 class QuoteDetail(View):
     def get(self, request, **kwargs):
         quote = get_one_or_404(request.user, 'view_quote', q.Quote, pk=kwargs['pk'])
@@ -161,7 +150,7 @@ class QuoteDetail(View):
         request.breadcrumbs([(_('Quotes'), reverse('quotes')),
                              (_('Quote: %s' % quote.name), request.path_info)])
         return TemplateResponse(request=request,
-                                template="quotes/quote_detail.html",
+                                template="quotes/quote_detail_ng.html",
                                 context={'title': 'Quote', 'object': quote})
 
     def post(self, request, **kwargs):
@@ -181,7 +170,7 @@ class QuoteList(View):
     def get(self, request):
         self.request.breadcrumbs(_('Quotes'), request.path_info)
         return TemplateResponse(request=request,
-                                template="quotes/quote_list.html",
+                                template="quotes/quote_list_ng.html",
                                 context={'title': 'Quotes',
                                          'object_list': q.Quote.objects
                                 .all_for(request.user)
@@ -190,16 +179,35 @@ class QuoteList(View):
                                 .all_for(request.user)})
 
 
-class QuoteDetailAPI(generics.RetrieveUpdateAPIView):
+def quote_fields_json(request):
+    return JsonResponse(get_field_choices(q.Quote), safe=False)
+
+
+class QuoteViewSet(ModelViewSet):
     model = q.Quote
     serializer_class = serializers.QuoteSerializer
     permission_classes = [
-        GallantObjectPermissions
-    ]
+         GallantViewSetPermissions
+     ]
 
     def get_queryset(self):
         return self.model.objects.all_for(self.request.user)
 
+    def update(self, request, *args, **kwargs):
+        response = super(QuoteViewSet, self).update(request, *args, **kwargs)
+        if response.status_code == HTTP_200_OK or response.status_code == HTTP_201_CREATED:
+            self.request._messages.add(messages.SUCCESS, 'Quote saved.')
+            return Response({'status': 0, 'redirect': reverse('quote_detail', args=[response.data['id']])})
+        else:
+            return response
+
+    def create(self, request, *args, **kwargs):
+        response = super(QuoteViewSet, self).create(request, *args, **kwargs)
+        if response.status_code == HTTP_201_CREATED:
+            self.request._messages.add(messages.SUCCESS, 'Quote saved.')
+            return Response({'status': 0, 'redirect': reverse('quote_detail', args=[response.data['id']])})
+        else:
+            return response
 
 class QuotePaymentsAPI(generics.RetrieveUpdateAPIView):
     model = g.Client

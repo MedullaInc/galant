@@ -978,10 +978,6 @@ header .brand img:first-child {
     /*margin: -10px 15px 0 0;*/
 }
 
-section * {
-    z-index: 2;
-}
-
 .background {
     position: absolute;
     left: 0;

@@ -46,8 +46,8 @@ class QuoteTest(test.TransactionTestCase):
         user = self.user
 
         # Add sections to Quote
-        intro = q.TextSection.objects.create(user=user, name='intro', index=0)
-        important_notes = q.TextSection.objects.create(user=user, name='important_notes', index=1)
+        intro = q.Section.objects.create(user=user, name='intro', index=0)
+        important_notes = q.Section.objects.create(user=user, name='important_notes', index=1)
         quote.sections.add(intro)
         quote.sections.add(important_notes)
 
@@ -68,7 +68,7 @@ class QuoteTest(test.TransactionTestCase):
             self.assertEqual(section.deleted_by_parent, 1)
 
         # Validate Quote Services deleted & deleted_by_parent fields are 1
-        for service in quote.service_sections.all_for(user):
+        for service in quote.services.all_for(user):
             self.assertEqual(service.deleted, 1)
             self.assertEqual(service.deleted_by_parent, 1)
 
@@ -79,7 +79,7 @@ class QuoteTest(test.TransactionTestCase):
 
         quote.projects.add(autofixture.create_one(g.Project, generate_fk=True, field_values={'user': user}))
 
-        request = factory.get(reverse('api_quote_detail', args=[quote.id]))
+        request = factory.get(reverse('api-quote-detail', args=[quote.id]))
         request.user = user
         force_authenticate(request, user=user)
 
@@ -96,7 +96,7 @@ class QuoteTest(test.TransactionTestCase):
         quote = self.quote
         user = self.user
 
-        request = factory.get(reverse('api_quote_detail', args=[quote.id]))
+        request = factory.get(reverse('api-quote-detail', args=[quote.id]))
         request.user = user
         force_authenticate(request, user=user)
 
@@ -121,8 +121,7 @@ class QuoteTest(test.TransactionTestCase):
             'user': user, 'quantity': 1})
         service.cost = Money(500, 'USD')
         service.save()
-        service_section = q.ServiceSection.objects.create(user=user, index=0, service=service)
-        quote.service_sections.add(service_section)
+        quote.services.add(service)
 
         # Q1 Paid
         payment1 = autofixture.create_one(g.Payment, generate_fk=True, field_values=
@@ -222,11 +221,12 @@ class QuoteTest(test.TransactionTestCase):
         quote = self.quote
         user = self.user
 
-        request = factory.get(reverse('api_quote_detail', args=[quote.id]))
+        request = factory.get(reverse('api-quote-detail', args=[quote.id]))
         request.user = user
         force_authenticate(request, user=user)
 
-        response = views.QuoteDetailAPI.as_view()(request, pk=quote.id)
+        response = views.QuoteViewSet.as_view({'get': 'retrieve'})(request, pk=quote.id)
+
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
 
@@ -238,12 +238,19 @@ class QuoteTest(test.TransactionTestCase):
         quote.projects.add(autofixture.create_one('gallant.Project', generate_fk=True,
                                                   field_values={'user': user}))
 
-        data = {'projects': []}
+        data = {'projects': [], 'services': [], 'sections': []}
 
-        request = factory.patch(reverse('api_quote_detail', args=[quote.id]), data=data, format='json')
+        request = factory.patch(reverse('api-quote-detail', args=[quote.id]), data=data, format='json')
+
+        class Object(object):
+            def add(self, a, b):
+                pass
+        request._messages = Object()
+
         force_authenticate(request, user=user)
 
-        response = views.QuoteDetailAPI.as_view()(request, pk=quote.id)
+
+        response = views.QuoteViewSet.as_view({'patch': 'partial_update'})(request, pk=quote.id)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         quote.refresh_from_db()
@@ -257,12 +264,12 @@ class QuoteTemplateTest(test.TestCase):
 
         quote = autofixture.create_one(q.Quote, generate_fk=True,
                                        field_values={'sections': [], 'language': 'en', 'user': user, 'client': client})
-        i = q.TextSection.objects.create(user=quote.user, name='intro', index=0)
-        m = q.TextSection.objects.create(user=quote.user, name='important_notes', index=1)
+        i = q.Section.objects.create(user=quote.user, name='intro', index=0)
+        m = q.Section.objects.create(user=quote.user, name='important_notes', index=1)
         quote.sections.add(i)
         quote.sections.add(m)
         quote_template = autofixture.create_one(q.QuoteTemplate, generate_fk=True,
-                                                field_values={'quote': quote, 'user': user})
+                                                field_values={'quote': quote, 'user': user, 'client':user})
 
         self.user = user
         self.quote = quote
@@ -281,8 +288,8 @@ class QuoteTemplateTest(test.TestCase):
         quote_no_client = autofixture.create_one(q.Quote, generate_fk=True,
                                                  field_values={'sections': [], 'language': 'en', 'user': user,
                                                                'client': None})
-        i = q.TextSection.objects.create(user=quote_no_client.user, name='intro', index=0)
-        m = q.TextSection.objects.create(user=quote_no_client.user, name='important_notes', index=1)
+        i = q.Section.objects.create(user=quote_no_client.user, name='intro', index=0)
+        m = q.Section.objects.create(user=quote_no_client.user, name='important_notes', index=1)
         quote_no_client.sections.add(i)
         quote_no_client.sections.add(m)
 
@@ -309,12 +316,20 @@ class QuoteTemplateTest(test.TestCase):
         self.assertEqual(quote_template_b.quote.deleted_by_parent, 1)
 
     def test_quote_template_serialize(self):
+        factory = APIRequestFactory()
         quote_template = self.quote_template
+        user = self.user
+        quote_template.user = user
 
-        serializer = serializers.QuoteTemplateSerializer(quote_template)
+        request = factory.get(reverse('api-quote-template-detail', args=[quote_template.id]))
+        request.user = self.user
+        force_authenticate(request, user=user)
+
+        serializer = serializers.QuoteTemplateSerializer(quote_template, context={'request': request})
+
         self.assertIsNotNone(serializer.data)
 
-        parser = serializers.QuoteTemplateSerializer(quote_template, data=serializer.data)
+        parser = serializers.QuoteTemplateSerializer(quote_template, data=serializer.data, context={'request': request})
         self.assertTrue(parser.is_valid())
 
     def test_access_api_quote_template(self):
@@ -322,161 +337,9 @@ class QuoteTemplateTest(test.TestCase):
         quote_template = self.quote_template
         user = self.user
 
-        request = factory.get(reverse('api_quote_template_detail', args=[quote_template.id]))
+        request = factory.get(reverse('api-quote-template-detail', args=[quote_template.id]))
         request.user = user
         force_authenticate(request, user=user)
 
-        response = views.QuoteTemplateDetailAPI.as_view()(request, pk=quote_template.id)
+        response = views.QuoteTemplateViewSet.as_view({'get': 'retrieve'})(request, pk=quote_template.id)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-
-
-class QuoteFormTest(test.TestCase):
-    def setUp(self):
-        client = AutoFixture(g.Client, generate_fk=True).create(1)
-        self.request = type('obj', (object,), {
-            'POST': {'status': '1', 'name': 'asdfQuote test edit', 'language': 'en',
-                     '-section-0-text': 'test intro text',
-                     '-section-0-title': 'modified intro title', '-section-0-name': 'intro', '-section-0-index': '0',
-                     '-section-1-name': 'important_notes', '-section-1-title': 'test important notes title',
-                     '-section-1-text': 'test important notes text', '-section-1-index': '1', 'client': client[0].id},
-            'user': client[0].user,
-        })
-
-    def test_create_quote(self):
-        f = qf.QuoteForm(self.request.user, self.request.POST)
-        s = qf.section_forms_request(self.request)
-
-        self.assertTrue(f.is_valid())
-
-        obj = qf.create_quote(f, s)
-        self.assertEquals(obj.id, 1)
-
-    def test_edit_quote(self):
-        f = qf.QuoteForm(self.request.user, self.request.POST)
-        s = qf.section_forms_request(self.request)
-
-        self.assertTrue(f.is_valid())
-
-        obj = qf.create_quote(f, s)
-        new_obj = qf.create_quote(f, s)
-        self.assertEquals(obj.id, new_obj.id)
-
-    def test_new_section(self):
-        new_data = {'-section-2-title': 'title123', '-section-2-text': 'text123',
-                    '-section-2-name': 'section_1', '-section-2-index': '2'}
-        self.request.POST.update(new_data)
-
-        f = qf.QuoteForm(self.request.user, self.request.POST)
-        s = qf.section_forms_request(self.request)
-
-        self.assertTrue(f.is_valid())
-
-        obj = qf.create_quote(f, s)
-        obj.save()
-
-        self.assertEquals(obj.sections.count(), 3)
-
-    def test_new_service(self):
-        new_data = {'-service-2-section_name': 'title123', '-service-2-type': '3',
-                    '-service-2-description': 'title123', '-service-2-cost_0': '3',
-                    '-service-2-quantity': '2', '-service-2-name': 'title123',
-                    '-service-2-cost_1': 'USD', '-service-2-index': '2'}
-        self.request.POST.update(new_data)
-
-        f = qf.QuoteForm(self.request.user, self.request.POST)
-        s = qf.section_forms_request(self.request)
-
-        self.assertTrue(f.is_valid())
-
-        obj = qf.create_quote(f, s)
-        obj.save()
-
-        self.assertEquals(obj.service_sections.count(), 1)
-
-    def test_same_sections(self):
-        new_data = {'-section-2-title': 'title123', '-section-2-text': 'text123',
-                    '-section-2-name': 'section_1', '-section-2-index': '2'}
-        self.request.POST.update(new_data)
-
-        f = qf.QuoteForm(self.request.user, self.request.POST)
-        s = qf.section_forms_request(self.request)
-        for sf in s:
-            if not sf.is_valid():
-                for field in sf:
-                    print '%s: %s' % (field.name, field.errors)
-
-        self.assertTrue(f.is_valid())
-
-        obj = qf.create_quote(f, s)
-        obj.save()
-        intro_id = obj.intro().id
-        important_notes_id = obj.important_notes().id
-        section_ids = [s.id for s in obj.sections.all_for(self.request.user)]
-
-        new_data['-section-0-id'] = intro_id
-        new_data['-section-1-id'] = important_notes_id
-        new_data['-section-2-id'] = section_ids[2]
-        self.request.POST.update(new_data)
-        s = qf.section_forms_request(self.request)
-
-        new_obj = qf.create_quote(f, s)
-        new_obj.save()
-        new_section_ids = [s.id for s in new_obj.sections.all_for(self.request.user)]
-
-        self.assertEquals(section_ids, new_section_ids)
-
-    def test_same_services(self):
-        new_data = {'-service-2-section_name': 'title123', '-service-2-type': '3',
-                    '-service-2-description': 'title123', '-service-2-cost_0': '3',
-                    '-service-2-quantity': '2', '-service-2-name': 'title123',
-                    '-service-2-index': '2', '-service-2-cost_1': 'USD',
-                    '-service-3-section_name': 'title123', '-service-3-type': '3',
-                    '-service-3-description': 'title123',
-                    '-service-3-cost_0': '3', '-service-3-quantity': '2',
-                    '-service-3-name': 'title123', '-service-3-cost_1': 'USD',
-                    '-service-3-index': '3'}
-        self.request.POST.update(new_data)
-
-        f = qf.QuoteForm(self.request.user, self.request.POST)
-        s = qf.section_forms_request(self.request)
-
-        self.assertTrue(f.is_valid())
-
-        obj = qf.create_quote(f, s)
-        obj.save()
-        service_ids = [s.id for s in obj.service_sections.all_for(self.request.user)]
-
-        new_data['-service-2-id'] = service_ids[0]
-        new_data['-service-3-id'] = service_ids[1]
-        self.request.POST.update(new_data)
-        s = qf.section_forms_request(self.request)
-
-        new_obj = qf.create_quote(f, s)
-        new_obj.save()
-        new_service_ids = [s.id for s in new_obj.service_sections.all_for(self.request.user)]
-
-        self.assertEquals(service_ids, new_service_ids)
-
-    def test_modify_section(self):
-        new_data = {'-section-2-title': 'title123', '-section-2-text': 'text123',
-                    '-section-2-name': 'section_1', '-section-2-index': '2'}
-        self.request.POST.update(new_data)
-
-        f = qf.QuoteForm(self.request.user, self.request.POST)
-        s = qf.section_forms_request(self.request)
-
-        self.assertTrue(f.is_valid())
-
-        obj = qf.create_quote(f, s)
-        obj.save()
-        section_ids = [s.id for s in obj.sections.all_for(self.request.user)]
-
-        new_data['-section-2-title'] = 'new title'
-        self.request.POST.update(new_data)
-        s = qf.section_forms_request(self.request)
-
-        new_obj = qf.create_quote(f, s)
-        new_obj.save()
-        new_section_ids = [s.id for s in new_obj.sections.all_for(self.request.user)]
-
-        self.assertNotEquals(section_ids, new_section_ids)

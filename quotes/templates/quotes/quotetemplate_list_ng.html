@@ -1,0 +1,58 @@
+{% extends "base_sidebar.html" %}
+{% load bootstrap i18n %}
+{% load static %}
+
+{% block ng_app %} ng-app="quote" {% endblock %}
+
+{% block scripts %}
+    {{ block.super }}
+    <script src="{% static "js/angular.js" %}"></script>
+    <script src="{% static "js/angular-resource.js" %}"></script>
+    <script src="{% static "js/xeditable.min.js" %}"></script>
+    <script src="{% static "js/ui-bootstrap-tpls.js" %}"></script>
+    <script src="{% static "djangular/js/django-angular.min.js" %}"></script>
+    <script src="{% static "gallant/js/directives/glForm.js" %}"></script>
+    <script src="{% static "gallant/js/controllers/glFormController.js" %}"></script>
+    <script src="{% static "quotes/js/controllers/qtQuoteListController.js" %}"></script>
+    <script src="{% static "quotes/js/controllers/qtPopoverController.js" %}"></script>
+    <script src="{% static "quotes/js/services/qtServices.js" %}"></script>
+    <script src="{% static "quotes/js/directives/qtForm.js" %}"></script>
+    <script src="{% static "quotes/js/apps/quotes.js" %}"></script>
+    <script src="{% static "js/ng-sortable.min.js" %}"></script>
+    <script src="{% static "js/smart-table.js" %}"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular-animate.js"></script>
+
+{% endblock %}
+
+{% block section_title %}
+    {% trans "Quote Templates" %}
+{% endblock %}
+
+{% block sidebar %}
+    <a href="{% url 'add_quote_template' %}">
+        <button type="button" class="btn btn-default sidebar">
+            {% trans "Add New Template" %}
+        </button>
+    </a>
+{% endblock %}
+
+{% block center_content %}
+    <div ng-controller="qtQuoteListController"
+         ng-init="init('{% url 'quote_template_detail' %}')">
+        <table st-table="quotes" st-safe-src="quotesSafe"
+               class="table table-striped table-bordered">
+            <thead>
+            <tr>
+                <th st-sort="last_modified">{% trans "Name" %}</th>
+                <th st-sort="client">{% trans "Last Modified" %}</th>
+            </tr>
+            </thead>
+            <tbody ng-include src="'{% static "quotes/html/qt_quotetemplate_rows.html" %}'">
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+
+{% block extra_body %}
+
+{% endblock %}

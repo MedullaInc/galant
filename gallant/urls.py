@@ -28,6 +28,7 @@ from rest_framework.routers import SimpleRouter
 
 router = SimpleRouter(trailing_slash=False)
 router.register(r'api/client', views.ClientsAPI, 'api-client')
+router.register(r'api/service', views.ServiceAPI, 'api-service')
 
 urlpatterns = i18n_patterns(
     # ==============
@@ -115,4 +116,9 @@ urlpatterns += patterns('',
 urlpatterns += url(r'^api/client/fields',
                    login_required(gallant.views.client_fields_json),
                    name='api-client-fields'),
+
+urlpatterns += url(r'^api/service/fields',
+                   login_required(gallant.views.service_fields_json),
+                   name='api-service-fields'),
+
 urlpatterns += router.urls

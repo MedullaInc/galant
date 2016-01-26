@@ -18,6 +18,14 @@ class ServiceType(gf.ChoiceEnum):
     Interior_Design = 8
 
 
+class ServiceStatus(gf.ChoiceEnum):
+    On_Hold = 0
+    Pending_Assignment = 1
+    Active = 2
+    Overdue = 3
+    Completed = 4
+
+
 class Service(UserModel):
     """
     A service to be rendered for a client, will appear on Quotes. When associated with a project / user, it should
@@ -26,6 +34,8 @@ class Service(UserModel):
     # name = m.ForeignKey(ULText, related_name='name')
     name = gf.ULCharField()
     description = gf.ULTextField(null=True)
+    status = m.CharField(max_length=2, choices=ServiceStatus.choices(), default=ServiceStatus.Pending_Assignment.value)
+
     # TODO: brief = ServiceBrief()
 
     # currency is chosen based on client preference
@@ -43,6 +53,10 @@ class Service(UserModel):
             total += sub.get_total_cost()
 
         return total
+
+    def get_quote_template_services(self):
+        return self.services.all_for(self.user)
+
 
     def __unicode__(self):
         return self.name.get_text()
@@ -63,4 +77,3 @@ class Service(UserModel):
                 service.soft_delete(deleted_by_parent=True)
 
             super(Service, self).soft_delete(deleted_by_parent)
-

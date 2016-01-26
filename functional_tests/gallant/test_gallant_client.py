@@ -37,10 +37,7 @@ class GallantClientTest(browser.SignedInTest):
 
         # Assign services to quote
         for s in services[0:9]:
-            quote.service_sections.add(
-                qm.ServiceSection.objects.create(index=0, user=self.user,
-                                                 name='service', service=s)
-            )
+            quote.services.add(s)
 
         quote.save()
 
