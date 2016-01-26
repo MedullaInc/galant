@@ -104,7 +104,7 @@ class QuoteCreate(QuoteUpdate):
                                 context=context)
 
 
-def _send_quote_email(email, from_name, link, site):
+def _send_quote_email(email, from_name, link, site): # pragma: no cover
     message = '%s has sent you a Quote from %s.\n\n Click this link to view:\n %s' % \
               (from_name, site, link)
     send_mail('Client Quote', message,
