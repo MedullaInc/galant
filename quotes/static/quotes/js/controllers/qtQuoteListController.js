@@ -36,7 +36,7 @@ app.controller('qtQuoteListController', ['$scope', '$http', '$window', 'Quote', 
         });
 
         $scope.redirect = function(id) {
-            $window.location.href = $scope.quoteDetailURL + id
+            $window.location.href = $scope.quoteDetailURL + id;
         };
 
     }

@@ -28,11 +28,12 @@ app.directive('qtQuoteForm', ['Quote', 'Service', 'Client', '$filter', '$uibModa
 
             $scope.addSection = function(section_name) {
                 var name = "";
+                var counter;
                                 
                 if (section_name) {
                     name = section_name;
                 } else {
-                    var counter = $scope.quote.sections.length;
+                    counter = $scope.quote.sections.length;
                     name = "section_" + (counter++);
                 }
 
@@ -41,7 +42,7 @@ app.directive('qtQuoteForm', ['Quote', 'Service', 'Client', '$filter', '$uibModa
                     text: {},
                     name: name,
                     index: counter,
-              }
+              };
               $scope.quote.sections.push($scope.inserted);
             };
 
@@ -74,7 +75,7 @@ app.directive('qtQuoteForm', ['Quote', 'Service', 'Client', '$filter', '$uibModa
                 if(selected.length > 0){
                     $scope.language_list.push([selected[0].value,selected[0].text]);
                 }
-            }
+            };
 
 
             Client.get().$promise.then(function(clients) {
@@ -83,9 +84,12 @@ app.directive('qtQuoteForm', ['Quote', 'Service', 'Client', '$filter', '$uibModa
 
 
             Quote.fields().$promise.then(function(fields) {
-                for (var key in fields.status) {
+                var tempObj = {};
+                var key = "";
+
+                for (key in fields.status) {
                     // must create a temp object to set the key using a variable
-                    var tempObj = {};
+                    tempObj = {};
                     tempObj[key] = fields.status[key];
                     $scope.quoteStatus.push({
                         value: key,
@@ -93,9 +97,9 @@ app.directive('qtQuoteForm', ['Quote', 'Service', 'Client', '$filter', '$uibModa
                     });
                 }
 
-                for (var key in fields.language) {
+                for (key in fields.language) {
                     // must create a temp object to set the key using a variable
-                    var tempObj = {};
+                    tempObj = {};
                     tempObj[key] = fields.language[key];
                     $scope.quoteLanguage.push({
                         value: key,
@@ -192,7 +196,7 @@ app.directive('qtQuoteForm', ['Quote', 'Service', 'Client', '$filter', '$uibModa
 
             $scope.changeLanguage = function(lang){
                 $scope.language = lang[0];
-            }
+            };
             $scope.removeService = function(index) {
                 $scope.quote.services.splice(index, 1);
             };
@@ -204,7 +208,7 @@ app.directive('qtQuoteForm', ['Quote', 'Service', 'Client', '$filter', '$uibModa
                     });
                     return selected.length ? selected[0].text : 'Not set';
                 }
-            }
+            };
             $scope.getTotal = function() {
                 if ($scope.quote) {
                     if($scope.quote.services){
@@ -220,7 +224,7 @@ app.directive('qtQuoteForm', ['Quote', 'Service', 'Client', '$filter', '$uibModa
                     }
                 return $scope.total;
                 }
-            }
+            };
 
             $scope.removeSection = function(index) {
                 $scope.quote.sections.splice(index, 1);
@@ -231,7 +235,6 @@ app.directive('qtQuoteForm', ['Quote', 'Service', 'Client', '$filter', '$uibModa
                     scope: $scope,
                     animation: true,
                     templateUrl: 'myModalContent.html',
-                    scope:$scope, //Refer to parent scope here
                 });
                 return 0;
             };
