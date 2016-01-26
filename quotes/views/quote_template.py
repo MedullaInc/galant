@@ -42,7 +42,7 @@ class QuoteTemplateView(View):
         self.request.breadcrumbs([(_('Quotes'), reverse('quotes')),
                                   (_('Templates'), reverse('quote_templates'))])
 
-        if 'pk' in kwargs:
+        if 'pk' in kwargs:  # pragma: no cover
             self.object = get_one_or_404(request.user, 'view_quotetemplate', q.QuoteTemplate, pk=kwargs['pk'])
 
             if not request.user.has_perm('change_quotetemplate', self.object):
@@ -52,7 +52,7 @@ class QuoteTemplateView(View):
 
             self.request.breadcrumbs([(_('Quote: %s' % self.object.quote.name), reverse('quote_template_detail', args=[self.object.id])),
                                       (_('Edit Template'), request.path_info)])
-        else:
+        else: 
             self.object = None
             self.request.breadcrumbs([(_('Add'), request.path_info)])
 

@@ -22,14 +22,14 @@ from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED
 
 
 class QuoteUpdate(View):
-    def get(self, request, **kwargs):
+    def get(self, request, **kwargs): # pragma: no cover
         self.object = get_one_or_404(request.user, 'change_quote', q.Quote, pk=kwargs['pk'])
         return self.render_to_response({'object': self.object,
                                         'title': 'Edit Quote'})
 
 
-    def form_valid(self, form, section_forms):
-        if 'preview' in self.request.POST:  # pragma: no cover
+    def form_valid(self, form, section_forms): # pragma: no cover
+        if 'preview' in self.request.POST:  
             form.instance.pk = None
             form.instance.token = uuid4()
 
@@ -68,7 +68,7 @@ class QuoteUpdate(View):
             messages.success(self.request, 'Quote saved.')
             return HttpResponseRedirect(reverse('quote_detail', args=[self.object.id]))
 
-    def render_to_response(self, context):
+    def render_to_response(self, context): # pragma: no cover
         self.request.breadcrumbs(_('Quotes'), reverse('quotes'))
         if self.object:
             self.request.breadcrumbs([(_('Quote: %s' % self.object.name),
@@ -146,8 +146,7 @@ class QuoteDetail(View):
                              (_('Quote: %s' % quote.name), request.path_info)])
         return TemplateResponse(request=request,
                                 template="quotes/quote_detail_ng.html",
-                                context={'title': 'Quote', 'object': quote})
-
+                                context={'title': 'Quote', 'object': quote})  
     def post(self, request, **kwargs):
         quote = get_one_or_404(request.user, 'view_quote', q.Quote, id=kwargs['pk'])
         quote.status = q.QuoteStatus.Sent.value
@@ -158,7 +157,7 @@ class QuoteDetail(View):
                               reverse('quote_pdf', args=[quote.token.hex]))),
                           get_site_from_host(request))
         messages.success(request, 'Quote link sent to %s.' % quote.client.email)
-        return self.get(request, **kwargs)
+        return self.get(request, **kwargs
 
 
 class QuoteList(View):
