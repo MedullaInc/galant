@@ -147,6 +147,8 @@ class QuoteDetail(View):
         return TemplateResponse(request=request,
                                 template="quotes/quote_detail_ng.html",
                                 context={'title': 'Quote', 'object': quote})  
+
+class QuoteSend(View):
     def post(self, request, **kwargs):
         quote = get_one_or_404(request.user, 'view_quote', q.Quote, id=kwargs['pk'])
         quote.status = q.QuoteStatus.Sent.value
@@ -157,7 +159,7 @@ class QuoteDetail(View):
                               reverse('quote_pdf', args=[quote.token.hex]))),
                           get_site_from_host(request))
         messages.success(request, 'Quote link sent to %s.' % quote.client.email)
-        return self.get(request, **kwargs)
+        return HttpResponseRedirect(reverse('quote_detail', args=[quote.id]))
 
 
 class QuoteList(View):
