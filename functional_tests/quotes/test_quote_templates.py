@@ -47,8 +47,8 @@ class QuoteTemplatesTest(browser.SignedInTest):
         b.get(self.live_server_url + reverse('add_quote_template'))
 
         b.find_element_by_id('edit_quote').click()
-        browser.wait().until(lambda driver: driver.find_element_by_xpath('//select[@name="client"]/option[1]'))
-        b.find_element_by_xpath('//select[@name="client"]/option[1]').click()
+        browser.wait().until(lambda driver: driver.find_element_by_xpath('//select[@name="client"]/option[2]'))
+        b.find_element_by_xpath('//select[@name="client"]/option[2]').click()
         b.find_element_by_id('save_quote').click()
 
         b.find_element_by_id('edit_service_0').click()
@@ -169,7 +169,9 @@ class QuoteTemplatesTest(browser.SignedInTest):
         b.find_element_by_id('title_0').send_keys('titulo de intro prueba')
         b.find_element_by_id('save_section_0').click()
 
-        self._submit_and_check(b)
+        with browser.wait_for_page_load():
+            b.find_element_by_id('create_submit').click()
+            self.save_snapshot()
 
         browser.wait().until(lambda driver: driver.find_element_by_xpath('//*[@id="es_tab"]'))
         new_tab = b.find_element_by_xpath('//*[@id="es_tab"]')
