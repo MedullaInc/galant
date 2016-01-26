@@ -169,9 +169,7 @@ class QuoteTemplatesTest(browser.SignedInTest):
         b.find_element_by_id('title_0').send_keys('titulo de intro prueba')
         b.find_element_by_id('save_section_0').click()
 
-        with browser.wait_for_page_load():
-            b.find_element_by_id('create_submit').click()
-            self.save_snapshot()
+        self._submit_and_check(b)
 
         browser.wait().until(lambda driver: driver.find_element_by_xpath('//*[@id="es_tab"]'))
         new_tab = b.find_element_by_xpath('//*[@id="es_tab"]')
