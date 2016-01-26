@@ -25,10 +25,9 @@ from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED
 class QuoteUpdate(View):
     def get(self, request, **kwargs):
         self.object = get_one_or_404(request.user, 'change_quote', q.Quote, pk=kwargs['pk'])
-        form = qf.QuoteForm(request.user, instance=self.object)
-        return self.render_to_response({'object': self.object, 'form': form,
+        return self.render_to_response({'object': self.object,
                                         'title': 'Edit Quote'})
-        
+
 
     def form_valid(self, form, section_forms):
         if 'preview' in self.request.POST:  # pragma: no cover
