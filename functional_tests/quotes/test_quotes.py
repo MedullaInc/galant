@@ -73,12 +73,15 @@ class QuotesSignedInTest(browser.SignedInTest):
 
     def test_edit_quote(self):
         b = browser.instance()
+        c = autofixture.create_one('gallant.Client', generate_fk=True,
+                                   field_values={'user': self.user, 'status': '1'})
+        c.save()
         q = get_blank_quote_autofixture(self.user)
         b.get(self.live_server_url + reverse('quote_detail', args=[q.id]))
         b.find_element_by_id('edit_quote').click()
         b.find_element_by_id('quote_name').send_keys('Quote test')
-        browser.wait().until(lambda driver: driver.find_element_by_xpath('//select[@name="client"]/option[1]'))
-        b.find_element_by_xpath('//select[@name="client"]/option[1]').click()
+        browser.wait().until(lambda driver: driver.find_element_by_xpath('//select[@name="client"]/option[2]'))
+        b.find_element_by_xpath('//select[@name="client"]/option[2]').click()
         b.find_element_by_id('save_quote').click()
         browser.wait().until(lambda driver: driver.find_element_by_id('edit_section_0'))
         b.find_element_by_id('edit_section_0').click()
