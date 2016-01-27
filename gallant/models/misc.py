@@ -31,7 +31,7 @@ class Payment(UserModel):
     notes = m.ManyToManyField(Note)
 
     def __unicode__(self):
-        return '%s: %s' % (self.submitted_on, self.amount)
+        return '%s: %s' % (self.due, self.amount)
 
     class Meta:
         permissions = (
