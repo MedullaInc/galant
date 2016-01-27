@@ -87,9 +87,9 @@
             </div>
         </div>
 
-        <div ng-repeat="service in quote.services">
+        <div ng-repeat="service in quote.services" style="padding: 30px">
             <div class="row">
-                <span ng-click="rowform.$show()">
+                <span ng-click="showRowForm(rowform)">
                 <div class="col-xs-offset-0 col-xs-2 section_content">
                     <div name="name" e-class="form-control" editable-text="service.name[language]" e-id="service_name_{{$index}}" e-form="rowform" e-required>
                         {{ service.name[language] || 'empty' }}
@@ -117,10 +117,10 @@
                 </div>
                 </span>
 
-                <!-- form -->
-                <form editable-form name="rowform" ng-show="rowform.$visible" class="form-buttons form-inline" shown="inserted == service">
-                    <button id="save_service_{{$index}}" type="submit" ng-disabled="rowform.$waiting" class="btn btn-default save_button">
-                        <span class="glyphicon glyphicon-floppy-disk">
+          <!-- form -->
+          <form editable-form name="rowform" ng-show="rowform.$visible" class="form-buttons form-inline" shown="inserted == service">
+              <button id="save_service_{{$index}}" type="submit" ng-disabled="rowform.$waiting" class="btn btn-default save_button">
+                  <span class="glyphicon glyphicon-floppy-disk">
             </button>
             <button id="cancel_service_{{$index}}" type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()" class="btn btn-default save_button">
             <span class="glyphicon glyphicon-remove">
@@ -128,7 +128,7 @@
          </form>
 
          <div class="buttons" ng-show="!rowform.$visible" ng-if="quote.status != '2'">
-            <button id="edit_service_{{$index}}" class="btn btn-default edit_button" ng-click="rowform.$show()">
+            <button id="edit_service_{{$index}}" class="btn btn-default edit_button" ng-click="showRowForm(rowform)">
             <span class="glyphicon glyphicon-edit"/>
             </button>
             <button id="remove_service_{{$index}}" class="btn btn-default delete_button" ng-click="removeService($index)">
@@ -138,6 +138,13 @@
 
       </div>
 
+      <div class="row" style="padding-top:10px">
+        <div class="col-xs-12 section_content" ng-click="showRowForm(rowform)">
+          <div e-class="form-control" editable-text="service.description[language]" e-id="description_{{$index}}" e-form="rowform" e-required>
+              {{ service.description[language] | cut:true:100:' ...' }}
+          </div>
+        </div>
+      </div>
    </div>
 
    <div class="row">
@@ -183,7 +190,7 @@
                   </h2>
                   <br>
                   <p e-id="text_{{$index}}" e-class="form-control" data-inputclass="form-control" editable-text="section.text[language]" e-name="text" e-form="rowform" e-required>
-                     {{ section.text[language] || 'empty' }}
+                     {{ section.text[language] | cut:true:100:' ...' || 'empty' }}
                   </p>
                </div>
 
@@ -198,7 +205,7 @@
                   </form>
 
                   <div class="buttons" ng-show="!rowform.$visible" ng-if="quote.status != '2'">
-                     <button id="edit_section_{{$index}}" class="btn btn-default edit_button" ng-click="rowform.$show()">
+                     <button id="edit_section_{{$index}}" class="btn btn-default edit_button" ng-click="showRowForm(rowform)">
                      <span class="glyphicon glyphicon-edit"/>
                      </button>
                      <button id="remove_section_{{$index}}" class="btn btn-default delete_button" ng-click="removeSection($index)">

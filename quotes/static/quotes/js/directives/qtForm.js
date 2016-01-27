@@ -4,7 +4,32 @@ app = angular.module('quotes.directives.qtForm', [
   'ui.bootstrap',
   'as.sortable']);
 
-app.directive('qtQuoteForm', ['Quote', 'Service', 'Client', '$filter', '$uibModal', function(Quote, Service, Client, $filter, $uibModal) {
+
+
+
+
+
+app.filter('cut', function () {
+        return function (value, wordwise, max, tail) {
+            if (!value) return '';
+
+            max = parseInt(max, 10);
+            if (!max) return value;
+            if (value.length <= max) return value;
+
+            value = value.substr(0, max);
+            if (wordwise) {
+                var lastspace = value.lastIndexOf(' ');
+                if (lastspace != -1) {
+                    value = value.substr(0, lastspace);
+                }
+            }
+
+            return value + (tail || '');
+        };
+})
+
+.directive('qtQuoteForm', ['Quote', 'Service', 'Client', '$filter', '$uibModal', function(Quote, Service, Client, $filter, $uibModal) {
     return {
         restrict: 'A',
         scope: {
@@ -26,6 +51,7 @@ app.directive('qtQuoteForm', ['Quote', 'Service', 'Client', '$filter', '$uibModa
             $scope.serviceFields = [];
             $scope.language_list  = [];
 
+    
             $scope.addSection = function(section_name) {
                 var name = "";
                 var counter;
@@ -56,7 +82,6 @@ app.directive('qtQuoteForm', ['Quote', 'Service', 'Client', '$filter', '$uibModa
                             amount: "0",
                             currency: "USD",
                             },
-                        description: "N/A",
                         user: $scope.quote.user,
                         name: "",
                         notes: Array[0],
@@ -135,6 +160,7 @@ app.directive('qtQuoteForm', ['Quote', 'Service', 'Client', '$filter', '$uibModa
             if ($attrs.quoteId) {
                 Quote.get({id: $attrs.quoteId}).$promise.then(function(quote) {
                     $scope.quote = quote;
+                    console.log($scope.quote);
                     if($scope.language){
                         $scope.addLanguage($scope.language);
                     }
@@ -225,6 +251,12 @@ app.directive('qtQuoteForm', ['Quote', 'Service', 'Client', '$filter', '$uibModa
                 return $scope.total;
                 }
             };
+
+            $scope.showRowForm = function(rowform) {
+                if($scope.quote.status != '2'){
+                    rowform.$show();
+                }
+            }
 
             $scope.removeSection = function(index) {
                 $scope.quote.sections.splice(index, 1);
