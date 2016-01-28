@@ -87,7 +87,9 @@ class SignedInTest(BrowserTest):
 
         # add session cookie for logged-in user
         self.client.login(email=self.user.email, password='password')
-        instance().add_cookie({u'domain': u'localhost', u'name': u'sessionid',
+
+        instance().get(self.live_server_url)
+        instance().add_cookie({u'domain': u'.localhost', u'name': u'sessionid',
                                u'value': self.client.session.session_key,
                                u'path': u'/', u'httponly': True, u'secure': False})
 
