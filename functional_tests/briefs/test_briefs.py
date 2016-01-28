@@ -160,6 +160,7 @@ class BriefsSignedInTest(browser.SignedInTest):
         brief = self.brief
 
         b.get(self.live_server_url + reverse('brief_detail', args=[brief.id]))
+        browser.wait().until(lambda driver: driver.find_element_by_id('send_brief'))
         b.find_element_by_id('send_brief').click()
 
         success_message = b.find_element_by_class_name('alert-success')
