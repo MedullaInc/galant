@@ -11,6 +11,10 @@ def tearDown():
     browser.close()
 
 
+def teardown_module(module):
+    browser.close()
+
+
 class CalendrTest(browser.SignedInTest):
     def setUp(self):
         super(CalendrTest, self).setUp()

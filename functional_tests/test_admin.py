@@ -5,6 +5,10 @@ def tearDown():
     browser.close()
 
 
+def teardown_module(module):
+    browser.close()
+
+
 class AdminTest(browser.SignedInTest):
     def test_can_access_admin_site(self):
         b = browser.instance()

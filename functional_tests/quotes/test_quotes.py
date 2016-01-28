@@ -9,6 +9,10 @@ def tearDown():
     browser.close()
 
 
+def teardown_module(module):
+    browser.close()
+
+
 def get_blank_quote_autofixture(user):
     c = autofixture.create_one('gallant.Client', generate_fk=True,
                                field_values={'user': user})

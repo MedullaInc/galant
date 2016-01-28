@@ -8,6 +8,10 @@ def tearDown():
     browser.close()
 
 
+def teardown_module(module):
+    browser.close()
+
+
 class QuoteTemplatesTest(browser.SignedInTest):
     def test_add_quote_template(self):
         b = browser.instance()

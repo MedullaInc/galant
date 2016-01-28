@@ -9,6 +9,10 @@ def tearDown():
     browser.close()
 
 
+def teardown_module(module):
+    browser.close()
+
+
 @override_settings(EXPERIMENTS_VERIFY_HUMAN=False)
 class LandingPageTest(browser.BrowserTest):
     def setUp(self):

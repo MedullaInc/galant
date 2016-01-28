@@ -7,6 +7,10 @@ def tearDown():
     browser.close()
 
 
+def teardown_module(module):
+    browser.close()
+
+
 class GallantServiceTest(browser.SignedInTest):
     def test_add_service(self):
         b = browser.instance()

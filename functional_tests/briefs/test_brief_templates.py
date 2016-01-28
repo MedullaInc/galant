@@ -8,6 +8,10 @@ def tearDown():
     browser.close()
 
 
+def teardown_module(module):
+    browser.close()
+
+
 class BriefTemplatesTest(browser.SignedInTest):
     def test_add_brief_template(self):
         b = browser.instance()

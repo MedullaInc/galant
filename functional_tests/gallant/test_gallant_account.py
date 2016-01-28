@@ -11,6 +11,10 @@ def tearDown():
     browser.close()
 
 
+def teardown_module(module):
+    browser.close()
+
+
 class GallantAccountTest(StaticLiveServerTestCase):
     def test_add_account(self):
         b = browser.instance()

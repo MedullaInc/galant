@@ -8,6 +8,10 @@ def tearDown():
     browser.close()
 
 
+def teardown_module(module):
+    browser.close()
+
+
 class BriefAnswersTest(browser.BrowserTest):
     def test_can_access_answers(self):
         brief = autofixture.create_one('briefs.Brief', generate_fk=True, field_values={'status': 2})

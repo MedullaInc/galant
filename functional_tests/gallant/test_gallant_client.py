@@ -12,6 +12,10 @@ def tearDown():
     browser.close()
 
 
+def teardown_module(module):
+    browser.close()
+
+
 class GallantClientTest(browser.SignedInTest):
     def render_template(self, string, context=None):
         context = context or {}

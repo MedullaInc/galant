@@ -5,6 +5,10 @@ def tearDown():
     browser.close()
 
 
+def teardown_module(module):
+    browser.close()
+
+
 class LoginSignUpTest(browser.SignedInTest):
     def setUp(self):
         super(LoginSignUpTest, self).setUp()

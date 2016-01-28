@@ -9,6 +9,10 @@ def tearDown():
     browser.close()
 
 
+def teardown_module(module):
+    browser.close()
+
+
 class BriefsSignedInTest(browser.SignedInTest):
     def setUp(self):
         super(BriefsSignedInTest, self).setUp()
