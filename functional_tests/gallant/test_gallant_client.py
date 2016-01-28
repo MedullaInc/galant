@@ -157,6 +157,7 @@ class GallantClientTest(browser.SignedInTest):
         c.save()
         b.get(self.live_server_url + reverse('edit_client', args=[c.id]))
 
+        browser.wait().until(lambda driver: driver.find_element_by_name('client.name'))
         b.find_element_by_name('client.name').send_keys('PPPPPPP')
         b.find_element_by_xpath('//select[@name="client.type"]/option[@value="1"]').click()
         b.find_element_by_xpath('//select[@name="client.size"]/option[@value="1"]').click()
