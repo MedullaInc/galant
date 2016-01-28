@@ -54,6 +54,8 @@ describe('qtForm', function () {
         $scope = $rootScope.$new();
     });
 
+
+
   describe('qtQuoteForm', function () {
 
         beforeEach(function () {
@@ -63,6 +65,15 @@ describe('qtForm', function () {
             $scope.endpoint = $scope.quote;
             $scope.modalInstance = {};
         });
+
+        it('has a cut filter', inject(function($filter) {
+            expect($filter('cut')).not.toBeNull();
+        }));
+
+        it("should trim the string to 5 chars ", inject(function (cutFilter) {
+            expect(cutFilter("xxxxxxxxxx",true,5,"").length).toEqual(5);
+        }));
+
 
         it('compiles', function () {
             var element = $compile('<div quote-id="0" quote="quote" qt-quote-form language="language"></div>')($scope);
