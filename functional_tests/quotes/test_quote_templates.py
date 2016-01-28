@@ -1,7 +1,20 @@
 from django.core.urlresolvers import reverse
 from functional_tests import browser
 import autofixture
-from test_quotes import get_blank_quote_autofixture
+from quotes import models as qm
+
+
+def get_blank_quote_autofixture(user):
+    c = autofixture.create_one('gallant.Client', generate_fk=True,
+                               field_values={'user': user})
+    q = autofixture.create_one('quotes.Quote', generate_fk=True,
+                               field_values={'sections': [],'services': [], 'language': 'en',
+                                             'user': user, 'client': c, 'status': '1'})
+    i = qm.Section.objects.create(user=q.user, name='intro', index=0)
+    m = qm.Section.objects.create(user=q.user, name='important_notes', index=1)
+    q.sections.add(i)
+    q.sections.add(m)
+    return q
 
 
 def tearDown():
