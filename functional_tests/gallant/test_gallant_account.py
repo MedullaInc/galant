@@ -22,7 +22,7 @@ class GallantAccountTest(StaticLiveServerTestCase):
         user.save()
         self.client.login(email=user.email, password='password')
 
-        b.add_cookie({u'domain': u'localhost', u'name': u'sessionid',
+        b.add_cookie({u'domain': u'.localhost', u'name': u'sessionid',
                                  u'value': self.client.session.session_key,
                                  u'path': u'/', u'httponly': True, u'secure': False})
 
@@ -45,7 +45,7 @@ class GallantAccountTest(StaticLiveServerTestCase):
                                                     'is_superuser': True})
         user.save()
         self.client.login(email=user.email, password='password')
-        b.add_cookie({u'domain': u'localhost', u'name': u'sessionid',
+        b.add_cookie({u'domain': u'.localhost', u'name': u'sessionid',
                                  u'value': self.client.session.session_key,
                                  u'path': u'/', u'httponly': True, u'secure': False})
 
