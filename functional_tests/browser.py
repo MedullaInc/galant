@@ -33,7 +33,7 @@ def close():
     browser.pop(0)
 
 
-def wait(timeout=5):
+def wait(timeout=10):
     return ui.WebDriverWait(instance(), timeout)
 
 
