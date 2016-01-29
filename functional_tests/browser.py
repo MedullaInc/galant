@@ -34,7 +34,7 @@ def close():
 
 
 def wait(timeout=10):
-    return ui.WebDriverWait(instance(), timeout)
+    return ui.WebDriverWait(instance(), timeout, 0.1)
 
 
 @contextmanager
