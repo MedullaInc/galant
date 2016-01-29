@@ -138,18 +138,34 @@ LOGGING = {
         'console': {
             'class': 'logging.StreamHandler',
         },
+        'logfile': {
+            'level':'DEBUG',
+            'class':'logging.handlers.RotatingFileHandler',
+            'filename': BASE_DIR + "/django.log",
+            'maxBytes': 5000000,
+            'backupCount': 2,
+        },
     },
     'filters': {
         'ignored_warnings': {
             '()': 'django.utils.log.CallbackFilter',
             'callback': filter_warnings,
         },
+        'require_debug_true': {
+            '()': 'django.utils.log.RequireDebugTrue',
+        }
+
     },
     'loggers': {
         'py.warnings': {
             'handlers': ['console', ],
             'filters': ['ignored_warnings', ],
-        }
+        },
+        # uncomment to log DB queries
+        #'django.db.backends': {
+        #    'level': 'DEBUG',
+        #    'handlers': ['logfile'],
+        #}
     },
 }
 # Database
