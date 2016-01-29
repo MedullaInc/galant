@@ -178,7 +178,6 @@ DATABASES = {
     }
 }
 
-TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 
 # Uncomment to disable email and instead print to console
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

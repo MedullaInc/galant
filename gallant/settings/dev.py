@@ -9,6 +9,7 @@ DATABASES = {
         'OPTIONS': {
           'autocommit': True,
         },
+        'ATOMIC_REQUESTS': True,
     }
 }
 
