@@ -160,7 +160,6 @@ app.filter('cut', function () {
             if ($attrs.quoteId) {
                 Quote.get({id: $attrs.quoteId}).$promise.then(function(quote) {
                     $scope.quote = quote;
-                    console.log($scope.quote);
                     if($scope.language){
                         $scope.addLanguage($scope.language);
                     }
