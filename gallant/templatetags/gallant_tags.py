@@ -1,6 +1,7 @@
 from analytical.templatetags.clicky import ClickyNode
 from analytical.templatetags.crazy_egg import CrazyEggNode
 from django import template
+from django.utils.safestring import mark_safe
 from gallant import models as g
 
 register = template.Library()
@@ -20,7 +21,7 @@ def objects_for(context, queryset, permission='view'):
 def analytics(context):
     """ Returns analytics code
     """
-    return '%s\n%s' % (ClickyNode().render(context), CrazyEggNode().render(context))
+    return mark_safe('%s\n%s' % (ClickyNode().render(context), CrazyEggNode().render(context)))
 
 
 @register.simple_tag()
