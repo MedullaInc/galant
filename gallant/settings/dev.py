@@ -2,6 +2,7 @@ from gallant.settings.base import *
 
 DATABASES = {
     'default': {
+    	'HOST': "127.0.0.1",
         'NAME': 'gallant_dev',
         'ENGINE': 'django.db.backends.mysql',
         'USER': 'root',

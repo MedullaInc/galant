@@ -15,6 +15,7 @@ describe('qtForm', function () {
             $provide.factory('Quote', function ($q) {
                 var Quote = function () { return {id: 0}; };
                 Quote.get = function () { return {$promise: $q.when({id: 0})}; };
+                Quote.update = function () { return {$promise: $q.when({id: 0})}; };
                 Quote.fields = function () { return {$promise: $q.when({status: ['status', 'status'], language: ['language', 'language']})}; };
                 return Quote;
             });
@@ -31,8 +32,15 @@ describe('qtForm', function () {
                 return Client;
             });
 
+            $provide.factory('Section', function ($q) {
+                var Service = jasmine.createSpyObj('Service', ['get', 'update']);
+                Service.get.and.returnValue({$promise: $q.when([{id: 0}])});
+                Service.update.and.returnValue({$promise: $q.when({type: ['type', 'type']})});
+                return Service;
+            });
+
             $provide.factory('Service', function ($q) {
-                var Service = jasmine.createSpyObj('Service', ['get', 'fields']);
+                var Service = jasmine.createSpyObj('Service', ['get','update', 'fields']);
                 Service.get.and.returnValue({$promise: $q.when([{id: 0}])});
                 Service.fields.and.returnValue({$promise: $q.when({type: ['type', 'type']})});
                 return Service;
@@ -73,7 +81,6 @@ describe('qtForm', function () {
         it("should trim the string to 5 chars ", inject(function (cutFilter) {
             expect(cutFilter("xxxxxxxxxx",true,5,"").length).toEqual(5);
         }));
-
 
         it('compiles', function () {
             var element = $compile('<div quote-id="0" quote="quote" qt-quote-form language="language"></div>')($scope);
@@ -116,6 +123,16 @@ describe('qtForm', function () {
             element.isolateScope().removeService();
             expect($scope.quote.services.length).toEqual(0);
         });
+
+        it('show service', function () {
+            $scope.quote = {};
+            $scope.service = {id:0};
+            var element = $compile('<div qt-quote-form quote="quote"></div>')($scope);
+            $scope.$digest();
+ 
+            element.isolateScope().showService($scope.service);
+            expect($scope.quote.sections.length).toEqual(2);
+        });
  
         it('adds section', function () {
             $scope.quote = {};
@@ -124,6 +141,16 @@ describe('qtForm', function () {
  
             element.isolateScope().addSection();
             expect($scope.quote.sections.length).toEqual(3);
+        });
+
+        it('show section', function () {
+            $scope.quote = {};
+            $scope.section = {id:0};
+            var element = $compile('<div qt-quote-form quote="quote"></div>')($scope);
+            $scope.$digest();
+ 
+            element.isolateScope().showSection($scope.section);
+            expect($scope.quote.sections.length).toEqual(2);
         });
 
         it('remove section', function () {
@@ -142,6 +169,16 @@ describe('qtForm', function () {
  
             element.isolateScope().changeLanguage(["en","en"]);
             expect($scope.language.length).toEqual(2);
+        });
+
+        it('show rowform', function () {
+            $scope.quote = {};
+            $scope.rowform = {$show: function(){}};
+            var element = $compile('<div qt-quote-form quote="quote"></div>')($scope);
+            $scope.$digest();
+ 
+            element.isolateScope().showRowForm($scope.rowform);
+            expect($scope.quote.sections.length).toEqual(2);
         });
 
     });

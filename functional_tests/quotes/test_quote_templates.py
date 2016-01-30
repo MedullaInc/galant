@@ -39,6 +39,7 @@ class QuoteTemplatesTest(browser.SignedInTest):
         b.find_element_by_id('edit_service_0').click()
         b.find_element_by_id('service_name_0').send_keys('1234')
         b.find_element_by_id('quantity_0').send_keys('1')
+        b.find_element_by_id('description_0').send_keys('desc')
         b.find_element_by_xpath('//select[@id="type_0"]/option[2]').click()
         b.find_element_by_id('save_service_0').click()
 
@@ -68,6 +69,7 @@ class QuoteTemplatesTest(browser.SignedInTest):
         b.find_element_by_id('edit_service_0').click()
         b.find_element_by_id('service_name_0').send_keys('1234')
         b.find_element_by_id('quantity_0').send_keys('1')
+        b.find_element_by_id('description_0').send_keys('desc')
         b.find_element_by_xpath('//select[@id="type_0"]/option[2]').click()
         b.find_element_by_id('save_service_0').click()
 
@@ -186,7 +188,6 @@ class QuoteTemplatesTest(browser.SignedInTest):
         b.find_element_by_id('save_section_0').click()
 
         self._submit_and_check(b)
-
         browser.wait().until(lambda driver: driver.find_element_by_xpath('//*[@id="es_tab"]'))
         new_tab = b.find_element_by_xpath('//*[@id="es_tab"]')
         self.assertEqual(u'Spanish', new_tab.text)
