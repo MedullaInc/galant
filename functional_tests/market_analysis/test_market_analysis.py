@@ -5,11 +5,7 @@ from functional_tests import browser
 from django.test.utils import override_settings
 
 
-def tearDown():
-    browser.close()
-
-
-def teardown_module(module):
+def tearDownModule():
     browser.close()
 
 

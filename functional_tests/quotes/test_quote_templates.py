@@ -17,11 +17,7 @@ def get_blank_quote_autofixture(user):
     return q
 
 
-def tearDown():
-    browser.close()
-
-
-def teardown_module(module):
+def tearDownModule():
     browser.close()
 
 

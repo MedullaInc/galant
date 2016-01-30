@@ -5,11 +5,7 @@ from quotes import models as qm
 import autofixture
 
 
-def tearDown():
-    browser.close()
-
-
-def teardown_module(module):
+def tearDownModule():
     browser.close()
 
 
