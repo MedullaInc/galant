@@ -10,14 +10,17 @@ import json
 class SectionSerializer(serializers.ModelSerializer):
     title = ULTextField()
     text = ULTextField()
+    views = serializers.IntegerField(required=False)
+
     class Meta:
         model = q.Section
-        fields = ('title','text','name','index') 
+        fields = ('title','text','name','index', 'id', 'views') 
 
 
 class QuoteSerializer(serializers.ModelSerializer):
     user = serializers.PrimaryKeyRelatedField(read_only=True)
     parent = serializers.PrimaryKeyRelatedField(read_only=True)
+    views = serializers.IntegerField()
 
     def get_fields(self, *args, **kwargs):
         fields = super(QuoteSerializer, self).get_fields(*args, **kwargs)
@@ -78,7 +81,7 @@ class QuoteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Quote
         fields = ('id', 'user', 'name', 'client', 'sections', 'services', 'language', 'status',
-                  'modified', 'token', 'parent', 'projects')
+                  'modified', 'token', 'parent', 'projects', 'views')
         extra_kwargs = {
             'id': {'read_only': False, 'required': False, 'allow_null':True},
             'user': {'required': False},

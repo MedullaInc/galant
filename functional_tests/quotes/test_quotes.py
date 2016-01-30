@@ -97,7 +97,6 @@ class QuotesSignedInTest(browser.SignedInTest):
 
         browser.wait().until(lambda driver: driver.find_element_by_id('edit_section_0'))
         b.find_element_by_id('edit_section_0').click()
-
         intro = b.find_element_by_id('title_0')
         self.assertEqual(intro.get_attribute('value'), 'modified intro title')
 
@@ -166,6 +165,7 @@ class QuotesSignedInTest(browser.SignedInTest):
         b.find_element_by_id('edit_service_0').click()
         b.find_element_by_id('service_name_0').send_keys('1234')
         b.find_element_by_id('quantity_0').send_keys('1')
+        b.find_element_by_id('description_0').send_keys('desc')
 
         browser.wait().until(lambda driver: driver.find_element_by_xpath('//select[@id="type_0"]/option[2]'))       
         b.find_element_by_xpath('//select[@id="type_0"]/option[2]').click()

@@ -46,6 +46,7 @@ class Service(UserModel):
     parent = m.ForeignKey('self', null=True, blank=True, related_name='sub_services')
 
     notes = m.ManyToManyField(Note)
+    views = m.IntegerField(default=0)
 
     def get_total_cost(self):
         total = self.cost * self.quantity

@@ -179,6 +179,17 @@ def quote_fields_json(request):
     return JsonResponse(get_field_choices(q.Quote), safe=False)
 
 
+class SectionViewSet(ModelViewSet):
+    model = q.Section
+    serializer_class = serializers.SectionSerializer
+    permission_classes = [
+         GallantViewSetPermissions
+     ]
+
+    def get_queryset(self):
+        return self.model.objects.all_for(self.request.user)
+
+
 class QuoteViewSet(ModelViewSet):
     model = q.Quote
     serializer_class = serializers.QuoteSerializer
