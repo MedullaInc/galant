@@ -3,11 +3,7 @@ import autofixture
 from functional_tests import browser
 
 
-def tearDown():
-    browser.close()
-
-
-def teardown_module(module):
+def tearDownModule():
     browser.close()
 
 

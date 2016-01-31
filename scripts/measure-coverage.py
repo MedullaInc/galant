@@ -3,7 +3,7 @@ import re
 
 REQ_COVERAGE = 90
 print 'Measuring coverage (need %d%%)...' % REQ_COVERAGE
-output = subprocess.check_output("venv/bin/coverage report --omit='venv/*'", shell=True)
+output = subprocess.check_output("venv/bin/coverage report --omit='venv/*,**/migrations/**,*tests*'", shell=True)
 
 for row in output.split('\n'):
 	m = re.search(r"([0-9]+)%", row)

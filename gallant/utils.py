@@ -91,7 +91,7 @@ def get_site_from_host(request):
     if host not in SITE_CACHE:
         try:
             site = Site.objects.get(domain__iexact=host)
-        except ObjectDoesNotExist:
+        except:
             site = Site.objects.get(pk=1)
         SITE_CACHE[host] = site
     return SITE_CACHE[host]

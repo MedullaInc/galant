@@ -8,11 +8,7 @@ from selenium.common.exceptions import NoSuchElementException
 from quotes import models as qm
 
 
-def tearDown():
-    browser.close()
-
-
-def teardown_module(module):
+def tearDownModule():
     browser.close()
 
 
