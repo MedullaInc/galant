@@ -46,7 +46,6 @@ app.filter('cut', function () {
                     $scope.serviceFields = [];
                     $scope.language_list = [];
 
-
                     $scope.addSection = function (section_name) {
                         var name = "";
                         var counter;
@@ -91,40 +90,16 @@ app.filter('cut', function () {
                     };
 
                     $scope.addLanguage = function (lang) {
-                        selected = $filter('filter')($scope.quoteLanguage, {
-                            value: lang
-                        }, true);
-                        if (selected.length > 0) {
-                            $scope.language_list.push([selected[0].value, selected[0].text]);
-                        }
+                        $scope.language_list.push(quoteLanguage[lang]);
                     };
-
 
                     Client.get().$promise.then(function (clients) {
                         $scope.clients = clients;
                     });
 
-
                     Quote.fields().$promise.then(function (fields) {
-                        var tempObj = [];
-                        for (key in fields.status) {
-                            // must create a temp object to set the key using a variable
-                            tempObj[key] = fields.status[key];
-                            $scope.quoteStatus.push({
-                                value: key,
-                                text: tempObj[key]
-                            });
-                        }
-
-                        for (key in fields.language) {
-                            // must create a temp object to set the key using a variable
-                            tempObj[key] = fields.language[key];
-                            $scope.quoteLanguage.push({
-                                value: key,
-                                text: tempObj[key]
-                            });
-                        }
-                        $scope.addLanguage($scope.language);
+                        $scope.quoteStatus = fields.status;
+                        $scope.quoteLanguage = fields.language;
                     });
 
                     Service.get().$promise.then(function (services) {
@@ -132,15 +107,7 @@ app.filter('cut', function () {
                     });
 
                     Service.fields({}).$promise.then(function (fields) {
-                        for (var key in fields.type) {
-                            // must create a temp object to set the key using a variable
-                            var tempObj = {};
-                            tempObj[key] = fields.type[key];
-                            $scope.serviceFields.push({
-                                value: key,
-                                text: tempObj[key]
-                            });
-                        }
+                        $scope.serviceFields = fields.type;
                     });
 
                     $scope.boolTemplate = $attrs.boolTemplate;
@@ -154,7 +121,7 @@ app.filter('cut', function () {
                         Quote.get({id: $attrs.quoteId}).$promise.then(function (quote) {
                             $scope.quote = quote;
                             if ($scope.language) {
-                                $scope.addLanguage($scope.language);
+                                $scope.language_list.push($scope.language);
                             }
 
                             /*
@@ -169,7 +136,6 @@ app.filter('cut', function () {
                                 $scope.quoteTemplate.quote.id = null;
                             }
                         });
-
                     } else {
                         if ($attrs.templateId) {
                             QuoteTemplate.get({
@@ -242,10 +208,7 @@ app.filter('cut', function () {
                 };
                 $scope.showType = function (service) {
                     if (service) {
-                        selected = $filter('filter')($scope.serviceFields, {
-                            value: service.type
-                        });
-                        return selected.length ? selected[0].text : 'Not set';
+                        return $scope.serviceFields[service.type];
                     }
                 };
                 $scope.getTotal = function () {
