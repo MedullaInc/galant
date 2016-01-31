@@ -43,8 +43,7 @@ class Quote(g.UserModel):
         language_set = set()
         for s in list(self.all_sections()):
             if s is not None:
-                if isinstance(s, Section):
-                    language_set.update(s.get_languages())
+                language_set.update(s.get_languages())
 
         return language_set
 
@@ -91,7 +90,11 @@ class QuoteTemplate(g.UserModel):
     quote = m.ForeignKey(Quote)
 
     def language_list(self):
-        return [(c, utils.LANG_DICT[c]) for c in self.quote.get_languages() if c in utils.LANG_DICT]
+        lang_dict = {}
+        for c in self.quote.get_languages():
+            if c in utils.LANG_DICT:
+                lang_dict[c] = utils.LANG_DICT[c]
+        return lang_dict
 
     class Meta:
         permissions = (

@@ -39,12 +39,12 @@ app.filter('cut', function () {
                 function ($scope, $attrs, $filter, Quote, Service, Section, QuoteTemplate, Client) {
                     $scope.isCollapsed = false;
                     $scope.quoteFields = [];
-                    $scope.quoteStatus = [];
-                    $scope.quoteLanguage = [];
+                    $scope.quoteStatus = {};
+                    $scope.quoteLanguage = {};
                     $scope.services = [];
                     $scope.sections = [];
                     $scope.serviceFields = [];
-                    $scope.language_list = [];
+                    $scope.language_list = {};
 
                     $scope.addSection = function (section_name) {
                         var name = "";
@@ -90,7 +90,8 @@ app.filter('cut', function () {
                     };
 
                     $scope.addLanguage = function (lang) {
-                        $scope.language_list.push(quoteLanguage[lang]);
+                        $scope.language_list[lang] = $scope.quoteLanguage[lang];
+                        console.log($scope.language_list);
                     };
 
                     Client.get().$promise.then(function (clients) {
@@ -116,12 +117,11 @@ app.filter('cut', function () {
                     } else {
                         $scope.endpoint = QuoteTemplate;
                     }
-
                     if ($attrs.quoteId) {
                         Quote.get({id: $attrs.quoteId}).$promise.then(function (quote) {
                             $scope.quote = quote;
                             if ($scope.language) {
-                                $scope.language_list.push($scope.language);
+                                $scope.language_list[$scope.language] = $scope.quoteLanguage[$scope.language];
                             }
 
                             /*
@@ -144,6 +144,7 @@ app.filter('cut', function () {
                                 $scope.quote = quoteTemplate.quote;
                                 $scope.quoteTemplate = quoteTemplate;
                                 $scope.language_list = quoteTemplate.language_list;
+                                console.log($scope.language_list);
 
                                 if ($attrs.boolTemplate != "True") {
                                     $scope.quote.id = null;
@@ -179,29 +180,27 @@ app.filter('cut', function () {
             ],
             templateUrl: '/static/quotes/html/qt_quote_form.html',
             link: function ($scope) {
+                console.log($scope.language_list);
 
-                    $scope.dynamicPopover = {
-                        translationTemplateUrl: 'translationTemplate.html',
-                        serviceTemplateUrl: 'serviceTemplate.html'
-                    };
+                $scope.dynamicPopover = {
+                    translationTemplateUrl: 'translationTemplate.html',
+                    serviceTemplateUrl: 'serviceTemplate.html'
+                };
 
+                $scope.showService = function (service){
+                    id = service.id;
+                    service.views = service.views+1;
+                    Service.update({id: id}, service);
+                }
 
-
-                    $scope.showService = function (service){
-                        id = service.id;
-                        service.views = service.views+1;
-                        Service.update({id: id}, service);
-                    }
-
-                    $scope.showSection = function (section){
-                        id = section.id;
-                        section.views = section.views+1;
-                        Section.update({id: id}, section);                       
-                    }
-
+                $scope.showSection = function (section){
+                    id = section.id;
+                    section.views = section.views+1;
+                    Section.update({id: id}, section);                       
+                }
 
                 $scope.changeLanguage = function (lang) {
-                    $scope.language = lang[0];
+                    $scope.language = lang;
                 };
                 $scope.removeService = function (index) {
                     $scope.quote.services.splice(index, 1);

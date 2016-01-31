@@ -47,15 +47,14 @@
 
 <uib-tabset ng-show="boolTemplate == 'True'" id="tabs" class="nav nav-tabs"
             style="margin-bottom: -1px; border-bottom: 0">
-    <uib-tab ng-click="changeLanguage(language)" id="{{ language[0] }}_tab" ng-repeat="language in language_list"
-             heading="{{ language[1] }}" active="tab.active"></uib-tab>
+    <uib-tab ng-click="changeLanguage(key)" id="{{ key }}_tab" ng-repeat="(key, val) in language_list"
+             heading="{{ val }}" active="tab.active"></uib-tab>
     <uib-tab id="add_translation_button" popover-placement="bottom"
              uib-popover-template="dynamicPopover.translationTemplateUrl" heading="Add Translation"
              active="tab.active"></uib-tab>
 </uib-tabset>
 
 <div id="center_content_enclosed">
-
     <script type="text/ng-template" id="translationTemplate.html">
         <select id="id_language" class="form-control" ng-model="language"
                 ng-options="key as val for (key, val) in quoteLanguage"></select>
