@@ -91,7 +91,6 @@ app.filter('cut', function () {
 
                     $scope.addLanguage = function (lang) {
                         $scope.language_list[lang] = $scope.quoteLanguage[lang];
-                        console.log($scope.language_list);
                     };
 
                     Client.get().$promise.then(function (clients) {
@@ -144,7 +143,6 @@ app.filter('cut', function () {
                                 $scope.quote = quoteTemplate.quote;
                                 $scope.quoteTemplate = quoteTemplate;
                                 $scope.language_list = quoteTemplate.language_list;
-                                console.log($scope.language_list);
 
                                 if ($attrs.boolTemplate != "True") {
                                     $scope.quote.id = null;
@@ -180,7 +178,6 @@ app.filter('cut', function () {
             ],
             templateUrl: '/static/quotes/html/qt_quote_form.html',
             link: function ($scope) {
-                console.log($scope.language_list);
 
                 $scope.dynamicPopover = {
                     translationTemplateUrl: 'translationTemplate.html',
