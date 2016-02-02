@@ -46,10 +46,10 @@ app.filter('cut', function () {
                     $scope.serviceFields = [];
                     $scope.language_list = {};
 
-                    $window.onunload = function () { 
-                        $scope.quote.session_duration = ((new Date() - $scope.$parent.startTime)/100 );
+                    $window.onbeforeunload = function () { 
+                        $scope.quote.session_duration = ((new Date() - $scope.$parent.startTime)/1000 );
                         $scope.quote.views = $scope.quote.views+1;
-                        console.log("Heee");
+                        Quote.update({id: $scope.quote.id}, $scope.quote);
                     }
 
                     $scope.addSection = function (section_name) {
@@ -98,6 +98,23 @@ app.filter('cut', function () {
                     $scope.addLanguage = function (lang) {
                         $scope.language_list[lang] = $scope.quoteLanguage[lang];
                     };
+
+                    Client.get().$promise.then(function (clients) {
+                        $scope.clients = clients;
+                    });
+
+                    Quote.fields().$promise.then(function (fields) {
+                        $scope.quoteStatus = fields.status;
+                        $scope.quoteLanguage = fields.language;
+                    });
+
+                    Service.get().$promise.then(function (services) {
+                        $scope.services = services;
+                    });
+
+                    Service.fields({}).$promise.then(function (fields) {
+                        $scope.serviceFields = fields.type;
+                    });
 
                     $scope.boolTemplate = $attrs.boolTemplate;
                     if ($attrs.boolTemplate == "False") {
@@ -158,23 +175,6 @@ app.filter('cut', function () {
                             $scope.addSection('important_notes');
                             $scope.addService();
                         }
-
-                    Client.get().$promise.then(function (clients) {
-                        $scope.clients = clients;
-                    });
-
-                    Quote.fields().$promise.then(function (fields) {
-                        $scope.quoteStatus = fields.status;
-                        $scope.quoteLanguage = fields.language;
-                    });
-
-                    Service.get().$promise.then(function (services) {
-                        $scope.services = services;
-                    });
-
-                    Service.fields({}).$promise.then(function (fields) {
-                        $scope.serviceFields = fields.type;
-                    });
 
                     }
                 }
