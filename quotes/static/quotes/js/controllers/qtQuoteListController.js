@@ -11,16 +11,8 @@ app.controller('qtQuoteListController', ['$scope', '$http', '$window', 'Quote', 
             $scope.currentLanguage = currentLanguage;
         };
 
-        Quote.fields().$promise.then(function(fields) {
-            for (var key in fields.status) {
-                // must create a temp object to set the key using a variable
-                var tempObj = {};
-                tempObj[key] = fields.status[key];
-                $scope.quoteStatus.push({
-                    value: key,
-                    text: tempObj[key]
-                });
-            }
+        Quote.fields().$promise.then(function (fields) {
+            $scope.quoteStatus = fields.status;
         });
 
         Quote.query().$promise.then(function(quotes) {

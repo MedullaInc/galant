@@ -58,6 +58,12 @@ class Service(UserModel):
     def get_quote_template_services(self):
         return self.services.all_for(self.user)
 
+    def get_languages(self):
+        language_set = set()
+        map(lambda l: language_set.add(l), self.name.keys())
+        map(lambda l: language_set.add(l), self.description.keys())
+        return language_set
+
 
     def __unicode__(self):
         return self.name.get_text()
