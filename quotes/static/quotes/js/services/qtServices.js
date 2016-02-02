@@ -23,6 +23,10 @@ app.factory("Quote", function ($resource) {
         update: {
           method: 'PATCH',
         },
+        views: {
+          method: 'PATCH',
+          url: '/en/quote/api/quote/views/:id '
+        },
 	});
 
 });
@@ -58,7 +62,6 @@ app.factory("Section", function ($resource) {
 	});
 
 });
-
 
 /* istanbul ignore next  */
 app.factory("Client", function ($resource) {

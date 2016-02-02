@@ -61,6 +61,10 @@ app.controller('glFormController', ['$scope', '$http', '$window',
             $http.defaults.headers.post['X-CSRFToken'] = csrftoken;
         };
 
+        $window.onload = function(e) { 
+            $scope.startTime = new Date();
+        }
+
         $scope.$watch('object', function (newValue, oldValue) {
             if ((oldValue !== null && typeof(oldValue) !== 'undefined') && newValue != oldValue) {
                 if (!$window.onbeforeunload) {
