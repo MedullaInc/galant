@@ -1,5 +1,4 @@
 export DJANGO_SETTINGS_MODULE=gallant.settings.stg_ec2
-cd gallant
 git checkout .
 
 echo 'Erasing python coverage data...'
