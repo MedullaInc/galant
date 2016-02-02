@@ -1,17 +1,37 @@
 from contextlib import contextmanager
 
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
-from selenium import webdriver
 import selenium.webdriver.support.ui as ui
 import autofixture
 from django.contrib.auth import hashers
+from selenium.common.exceptions import TimeoutException
+from selenium.webdriver.phantomjs.webdriver import WebDriver as PhantomJS
+
+
+MAX_TRIES = 3
+PAGE_TIMEOUT = 5
+
+
+class CustomPhantomJS(PhantomJS):
+    def get(self, url):
+        count = 0
+
+        while True:
+            try:
+                super(CustomPhantomJS, self).get(url)
+                break
+            except TimeoutException:
+                count += 1
+                if count > MAX_TRIES:
+                    raise
+
 
 browser = []
 
 
 def instance():
     if len(browser) < 1:
-        b = webdriver.PhantomJS()
+        b = CustomPhantomJS()
         # hack while the python interface lags
         b.command_executor._commands['executePhantomScript'] = ('POST', '/session/$sessionId/phantom/execute')
 
