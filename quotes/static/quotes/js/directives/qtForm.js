@@ -35,8 +35,8 @@ app.filter('cut', function () {
                 forms: '=',
                 boolTemplate: '='
             },
-            controller: ['$scope', '$attrs', '$filter', 'Quote', 'Service', 'Section', 'QuoteTemplate', 'Client',
-                function ($scope, $attrs, $filter, Quote, Service, Section, QuoteTemplate, Client) {
+            controller: ['$scope', '$attrs', '$filter', '$window', 'Quote', 'Service', 'Section', 'QuoteTemplate', 'Client',
+                function ($scope, $attrs, $filter, $window, Quote, Service, Section, QuoteTemplate, Client) {
                     $scope.isCollapsed = false;
                     $scope.quoteFields = [];
                     $scope.quoteStatus = {};
@@ -45,6 +45,12 @@ app.filter('cut', function () {
                     $scope.sections = [];
                     $scope.serviceFields = [];
                     $scope.language_list = {};
+
+                    $window.onunload = function () { 
+                        $scope.quote.session_duration = ((new Date() - $scope.$parent.startTime)/100 );
+                        $scope.quote.views = $scope.quote.views+1;
+                        console.log("Heee");
+                    }
 
                     $scope.addSection = function (section_name) {
                         var name = "";
@@ -93,23 +99,6 @@ app.filter('cut', function () {
                         $scope.language_list[lang] = $scope.quoteLanguage[lang];
                     };
 
-                    Client.get().$promise.then(function (clients) {
-                        $scope.clients = clients;
-                    });
-
-                    Quote.fields().$promise.then(function (fields) {
-                        $scope.quoteStatus = fields.status;
-                        $scope.quoteLanguage = fields.language;
-                    });
-
-                    Service.get().$promise.then(function (services) {
-                        $scope.services = services;
-                    });
-
-                    Service.fields({}).$promise.then(function (fields) {
-                        $scope.serviceFields = fields.type;
-                    });
-
                     $scope.boolTemplate = $attrs.boolTemplate;
                     if ($attrs.boolTemplate == "False") {
                         $scope.endpoint = Quote;
@@ -123,17 +112,13 @@ app.filter('cut', function () {
                                 $scope.language_list[$scope.language] = $scope.quoteLanguage[$scope.language];
                             }
 
-                            /*
-                            $scope.quote.views = $scope.quote.views+1;
-                            Quote.update({id: $scope.quote.id}, $scope.quote);
-                            */
-                            
                             if ($attrs.boolTemplate == "True") {
                                 $scope.quoteTemplate = {
                                     "quote": $scope.quote
                                 };
                                 $scope.quoteTemplate.quote.id = null;
                             }
+
                         });
                     } else {
                         if ($attrs.templateId) {
@@ -173,6 +158,24 @@ app.filter('cut', function () {
                             $scope.addSection('important_notes');
                             $scope.addService();
                         }
+
+                    Client.get().$promise.then(function (clients) {
+                        $scope.clients = clients;
+                    });
+
+                    Quote.fields().$promise.then(function (fields) {
+                        $scope.quoteStatus = fields.status;
+                        $scope.quoteLanguage = fields.language;
+                    });
+
+                    Service.get().$promise.then(function (services) {
+                        $scope.services = services;
+                    });
+
+                    Service.fields({}).$promise.then(function (fields) {
+                        $scope.serviceFields = fields.type;
+                    });
+
                     }
                 }
             ],
@@ -199,14 +202,17 @@ app.filter('cut', function () {
                 $scope.changeLanguage = function (lang) {
                     $scope.language = lang;
                 };
+
                 $scope.removeService = function (index) {
                     $scope.quote.services.splice(index, 1);
                 };
+
                 $scope.showType = function (service) {
                     if (service) {
                         return $scope.serviceFields[service.type];
                     }
                 };
+
                 $scope.getTotal = function () {
                     if ($scope.quote) {
                         if ($scope.quote.services) {
