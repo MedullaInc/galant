@@ -1,19 +1,15 @@
-var app = angular.module('gallant.controllers.glClientPaymentController', [])
+app = angular.module('gallant.controllers.glClientPaymentController', []);
 
-app.controller('glClientPaymentController', function ($scope, $attrs, $uibModal, $log, ClientProjects, ClientQuoteDetail) {
-    $scope.openEditModal = function (payment) {
+app.controller('glClientPaymentController', ['$scope', '$attrs', '$uibModal', '$log', 'ClientProjects', '$http', '$window', function ($scope, $attrs, $uibModal) {
+    $scope.openEditModal = function () {
         $uibModal.open({
             templateUrl: '/static/gallant/html/gl_client_payment_modal.html',
             backdrop: true,
             windowClass: 'modal',
-            controller: function ($scope) {
-                $scope.cancel = function () {
-                    $modalInstance.dismiss('cancel');
-                };
+            controller: function ($scope, $uibModalInstance, ClientProjects) {
 
-                $scope.dt = new Date();
+                // When form loads, it will load projects
                 $scope.projects = [];
-                $scope.currency = "";
 
                 $scope.getProjects = function () {
                     ClientProjects.query({id: $attrs.clientId}).$promise.then(function (response) {
@@ -23,6 +19,17 @@ app.controller('glClientPaymentController', function ($scope, $attrs, $uibModal,
 
                 $scope.getProjects();
 
+                // When selecting a project, currency will update
+                $scope.updateCurrency = function (project) {
+                    $scope.currency = '( in ' + $.grep($scope.projects, function (e) {
+                            return e.id == project
+                        })[0].payments.currency + ' )';
+                    if ($scope.currency == '( in  )') {
+                        $scope.currency = '( N/A )'
+                    }
+                };
+
+                // Date pickers
                 $scope.openDueDatePicker = function () {
                     $scope.due_date_opened = true;
                 };
@@ -31,16 +38,17 @@ app.controller('glClientPaymentController', function ($scope, $attrs, $uibModal,
                     $scope.paid_date_opened = true;
                 };
 
-                $scope.updateCurrency = function(project) {
-                    console.log($scope.projects);
-                }
+                // Form functions
+                console.log($scope)
 
-                $scope.ok = function () {
-                    $modalInstance.close($scope.dt);
+                // Modal functions
+                $scope.cancel = function () {
+                    $uibModalInstance.dismiss('cancel');
                 };
+
             },
             resolve: {}
         });
     };
 
-});
+}]);

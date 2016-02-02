@@ -43,6 +43,41 @@ app.factory('Client', function ($resource) {
 
 });
 
+/* istanbul ignore next */
+app.factory('Payment', function ($resource) {
+    return $resource('/api/quote/payments/:id', {}, {
+        // List of objects
+        query: {
+            method: 'GET',
+            params: {},
+            isArray: true,
+            url: '/api/quote/payments/:id?client_id=:client_id'
+        },
+        // One object
+        retrieve: {
+            method: 'GET',
+            params: {},
+            isArray: true,
+            url: '/api/quote/payments/:id'
+        },
+        // the following are untested
+        save: {
+            method: 'POST',
+            params: {
+                payment: '@payment'
+            },
+        },
+        update: {
+            method: 'PATCH',
+            params: {
+                id: '@id'
+            },
+            url: '/api/quote/payments/:id'
+        }
+    });
+
+});
+
 /* istanbul ignore next  */
 app.factory('Project', function ($resource) {
     return $resource('/en/api/projects');
@@ -53,10 +88,10 @@ app.factory('ClientProjects', function ($resource) {
     return $resource('/en/api/projects?client_id=:id', {id: '@id'});
 });
 
-/* istanbul ignore next  */
-app.factory('ClientQuoteDetail', function ($resource) {
-    return $resource('/en/quote/api/payments/:client_id/:id', {client_id: '@client_id', id: '@id'});
-});
+///* istanbul ignore next  */
+//app.factory('ClientQuoteDetail', function ($resource) {
+//    return $resource('/en/quote/api/payments/:client_id/:id', {client_id: '@client_id', id: '@id'});
+//});
 
 /* istanbul ignore next  */
 app.factory('User', function ($resource) {

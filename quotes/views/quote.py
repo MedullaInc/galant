@@ -203,6 +203,7 @@ class QuoteViewSet(ModelViewSet):
         else:
             return response
 
+
 class QuotePaymentsAPI(generics.RetrieveUpdateAPIView):
     model = g.Client
     serializer_class = payment.PaymentSerializer

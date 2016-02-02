@@ -12,12 +12,13 @@ class ProjectSerializer(serializers.ModelSerializer):
     def get_payments(self, project):
         currency = ''
         amt = 0.00
-        for q in project.quote_set.all_for(self.context['request'].user).prefetch_related(Prefetch('payments', to_attr='payments_arr')):
+        for q in project.quote_set.all_for(self.context['request'].user).prefetch_related(
+                Prefetch('payments', to_attr='payments_arr')):
             for p in q.payments_arr:
                 amt += p.amount
 
-            for s in q.service_sections.all_for(self.context['request'].user):
-                currency = s.service.cost_currency
+            for s in q.services.all_for(self.context['request'].user):
+                currency = s.cost_currency
 
         return {'amount': amt, 'currency': currency}
 
