@@ -91,9 +91,13 @@ class SignedInTest(BrowserTest):
         self.client.login(email=self.user.email, password='password')
 
         instance().get(self.live_server_url)
-        instance().add_cookie({u'domain': u'.localhost', u'name': u'sessionid',
-                               u'value': self.client.session.session_key,
-                               u'path': u'/', u'httponly': True, u'secure': False})
+        add_login_cookie(instance(), self.client.session.session_key)
 
     def tearDown(self):
         instance().delete_all_cookies()
+
+
+def add_login_cookie(browser_instance, session_key):
+    browser_instance.add_cookie({u'domain': u'.localhost', u'name': u'sessionid',
+                           u'value': session_key,
+                           u'path': u'/', u'httponly': True, u'secure': False})
