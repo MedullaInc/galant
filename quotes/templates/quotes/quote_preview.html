@@ -40,7 +40,6 @@
         <section class="content">
             <div class="holder v-center">
                 <div class="container">
-
                     {% if object.intro %}
                         <div class="pdf_element intro">
                             <div class="row">
@@ -60,21 +59,21 @@
 
                     {% for section in object.all_sections %}
 
-                        {% if section.service %}
 
-                            {% with service=section.service %}
+                        {% if section.cost %}
+
                                 <div class="pdf_element service">
 
                                     <div class="row">
                                         <div class="col-xs-offset-2 col-xs-8 section_title">
                                             <h2>
-                                                {{ service.name.get_text }}
+                                                {{ section.name.get_text }}
                                             </h2>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-xs-offset-4 col-xs-8 section_content">
-                                            {{ service.description.get_text|linebreaks }}
+                                            {{ section.description.get_text|linebreaks }}
                                         </div>
                                     </div>
                                     <div class="row">
@@ -85,13 +84,12 @@
                                         </div>
                                         <div class="col-xs-4 section_content">
                                             <p class="service_cost">
-                                                {{ service.cost }} &times; {{ service.quantity }}
+                                                {{ section.cost }} &times; {{ section.quantity }}
                                             </p>
                                         </div>
                                     </div>
 
                                 </div>
-                            {% endwith %}
 
                         {% elif section.name != "important_notes" and section.name != "intro" %}
 
@@ -145,31 +143,29 @@
                             </div>
                         </div>
                         {% for section in object.all_sections %}
-                            {% if section.service %}
-                                {% with service=section.service %}
+                            {% if section.cost %}
                                     <div class="row">
                                         <div class="col-xs-offset-4 col-xs-3 section_content">
                                             <p>
-                                                {{ service.name.get_text }}
+                                                {{ section.name.get_text }}
                                             </p>
                                         </div>
                                         <div class="col-xs-1 section_content">
                                             <p>
-                                                {{ service.quantity }}
+                                                {{ section.quantity }}
                                             </p>
                                         </div>
                                         <div class="col-xs-2 section_content">
                                             <p>
-                                                {{ service.cost }}
+                                                {{ section.cost }}
                                             </p>
                                         </div>
                                         <div class="col-xs-2 section_content">
                                             <p>
-                                                {{ service.get_total_cost }}
+                                                {{ section.get_total_cost }}
                                             </p>
                                         </div>
                                     </div>
-                                {% endwith %}
                             {% endif %}
                         {% endfor %}
 
@@ -187,18 +183,18 @@
                         </div>
                     </div>
 
-                    {% if object.important_notes %}
+                    {% if object.title %}
                         <div class="pdf_element margin">
                             <div class="row">
                                 <div class="col-xs-offset-2 col-xs-8 section_title">
                                     <h2>
-                                        {{ object.important_notes.title.get_text }}
+                                        {{ object.title.get_text }}
                                     </h2>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-xs-offset-4 col-xs-8 section_content">
-                                    {{ object.important_notes.text.get_text|linebreaks }}
+                                    {{ object.text.get_text|linebreaks }}
                                 </div>
                             </div>
                         </div>

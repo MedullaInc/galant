@@ -20,6 +20,9 @@ app.factory("Quote", function ($resource) {
           method: 'GET',
           url: '/en/quote/api/quote/fields/ '
         },
+        update: {
+          method: 'PATCH',
+        },
 	});
 
 });
@@ -36,9 +39,26 @@ app.factory("Service", function ($resource) {
           url: '/api/service ',
           isArray: true
         },
+        update: {
+          method: 'PATCH',
+          url: '/api/service/:id ',
+        },
 	});
 
 });
+
+/* istanbul ignore next  */
+app.factory("Section", function ($resource) {
+	//
+	return $resource("/en/quote/api/section ", {}, {
+        update: {
+          method: 'PATCH',
+          url: '/en/quote/api/section/:id ',
+        },
+	});
+
+});
+
 
 /* istanbul ignore next  */
 app.factory("Client", function ($resource) {

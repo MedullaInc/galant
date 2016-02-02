@@ -3,14 +3,17 @@ from rest_framework import serializers
 from gallant.models import Service
 from gallant.serializers.misc import MoneyField
 
+
 class ServiceSerializer(serializers.ModelSerializer):
 	name = ULTextField()
+	description = ULTextField()
 	cost = MoneyField()
 	notes = serializers.CharField(read_only=True)
+	views = serializers.IntegerField(required=False)
 
 	class Meta:
 		model = Service
-		fields = ('id', 'user', 'name', 'description', 'cost', 'quantity', 'type', 'parent', 'notes')
+		fields = ('id', 'user', 'name', 'description', 'cost', 'quantity', 'type', 'parent', 'notes','views')
 		extra_kwargs = {
 			'id': {'read_only': False, 'required': False},
 		}

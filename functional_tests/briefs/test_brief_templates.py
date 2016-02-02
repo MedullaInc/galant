@@ -4,7 +4,7 @@ from briefs import models as bm
 import autofixture
 
 
-def tearDown():
+def tearDownModule():
     browser.close()
 
 

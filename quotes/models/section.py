@@ -9,6 +9,7 @@ class Section(g.UserModel):
     index = m.IntegerField(default=0)
     title = gf.ULCharField(blank=True)
     text = gf.ULTextField(blank=True)
+    views = m.IntegerField(default=0)
 
     def get_languages(self):
         language_set = set()

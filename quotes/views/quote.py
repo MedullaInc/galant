@@ -83,7 +83,7 @@ class QuoteUpdate(View):
 
 
 class QuoteCreate(QuoteUpdate):
-    def get(self, request):
+    def get(self, request): 
         context = {'title': 'Add Quote'}
         template_id = request.GET.get('template_id', None)
         lang = request.GET.get('lang', None)
@@ -147,6 +147,8 @@ class QuoteDetail(View):
         return TemplateResponse(request=request,
                                 template="quotes/quote_detail_ng.html",
                                 context={'title': 'Quote', 'object': quote})  
+
+class QuoteSend(View): # pragma: no cover
     def post(self, request, **kwargs):
         quote = get_one_or_404(request.user, 'view_quote', q.Quote, id=kwargs['pk'])
         quote.status = q.QuoteStatus.Sent.value
@@ -157,7 +159,7 @@ class QuoteDetail(View):
                               reverse('quote_pdf', args=[quote.token.hex]))),
                           get_site_from_host(request))
         messages.success(request, 'Quote link sent to %s.' % quote.client.email)
-        return self.get(request, **kwargs)
+        return HttpResponseRedirect(reverse('quote_detail', args=[quote.id]))
 
 
 class QuoteList(View):
@@ -175,6 +177,17 @@ class QuoteList(View):
 
 def quote_fields_json(request):
     return JsonResponse(get_field_choices(q.Quote), safe=False)
+
+
+class SectionViewSet(ModelViewSet):
+    model = q.Section
+    serializer_class = serializers.SectionSerializer
+    permission_classes = [
+         GallantViewSetPermissions
+     ]
+
+    def get_queryset(self):
+        return self.model.objects.all_for(self.request.user)
 
 
 class QuoteViewSet(ModelViewSet):

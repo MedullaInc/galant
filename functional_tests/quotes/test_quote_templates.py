@@ -1,10 +1,23 @@
 from django.core.urlresolvers import reverse
 from functional_tests import browser
 import autofixture
-from test_quotes import get_blank_quote_autofixture
+from quotes import models as qm
 
 
-def tearDown():
+def get_blank_quote_autofixture(user):
+    c = autofixture.create_one('gallant.Client', generate_fk=True,
+                               field_values={'user': user})
+    q = autofixture.create_one('quotes.Quote', generate_fk=True,
+                               field_values={'sections': [],'services': [], 'language': 'en',
+                                             'user': user, 'client': c, 'status': '1'})
+    i = qm.Section.objects.create(user=q.user, name='intro', index=0)
+    m = qm.Section.objects.create(user=q.user, name='important_notes', index=1)
+    q.sections.add(i)
+    q.sections.add(m)
+    return q
+
+
+def tearDownModule():
     browser.close()
 
 
@@ -17,7 +30,7 @@ class QuoteTemplatesTest(browser.SignedInTest):
 
         b.get(self.live_server_url + reverse('add_quote_template'))
 
-
+        browser.wait().until(lambda driver: driver.find_element_by_id('edit_quote'))
         b.find_element_by_id('edit_quote').click()
         b.find_element_by_id('quote_name').send_keys('Quote test')
         browser.wait().until(lambda driver: driver.find_element_by_xpath('//select[@name="client"]/option[2]'))
@@ -26,6 +39,7 @@ class QuoteTemplatesTest(browser.SignedInTest):
         b.find_element_by_id('edit_service_0').click()
         b.find_element_by_id('service_name_0').send_keys('1234')
         b.find_element_by_id('quantity_0').send_keys('1')
+        b.find_element_by_id('description_0').send_keys('desc')
         b.find_element_by_xpath('//select[@id="type_0"]/option[2]').click()
         b.find_element_by_id('save_service_0').click()
 
@@ -46,6 +60,7 @@ class QuoteTemplatesTest(browser.SignedInTest):
 
         b.get(self.live_server_url + reverse('add_quote_template'))
 
+        browser.wait().until(lambda driver: driver.find_element_by_id('edit_quote'))
         b.find_element_by_id('edit_quote').click()
         browser.wait().until(lambda driver: driver.find_element_by_xpath('//select[@name="client"]/option[2]'))
         b.find_element_by_xpath('//select[@name="client"]/option[2]').click()
@@ -54,6 +69,7 @@ class QuoteTemplatesTest(browser.SignedInTest):
         b.find_element_by_id('edit_service_0').click()
         b.find_element_by_id('service_name_0').send_keys('1234')
         b.find_element_by_id('quantity_0').send_keys('1')
+        b.find_element_by_id('description_0').send_keys('desc')
         b.find_element_by_xpath('//select[@id="type_0"]/option[2]').click()
         b.find_element_by_id('save_service_0').click()
 
@@ -74,6 +90,8 @@ class QuoteTemplatesTest(browser.SignedInTest):
 
         b.get(self.live_server_url + reverse('quote_template_detail', args=[qt.id]))
 
+
+        browser.wait().until(lambda driver: driver.find_element_by_id('edit_quote'))
         b.find_element_by_id('edit_quote').click()
         b.find_element_by_id('quote_name').send_keys('Quote test')
         browser.wait().until(lambda driver: driver.find_element_by_xpath('//select[@name="client"]/option[2]'))
@@ -170,7 +188,6 @@ class QuoteTemplatesTest(browser.SignedInTest):
         b.find_element_by_id('save_section_0').click()
 
         self._submit_and_check(b)
-
         browser.wait().until(lambda driver: driver.find_element_by_xpath('//*[@id="es_tab"]'))
         new_tab = b.find_element_by_xpath('//*[@id="es_tab"]')
         self.assertEqual(u'Spanish', new_tab.text)

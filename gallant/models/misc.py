@@ -32,7 +32,7 @@ class Payment(UserModel):
     description = m.TextField(help_text='Payment Description.', blank=False, default='Payment')
 
     def __unicode__(self):
-        return '%s: %s' % (self.submitted_on, self.amount)
+        return '%s: %s' % (self.due, self.amount)
 
     class Meta:
         permissions = (

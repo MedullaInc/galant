@@ -7,7 +7,7 @@ from functional_tests import browser
 import autofixture
 
 
-def tearDown():
+def tearDownModule():
     browser.close()
 
 

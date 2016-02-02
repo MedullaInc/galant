@@ -37,6 +37,7 @@ class Quote(g.UserModel):
     parent = m.ForeignKey('self', null=True, blank=True, related_name='versions')
     projects = m.ManyToManyField(g.Project, blank=True)
     payments = m.ManyToManyField(g.Payment, blank=True)
+    views = m.IntegerField(default=0)
 
     def get_languages(self):
         language_set = set()
@@ -56,13 +57,12 @@ class Quote(g.UserModel):
     def all_sections(self):
         sections = list(self.sections.all_for(self.user)) + \
                    list(self.services.all_for(self.user))
-        #sections.sort(lambda a, b: cmp(a.index, b.index))
         return sections
 
     def get_total_cost(self):
         total = Money(0, "USD")
         for service in self.services.all_for(self.user):
-            total += service.service.get_total_cost()
+            total += service.get_total_cost()
 
         return total
 

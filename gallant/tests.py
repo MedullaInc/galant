@@ -474,8 +474,8 @@ class ULTextTest(TestCase):
 class GallantUserTest(TestCase):
     def test_create_user(self):
         UserModel = get_user_model()
-        u = UserModel.objects.create_user(email='foo@bar.com')
         group, created = Group.objects.get_or_create(name='users')
+        u = UserModel.objects.create_user(email='foo@bar.com')
 
         self.assertTrue(u in group.user_set.all())
 
