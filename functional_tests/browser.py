@@ -24,7 +24,9 @@ def instance():
         }
 }
 ''', 'args': []})
+        b.set_page_load_timeout(5)
         browser.append(b)
+
     return browser[0]
 
 
