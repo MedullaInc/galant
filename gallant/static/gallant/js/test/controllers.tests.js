@@ -145,4 +145,15 @@ describe('glFormController', function () {
         expect($window.onbeforeunload().length).not.toEqual(0);
         $window.onbeforeunload = null; // remove so browser doesn't get stuck
     });
+
+    it('adds onload function', function () {
+        $rootScope.$apply();
+        var result = $window.onload();
+        expect(result).not.toBeNull();
+        $window.onload = null; // remove so browser doesn't get stuck
+    });
+
 });
+
+
+

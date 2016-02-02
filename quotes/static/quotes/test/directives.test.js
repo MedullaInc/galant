@@ -2,6 +2,7 @@ describe('qtForm', function () {
     var $rootScope;
     var $compile;
     var $scope;
+    var $window;
 
     beforeEach(function () {
         module('quotes.directives.qtForm');
@@ -51,10 +52,11 @@ describe('qtForm', function () {
             $provide.value('$uibModal', {open: function () {}});
             $provide.value('$window', {location: {href: null}});
         });
-        inject(function (_$rootScope_, _$compile_) {
+        inject(function (_$rootScope_, _$compile_, _$window_) {
             // The injector unwraps the underscores (_) from around the parameter names when matching
             $rootScope = _$rootScope_;
             $compile = _$compile_;
+            $window = _$window_;
         });
  
         $rootScope.language = 'en';
@@ -180,6 +182,15 @@ describe('qtForm', function () {
             element.isolateScope().showRowForm($scope.rowform);
             expect($scope.quote.sections.length).toEqual(2);
         });
+
+        it('adds onload function', function () {
+            var element = $compile('<div qt-quote-form quote="quote"></div>')($scope);
+            $scope.$digest();
+            var result = $window.onbeforeunload();
+            expect(result).not.toBeNull();
+            $window.onbeforeunload = null; // remove so browser doesn't get stuck
+        });
+
 
     });
 });
