@@ -28,16 +28,12 @@ class CustomPhantomJS(PhantomJS):
                     continue
 
 
-browser = []
+def custom_phantomjs():
+    b = CustomPhantomJS(desired_capabilities={'phantomjs.page.settings.resourceTimeout': '5000'})
+    # hack while the python interface lags
+    b.command_executor._commands['executePhantomScript'] = ('POST', '/session/$sessionId/phantom/execute')
 
-
-def instance():
-    if len(browser) < 1:
-        b = CustomPhantomJS(desired_capabilities={'phantomjs.page.settings.resourceTimeout': '5000'})
-        # hack while the python interface lags
-        b.command_executor._commands['executePhantomScript'] = ('POST', '/session/$sessionId/phantom/execute')
-
-        b.execute('executePhantomScript', {'script': '''
+    b.execute('executePhantomScript', {'script': '''
 var page = this; // won't work otherwise
 page.onResourceRequested = function(requestData, request) {
     if ((/http:\/\/.+?\.css/gi).test(requestData['url']) || requestData['Content-Type'] == 'text/css') {
@@ -50,7 +46,16 @@ page.onResourceTimeout = function(request) {
   request.abort();
 };
 ''', 'args': []})
-        b.set_page_load_timeout(PAGE_TIMEOUT)
+    b.set_page_load_timeout(PAGE_TIMEOUT)
+    return b
+
+
+browser = []
+
+
+def instance():
+    if len(browser) < 1:
+        b = custom_phantomjs()
         browser.append(b)
 
     return browser[0]
