@@ -39,13 +39,12 @@ app.filter('cut', function () {
                 function ($scope, $attrs, $filter, Quote, Service, Section, QuoteTemplate, Client) {
                     $scope.isCollapsed = false;
                     $scope.quoteFields = [];
-                    $scope.quoteStatus = [];
-                    $scope.quoteLanguage = [];
+                    $scope.quoteStatus = {};
+                    $scope.quoteLanguage = {};
                     $scope.services = [];
                     $scope.sections = [];
                     $scope.serviceFields = [];
-                    $scope.language_list = [];
-
+                    $scope.language_list = {};
 
                     $scope.addSection = function (section_name) {
                         var name = "";
@@ -91,40 +90,16 @@ app.filter('cut', function () {
                     };
 
                     $scope.addLanguage = function (lang) {
-                        selected = $filter('filter')($scope.quoteLanguage, {
-                            value: lang
-                        }, true);
-                        if (selected.length > 0) {
-                            $scope.language_list.push([selected[0].value, selected[0].text]);
-                        }
+                        $scope.language_list[lang] = $scope.quoteLanguage[lang];
                     };
-
 
                     Client.get().$promise.then(function (clients) {
                         $scope.clients = clients;
                     });
 
-
                     Quote.fields().$promise.then(function (fields) {
-                        var tempObj = [];
-                        for (key in fields.status) {
-                            // must create a temp object to set the key using a variable
-                            tempObj[key] = fields.status[key];
-                            $scope.quoteStatus.push({
-                                value: key,
-                                text: tempObj[key]
-                            });
-                        }
-
-                        for (key in fields.language) {
-                            // must create a temp object to set the key using a variable
-                            tempObj[key] = fields.language[key];
-                            $scope.quoteLanguage.push({
-                                value: key,
-                                text: tempObj[key]
-                            });
-                        }
-                        $scope.addLanguage($scope.language);
+                        $scope.quoteStatus = fields.status;
+                        $scope.quoteLanguage = fields.language;
                     });
 
                     Service.get().$promise.then(function (services) {
@@ -132,15 +107,7 @@ app.filter('cut', function () {
                     });
 
                     Service.fields({}).$promise.then(function (fields) {
-                        for (var key in fields.type) {
-                            // must create a temp object to set the key using a variable
-                            var tempObj = {};
-                            tempObj[key] = fields.type[key];
-                            $scope.serviceFields.push({
-                                value: key,
-                                text: tempObj[key]
-                            });
-                        }
+                        $scope.serviceFields = fields.type;
                     });
 
                     $scope.boolTemplate = $attrs.boolTemplate;
@@ -149,12 +116,11 @@ app.filter('cut', function () {
                     } else {
                         $scope.endpoint = QuoteTemplate;
                     }
-
                     if ($attrs.quoteId) {
                         Quote.get({id: $attrs.quoteId}).$promise.then(function (quote) {
                             $scope.quote = quote;
                             if ($scope.language) {
-                                $scope.addLanguage($scope.language);
+                                $scope.language_list[$scope.language] = $scope.quoteLanguage[$scope.language];
                             }
 
                             /*
@@ -169,7 +135,6 @@ app.filter('cut', function () {
                                 $scope.quoteTemplate.quote.id = null;
                             }
                         });
-
                     } else {
                         if ($attrs.templateId) {
                             QuoteTemplate.get({
@@ -214,38 +179,32 @@ app.filter('cut', function () {
             templateUrl: '/static/quotes/html/qt_quote_form.html',
             link: function ($scope) {
 
-                    $scope.dynamicPopover = {
-                        translationTemplateUrl: 'translationTemplate.html',
-                        serviceTemplateUrl: 'serviceTemplate.html'
-                    };
+                $scope.dynamicPopover = {
+                    translationTemplateUrl: 'translationTemplate.html',
+                    serviceTemplateUrl: 'serviceTemplate.html'
+                };
 
+                $scope.showService = function (service){
+                    id = service.id;
+                    service.views = service.views+1;
+                    Service.update({id: id}, service);
+                }
 
-
-                    $scope.showService = function (service){
-                        id = service.id;
-                        service.views = service.views+1;
-                        Service.update({id: id}, service);
-                    }
-
-                    $scope.showSection = function (section){
-                        id = section.id;
-                        section.views = section.views+1;
-                        Section.update({id: id}, section);                       
-                    }
-
+                $scope.showSection = function (section){
+                    id = section.id;
+                    section.views = section.views+1;
+                    Section.update({id: id}, section);                       
+                }
 
                 $scope.changeLanguage = function (lang) {
-                    $scope.language = lang[0];
+                    $scope.language = lang;
                 };
                 $scope.removeService = function (index) {
                     $scope.quote.services.splice(index, 1);
                 };
                 $scope.showType = function (service) {
                     if (service) {
-                        selected = $filter('filter')($scope.serviceFields, {
-                            value: service.type
-                        });
-                        return selected.length ? selected[0].text : 'Not set';
+                        return $scope.serviceFields[service.type];
                     }
                 };
                 $scope.getTotal = function () {

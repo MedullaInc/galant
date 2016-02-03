@@ -1,17 +1,37 @@
 from contextlib import contextmanager
 
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
-from selenium import webdriver
 import selenium.webdriver.support.ui as ui
 import autofixture
 from django.contrib.auth import hashers
+from selenium.common.exceptions import TimeoutException
+from selenium.webdriver.phantomjs.webdriver import WebDriver as PhantomJS
+
+
+MAX_TRIES = 3
+PAGE_TIMEOUT = 5
+
+
+class CustomPhantomJS(PhantomJS):
+    def get(self, url):
+        count = 0
+
+        while True:
+            try:
+                super(CustomPhantomJS, self).get(url)
+                break
+            except TimeoutException:
+                count += 1
+                if count > MAX_TRIES:
+                    raise
+
 
 browser = []
 
 
 def instance():
     if len(browser) < 1:
-        b = webdriver.PhantomJS()
+        b = CustomPhantomJS()
         # hack while the python interface lags
         b.command_executor._commands['executePhantomScript'] = ('POST', '/session/$sessionId/phantom/execute')
 
@@ -24,7 +44,9 @@ def instance():
         }
 }
 ''', 'args': []})
+        b.set_page_load_timeout(5)
         browser.append(b)
+
     return browser[0]
 
 
@@ -89,9 +111,13 @@ class SignedInTest(BrowserTest):
         self.client.login(email=self.user.email, password='password')
 
         instance().get(self.live_server_url)
-        instance().add_cookie({u'domain': u'.localhost', u'name': u'sessionid',
-                               u'value': self.client.session.session_key,
-                               u'path': u'/', u'httponly': True, u'secure': False})
+        add_login_cookie(instance(), self.client.session.session_key)
 
     def tearDown(self):
         instance().delete_all_cookies()
+
+
+def add_login_cookie(browser_instance, session_key):
+    browser_instance.add_cookie({u'domain': u'.localhost', u'name': u'sessionid',
+                           u'value': session_key,
+                           u'path': u'/', u'httponly': True, u'secure': False})

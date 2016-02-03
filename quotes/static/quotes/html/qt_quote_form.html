@@ -37,9 +37,8 @@
            e-required e-ng-options="s.id as s.name for s in clients"><span class="detail_title">Client</span>
             {{ (clients | filter:{id: quote.client})[0].name }} </p>
         <br>
-        <p e-class="form-control" id="status" class="data" editable-select="quote.status" e-form="quoteform" e-required
-           e-ng-options="s.value as s.text for s in quoteStatus"><span
-                class="label label-default">{{ quoteStatus[quote.status].text }}</span>
+        <p e-class="form-control" id="status" class="data" editable-select="quote.status" e-form="quoteform" e-required e-ng-options="key as val for (key, val) in quoteStatus">
+           <span class="label label-default">{{ quoteStatus[quote.status] }}</span>
         </p>
     </div>
 </div>
@@ -48,18 +47,17 @@
 
 <uib-tabset ng-show="boolTemplate == 'True'" id="tabs" class="nav nav-tabs"
             style="margin-bottom: -1px; border-bottom: 0">
-    <uib-tab ng-click="changeLanguage(language)" id="{{ language[0] }}_tab" ng-repeat="language in language_list"
-             heading="{{ language[1] }}" active="tab.active"></uib-tab>
+    <uib-tab ng-click="changeLanguage(key)" id="{{ key }}_tab" ng-repeat="(key, val) in language_list"
+             heading="{{ val }}" active="tab.active"></uib-tab>
     <uib-tab id="add_translation_button" popover-placement="bottom"
              uib-popover-template="dynamicPopover.translationTemplateUrl" heading="Add Translation"
              active="tab.active"></uib-tab>
 </uib-tabset>
 
 <div id="center_content_enclosed">
-
     <script type="text/ng-template" id="translationTemplate.html">
         <select id="id_language" class="form-control" ng-model="language"
-                ng-options="lang.value as lang.text for lang in quoteLanguage"></select>
+                ng-options="key as val for (key, val) in quoteLanguage"></select>
         <button ng-click="addLanguage(language)" id="language_add" type="button" class="btn btn-default">Add</button>
     </script>
 
@@ -117,7 +115,7 @@
                 </div>
                 <div class="col-xs-2 section_content">
                     <div e-class="form-control" editable-select="service.type" e-id="type_{{$index}}" e-form="rowform"
-                         e-ng-options="s.value as s.text for s in serviceFields">
+                         e-ng-options="key as val for (key, val) in serviceFields">
                         {{ showType(service) }}
                     </div>
                 </div>
@@ -331,5 +329,8 @@
                 </tbody>
             </table>
         </div>
+    </script>
+
+   </div>
     </script>
 

@@ -2,7 +2,7 @@
     <td>{{ quote.modified|date:'y-M-d h:m' }}</td>
     <td>{{ (clients | filter:{id: quote.client})[0].name }}</td>
     <td>{{ quote.name }}</td>
-    <td>{{ quoteStatus[quote.status].text  }}</td>
+    <td>{{ quoteStatus[quote.status]  }}</td>
 </tr>
 <tr ng-if="quotes.length == 0">
     <td colspan="4">
