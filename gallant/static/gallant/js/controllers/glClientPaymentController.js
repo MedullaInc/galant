@@ -6,7 +6,7 @@ app.controller('glClientPaymentController', ['$scope', '$attrs', '$uibModal', '$
             templateUrl: '/static/gallant/html/gl_client_payment_modal.html',
             backdrop: true,
             windowClass: 'modal',
-            controller: function ($scope, $uibModalInstance, ClientProjects) {
+            controller: function ($scope, $uibModalInstance, ClientProjects, createPayment) {
 
                 // When form loads, it will load projects
                 $scope.projects = [];
@@ -39,7 +39,19 @@ app.controller('glClientPaymentController', ['$scope', '$attrs', '$uibModal', '$
                 };
 
                 // Form functions
-                console.log($scope)
+                $scope.createPayment = createPayment;
+                $scope.submit = function (e) {
+                    var newPayment = {
+                        "id": "",
+                        "quote": payment.quote,
+                        "amount": payment.amount,
+                        "description": payment.description,
+                        "due": moment(payment.due).format(),
+                        "paid_on": moment(payment.paid_on).format()
+                    };
+                    
+                    $scope.createPayment(newPayment);
+                };
 
                 // Modal functions
                 $scope.cancel = function () {
@@ -47,8 +59,17 @@ app.controller('glClientPaymentController', ['$scope', '$attrs', '$uibModal', '$
                 };
 
             },
-            resolve: {}
+            resolve: {
+                createPayment: function () {
+                    return $scope.createPayment;
+                },
+            }
         });
     };
+
+    $scope.createPayment = function (payment) {
+        console.log("OK");
+    };
+
 
 }]);
