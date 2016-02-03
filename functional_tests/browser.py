@@ -6,20 +6,10 @@ import autofixture
 from django.contrib.auth import hashers
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.phantomjs.webdriver import WebDriver as PhantomJS
-import signal
 
 
 MAX_TRIES = 3
 PAGE_TIMEOUT = 5
-DRIVER_TIMEOUT = 6
-
-
-class DriverTimeout(Exception):
-    pass
-
-
-def handler(signum, frame):
-    raise DriverTimeout("The webdriver timed out.")
 
 
 class CustomPhantomJS(PhantomJS):
@@ -28,20 +18,14 @@ class CustomPhantomJS(PhantomJS):
 
         while True:
             try:
-                signal.signal(signal.SIGALRM, handler)
-                signal.alarm(DRIVER_TIMEOUT)
                 super(CustomPhantomJS, self).get(url)
                 break
-            except (TimeoutException, DriverTimeout), ex:
-                print '%s: %s' % (type(ex), ex)
+            except TimeoutException:
                 count += 1
                 if count > MAX_TRIES:
                     raise
                 else:
                     continue
-            finally:
-                signal.signal(signal.SIGALRM, signal.SIG_IGN)
-                signal.alarm(0)
 
 
 browser = []
