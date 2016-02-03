@@ -168,7 +168,6 @@ class QuotesSignedInTest(browser.SignedInTest):
         browser.wait().until(lambda driver: driver.find_element_by_xpath('//select[@id="type_0"]/option[2]'))       
         b.find_element_by_xpath('//select[@id="type_0"]/option[2]').click()
         b.find_element_by_id('save_service_0').click()
-
         self._submit_and_check(b)
 
         browser.wait().until(lambda driver: driver.find_element_by_id('edit_section_0'))

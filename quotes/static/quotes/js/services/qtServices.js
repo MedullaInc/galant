@@ -21,12 +21,8 @@ app.factory("Quote", function ($resource) {
           url: '/en/quote/api/quote/fields/ '
         },
         update: {
-          method: 'PATCH',
-        },
-        views: {
-          method: 'PATCH',
-          url: '/en/quote/api/quote/views/:id '
-        },
+          method: 'PUT',
+        }
 	});
 
 });
