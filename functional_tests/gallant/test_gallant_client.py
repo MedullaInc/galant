@@ -142,7 +142,7 @@ class GallantClientTest(browser.SignedInTest):
         try:
             success_message = b.find_element_by_class_name('alert-success')
         except NoSuchElementException:
-            time.sleep(1)
+            time.sleep(2)
             success_message = b.find_element_by_class_name('alert-success')
         self.assertTrue(u'Client saved.' in success_message.text)
 

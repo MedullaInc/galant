@@ -165,6 +165,7 @@ app.filter('cut', function () {
                                 "parent": null,
                                 "projects": [],
                                 "views": 0,
+                                "session_duration": 0.0,
                             };
 
                             $scope.quoteTemplate = {

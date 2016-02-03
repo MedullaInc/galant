@@ -79,6 +79,6 @@ class CalendrTest(browser.SignedInTest):
         b.get(self.live_server_url + reverse('calendr'))
         browser.wait().until(lambda driver: driver.find_element_by_id('filterTask'))
         b.find_element_by_id('filterTask').click()
-
+        browser.wait().until(lambda driver: driver.find_element_by_id('searchText'))
         search_task = b.find_element_by_id('searchText')
         self.assertTrue(search_task)

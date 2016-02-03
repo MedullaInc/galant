@@ -166,9 +166,8 @@ class QuoteTemplatesTest(browser.SignedInTest):
         b.find_element_by_id('edit_section_0').click()
         intro_title = b.find_element_by_id('title_0')
 
-        
         with browser.wait_for_page_load():
-            b.find_element_by_id('create_submit').click()
+            b.find_element_by_xpath('//button[@id="create_submit"]').click()
         success_message = b.find_element_by_class_name('alert-success')
         self.assertTrue(u'Quote saved.' in success_message.text)
 
@@ -207,6 +206,6 @@ class QuoteTemplatesTest(browser.SignedInTest):
 
     def _submit_and_check(self, b):
         with browser.wait_for_page_load():
-            b.find_element_by_id('create_submit').click()  
+            b.find_element_by_xpath('//button[@id="create_submit"]').click()
         success_message = b.find_element_by_class_name('alert-success')
         self.assertTrue(u'Quote Template saved.' in success_message.text)

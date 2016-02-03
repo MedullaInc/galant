@@ -40,7 +40,8 @@ class BriefsSignedInTest(browser.SignedInTest):
         # access Client Briefs & click add brief
         b.get(self.live_server_url + reverse('briefs') + '?client_id=%s' % self.brief.client.id)
         b.find_element_by_id('add_brief').click()
-        b.find_element_by_css_selector('.popover-content .from_scratch_button').click()
+        browser.wait().until(lambda driver: driver.find_element_by_xpath('//button[@class="from_scratch_button"]'))
+        b.find_element_by_xpath('//button[@class="from_scratch_button"]').click()
 
         # fill out brief & save
         b.find_element_by_id('id_title').send_keys('Brief test')
