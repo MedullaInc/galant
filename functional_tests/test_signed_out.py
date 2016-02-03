@@ -91,7 +91,7 @@ class SignedOutTest(StaticLiveServerTestCase):
 
         title = b.find_element_by_css_selector('h1 span.red_a')
 
-        self.assertEqual(u'CONTACT', title.text)
+        self.assertEqual(u'Contact', title.text)
 
     def test_can_request_signup(self):
         b = self.browser
