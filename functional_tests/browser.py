@@ -7,6 +7,15 @@ from django.contrib.auth import hashers
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.phantomjs.webdriver import WebDriver as PhantomJS
 
+from django.core.servers import basehttp
+from wsgiref.simple_server import WSGIServer as base_wsgi
+
+
+def my_handle_error(self, request, client_address):
+    if not basehttp.is_broken_pipe_error():
+        base_wsgi.handle_error(self, request, client_address)
+basehttp.WSGIServer.handle_error = my_handle_error
+
 
 MAX_TRIES = 3
 PAGE_TIMEOUT = 7
