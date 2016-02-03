@@ -9,7 +9,7 @@ from selenium.webdriver.phantomjs.webdriver import WebDriver as PhantomJS
 
 
 MAX_TRIES = 3
-PAGE_TIMEOUT = 5
+PAGE_TIMEOUT = 7
 
 
 class CustomPhantomJS(PhantomJS):
