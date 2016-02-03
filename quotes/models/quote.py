@@ -38,6 +38,7 @@ class Quote(g.UserModel):
     projects = m.ManyToManyField(g.Project, blank=True)
     payments = m.ManyToManyField(g.Payment, blank=True)
     views = m.IntegerField(default=0)
+    session_duration = m.FloatField(default=0.0)
 
     def get_languages(self):
         language_set = set()

@@ -128,35 +128,35 @@ class QuoteTemplateDelete(View):
         return HttpResponseRedirect(reverse('quote_templates'))
 
 
-# class QuoteDetail(View):
-#     def get(self, request, **kwargs):
-#         quote = get_one_or_404(request.user, 'view_quote', q.Quote, pk=kwargs['pk'])
-
-#         request.breadcrumbs([(_('Quotes'), reverse('quotes')),
-#                              (_('Quote: %s' % quote.name), request.path_info)])
-#         return TemplateResponse(request=request,
-#                                 template="quotes/quote_detail.html",
-#                                 context={'title': 'Quote', 'object': quote})
-
 class QuoteDetail(View):
     def get(self, request, **kwargs):
-        quote = get_one_or_404(request.user, 'view_quote', q.Quote, pk=kwargs['pk'])
+        for key in ('pk', 'token'):
+            if key in kwargs:
+                id_type = key
+                if id_type == "pk":
+                    template = "quotes/quote_detail_ng.html"
+                elif id_type == "token":
+                    template = "quotes/quote_detail_client_ng.html"
+
+                quote = get_one_or_404(request.user, 'view_quote', q.Quote, **{ key: kwargs[key] })
 
         request.breadcrumbs([(_('Quotes'), reverse('quotes')),
                              (_('Quote: %s' % quote.name), request.path_info)])
         return TemplateResponse(request=request,
-                                template="quotes/quote_detail_ng.html",
-                                context={'title': 'Quote', 'object': quote})  
+                                template=template,
+                                context={'title': 'Quote', 'object': quote, 'id_type': id_type })  
+
 
 class QuoteSend(View): # pragma: no cover
     def post(self, request, **kwargs):
         quote = get_one_or_404(request.user, 'view_quote', q.Quote, id=kwargs['pk'])
+        print quote.id
         quote.status = q.QuoteStatus.Sent.value
         quote.save()
 
         _send_quote_email(quote.client.email, request.user.name,
                           (request.build_absolute_uri(
-                              reverse('quote_pdf', args=[quote.token.hex]))),
+                              reverse('quote_detail', args=[quote.token.hex]))),
                           get_site_from_host(request))
         messages.success(request, 'Quote link sent to %s.' % quote.client.email)
         return HttpResponseRedirect(reverse('quote_detail', args=[quote.id]))
@@ -188,6 +188,17 @@ class SectionViewSet(ModelViewSet):
 
     def get_queryset(self):
         return self.model.objects.all_for(self.request.user)
+
+
+class QuoteViewsViewsSet(ModelViewSet):
+    model = q.Quote
+    serializer_class = serializers.QuoteSerializer
+    permission_classes = [
+         GallantViewSetPermissions
+     ]
+
+    def get_queryset(self):
+        return self.model.objects.all_for(self.request.user)    
 
 
 class QuoteViewSet(ModelViewSet):

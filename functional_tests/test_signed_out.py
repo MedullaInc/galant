@@ -2,6 +2,7 @@
 import time
 from unittest.case import skip
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
+from functional_tests import browser
 from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException
 from django.utils.translation import activate, get_language
@@ -12,7 +13,7 @@ class SignedOutTest(StaticLiveServerTestCase):
     # fixtures = ['functional_tests/fixtures/ft_one_user.json']
 
     def setUp(self):
-        self.browser = webdriver.PhantomJS()
+        self.browser = browser.custom_phantomjs()
 
         # other browsers can be set here, eg
         # self.browser = webdriver.Firefox()
@@ -90,7 +91,7 @@ class SignedOutTest(StaticLiveServerTestCase):
 
         title = b.find_element_by_css_selector('h1 span.red_a')
 
-        self.assertEqual(u'CONTACT', title.text)
+        self.assertEqual(u'Contact', title.text)
 
     def test_can_request_signup(self):
         b = self.browser

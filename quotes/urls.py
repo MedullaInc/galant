@@ -15,6 +15,7 @@ urlpatterns = [
     url(r'^delete/(?P<pk>[0-9]+)$', login_required(views.QuoteDelete.as_view()), name='delete_quote'),
     url(r'^send_quote/(?P<pk>[0-9]+)$', login_required(views.QuoteSend.as_view()), name='send_quote'),
     url(r'^(?P<pk>[0-9]+)?$', login_required(views.QuoteDetail.as_view()), name='quote_detail'),
+    url(r'^(?P<token>[a-f0-9]{32})?$', login_required(views.QuoteDetail.as_view()), name='quote_detail'),
     url(r'^template/$', login_required(views.QuoteTemplateList.as_view()), name='quote_templates'),
     url(r'^template/(?P<pk>[0-9]+)?$', login_required(views.QuoteTemplateDetail.as_view()),
         name='quote_template_detail'),

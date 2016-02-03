@@ -37,10 +37,8 @@ class BriefsSignedInTest(browser.SignedInTest):
     def test_add_brief(self):
         b = self.browser
 
-        # access Client Briefs & click add brief
-        b.get(self.live_server_url + reverse('briefs') + '?client_id=%s' % self.brief.client.id)
-        b.find_element_by_id('add_brief').click()
-        b.find_element_by_css_selector('.popover-content .from_scratch_button').click()
+        # add brief
+        b.get(self.live_server_url + reverse('add_brief') + '?client_id=%s' % self.brief.client.id)
 
         # fill out brief & save
         b.find_element_by_id('id_title').send_keys('Brief test')
@@ -104,6 +102,7 @@ class BriefsSignedInTest(browser.SignedInTest):
         success_message = b.find_element_by_class_name('alert-success')
         self.assertTrue(u'Brief saved.' in success_message.text)
 
+        browser.wait().until(lambda driver: driver.find_element_by_xpath('//div[@id="question_2"]/div/div[1]'))
         answer = b.find_element_by_xpath('//div[@id="question_2"]/div/div[1]').text
         self.assertEqual(answer, u'— foo')
 

@@ -26,7 +26,8 @@ class GallantServiceTest(browser.SignedInTest):
         b.find_element_by_name('quantity').send_keys('10')
         b.find_element_by_xpath('//select[@name="type"]/option[@value="0"]').click()
 
-        b.find_element_by_xpath('//button[@type="submit"]').click()
+        with browser.wait_for_page_load():
+            b.find_element_by_xpath('//button[@type="submit"]').click()
 
         success_message = b.find_element_by_class_name('alert-success')
         self.assertTrue(u'Service saved.' in success_message.text)
@@ -52,7 +53,8 @@ class GallantServiceTest(browser.SignedInTest):
         b.find_element_by_name('quantity').send_keys('88')
         b.find_element_by_xpath('//select[@name="type"]/option[@value="3"]').click()
 
-        b.find_element_by_xpath('//button[@type="submit"]').click()
+        with browser.wait_for_page_load():
+            b.find_element_by_xpath('//button[@type="submit"]').click()
 
         success_message = b.find_element_by_class_name('alert-success')
         self.assertTrue(u'Service saved.' in success_message.text)
@@ -73,7 +75,9 @@ class GallantServiceTest(browser.SignedInTest):
         test_string = '2351tlgkjqlwekjalfkj'
 
         b.find_element_by_xpath('//textarea[@name="note.text"]').send_keys(test_string)
-        b.find_element_by_xpath('//button[@type="submit"]').click()
+        
+        with browser.wait_for_page_load():
+            b.find_element_by_xpath('//button[@type="submit"]').click()
         
         s.refresh_from_db()
         self.assertEqual(s.notes.count(), 1)

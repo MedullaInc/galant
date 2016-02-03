@@ -33,10 +33,11 @@ app.filter('cut', function () {
                 endpoint: '=',
                 language: '=',
                 forms: '=',
-                boolTemplate: '='
+                boolTemplate: '=',
+                idType: '=',
             },
-            controller: ['$scope', '$attrs', '$filter', 'Quote', 'Service', 'Section', 'QuoteTemplate', 'Client',
-                function ($scope, $attrs, $filter, Quote, Service, Section, QuoteTemplate, Client) {
+            controller: ['$scope', '$attrs', '$filter', '$window', 'Quote', 'Service', 'Section', 'QuoteTemplate', 'Client',
+                function ($scope, $attrs, $filter, $window, Quote, Service, Section, QuoteTemplate, Client) {
                     $scope.isCollapsed = false;
                     $scope.quoteFields = [];
                     $scope.quoteStatus = {};
@@ -45,6 +46,15 @@ app.filter('cut', function () {
                     $scope.sections = [];
                     $scope.serviceFields = [];
                     $scope.language_list = {};
+
+                    if($attrs.idType == "token"){
+                        $window.onbeforeunload = function () { 
+                            $scope.quote.session_duration = ((new Date() - $scope.$parent.startTime)/1000 );
+                            $scope.quote.views = $scope.quote.views+1;
+                            $scope.quote.status = "3";
+                            Quote.update({id: $scope.quote.id}, $scope.quote);
+                        }
+                    }
 
                     $scope.addSection = function (section_name) {
                         var name = "";
@@ -79,6 +89,7 @@ app.filter('cut', function () {
                                 },
                                 user: $scope.quote.user,
                                 name: "",
+                                description: "",
                                 notes: Array[0],
                                 parent: null,
                                 quantity: "",
@@ -110,6 +121,7 @@ app.filter('cut', function () {
                         $scope.serviceFields = fields.type;
                     });
 
+                    $scope.idType = $attrs.idType;
                     $scope.boolTemplate = $attrs.boolTemplate;
                     if ($attrs.boolTemplate == "False") {
                         $scope.endpoint = Quote;
@@ -123,17 +135,13 @@ app.filter('cut', function () {
                                 $scope.language_list[$scope.language] = $scope.quoteLanguage[$scope.language];
                             }
 
-                            /*
-                            $scope.quote.views = $scope.quote.views+1;
-                            Quote.update({id: $scope.quote.id}, $scope.quote);
-                            */
-                            
                             if ($attrs.boolTemplate == "True") {
                                 $scope.quoteTemplate = {
                                     "quote": $scope.quote
                                 };
                                 $scope.quoteTemplate.quote.id = null;
                             }
+
                         });
                     } else {
                         if ($attrs.templateId) {
@@ -163,6 +171,7 @@ app.filter('cut', function () {
                                 "parent": null,
                                 "projects": [],
                                 "views": 0,
+                                "session_duration": 0.0,
                             };
 
                             $scope.quoteTemplate = {
@@ -173,6 +182,7 @@ app.filter('cut', function () {
                             $scope.addSection('important_notes');
                             $scope.addService();
                         }
+
                     }
                 }
             ],
@@ -199,14 +209,17 @@ app.filter('cut', function () {
                 $scope.changeLanguage = function (lang) {
                     $scope.language = lang;
                 };
+
                 $scope.removeService = function (index) {
                     $scope.quote.services.splice(index, 1);
                 };
+
                 $scope.showType = function (service) {
                     if (service) {
                         return $scope.serviceFields[service.type];
                     }
                 };
+
                 $scope.getTotal = function () {
                     if ($scope.quote) {
                         if ($scope.quote.services) {

@@ -21,8 +21,8 @@ app.factory("Quote", function ($resource) {
           url: '/en/quote/api/quote/fields/ '
         },
         update: {
-          method: 'PATCH',
-        },
+          method: 'PUT',
+        }
 	});
 
 });
@@ -58,7 +58,6 @@ app.factory("Section", function ($resource) {
 	});
 
 });
-
 
 /* istanbul ignore next  */
 app.factory("Client", function ($resource) {

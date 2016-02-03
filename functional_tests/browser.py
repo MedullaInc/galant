@@ -7,9 +7,18 @@ from django.contrib.auth import hashers
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.phantomjs.webdriver import WebDriver as PhantomJS
 
+from django.core.servers import basehttp
+from wsgiref.simple_server import WSGIServer as base_wsgi
+
+
+def my_handle_error(self, request, client_address):
+    if not basehttp.is_broken_pipe_error():
+        base_wsgi.handle_error(self, request, client_address)
+basehttp.WSGIServer.handle_error = my_handle_error
+
 
 MAX_TRIES = 3
-PAGE_TIMEOUT = 5
+PAGE_TIMEOUT = 7
 
 
 class CustomPhantomJS(PhantomJS):
@@ -24,6 +33,30 @@ class CustomPhantomJS(PhantomJS):
                 count += 1
                 if count > MAX_TRIES:
                     raise
+                else:
+                    continue
+
+
+def custom_phantomjs():
+    b = CustomPhantomJS(desired_capabilities={'phantomjs.page.settings.resourceTimeout': '5000'})
+    # hack while the python interface lags
+    b.command_executor._commands['executePhantomScript'] = ('POST', '/session/$sessionId/phantom/execute')
+
+    b.execute('executePhantomScript', {'script': '''
+var page = this; // won't work otherwise
+page.onResourceRequested = function(requestData, request) {
+    if ((/http:\/\/.+?\.css/gi).test(requestData['url']) || requestData['Content-Type'] == 'text/css') {
+        console.log('The url of the request is matching. Aborting: ' + requestData['url']);
+        request.abort();
+    }
+}
+
+page.onResourceTimeout = function(request) {
+  request.abort();
+};
+''', 'args': []})
+    b.set_page_load_timeout(PAGE_TIMEOUT)
+    return b
 
 
 browser = []
@@ -31,20 +64,7 @@ browser = []
 
 def instance():
     if len(browser) < 1:
-        b = CustomPhantomJS()
-        # hack while the python interface lags
-        b.command_executor._commands['executePhantomScript'] = ('POST', '/session/$sessionId/phantom/execute')
-
-        b.execute('executePhantomScript', {'script': '''
-    var page = this; // won't work otherwise
-    page.onResourceRequested = function(requestData, request) {
-        if ((/http:\/\/.+?\.css/gi).test(requestData['url']) || requestData['Content-Type'] == 'text/css') {
-            console.log('The url of the request is matching. Aborting: ' + requestData['url']);
-            request.abort();
-        }
-}
-''', 'args': []})
-        b.set_page_load_timeout(5)
+        b = custom_phantomjs()
         browser.append(b)
 
     return browser[0]

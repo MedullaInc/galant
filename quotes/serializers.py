@@ -21,6 +21,7 @@ class QuoteSerializer(serializers.ModelSerializer):
     user = serializers.PrimaryKeyRelatedField(read_only=True)
     parent = serializers.PrimaryKeyRelatedField(read_only=True)
     views = serializers.IntegerField()
+    session_duration = serializers.FloatField()
 
     def get_fields(self, *args, **kwargs):
         fields = super(QuoteSerializer, self).get_fields(*args, **kwargs)
@@ -81,7 +82,7 @@ class QuoteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Quote
         fields = ('id', 'user', 'name', 'client', 'sections', 'services', 'language', 'status',
-                  'modified', 'token', 'parent', 'projects', 'views')
+                  'modified', 'token', 'parent', 'projects', 'views', 'session_duration')
         extra_kwargs = {
             'id': {'read_only': False, 'required': False, 'allow_null':True},
             'user': {'required': False},
