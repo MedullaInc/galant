@@ -33,7 +33,8 @@ app.filter('cut', function () {
                 endpoint: '=',
                 language: '=',
                 forms: '=',
-                boolTemplate: '='
+                boolTemplate: '=',
+                idType: '=',
             },
             controller: ['$scope', '$attrs', '$filter', '$window', 'Quote', 'Service', 'Section', 'QuoteTemplate', 'Client',
                 function ($scope, $attrs, $filter, $window, Quote, Service, Section, QuoteTemplate, Client) {
@@ -46,10 +47,13 @@ app.filter('cut', function () {
                     $scope.serviceFields = [];
                     $scope.language_list = {};
 
-                    $window.onbeforeunload = function () { 
-                        $scope.quote.session_duration = ((new Date() - $scope.$parent.startTime)/1000 );
-                        $scope.quote.views = $scope.quote.views+1;
-                        Quote.update({id: $scope.quote.id}, $scope.quote);
+                    if($attrs.idType == "token"){
+                        $window.onbeforeunload = function () { 
+                            $scope.quote.session_duration = ((new Date() - $scope.$parent.startTime)/1000 );
+                            $scope.quote.views = $scope.quote.views+1;
+                            $scope.quote.status = "3";
+                            Quote.update({id: $scope.quote.id}, $scope.quote);
+                        }
                     }
 
                     $scope.addSection = function (section_name) {
@@ -85,6 +89,7 @@ app.filter('cut', function () {
                                 },
                                 user: $scope.quote.user,
                                 name: "",
+                                description: "",
                                 notes: Array[0],
                                 parent: null,
                                 quantity: "",
@@ -116,6 +121,7 @@ app.filter('cut', function () {
                         $scope.serviceFields = fields.type;
                     });
 
+                    $scope.idType = $attrs.idType;
                     $scope.boolTemplate = $attrs.boolTemplate;
                     if ($attrs.boolTemplate == "False") {
                         $scope.endpoint = Quote;

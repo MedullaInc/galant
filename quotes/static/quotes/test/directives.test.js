@@ -184,7 +184,7 @@ describe('qtForm', function () {
         });
 
         it('adds onload function', function () {
-            var element = $compile('<div qt-quote-form quote="quote"></div>')($scope);
+            var element = $compile('<div qt-quote-form quote="quote" id-type="token"></div>')($scope);
             $scope.$digest();
             var result = $window.onbeforeunload();
             expect(result).not.toBeNull();
