@@ -8,6 +8,7 @@ var uglify = require('gulp-uglify');
 var rename = require('gulp-rename');
 var del = require('del');
 var Server = require('karma').Server;
+var watch = require('gulp-watch');
 
 var scripts = ['**/static/**/*.js',
     '!**/static/**/*test*.js', '!static/**', '!venv/**', '!node_modules/**'];
@@ -78,3 +79,9 @@ gulp.task('clean-coverage', function () {
 gulp.task('static', ['copy-js-assets', 'copy-css-assets', 'concat-and-min'])
 
 gulp.task('default', ['lint', 'copy-assets', 'test']);
+
+gulp.task('watchStatic', function() {
+    watch(scripts, function() {
+        gulp.start('static');
+    });
+});
