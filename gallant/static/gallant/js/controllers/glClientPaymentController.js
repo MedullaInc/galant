@@ -1,6 +1,6 @@
-app = angular.module('gallant.controllers.glClientPaymentController', []);
+app = angular.module('gallant.controllers.glClientPaymentController', ['ui.bootstrap', 'ng.django.forms']);
 
-app.controller('glClientPaymentController', ['$scope', '$attrs', '$uibModal', '$log', 'ClientProjects', '$http', '$window', function ($scope, $attrs, $uibModal) {
+app.controller('glClientPaymentController', ['$scope', '$attrs', '$uibModal', '$log', 'ClientProjects', '$http', '$window', function ($scope, $attrs, $uibModal, Payment) {
     $scope.openEditModal = function () {
         $uibModal.open({
             templateUrl: '/static/gallant/html/gl_client_payment_modal.html',
@@ -40,24 +40,19 @@ app.controller('glClientPaymentController', ['$scope', '$attrs', '$uibModal', '$
 
                 // Form functions
                 $scope.createPayment = createPayment;
-                $scope.submit = function (e) {
-                    var newPayment = {
-                        "id": "",
-                        "quote": payment.quote,
-                        "amount": payment.amount,
-                        "description": payment.description,
-                        "due": moment(payment.due).format(),
-                        "paid_on": moment(payment.paid_on).format()
-                    };
-                    
-                    $scope.createPayment(newPayment);
+                $scope.submit = function () {
+                    if (typeof $scope.payment == 'undefined' || typeof $scope.payment.quote == 'undefined' || typeof $scope.payment.amount == 'undefined' || typeof $scope.payment.description == 'undefined' ) {
+                        $scope.errors = "Project, Amount & Description are required!";
+                    } else {
+                        $scope.errors = "";
+                        $scope.createPayment($scope.payment);
+                    }
                 };
 
                 // Modal functions
                 $scope.cancel = function () {
                     $uibModalInstance.dismiss('cancel');
                 };
-
             },
             resolve: {
                 createPayment: function () {
@@ -68,8 +63,26 @@ app.controller('glClientPaymentController', ['$scope', '$attrs', '$uibModal', '$
     };
 
     $scope.createPayment = function (payment) {
-        console.log("OK");
+        var newPayment = {
+            'quote': payment.quote,
+            'amount': payment.amount,
+            'description': payment.description,
+            'due': new Date(payment.due),
+            'paid_on': new Date(payment.paid_on)
+        };
+
+        $scope.postPayment(newPayment);
+
     };
 
+    $scope.postPayment = function (payment) {
+        Payment.save({payment: payment}).$promise.then(function (response) {
+            $scope.renderPayment(response);
+        });
+    };
+
+    $scope.renderPayment = function (response) {
+        console.log(response);
+    };
 
 }]);

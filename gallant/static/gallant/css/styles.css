@@ -2461,6 +2461,14 @@ ul.djng-form-control-feedback.djng-field-errors li.invalid::before {
     font-family: 'Glyphicons Halflings';
 }
 
+input.form-control.has-error {
+    border: 1px solid #ff0000;
+}
+
+span.error {
+    color: #ff0000;
+}
+
 /* End Form Errors*/
 
 /* Notices */

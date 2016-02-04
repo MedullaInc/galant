@@ -46,21 +46,11 @@ app.factory('Client', function ($resource) {
 /* istanbul ignore next */
 app.factory('Payment', function ($resource) {
     return $resource('/api/quote/payments/:id', {}, {
-        // List of objects
         query: {
             method: 'GET',
             params: {},
-            isArray: true,
-            url: '/api/quote/payments/:id?client_id=:client_id'
+            isArray: true
         },
-        // One object
-        retrieve: {
-            method: 'GET',
-            params: {},
-            isArray: true,
-            url: '/api/quote/payments/:id'
-        },
-        // the following are untested
         save: {
             method: 'POST',
             params: {
@@ -68,11 +58,18 @@ app.factory('Payment', function ($resource) {
             },
         },
         update: {
-            method: 'PATCH',
+            method: 'PUT',
             params: {
                 id: '@id'
             },
-            url: '/api/quote/payments/:id'
+            url: '/en/quotes/api/payment/:id '
+        },
+        delete: {
+            method: 'DELETE',
+            params: {
+                id: '@id'
+            },
+            url: '/en/quotes/api/payment/:id '
         }
     });
 
