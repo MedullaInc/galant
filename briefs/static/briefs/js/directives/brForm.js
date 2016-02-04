@@ -59,25 +59,23 @@ app.directive('brBriefForm', ['Question', function (Question) {
                     }).$promise.then(function (brief) {
                             $scope.brief = brief;
                         });
-                } else {
-                    if ($attrs.templateId) {
-                        BriefTemplate.get({
-                            id: $attrs.templateId
-                        }).$promise.then(function (briefTemplate) {
-                                $scope.brief = briefTemplate.brief;
-                                delete $scope.brief.id;
-                                angular.forEach($scope.brief.questions, function (q) {
-                                    delete q.id;
-                                });
-                                $scope.brief.quote = $attrs.quoteId;
-                                $scope.brief.client = $attrs.clientId;
+                } else if ($attrs.templateId) {
+                    BriefTemplate.get({
+                        id: $attrs.templateId
+                    }).$promise.then(function (briefTemplate) {
+                            $scope.brief = briefTemplate.brief;
+                            delete $scope.brief.id;
+                            angular.forEach($scope.brief.questions, function (q) {
+                                delete q.id;
                             });
-                    } else {
-                        $scope.brief = new Brief();
-                        $scope.brief.questions = [];
-                        $scope.brief.quote = $attrs.quoteId;
-                        $scope.brief.client = $attrs.clientId;
-                    }
+                            $scope.brief.quote = $attrs.quoteId;
+                            $scope.brief.client = $attrs.clientId;
+                        });
+                } else {
+                    $scope.brief = new Brief();
+                    $scope.brief.questions = [];
+                    $scope.brief.quote = $attrs.quoteId;
+                    $scope.brief.client = $attrs.clientId;
                 }
             }],
         templateUrl: '/static/briefs/html/br_brief_form.html',
