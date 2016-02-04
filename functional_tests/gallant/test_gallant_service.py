@@ -75,7 +75,7 @@ class GallantServiceTest(browser.SignedInTest):
         test_string = '2351tlgkjqlwekjalfkj'
 
         b.find_element_by_xpath('//textarea[@name="note.text"]').send_keys(test_string)
-        
+
         with browser.wait_for_page_load():
             b.find_element_by_xpath('//button[@type="submit"]').click()
         

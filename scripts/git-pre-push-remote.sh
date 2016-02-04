@@ -8,7 +8,20 @@ fi
 echo 'Running JS tests / coverage...'
 gulp test || exit 1
 
-echo 'rsyncing to remote git repo...'
-rsync -avz -e ssh .git/ stg:gallant/.git/
-echo 'running remote test / coverage...'
-ssh stg 'cd gallant; ./scripts/test-remote.sh'
+echo 'Attempting rsync to remote git repo...'
+
+function run_local() {
+  trap : SIGINT;
+  echo 'Failed, running local test / coverage...';
+  ./scripts/test-and-coverage.sh || exit 1;
+  python ./scripts/measure-coverage.py || exit 1;
+  exit 0;
+}
+
+trap run_local SIGINT
+if (rsync -avz -e ssh .git/ stg:gallant/.git/); then
+  echo 'Running remote test / coverage...'
+  ssh stg 'cd gallant; ./scripts/test-remote.sh' || exit 1
+else
+  run_local
+fi
