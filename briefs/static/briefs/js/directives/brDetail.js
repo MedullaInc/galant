@@ -2,6 +2,22 @@ app = angular.module('briefs.directives.brDetail', [
     'briefs.services.brServices'
 ]);
 
+app.directive('brBriefTemplate', function() {
+    return {
+        restrict: 'A',
+        scope: {
+            object: '=',
+            endpoint: '=',
+            language: '='
+        },
+        controller: ['$scope', '$attrs', 'Brief', 'BriefTemplate',
+            function ($scope, $attrs, Brief, BriefTemplate) {
+                $scope.object = $scope.brief;
+                $scope.endpoint = $scope.briefEndpoint;
+            }],
+    };
+});
+
 app.directive('brBriefDetail', ['Question', function (Question) {
     return {
         restrict: 'A',
@@ -20,9 +36,9 @@ app.directive('brBriefDetail', ['Question', function (Question) {
                             $scope.brief = brief;
                         });
                 } else {
-                    if ($attrs.templateId) {
+                    if ($attrs.fromTemplate) {
                         BriefTemplate.get({
-                            id: $attrs.templateId
+                            id: $attrs.fromTemplate
                         }).$promise.then(function (briefTemplate) {
                                 $scope.brief = briefTemplate.brief;
                                 delete $scope.brief.id;
