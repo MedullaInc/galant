@@ -7,6 +7,7 @@ from django.contrib import messages
 from django.core.urlresolvers import reverse
 from gallant.utils import get_one_or_404, url_to_pdf, get_site_from_host, GallantObjectPermissions, get_field_choices, \
     GallantViewSetPermissions
+from gallant.views.user import UserModelViewSet
 from quotes import models as q
 from quotes import serializers
 from gallant.serializers import payment
@@ -201,31 +202,10 @@ class QuoteViewsViewsSet(ModelViewSet):
         return self.model.objects.all_for(self.request.user)    
 
 
-class QuoteViewSet(ModelViewSet):
+class QuoteViewSet(UserModelViewSet):
     model = q.Quote
     serializer_class = serializers.QuoteSerializer
-    permission_classes = [
-         GallantViewSetPermissions
-     ]
 
-    def get_queryset(self):
-        return self.model.objects.all_for(self.request.user)
-
-    def update(self, request, *args, **kwargs):
-        response = super(QuoteViewSet, self).update(request, *args, **kwargs)
-        if response.status_code == HTTP_200_OK or response.status_code == HTTP_201_CREATED:
-            self.request._messages.add(messages.SUCCESS, 'Quote saved.')
-            return Response({'status': 0, 'redirect': reverse('quote_detail', args=[response.data['id']])})
-        else:
-            return response
-
-    def create(self, request, *args, **kwargs):
-        response = super(QuoteViewSet, self).create(request, *args, **kwargs)
-        if response.status_code == HTTP_201_CREATED:
-            self.request._messages.add(messages.SUCCESS, 'Quote saved.')
-            return Response({'status': 0, 'redirect': reverse('quote_detail', args=[response.data['id']])})
-        else:
-            return response
 
 class QuotePaymentsAPI(generics.RetrieveUpdateAPIView):
     model = g.Client
