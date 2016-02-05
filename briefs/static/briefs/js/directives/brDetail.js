@@ -2,7 +2,7 @@ app = angular.module('briefs.directives.brDetail', [
     'briefs.services.brServices'
 ]);
 
-app.directive('brBriefTemplate', function() {
+app.directive('brBriefDetail', ['Question', function (Question) {
     return {
         restrict: 'A',
         scope: {
@@ -12,34 +12,31 @@ app.directive('brBriefTemplate', function() {
         },
         controller: ['$scope', '$attrs', 'Brief', 'BriefTemplate',
             function ($scope, $attrs, Brief, BriefTemplate) {
-                $scope.object = $scope.brief;
-                $scope.endpoint = $scope.briefEndpoint;
-            }],
-    };
-});
-
-app.directive('brBriefDetail', ['Question', function (Question) {
-    return {
-        restrict: 'A',
-        scope: {
-            brief: '=',
-            endpoint: '=',
-            language: '='
-        },
-        controller: ['$scope', '$attrs', 'Brief', 'BriefTemplate',
-            function ($scope, $attrs, Brief, BriefTemplate) {
-                $scope.endpoint = Brief;
-                if ($attrs.briefId) {
-                    Brief.get({
-                        id: $attrs.briefId
-                    }).$promise.then(function (brief) {
-                            $scope.brief = brief;
-                        });
+                if ($attrs.isTemplate) {
+                    $scope.endpoint = BriefTemplate;
+                    BriefTemplate.get({
+                        id: $attrs.templateId
+                    }).$promise.then(function (briefTemplate) {
+                        $scope.briefTemplate = briefTemplate;
+                        $scope.brief = $scope.briefTemplate.brief;
+                        $scope.brief.quote = $attrs.quoteId;
+                        $scope.brief.client = $attrs.clientId;
+                        $scope.object = $scope.briefTemplate;
+                    });
                 } else {
-                    if ($attrs.fromTemplate) {
-                        BriefTemplate.get({
-                            id: $attrs.fromTemplate
-                        }).$promise.then(function (briefTemplate) {
+                    $scope.endpoint = Brief;
+                    if ($attrs.briefId) {
+                        Brief.get({
+                            id: $attrs.briefId
+                        }).$promise.then(function (brief) {
+                            $scope.brief = brief;
+                            $scope.object = $scope.brief;
+                        });
+                    } else {
+                        if ($attrs.templateId) {
+                            BriefTemplate.get({
+                                id: $attrs.templateId
+                            }).$promise.then(function (briefTemplate) {
                                 $scope.brief = briefTemplate.brief;
                                 delete $scope.brief.id;
                                 angular.forEach($scope.brief.questions, function (q) {
@@ -48,11 +45,12 @@ app.directive('brBriefDetail', ['Question', function (Question) {
                                 $scope.brief.quote = $attrs.quoteId;
                                 $scope.brief.client = $attrs.clientId;
                             });
-                    } else {
-                        $scope.brief = new Brief();
-                        $scope.brief.questions = [];
-                        $scope.brief.quote = $attrs.quoteId;
-                        $scope.brief.client = $attrs.clientId;
+                        } else {
+                            $scope.brief = new Brief();
+                            $scope.brief.questions = [];
+                            $scope.brief.quote = $attrs.quoteId;
+                            $scope.brief.client = $attrs.clientId;
+                        }
                     }
                 }
             }],

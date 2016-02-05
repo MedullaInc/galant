@@ -31,7 +31,6 @@ app.controller('glFormController', ['$scope', '$http', '$window',
         };
 
         $scope.submitForm = function () {
-            
             var valid = setFormsDirty($scope.forms);
 
             if (valid) {

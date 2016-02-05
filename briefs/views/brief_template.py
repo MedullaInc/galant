@@ -27,26 +27,15 @@ class BriefTemplateList(View):
 
 class BriefTemplateDetail(View):
     def get(self, request, **kwargs):
-        context = {'title': 'Brief Template Detail'}
-        brief = get_one_or_404(request.user, 'view_brieftemplate', b.BriefTemplate, id=kwargs['pk'])
-
-        answers_q = brief.brief.briefanswers_set.all_for(request.user)
-        if answers_q.count() > 0:
-            brief_answers = answers_q.last()
-            context.update({'answer_set': brief_answers,
-                            'answers': brief_answers.answers
-                                                    .all_for(request.user)
-                                                    .order_by('question__index')})
+        context = {'title': 'Brief Template Detail',
+                   'is_brief': True}
 
         _update_from_query(request, context)
-        context.update({'object': brief,
-                        'questions': brief.brief.questions
-                                          .all_for(request.user)\
-                                          .order_by('index')})
+        context.update({'template_id': kwargs['pk']})
 
-        request.breadcrumbs([(_('Briefs'), reverse('briefs')), (_('Templates'), reverse('brief_templates')), (_('Template: ') + brief.brief.name, request.path_info + query_url(request))])
+        request.breadcrumbs([(_('Briefs'), reverse('briefs')), (_('Templates'), reverse('brief_templates')), (_('Edit Template'), request.path_info + query_url(request))])
         return TemplateResponse(request=request,
-                                template="briefs/brieftemplate_detail.html",
+                                template="briefs/brief_detail_ng.html",
                                 context=context)
 
 
