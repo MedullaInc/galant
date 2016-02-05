@@ -168,25 +168,17 @@ class BriefsSignedInTest(browser.SignedInTest):
         client = self.brief.client
         brief = self.brief
 
-        b.get(self.live_server_url + reverse('delete_brief', args=[brief.id]))
+        b.get(self.live_server_url + reverse('brief_detail', args=[brief.id]))
+
+        browser.wait().until(lambda driver: driver.find_element_by_id('question_0'))
+        with browser.wait_for_page_load():
+            b.find_element_by_id('section_delete').click()
+
+        success_message = b.find_element_by_class_name('alert-success')
+        self.assertTrue(u'Brief deleted.' in success_message.text)
 
         # check that brief access returns 404
         response = self.client.get(self.live_server_url + reverse('brief_detail', args=[brief.id]) + '?client_id=%d' % client.id)
-        self.assertEqual(response.status_code, 404)
-
-    def test_soft_delete_brief_template(self):
-        b = self.browser
-        brief = self.brief
-
-        # Create Template
-        template = autofixture.create_one(bm.BriefTemplate, generate_fk=True,
-                                          field_values={'user': self.user, 'brief': brief})
-
-        # access delete view
-        b.get(self.live_server_url + reverse('delete_brief_template', args=[template.id]))
-
-        # check that brief access returns 404
-        response = self.client.get(self.live_server_url + reverse('brief_template_detail', args=[template.id]))
         self.assertEqual(response.status_code, 404)
 
     def test_can_access_brief_endpoint(self):

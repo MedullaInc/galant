@@ -11,6 +11,7 @@ from gallant import forms as gf
 from gallant.utils import get_one_or_404, query_url, GallantObjectPermissions
 from django.utils.translation import ugettext_lazy as _
 from briefs.views.brief import _update_from_query
+from gallant.views.user import UserModelViewSet
 from rest_framework import generics
 
 
@@ -33,7 +34,7 @@ class BriefTemplateDetail(View):
         _update_from_query(request, context)
         context.update({'template_id': kwargs['pk']})
 
-        request.breadcrumbs([(_('Briefs'), reverse('briefs')), (_('Templates'), reverse('brief_templates')), (_('Edit Template'), request.path_info + query_url(request))])
+        request.breadcrumbs([(_('Briefs'), reverse('briefs')), (_('Templates'), reverse('brieftemplates')), (_('Edit Template'), request.path_info + query_url(request))])
         return TemplateResponse(request=request,
                                 template="briefs/brief_detail_ng.html",
                                 context=context)
@@ -42,7 +43,7 @@ class BriefTemplateDetail(View):
 class BriefTemplateView(View):
     def get(self, request, **kwargs):
         self.request.breadcrumbs([(_('Briefs'), reverse('briefs')),
-                                  (_('Templates'), reverse('brief_templates'))])
+                                  (_('Templates'), reverse('brieftemplates'))])
         if 'pk' in kwargs:
             self.object = get_one_or_404(request.user, 'view_brieftemplate', b.BriefTemplate, pk=kwargs['pk'])
             form = bf.BriefTemplateForm(request.user, instance=self.object.brief)
@@ -123,16 +124,10 @@ class BriefTemplateDelete(View):
         brief = get_one_or_404(request.user, 'change_brieftemplate', b.BriefTemplate, id=kwargs['pk'])
         brief.soft_delete()
 
-        return HttpResponseRedirect(reverse('brief_templates'))
+        return HttpResponseRedirect(reverse('brieftemplates'))
 
 
-class BriefTemplateDetailAPI(generics.RetrieveUpdateAPIView):
+class BriefTemplateViewSet(UserModelViewSet):
     model = b.BriefTemplate
     serializer_class = serializers.BriefTemplateSerializer
-    permission_classes = [
-        GallantObjectPermissions
-    ]
-
-    def get_queryset(self):
-        return self.model.objects.all_for(self.request.user)
 
