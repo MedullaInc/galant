@@ -43,13 +43,14 @@ app.controller('glFormController', ['$scope', '$http', '$window',
                 }
 
                 method({id: $scope.object.id}, $scope.object, function (response) {
+                    /* istanbul ignore else  */
                     if (response.redirect) {
                         window.location.href = response.redirect;
                     } else {
                         // handle errors
                         console.log(JSON.stringify(response.data));
                     }
-                }, function (errorResponse) {
+                }, /* istanbul ignore next */ function (errorResponse) {
                     console.log(JSON.stringify(errorResponse.data));
                 });
             }
@@ -57,13 +58,14 @@ app.controller('glFormController', ['$scope', '$http', '$window',
 
         $scope.deleteObject = function() {
             $scope.objectEndpoint.delete({id: $scope.object.id}, function (response) {
+                /* istanbul ignore else  */
                 if (response.redirect) {
                     window.location.href = response.redirect;
                 } else {
                     // handle errors
                     console.log(JSON.stringify(response.data));
                 }
-            }, function (errorResponse) {
+            }, /* istanbul ignore next */ function (errorResponse) {
                 console.log(JSON.stringify(errorResponse.data));
             });
         };

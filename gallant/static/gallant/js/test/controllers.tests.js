@@ -94,9 +94,13 @@ describe('glFormController', function () {
         $scope.objectEndpoint.update = function (a, b, callback) {
             callback({ redirect: url });
         };
+        $scope.objectEndpoint.delete = function (a, callback) {
+            callback({ redirect: url });
+        };
 
         spyOn($scope.objectEndpoint, 'save').and.callThrough();
         spyOn($scope.objectEndpoint, 'update').and.callThrough();
+        spyOn($scope.objectEndpoint, 'delete').and.callThrough();
 
         $scope.forms = [{
             $invalid: false, field: {
@@ -128,6 +132,12 @@ describe('glFormController', function () {
         $scope.object = {id: 1};
         $scope.submitForm();
         expect($scope.objectEndpoint.update).toHaveBeenCalled();
+    });
+
+    it('deletes object', function () {
+        $scope.object = {id: 1};
+        $scope.deleteObject();
+        expect($scope.objectEndpoint.delete).toHaveBeenCalled();
     });
 
     it('skips when forms invalid', function () {
