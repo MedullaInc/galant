@@ -209,7 +209,7 @@ class QuoteViewSet(ModelViewSet):
      ]
 
     def get_queryset(self):
-        return self.model.objects.all_for(self.request.user)
+        return self.model.objects.all_for(self.request.user).filter(client__isnull=False)
 
     def update(self, request, *args, **kwargs):
         response = super(QuoteViewSet, self).update(request, *args, **kwargs)
