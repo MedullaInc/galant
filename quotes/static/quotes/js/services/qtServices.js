@@ -14,7 +14,7 @@ app.factory("Quote", function ($resource) {
 		  method: 'GET',
 		  params: {},
 		  isArray: true,
-		  url: '/en/quote/api/quote/'			
+		  url: '/en/quote/api/quote/',	
 		},
         fields: {
           method: 'GET',
