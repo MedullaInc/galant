@@ -173,25 +173,15 @@ describe('brForm', function () {
             expect(element.html().substring(0, 8)).toEqual('<div cla');
         });
 
-        it('compiles with brief template id', function () {
-            var element = $compile('<div br-brief-detail template-id="0" quote-id="0" client-id="0"></div>')($scope);
+        it('compiles with brief template id and is-template', function () {
+            var element = $compile('<div br-brief-detail template-id="0" is-template="true"></div>')($scope);
             $scope.$digest();
             expect(element.html().substring(0, 8)).toEqual('<div cla');
         });
 
         it('adds question', function () {
             $scope.brief = {};
-            var element = $compile('<div br-brief-detail brief="brief"></div>')($scope);
-            $scope.$digest();
-
-            element.isolateScope().addQuestion();
-            element.isolateScope().addQuestion('multi');
-            expect($scope.brief.questions.length).toEqual(2);
-        });
-
-        it('adds question', function () {
-            $scope.brief = {};
-            var element = $compile('<div br-brief-detail brief="brief"></div>')($scope);
+            var element = $compile('<div br-brief-detail object="brief"></div>')($scope);
             $scope.$digest();
 
             element.isolateScope().addQuestion();
