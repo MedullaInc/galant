@@ -28,7 +28,7 @@ class BriefTemplateList(View):
 class BriefTemplateDetail(View):
     def get(self, request, **kwargs):
         context = {'title': 'Brief Template Detail',
-                   'is_brief': True}
+                   'is_template': True}
 
         _update_from_query(request, context)
         context.update({'template_id': kwargs['pk']})
