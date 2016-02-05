@@ -8,7 +8,8 @@ app.directive('brBriefDetail', ['Question', function (Question) {
         scope: {
             object: '=',
             endpoint: '=',
-            language: '='
+            language: '=',
+            deleteObject: '&'
         },
         controller: ['$scope', '$attrs', 'Brief', 'BriefTemplate',
             function ($scope, $attrs, Brief, BriefTemplate) {

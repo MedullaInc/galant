@@ -55,6 +55,19 @@ app.controller('glFormController', ['$scope', '$http', '$window',
             }
         };
 
+        $scope.deleteObject = function() {
+            $scope.objectEndpoint.delete({id: $scope.object.id}, function (response) {
+                if (response.redirect) {
+                    window.location.href = response.redirect;
+                } else {
+                    // handle errors
+                    console.log(JSON.stringify(response.data));
+                }
+            }, function (errorResponse) {
+                console.log(JSON.stringify(errorResponse.data));
+            });
+        };
+
         $scope.init = function (currentLanguage, csrftoken) {
             $scope.currentLanguage = currentLanguage;
             $http.defaults.headers.post['X-CSRFToken'] = csrftoken;

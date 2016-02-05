@@ -250,6 +250,7 @@ class UsersAPI(generics.ListAPIView):
         else:
             return self.model.objects.all()
 
+
 class UserModelViewSet(viewsets.ModelViewSet):
     permission_classes = [
         GallantViewSetPermissions
@@ -279,5 +280,6 @@ class UserModelViewSet(viewsets.ModelViewSet):
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
         instance.soft_delete()
+        self.request._messages.add(messages.SUCCESS, '%s deleted.' % self.model._meta.model_name.title())
         return Response({'status': 0, 'redirect':
                          reverse('%ss' % self.model._meta.model_name)})
