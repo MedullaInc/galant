@@ -163,8 +163,7 @@ class QuoteTemplatesTest(browser.SignedInTest):
                                    field_values={'user': self.user})
         c.save()
         b.get(self.live_server_url + reverse('add_quote') + '?template_id=%d&lang=en' % qt.id)
-        browser.wait().until(lambda driver: driver.find_element_by_id('edit_section_0'))
-        b.find_element_by_id('edit_section_0').click()
+        browser.wait().until(lambda driver: driver.find_element_by_id('edit_quote')).click()
         cl = browser.wait().until(lambda driver: driver.find_element_by_xpath('//select[@name="client"]/option[2]'))
         cl.click()
 
