@@ -11,11 +11,13 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.core.urlresolvers import reverse
 from gallant import forms, serializers
-from gallant.utils import get_site_from_host
+from gallant.utils import get_site_from_host, GallantViewSetPermissions
 from django.utils.translation import ugettext_lazy as _
-from rest_framework import generics
+from rest_framework import generics, viewsets
 from rest_framework.permissions import IsAuthenticated
 from calendr.models import Task
+from rest_framework.response import Response
+from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED
 
 
 def _send_signup_request_email(form):
@@ -249,3 +251,28 @@ class UsersAPI(generics.ListAPIView):
         else:
             return self.model.objects.all()
 
+class UserModelViewSet(viewsets.ModelViewSet):
+    permission_classes = [
+        GallantViewSetPermissions
+    ]
+
+    def get_queryset(self):
+        return self.model.objects.all_for(self.request.user)
+
+    def update(self, request, *args, **kwargs):
+        response = super(UserModelViewSet, self).update(request, *args, **kwargs)
+        if response.status_code == HTTP_200_OK or response.status_code == HTTP_201_CREATED:
+            self.request._messages.add(messages.SUCCESS, '%s saved.' % self.model._meta.model_name.title())
+            return Response({'status': 0, 'redirect':
+                             reverse('%s_detail' % self.model._meta.model_name, args=[response.data['id']])})
+        else:
+            return response
+
+    def create(self, request, *args, **kwargs):
+        response = super(UserModelViewSet, self).create(request, *args, **kwargs)
+        if response.status_code == HTTP_201_CREATED:
+            self.request._messages.add(messages.SUCCESS, '%s saved.' % self.model._meta.model_name.title())
+            return Response({'status': 0, 'redirect':
+                             reverse('%s_detail' % self.model._meta.model_name, args=[response.data['id']])})
+        else:
+            return response

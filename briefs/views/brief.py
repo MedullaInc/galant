@@ -6,6 +6,7 @@ from briefs import models as b, serializers
 from django.http import HttpResponseRedirect
 from django.template.response import TemplateResponse
 from gallant import models as g
+from gallant.views.user import UserModelViewSet
 from quotes import models as q
 from django.views.generic import View
 from briefs import forms as bf
@@ -225,28 +226,6 @@ class BriefDelete(View):
         return HttpResponseRedirect(reverse('briefs'))
 
 
-class BriefViewSet(viewsets.ModelViewSet):
+class BriefViewSet(UserModelViewSet):
     model = b.Brief
     serializer_class = serializers.BriefSerializer
-    permission_classes = [
-        GallantViewSetPermissions
-    ]
-
-    def get_queryset(self):
-        return self.model.objects.all_for(self.request.user)
-
-    def update(self, request, *args, **kwargs):
-        response = super(BriefViewSet, self).update(request, *args, **kwargs)
-        if response.status_code == HTTP_200_OK or response.status_code == HTTP_201_CREATED:
-            self.request._messages.add(messages.SUCCESS, 'Brief saved.')
-            return Response({'status': 0, 'redirect': reverse('brief_detail', args=[response.data['id']])})
-        else:
-            return response
-
-    def create(self, request, *args, **kwargs):
-        response = super(BriefViewSet, self).create(request, *args, **kwargs)
-        if response.status_code == HTTP_201_CREATED:
-            self.request._messages.add(messages.SUCCESS, 'Brief saved.')
-            return Response({'status': 0, 'redirect': reverse('brief_detail', args=[response.data['id']])})
-        else:
-            return response
