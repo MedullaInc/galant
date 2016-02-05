@@ -13,11 +13,10 @@ from django.core.urlresolvers import reverse
 from gallant import forms, serializers
 from gallant.utils import get_site_from_host, GallantViewSetPermissions
 from django.utils.translation import ugettext_lazy as _
-from rest_framework import generics, viewsets
+from rest_framework import generics, viewsets, status
 from rest_framework.permissions import IsAuthenticated
 from calendr.models import Task
 from rest_framework.response import Response
-from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED
 
 
 def _send_signup_request_email(form):
@@ -261,7 +260,7 @@ class UserModelViewSet(viewsets.ModelViewSet):
 
     def update(self, request, *args, **kwargs):
         response = super(UserModelViewSet, self).update(request, *args, **kwargs)
-        if response.status_code == HTTP_200_OK or response.status_code == HTTP_201_CREATED:
+        if response.status_code == status.HTTP_200_OK or response.status_code == status.HTTP_201_CREATED:
             self.request._messages.add(messages.SUCCESS, '%s saved.' % self.model._meta.model_name.title())
             return Response({'status': 0, 'redirect':
                              reverse('%s_detail' % self.model._meta.model_name, args=[response.data['id']])})
@@ -270,9 +269,15 @@ class UserModelViewSet(viewsets.ModelViewSet):
 
     def create(self, request, *args, **kwargs):
         response = super(UserModelViewSet, self).create(request, *args, **kwargs)
-        if response.status_code == HTTP_201_CREATED:
+        if response.status_code == status.HTTP_201_CREATED:
             self.request._messages.add(messages.SUCCESS, '%s saved.' % self.model._meta.model_name.title())
             return Response({'status': 0, 'redirect':
                              reverse('%s_detail' % self.model._meta.model_name, args=[response.data['id']])})
         else:
             return response
+
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        instance.soft_delete()
+        return Response({'status': 0, 'redirect':
+                         reverse('%ss' % self.model._meta.model_name)})
