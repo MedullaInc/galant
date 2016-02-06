@@ -167,6 +167,8 @@ class QuoteTemplatesTest(browser.SignedInTest):
         browser.wait().until(lambda driver: driver.find_element_by_id('edit_quote')).click()
         cl = browser.wait().until(lambda driver: driver.find_element_by_xpath('//select[@name="client"]/option[2]'))
         cl.click()
+        b.find_element_by_id('quote_name').send_keys('new quote')
+
         browser.wait().until(lambda driver: driver.find_element_by_id('save_quote')).click()
 
         with browser.wait_for_page_load():
