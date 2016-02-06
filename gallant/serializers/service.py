@@ -9,7 +9,7 @@ class ServiceSerializer(serializers.ModelSerializer):
 	description = ULTextField()
 	cost = MoneyField()
 	notes = serializers.CharField(read_only=True)
-	views = serializers.IntegerField(required=False)
+	views = serializers.IntegerField(required=False, allow_null=True)
 
 	class Meta:
 		model = Service

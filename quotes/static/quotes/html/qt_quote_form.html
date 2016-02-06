@@ -21,23 +21,24 @@
         </button>
     </form>
 
-    <div class="buttons" ng-show="!quoteform.$visible" ng-if="quote.status != '2' && idType != 'token'">
-        <button id="edit_quote" class="btn btn-default edit_button" ng-click="quoteform.$show()">
+    <div class="buttons" ng-show="!quoteform.$visible">
+        <button id="edit_quote" class="btn btn-default edit_button" ng-click="quoteform.$show()" ng-if="idType != 'token'">
             <span class="glyphicon glyphicon-edit"/>
         </button>
-        <a href="{% url 'delete_quote' object.id %}" class="delete_button" title="Delete"
-           onclick="return confirm('Are you sure?')">
-            <button id="section_delete" type="button" class="btn btn-default delete_button" aria-label="Delete">
-                <span class="glyphicon glyphicon-trash"></span>
-            </button>
-        </a>
+        <button id="section_delete" type="button" class="btn btn-default delete_button" aria-label="Delete"
+                ng-click="deleteObject()" ng-if="idType != 'token'">
+            <span class="glyphicon glyphicon-trash"/>
+        </button>
+
+
+
     </div>
 
 </div>
 
 <div class="row object_data" ng-if="idType != 'token'">
     <div class="col-lg-6">
-        <p ng-show="boolTemplate != 'True'" e-class="form-control" e-name="client" class="data" editable-select="quote.client" e-form="quoteform"
+        <p onbeforesave="checkClient($data)" ng-required="true" e-class="form-control" e-name="client" class="data" editable-select="quote.client" e-form="quoteform"
            e-required e-ng-options="s.id as s.name for s in clients"><span class="detail_title">Client</span>
             {{ (clients | filter:{id: quote.client})[0].name }} </p>
         <br>
@@ -53,9 +54,9 @@
             style="margin-bottom: -1px; border-bottom: 0">
     <uib-tab ng-click="changeLanguage(key)" id="{{ key }}_tab" ng-repeat="(key, val) in language_list"
              heading="{{ val }}" active="tab.active"></uib-tab>
-    <uib-tab id="add_translation_button" popover-placement="bottom"
+    <uib-tab id="add_translation_button" popover-placement="bottom" 
              uib-popover-template="dynamicPopover.translationTemplateUrl" heading="Add Translation"
-             active="tab.active"></uib-tab>
+             active="tab.active" ></uib-tab>
 </uib-tabset>
 
 <div >

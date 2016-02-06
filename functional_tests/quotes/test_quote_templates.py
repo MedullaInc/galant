@@ -43,6 +43,7 @@ class QuoteTemplatesTest(browser.SignedInTest):
         b.find_element_by_xpath('//select[@id="type_0"]/option[2]').click()
         b.find_element_by_id('save_service_0').click()
 
+        b.find_element_by_id('edit_section_1').click()
         b.find_element_by_id('text_1').send_keys('test intro text')
         b.find_element_by_id('title_1').send_keys('test margin title')
         b.find_element_by_id('save_section_1').click()
@@ -166,6 +167,7 @@ class QuoteTemplatesTest(browser.SignedInTest):
         browser.wait().until(lambda driver: driver.find_element_by_id('edit_quote')).click()
         cl = browser.wait().until(lambda driver: driver.find_element_by_xpath('//select[@name="client"]/option[2]'))
         cl.click()
+        browser.wait().until(lambda driver: driver.find_element_by_id('save_quote')).click()
 
         with browser.wait_for_page_load():
             b.find_element_by_xpath('//button[@id="create_submit"]').click()

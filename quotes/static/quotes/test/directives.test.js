@@ -37,16 +37,17 @@ describe('qtForm', function () {
             });
 
             $provide.factory('Section', function ($q) {
-                var Service = jasmine.createSpyObj('Service', ['get', 'update']);
-                Service.get.and.returnValue({$promise: $q.when([{id: 0}])});
-                Service.update.and.returnValue({$promise: $q.when({type: ['type', 'type']})});
-                return Service;
+                var Section = function () { return {id: 0}; };
+                Section.get = function () { return {$promise: $q.when({id: 0})}; };
+                Section.update = function () { return {$promise: $q.when({type: ['type', 'type']})};  };
+                return Section;
             });
 
             $provide.factory('Service', function ($q) {
-                var Service = jasmine.createSpyObj('Service', ['get','update', 'fields']);
-                Service.get.and.returnValue({$promise: $q.when([{id: 0}])});
-                Service.fields.and.returnValue({$promise: $q.when({type: ['type', 'type']})});
+                var Service = function () { return {id: 0}; };
+                Service.get = function () { return {$promise: $q.when({id: 0})}; };
+                Service.fields = function () { return {$promise: $q.when({type: ['type', 'type']})};  };
+                Service.update = function () { return {$promise: $q.when({type: ['type', 'type']})};  };
                 return Service;
             });
 
@@ -120,6 +121,14 @@ describe('qtForm', function () {
             var element = $compile('<div qt-quote-form quote="quote" template-id="0" bool-template="True"></div>')($scope);
             $scope.$digest();
             expect(element.html().substring(0, 8)).toEqual('<div cla');
+        });
+
+        it('check client', function () {
+            $scope.quote = {};
+            var element = $compile('<div qt-quote-form quote="quote" ></div>')($scope);
+            $scope.$digest();
+            var expected = element.isolateScope().checkClient();
+            expect(expected).toEqual("Plase select a client");
         });
 
         it('adds service (scratch)', function () {
