@@ -61,7 +61,7 @@
 
         <div ng-repeat="question in brief.questions">
             <div id="question_{{ question.index }}" class="question">
-                {{ $index }} ) {{ question.question[language] }}
+                {{ $index + 1 }} ) {{ question.question[language] }}
                 <div class="multiquestion_choices">
                     <div ng-repeat="choice in question.choices">
                         <div>
