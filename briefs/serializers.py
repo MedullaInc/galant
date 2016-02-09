@@ -137,10 +137,14 @@ class BriefSerializer(serializers.ModelSerializer):
 class BriefTemplateSerializer(serializers.ModelSerializer):
     user = serializers.PrimaryKeyRelatedField(read_only=True)
     brief = BriefSerializer()
+    languages = serializers.SerializerMethodField()
 
     class Meta:
         model = BriefTemplate
-        fields = ('id', 'user', 'brief')
+        fields = ('id', 'user', 'brief', 'languages')
+
+    def get_languages(self, template):
+        return template.brief.get_languages()
 
     def create(self, validated_data):
         user = self.context['request'].user
