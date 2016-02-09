@@ -2,9 +2,10 @@
     <h2 e-id="brief_name" editable-text="brief.name" class="section_title editable" style="margin-top: 20px"
         e-required="">{{ brief.name }}</h2>
     <ul id="tabs" class="nav nav-tabs" style="margin-bottom: -1px; border-bottom: 0">
-        <li id="en_tab" data="en" class="active">
-            <a>
-                English
+        <li ng-repeat="lang in briefTemplate.languages"
+            id="{{ lang.code }}_tab" data="{{ lang.code }}">
+            <a ng-click="setLanguage(lang.code)">
+                {{ lang.name }}
             </a>
         </li>
         <li id="add_translation">

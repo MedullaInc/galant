@@ -1,3 +1,5 @@
+from django.conf import settings
+from django.utils.translation import get_language
 from gallant.serializers.misc import ULTextField, ULTextArrayField
 from rest_framework import serializers
 from briefs.models import Brief, BriefTemplate
@@ -144,7 +146,11 @@ class BriefTemplateSerializer(serializers.ModelSerializer):
         fields = ('id', 'user', 'brief', 'languages')
 
     def get_languages(self, template):
-        return template.brief.get_languages()
+        lang_dict = dict(settings.LANGUAGES)
+        language_set = set(template.brief.get_languages())
+        if len(language_set) == 0:
+            language_set.update(get_language())
+        return [{'code': c, 'name': lang_dict[c]} for c in language_set if c in lang_dict]
 
     def create(self, validated_data):
         user = self.context['request'].user

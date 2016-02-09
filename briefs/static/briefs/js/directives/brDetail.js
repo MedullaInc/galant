@@ -74,6 +74,11 @@ app.directive('brBriefDetail', ['Question', function (Question) {
                 var index = $scope.brief.questions.indexOf(question);
                 $scope.brief.questions.splice(index, 1);
             };
+
+            $scope.setLanguage = function (language) {
+                console.log($scope.language);
+                $scope.language = language;
+            };
         }
     };
 }]);
