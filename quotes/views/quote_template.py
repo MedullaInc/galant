@@ -99,7 +99,13 @@ class QuoteTemplateViewSet(ModelViewSet):
      ]
 
     def get_queryset(self):
-        return self.model.objects.all_for(self.request.user)
+        clients_only = self.request.query_params.get('clients_only', None)
+        if clients_only is not None:
+            return self.model.objects.all_for(self.request.user).filter(quote__client__isnull=clients_only)
+        else:
+            return self.model.objects.all_for(self.request.user)
+
+
 
     def update(self, request, *args, **kwargs):
         response = super(QuoteTemplateViewSet, self).update(request, *args, **kwargs)

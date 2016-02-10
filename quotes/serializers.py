@@ -33,7 +33,7 @@ class QuoteSerializer(serializers.ModelSerializer):
 
         def model_queryset(m): return m.objects.all_for(user)
 
-        fields['client'] = serializers.PrimaryKeyRelatedField(queryset=model_queryset(g.Client))
+        fields['client'] = serializers.PrimaryKeyRelatedField(queryset=model_queryset(g.Client), allow_null=True)
         fields['sections'] = SectionSerializer(many=True)
         fields['services'] = s.ServiceSerializer(many=True)
         fields['projects'] = serializers.PrimaryKeyRelatedField(many=True, queryset=model_queryset(g.Project))

@@ -151,7 +151,6 @@ class QuoteDetail(View):
 class QuoteSend(View): # pragma: no cover
     def post(self, request, **kwargs):
         quote = get_one_or_404(request.user, 'view_quote', q.Quote, id=kwargs['pk'])
-        print quote.id
         quote.status = q.QuoteStatus.Sent.value
         quote.save()
 
@@ -191,24 +190,16 @@ class SectionViewSet(ModelViewSet):
         return self.model.objects.all_for(self.request.user)
 
 
-class QuoteViewsViewsSet(ModelViewSet):
-    model = q.Quote
-    serializer_class = serializers.QuoteSerializer
-    permission_classes = [
-         GallantViewSetPermissions
-     ]
-
-    def get_queryset(self):
-        return self.model.objects.all_for(self.request.user)    
-
-
 class QuoteViewSet(UserModelViewSet):
     model = q.Quote
     serializer_class = serializers.QuoteSerializer
 
     def get_queryset(self):
-        return self.model.objects.all_for(self.request.user).filter(client__isnull=False)
-
+        clients_only = self.request.query_params.get('clients_only', None)
+        if clients_only is not None:
+            return self.model.objects.all_for(self.request.user).exclude(client__isnull=clients_only)
+        else:
+            return self.model.objects.all_for(self.request.user)
 
 class QuotePaymentsAPI(generics.RetrieveUpdateAPIView):
     model = g.Client

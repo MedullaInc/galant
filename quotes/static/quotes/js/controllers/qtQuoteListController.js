@@ -19,6 +19,10 @@ app.controller('qtQuoteListController', ['$scope', '$http', '$window', 'Quote', 
             $scope.quotesSafe = quotes;
         });
 
+        Quote.queryNC().$promise.then(function(quotes) {
+            $scope.quotesTempSafe = quotes;
+        });
+
         QuoteTemplate.query().$promise.then(function(quoteTemplates) {
             $scope.quoteTemplates = quoteTemplates;
         });    

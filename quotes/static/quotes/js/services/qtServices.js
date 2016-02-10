@@ -14,7 +14,13 @@ app.factory("Quote", function ($resource) {
 		  method: 'GET',
 		  params: {},
 		  isArray: true,
-		  url: '/en/quote/api/quote/',	
+		  url: '/en/quote/api/quote?clients_only=True',	
+		},
+		queryNC: {
+		  method: 'GET',
+		  params: {},
+		  isArray: true,
+		  url: '/en/quote/api/quote',	
 		},
         fields: {
           method: 'GET',
@@ -86,7 +92,7 @@ app.factory("QuoteTemplate", function ($resource) {
 		  method: 'GET',
 		  params: {},
 		  isArray: true,
-		  url: '/en/quote/api/quote_template/'			
+		  url: '/en/quote/api/quote_template?clients_only=False'			
 		}
 	});
 

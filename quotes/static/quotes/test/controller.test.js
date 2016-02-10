@@ -9,9 +9,10 @@ describe('qtQuoteListController', function () {
         angular.module('ngAnimate', []);
         module('quotes.services.qtServices', function ($provide) {
             $provide.factory('Quote', function ($q) {
-                var Quote = jasmine.createSpyObj('Quote', ['query', 'fields']);
+                var Quote = jasmine.createSpyObj('Quote', ['query','queryNC', 'fields']);
  
                 Quote.query.and.returnValue({$promise: $q.when([{id: 0, last_modified: null}])});
+                Quote.queryNC.and.returnValue({$promise: $q.when([{id: 0, last_modified: null}])});
                 Quote.fields.and.returnValue({$promise: $q.when({status: ['bla','bla']})});
  
                 return Quote;
