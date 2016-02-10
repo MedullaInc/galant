@@ -31,7 +31,8 @@ class BriefTemplateDetail(View):
         brief_template = get_one_or_404(request.user, 'view_brieftemplate', b.BriefTemplate, id=kwargs['pk'])
         context = {'title': 'Brief Template Detail',
                    'is_template': True,
-                   'template_id': kwargs['pk']}
+                   'template_id': kwargs['pk'],
+                   'language_form': gf.LanguageForm()}
 
         _update_from_query(request, context)
         context.update({})

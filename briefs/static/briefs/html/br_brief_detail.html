@@ -1,3 +1,7 @@
+<script type="text/ng-template" id="languageForm.html">
+      <gl-language-form></gl-language-form>
+</script>
+
 <div ng-show="briefTemplate">
     <h2 e-id="brief_name" editable-text="brief.name" class="section_title editable" style="margin-top: 20px"
         e-required="">{{ brief.name }}</h2>
@@ -9,7 +13,8 @@
             </a>
         </li>
         <li id="add_translation">
-            <a id="add_translation_button" class="btn" data-original-title="" title="">Add Translation</a>
+            <a uib-popover-template="'languageForm.html'" popover-placement="bottom"
+                id="add_translation_button" class="btn" data-original-title="" title="">Add Translation</a>
         </li>
     </ul>
 </div>

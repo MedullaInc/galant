@@ -1,5 +1,6 @@
 app = angular.module('briefs.directives.brDetail', [
-    'briefs.services.brServices'
+    'briefs.services.brServices',
+    'ui.bootstrap'
 ]);
 
 app.directive('brBriefDetail', ['Question', function (Question) {
@@ -76,8 +77,12 @@ app.directive('brBriefDetail', ['Question', function (Question) {
             };
 
             $scope.setLanguage = function (language) {
-                console.log($scope.language);
                 $scope.language = language;
+            };
+
+            $scope.addLanguage = function (language) {
+                console.log(language);
+                $scope.briefTemplate.languages.push(language);
             };
         }
     };
