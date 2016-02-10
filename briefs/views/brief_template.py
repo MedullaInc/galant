@@ -52,7 +52,7 @@ class BriefTemplateView(View):
             self.object = get_one_or_404(request.user, 'view_brieftemplate', b.BriefTemplate, pk=kwargs['pk'])
             form = bf.BriefTemplateForm(request.user, instance=self.object.brief)
             question_forms = bf.question_forms_brief(self.object.brief)
-            self.request.breadcrumbs(_('Template: %s' % self.object.brief.name), reverse('brief_template_detail', args=[kwargs['pk']]))
+            self.request.breadcrumbs(_('Template: %s' % self.object.brief.name), reverse('brieftemplate_detail', args=[kwargs['pk']]))
 
             if not request.user.has_perm('change_brieftemplate', self.object):
                 messages.warning(request, 'Warning: you don\'t have permission to change this template. '

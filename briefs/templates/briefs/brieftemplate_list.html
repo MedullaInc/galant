@@ -44,7 +44,7 @@
 {% block extra_body %}
     <script>
         $('.table > tbody > tr.template_row').click(function () {
-            window.location.href = "{% url 'brief_template_detail' %}" + $(this).attr('data-rel')
+            window.location.href = "{% url 'brieftemplate_detail' %}" + $(this).attr('data-rel')
         });
     </script>
 {% endblock %}

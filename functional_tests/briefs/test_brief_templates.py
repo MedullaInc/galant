@@ -17,13 +17,13 @@ class BriefTemplatesTest(browser.SignedInTest):
 
         self._submit_and_check(b)
 
-    def test_brief_template_detail(self):
+    def test_brieftemplate_detail(self):
         b = browser.instance()
         brief = autofixture.create_one('briefs.Brief', generate_fk=True,
                                        field_values={'user': self.user})
         bt = autofixture.create_one('briefs.BriefTemplate', generate_fk=False,
                                     field_values={'brief': brief, 'user': self.user})
-        b.get(self.live_server_url + reverse('brief_template_detail', args=[bt.id]))
+        b.get(self.live_server_url + reverse('brieftemplate_detail', args=[bt.id]))
 
         app_title = browser.instance().find_element_by_class_name('app_title')
         self.assertEqual('Brief Template Detail', app_title.text)
@@ -143,7 +143,7 @@ class BriefTemplatesTest(browser.SignedInTest):
         bt = autofixture.create_one('briefs.BriefTemplate', generate_fk=False,
                                     field_values={'brief': brief, 'user': self.user})
 
-        b.get(self.live_server_url + reverse('brief_template_detail', args=[bt.id]))
+        b.get(self.live_server_url + reverse('brieftemplate_detail', args=[bt.id]))
 
         browser.wait().until(lambda driver: driver.find_element_by_id('question_0'))
         with browser.wait_for_page_load():
@@ -153,7 +153,7 @@ class BriefTemplatesTest(browser.SignedInTest):
         self.assertTrue(u'Brieftemplate deleted.' in success_message.text)
 
         # check that brief access returns 404
-        response = self.client.get(self.live_server_url + reverse('brief_template_detail', args=[bt.id]))
+        response = self.client.get(self.live_server_url + reverse('brieftemplate_detail', args=[bt.id]))
         self.assertEqual(response.status_code, 404)
 
     def _submit_and_check(self, b):
