@@ -58,4 +58,12 @@ describe('glForm', function () {
             expect($scope.text[$scope.language]).toEqual('hello');
         });
     });
+
+    describe('glLanguageForm', function () {
+        it('compiles', function () {
+            var element = $compile('<div gl-language-form></div>')($scope);
+            $scope.$digest();
+            expect(element.html().substring(0, 3)).toEqual('<di');
+        });
+    });
 });

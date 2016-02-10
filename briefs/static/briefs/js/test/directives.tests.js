@@ -25,7 +25,7 @@ describe('brForm', function () {
 
             $provide.factory('BriefTemplate', function ($q) {
                 var BriefTemplate = function () {};
-                BriefTemplate.get = function () { return {$promise: $q.when({id: 0, brief: {
+                BriefTemplate.get = function () { return {$promise: $q.when({id: 0, languages: [], brief: {
                     id: 0,
                     questions: [{}]
                 }})}; };
@@ -196,6 +196,22 @@ describe('brForm', function () {
             expect($scope.brief.questions.length).toEqual(2);
             element.isolateScope().removeQuestion($scope.brief.questions[0]);
             expect($scope.brief.questions.length).toEqual(1);
+        });
+
+        it('sets language', function () {
+            var element = $compile('<div br-brief-detail object="brief"></div>')($scope);
+            $scope.$digest();
+
+            element.isolateScope().setLanguage('en');
+            expect(element.isolateScope().language).toEqual('en');
+        });
+
+        it('adds language', function () {
+            var element = $compile('<div br-brief-detail object="brief" is-template="true"></div>')($scope);
+            $scope.$digest();
+
+            element.isolateScope().addLanguage({'code': 'en', 'name': 'English'});
+            expect(element.isolateScope().briefTemplate.languages.length).toEqual(1);
         });
     });
 });

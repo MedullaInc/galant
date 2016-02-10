@@ -81,7 +81,6 @@ app.directive('brBriefDetail', ['Question', function (Question) {
             };
 
             $scope.addLanguage = function (language) {
-                console.log(language);
                 $scope.briefTemplate.languages.push(language);
             };
         }
