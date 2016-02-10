@@ -8,6 +8,7 @@ describe('brForm', function () {
         module('briefs.directives.brDetail');
         module('staticNgTemplates');
 
+        angular.module('ui.bootstrap', []);
         angular.module('brief.services.brServices', []);
         module('brief.services.brServices', function ($provide) {
             $provide.factory('Question', function ($q) {
@@ -164,25 +165,25 @@ describe('brForm', function () {
         it('compiles', function () {
             var element = $compile('<div br-brief-detail></div>')($scope);
             $scope.$digest();
-            expect(element.html().substring(0, 8)).toEqual('<div cla');
+            expect(element.html().substring(0, 8)).toEqual('<script ');
         });
 
         it('compiles with brief id', function () {
             var element = $compile('<div br-brief-detail brief-id="0"></div>')($scope);
             $scope.$digest();
-            expect(element.html().substring(0, 8)).toEqual('<div cla');
+            expect(element.html().substring(0, 8)).toEqual('<script ');
         });
 
         it('compiles with brief template id', function () {
             var element = $compile('<div br-brief-detail template-id="0" quote-id="0" client-id="0"></div>')($scope);
             $scope.$digest();
-            expect(element.html().substring(0, 8)).toEqual('<div cla');
+            expect(element.html().substring(0, 8)).toEqual('<script ');
         });
 
         it('compiles with brief template id and is-template', function () {
             var element = $compile('<div br-brief-detail template-id="0" is-template="true"></div>')($scope);
             $scope.$digest();
-            expect(element.html().substring(0, 8)).toEqual('<div cla');
+            expect(element.html().substring(0, 8)).toEqual('<script ');
         });
 
         it('adds question', function () {
