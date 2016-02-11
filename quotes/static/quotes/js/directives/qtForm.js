@@ -24,7 +24,6 @@ app.directive('qtQuoteForm', ['Quote', 'Service', 'Section', 'Client', '$filter'
                 $scope.quoteFields   = [];
                 $scope.quoteStatus   = {};
                 $scope.quoteLanguage = {};
-                $scope.language_list = {};
                 $scope.newQuote      = false;
 
                 $scope.idType = $attrs.idType;
@@ -87,9 +86,6 @@ app.directive('qtQuoteForm', ['Quote', 'Service', 'Section', 'Client', '$filter'
                 if ($attrs.quoteId) {
                     Quote.get({id: $attrs.quoteId}).$promise.then(function (quote) {
                         $scope.quote = quote;
-                        if ($scope.language) {
-                            $scope.language_list[$scope.language] = $scope.quoteLanguage[$scope.language];
-                        }
 
                         if ($attrs.boolTemplate == "True") {
                             $scope.quoteTemplate = {
@@ -105,7 +101,6 @@ app.directive('qtQuoteForm', ['Quote', 'Service', 'Section', 'Client', '$filter'
                         }).$promise.then(function (quoteTemplate) {
                             $scope.quote = quoteTemplate.quote;
                             $scope.quoteTemplate = quoteTemplate;
-                            $scope.language_list = quoteTemplate.language_list;
 
                             if ($attrs.boolTemplate != "True") {
                                 $scope.quote.id = null;
@@ -151,8 +146,12 @@ app.directive('qtQuoteForm', ['Quote', 'Service', 'Section', 'Client', '$filter'
                 $scope.language = lang;
             };
 
-            $scope.addLanguage = function (lang) {
-                $scope.language_list[lang] = $scope.quoteLanguage[lang];
+            $scope.setLanguage = function (language) {
+                $scope.language = language;
+            };
+
+            $scope.addLanguage = function (language) {
+                $scope.quoteTemplate.languages.push(language);
             };
 
             $scope.showRowForm = function (rowform) {
