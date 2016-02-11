@@ -113,6 +113,10 @@ class BriefSerializer(serializers.ModelSerializer):
         model = Brief
         fields = ('id', 'user', 'name', 'title', 'greeting', 'status', 'token',
                   'modified', 'questions', 'language', 'client', 'quote')
+        extra_kwargs = {
+            'id': {'read_only': False, 'required': False},
+            'user': {'required': False},
+        }
 
     def _write_questions(self, user, instance, questions_data):
         init_questions = set(instance.questions.all_for(user))
@@ -158,11 +162,20 @@ class BriefTemplateSerializer(serializers.ModelSerializer):
         validated_data.update({'user': user})
         brief_data.update({'user': user})
 
-        instance = super(BriefSerializer, self).create(validated_data)
+        instance = super(BriefTemplateSerializer, self).create(validated_data)
 
         instance.brief = BriefSerializer(data=brief_data)
         return instance
 
     def update(self, instance, validated_data):
-        validated_data.pop('brief')
-        return super(BriefTemplateSerializer, self).update(instance, validated_data)
+        user = self.context['request'].user
+        brief_data = validated_data.pop('brief')
+        validated_data.update({'user': user})
+
+        brief_id = brief_data.get('id', None)
+        if brief_id:
+            brief_instance = b.Brief.objects.get_for(user, 'change', pk=brief_id)
+            bs = BriefSerializer(data=brief_data, instance=brief_instance, context=self.context)
+            self.instance.brief = bs.update(brief_instance, brief_data)
+
+        return super(BriefTemplateSerializer, self).update(self.instance, validated_data)
