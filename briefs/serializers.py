@@ -102,6 +102,7 @@ class BriefSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         user = self.context['request'].user
         questions_data = validated_data.pop('questions')
+        validated_data.pop('id', None)
         validated_data.update({'user': user})
 
         instance = super(BriefSerializer, self).create(validated_data)
