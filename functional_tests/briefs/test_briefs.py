@@ -169,6 +169,7 @@ class BriefsSignedInTest(browser.SignedInTest):
         brief = self.brief
 
         b.get(self.live_server_url + reverse('brief_detail', args=[brief.id]))
+        self.disable_popups()
 
         browser.wait().until(lambda driver: driver.find_element_by_id('question_0'))
         with browser.wait_for_page_load():

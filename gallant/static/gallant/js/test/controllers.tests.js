@@ -136,8 +136,11 @@ describe('glFormController', function () {
 
     it('deletes object', function () {
         $scope.object = {id: 1};
+        var tmp = $window.confirm;
+        $window.confirm = function(a) { return true; }; // remove so browser doesn't get stuck
         $scope.deleteObject();
         expect($scope.objectEndpoint.delete).toHaveBeenCalled();
+        $window.confirm = tmp;
     });
 
     it('skips when forms invalid', function () {
