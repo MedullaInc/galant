@@ -60,8 +60,8 @@
     <div ng-show="quoteTemplate">
         <ul id="tabs" class="nav nav-tabs" style="margin-bottom: -1px; border-bottom: 0">
             <li ng-repeat="lang in quoteTemplate.languages"
-                id="{{ lang.code }}_tab" data="{{ lang.code }}">
-                <a ng-click="setLanguage(lang.code)">
+                 data="{{ lang.code }}">
+                <a id="{{ lang.code }}_tab" ng-click="setLanguage(lang.code)">
                     {{ lang.name }}
                 </a>
             </li>

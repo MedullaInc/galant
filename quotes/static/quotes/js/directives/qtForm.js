@@ -92,6 +92,7 @@ app.directive('qtQuoteForm', ['Quote', 'Service', 'Section', 'Client', '$filter'
                                 "quote": $scope.quote
                             };
                             $scope.quoteTemplate.quote.id = null;
+                            $scope.quoteTemplate.languages  = [];
                         }
 
                     });
@@ -117,6 +118,7 @@ app.directive('qtQuoteForm', ['Quote', 'Service', 'Section', 'Client', '$filter'
                         $scope.quote.session_duration   = 0.0;
 
                         $scope.quoteTemplate            = {"quote": $scope.quote};
+                        $scope.quoteTemplate.languages  = [];
 
                         $scope.addSection('intro');
                         $scope.addSection('important_notes');
