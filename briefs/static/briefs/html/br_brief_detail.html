@@ -46,7 +46,7 @@
         </span>
         </form>
     </div>
-    <div class="col-lg-2 col-md-2 col-sm-3 col-xs-3 action_box">
+    <div class="buttons" ng-hide="briefForm.$visible">
         <button id="section_edit" type="button" class="btn btn-default edit_button" aria-label="Edit"
                 ng-click="briefForm.$show()">
             <span class="glyphicon glyphicon-edit"/>
@@ -66,16 +66,7 @@
         <hr>
 
         <div ng-repeat="question in brief.questions">
-            <div id="question_{{ question.index }}" class="question">
-                {{ $index + 1 }} ) {{ question.question[language] }}
-                <div class="multiquestion_choices">
-                    <div ng-repeat="choice in question.choices">
-                        <div>
-                            — {{ choice[language] }}
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <div id="question_{{ question.index }}" class="question" br-question-detail question="question" language="language"></div>
         </div>
 
         <hr>

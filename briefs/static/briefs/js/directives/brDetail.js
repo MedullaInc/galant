@@ -86,3 +86,41 @@ app.directive('brBriefDetail', ['Question', function (Question) {
         }
     };
 }]);
+
+
+app.directive('brQuestionDetail', function (Question) {
+    return {
+        restrict: 'A',
+        scope: {
+            question: '=',
+            language: '=',
+            removeQuestion: '&'
+        },
+        link: function ($scope, $element) {
+            var template = '/static/briefs/html/br_question_detail.html';
+            if ($scope.question.type == 'MultipleChoiceQuestion') {
+                template = '/static/briefs/html/br_multiquestion_detail.html';
+            }
+            $scope.myTemplate = template;
+
+            $scope.remove = function () {
+                if (confirm('Remove question?')) {
+                    $element.remove();
+                    $scope.removeQuestion()($scope.question);
+                }
+            };
+
+            $scope.addChoice = function () {
+                if ($scope.question.choices) {
+                    $scope.question.choices.push(null);
+                }
+            };
+            $scope.removeChoice = function ($index) {
+                if (confirm('Remove choice?')) {
+                    $scope.question.choices.splice($index, 1);
+                }
+            };
+        },
+        template: "<div ng-include='myTemplate'></div>",
+    };
+});
