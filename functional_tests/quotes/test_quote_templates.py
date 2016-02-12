@@ -36,6 +36,7 @@ class QuoteTemplatesTest(browser.SignedInTest):
         browser.wait().until(lambda driver: driver.find_element_by_xpath('//select[@name="client"]/option[2]'))
         b.find_element_by_xpath('//select[@name="client"]/option[2]').click()
         b.find_element_by_id('save_quote').click()
+        browser.wait().until(lambda driver: driver.find_element_by_id('edit_service_0'))
         b.find_element_by_id('edit_service_0').click()
         b.find_element_by_id('service_name_0').send_keys('1234')
         b.find_element_by_id('quantity_0').send_keys('1')
@@ -67,7 +68,7 @@ class QuoteTemplatesTest(browser.SignedInTest):
         b.find_element_by_xpath('//select[@name="client"]/option[2]').click()
         b.find_element_by_id('quote_name').send_keys('New quote')
         b.find_element_by_id('save_quote').click()
-
+        browser.wait().until(lambda driver: driver.find_element_by_id('edit_service_0'))
         b.find_element_by_id('edit_service_0').click()
         b.find_element_by_id('service_name_0').send_keys('1234')
         b.find_element_by_id('quantity_0').send_keys('1')
@@ -172,7 +173,7 @@ class QuoteTemplatesTest(browser.SignedInTest):
         browser.wait().until(lambda driver: driver.find_element_by_id('save_quote')).click()
 
         with browser.wait_for_page_load():
-            b.find_element_by_xpath('//button[@id="create_submit"]').click()
+            b.find_element_by_id('create_submit').click()
         success_message = b.find_element_by_class_name('alert-success')
         self.assertTrue(u'Quote saved.' in success_message.text)
 
