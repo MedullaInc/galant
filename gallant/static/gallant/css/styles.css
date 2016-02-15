@@ -2643,3 +2643,9 @@ div.breadcrumbs span {
 }
 
 /* End Client Profile */
+
+/* Section Sortable Items */
+.as-sortable-item {
+    border: 0px !important;
+}
+/* End Section Sortable Items */
