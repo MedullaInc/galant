@@ -58,6 +58,7 @@ app.directive('qtQuoteForm', ['Quote', 'Service', 'Section', 'Client', '$filter'
                     name = "section_" + (counter++);
                 }
                 $scope.section       = new Section({"name":name, "index":counter, "text":{}, "title":{}, "views":0});
+                delete $scope.section.id;
                 $scope.quote.sections.push($scope.section);
             };
 
@@ -73,6 +74,7 @@ app.directive('qtQuoteForm', ['Quote', 'Service', 'Section', 'Client', '$filter'
                     $scope.service.cost         = {amount:0, currency:"USD"}
                 }
                 $scope.service.user = $scope.quote.user;
+                delete $scope.service.id;
                 $scope.quote.services.push($scope.service);
             };
                 
@@ -91,7 +93,15 @@ app.directive('qtQuoteForm', ['Quote', 'Service', 'Section', 'Client', '$filter'
                             $scope.quoteTemplate = {
                                 "quote": $scope.quote
                             };
-                            $scope.quoteTemplate.quote.id = null;
+
+                            delete $scope.quoteTemplate.quote.id;
+                            angular.forEach($scope.quote.sections, function (q) {
+                                delete q.id;
+                            });
+                            angular.forEach($scope.quote.services, function (q) {
+                                delete q.id;
+                            });
+
                             $scope.quoteTemplate.languages  = [];
                         }
 
@@ -104,8 +114,16 @@ app.directive('qtQuoteForm', ['Quote', 'Service', 'Section', 'Client', '$filter'
                             $scope.quoteTemplate = quoteTemplate;
 
                             if ($attrs.boolTemplate != "True") {
-                                $scope.quote.id = null;
+                                delete $scope.quote.id;
                             }
+
+                            angular.forEach($scope.quote.sections, function (q) {
+                                delete q.id;
+                            });
+                            angular.forEach($scope.quote.services, function (q) {
+                                delete q.id;
+                            });
+
                         });
                     } else {
                         $scope.quote                    = new Quote();
