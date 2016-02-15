@@ -18,7 +18,7 @@ describe('qtForm', function () {
         module('quotes.services.qtServices', function ($provide) { 
             $provide.factory('Quote', function ($q) {
                 var Quote = function () { return {id: 0}; };
-                Quote.get = function () { return {$promise: $q.when({id: 0})}; };
+                Quote.get = function () { return {$promise: $q.when({id: 0, sections: [{}], ervices: [{cost: [{amount: 0, currency:"USD"}]}]})}; };
                 Quote.update = function () { return {$promise: $q.when({id: 0})}; };
                 Quote.fields = function () { return {$promise: $q.when({status: ['status', 'status'], language: ['language', 'language']})}; };
                 return Quote;
@@ -26,7 +26,11 @@ describe('qtForm', function () {
 
             $provide.factory('QuoteTemplate', function ($q) {
                 var QuoteTemplate = function () { return {id: 0}; };
-                QuoteTemplate.get = function () { return {$promise: $q.when({id: 0, languages: []})}; };
+                QuoteTemplate.get = function () { return {$promise: $q.when({id: 0, languages: [], quote: {
+                    id: 0,
+                    sections: [{}],
+                    services: [{cost: [{amount: 0, currency:"USD"}]}],
+                }})}; };
                 return QuoteTemplate;
             });
 
