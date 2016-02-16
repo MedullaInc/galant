@@ -1,7 +1,7 @@
 <div class="row">
 
     <div class="col-lg-10 col-md-10 col-sm-9 col-xs-9">
-        <div ng-if="quote.status == '3' && idType != 'token'">
+        <div ng-show="showViews()">
             <span class="label label-success" uib-tooltip="Views" tooltip-placement="right"> {{ quote.views }} </span><br>
             <span class="label label-success" uib-tooltip="Seconds" tooltip-placement="right"> {{ quote.session_duration }}</span>
         </div>
@@ -10,35 +10,37 @@
             e-required>{{ quote.name }}</h2>
     </div>
 
-    <!-- form -->
-    <form editable-form name="quoteform" ng-show="quoteform.$visible" class="form-buttons form-inline" shown="False">
-        <button id="save_quote" type="submit" ng-disabled="quoteform.$waiting" class="btn btn-default save_button">
-            <span class="glyphicon glyphicon-floppy-disk" </span>
-        </button>
-        <button id="cancel_quote" type="button" ng-disabled="quoteform.$waiting" ng-click="quoteform.$cancel()"
-                class="btn btn-default save_button">
-            <span class="glyphicon glyphicon-remove"></span>
-        </button>
-    </form>
+    <div ng-show="showEdit()">
+        <!-- form -->
+        <form editable-form name="quoteform" ng-show="quoteform.$visible" class="form-buttons form-inline" shown="False">
+            <button id="save_quote" type="submit" ng-disabled="quoteform.$waiting" class="btn btn-default save_button">
+                <span class="glyphicon glyphicon-floppy-disk" </span>
+            </button>
+            <button id="cancel_quote" type="button" ng-disabled="quoteform.$waiting" ng-click="quoteform.$cancel()"
+                    class="btn btn-default save_button">
+                <span class="glyphicon glyphicon-remove"></span>
+            </button>
+        </form>
 
-    <div class="buttons" ng-show="!quoteform.$visible">
-        <button id="edit_quote" class="btn btn-default edit_button" ng-click="quoteform.$show()" ng-if="idType != 'token'">
-            <span class="glyphicon glyphicon-edit"/>
-        </button>
-        <button id="section_delete" type="button" class="btn btn-default delete_button" aria-label="Delete"
-                ng-click="deleteObject()" ng-if="idType != 'token'">
-            <span class="glyphicon glyphicon-trash"/>
-        </button>
+        <div class="buttons" ng-show="!quoteform.$visible">
+            <button id="edit_quote" class="btn btn-default edit_button" ng-click="quoteform.$show()" ng-if="idType != 'token'">
+                <span class="glyphicon glyphicon-edit"/>
+            </button>
+            <button id="section_delete" type="button" class="btn btn-default delete_button" aria-label="Delete"
+                    ng-click="deleteObject()" ng-if="idType != 'token'">
+                <span class="glyphicon glyphicon-trash"/>
+            </button>
+        </div>
     </div>
 </div>
 
-<div class="row object_data" ng-if="idType != 'token'">
+<div class="row object_data" ng-show="showClient()">
     <div class="col-lg-6">
-        <p onbeforesave="checkClient($data)" ng-required="true" e-class="form-control" e-name="client" class="data" editable-select="quote.client" e-form="quoteform"
+        <p ng-required="true" e-class="form-control" e-name="client" class="data" editable-select="quote.client" e-form="quoteform"
            e-required e-ng-options="s.id as s.name for s in clients"><span class="detail_title">Client</span>
             {{ (clients | filter:{id: quote.client})[0].name }} </p>
         <br>
-        <p e-class="form-control" id="status" class="data" editable-select="quote.status" e-form="quoteform" e-required e-ng-options="key as val for (key, val) in quoteStatus">
+        <p e-class="form-control" id="status" class="data" editable-select="quote.status" e-form="quoteform" e-required e-ng-options="key as val for (key, val) in quoteStatus" >
            <span class="label label-default">{{ quoteStatus[quote.status] }}</span>
         </p>
     </div>
@@ -57,7 +59,7 @@
           <gl-language-form></gl-language-form>
     </script>
 
-    <div ng-show="quoteTemplate">
+    <div ng-show="boolTemplate == 'True'">
         <ul id="tabs" class="nav nav-tabs" style="margin-bottom: -1px; border-bottom: 0">
             <li ng-repeat="lang in quoteTemplate.languages"
                  data="{{ lang.code }}">
@@ -76,7 +78,7 @@
 
     <div qt-section-table></div>
 
-    <div class="row" ng-if="quote.status != '2' && idType != 'token'">
+    <div class="row" ng-show="showEdit()">
         <div class="col-lg-12">
             <button type="button" id="add_service" class="btn btn-default pull-right margin-left-10"
                     popover-placement="bottom" uib-popover-template="dynamicPopover.serviceTemplateUrl"

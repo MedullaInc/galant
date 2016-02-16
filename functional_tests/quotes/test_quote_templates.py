@@ -33,8 +33,6 @@ class QuoteTemplatesTest(browser.SignedInTest):
         browser.wait().until(lambda driver: driver.find_element_by_id('edit_quote'))
         b.find_element_by_id('edit_quote').click()
         b.find_element_by_id('quote_name').send_keys('Quote test')
-        browser.wait().until(lambda driver: driver.find_element_by_xpath('//select[@name="client"]/option[2]'))
-        b.find_element_by_xpath('//select[@name="client"]/option[2]').click()
         b.find_element_by_id('save_quote').click()
         browser.wait().until(lambda driver: driver.find_element_by_id('edit_service_0'))
         b.find_element_by_id('edit_service_0').click()
@@ -64,8 +62,6 @@ class QuoteTemplatesTest(browser.SignedInTest):
 
         browser.wait().until(lambda driver: driver.find_element_by_id('edit_quote'))
         b.find_element_by_id('edit_quote').click()
-        browser.wait().until(lambda driver: driver.find_element_by_xpath('//select[@name="client"]/option[2]'))
-        b.find_element_by_xpath('//select[@name="client"]/option[2]').click()
         b.find_element_by_id('quote_name').send_keys('New quote')
         b.find_element_by_id('save_quote').click()
         browser.wait().until(lambda driver: driver.find_element_by_id('edit_service_0'))
@@ -86,7 +82,7 @@ class QuoteTemplatesTest(browser.SignedInTest):
         q = get_blank_quote_autofixture(self.user)
         qt = autofixture.create_one('quotes.QuoteTemplate', generate_fk=False,
                                     field_values={'quote': q, 'user': self.user})
- 
+
         c = autofixture.create_one('gallant.Client', generate_fk=True,
                                    field_values={'user': self.user})
         c.save()
@@ -97,8 +93,6 @@ class QuoteTemplatesTest(browser.SignedInTest):
         browser.wait().until(lambda driver: driver.find_element_by_id('edit_quote'))
         b.find_element_by_id('edit_quote').click()
         b.find_element_by_id('quote_name').send_keys('Quote test')
-        browser.wait().until(lambda driver: driver.find_element_by_xpath('//select[@name="client"]/option[2]'))
-        b.find_element_by_xpath('//select[@name="client"]/option[2]').click()
         b.find_element_by_id('save_quote').click()
 
         browser.wait().until(lambda driver: driver.find_element_by_id('edit_section_0'))
@@ -108,7 +102,7 @@ class QuoteTemplatesTest(browser.SignedInTest):
         b.find_element_by_id('text_0').clear()
         b.find_element_by_id('text_0').send_keys('modified intro title')
         b.find_element_by_id('save_section_0').click()
-        
+
 
         self._submit_and_check(b)
 
@@ -165,9 +159,8 @@ class QuoteTemplatesTest(browser.SignedInTest):
                                    field_values={'user': self.user})
         c.save()
         b.get(self.live_server_url + reverse('add_quote') + '?template_id=%d&lang=en' % qt.id)
+        self.save_snapshot()
         browser.wait().until(lambda driver: driver.find_element_by_id('edit_quote')).click()
-        cl = browser.wait().until(lambda driver: driver.find_element_by_xpath('//select[@name="client"]/option[2]'))
-        cl.click()
         b.find_element_by_id('quote_name').send_keys('new quote')
 
         browser.wait().until(lambda driver: driver.find_element_by_id('save_quote')).click()

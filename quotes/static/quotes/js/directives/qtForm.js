@@ -25,6 +25,7 @@ app.directive('qtQuoteForm', ['Quote', 'Service', 'Section', 'Client', '$filter'
                 $scope.quoteStatus   = {};
                 $scope.quoteLanguage = {};
                 $scope.newQuote      = false;
+                $scope.tempStatus    = '0';
 
                 $scope.idType = $attrs.idType;
                 $scope.boolTemplate = $attrs.boolTemplate;
@@ -88,6 +89,7 @@ app.directive('qtQuoteForm', ['Quote', 'Service', 'Section', 'Client', '$filter'
                 if ($attrs.quoteId) {
                     Quote.get({id: $attrs.quoteId}).$promise.then(function (quote) {
                         $scope.quote = quote;
+                        $scope.tempStatus = $scope.quote.status;
 
                         if ($attrs.boolTemplate == "True") {
                             $scope.quoteTemplate = {
@@ -110,9 +112,9 @@ app.directive('qtQuoteForm', ['Quote', 'Service', 'Section', 'Client', '$filter'
                         QuoteTemplate.get({
                             id: $attrs.templateId
                         }).$promise.then(function (quoteTemplate) {
-                            $scope.quote = quoteTemplate.quote;
                             $scope.quoteTemplate = quoteTemplate;
-
+                            $scope.quote = quoteTemplate.quote;
+                            $scope.tempStatus = $scope.quote.status;
                             if ($attrs.boolTemplate != "True") {
                                 delete $scope.quote.id;
                             }
@@ -132,6 +134,7 @@ app.directive('qtQuoteForm', ['Quote', 'Service', 'Section', 'Client', '$filter'
                         $scope.quote.projects           = [];
                         $scope.quote.services           = [];
                         $scope.quote.sections           = [];
+                        $scope.quote.status             = 0;
                         $scope.quote.views              = 0;
                         $scope.quote.session_duration   = 0.0;
 
@@ -142,11 +145,13 @@ app.directive('qtQuoteForm', ['Quote', 'Service', 'Section', 'Client', '$filter'
                         $scope.addSection('important_notes');
                         $scope.addService();
                         $scope.newQuote                 = true;
+                        $scope.tempStatus               = $scope.quote.status;
                     }
                 }],
         templateUrl: '/static/quotes/html/qt_quote_form.html',
         link: function ($scope) {
-
+            
+            /*  TODO validate selected client onbeforesave
             if($scope.newQuote){
                 //$scope.quoteform.$show();
             }
@@ -156,6 +161,7 @@ app.directive('qtQuoteForm', ['Quote', 'Service', 'Section', 'Client', '$filter'
                   return "Plase select a client";
                 }
             }
+            */
 
             $scope.dynamicPopover = {
                 translationTemplateUrl: 'translationTemplate.html',
@@ -187,6 +193,26 @@ app.directive('qtQuoteForm', ['Quote', 'Service', 'Section', 'Client', '$filter'
                     templateUrl: 'myModalContent.html'
                 });
                 return 0;
+            };
+
+            /* show functions depending on status */
+            $scope.showViews = function () {
+                if ($scope.tempStatus == '3' && $scope.tempStatus != 'token'){
+                    return true;
+                }
+            }
+
+            $scope.showEdit = function() {
+                if (( $scope.tempStatus == '0' || $scope.tempStatus == '1' )
+                    && $scope.idType != 'token'){
+                    return true;
+                }
+            };
+
+            $scope.showClient = function() {
+                if ($scope.boolTemplate != 'True' && $scope.idType != 'token' ){
+                    return true;
+                }
             };
 
         }

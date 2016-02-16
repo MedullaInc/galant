@@ -39,21 +39,18 @@
 
                     </div>
 
-                    <div class="col-lg-2">
+                    <div class="col-lg-2" ng-show="showEdit()">
                         <form editable-form name="rowform" onbeforesave="saveUser($data, user.id)"
-                              ng-show="rowform.$visible" class="form-buttons form-inline"
-                              shown="inserted == section">
-                            <button id="save_section_{{$index}}" type="submit" ng-disabled="rowform.$waiting"
-                                    class="btn btn-default save_button">
-                 <span class="glyphicon glyphicon-floppy-disk">
+                              ng-show="rowform.$visible" class="form-buttons form-inline" shown="inserted == section">
+                            <button id="save_section_{{$index}}" type="submit" ng-disabled="rowform.$waiting" class="btn btn-default save_button">
+                                <span class="glyphicon glyphicon-floppy-disk">
                             </button>
-                            <button id="cancel_section_{{$index}}" type="button" ng-disabled="rowform.$waiting"
-                                    ng-click="rowform.$cancel()" class="btn btn-default save_button">
-                 <span class="glyphicon glyphicon-remove ">
+                            <button id="cancel_section_{{$index}}" type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()" class="btn btn-default save_button">
+                                <span class="glyphicon glyphicon-remove ">
                             </button>
                         </form>
 
-                    <div class="buttons" ng-show="!rowform.$visible" ng-if="quote.status != '2' && idType != 'token'">
+                    <div class="buttons" ng-show="!rowform.$visible">
                             <button id="edit_section_{{$index}}" class="btn btn-default edit_button"
                                     ng-click="showRowForm(rowform)">
                                 <span class="glyphicon glyphicon-edit"/>
@@ -66,7 +63,7 @@
                     </div>
 
                     <div class="col-lg-2">
-                        <p ng-if="quote.status == '3' && idType != 'token'">
+                        <p ng-show="showViews()">
                             <span class="label label-success" uib-tooltip="Times Expanded" tooltip-placement="right">{{ section.views }}</span>
                         </p>
                     </div>

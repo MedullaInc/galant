@@ -67,33 +67,33 @@
                     {{ service.cost.amount * service.quantity | currency }}
                 </p>
             </div>
-            <div class="col-xs-2 section_content" ng-if="quote.status == '3' && idType != 'token'">
+            <div class="col-xs-2 section_content" ng-show="showViews()">
                 <span class="label label-success" uib-tooltip="Times Expanded" tooltip-placement="right">{{ service.views }}</span>
             </div>
             </span>
 
-            <!-- form -->
-            <form editable-form name="rowform" ng-show="rowform.$visible" class="form-buttons form-inline"
-                  shown="inserted == service">
-                <button id="save_service_{{$index}}" type="submit" ng-disabled="rowform.$waiting"
-                        class="btn btn-default save_button">
-              <span class="glyphicon glyphicon-floppy-disk">
-                </button>
-                <button id="cancel_service_{{$index}}" type="button" ng-disabled="rowform.$waiting"
-                        ng-click="rowform.$cancel()" class="btn btn-default save_button">
-        <span class="glyphicon glyphicon-remove">
-                </button>
-            </form>
+            <div ng-show="showEdit()">
+                <!-- form -->
+                <form editable-form name="rowform" ng-show="rowform.$visible" class="form-buttons form-inline"
+                      shown="inserted == service">
+                    <button id="save_service_{{$index}}" type="submit" ng-disabled="rowform.$waiting" class="btn btn-default save_button">
+                        <span class="glyphicon glyphicon-floppy-disk">
+                    </button>
+                    <button id="cancel_service_{{$index}}" type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()" class="btn btn-default save_button">
+                        <span class="glyphicon glyphicon-remove">
+                    </button>
+                </form>
 
-            <div class="buttons" ng-show="!rowform.$visible" ng-if="quote.status != '2' && idType != 'token'">
-                <button id="edit_service_{{$index}}" class="btn btn-default edit_button"
-                        ng-click="showRowForm(rowform)">
-                    <span class="glyphicon glyphicon-edit"/>
-                </button>
-                <button id="remove_service_{{$index}}" class="btn btn-default delete_button"
-                        ng-click="removeService($index)">
-                    <span class="glyphicon glyphicon-trash"/>
-                </button>
+                <div class="buttons" ng-show="!rowform.$visible">
+                    <button id="edit_service_{{$index}}" class="btn btn-default edit_button"
+                            ng-click="showRowForm(rowform)">
+                        <span class="glyphicon glyphicon-edit"/>
+                    </button>
+                    <button id="remove_service_{{$index}}" class="btn btn-default delete_button"
+                            ng-click="removeService($index)">
+                        <span class="glyphicon glyphicon-trash"/>
+                    </button>
+                </div>
             </div>
 
         </div>
