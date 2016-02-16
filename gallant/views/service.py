@@ -11,6 +11,8 @@ from gallant.utils import get_one_or_404, GallantObjectPermissions, GallantViewS
 from django.utils.translation import ugettext_lazy as _
 from rest_framework import generics
 from rest_framework.viewsets import ModelViewSet
+from rest_framework.permissions import AllowAny
+from rest_framework.decorators import permission_classes
 from quotes import models as q
 
 
@@ -125,6 +127,7 @@ class ServiceDetailAPI(generics.RetrieveUpdateAPIView):
     def get_queryset(self):
         return self.model.objects.all_for(self.request.user)
 
+@permission_classes((AllowAny, ))
 class ServiceAPI(ModelViewSet):
     model = g.Service
     serializer_class = serializers.ServiceSerializer

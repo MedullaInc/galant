@@ -19,9 +19,11 @@ app.directive('qtServiceTable', ['Service', function (Service) {
             link: function ($scope) {
 
                 $scope.showService = function (service){
-                    id = service.id;
-                    service.views = service.views+1;
-                    Service.update({id: id}, service);
+                    if($scope.idType == "token"){
+                        id = service.id;
+                        service.views = service.views+1;
+                        Service.update({id: id}, service);
+                    }
                 }
 
                 $scope.removeService = function (index) {

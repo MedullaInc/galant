@@ -20,6 +20,10 @@ from rest_framework import generics
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, AllowAny
+from rest_framework.decorators import permission_classes
+
+
 
 
 class QuoteUpdate(View):
@@ -179,6 +183,7 @@ def quote_fields_json(request):
     return JsonResponse(get_field_choices(q.Quote), safe=False)
 
 
+@permission_classes((AllowAny, ))
 class SectionViewSet(ModelViewSet):
     model = q.Section
     serializer_class = serializers.SectionSerializer
@@ -189,7 +194,7 @@ class SectionViewSet(ModelViewSet):
     def get_queryset(self):
         return self.model.objects.all_for(self.request.user)
 
-
+@permission_classes((IsAuthenticatedOrReadOnly, ))
 class QuoteViewSet(UserModelViewSet):
     model = q.Quote
     serializer_class = serializers.QuoteSerializer

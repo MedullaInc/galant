@@ -3,7 +3,6 @@ from rest_framework import serializers
 from gallant.models import Service
 from gallant.serializers.misc import MoneyField
 
-
 class ServiceSerializer(serializers.ModelSerializer):
 	name = ULTextField()
 	description = ULTextField()

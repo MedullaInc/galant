@@ -15,9 +15,11 @@ app.directive('qtSectionTable', ['Section', function (Section) {
             link: function ($scope) {
 
                 $scope.showSection = function (section){
-                    id = section.id;
-                    section.views = section.views+1;
-                    Section.update({id: id}, section);                       
+                    if($scope.idType == "token"){
+                        id = section.id;
+                        section.views = section.views+1;
+                        Section.update({id: id}, section);    
+                    }                   
                 }
 
                 $scope.removeSection = function (index) {

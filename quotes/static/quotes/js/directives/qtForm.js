@@ -197,7 +197,7 @@ app.directive('qtQuoteForm', ['Quote', 'Service', 'Section', 'Client', '$filter'
 
             /* show functions depending on status */
             $scope.showViews = function () {
-                if ($scope.tempStatus == '3' && $scope.tempStatus != 'token'){
+                if ($scope.tempStatus == '3' && $scope.idType != 'token'){
                     return true;
                 }
             }
