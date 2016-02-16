@@ -159,7 +159,6 @@ class QuoteTemplatesTest(browser.SignedInTest):
                                    field_values={'user': self.user})
         c.save()
         b.get(self.live_server_url + reverse('add_quote') + '?template_id=%d&lang=en' % qt.id)
-        self.save_snapshot()
         browser.wait().until(lambda driver: driver.find_element_by_id('edit_quote')).click()
         b.find_element_by_id('quote_name').send_keys('new quote')
 
