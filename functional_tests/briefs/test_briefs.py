@@ -55,15 +55,15 @@ class BriefsSignedInTest(browser.SignedInTest):
 
     def test_edit_client_brief(self):
         b = self.browser
-        b.get(self.live_server_url + reverse('edit_brief', args=[self.brief.id]) +
+        b.get(self.live_server_url + reverse('brief_detail', args=[self.brief.id]) +
               '?client_id=%d' % self.brief.client.id)
 
-        browser.wait().until(lambda driver: driver.find_element_by_id('question1_question'))
-        b.find_element_by_id('id_title').clear()
-        b.find_element_by_id('id_title').send_keys('modified title')
-
+        browser.wait().until(lambda driver: driver.find_element_by_id('edit_brief')).click()
+        b.find_element_by_id('brief_title').send_keys('Brief test')
+        b.find_element_by_id('brief_greeting').send_keys('Brief test')
+        b.find_element_by_id('save_edit').click()
         with browser.wait_for_page_load():
-            b.find_element_by_xpath('//button[@type="submit"]').click()
+            b.find_element_by_id('create_submit').click()
 
         success_message = b.find_element_by_class_name('alert-success')
         self.assertTrue(u'Brief saved.' in success_message.text)
