@@ -1,18 +1,23 @@
 <div class="row" id="question{{ question.index }}">
     <form editable-form name="questionForm">
-        <div id="question{{ question.index }}_question" class="data">
+        <div class="data">
             <span>Question{{ question.is_long_answer ? ' (Long-answer)' : '' }}:</span>
-            <span editable-text="question.question[language]">{{ question.question[language] || 'empty' }}</span>
+            <span editable-text="question.question[language]" e-id="question{{ question.index }}_question">
+                {{ question.question[language] || 'empty' }}
+            </span>
         </div>
-        <div id="question{{ question.index }}_long" class="data" ng-show="questionForm.$visible">
-            <input type="checkbox" ng-model="question.is_long_answer"> Long-answer
+        <div class="data" ng-show="questionForm.$visible">
+            <input type="checkbox" ng-model="question.is_long_answer" id="question{{ question.index }}_long">
+            Long-answer
         </div>
 
         <span ng-show="questionForm.$visible">
-            <button type="submit" class="btn btn-primary" ng-disabled="questionForm.$waiting">
+            <button id="question{{ question.index }}_save" type="button"
+                     class="btn btn-primary" ng-disabled="questionForm.$waiting">
                 Save
             </button>
-            <button type="button" class="btn btn-default" ng-disabled="questionForm.$waiting"
+            <button  id="question{{ question.index }}_cancel" type="button"
+                     class="btn btn-default" ng-disabled="questionForm.$waiting"
                     ng-click="questionForm.$cancel()">
                 Cancel
             </button>

@@ -70,19 +70,20 @@ class BriefsSignedInTest(browser.SignedInTest):
 
     def test_edit_client_brief_question(self):
         b = self.browser
-        b.get(self.live_server_url + reverse('edit_brief', args=[self.brief.id]) +
+        b.get(self.live_server_url + reverse('brief_detail', args=[self.brief.id]) +
               '?client_id=%d' % self.brief.client.id)
 
-        browser.wait().until(lambda driver: driver.find_element_by_id('question1_question'))
-        b.find_element_by_id('id_title').clear()
-        b.find_element_by_id('id_title').send_keys('modified title')
-
+        browser.wait().until(lambda driver: driver.find_element_by_id('question0_edit')).click()
         b.find_element_by_id('question0_question').send_keys('Who is your daddy, and what does he do?')
+        b.find_element_by_id('question0_save').click()
+
         b.find_element_by_id('question1_add_choice').click()
+        b.find_element_by_id('question1_choice3_edit').click()
         b.find_element_by_id('question1_choice3').send_keys('foo')
+        b.find_element_by_id('question1_choice3_save').click()
 
         with browser.wait_for_page_load():
-            b.find_element_by_xpath('//button[@type="submit"]').click()
+            b.find_element_by_id('create_submit').click()
 
         success_message = b.find_element_by_class_name('alert-success')
         self.assertTrue(u'Brief saved.' in success_message.text)

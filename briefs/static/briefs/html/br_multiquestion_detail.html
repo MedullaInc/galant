@@ -1,18 +1,24 @@
 <div class="row" id="question{{ question.index }}">
     <form editable-form name="questionForm">
-        <div id="question{{ question.index }}_question" class="data">
+        <div class="data">
             <span>Question{{ question.can_select_multiple ? ' (Can select multiple)' : '' }}:</span>
-            <span editable-text="question.question[language]">{{ question.question[language] || 'empty' }}</span>
+            <span editable-text="question.question[language]" e-id="question{{ question.index }}_question">
+            {{ question.question[language] || 'empty' }}
+            </span>
         </div>
-        <div id="question{{ question.index }}_mult" class="data" ng-show="questionForm.$visible">
-            <input type="checkbox" ng-model="question.can_select_multiple"> Can select multiple
+        <div class="data" ng-show="questionForm.$visible">
+            <input type="checkbox" ng-model="question.can_select_multiple"
+                   id="question{{ question.index }}_mult">
+            Can select multiple
         </div>
 
         <span ng-show="questionForm.$visible">
-            <button type="submit" class="btn btn-primary" ng-disabled="questionForm.$waiting">
+            <button id="question{{ question.index }}_save" type="button"
+                     class="btn btn-primary" ng-disabled="questionForm.$waiting">
                 Save
             </button>
-            <button type="button" class="btn btn-default" ng-disabled="questionForm.$waiting"
+            <button  id="question{{ question.index }}_cancel" type="button"
+                     class="btn btn-default" ng-disabled="questionForm.$waiting"
                     ng-click="questionForm.$cancel()">
                 Cancel
             </button>
@@ -24,7 +30,9 @@
                     <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11">
 
                         <ng-form editable-form name="innerFormC{{ $index }}">
-                            <span editable-text="choice[language]" e-form="innerFormC{{ $index }}">
+                            <span editable-text="choice[language]"
+                                  e-id="question{{ question.index }}_choice{{ $index }}"
+                                  e-form="innerFormC{{ $index }}">
                                 - {{ choice[language] || 'empty' }}
                             </span>
                         </ng-form>
@@ -47,11 +55,15 @@
                 </span>
 
                 <span ng-show="innerFormC{{ $index }}.$visible">
-                    <button class="btn btn-primary" ng-disabled="innerFormC{{ $index }}.$waiting"
+                    <button id="question{{ question.index }}_choice{{ $index }}_save"
+                            class="btn btn-primary"
+                            ng-disabled="innerFormC{{ $index }}.$waiting"
                             ng-click="this['innerFormC' + $index].$save()">
                         Save
                     </button>
-                    <button type="button" class="btn btn-default" ng-disabled="innerFormC{{ $index }}.$waiting"
+                    <button  id="question{{ question.index }}_choice{{ $index }}_cancel"
+                             type="button" class="btn btn-default"
+                             ng-disabled="innerFormC{{ $index }}.$waiting"
                             ng-click="this['innerFormC' + $index].$cancel()">
                         Cancel
                     </button>
