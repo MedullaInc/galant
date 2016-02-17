@@ -77,6 +77,10 @@ app.directive('brBriefDetail', ['Question', function (Question) {
                 $scope.brief.questions.splice(index, 1);
             };
 
+            $scope.showButtons = function () {
+                return (typeof $scope.addQuestion === 'function');
+            };
+
             $scope.setLanguage = function (language) {
                 $scope.language = language;
             };

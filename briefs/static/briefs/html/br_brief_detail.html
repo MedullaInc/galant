@@ -81,4 +81,10 @@
             No questions have been added yet.<br/>
         </div>
     </div>
+    <button type="button" id="add_question" class="btn btn-default pull-left margin-right-10" ng-click="addQuestion()" ng-show="showButtons()">
+        Add Question
+    </button>
+    <button type="button" id="add_multiquestion" class="btn btn-default pull-left" ng-click="addQuestion('multi')" ng-show="showButtons()">
+        Add Multiple Choice Question
+    </button>
 </div>
