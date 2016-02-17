@@ -184,23 +184,28 @@ def _send_brief_email(email, from_name, link, site):
 class BriefDetail(View):
     def get(self, request, **kwargs):
         context = {'title': 'Brief Detail'}
-        brief = get_one_or_404(request.user, 'view_brief', b.Brief, id=kwargs['pk'])
-
-        answers_q = brief.briefanswers_set.all_for(request.user)
-        if answers_q.count() > 0:
-            brief_answers = answers_q.last()
-            context.update({'answer_set': brief_answers,
-                            'answers': brief_answers.answers
-                           .all_for(request.user)
-                           .order_by('question__index')})
-
         _update_from_query(request, context)
-        context.update({'object': brief,
-                        'questions': brief.questions
-                       .all_for(request.user) \
-                       .order_by('index')})
 
-        request.breadcrumbs(_('Brief: ') + brief.name, request.path_info + query_url(request))
+        if 'pk' in kwargs:
+            brief = get_one_or_404(request.user, 'view_brief', b.Brief, id=kwargs['pk'])
+
+            answers_q = brief.briefanswers_set.all_for(request.user)
+            if answers_q.count() > 0:
+                brief_answers = answers_q.last()
+                context.update({'answer_set': brief_answers,
+                                'answers': brief_answers.answers
+                               .all_for(request.user)
+                               .order_by('question__index')})
+
+            context.update({'object': brief,
+                            'questions': brief.questions
+                           .all_for(request.user) \
+                           .order_by('index')})
+            request.breadcrumbs(_('Brief: ') + brief.name, request.path_info + query_url(request))
+        else:
+            request.breadcrumbs(_('Add'), request.path_info + query_url(request))
+
+
         return TemplateResponse(request=request,
                                 template="briefs/brief_detail_ng.html",
                                 context=context)

@@ -41,10 +41,12 @@ class BriefsSignedInTest(browser.SignedInTest):
         b.get(self.live_server_url + reverse('add_brief') + '?client_id=%s' % self.brief.client.id)
 
         # fill out brief & save
-        b.find_element_by_id('id_title').send_keys('Brief test')
-        b.find_element_by_id('id_greeting').send_keys('Brief test')
+        browser.wait().until(lambda driver: driver.find_element_by_id('edit_brief')).click()
+        b.find_element_by_id('brief_title').send_keys('Brief test')
+        b.find_element_by_id('brief_greeting').send_keys('Brief test')
+        b.find_element_by_id('save_edit').click()
         with browser.wait_for_page_load():
-            b.find_element_by_xpath('//button[@type="submit"]').click()
+            b.find_element_by_id('create_submit').click()
 
         success_message = b.find_element_by_class_name('alert-success')
 
@@ -141,13 +143,13 @@ class BriefsSignedInTest(browser.SignedInTest):
                                field_values={'user': self.user, 'client': c, 'project': p})
 
         b.get(self.live_server_url + reverse('add_brief') + '?project_id=%d' % p.id)
-
-        b.find_element_by_id('id_title').clear()
-        b.find_element_by_id('id_title').send_keys('modified title')
-        b.find_element_by_id('id_greeting').send_keys('Brief test')
-
+        
+        browser.wait().until(lambda driver: driver.find_element_by_id('edit_brief')).click()
+        b.find_element_by_id('brief_title').send_keys('Brief test')
+        b.find_element_by_id('brief_greeting').send_keys('Brief test')
+        b.find_element_by_id('save_edit').click()
         with browser.wait_for_page_load():
-            b.find_element_by_xpath('//button[@type="submit"]').click()
+            b.find_element_by_id('create_submit').click()
 
         success_message = b.find_element_by_class_name('alert-success')
         self.assertTrue(u'Brief saved.' in success_message.text)
@@ -175,7 +177,7 @@ class BriefsSignedInTest(browser.SignedInTest):
 
         browser.wait().until(lambda driver: driver.find_element_by_id('question_0'))
         with browser.wait_for_page_load():
-            b.find_element_by_id('section_delete').click()
+            b.find_element_by_id('delete_brief').click()
 
         success_message = b.find_element_by_class_name('alert-success')
         self.assertTrue(u'Brief deleted.' in success_message.text)

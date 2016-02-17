@@ -10,7 +10,7 @@ router.register(r'api/template', views.BriefTemplateViewSet, 'api-brief-template
 urlpatterns = [
     url(r'^$', login_required(views.BriefList.as_view()), name='briefs'),
     url(r'^answer/(?P<token>[a-f0-9]{32})$', views.BriefAnswer.as_view(), name='brief_answer'),
-    url(r'^add/$', login_required(views.BriefCreate.as_view()), name='add_brief'),
+    url(r'^add/$', login_required(views.BriefDetail.as_view()), name='add_brief'),
     url(r'^edit/(?P<pk>[0-9]+)$', login_required(views.BriefUpdate.as_view()), name='edit_brief'),
     url(r'^delete/(?P<pk>[0-9]+)$', login_required(views.BriefDelete.as_view()), name='delete_brief'),
     url(r'^(?P<pk>[0-9]+)?$', login_required(views.BriefDetail.as_view()), name='brief_detail'),
