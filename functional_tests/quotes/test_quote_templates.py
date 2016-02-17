@@ -36,6 +36,7 @@ class QuoteTemplatesTest(browser.SignedInTest):
         browser.wait().until(lambda driver: driver.find_element_by_xpath('//select[@name="client"]/option[2]'))
         b.find_element_by_xpath('//select[@name="client"]/option[2]').click()
         b.find_element_by_id('save_quote').click()
+        browser.wait().until(lambda driver: driver.find_element_by_id('edit_service_0'))
         b.find_element_by_id('edit_service_0').click()
         b.find_element_by_id('service_name_0').send_keys('1234')
         b.find_element_by_id('quantity_0').send_keys('1')
@@ -67,7 +68,7 @@ class QuoteTemplatesTest(browser.SignedInTest):
         b.find_element_by_xpath('//select[@name="client"]/option[2]').click()
         b.find_element_by_id('quote_name').send_keys('New quote')
         b.find_element_by_id('save_quote').click()
-
+        browser.wait().until(lambda driver: driver.find_element_by_id('edit_service_0'))
         b.find_element_by_id('edit_service_0').click()
         b.find_element_by_id('service_name_0').send_keys('1234')
         b.find_element_by_id('quantity_0').send_keys('1')
@@ -172,28 +173,31 @@ class QuoteTemplatesTest(browser.SignedInTest):
         browser.wait().until(lambda driver: driver.find_element_by_id('save_quote')).click()
 
         with browser.wait_for_page_load():
-            b.find_element_by_xpath('//button[@id="create_submit"]').click()
+            b.find_element_by_id('create_submit').click()
         success_message = b.find_element_by_class_name('alert-success')
         self.assertTrue(u'Quote saved.' in success_message.text)
 
     def _add_language_and_text(self, b):
         browser.wait().until(lambda driver: driver.find_element_by_id('edit_section_0'))
-        b.find_element_by_id('edit_section_0').click()
-        b.find_element_by_id('title_0').clear()
-        b.find_element_by_id('title_0').send_keys('test intro title')
         b.find_element_by_id('add_translation_button').click()
-        b.find_element_by_xpath('//div[@class="popover-content"]//select[@id="id_language"]/option[@value="string:en"]').click()
+        browser.wait().until(lambda driver: driver.find_element_by_xpath('//*[@id="id_language"]/option[@label="English"]'))
+        b.find_element_by_xpath('//*[@id="id_language"]/option[@label="English"]').click()
         b.find_element_by_id('language_add').click()
-        b.find_element_by_xpath('//div[@class="popover-content"]//select[@id="id_language"]/option[@value="string:es"]').click()
+        b.find_element_by_xpath('//*[@id="id_language"]/option[@label="Spanish"]').click()
         b.find_element_by_id('language_add').click()
+        b.find_element_by_id('en_tab').click()
+        b.find_element_by_id('edit_section_0').click()
+        b.find_element_by_id('title_0').send_keys('test intro title')
+        b.find_element_by_id('save_section_0').click()
         b.find_element_by_id('es_tab').click()
-        b.find_element_by_id('title_0').clear()
+        b.find_element_by_id('edit_section_0').click()
         b.find_element_by_id('title_0').send_keys('titulo de intro prueba')
         b.find_element_by_id('save_section_0').click()
-
+        b.find_element_by_id('en_tab').click()
         self._submit_and_check(b)
-        browser.wait().until(lambda driver: driver.find_element_by_xpath('//*[@id="es_tab"]'))
-        new_tab = b.find_element_by_xpath('//*[@id="es_tab"]')
+
+        browser.wait().until(lambda driver: driver.find_element_by_id('es_tab'))
+        new_tab = b.find_element_by_id('es_tab')
         self.assertEqual(u'Spanish', new_tab.text)
 
         b.find_element_by_id('edit_section_0').click()

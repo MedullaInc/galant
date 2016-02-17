@@ -5,7 +5,7 @@ app.controller('qtQuoteListController', ['$scope', '$http', '$window', 'Quote', 
         $scope.quotes = [];
         $scope.quoteStatus = [];
         $scope.clients = [];
-
+        
         $scope.init = function(quoteDetailURL, currentLanguage) {
             $scope.quoteDetailURL = quoteDetailURL;
             $scope.currentLanguage = currentLanguage;

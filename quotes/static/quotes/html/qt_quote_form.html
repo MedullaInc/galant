@@ -29,11 +29,7 @@
                 ng-click="deleteObject()" ng-if="idType != 'token'">
             <span class="glyphicon glyphicon-trash"/>
         </button>
-
-
-
     </div>
-
 </div>
 
 <div class="row object_data" ng-if="idType != 'token'">
@@ -50,21 +46,31 @@
 
 <br>
 
-<uib-tabset ng-show="boolTemplate == 'True'" id="tabs" class="nav nav-tabs"
-            style="margin-bottom: -1px; border-bottom: 0">
-    <uib-tab ng-click="changeLanguage(key)" id="{{ key }}_tab" ng-repeat="(key, val) in language_list"
-             heading="{{ val }}" active="tab.active"></uib-tab>
-    <uib-tab id="add_translation_button" popover-placement="bottom" 
-             uib-popover-template="dynamicPopover.translationTemplateUrl" heading="Add Translation"
-             active="tab.active" ></uib-tab>
-</uib-tabset>
-
-<div >
+<div>
     <script type="text/ng-template" id="translationTemplate.html">
         <select id="id_language" class="form-control" ng-model="language"
                 ng-options="key as val for (key, val) in quoteLanguage"></select>
         <button ng-click="addLanguage(language)" id="language_add" type="button" class="btn btn-default">Add</button>
     </script>
+
+    <script type="text/ng-template" id="languageForm.html">
+          <gl-language-form></gl-language-form>
+    </script>
+
+    <div ng-show="quoteTemplate">
+        <ul id="tabs" class="nav nav-tabs" style="margin-bottom: -1px; border-bottom: 0">
+            <li ng-repeat="lang in quoteTemplate.languages"
+                 data="{{ lang.code }}">
+                <a id="{{ lang.code }}_tab" ng-click="setLanguage(lang.code)">
+                    {{ lang.name }}
+                </a>
+            </li>
+            <li id="add_translation">
+                <a uib-popover-template="'languageForm.html'" popover-placement="bottom"
+                    id="add_translation_button" class="btn" data-original-title="" title="">Add Translation</a>
+            </li>
+        </ul>
+    </div>
 
     <div qt-service-table></div>
 
@@ -126,7 +132,6 @@
             </table>
         </div>
     </script>
+</div>
 
-   </div>
-    </script>
 

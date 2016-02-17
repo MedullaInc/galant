@@ -28,13 +28,18 @@ class QuoteTemplateList(View):
 class QuoteTemplateDetail(View):
     def get(self, request, **kwargs):
         quote = get_one_or_404(request.user, 'view_quotetemplate', q.QuoteTemplate, pk=kwargs['pk'])
+        context = {'title': 'Quote Template',
+                   'object': quote,
+                   'is_template': True,
+                   'template_id': kwargs['pk'],
+                   'language_form': gf.LanguageForm()}
 
         request.breadcrumbs([(_('Quotes'), reverse('quotes')),
                              (_('Quote Templates'), reverse('quote_templates')),
                              (_('Quote: %s' % quote.quote.name), request.path_info)])
         return TemplateResponse(request=request,
                                 template="quotes/quotetemplate_detail_ng.html",
-                                context={'title': 'Quote Template', 'object': quote, 'template_id': kwargs['pk'] })
+                                context=context)
 
 
 class QuoteTemplateView(View):
@@ -81,9 +86,10 @@ class QuoteTemplateView(View):
         else:
             language_set.add(language)
         context.update({'languages': [(c, lang_dict[c]) for c in language_set if c in lang_dict],
-                        'language_form': form,
+                        'language_form': gf.LanguageForm(),
                         'object': quote,
                         'template': self.object,
+                        'is_template': True,
                         'language': language,
                         'quote_type': 'template'})
         return TemplateResponse(request=self.request,
