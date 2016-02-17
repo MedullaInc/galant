@@ -119,6 +119,50 @@ describe('brForm', function () {
         });
     });
 
+    describe('brQuestionDetail', function () {
+        beforeEach(function () {
+            $scope.question = {type: 'TextQuestion'};
+            $scope.language = 'en';
+        });
+
+        it('compiles', function () {
+            var element = $compile('<div br-question-detail question="question"></div>')($scope);
+            $scope.$digest();
+            expect(element.html().substring(0, 3)).toEqual('<!-');
+        });
+
+        it('removes question', function () {
+            $scope.removeQuestion = function () { $scope.question = null; };
+            var element = $compile(
+                '<div br-question-detail question="question" remove-question="removeQuestion"></div>'
+            )($scope);
+            $scope.$digest();
+
+            var tmp = window.confirm;
+            window.confirm = function (str) { return true; };
+
+            element.isolateScope().remove();
+            window.confirm = tmp;
+
+            expect($scope.question).toBeNull();
+        });
+
+        it('adds and removes choices', function () {
+            $scope.question.choices = [];
+            var element = $compile('<div br-question-detail question="question"></div>')($scope);
+            $scope.$digest();
+
+            element.isolateScope().addChoice();
+            expect($scope.question.choices.length).toEqual(1);
+
+            var tmp = window.confirm;
+            window.confirm = function (str) { return true; };
+            element.isolateScope().removeChoice(0);
+            window.confirm = tmp;
+            expect($scope.question.choices.length).toEqual(0);
+        });
+    });
+
     describe('brBriefForm', function () {
         it('compiles', function () {
             var element = $compile('<div br-brief-form></div>')($scope);
