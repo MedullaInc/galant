@@ -18,7 +18,7 @@ app.directive('qtSectionTable', ['Section', function (Section) {
                     if($scope.idType == "token"){
                         id = section.id;
                         section.views = section.views+1;
-                        Section.update({id: id}, section);    
+                        Section.update({id: id, user: $scope.quote.user}, section);    
                     }                   
                 }
 

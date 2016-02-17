@@ -22,7 +22,7 @@ app.directive('qtServiceTable', ['Service', function (Service) {
                     if($scope.idType == "token"){
                         id = service.id;
                         service.views = service.views+1;
-                        Service.update({id: id}, service);
+                        Service.update({id: id, user: $scope.quote.user}, service);
                     }
                 }
 

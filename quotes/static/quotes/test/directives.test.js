@@ -6,6 +6,7 @@ describe('qtForm', function () {
 
     beforeEach(function () {
         module('quotes.directives.qtForm');
+        module('quotes.directives.qtClientForm');
         module('quotes.directives.qtServiceTable');
         module('quotes.directives.qtSectionTable');
         module('quotes.filters.qtCutFilter');
@@ -19,6 +20,7 @@ describe('qtForm', function () {
             $provide.factory('Quote', function ($q) {
                 var Quote = function () { return {id: 0}; };
                 Quote.get = function () { return {$promise: $q.when({id: 0, sections: [{}], ervices: [{cost: [{amount: 0, currency:"USD"}]}]})}; };
+                Quote.getUser = function () { return {$promise: $q.when({id: 0, sections: [{}], ervices: [{cost: [{amount: 0, currency:"USD"}]}]})}; };
                 Quote.update = function () { return {$promise: $q.when({id: 0})}; };
                 Quote.fields = function () { return {$promise: $q.when({status: ['status', 'status'], language: ['language', 'language']})}; };
                 return Quote;
@@ -92,6 +94,7 @@ describe('qtForm', function () {
     }));
 
   });
+
 
   describe('qtQuoteForm', function () {
 
@@ -200,6 +203,26 @@ describe('qtForm', function () {
 
     });
 
+
+    describe('qtClientForm', function () {
+
+        it('compiles', function () {
+            var element = $compile('<div qt-client id-type="token"></div>')($scope);
+            $scope.$digest();
+            expect(element.html().substring(0, 4)).toEqual('<div');
+        });
+
+        it('adds onbeforeunload function', function () {
+            var element = $compile('<div qt-client id-type="token"></div>')($scope);
+            $scope.$digest();
+            var result = $window.onbeforeunload();
+            expect(result).not.toBeNull();
+            $window.onbeforeunload = null; // remove so browser doesn't get stuck
+        });
+
+    });
+
+
     describe('qtServiceTable', function () {
 
         it('compiles', function () {
@@ -222,6 +245,7 @@ describe('qtForm', function () {
         it('show service', function () {
             $scope.quote = {};
             $scope.service = {id:0};
+            $scope.idType = "token";
             var element = $compile('<div qt-service-table></div>')($scope);
             $scope.$digest();
  
@@ -229,8 +253,8 @@ describe('qtForm', function () {
             expect($scope.service).toBeDefined();
         });
 
-
     });
+    
 
     describe('qtSectionTable', function () {
 
@@ -243,7 +267,7 @@ describe('qtForm', function () {
         it('show section', function () {
             $scope.quote = {};
             $scope.section = {id:0};
-
+            $scope.idType = "token";
             var element = $compile('<div qt-section-table></div>')($scope);
             $scope.$digest();
             element.scope().showSection($scope.section);

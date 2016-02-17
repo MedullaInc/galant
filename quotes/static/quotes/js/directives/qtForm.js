@@ -87,7 +87,7 @@ app.directive('qtQuoteForm', ['Quote', 'Service', 'Section', 'Client', '$filter'
                 }
 
                 if ($attrs.quoteId) {
-                    Quote.get({id: $attrs.quoteId}).$promise.then(function (quote) {
+                    Quote.get({id: $attrs.quoteId, user: $attrs.userId}).$promise.then(function (quote) {
                         $scope.quote = quote;
                         $scope.tempStatus = $scope.quote.status;
 

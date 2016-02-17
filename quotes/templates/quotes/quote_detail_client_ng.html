@@ -15,10 +15,11 @@
     <script src="{% static "djangular/js/django-angular.min.js" %}"></script>
     <script src="{% static "gallant/js/directives/glForm.js" %}"></script>
     <script src="{% static "gallant/js/controllers/glFormController.js" %}"></script>
-    <script src="{% static "quotes/js/controllers/qtQuoteListController.js" %}"></script>   
-    <script src="{% static "quotes/js/controllers/qtPopoverController.js" %}"></script>     
+    <script src="{% static "quotes/js/controllers/qtQuoteListController.js" %}"></script>
+    <script src="{% static "quotes/js/controllers/qtPopoverController.js" %}"></script>   
     <script src="{% static "quotes/js/services/qtServices.js" %}"></script>
     <script src="{% static "quotes/js/directives/qtForm.js" %}"></script>
+    <script src="{% static "quotes/js/directives/qtClientForm.js" %}"></script>
     <script src="{% static "quotes/js/directives/qtServiceTable.js" %}"></script>
     <script src="{% static "quotes/js/directives/qtSectionTable.js" %}"></script>
     <script src="{% static "quotes/js/filters/qtCutFilter.js" %}"></script>
@@ -67,12 +68,8 @@
 
 {% block center_content %}
 
-    <div ng-controller="glFormController"
-         ng-init="init('{% firstof language LANGUAGE_CODE %}', '{{ csrf_token }}')">
-        <div qt-quote-form quote-id="{{ object.pk }}" quote="object" endpoint="objectEndpoint"
-             language="currentLanguage" forms="forms"
-             client-id="{{ client.id }}" project-id="{{ project.id }}" quote-id="{{ quote.id }}"
-             template-id="{{ template_id }}" bool-template="False" id-type="{{id_type}}">
+    <div ng-controller="glFormController" ng-init="init('{% firstof language LANGUAGE_CODE %}', '{{ csrf_token }}')">
+        <div qt-client quote-id="{{ object.pk }}" quote="object" endpoint="objectEndpoint" language="currentLanguage" forms="forms" client-id="{{ client.id }}" project-id="{{ project.id }}" quote-id="{{ quote.id }}" user-id="{{ object.user.id }}" template-id="{{ template_id }}" bool-template="False" id-type="{{id_type}}">
         </div> 
     </div>
 

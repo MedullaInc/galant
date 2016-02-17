@@ -4,7 +4,9 @@ from django.template.response import TemplateResponse
 from django.http import HttpResponseRedirect
 from django.conf import settings
 from django.contrib import messages
+from gallant.models import GallantUser
 from django.core.urlresolvers import reverse
+from django.shortcuts import get_object_or_404
 from gallant.utils import get_one_or_404, url_to_pdf, get_site_from_host, GallantObjectPermissions, get_field_choices, \
     GallantViewSetPermissions
 from gallant.views.user import UserModelViewSet
@@ -140,10 +142,10 @@ class QuoteDetail(View):
                 id_type = key
                 if id_type == "pk":
                     template = "quotes/quote_detail_ng.html"
+                    quote = get_one_or_404(request.user, 'view_quote', q.Quote, **{ key: kwargs[key] })
                 elif id_type == "token":
                     template = "quotes/quote_detail_client_ng.html"
-
-                quote = get_one_or_404(request.user, 'view_quote', q.Quote, **{ key: kwargs[key] })
+                    quote = get_object_or_404(q.Quote, **{ key: kwargs[key] })
 
         request.breadcrumbs([(_('Quotes'), reverse('quotes')),
                              (_('Quote: %s' % quote.name), request.path_info)])
@@ -192,7 +194,11 @@ class SectionViewSet(ModelViewSet):
      ]
 
     def get_queryset(self):
-        return self.model.objects.all_for(self.request.user)
+        user = self.request.query_params.get('user', None)
+        if user:
+            return self.model.objects.all_for(get_object_or_404(GallantUser ,pk=user))
+        else:
+            return self.model.objects.all_for(self.request.user)
 
 @permission_classes((IsAuthenticatedOrReadOnly, ))
 class QuoteViewSet(UserModelViewSet):
@@ -200,11 +206,16 @@ class QuoteViewSet(UserModelViewSet):
     serializer_class = serializers.QuoteSerializer
 
     def get_queryset(self):
+        if self.request.query_params.get('user', None):
+            user = get_object_or_404(GallantUser, pk= self.request.query_params.get('user', None))
+        else:
+            user = self.request.user
+
         clients_only = self.request.query_params.get('clients_only', None)
         if clients_only is not None:
-            return self.model.objects.all_for(self.request.user).exclude(client__isnull=clients_only)
+            return self.model.objects.all_for(user).exclude(client__isnull=clients_only)
         else:
-            return self.model.objects.all_for(self.request.user)
+            return self.model.objects.all_for(user)
 
 class QuotePaymentsAPI(generics.RetrieveUpdateAPIView):
     model = g.Client
