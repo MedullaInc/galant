@@ -3,6 +3,7 @@ var app = angular.module('quote', [
     'smart-table',
     'gallant.controllers.glFormController',
     'quotes.controllers.qtQuoteListController',
+    'quotes.controllers.qtQuoteTemplateListController',
     'quotes.controllers.qtPopoverController',
     'quotes.directives.qtForm',
     'quotes.directives.qtClientForm',
