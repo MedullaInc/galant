@@ -92,11 +92,11 @@ class BriefTemplatesTest(browser.SignedInTest):
               reverse('add_brief') + '?template_id=%d&lang=en&client_id=%d' % (bt.id, client.id))
 
         browser.wait().until(lambda driver: driver.find_element_by_id('question0_question'))
-        question = b.find_element_by_id('question0_question')
-        self.assertEqual(quest.question.get_text(), question.get_attribute('value'))
+        question = b.find_element_by_xpath('//div[@id="question0_question"]/span[2]')
+        self.assertEqual(quest.question.get_text(), question.text)
 
         with browser.wait_for_page_load():
-            b.find_element_by_xpath('//button[@type="submit"]').click()
+            b.find_element_by_id('create_submit').click()
 
         success_message = b.find_element_by_class_name('alert-success')
         self.assertTrue(u'Brief saved.' in success_message.text)
@@ -148,7 +148,7 @@ class BriefTemplatesTest(browser.SignedInTest):
 
         browser.wait().until(lambda driver: driver.find_element_by_id('question_0'))
         with browser.wait_for_page_load():
-            b.find_element_by_id('section_delete').click()
+            b.find_element_by_id('delete_brief').click()
 
         success_message = b.find_element_by_class_name('alert-success')
         self.assertTrue(u'Brieftemplate deleted.' in success_message.text)

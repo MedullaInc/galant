@@ -203,6 +203,9 @@ class BriefDetail(View):
                            .order_by('index')})
             request.breadcrumbs(_('Brief: ') + brief.name, request.path_info + query_url(request))
         else:
+            template_id = request.GET.get('template_id', None)
+            if template_id:
+                context.update({'template_id': template_id})
             request.breadcrumbs(_('Add'), request.path_info + query_url(request))
 
 

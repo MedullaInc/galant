@@ -46,6 +46,7 @@ app.directive('brBriefDetail', ['Question', function (Question) {
                                 });
                                 $scope.brief.quote = $attrs.quoteId;
                                 $scope.brief.client = $attrs.clientId;
+                                $scope.object = $scope.brief;
                             });
                         } else {
                             $scope.brief = new Brief();
