@@ -91,8 +91,8 @@ class BriefTemplatesTest(browser.SignedInTest):
         b.get(self.live_server_url +
               reverse('add_brief') + '?template_id=%d&lang=en&client_id=%d' % (bt.id, client.id))
 
-        browser.wait().until(lambda driver: driver.find_element_by_id('question0_question'))
-        question = b.find_element_by_xpath('//div[@id="question0_question"]/span[2]')
+        browser.wait().until(lambda driver: driver.find_element_by_id('question0'))
+        question = b.find_element_by_xpath('//span[@e-id="question0_question"]')
         self.assertEqual(quest.question.get_text(), question.text)
 
         with browser.wait_for_page_load():

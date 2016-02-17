@@ -78,9 +78,9 @@ class BriefsSignedInTest(browser.SignedInTest):
         b.find_element_by_id('question0_save').click()
 
         b.find_element_by_id('question1_add_choice').click()
-        b.find_element_by_id('question1_choice3_edit').click()
+        b.find_element_by_id('question1_edit').click()
         b.find_element_by_id('question1_choice3').send_keys('foo')
-        b.find_element_by_id('question1_choice3_save').click()
+        b.find_element_by_id('question1_save').click()
 
         with browser.wait_for_page_load():
             b.find_element_by_id('create_submit').click()
@@ -90,24 +90,25 @@ class BriefsSignedInTest(browser.SignedInTest):
 
     def test_add_client_brief_multiquestion(self):
         b = self.browser
-        b.get(self.live_server_url + reverse('edit_brief', args=[self.brief.id]) +
+        b.get(self.live_server_url + reverse('brief_detail', args=[self.brief.id]) +
               '?client_id=%d' % self.brief.client.id)
 
-        browser.wait().until(lambda driver: driver.find_element_by_id('question1_question'))
+        browser.wait().until(lambda driver: driver.find_element_by_id('question1_edit'))
         b.find_element_by_id('add_multiquestion').click()
+        browser.wait().until(lambda driver: driver.find_element_by_id('question2_edit')).click()
         b.find_element_by_id('question2_question').send_keys('Who is your daddy, and what does he do?')
         b.find_element_by_id('question2_choice0').send_keys('foo')
         b.find_element_by_id('question2_choice1').send_keys('bar')
+        b.find_element_by_id('question2_save').click()
 
         with browser.wait_for_page_load():
-            b.find_element_by_xpath('//button[@type="submit"]').click()
+            b.find_element_by_id('create_submit').click()
 
         success_message = b.find_element_by_class_name('alert-success')
         self.assertTrue(u'Brief saved.' in success_message.text)
 
         el = browser.wait().until(lambda driver:
-                                  driver.find_element_by_xpath(
-                                      '//div[@id="question2"]/form/div[3]/div[1]/div/div/ng-form/span'))
+                                  driver.find_element_by_xpath('//span[@e-id="question2_choice0"]'))
         answer = el.text
         self.assertEqual(answer, u'- foo')
 
