@@ -122,8 +122,13 @@ class BriefsSignedInTest(browser.SignedInTest):
 
     def test_add_quote_brief(self):
         b = self.browser
+        c = autofixture.create_one('gallant.Client', generate_fk=True,
+                                   field_values={'user': self.user})
+        q = autofixture.create_one('quotes.Quote', generate_fk=True,
+                                   field_values={'user': self.user, 'client': c})
+
         b.get(self.live_server_url + reverse('brief_detail', args=[self.brief.id]) +
-              '?client_id=%d' % self.brief.client.id)
+              '?quote_id=%d' % q.id)
 
         browser.wait().until(lambda driver: driver.find_element_by_id('edit_brief')).click()
         b.find_element_by_id('brief_title').send_keys('Brief test')
