@@ -130,7 +130,7 @@ class BriefTemplatesTest(browser.SignedInTest):
 
         self._submit_and_check(b)
 
-        new_tab = b.find_element_by_xpath('//*[@id="es_tab"]/a')
+        new_tab = browser.wait().until(lambda driver: driver.find_element_by_xpath('//*[@id="es_tab"]/a'))
         self.assertEqual(u'Spanish', new_tab.text)
 
         question = b.find_element_by_xpath('//span[@e-id="question0_question"]')
