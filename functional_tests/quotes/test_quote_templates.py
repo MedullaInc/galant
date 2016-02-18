@@ -170,8 +170,8 @@ class QuoteTemplatesTest(browser.SignedInTest):
         self.assertTrue(u'Quote saved.' in success_message.text)
 
     def _add_language_and_text(self, b):
-        browser.wait().until(lambda driver: driver.find_element_by_id('add_translation'))
-        b.find_element_by_id('add_translation').click()
+        browser.wait().until(lambda driver: driver.find_element_by_id('add_translation_button'))
+        b.find_element_by_id('add_translation_button').click()
         browser.wait().until(lambda driver: driver.find_element_by_xpath('//*[@id="id_language"]/option[@label="English"]'))
         b.find_element_by_xpath('//*[@id="id_language"]/option[@label="English"]').click()
         b.find_element_by_id('language_add').click()
