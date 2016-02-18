@@ -14,43 +14,51 @@ app.directive('brBriefDetail', ['Question', function (Question) {
         },
         controller: ['$scope', '$attrs', 'Brief', 'BriefTemplate', 'LANGUAGES',
             function ($scope, $attrs, Brief, BriefTemplate, LANGUAGES) {
+                var loadBriefAndTemplate = function(brief, template, language) {
+                    $scope.brief = brief
+                    $scope.brief.quote = $attrs.quoteId;
+                    $scope.brief.client = $attrs.clientId;
+                    if (template) {
+                        $scope.briefTemplate = template;
+                        $scope.briefTemplate.brief = $scope.brief;
+                        $scope.object = $scope.briefTemplate;
+
+                        if (language) {
+                            var lang = LANGUAGES.find(function (x) { return x.code == language;});
+                            $scope.briefTemplate.languages = [lang];
+                        }
+                    } else {
+                        $scope.object = $scope.brief;
+                    }
+                    if (!$scope.brief.questions) {
+                        $scope.brief.questions = [];
+                    }
+                };
+
                 if ($attrs.isTemplate) {
                     $scope.endpoint = BriefTemplate;
                     if ($attrs.templateId) {
                         BriefTemplate.get({
                             id: $attrs.templateId
                         }).$promise.then(function (briefTemplate) {
-                            $scope.briefTemplate = briefTemplate;
-                            $scope.brief = $scope.briefTemplate.brief;
-                            $scope.brief.quote = $attrs.quoteId;
-                            $scope.brief.client = $attrs.clientId;
-                            $scope.object = $scope.briefTemplate;
+                            loadBriefAndTemplate(briefTemplate.brief, briefTemplate);
                         });
                     } else {
                         if ($attrs.briefId) {
                             Brief.get({
                                 id: $attrs.briefId
                             }).$promise.then(function (brief) {
-                                $scope.brief = brief;
-                                $scope.briefTemplate = new BriefTemplate();
-                                var brief_lang = $scope.brief.language ? $scope.brief.language : $scope.language;
-                                var lang = LANGUAGES.find(function (x) {
-                                    return x.code == brief_lang;
+                                var brief_lang = brief.language ? brief.language : $scope.language;
+                                // we're creating a template from a saved brief, so delete IDs to create new one
+                                delete brief.id;
+                                angular.forEach(brief.questions, function (q) {
+                                    delete q.id;
                                 });
-                                $scope.briefTemplate.languages = [lang];
-                                $scope.briefTemplate.brief = $scope.brief;
-                                $scope.object = $scope.briefTemplate;
+                                loadBriefAndTemplate(brief, new BriefTemplate(), brief_lang);
                             });
                         } else {
-                            $scope.brief = new Brief();
-                            $scope.brief.questions = [];
-                            $scope.brief.quote = $attrs.quoteId;
-                            $scope.brief.client = $attrs.clientId;
-                            $scope.briefTemplate = new BriefTemplate();
-                            var lang = LANGUAGES.find(function (x) { return x.code == $scope.language;});
-                            $scope.briefTemplate.languages = [lang];
-                            $scope.briefTemplate.brief = $scope.brief;
-                            $scope.object = $scope.briefTemplate;
+                            loadBriefAndTemplate(new Brief(), new BriefTemplate(), $scope.language);
+
                         }
                     }
                 } else {
@@ -59,29 +67,21 @@ app.directive('brBriefDetail', ['Question', function (Question) {
                         Brief.get({
                             id: $attrs.briefId
                         }).$promise.then(function (brief) {
-                            $scope.brief = brief;
-                            $scope.object = $scope.brief;
+                            loadBriefAndTemplate(brief);
                         });
                     } else {
                         if ($attrs.templateId) {
                             BriefTemplate.get({
                                 id: $attrs.templateId
                             }).$promise.then(function (briefTemplate) {
-                                $scope.brief = briefTemplate.brief;
+                                loadBriefAndTemplate(briefTemplate.brief);
                                 delete $scope.brief.id;
                                 angular.forEach($scope.brief.questions, function (q) {
                                     delete q.id;
                                 });
-                                $scope.brief.quote = $attrs.quoteId;
-                                $scope.brief.client = $attrs.clientId;
-                                $scope.object = $scope.brief;
                             });
                         } else {
-                            $scope.brief = new Brief();
-                            $scope.brief.questions = [];
-                            $scope.brief.quote = $attrs.quoteId;
-                            $scope.brief.client = $attrs.clientId;
-                            $scope.object = $scope.brief;
+                            loadBriefAndTemplate(new Brief());
                         }
                     }
                 }
