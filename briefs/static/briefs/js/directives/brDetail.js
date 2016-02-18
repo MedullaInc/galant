@@ -27,15 +27,31 @@ app.directive('brBriefDetail', ['Question', function (Question) {
                             $scope.object = $scope.briefTemplate;
                         });
                     } else {
-                        $scope.brief = new Brief();
-                        $scope.brief.questions = [];
-                        $scope.brief.quote = $attrs.quoteId;
-                        $scope.brief.client = $attrs.clientId;
-                        $scope.briefTemplate = new BriefTemplate();
-                        var lang = LANGUAGES.find(function (x) { return x.code == $scope.language;});
-                        $scope.briefTemplate.languages = [lang];
-                        $scope.briefTemplate.brief = $scope.brief;
-                        $scope.object = $scope.briefTemplate;
+                        if ($attrs.briefId) {
+                            Brief.get({
+                                id: $attrs.briefId
+                            }).$promise.then(function (brief) {
+                                $scope.brief = brief;
+                                $scope.briefTemplate = new BriefTemplate();
+                                var brief_lang = $scope.brief.language ? $scope.brief.language : $scope.language;
+                                var lang = LANGUAGES.find(function (x) {
+                                    return x.code == brief_lang;
+                                });
+                                $scope.briefTemplate.languages = [lang];
+                                $scope.briefTemplate.brief = $scope.brief;
+                                $scope.object = $scope.briefTemplate;
+                            });
+                        } else {
+                            $scope.brief = new Brief();
+                            $scope.brief.questions = [];
+                            $scope.brief.quote = $attrs.quoteId;
+                            $scope.brief.client = $attrs.clientId;
+                            $scope.briefTemplate = new BriefTemplate();
+                            var lang = LANGUAGES.find(function (x) { return x.code == $scope.language;});
+                            $scope.briefTemplate.languages = [lang];
+                            $scope.briefTemplate.brief = $scope.brief;
+                            $scope.object = $scope.briefTemplate;
+                        }
                     }
                 } else {
                     $scope.endpoint = Brief;

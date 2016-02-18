@@ -163,9 +163,10 @@ class BriefTemplateSerializer(serializers.ModelSerializer):
         validated_data.update({'user': user})
         brief_data.update({'user': user})
 
+        brief = BriefSerializer(context=self.context).create(brief_data)
+        validated_data.update({'brief': brief})
         instance = super(BriefTemplateSerializer, self).create(validated_data)
 
-        instance.brief = BriefSerializer(data=brief_data)
         return instance
 
     def update(self, instance, validated_data):

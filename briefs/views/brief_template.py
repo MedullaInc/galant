@@ -28,7 +28,6 @@ class BriefTemplateList(View):
 
 class BriefTemplateDetail(View):
     def get(self, request, **kwargs):
-        lang_dict = dict(settings.LANGUAGES)
         context = {'title': 'Brief Template Detail',
                    'is_template': True,
                    'language': get_language(),
@@ -47,6 +46,10 @@ class BriefTemplateDetail(View):
             request.breadcrumbs([(_('Template: ') + brief_template.brief.name,
                                   request.path_info + query_url(request))])
         else:
+            brief_id = request.GET.get('brief_id', None)
+            if brief_id:
+                brief = get_one_or_404(request.user, 'view_brief', b.Brief, id=brief_id)
+                context.update({'object': brief})
             request.breadcrumbs([(_('Add'), request.path_info + query_url(request))])
 
         return TemplateResponse(request=request,

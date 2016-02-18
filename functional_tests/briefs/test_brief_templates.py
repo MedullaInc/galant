@@ -35,7 +35,10 @@ class BriefTemplatesTest(browser.SignedInTest):
         b = browser.instance()
         b.get(self.live_server_url + reverse('add_brief_template'))
 
-        b.find_element_by_name('name').send_keys('Brief test')
+        browser.wait().until(lambda driver: driver.find_element_by_id('edit_brief')).click()
+        b.find_element_by_id('brief_title').send_keys('Brief test')
+        b.find_element_by_id('brief_greeting').send_keys('Brief test')
+        b.find_element_by_id('save_edit').click()
 
         self._add_language_and_text(b)
         self._submit_and_check(b)
@@ -79,10 +82,11 @@ class BriefTemplatesTest(browser.SignedInTest):
                                        field_values={'questions': [], 'user': self.user})
         quest = bm.TextQuestion.objects.create(user=brief.user)
         brief.questions.add(quest)
-        b.get(self.live_server_url + reverse('add_brief_template', kwargs={'brief_id': brief.id}))
+        b.get(self.live_server_url + reverse('add_brief_template') + '?brief_id=%d' % brief.id)
 
-        question = b.find_element_by_id('id_-question-0-question_hidden')
-        self.assertEqual(quest.question.json(), question.get_attribute('value'))
+        question = browser.wait().until(lambda driver:
+                                        driver.find_element_by_xpath('//span[@e-id="question0_question"]'))
+        self.assertEqual('empty', question.text)
 
     def test_add_brief_from_template(self):
         b = browser.instance()
@@ -108,13 +112,14 @@ class BriefTemplatesTest(browser.SignedInTest):
         self.assertTrue(u'Brief saved.' in success_message.text)
 
     def _add_language_and_text(self, b):
+        browser.wait().until(lambda driver: driver.find_element_by_xpath('//span[@e-id="brief_title"]').text != 'empty')
         b.find_element_by_id('add_question').click()
-        browser.wait().until(lambda driver: driver.find_element_by_id('question0_edit')).click()
+        b.find_element_by_id('question0_edit').click()
         b.find_element_by_id('question0_question').clear()
         b.find_element_by_id('question0_question').send_keys('Who\'s on first?')
         b.find_element_by_id('question0_save').click()
         b.find_element_by_id('add_translation_button').click()
-        b.find_element_by_xpath('//select[@id="id_language"]/option[@value="object:52"]').click()
+        b.find_element_by_xpath('//select[@id="id_language"]/option[text()[1]="Spanish"]').click()
         b.find_element_by_id('language_add').click()
         b.find_element_by_xpath('//*[@id="es_tab"]/a').click()
         b.find_element_by_id('question0_edit').click()
