@@ -230,6 +230,12 @@ describe('brForm', function () {
             expect(element.html().substring(0, 8)).toEqual('<script ');
         });
 
+        it('compiles  with brief id and is-template', function () {
+            var element = $compile('<div br-brief-detail brief-id="0" is-template="true"></div>')($scope);
+            $scope.$digest();
+            expect(element.html().substring(0, 8)).toEqual('<script ');
+        });
+
         it('adds question', function () {
             $scope.brief = {};
             var element = $compile('<div br-brief-detail object="brief"></div>')($scope);
@@ -251,11 +257,14 @@ describe('brForm', function () {
         });
 
         it('adds language', function () {
-            var element = $compile('<div br-brief-detail object="brief" is-template="true"></div>')($scope);
+            $scope.language = 'en';
+            var element = $compile(
+                '<div br-brief-detail object="brief" is-template="true" language="language"></div>'
+            )($scope);
             $scope.$digest();
 
-            element.isolateScope().addLanguage({'code': 'en', 'name': 'English'});
-            expect(element.isolateScope().briefTemplate.languages.length).toEqual(1);
+            element.isolateScope().addLanguage({'code': 'es', 'name': 'Spanish'});
+            expect(element.isolateScope().briefTemplate.languages.length).toEqual(2);
         });
     });
 });

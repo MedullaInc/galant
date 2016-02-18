@@ -57,7 +57,7 @@ gulp.task('concat-and-min', function () {
 gulp.task('test', function (done) {
     new Server({
         configFile: __dirname + '/karma.conf.js',
-    }, done).start();
+    }, done()).start();
 });
 
 gulp.task('karma', function (done) {
@@ -65,7 +65,7 @@ gulp.task('karma', function (done) {
         configFile: __dirname + '/karma.conf.js',
         singleRun: false,
         autoWatch: true,
-    }, done).start();
+    }, done()).start();
 });
 
 gulp.task('clean', function () {

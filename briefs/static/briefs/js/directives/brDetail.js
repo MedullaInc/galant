@@ -12,19 +12,47 @@ app.directive('brBriefDetail', ['Question', function (Question) {
             language: '=',
             deleteObject: '&'
         },
-        controller: ['$scope', '$attrs', 'Brief', 'BriefTemplate',
-            function ($scope, $attrs, Brief, BriefTemplate) {
+        controller: ['$scope', '$attrs', 'Brief', 'BriefTemplate', 'LANGUAGES',
+            function ($scope, $attrs, Brief, BriefTemplate, LANGUAGES) {
                 if ($attrs.isTemplate) {
                     $scope.endpoint = BriefTemplate;
-                    BriefTemplate.get({
-                        id: $attrs.templateId
-                    }).$promise.then(function (briefTemplate) {
-                        $scope.briefTemplate = briefTemplate;
-                        $scope.brief = $scope.briefTemplate.brief;
-                        $scope.brief.quote = $attrs.quoteId;
-                        $scope.brief.client = $attrs.clientId;
-                        $scope.object = $scope.briefTemplate;
-                    });
+                    if ($attrs.templateId) {
+                        BriefTemplate.get({
+                            id: $attrs.templateId
+                        }).$promise.then(function (briefTemplate) {
+                            $scope.briefTemplate = briefTemplate;
+                            $scope.brief = $scope.briefTemplate.brief;
+                            $scope.brief.quote = $attrs.quoteId;
+                            $scope.brief.client = $attrs.clientId;
+                            $scope.object = $scope.briefTemplate;
+                        });
+                    } else {
+                        if ($attrs.briefId) {
+                            Brief.get({
+                                id: $attrs.briefId
+                            }).$promise.then(function (brief) {
+                                $scope.brief = brief;
+                                $scope.briefTemplate = new BriefTemplate();
+                                var brief_lang = $scope.brief.language ? $scope.brief.language : $scope.language;
+                                var lang = LANGUAGES.find(function (x) {
+                                    return x.code == brief_lang;
+                                });
+                                $scope.briefTemplate.languages = [lang];
+                                $scope.briefTemplate.brief = $scope.brief;
+                                $scope.object = $scope.briefTemplate;
+                            });
+                        } else {
+                            $scope.brief = new Brief();
+                            $scope.brief.questions = [];
+                            $scope.brief.quote = $attrs.quoteId;
+                            $scope.brief.client = $attrs.clientId;
+                            $scope.briefTemplate = new BriefTemplate();
+                            var lang = LANGUAGES.find(function (x) { return x.code == $scope.language;});
+                            $scope.briefTemplate.languages = [lang];
+                            $scope.briefTemplate.brief = $scope.brief;
+                            $scope.object = $scope.briefTemplate;
+                        }
+                    }
                 } else {
                     $scope.endpoint = Brief;
                     if ($attrs.briefId) {
@@ -46,6 +74,7 @@ app.directive('brBriefDetail', ['Question', function (Question) {
                                 });
                                 $scope.brief.quote = $attrs.quoteId;
                                 $scope.brief.client = $attrs.clientId;
+                                $scope.object = $scope.brief;
                             });
                         } else {
                             $scope.brief = new Brief();
@@ -74,6 +103,10 @@ app.directive('brBriefDetail', ['Question', function (Question) {
             $scope.removeQuestion = function (question) {
                 var index = $scope.brief.questions.indexOf(question);
                 $scope.brief.questions.splice(index, 1);
+            };
+
+            $scope.showButtons = function () {
+                return (typeof $scope.addQuestion === 'function');
             };
 
             $scope.setLanguage = function (language) {

@@ -41,10 +41,12 @@ class BriefsSignedInTest(browser.SignedInTest):
         b.get(self.live_server_url + reverse('add_brief') + '?client_id=%s' % self.brief.client.id)
 
         # fill out brief & save
-        b.find_element_by_id('id_title').send_keys('Brief test')
-        b.find_element_by_id('id_greeting').send_keys('Brief test')
+        browser.wait().until(lambda driver: driver.find_element_by_id('edit_brief')).click()
+        b.find_element_by_id('brief_title').send_keys('Brief test')
+        b.find_element_by_id('brief_greeting').send_keys('Brief test')
+        b.find_element_by_id('save_edit').click()
         with browser.wait_for_page_load():
-            b.find_element_by_xpath('//button[@type="submit"]').click()
+            b.find_element_by_id('create_submit').click()
 
         success_message = b.find_element_by_class_name('alert-success')
 
@@ -53,58 +55,60 @@ class BriefsSignedInTest(browser.SignedInTest):
 
     def test_edit_client_brief(self):
         b = self.browser
-        b.get(self.live_server_url + reverse('edit_brief', args=[self.brief.id]) +
+        b.get(self.live_server_url + reverse('brief_detail', args=[self.brief.id]) +
               '?client_id=%d' % self.brief.client.id)
 
-        browser.wait().until(lambda driver: driver.find_element_by_id('question1_question'))
-        b.find_element_by_id('id_title').clear()
-        b.find_element_by_id('id_title').send_keys('modified title')
-
+        browser.wait().until(lambda driver: driver.find_element_by_id('edit_brief')).click()
+        b.find_element_by_id('brief_title').send_keys('Brief test')
+        b.find_element_by_id('brief_greeting').send_keys('Brief test')
+        b.find_element_by_id('save_edit').click()
         with browser.wait_for_page_load():
-            b.find_element_by_xpath('//button[@type="submit"]').click()
+            b.find_element_by_id('create_submit').click()
 
         success_message = b.find_element_by_class_name('alert-success')
         self.assertTrue(u'Brief saved.' in success_message.text)
 
     def test_edit_client_brief_question(self):
         b = self.browser
-        b.get(self.live_server_url + reverse('edit_brief', args=[self.brief.id]) +
+        b.get(self.live_server_url + reverse('brief_detail', args=[self.brief.id]) +
               '?client_id=%d' % self.brief.client.id)
 
-        browser.wait().until(lambda driver: driver.find_element_by_id('question1_question'))
-        b.find_element_by_id('id_title').clear()
-        b.find_element_by_id('id_title').send_keys('modified title')
-
+        browser.wait().until(lambda driver: driver.find_element_by_id('question0_edit')).click()
         b.find_element_by_id('question0_question').send_keys('Who is your daddy, and what does he do?')
+        b.find_element_by_id('question0_save').click()
+
         b.find_element_by_id('question1_add_choice').click()
+        b.find_element_by_id('question1_edit').click()
         b.find_element_by_id('question1_choice3').send_keys('foo')
+        b.find_element_by_id('question1_save').click()
 
         with browser.wait_for_page_load():
-            b.find_element_by_xpath('//button[@type="submit"]').click()
+            b.find_element_by_id('create_submit').click()
 
         success_message = b.find_element_by_class_name('alert-success')
         self.assertTrue(u'Brief saved.' in success_message.text)
 
     def test_add_client_brief_multiquestion(self):
         b = self.browser
-        b.get(self.live_server_url + reverse('edit_brief', args=[self.brief.id]) +
+        b.get(self.live_server_url + reverse('brief_detail', args=[self.brief.id]) +
               '?client_id=%d' % self.brief.client.id)
 
-        browser.wait().until(lambda driver: driver.find_element_by_id('question1_question'))
+        browser.wait().until(lambda driver: driver.find_element_by_id('question1_edit'))
         b.find_element_by_id('add_multiquestion').click()
+        browser.wait().until(lambda driver: driver.find_element_by_id('question2_edit')).click()
         b.find_element_by_id('question2_question').send_keys('Who is your daddy, and what does he do?')
         b.find_element_by_id('question2_choice0').send_keys('foo')
         b.find_element_by_id('question2_choice1').send_keys('bar')
+        b.find_element_by_id('question2_save').click()
 
         with browser.wait_for_page_load():
-            b.find_element_by_xpath('//button[@type="submit"]').click()
+            b.find_element_by_id('create_submit').click()
 
         success_message = b.find_element_by_class_name('alert-success')
         self.assertTrue(u'Brief saved.' in success_message.text)
 
         el = browser.wait().until(lambda driver:
-                                  driver.find_element_by_xpath(
-                                      '//div[@id="question2"]/form/div[3]/div[1]/div/div/ng-form/span'))
+                                  driver.find_element_by_xpath('//span[@e-id="question2_choice0"]'))
         answer = el.text
         self.assertEqual(answer, u'- foo')
 
@@ -118,16 +122,20 @@ class BriefsSignedInTest(browser.SignedInTest):
 
     def test_add_quote_brief(self):
         b = self.browser
-        b.get(self.live_server_url + reverse('edit_brief', args=[self.brief.id]) +
-              '?client_id=%d' % self.brief.client.id)
+        c = autofixture.create_one('gallant.Client', generate_fk=True,
+                                   field_values={'user': self.user})
+        q = autofixture.create_one('quotes.Quote', generate_fk=True,
+                                   field_values={'user': self.user, 'client': c})
 
-        browser.wait().until(lambda driver: driver.find_element_by_id('question1_question'))
-        b.find_element_by_id('id_title').clear()
-        b.find_element_by_id('id_title').send_keys('modified title')
-        b.find_element_by_id('id_greeting').send_keys('modified greeting')
+        b.get(self.live_server_url + reverse('brief_detail', args=[self.brief.id]) +
+              '?quote_id=%d' % q.id)
 
+        browser.wait().until(lambda driver: driver.find_element_by_id('edit_brief')).click()
+        b.find_element_by_id('brief_title').send_keys('Brief test')
+        b.find_element_by_id('brief_greeting').send_keys('Brief test')
+        b.find_element_by_id('save_edit').click()
         with browser.wait_for_page_load():
-            b.find_element_by_xpath('//button[@type="submit"]').click()
+            b.find_element_by_id('create_submit').click()
 
         success_message = b.find_element_by_class_name('alert-success')
         self.assertTrue(u'Brief saved.' in success_message.text)
@@ -141,13 +149,13 @@ class BriefsSignedInTest(browser.SignedInTest):
                                field_values={'user': self.user, 'client': c, 'project': p})
 
         b.get(self.live_server_url + reverse('add_brief') + '?project_id=%d' % p.id)
-
-        b.find_element_by_id('id_title').clear()
-        b.find_element_by_id('id_title').send_keys('modified title')
-        b.find_element_by_id('id_greeting').send_keys('Brief test')
-
+        
+        browser.wait().until(lambda driver: driver.find_element_by_id('edit_brief')).click()
+        b.find_element_by_id('brief_title').send_keys('Brief test')
+        b.find_element_by_id('brief_greeting').send_keys('Brief test')
+        b.find_element_by_id('save_edit').click()
         with browser.wait_for_page_load():
-            b.find_element_by_xpath('//button[@type="submit"]').click()
+            b.find_element_by_id('create_submit').click()
 
         success_message = b.find_element_by_class_name('alert-success')
         self.assertTrue(u'Brief saved.' in success_message.text)
@@ -173,9 +181,9 @@ class BriefsSignedInTest(browser.SignedInTest):
         b.get(self.live_server_url + reverse('brief_detail', args=[brief.id]))
         self.disable_popups()
 
-        browser.wait().until(lambda driver: driver.find_element_by_id('question_0'))
+        browser.wait().until(lambda driver: driver.find_element_by_id('question0'))
         with browser.wait_for_page_load():
-            b.find_element_by_id('section_delete').click()
+            b.find_element_by_id('delete_brief').click()
 
         success_message = b.find_element_by_class_name('alert-success')
         self.assertTrue(u'Brief deleted.' in success_message.text)
