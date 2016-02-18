@@ -1,10 +1,9 @@
-describe('brForm', function () {
+describe('brDetail', function () {
     var $rootScope;
     var $compile;
     var $scope;
 
     beforeEach(function () {
-        module('briefs.directives.brForm');
         module('briefs.directives.brDetail');
         module('staticNgTemplates');
 
@@ -40,83 +39,6 @@ describe('brForm', function () {
         });
 
         $scope = $rootScope.$new();
-    });
-
-    describe('brQuestionForm', function () {
-        beforeEach(function () {
-            $scope.question = {type: 'TextQuestion'};
-            $scope.language = 'en';
-        });
-
-        it('compiles', function () {
-            var element = $compile('<div br-question-form question="question"></div>')($scope);
-            $scope.$digest();
-            expect(element.html().substring(0, 3)).toEqual('<!-');
-        });
-
-        it('sets question text', function () {
-            var element = $compile('<div br-question-form question="question" language="language"></div>')($scope);
-            $scope.$digest();
-
-            var q = angular.element(element.find('input')[1]);
-            q.val('Huh?').triggerHandler('input');
-
-            expect($scope.question.question[$scope.language]).toEqual('Huh?');
-        });
-
-        it('sets multiquestion text', function () {
-            $scope.question.type = 'MultipleChoiceQuestion';
-            var element = $compile('<div br-question-form question="question" language="language"></div>')($scope);
-            $scope.$digest();
-
-            var q = angular.element(element.find('input')[1]);
-            q.val('Huh?').triggerHandler('input');
-
-            expect($scope.question.question[$scope.language]).toEqual('Huh?');
-        });
-
-        it('sets multiquestion select multiple', function () {
-            $scope.question.type = 'MultipleChoiceQuestion';
-            $scope.question.can_select_multiple = false;
-            var element = $compile('<div br-question-form question="question" language="language"></div>')($scope);
-            $scope.$digest();
-
-            var q = angular.element(element.find('input')[0]);
-            q.prop('checked', true).triggerHandler('click');
-
-            expect($scope.question.can_select_multiple).toEqual(true);
-        });
-
-        it('removes question', function () {
-            $scope.removeQuestion = function () { $scope.question = null; };
-            var element = $compile(
-                '<div br-question-form question="question" remove-question="removeQuestion"></div>'
-            )($scope);
-            $scope.$digest();
-
-            var tmp = window.confirm;
-            window.confirm = function (str) { return true; };
-
-            element.isolateScope().remove();
-            window.confirm = tmp;
-
-            expect($scope.question).toBeNull();
-        });
-
-        it('adds and removes choices', function () {
-            $scope.question.choices = [];
-            var element = $compile('<div br-question-form question="question"></div>')($scope);
-            $scope.$digest();
-
-            element.isolateScope().addChoice();
-            expect($scope.question.choices.length).toEqual(1);
-
-            var tmp = window.confirm;
-            window.confirm = function (str) { return true; };
-            element.isolateScope().removeChoice(0);
-            window.confirm = tmp;
-            expect($scope.question.choices.length).toEqual(0);
-        });
     });
 
     describe('brQuestionDetail', function () {
@@ -160,48 +82,6 @@ describe('brForm', function () {
             element.isolateScope().removeChoice(0);
             window.confirm = tmp;
             expect($scope.question.choices.length).toEqual(0);
-        });
-    });
-
-    describe('brBriefForm', function () {
-        it('compiles', function () {
-            var element = $compile('<div br-brief-form></div>')($scope);
-            $scope.$digest();
-            expect(element.html().substring(0, 8)).toEqual('<ng-form');
-        });
-
-        it('compiles with brief id', function () {
-            var element = $compile('<div br-brief-form brief-id="0"></div>')($scope);
-            $scope.$digest();
-            expect(element.html().substring(0, 8)).toEqual('<ng-form');
-        });
-
-        it('compiles with brief template id', function () {
-            var element = $compile('<div br-brief-form template-id="0" quote-id="0" client-id="0"></div>')($scope);
-            $scope.$digest();
-            expect(element.html().substring(0, 8)).toEqual('<ng-form');
-        });
-
-        it('adds question', function () {
-            $scope.brief = {};
-            var element = $compile('<div br-brief-form brief="brief"></div>')($scope);
-            $scope.$digest();
-
-            element.isolateScope().addQuestion();
-            element.isolateScope().addQuestion('multi');
-            expect($scope.brief.questions.length).toEqual(2);
-        });
-
-        it('adds question', function () {
-            $scope.brief = {};
-            var element = $compile('<div br-brief-form brief="brief"></div>')($scope);
-            $scope.$digest();
-
-            element.isolateScope().addQuestion();
-            element.isolateScope().addQuestion('multi');
-            expect($scope.brief.questions.length).toEqual(2);
-            element.isolateScope().removeQuestion($scope.brief.questions[0]);
-            expect($scope.brief.questions.length).toEqual(1);
         });
     });
 
