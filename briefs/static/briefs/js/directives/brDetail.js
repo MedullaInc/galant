@@ -12,19 +12,31 @@ app.directive('brBriefDetail', ['Question', function (Question) {
             language: '=',
             deleteObject: '&'
         },
-        controller: ['$scope', '$attrs', 'Brief', 'BriefTemplate',
-            function ($scope, $attrs, Brief, BriefTemplate) {
+        controller: ['$scope', '$attrs', 'Brief', 'BriefTemplate', 'LANGUAGES',
+            function ($scope, $attrs, Brief, BriefTemplate, LANGUAGES) {
                 if ($attrs.isTemplate) {
                     $scope.endpoint = BriefTemplate;
-                    BriefTemplate.get({
-                        id: $attrs.templateId
-                    }).$promise.then(function (briefTemplate) {
-                        $scope.briefTemplate = briefTemplate;
-                        $scope.brief = $scope.briefTemplate.brief;
+                    if ($attrs.templateId) {
+                        BriefTemplate.get({
+                            id: $attrs.templateId
+                        }).$promise.then(function (briefTemplate) {
+                            $scope.briefTemplate = briefTemplate;
+                            $scope.brief = $scope.briefTemplate.brief;
+                            $scope.brief.quote = $attrs.quoteId;
+                            $scope.brief.client = $attrs.clientId;
+                            $scope.object = $scope.briefTemplate;
+                        });
+                    } else {
+                        $scope.brief = new Brief();
+                        $scope.brief.questions = [];
                         $scope.brief.quote = $attrs.quoteId;
                         $scope.brief.client = $attrs.clientId;
+                        $scope.briefTemplate = new BriefTemplate();
+                        var lang = LANGUAGES.find(function (x) { return x.code == $scope.language;});
+                        $scope.briefTemplate.languages = [lang];
+                        $scope.briefTemplate.brief = $scope.brief;
                         $scope.object = $scope.briefTemplate;
-                    });
+                    }
                 } else {
                     $scope.endpoint = Brief;
                     if ($attrs.briefId) {

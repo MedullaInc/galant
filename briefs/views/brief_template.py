@@ -23,22 +23,32 @@ class BriefTemplateList(View):
                                 template="briefs/brieftemplate_list.html",
                                 context={'title': 'Brief Templates',
                                          'object_list': b.BriefTemplate.objects
-                                                         .all_for(request.user)})
+                                .all_for(request.user)})
 
 
 class BriefTemplateDetail(View):
     def get(self, request, **kwargs):
-        brief_template = get_one_or_404(request.user, 'view_brieftemplate', b.BriefTemplate, id=kwargs['pk'])
+        lang_dict = dict(settings.LANGUAGES)
         context = {'title': 'Brief Template Detail',
                    'is_template': True,
-                   'template_id': kwargs['pk'],
+                   'language': get_language(),
                    'language_form': gf.LanguageForm()}
 
         _update_from_query(request, context)
-        context.update({})
 
-        request.breadcrumbs([(_('Briefs'), reverse('briefs')), (_('Templates'), reverse('brieftemplates')),
-                             (_('Template: ') + brief_template.brief.name, request.path_info + query_url(request))])
+        request.breadcrumbs([(_('Briefs'), reverse('briefs')),
+                             (_('Templates'), reverse('brieftemplates'))])
+
+        if 'pk' in kwargs:
+            brief_template = get_one_or_404(request.user, 'view_brieftemplate',
+                                            b.BriefTemplate, id=kwargs['pk'])
+            context.update({'template_id': kwargs['pk']})
+
+            request.breadcrumbs([(_('Template: ') + brief_template.brief.name,
+                                  request.path_info + query_url(request))])
+        else:
+            request.breadcrumbs([(_('Add'), request.path_info + query_url(request))])
+
         return TemplateResponse(request=request,
                                 template="briefs/brief_detail_ng.html",
                                 context=context)
@@ -52,12 +62,13 @@ class BriefTemplateView(View):
             self.object = get_one_or_404(request.user, 'view_brieftemplate', b.BriefTemplate, pk=kwargs['pk'])
             form = bf.BriefTemplateForm(request.user, instance=self.object.brief)
             question_forms = bf.question_forms_brief(self.object.brief)
-            self.request.breadcrumbs(_('Template: %s' % self.object.brief.name), reverse('brieftemplate_detail', args=[kwargs['pk']]))
+            self.request.breadcrumbs(_('Template: %s' % self.object.brief.name),
+                                     reverse('brieftemplate_detail', args=[kwargs['pk']]))
 
             if not request.user.has_perm('change_brieftemplate', self.object):
                 messages.warning(request, 'Warning: you don\'t have permission to change this template. '
-                                 'To save it as your own, use it to create a brief, then '
-                                 'create a separate template from the new brief.')
+                                          'To save it as your own, use it to create a brief, then '
+                                          'create a separate template from the new brief.')
 
             self.request.breadcrumbs(_('Edit'), request.path_info)
         else:
@@ -134,4 +145,3 @@ class BriefTemplateDelete(View):
 class BriefTemplateViewSet(UserModelViewSet):
     model = b.BriefTemplate
     serializer_class = serializers.BriefTemplateSerializer
-
