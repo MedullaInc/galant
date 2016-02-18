@@ -3,19 +3,13 @@ from django.contrib import messages
 from django.core.mail import send_mail
 from django.core.urlresolvers import reverse
 from briefs import models as b, serializers
-from django.http import HttpResponseRedirect
 from django.template.response import TemplateResponse
 from gallant import models as g
 from gallant.views.user import UserModelViewSet
 from quotes import models as q
 from django.views.generic import View
-from briefs import forms as bf
-from gallant.utils import get_one_or_404, query_url, get_site_from_host, GallantObjectPermissions, \
-    GallantViewSetPermissions
+from gallant.utils import get_one_or_404, query_url, get_site_from_host
 from django.utils.translation import ugettext_lazy as _
-from rest_framework import generics, viewsets
-from rest_framework.response import Response
-from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED
 
 
 def _update_from_query(request, context):
@@ -71,108 +65,6 @@ class BriefList(View):
                                 context=context)
 
 
-class BriefUpdate(View):
-    def get(self, request, *args, **kwargs):
-        context = {}
-        brief = get_one_or_404(request.user, 'change_brief', b.Brief, pk=kwargs['pk'])
-
-        if brief.pk:
-            self.request.breadcrumbs([
-                (_('Clients'), reverse('clients')),
-                (brief.client.name, reverse('client_detail', args=[brief.client.id])),
-                (_('Briefs'), reverse('briefs') + query_url(request)),
-                (_('Brief: ') + brief.name, reverse('brief_detail', args=[brief.id]) + query_url(self.request)),
-                (_('Edit'), self.request.path_info + query_url(self.request))
-            ])
-        else:
-            self.request.breadcrumbs(
-                _('Add'), self.request.path_info + query_url(self.request)
-            )
-
-        form = bf.BriefForm(request.user, instance=brief)
-        _update_from_query(request, context)
-
-        questions = bf.question_forms_brief(brief)
-        context.update({'object': brief, 'form': form, 'title': 'Edit Brief', 'questions': questions,
-                        'client': brief.client})
-
-        return self.render_to_response(context)
-
-    def post(self, request, *args, **kwargs): # pragma: no cover
-        if 'pk' in kwargs:
-            brief = get_one_or_404(request.user, 'change_brief', b.Brief, pk=kwargs['pk'])
-        else:
-            brief = b.Brief()
-
-        context = {}
-        _update_from_query(request, context)
-
-        if 'quote' in context:
-            # client specified by quote takes precedence over query param
-            brief.client = context['quote'].client
-        elif 'project' in context:
-            brief.quote = context['project'].quote
-            brief.client = brief.quote.client  # likewise for project
-
-        form = bf.BriefForm(request.user, request.POST, instance=brief)
-        question_forms = bf.question_forms_request(request)
-
-        valid = list([form.is_valid()] + [s.is_valid() for s in question_forms])
-        if all(valid):
-            obj = bf.create_brief(form, question_forms)
-
-            messages.success(self.request, 'Brief saved.')
-
-            return HttpResponseRedirect(reverse('brief_detail', args=[obj.id]))
-        else:
-            if brief.pk:
-                self.request.breadcrumbs([
-                    (_('Brief: ') + brief.name, reverse('brief_detail', args=[brief.id])),
-                    (_('Edit'), self.request.path_info + query_url(self.request))
-                ])
-            else:
-                self.request.breadcrumbs(
-                    _('Add'), self.request.path_info + query_url(self.request)
-                )
-            return self.render_to_response({'object': brief, 'form': form,
-                                            'title': 'Edit Brief', 'questions': question_forms})
-
-    def render_to_response(self, context, **kwargs):
-        brief = context['object']
-        return TemplateResponse(request=self.request, template="briefs/brief_form_ng.html", context=context, **kwargs)
-
-
-class BriefCreate(BriefUpdate):
-    def get(self, request, *args, **kwargs):
-        context = {}
-        instance = None
-        template_id = request.GET.get('template_id', None)
-        lang = request.GET.get('lang', None)
-
-        initial = _update_from_query(request, context)
-
-        if template_id is not None:
-            template = get_one_or_404(request.user, 'view_brieftemplate', b.BriefTemplate, pk=template_id)
-            brief = template.brief
-            question_forms = bf.question_forms_brief(brief, clear_pk=True)
-            context.update({'questions': question_forms,
-                            'template_id': template_id})
-            brief.pk = None
-
-            instance = brief
-
-            if lang is not None:
-                brief.language = lang
-                context.update({'language': lang,
-                                'object': brief})
-
-        form = bf.BriefForm(request.user, instance=instance, initial=initial)
-
-        context.update({'title': 'Create Brief', 'form': form, 'object': None})
-        request.breadcrumbs(_('Add'), request.path_info + query_url(request))
-        return TemplateResponse(request=self.request, template="briefs/brief_form_ng.html", context=context, **kwargs)
-
-
 def _send_brief_email(email, from_name, link, site):
     message = '%s has sent you a %s questionnaire.\n\n Click this link to answer:\n %s' % \
               (from_name, site, link)
@@ -224,14 +116,6 @@ class BriefDetail(View):
                           get_site_from_host(request))
         messages.success(request, 'Brief link sent to %s.' % brief.client.email)
         return self.get(request, **kwargs)
-
-
-class BriefDelete(View):
-    def get(self, request, **kwargs):
-        brief = get_one_or_404(request.user, 'change_brief', b.Brief, id=kwargs['pk'])
-        brief.soft_delete()
-
-        return HttpResponseRedirect(reverse('briefs'))
 
 
 class BriefViewSet(UserModelViewSet):
