@@ -1,18 +1,13 @@
-from django.conf import settings
-from django.contrib import messages
 from django.core.urlresolvers import reverse
 from briefs import models as b, serializers
-from django.http import HttpResponseRedirect
 from django.template.response import TemplateResponse
 from django.utils.translation import get_language
 from django.views.generic import View
-from briefs import forms as bf
 from gallant import forms as gf
-from gallant.utils import get_one_or_404, query_url, GallantObjectPermissions
+from gallant.utils import get_one_or_404, query_url
 from django.utils.translation import ugettext_lazy as _
 from briefs.views.brief import _update_from_query
 from gallant.views.user import UserModelViewSet
-from rest_framework import generics
 
 
 class BriefTemplateList(View):
