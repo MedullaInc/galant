@@ -51,15 +51,14 @@
     <div ng-app="brief" ng-controller="glFormController"
          ng-init="init('{% firstof language LANGUAGE_CODE %}', '{{ csrf_token }}')">
 
-        {% if object.status == "2" %}
-            <p id="public_link" class="data">Public Answer
-                Link:<br/>http://{{ request.get_host }}{% url 'brief_answer' token=object.token.hex %}</p>
-        {% endif %}
         {% if answer_set %}
             <p id="answered" class="text-success">
                 <b>{% trans "Answered on" %} {{ answer_set.created }}</b><br/>
                 {% trans "You can no longer edit this brief." %}
             </p>
+        {% elif object.status == "2" %}
+            <p id="public_link" class="data">Public Answer
+                Link:<br/>http://{{ request.get_host }}{% url 'brief_answer' token=object.token.hex %}</p>
         {% endif %}
 
         <div class="row">
