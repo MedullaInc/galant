@@ -155,23 +155,17 @@ class QuoteTemplatesTest(browser.SignedInTest):
         q = get_blank_quote_autofixture(self.user)
         qt = autofixture.create_one('quotes.QuoteTemplate', generate_fk=False,
                                     field_values={'quote': q, 'user': self.user})
-        c = autofixture.create_one('gallant.Client', generate_fk=True,
-                                   field_values={'user': self.user})
-        c.save()
         b.get(self.live_server_url + reverse('add_quote') + '?template_id=%d&lang=en' % qt.id)
         browser.wait().until(lambda driver: driver.find_element_by_id('edit_quote')).click()
         b.find_element_by_id('quote_name').send_keys('new quote')
-
-        browser.wait().until(lambda driver: driver.find_element_by_id('save_quote')).click()
-
+        b.find_element_by_id('save_quote').click()
         with browser.wait_for_page_load():
             b.find_element_by_id('create_submit').click()
         success_message = b.find_element_by_class_name('alert-success')
         self.assertTrue(u'Quote saved.' in success_message.text)
 
     def _add_language_and_text(self, b):
-        browser.wait().until(lambda driver: driver.find_element_by_id('add_translation_button'))
-        b.find_element_by_id('add_translation_button').click()
+        browser.wait().until(lambda driver: driver.find_element_by_id('add_translation_button')).click()
         browser.wait().until(lambda driver: driver.find_element_by_xpath('//*[@id="id_language"]/option[@label="English"]'))
         b.find_element_by_xpath('//*[@id="id_language"]/option[@label="English"]').click()
         b.find_element_by_id('language_add').click()
