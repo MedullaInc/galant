@@ -5,7 +5,7 @@
     </h2>
 
     <ul data-as-sortable="dragControlListeners" data-ng-model="quote.sections">
-        <li data-ng-repeat="section in quote.sections | orderBy:'textsection.index'" data-as-sortable-item>
+        <li data-ng-repeat="section in quote.sections | orderBy:'section.index'" data-as-sortable-item>
             <div id="section_{{$index}}" as-sortable-item-handle class="as-sortable-item-handle">
 
                 <div class="row">

@@ -49,21 +49,23 @@ app.directive('qtQuoteForm', ['Quote', 'Service', 'Section', 'Client', '$filter'
                 });
 
             $scope.addSection = function (section_name) {
+                var counter = $scope.quote.sections.length;
                 var name = "";
-                var counter;
 
                 if (section_name) {
                     name = section_name;
-                } else {
-                    counter = $scope.quote.sections.length;
+                } else {    
                     name = "section_" + (counter++);
                 }
-                $scope.section       = new Section({"name":name, "index":counter, "text":{}, "title":{}, "views":0});
+                $scope.section              = new Section({"name":name, "index":counter, "text":{}, "title":{}, "views":0});
+                $scope.section.index        = counter++;
                 delete $scope.section.id;
                 $scope.quote.sections.push($scope.section);
             };
 
             $scope.addService = function (service) {
+                var counter = $scope.quote.services.length;
+
                 if (service) {
                     $scope.service = service;
                     $scope.modalInstance.close();
@@ -74,7 +76,8 @@ app.directive('qtQuoteForm', ['Quote', 'Service', 'Section', 'Client', '$filter'
                     $scope.service.user         = $scope.quote.user;
                     $scope.service.cost         = {amount:0, currency:"USD"}
                 }
-                $scope.service.user = $scope.quote.user;
+                $scope.service.user         = $scope.quote.user;
+                $scope.service.index        = counter++;
                 delete $scope.service.id;
                 $scope.quote.services.push($scope.service);
             };
