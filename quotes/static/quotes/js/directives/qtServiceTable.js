@@ -30,12 +30,6 @@ app.directive('qtServiceTable', ['Service', function (Service) {
                     $scope.quote.services.splice(index, 1);
                 };
 
-                $scope.showType = function (service) {
-                    if (service) {
-                        return $scope.serviceFields[service.type];
-                    }
-                };
-
                 $scope.getTotal = function () {
                     if ($scope.quote) {
                         if ($scope.quote.services) {

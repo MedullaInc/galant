@@ -22,6 +22,7 @@ app.directive('qtQuoteForm', ['Quote', 'Service', 'Section', 'Client', '$filter'
         controller: ['$scope', '$attrs', '$filter', '$window', 'Quote', 'Service', 'Section', 'QuoteTemplate', 'Client',
             function ($scope, $attrs, $filter, $window, Quote, Service, Section, QuoteTemplate, Client) {
                 $scope.quoteFields   = [];
+                $scope.serviceFields = [];
                 $scope.quoteStatus   = {};
                 $scope.quoteLanguage = {};
                 $scope.newQuote      = false;
@@ -41,6 +42,15 @@ app.directive('qtQuoteForm', ['Quote', 'Service', 'Section', 'Client', '$filter'
 
                 Client.get().$promise.then(function (clients) {
                     $scope.clients = clients;
+                });
+
+                Service.get().$promise.then(function (services) {
+                    $scope.services = services;
+                });
+
+
+                Service.fields({}).$promise.then(function (fields) {
+                    $scope.serviceFields = fields.type;
                 });
 
                 Quote.fields().$promise.then(function (fields) {
@@ -196,6 +206,12 @@ app.directive('qtQuoteForm', ['Quote', 'Service', 'Section', 'Client', '$filter'
                     templateUrl: 'myModalContent.html'
                 });
                 return 0;
+            };
+
+            $scope.showType = function (service) {
+                if (service) {
+                    return $scope.serviceFields[service.type];
+                }
             };
 
             /* show functions depending on status */
