@@ -133,7 +133,9 @@ class QuoteTemplatesTest(browser.SignedInTest):
         c.save()     
 
         b.get(self.live_server_url + reverse('quote_template_detail', args=[qt.id]))
-
+        browser.wait().until(lambda driver: driver.find_element_by_id('edit_quote')).click()
+        b.find_element_by_id('quote_name').send_keys('new quote')
+        b.find_element_by_id('save_quote').click()
         self._add_language_and_text(b)
 
         self._submit_and_check(b)
@@ -165,6 +167,7 @@ class QuoteTemplatesTest(browser.SignedInTest):
         self.assertTrue(u'Quote saved.' in success_message.text)
 
     def _add_language_and_text(self, b):
+        self.save_snapshot()
         browser.wait().until(lambda driver: driver.find_element_by_xpath('//*[@e-id="quote_name"]').text != '')
         browser.wait().until(lambda driver: driver.find_element_by_id('add_translation_button')).click()
         browser.wait().until(lambda driver: driver.find_element_by_xpath('//*[@id="id_language"]/option[@label="English"]'))
