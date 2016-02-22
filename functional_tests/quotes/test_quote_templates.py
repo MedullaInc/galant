@@ -59,7 +59,6 @@ class QuoteTemplatesTest(browser.SignedInTest):
         c.save()
 
         b.get(self.live_server_url + reverse('add_quote_template'))
-
         browser.wait().until(lambda driver: driver.find_element_by_id('edit_quote'))
         b.find_element_by_id('edit_quote').click()
         b.find_element_by_id('quote_name').send_keys('New quote')
@@ -170,8 +169,6 @@ class QuoteTemplatesTest(browser.SignedInTest):
         browser.wait().until(lambda driver: driver.find_element_by_xpath('//*[@e-id="quote_name"]').text != '')
         browser.wait().until(lambda driver: driver.find_element_by_id('add_translation_button')).click()
         browser.wait().until(lambda driver: driver.find_element_by_xpath('//*[@id="id_language"]/option[@label="English"]'))
-        b.find_element_by_xpath('//*[@id="id_language"]/option[@label="English"]').click()
-        b.find_element_by_id('language_add').click()
         b.find_element_by_xpath('//*[@id="id_language"]/option[@label="Spanish"]').click()
         b.find_element_by_id('language_add').click()
         b.find_element_by_id('en_tab').click()

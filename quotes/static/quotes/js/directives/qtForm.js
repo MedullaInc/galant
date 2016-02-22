@@ -1,13 +1,13 @@
 app = angular.module('quotes.directives.qtForm', [
+    'gallant.directives.glForm',
     'quotes.services.qtServices',
     'quotes.filters.qtCutFilter',
     'quotes.directives.qtServiceTable',
     'quotes.directives.qtSectionTable',
-    'gallant.directives.glForm',
     'ui.bootstrap',
     'as.sortable']);
 
-app.directive('qtQuoteForm', ['Quote', 'Service', 'Section', 'Client', '$filter', '$uibModal', function (Quote, Service, Section, Client, $filter, $uibModal) {
+app.directive('qtQuoteForm', ['Quote', function (Quote) {
     return {
         restrict: 'A',
         scope: {
@@ -117,8 +117,6 @@ app.directive('qtQuoteForm', ['Quote', 'Service', 'Section', 'Client', '$filter'
                                 delete q.id;
                             });
 
-                            $scope.quoteTemplate.languages  = [];
-
                         }
 
                     });
@@ -140,6 +138,12 @@ app.directive('qtQuoteForm', ['Quote', 'Service', 'Section', 'Client', '$filter'
                                 delete q.id;
                             });
 
+                            if($scope.quoteTemplate.languages.length == 0){
+                                var lang = LANGUAGES.find(function (x) { return x.code == $scope.language;});
+                                $scope.quoteTemplate.languages  = [lang];
+                            }
+
+
                         });
                     } else {
                         $scope.quote                    = new Quote();
@@ -155,7 +159,7 @@ app.directive('qtQuoteForm', ['Quote', 'Service', 'Section', 'Client', '$filter'
                         $scope.quoteTemplate            = {"quote": $scope.quote};
                         $scope.quoteTemplate.languages  = [];
 
-                        if ($attrs.language) {
+                        if ($scope.language && LANGUAGES.length > 0) {
                             var lang = LANGUAGES.find(function (x) { return x.code == $scope.language;});
                             $scope.quoteTemplate.languages = [lang];
                         }
