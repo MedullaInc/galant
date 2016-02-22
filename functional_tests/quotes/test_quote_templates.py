@@ -160,6 +160,7 @@ class QuoteTemplatesTest(browser.SignedInTest):
         browser.wait().until(lambda driver: driver.find_element_by_id('edit_quote')).click()
         b.find_element_by_id('quote_name').send_keys('new quote')
         b.find_element_by_id('save_quote').click()
+        browser.wait().until(lambda driver: driver.find_element_by_xpath('//*[@e-id="quote_name"]').text != 'empty')
         with browser.wait_for_page_load():
             b.find_element_by_id('create_submit').click()
         success_message = b.find_element_by_class_name('alert-success')
