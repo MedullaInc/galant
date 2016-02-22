@@ -3,12 +3,19 @@ var app = angular.module('quote', [
     'smart-table',
     'gallant.controllers.glFormController',
     'quotes.controllers.qtQuoteListController',
+    'quotes.controllers.qtQuoteTemplateListController',
     'quotes.controllers.qtPopoverController',
     'quotes.directives.qtForm',
+    'quotes.directives.qtClientForm',
     'ngAnimate',
     'ui.bootstrap',
     'xeditable'
 ]);
+
+/* istanbul ignore next */
+app.run(function(editableOptions) {
+  editableOptions.theme = 'bs3'; // bootstrap3 theme. Can be also 'bs2', 'default'
+});
 
 /* istanbul ignore next */
 app.config(function ($httpProvider) {

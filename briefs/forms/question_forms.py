@@ -8,55 +8,6 @@ from gallant.utils import get_one_or_404
 import re
 
 
-class QuestionForm(gf.UserModelForm):
-    class Meta:
-        model = b.TextQuestion
-        fields = ['question', 'index', 'is_long_answer']
-
-    def __init__(self, user, data=None, prefix=None, *args, **kwargs):
-        # see if update or create
-        prefix = prefix or ''
-        data = data or {}
-        if prefix + '-id' in data:
-            question = get_one_or_404(user, 'change_textquestion', b.TextQuestion, pk=data[prefix + '-id'])
-            super(QuestionForm, self).__init__(user, data=data, prefix=prefix, instance=question, *args, **kwargs)
-        else:
-            super(QuestionForm, self).__init__(user, data=data, prefix=prefix, *args, **kwargs)
-
-    def as_table(self):
-        t = get_template('briefs/question_form.html')
-        if not self.instance:
-            self.instance = self.save(commit=False)
-
-        context = {'prefix': self.prefix + '-', 'question': self.instance, 'extra_class': 'dynamic_section'}
-        return t.render(context)
-
-
-class MultiQuestionForm(gf.UserModelForm):
-    class Meta:
-        model = b.MultipleChoiceQuestion
-        fields = ['question', 'index', 'choices', 'can_select_multiple']
-
-    def __init__(self, user, data=None, prefix=None, *args, **kwargs):
-        # see if update or create
-        prefix = prefix or ''
-        data = data or {}
-        if prefix + '-id' in data:
-            question = get_one_or_404(user, 'change_multiplechoicequestion',
-                                      b.MultipleChoiceQuestion, pk=data[prefix + '-id'])
-            super(MultiQuestionForm, self).__init__(user, data=data, prefix=prefix, instance=question, *args, **kwargs)
-        else:
-            super(MultiQuestionForm, self).__init__(user, data=data, prefix=prefix, *args, **kwargs)
-
-    def as_table(self):
-        t = get_template('briefs/multiquestion_form.html')
-        if not self.instance:
-            self.instance = self.save(commit=False)
-
-        context = {'prefix': self.prefix + '-', 'question': self.instance, 'extra_class': 'dynamic_section'}
-        return t.render(context)
-
-
 class BriefAnswersForm(gf.UserModelForm):
     class Meta:
         model = b.BriefAnswers
@@ -84,45 +35,6 @@ class BriefAnswersForm(gf.UserModelForm):
         # the same as the relevant brief.
         self.user = self.instance.brief.user
         return super(BriefAnswersForm, self).save()
-
-
-def question_forms_request(request):
-    qf = []
-    for key, value in sorted(request.POST.items(), key=operator.itemgetter(1)):
-        m = re.match('(-question-\d+)-question', key)
-        if m is not None:
-            qf.append(QuestionForm(request.user, request.POST, prefix=m.group(1)))
-        else:
-            m = re.match('(-multiquestion-\d+)-question', key)
-            if m is not None:
-                qf.append(MultiQuestionForm(request.user, request.POST, prefix=m.group(1)))
-
-    return qf
-
-
-def question_forms_brief(brief, clear_pk=False):
-    qf = []
-    user = brief.user
-    for question in brief.questions\
-                         .all_for(user)\
-                         .order_by('index'):
-        if clear_pk:
-            question.pk = None
-        if type(question) is b.MultipleChoiceQuestion:
-            qf.append(MultiQuestionForm(user=user, instance=question, prefix='-multiquestion-%d' % question.index))
-        elif type(question) is b.TextQuestion:
-            qf.append(QuestionForm(user=user, instance=question, prefix='-question-%d' % question.index))
-
-    return qf
-
-
-def create_brief(form, question_forms):
-    obj = form.save()
-    obj.questions.clear()
-    for q in question_forms:
-        obj.questions.add(q.save())
-
-    return obj
 
 
 class AnswerForm(forms.Form):

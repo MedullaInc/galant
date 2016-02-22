@@ -1,4 +1,6 @@
+from django.conf import settings
 from gallant.serializers.misc import ULTextField
+from django.utils.translation import get_language
 from rest_framework import serializers
 from quotes.models import Quote, QuoteTemplate
 from gallant import models as g
@@ -33,7 +35,7 @@ class QuoteSerializer(serializers.ModelSerializer):
 
         def model_queryset(m): return m.objects.all_for(user)
 
-        fields['client'] = serializers.PrimaryKeyRelatedField(queryset=model_queryset(g.Client))
+        fields['client'] = serializers.PrimaryKeyRelatedField(queryset=model_queryset(g.Client), allow_null=True)
         fields['sections'] = SectionSerializer(many=True)
         fields['services'] = s.ServiceSerializer(many=True)
         fields['projects'] = serializers.PrimaryKeyRelatedField(many=True, queryset=model_queryset(g.Project))
@@ -137,11 +139,11 @@ class QuoteSerializer(serializers.ModelSerializer):
 class QuoteTemplateSerializer(serializers.ModelSerializer):
     user = serializers.PrimaryKeyRelatedField(read_only=True)
     quote = QuoteSerializer()
-    language_list = serializers.SerializerMethodField()
+    languages = serializers.SerializerMethodField()
 
     class Meta:
         model = QuoteTemplate
-        fields = ('id', 'user', 'quote', 'language_list')
+        fields = ('id', 'user', 'quote', 'languages')
 
     def create(self, validated_data):
         user = self.context['request'].user
@@ -177,6 +179,9 @@ class QuoteTemplateSerializer(serializers.ModelSerializer):
 
         return super(QuoteTemplateSerializer, self).update(instance, validated_data)
 
-    def get_language_list(self, obj):
-        lan_list = QuoteTemplate.objects.all_for(obj.user).get(pk=obj.id).language_list()
-        return lan_list
+    def get_languages(self, template):
+        lang_dict = dict(settings.LANGUAGES)
+        language_set = set(template.quote.get_languages())
+        if len(language_set) == 0:
+            language_set.update(get_language())
+        return [{'code': c, 'name': lang_dict[c]} for c in language_set if c in lang_dict]

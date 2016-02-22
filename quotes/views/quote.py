@@ -4,9 +4,12 @@ from django.template.response import TemplateResponse
 from django.http import HttpResponseRedirect
 from django.conf import settings
 from django.contrib import messages
+from gallant.models import GallantUser
 from django.core.urlresolvers import reverse
-from gallant.utils import get_one_or_404, url_to_pdf, get_site_from_host, GallantObjectPermissions, get_field_choices, \
+from django.shortcuts import get_object_or_404
+from gallant.utils import get_one_or_404, url_to_pdf, get_site_from_host, get_field_choices, \
     GallantViewSetPermissions
+from gallant.views.user import UserModelViewSet
 from quotes import models as q
 from quotes import serializers
 from gallant.serializers import payment
@@ -15,11 +18,9 @@ from django.utils.text import slugify
 from django.utils.translation import ugettext_lazy as _
 from django.core.mail import send_mail
 from uuid import uuid4
-from rest_framework import generics
 from rest_framework.viewsets import ModelViewSet
-from rest_framework.response import Response
-from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED, HTTP_400_BAD_REQUEST
-
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, AllowAny
+from rest_framework.decorators import permission_classes
 
 class QuoteUpdate(View):
     def get(self, request, **kwargs): # pragma: no cover
@@ -134,10 +135,10 @@ class QuoteDetail(View):
                 id_type = key
                 if id_type == "pk":
                     template = "quotes/quote_detail_ng.html"
+                    quote = get_one_or_404(request.user, 'view_quote', q.Quote, **{ key: kwargs[key] })
                 elif id_type == "token":
                     template = "quotes/quote_detail_client_ng.html"
-
-                quote = get_one_or_404(request.user, 'view_quote', q.Quote, **{ key: kwargs[key] })
+                    quote = get_object_or_404(q.Quote, **{ key: kwargs[key] })
 
         request.breadcrumbs([(_('Quotes'), reverse('quotes')),
                              (_('Quote: %s' % quote.name), request.path_info)])
@@ -149,7 +150,6 @@ class QuoteDetail(View):
 class QuoteSend(View): # pragma: no cover
     def post(self, request, **kwargs):
         quote = get_one_or_404(request.user, 'view_quote', q.Quote, id=kwargs['pk'])
-        print quote.id
         quote.status = q.QuoteStatus.Sent.value
         quote.save()
 
@@ -178,6 +178,7 @@ def quote_fields_json(request):
     return JsonResponse(get_field_choices(q.Quote), safe=False)
 
 
+@permission_classes((AllowAny, ))
 class SectionViewSet(ModelViewSet):
     model = q.Section
     serializer_class = serializers.SectionSerializer
@@ -186,45 +187,28 @@ class SectionViewSet(ModelViewSet):
      ]
 
     def get_queryset(self):
-        return self.model.objects.all_for(self.request.user)
+        user = self.request.query_params.get('user', None)
+        if user:
+            return self.model.objects.all_for(get_object_or_404(GallantUser ,pk=user))
+        else:
+            return self.model.objects.all_for(self.request.user)
 
-
-class QuoteViewsViewsSet(ModelViewSet):
+@permission_classes((IsAuthenticatedOrReadOnly, ))
+class QuoteViewSet(UserModelViewSet):
     model = q.Quote
     serializer_class = serializers.QuoteSerializer
-    permission_classes = [
-         GallantViewSetPermissions
-     ]
 
     def get_queryset(self):
-        return self.model.objects.all_for(self.request.user)    
-
-
-class QuoteViewSet(ModelViewSet):
-    model = q.Quote
-    serializer_class = serializers.QuoteSerializer
-    permission_classes = [
-         GallantViewSetPermissions
-     ]
-
-    def get_queryset(self):
-        return self.model.objects.all_for(self.request.user)
-
-    def update(self, request, *args, **kwargs):
-        response = super(QuoteViewSet, self).update(request, *args, **kwargs)
-        if response.status_code == HTTP_200_OK or response.status_code == HTTP_201_CREATED:
-            self.request._messages.add(messages.SUCCESS, 'Quote saved.')
-            return Response({'status': 0, 'redirect': reverse('quote_detail', args=[response.data['id']])})
+        if self.request.query_params.get('user', None):
+            user = get_object_or_404(GallantUser, pk= self.request.query_params.get('user', None))
         else:
-            return response
+            user = self.request.user
 
-    def create(self, request, *args, **kwargs):
-        response = super(QuoteViewSet, self).create(request, *args, **kwargs)
-        if response.status_code == HTTP_201_CREATED:
-            self.request._messages.add(messages.SUCCESS, 'Quote saved.')
-            return Response({'status': 0, 'redirect': reverse('quote_detail', args=[response.data['id']])})
+        clients_only = self.request.query_params.get('clients_only', None)
+        if clients_only is not None:
+            return self.model.objects.all_for(user).exclude(client__isnull=clients_only)
         else:
-            return response
+            return self.model.objects.all_for(user)
 
 
 class QuotePaymentsAPI(ModelViewSet):

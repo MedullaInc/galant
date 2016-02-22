@@ -13,6 +13,8 @@ from gallant.utils import get_one_or_404, GallantObjectPermissions, GallantViewS
 from django.utils.translation import ugettext_lazy as _
 from rest_framework import generics
 from rest_framework.viewsets import ModelViewSet
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, AllowAny
+from rest_framework.decorators import permission_classes
 
 
 class ClientList(View):
@@ -164,7 +166,7 @@ class ClientDetailAPI(generics.RetrieveUpdateAPIView):
 def client_fields_json(request):
     return JsonResponse(get_field_choices(g.Client), safe=False)
 
-
+@permission_classes((AllowAny, ))
 class ClientsAPI(ModelViewSet):
     model = g.Client
     serializer_class = serializers.ClientSerializer

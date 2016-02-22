@@ -6,6 +6,10 @@ describe('qtForm', function () {
 
     beforeEach(function () {
         module('quotes.directives.qtForm');
+        module('quotes.directives.qtClientForm');
+        module('quotes.directives.qtServiceTable');
+        module('quotes.directives.qtSectionTable');
+        module('quotes.filters.qtCutFilter');
         module('staticNgTemplates');
         angular.module('ngAnimate', []);
         angular.module('as.sortable', []);
@@ -15,7 +19,8 @@ describe('qtForm', function () {
         module('quotes.services.qtServices', function ($provide) { 
             $provide.factory('Quote', function ($q) {
                 var Quote = function () { return {id: 0}; };
-                Quote.get = function () { return {$promise: $q.when({id: 0})}; };
+                Quote.get = function () { return {$promise: $q.when({id: 0, sections: [{}], ervices: [{cost: [{amount: 0, currency:"USD"}]}]})}; };
+                Quote.getUser = function () { return {$promise: $q.when({id: 0, sections: [{}], ervices: [{cost: [{amount: 0, currency:"USD"}]}]})}; };
                 Quote.update = function () { return {$promise: $q.when({id: 0})}; };
                 Quote.fields = function () { return {$promise: $q.when({status: ['status', 'status'], language: ['language', 'language']})}; };
                 return Quote;
@@ -23,7 +28,11 @@ describe('qtForm', function () {
 
             $provide.factory('QuoteTemplate', function ($q) {
                 var QuoteTemplate = function () { return {id: 0}; };
-                QuoteTemplate.get = function () { return {$promise: $q.when({id: 0})}; };
+                QuoteTemplate.get = function () { return {$promise: $q.when({id: 0, languages: [], quote: {
+                    id: 0,
+                    sections: [{}],
+                    services: [{cost: [{amount: 0, currency:"USD"}]}],
+                }})}; };
                 return QuoteTemplate;
             });
 
@@ -34,16 +43,17 @@ describe('qtForm', function () {
             });
 
             $provide.factory('Section', function ($q) {
-                var Service = jasmine.createSpyObj('Service', ['get', 'update']);
-                Service.get.and.returnValue({$promise: $q.when([{id: 0}])});
-                Service.update.and.returnValue({$promise: $q.when({type: ['type', 'type']})});
-                return Service;
+                var Section = function () { return {id: 0}; };
+                Section.get = function () { return {$promise: $q.when({id: 0})}; };
+                Section.update = function () { return {$promise: $q.when({type: ['type', 'type']})};  };
+                return Section;
             });
 
             $provide.factory('Service', function ($q) {
-                var Service = jasmine.createSpyObj('Service', ['get','update', 'fields']);
-                Service.get.and.returnValue({$promise: $q.when([{id: 0}])});
-                Service.fields.and.returnValue({$promise: $q.when({type: ['type', 'type']})});
+                var Service = function () { return {id: 0}; };
+                Service.get = function () { return {$promise: $q.when({id: 0})}; };
+                Service.fields = function () { return {$promise: $q.when({type: ['type', 'type']})};  };
+                Service.update = function () { return {$promise: $q.when({type: ['type', 'type']})};  };
                 return Service;
             });
 
@@ -65,6 +75,26 @@ describe('qtForm', function () {
     });
 
 
+  describe('qtQuoteForm', function () {
+  
+    it('has a cut filter', inject(function($filter) {
+        expect($filter('cut')).not.toBeNull();
+    }));
+
+    it("should trim the string to 5 chars ", inject(function (cutFilter) {
+        expect(cutFilter("xxxxxxxxxx",true,5,"").length).toEqual(5);
+    }));
+
+    it("test lastspace ", inject(function (cutFilter) {
+        expect(cutFilter("xxx xxxxxxx ",true,5,"").length).toEqual(3);
+    }));
+
+    it("exceed max ", inject(function (cutFilter) {
+        expect(cutFilter("xxx xxxxxxx ",true,15,"").length).toEqual(12);
+    }));
+
+  });
+
 
   describe('qtQuoteForm', function () {
 
@@ -75,14 +105,6 @@ describe('qtForm', function () {
             $scope.endpoint = $scope.quote;
             $scope.modalInstance = {};
         });
-
-        it('has a cut filter', inject(function($filter) {
-            expect($filter('cut')).not.toBeNull();
-        }));
-
-        it("should trim the string to 5 chars ", inject(function (cutFilter) {
-            expect(cutFilter("xxxxxxxxxx",true,5,"").length).toEqual(5);
-        }));
 
         it('compiles', function () {
             var element = $compile('<div quote-id="0" quote="quote" qt-quote-form language="language"></div>')($scope);
@@ -108,6 +130,17 @@ describe('qtForm', function () {
             expect(element.html().substring(0, 8)).toEqual('<div cla');
         });
 
+        it('check client', function () {
+            /* TODO */
+            pending();
+            
+            $scope.quote = {};
+            var element = $compile('<div qt-quote-form quote="quote" ></div>')($scope);
+            $scope.$digest();
+            var expected = element.isolateScope().checkClient();
+            expect(expected).toEqual("Plase select a client");
+        });
+
         it('adds service (scratch)', function () {
             $scope.quote = {};
             var element = $compile('<div qt-quote-form quote="quote" ></div>')($scope);
@@ -116,61 +149,37 @@ describe('qtForm', function () {
             element.isolateScope().addService();
             expect($scope.quote.services.length).toEqual(2);
         });
-
-        it('remove service', function () {
-            $scope.quote = {};
-            var element = $compile('<div qt-quote-form quote="quote"></div>')($scope);
-            $scope.$digest();
- 
-            element.isolateScope().removeService();
-            expect($scope.quote.services.length).toEqual(0);
-        });
-
-        it('show service', function () {
-            $scope.quote = {};
-            $scope.service = {id:0};
-            var element = $compile('<div qt-quote-form quote="quote"></div>')($scope);
-            $scope.$digest();
- 
-            element.isolateScope().showService($scope.service);
-            expect($scope.quote.sections.length).toEqual(2);
-        });
  
         it('adds section', function () {
-            $scope.quote = {};
-            var element = $compile('<div qt-quote-form quote="quote"></div>')($scope);
+            var element = $compile('<div qt-quote-form quote="quote" ></div>')($scope);
             $scope.$digest();
- 
             element.isolateScope().addSection();
             expect($scope.quote.sections.length).toEqual(3);
         });
 
-        it('show section', function () {
-            $scope.quote = {};
-            $scope.section = {id:0};
-            var element = $compile('<div qt-quote-form quote="quote"></div>')($scope);
-            $scope.$digest();
- 
-            element.isolateScope().showSection($scope.section);
-            expect($scope.quote.sections.length).toEqual(2);
-        });
-
-        it('remove section', function () {
-            $scope.quote = {};
-            var element = $compile('<div qt-quote-form quote="quote"></div>')($scope);
-            $scope.$digest();
- 
-            element.isolateScope().removeSection();
-            expect($scope.quote.sections.length).toEqual(1);
-        });
-
         it('changes language', function () {
             $scope.quote = {};
-            var element = $compile('<div qt-quote-form quote="quote"></div>')($scope);
+            var element = $compile('<div qt-quote-form  quote-template="quoteTemplate" is-template="true"></div>')($scope);
             $scope.$digest();
  
             element.isolateScope().changeLanguage(["en","en"]);
             expect($scope.language.length).toEqual(2);
+        });
+
+        it('adds language', function () {
+            var element = $compile('<div qt-quote-form quote-template="quoteTemplate" bool-template="True" template-id="quoteTemplate.id"></div>')($scope);
+            $scope.$digest();
+
+            element.isolateScope().addLanguage({'code': 'en', 'name': 'English'});
+            expect(element.isolateScope().quoteTemplate.languages.length).toEqual(1);
+        });
+
+        it('sets language', function () {
+            var element = $compile('<div qt-quote-form quote-template="quoteTemplate" bool-template="True"></div>')($scope);
+            $scope.$digest();
+
+            element.isolateScope().setLanguage('en');
+            expect(element.isolateScope().language).toEqual('en');
         });
 
         it('show rowform', function () {
@@ -193,5 +202,90 @@ describe('qtForm', function () {
 
 
     });
+
+
+    describe('qtClientForm', function () {
+
+        it('compiles', function () {
+            var element = $compile('<div qt-client id-type="token"></div>')($scope);
+            $scope.$digest();
+            expect(element.html().substring(0, 4)).toEqual('<div');
+        });
+
+        it('adds onbeforeunload function', function () {
+            var element = $compile('<div qt-client id-type="token"></div>')($scope);
+            $scope.$digest();
+            var result = $window.onbeforeunload();
+            expect(result).not.toBeNull();
+            $window.onbeforeunload = null; // remove so browser doesn't get stuck
+        });
+
+    });
+
+
+    describe('qtServiceTable', function () {
+
+        it('compiles', function () {
+            var element = $compile('<div qt-service-table></div>')($scope);
+            $scope.$digest();
+            expect(element.html().substring(0, 4)).toEqual('<div');
+        });
+
+        it('remove service', function () {
+            $scope.quote = { "sections": [],"services": []};
+            $scope.insertedService = {cost: {amount: "0", currency: "USD"}};
+            $scope.quote.services.push($scope.insertedService);
+
+            var element = $compile('<div qt-service-table></div>')($scope);
+            $scope.$digest();
+            element.scope().removeService();
+            expect($scope.quote.services.length).toEqual(0);
+        });
+
+        it('show service', function () {
+            $scope.quote = {};
+            $scope.service = {id:0};
+            $scope.idType = "token";
+            var element = $compile('<div qt-service-table></div>')($scope);
+            $scope.$digest();
+ 
+            element.scope().showService($scope.service);
+            expect($scope.service).toBeDefined();
+        });
+
+    });
+    
+
+    describe('qtSectionTable', function () {
+
+        it('compiles', function () {
+            var element = $compile('<div qt-section-table></div>')($scope);
+            $scope.$digest();
+            expect(element.html().substring(0, 4)).toEqual('<div');
+        });
+
+        it('show section', function () {
+            $scope.quote = {};
+            $scope.section = {id:0};
+            $scope.idType = "token";
+            var element = $compile('<div qt-section-table></div>')($scope);
+            $scope.$digest();
+            element.scope().showSection($scope.section);
+            expect($scope.section).toBeDefined();
+        });
+
+        it('remove section', function () {
+            $scope.quote = { "sections": [],"services": []};
+            $scope.section = {id:0};
+            $scope.quote.sections.push($scope.section);
+
+            var element = $compile('<div qt-section-table></div>')($scope);
+            $scope.$digest();
+            element.scope().removeSection();
+            expect($scope.quote.sections.length).toEqual(0);
+        });
+
+    });
+    
 });
  

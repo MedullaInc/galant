@@ -1,0 +1,64 @@
+<div class="row" id="question{{ question.index }}">
+    <form editable-form name="questionForm">
+        <div class="data">
+            <span>Question{{ question.can_select_multiple ? ' (Can select multiple)' : '' }}:</span>
+            <span editable-text="question.question[language]" e-id="question{{ question.index }}_question">
+            {{ question.question[language] || 'empty' }}
+            </span>
+        </div>
+        <div class="data" ng-show="questionForm.$visible">
+            <input type="checkbox" ng-model="question.can_select_multiple"
+                   id="question{{ question.index }}_mult">
+            Can select multiple
+        </div>
+        <div class="choices">
+            <div ng-repeat="choice in question.choices track by $index">
+                <div class="row margin-bottom-10 choice">
+                    <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11">
+
+                            <span editable-text="choice[language]" e-form="questionForm"
+                                  e-id="question{{ question.index }}_choice{{ $index }}"
+                                  e-form="innerFormC{{ $index }}">
+                                - {{ choice[language] || 'empty' }}
+                            </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row margin-bottom-10">
+            <div class="col-lg-12">
+                <button id="question{{ question.index }}_add_choice" type="button"
+                        class="btn btn-default add_choice" ng-click="addChoice()">
+                    Add Choice
+                </button>
+            </div>
+        </div>
+    </form>
+
+    <div class="buttons" ng-hide="questionForm.$visible">
+        <button id="question{{ question.index }}_edit" type="button" class="btn btn-default edit_button"
+                aria-label="Edit"
+                ng-click="questionForm.$show()">
+            <span class="glyphicon glyphicon-edit"/>
+        </button>
+        <button id="question{{ question.index }}_delete" type="button" class="btn btn-default delete_button"
+                aria-label="Delete"
+                ng-click="deleteQuestion()()">
+            <span class="glyphicon glyphicon-trash"/>
+        </button>
+    </div>
+
+    <span ng-show="questionForm.$visible">
+        <button id="question{{ question.index }}_save" type="button" ng-click="questionForm.$save()"
+                 class="btn btn-primary" ng-disabled="questionForm.$waiting">
+            Save
+        </button>
+        <button  id="question{{ question.index }}_cancel" type="button"
+                 class="btn btn-default" ng-disabled="questionForm.$waiting"
+                ng-click="questionForm.$cancel()">
+            Cancel
+        </button>
+    </span>
+
+
+</div>

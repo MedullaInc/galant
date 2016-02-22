@@ -1,7 +1,6 @@
 var app = angular.module('brief', [
     'ngResource',
     'xeditable',
-    'briefs.directives.brForm',
     'briefs.directives.brDetail',
     'gallant.controllers.glFormController',
 ]);

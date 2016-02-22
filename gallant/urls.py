@@ -114,11 +114,11 @@ urlpatterns += patterns('',
                         )
 
 urlpatterns += url(r'^api/client/fields',
-                   login_required(gallant.views.client_fields_json),
+                   gallant.views.client_fields_json,
                    name='api-client-fields'),
 
 urlpatterns += url(r'^api/service/fields',
-                   login_required(gallant.views.service_fields_json),
+                   gallant.views.service_fields_json,
                    name='api-service-fields'),
 
 urlpatterns += router.urls

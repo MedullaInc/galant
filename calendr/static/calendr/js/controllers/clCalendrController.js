@@ -29,15 +29,15 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
             $scope.asideInstance = $aside.open({
                 templateUrl: '/static/calendr/html/aside.html',
                 backdrop: false,
-                controller: function ($scope, $modalInstance, userEvents, openEditModal) {
+                controller: function ($scope, $uibModalInstance, userEvents, openEditModal) {
                     $scope.events = userEvents;
                     $scope.openEditModal = openEditModal;
                     $scope.ok = function (e) {
-                        $modalInstance.close();
+                        $uibModalInstance.close();
                         e.stopPropagation();
                     };
                     $scope.cancel = function (e) {
-                        $modalInstance.dismiss();
+                        $uibModalInstance.dismiss();
                         e.stopPropagation();
                     };
                 },
@@ -148,7 +148,7 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
             templateUrl: '/static/calendr/html/calendar_modal.html',
             backdrop: true,
             windowClass: 'modal',
-            controller: function ($scope, $modalInstance, $log, event, events, resources, projects, updateEvent, createTask) {
+            controller: function ($scope, $uibModalInstance, $log, event, events, resources, projects, updateEvent, createTask) {
                 $scope.event = event;
                 $scope.events = events;
                 $scope.resources = resources;
@@ -157,7 +157,7 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
                 $scope.createTask = createTask;
 
                 $scope.submit = function (e) {
-                    $modalInstance.dismiss('cancel');
+                    $uibModalInstance.dismiss('cancel');
                     // var found = $filter('filter')($scope.events, {id: $scope.event.id}, true)
                     if (e.id) {
                         $scope.updateEvent($scope.event);
@@ -180,14 +180,14 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
                     }
                 };
                 $scope.cancel = function () {
-                    $modalInstance.dismiss('cancel');
+                    $uibModalInstance.dismiss('cancel');
                 };
                 $scope.deleteTask = function (event) {
                     if (confirm('Are you sure you want to permanently delete this task?')) {
                         Task.delete({id: event.id}).$promise.then(function (response) {
                             var index = $scope.events.indexOf(event);
                             $scope.events.splice(index, 1);
-                            $modalInstance.dismiss('cancel');
+                            $uibModalInstance.dismiss('cancel');
                         });
                     }
 

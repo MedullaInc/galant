@@ -1,64 +1,90 @@
-<div class="col-lg-2 col-md-2 col-sm-3 col-xs-3 action_box">
-    <button id="section_edit" type="button" class="btn btn-default edit_button" aria-label="Edit"
-            ng-click="briefForm.$show()">
-        <span class="glyphicon glyphicon-edit"/>
-    </button>
-    <button id="section_edit" type="button" class="btn btn-default edit_button" aria-label="Delete">
-        <span class="glyphicon glyphicon-trash"/>
-    </button>
+<script type="text/ng-template" id="languageForm.html">
+      <gl-language-form></gl-language-form>
+</script>
+
+<div ng-show="briefTemplate">
+    <h2 e-id="brief_name" editable-text="brief.name" class="section_title editable" style="margin-top: 20px"
+        e-required="">{{ brief.name }}</h2>
+    <ul id="tabs" class="nav nav-tabs" style="margin-bottom: -1px; border-bottom: 0">
+        <li ng-repeat="lang in briefTemplate.languages"
+            id="{{ lang.code }}_tab" data="{{ lang.code }}">
+            <a ng-click="setLanguage(lang.code)">
+                {{ lang.name }}
+            </a>
+        </li>
+        <li id="add_translation">
+            <a uib-popover-template="'languageForm.html'" popover-placement="bottom"
+                id="add_translation_button" class="btn" data-original-title="" title="">Add Translation</a>
+        </li>
+    </ul>
 </div>
 
-<div class="col-lg-10 col-md-10 col-sm-9 col-xs-9">
-    <form editable-form name="briefForm">
-        <div id="title" class="data">
-            <span>Title:</span>
-            <span editable-text="brief.title[language]">{{ brief.title[language] || 'empty' }}</span>
-        </div>
-        <div id="title" class="data">
-            <span>Status:</span>
-            <span editable-text="brief.status">{{ brief.status || 'empty' }}</span>
-        </div>
-        <div id="title" class="data">
-            <span>Greeting:</span>
-            <pre editable-text="brief.greeting[language]">{{ brief.greeting[language] || 'empty' }}</pre>
-        </div>
+<div ng-class="briefTemplate ? 'rounded-border col-lg-12 col-md-12 col-sm-11 col-xs-11' : ''" style="border-top-left-radius: 0px">
+    <div class="col-lg-10 col-md-10 col-sm-9 col-xs-9">
+        <form editable-form name="briefForm">
+            <div id="title" class="data">
+                <span>Title:</span>
+                <span editable-text="brief.title[language]" e-id="brief_title">
+                    {{ brief.title[language] || 'empty' }}
+                </span>
+            </div>
+            <div id="title" class="data">
+                <span>Status:</span>
+                <span editable-text="brief.status" e-id="brief_status">
+                    {{ brief.status || 'empty' }}
+                </span>
+            </div>
+            <div id="title" class="data">
+                <span>Greeting:</span>
+                <pre editable-text="brief.greeting[language]" e-id="brief_greeting">
+                    {{ brief.greeting[language] || 'empty' }}
+                </pre>
+            </div>
 
         <span ng-show="briefForm.$visible">
-            <button type="submit" class="btn btn-primary" ng-disabled="briefForm.$waiting">
+            <button id="save_edit" type="submit" class="btn btn-primary" ng-disabled="briefForm.$waiting">
                 Save
             </button>
-            <button type="button" class="btn btn-default" ng-disabled="briefForm.$waiting"
+            <button id="cancel_edit" type="button" class="btn btn-default" ng-disabled="briefForm.$waiting"
                     ng-click="briefForm.$cancel()">
                 Cancel
             </button>
         </span>
-    </form>
-</div>
+        </form>
+    </div>
+    <div class="buttons" ng-hide="briefForm.$visible">
+        <button id="edit_brief" type="button" class="btn btn-default edit_button" aria-label="Edit"
+                ng-click="briefForm.$show()">
+            <span class="glyphicon glyphicon-edit"/>
+        </button>
+        <button id="delete_brief" type="button" class="btn btn-default delete_button" aria-label="Delete"
+                ng-click="deleteObject()('brief')">
+            <span class="glyphicon glyphicon-trash"/>
+        </button>
+    </div>
 
-<br/>
+    <br/>
 
-<div class="col-lg-10 col-md-10 col-sm-9 col-xs-9">
-    <h2 class="section_title">
-        Questions
-    </h2>
-    <hr>
+    <div class="col-lg-10 col-md-10 col-sm-9 col-xs-9">
+        <h2 class="section_title">
+            Questions
+        </h2>
+        <hr>
 
-    <div ng-repeat="question in brief.questions">
-        <div id="question_{{ question.index }}" class="question">
-            {{ $index }} ) {{ question.question[language] }}
-            <div class="multiquestion_choices">
-                <div ng-repeat="choice in question.choices">
-                    <div>
-                        — {{ choice[language] }}
-                    </div>
-                </div>
-            </div>
+        <div ng-repeat="question in brief.questions">
+            <div id="question_{{ question.index }}" class="question" br-question-detail question="question" language="language"></div>
+        </div>
+
+        <hr>
+
+        <div ng-show="questions.length == 0">
+            No questions have been added yet.<br/>
         </div>
     </div>
-
-    <hr>
-
-    <div ng-show="questions.length == 0">
-        No questions have been added yet.<br/>
-    </div>
+    <button type="button" id="add_question" class="btn btn-default pull-left margin-right-10" ng-click="addQuestion()" ng-show="showButtons()">
+        Add Question
+    </button>
+    <button type="button" id="add_multiquestion" class="btn btn-default pull-left" ng-click="addQuestion('multi')" ng-show="showButtons()">
+        Add Multiple Choice Question
+    </button>
 </div>

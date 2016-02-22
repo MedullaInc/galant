@@ -1,0 +1,37 @@
+<div class="row" id="question{{ question.index }}">
+    <form editable-form name="questionForm">
+        <div class="data">
+            <span>Question{{ question.is_long_answer ? ' (Long-answer)' : '' }}:</span>
+            <span editable-text="question.question[language]" e-id="question{{ question.index }}_question">
+                {{ question.question[language] || 'empty' }}
+            </span>
+        </div>
+        <div class="data" ng-show="questionForm.$visible">
+            <input type="checkbox" ng-model="question.is_long_answer" id="question{{ question.index }}_long">
+            Long-answer
+        </div>
+
+        <span ng-show="questionForm.$visible">
+            <button id="question{{ question.index }}_save" type="button" ng-click="questionForm.$save()"
+                     class="btn btn-primary" ng-disabled="questionForm.$waiting">
+                Save
+            </button>
+            <button  id="question{{ question.index }}_cancel" type="button"
+                     class="btn btn-default" ng-disabled="questionForm.$waiting"
+                    ng-click="questionForm.$cancel()">
+                Cancel
+            </button>
+        </span>
+    </form>
+
+    <div class="buttons" ng-hide="questionForm.$visible">
+        <button id="question{{ question.index }}_edit" type="button" class="btn btn-default edit_button" aria-label="Edit"
+                ng-click="questionForm.$show()">
+            <span class="glyphicon glyphicon-edit"/>
+        </button>
+        <button id="question{{ question.index }}_delete" type="button" class="btn btn-default delete_button" aria-label="Delete"
+                ng-click="deleteQuestion()()">
+            <span class="glyphicon glyphicon-trash"/>
+        </button>
+    </div>
+</div>

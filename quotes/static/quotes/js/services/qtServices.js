@@ -10,11 +10,22 @@ app.factory("Quote", function ($resource) {
 		  params: {},
 		  isArray: true
 		},
+		getUser: {
+		  method: 'GET',
+		  params: {},
+		  url:"/en/quote/api/quote/:id?user=:user"
+		},
 		query: {
 		  method: 'GET',
 		  params: {},
 		  isArray: true,
-		  url: '/en/quote/api/quote/'			
+		  url: '/en/quote/api/quote?clients_only=True',	
+		},
+		queryNC: {
+		  method: 'GET',
+		  params: {},
+		  isArray: true,
+		  url: '/en/quote/api/quote',	
 		},
         fields: {
           method: 'GET',
@@ -41,7 +52,7 @@ app.factory("Service", function ($resource) {
         },
         update: {
           method: 'PATCH',
-          url: '/api/service/:id ',
+          url: '/api/service/:id?user=:user',
         },
 	});
 
@@ -53,7 +64,7 @@ app.factory("Section", function ($resource) {
 	return $resource("/en/quote/api/section ", {}, {
         update: {
           method: 'PATCH',
-          url: '/en/quote/api/section/:id ',
+          url: '/en/quote/api/section/:id?user=:user',
         },
 	});
 
@@ -86,7 +97,7 @@ app.factory("QuoteTemplate", function ($resource) {
 		  method: 'GET',
 		  params: {},
 		  isArray: true,
-		  url: '/en/quote/api/quote_template/'			
+		  url: '/en/quote/api/quote_template?clients_only=False'			
 		}
 	});
 

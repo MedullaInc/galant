@@ -42,7 +42,7 @@ class Service(UserModel):
     cost = MoneyField(max_digits=10, decimal_places=2, default_currency='USD')
     quantity = m.IntegerField()
     type = m.CharField(max_length=2, choices=ServiceType.choices())
-
+    index = m.IntegerField(default=0) 
     parent = m.ForeignKey('self', null=True, blank=True, related_name='sub_services')
 
     notes = m.ManyToManyField(Note)

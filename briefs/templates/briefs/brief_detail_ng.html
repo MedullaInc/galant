@@ -5,6 +5,7 @@
     {{ block.super }}
     <script src="{% static "js/angular.js" %}"></script>
     <script src="{% static "js/angular-resource.js" %}"></script>
+    <script src="{% static "js/ui-bootstrap-tpls.min.js" %}"></script>
     <script src="{% static "js/xeditable.js" %}"></script>
     <script src="{% static "djangular/js/django-angular.min.js" %}"></script>
     <script src="{% static "js/gallant.js" %}"></script>
@@ -21,36 +22,43 @@
 {% endblock %}
 
 {% block sidebar %}
-    {% if object.client and not answer_set %}
-        <form method="post">
-            {% csrf_token %}
-            <a>
-                <button type="submit" class="btn btn-default sidebar" id="send_brief">
-                    {% trans "Send Brief" %}
-                </button>
-            </a>
-        </form>
+    {% if is_template %}
+        <a href="{% url 'add_brief' %}?template_id={{ template_id }}">
+            <button type="button" class="btn btn-default sidebar" id="add_brief">
+                Use For New Brief
+            </button>
+        </a>
+    {% else %}
+        {% if object.client and not answer_set %}
+            <form method="post">
+                {% csrf_token %}
+                <a>
+                    <button type="submit" class="btn btn-default sidebar" id="send_brief">
+                        {% trans "Send Brief" %}
+                    </button>
+                </a>
+            </form>
+        {% endif %}
+        <a href="{% url 'add_brief_template' brief_id=object.id %}">
+            <button type="button" class="btn btn-default sidebar" title="Create template from this brief.">
+                {% trans "Use as Template" %}
+            </button>
+        </a>
     {% endif %}
-    <a href="{% url 'add_brief_template' brief_id=object.id %}">
-        <button type="button" class="btn btn-default sidebar" title="Create template from this brief.">
-            {% trans "Use as Template" %}
-        </button>
-    </a>
 {% endblock %}
 
 {% block center_content %}
     <div ng-app="brief" ng-controller="glFormController"
          ng-init="init('{% firstof language LANGUAGE_CODE %}', '{{ csrf_token }}')">
 
-        {% if object.status == "2" %}
-            <p id="public_link" class="data">Public Answer
-                Link:<br/>http://{{ request.get_host }}{% url 'brief_answer' token=object.token.hex %}</p>
-        {% endif %}
         {% if answer_set %}
             <p id="answered" class="text-success">
                 <b>{% trans "Answered on" %} {{ answer_set.created }}</b><br/>
                 {% trans "You can no longer edit this brief." %}
             </p>
+        {% elif object.status == "2" %}
+            <p id="public_link" class="data">Public Answer
+                Link:<br/>http://{{ request.get_host }}{% url 'brief_answer' token=object.token.hex %}</p>
         {% endif %}
 
         <div class="row">
@@ -58,10 +66,25 @@
                 <h2 class="section_title">{{ object.client }}</h2>
             </div>
 
-            <div br-brief-detail brief-id="{{ object.pk }}" brief="object" endpoint="objectEndpoint"
-                 language="currentLanguage" forms="forms"
+            <div br-brief-detail brief-id="{{ object.pk }}" object="object" endpoint="objectEndpoint"
+                 language="currentLanguage" forms="forms" template-id="{{ template_id }}"
                  client-id="{{ client.id }}" project-id="{{ project.id }}" quote-id="{{ quote.id }}"
-                 template-id="{{ template_id }}">
+                 is-template="{{ is_template }}" delete-object="deleteObject">
+            </div>
+        </div>
+
+        <div id="form_actions">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="form-actions">
+                        {% block form_actions %}
+                            <button id="create_submit" class="btn btn-default pull-left" type="submit"
+                                    ng-click="submitForm()">
+                                {{ submit_text|default:_("Save") }}
+                            </button>
+                        {% endblock %}
+                    </div>
+                </div>
             </div>
         </div>
     </div>

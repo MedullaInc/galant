@@ -1,9 +1,9 @@
  <tr ng-repeat="template in quoteTemplates" ng-click="redirectTemplate(template)" style="cursor: pointer">
-    <td>{{ (quotes | filter:{id: template.quote.id})[0].name }}</td>
-    <td>{{ (quotes | filter:{id: template.quote.id})[0].modified | date:'y-M-d h:m'  }}</td>
+    <td>{{ template.quote.name }}</td>
+    <td>{{ template.quote.modified | date:'y-M-d h:m'  }}</td>
     <td ng-click="$event.stopPropagation()">
-        <select ng-if="template.language_list" class="template_lang form-control" name="language" ng-change="languageSelection(template, selectedLanguage)" ng-model="selectedLanguage">
-                <option ng-repeat="(key,val) in template.language_list" value="{{ key }}">{{ val }}</option>
+        <select ng-if="template.languages" class="template_lang form-control" name="language" ng-change="languageSelection(template, selectedLanguage)" ng-model="selectedLanguage">
+                <option ng-repeat="language in template.languages" value="{{ language.code }}">{{ language.name }}</option>
         </select>
     </td>
 </tr>

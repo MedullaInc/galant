@@ -1,13 +1,13 @@
-describe('brForm', function () {
+describe('brDetail', function () {
     var $rootScope;
     var $compile;
     var $scope;
 
     beforeEach(function () {
-        module('briefs.directives.brForm');
         module('briefs.directives.brDetail');
         module('staticNgTemplates');
 
+        angular.module('ui.bootstrap', []);
         angular.module('brief.services.brServices', []);
         module('brief.services.brServices', function ($provide) {
             $provide.factory('Question', function ($q) {
@@ -24,7 +24,7 @@ describe('brForm', function () {
 
             $provide.factory('BriefTemplate', function ($q) {
                 var BriefTemplate = function () {};
-                BriefTemplate.get = function () { return {$promise: $q.when({id: 0, brief: {
+                BriefTemplate.get = function () { return {$promise: $q.when({id: 0, languages: [], brief: {
                     id: 0,
                     questions: [{}]
                 }})}; };
@@ -41,55 +41,22 @@ describe('brForm', function () {
         $scope = $rootScope.$new();
     });
 
-    describe('brQuestionForm', function () {
+    describe('brQuestionDetail', function () {
         beforeEach(function () {
             $scope.question = {type: 'TextQuestion'};
             $scope.language = 'en';
         });
 
         it('compiles', function () {
-            var element = $compile('<div br-question-form question="question"></div>')($scope);
+            var element = $compile('<div br-question-detail question="question"></div>')($scope);
             $scope.$digest();
             expect(element.html().substring(0, 3)).toEqual('<!-');
-        });
-
-        it('sets question text', function () {
-            var element = $compile('<div br-question-form question="question" language="language"></div>')($scope);
-            $scope.$digest();
-
-            var q = angular.element(element.find('input')[1]);
-            q.val('Huh?').triggerHandler('input');
-
-            expect($scope.question.question[$scope.language]).toEqual('Huh?');
-        });
-
-        it('sets multiquestion text', function () {
-            $scope.question.type = 'MultipleChoiceQuestion';
-            var element = $compile('<div br-question-form question="question" language="language"></div>')($scope);
-            $scope.$digest();
-
-            var q = angular.element(element.find('input')[1]);
-            q.val('Huh?').triggerHandler('input');
-
-            expect($scope.question.question[$scope.language]).toEqual('Huh?');
-        });
-
-        it('sets multiquestion select multiple', function () {
-            $scope.question.type = 'MultipleChoiceQuestion';
-            $scope.question.can_select_multiple = false;
-            var element = $compile('<div br-question-form question="question" language="language"></div>')($scope);
-            $scope.$digest();
-
-            var q = angular.element(element.find('input')[0]);
-            q.prop('checked', true).triggerHandler('click');
-
-            expect($scope.question.can_select_multiple).toEqual(true);
         });
 
         it('removes question', function () {
             $scope.removeQuestion = function () { $scope.question = null; };
             var element = $compile(
-                '<div br-question-form question="question" remove-question="removeQuestion"></div>'
+                '<div br-question-detail question="question" remove-question="removeQuestion"></div>'
             )($scope);
             $scope.$digest();
 
@@ -104,7 +71,7 @@ describe('brForm', function () {
 
         it('adds and removes choices', function () {
             $scope.question.choices = [];
-            var element = $compile('<div br-question-form question="question"></div>')($scope);
+            var element = $compile('<div br-question-detail question="question"></div>')($scope);
             $scope.$digest();
 
             element.isolateScope().addChoice();
@@ -118,80 +85,40 @@ describe('brForm', function () {
         });
     });
 
-    describe('brBriefForm', function () {
-        it('compiles', function () {
-            var element = $compile('<div br-brief-form></div>')($scope);
-            $scope.$digest();
-            expect(element.html().substring(0, 8)).toEqual('<ng-form');
-        });
-
-        it('compiles with brief id', function () {
-            var element = $compile('<div br-brief-form brief-id="0"></div>')($scope);
-            $scope.$digest();
-            expect(element.html().substring(0, 8)).toEqual('<ng-form');
-        });
-
-        it('compiles with brief template id', function () {
-            var element = $compile('<div br-brief-form template-id="0" quote-id="0" client-id="0"></div>')($scope);
-            $scope.$digest();
-            expect(element.html().substring(0, 8)).toEqual('<ng-form');
-        });
-
-        it('adds question', function () {
-            $scope.brief = {};
-            var element = $compile('<div br-brief-form brief="brief"></div>')($scope);
-            $scope.$digest();
-
-            element.isolateScope().addQuestion();
-            element.isolateScope().addQuestion('multi');
-            expect($scope.brief.questions.length).toEqual(2);
-        });
-
-        it('adds question', function () {
-            $scope.brief = {};
-            var element = $compile('<div br-brief-form brief="brief"></div>')($scope);
-            $scope.$digest();
-
-            element.isolateScope().addQuestion();
-            element.isolateScope().addQuestion('multi');
-            expect($scope.brief.questions.length).toEqual(2);
-            element.isolateScope().removeQuestion($scope.brief.questions[0]);
-            expect($scope.brief.questions.length).toEqual(1);
-        });
-    });
-
     describe('brBriefDetail', function () {
         it('compiles', function () {
             var element = $compile('<div br-brief-detail></div>')($scope);
             $scope.$digest();
-            expect(element.html().substring(0, 8)).toEqual('<div cla');
+            expect(element.html().substring(0, 8)).toEqual('<script ');
         });
 
         it('compiles with brief id', function () {
             var element = $compile('<div br-brief-detail brief-id="0"></div>')($scope);
             $scope.$digest();
-            expect(element.html().substring(0, 8)).toEqual('<div cla');
+            expect(element.html().substring(0, 8)).toEqual('<script ');
         });
 
         it('compiles with brief template id', function () {
             var element = $compile('<div br-brief-detail template-id="0" quote-id="0" client-id="0"></div>')($scope);
             $scope.$digest();
-            expect(element.html().substring(0, 8)).toEqual('<div cla');
+            expect(element.html().substring(0, 8)).toEqual('<script ');
         });
 
-        it('adds question', function () {
-            $scope.brief = {};
-            var element = $compile('<div br-brief-detail brief="brief"></div>')($scope);
+        it('compiles with brief template id and is-template', function () {
+            var element = $compile('<div br-brief-detail template-id="0" is-template="true"></div>')($scope);
             $scope.$digest();
+            expect(element.html().substring(0, 8)).toEqual('<script ');
+        });
 
-            element.isolateScope().addQuestion();
-            element.isolateScope().addQuestion('multi');
-            expect($scope.brief.questions.length).toEqual(2);
+        it('compiles  with brief id and is-template', function () {
+            var element = $compile('<div br-brief-detail brief-id="0" is-template="true"></div>')($scope);
+            $scope.$digest();
+            expect(element.html().substring(0, 8)).toEqual('<script ');
         });
 
         it('adds question', function () {
             $scope.brief = {};
-            var element = $compile('<div br-brief-detail brief="brief"></div>')($scope);
+            var element = $compile('<div br-brief-detail object="brief"></div>')($scope);
             $scope.$digest();
 
             element.isolateScope().addQuestion();
@@ -199,6 +126,25 @@ describe('brForm', function () {
             expect($scope.brief.questions.length).toEqual(2);
             element.isolateScope().removeQuestion($scope.brief.questions[0]);
             expect($scope.brief.questions.length).toEqual(1);
+        });
+
+        it('sets language', function () {
+            var element = $compile('<div br-brief-detail object="brief"></div>')($scope);
+            $scope.$digest();
+
+            element.isolateScope().setLanguage('en');
+            expect(element.isolateScope().language).toEqual('en');
+        });
+
+        it('adds language', function () {
+            $scope.language = 'en';
+            var element = $compile(
+                '<div br-brief-detail object="brief" is-template="true" language="language"></div>'
+            )($scope);
+            $scope.$digest();
+
+            element.isolateScope().addLanguage({'code': 'es', 'name': 'Spanish'});
+            expect(element.isolateScope().briefTemplate.languages.length).toEqual(2);
         });
     });
 });

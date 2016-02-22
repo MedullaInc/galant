@@ -1,21 +1,15 @@
 app = angular.module('quotes.controllers.qtPopoverController', ['ngAnimate','ui.bootstrap', 'quotes.services.qtServices']);
 
-app.controller('qtPopoverController', ['$scope', '$http', '$window', '$uibModal', 'Quote', 'QuoteTemplate',
-    function($scope, $http, $window, $uibModal, Quote, QuoteTemplate) {
+app.controller('qtPopoverController', ['$scope', '$http', '$window', '$rootScope', '$uibModal', 'Quote', 'QuoteTemplate',
+    function($scope, $http, $window, $rootScope, $uibModal, Quote, QuoteTemplate) {
+
+    $scope.quoteTemplates = $rootScope.quoteTemplates;
 
     $scope.init = function(addQuoteURL, currentLanguage) {
         $scope.addQuoteURL = addQuoteURL;
         $scope.currentLanguage = currentLanguage;
         $scope.selectedLanguage = currentLanguage;
     };
-
-    Quote.query().$promise.then(function(quotes) {
-        $scope.quotes = quotes;
-    });
-
-    QuoteTemplate.query().$promise.then(function(quoteTemplates) {
-        $scope.quoteTemplates = quoteTemplates;
-    });    
 
 	$scope.dynamicPopover = {
 		templateUrl: 'myPopoverTemplate.html',

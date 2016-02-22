@@ -3,6 +3,7 @@ from django.core.urlresolvers import reverse
 from functional_tests import browser
 from quotes import models as qm
 import autofixture
+from unittest import skip
 
 
 def tearDownModule():
@@ -106,7 +107,7 @@ class QuotesSignedInTest(browser.SignedInTest):
         response = self.client.get(self.live_server_url + reverse('quote_detail', args=[q.id]))
         self.assertEqual(response.status_code, 404)
 
-    """TODO
+    @skip("TODO")
     def test_email_quote(self):
         b = browser.instance()
         q = get_blank_quote_autofixture(self.user)
@@ -116,7 +117,6 @@ class QuotesSignedInTest(browser.SignedInTest):
         self.assertTrue(u'Quote link sent to %s.' % q.client.email in success_message.text)
         q.refresh_from_db()
         self.assertEqual(q.status, '2')
-    """
 
     def test_add_sections(self):
         b = browser.instance()
@@ -245,7 +245,6 @@ class QuotesSignedInTest(browser.SignedInTest):
         browser.wait().until(lambda driver: driver.find_element_by_id('edit_section_0'))
         add_section = b.find_element_by_id('add_section')
         add_section.click()
-        b.find_element_by_id('save_section_2').click()
 
         self.assertEqual(len(b.find_elements_by_css_selector('h2[e-id="title_2"]')), 1)
 

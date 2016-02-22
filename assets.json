@@ -15,7 +15,7 @@
     "./node_modules/fullcalendar/dist/fullcalendar?(.min).js",
     "./node_modules/moment/moment.js",
     "./node_modules/moment/min/moment.min.js",
-    "./node_modules/angular-ui-bootstrap/ui-bootstrap-tpls?(.min).js",
+    "./node_modules/angular-ui-bootstrap/dist/ui-bootstrap-tpls?(.min).js",
     "./node_modules/angular-ui-calendar/src/calendar.js",
     "./node_modules/jquery/dist/*",
     "./node_modules/angular-smart-table/dist/*",

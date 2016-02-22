@@ -203,7 +203,7 @@ class BriefTemplateTest(test.TransactionTestCase):
         brief_template = self.brief_template
         user = self.user
 
-        request = factory.get(reverse('api_brief_template_detail', args=[brief_template.id]))
+        request = factory.get(reverse('api-brief-template-detail', args=[brief_template.id]))
         request.user = user
         force_authenticate(request, user=user)
         
@@ -220,7 +220,7 @@ class BriefTemplateTest(test.TransactionTestCase):
         brief_template = self.brief_template
         user = self.user
 
-        request = factory.get(reverse('api_brief_template_detail', args=[brief_template.id]))
+        request = factory.get(reverse('api-brief-template-detail', args=[brief_template.id]))
         request.user = user
         force_authenticate(request, user=user)
 
@@ -235,11 +235,11 @@ class BriefTemplateTest(test.TransactionTestCase):
         brief_template = self.brief_template
         user = self.user
 
-        request = factory.get(reverse('api_brief_template_detail', args=[brief_template.id]))
+        request = factory.get(reverse('api-brief-template-detail', args=[brief_template.id]))
         request.user = user
         force_authenticate(request, user=user)
 
-        response = views.BriefTemplateDetailAPI.as_view()(request, pk=brief_template.id)
+        response = views.BriefTemplateViewSet.as_view({'get': 'retrieve'})(request, pk=brief_template.id)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
 

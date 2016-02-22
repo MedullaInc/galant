@@ -1,0 +1,14 @@
+<div id="language_select">
+    <div class="form-group">
+        <label class="control-label  " for="id_language"></label>
+
+        <div class=" ">
+            <select ng-model="selectedLanguage" ng-options="language.name for language in languages"
+                    class=" form-control" id="id_language">
+            </select>
+        </div>
+    </div>
+    <button id="language_add" type="button" class="btn btn-default"
+            ng-click="addLanguage(selectedLanguage)">Add
+    </button>
+</div>

@@ -125,9 +125,11 @@ class GallantClientTest(browser.SignedInTest):
 
         b.find_element_by_name('client.name').send_keys('Kanye West')
         b.find_element_by_name('client.email').send_keys('kanye@imaletyoufinish.com')
-        b.find_element_by_xpath('//select[@name="client.type"]/option[@value="0"]').click()
-        b.find_element_by_xpath('//select[@name="client.size"]/option[@value="0"]').click()
-        b.find_element_by_xpath('//select[@name="client.status"]/option[@value="0"]').click()
+        browser.wait().until(
+            lambda driver: driver.find_element_by_xpath('//select[@name="client.type"]/option[@value="1"]')
+        ).click()
+        b.find_element_by_xpath('//select[@name="client.size"]/option[@value="1"]').click()
+        b.find_element_by_xpath('//select[@name="client.status"]/option[@value="1"]').click()
         # b.find_element_by_xpath('//textarea[@name="notes"]').send_keys('asdf')
 
         # phone # field JS broken

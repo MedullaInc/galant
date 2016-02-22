@@ -2765,3 +2765,9 @@ div.breadcrumbs span {
 }
 
 /* END CALENDAR */
+
+/* Section Sortable Items */
+.as-sortable-item {
+    border: 0px !important;
+}
+/* End Section Sortable Items */

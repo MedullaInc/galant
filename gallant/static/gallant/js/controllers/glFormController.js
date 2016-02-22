@@ -31,7 +31,6 @@ app.controller('glFormController', ['$scope', '$http', '$window',
         };
 
         $scope.submitForm = function () {
-            
             var valid = setFormsDirty($scope.forms);
 
             if (valid) {
@@ -44,13 +43,30 @@ app.controller('glFormController', ['$scope', '$http', '$window',
                 }
 
                 method({id: $scope.object.id}, $scope.object, function (response) {
+                    /* istanbul ignore else  */
                     if (response.redirect) {
                         window.location.href = response.redirect;
                     } else {
                         // handle errors
                         console.log(JSON.stringify(response.data));
                     }
-                }, function (errorResponse) {
+                }, /* istanbul ignore next */ function (errorResponse) {
+                    console.log(JSON.stringify(errorResponse.data));
+                });
+            }
+        };
+
+        $scope.deleteObject = function (objectType) {
+            if ($window.confirm("Are you sure you want to delete this " + objectType + "?")) {
+                $scope.objectEndpoint.delete({id: $scope.object.id}, function (response) {
+                    /* istanbul ignore else  */
+                    if (response.redirect) {
+                        window.location.href = response.redirect;
+                    } else {
+                        // handle errors
+                        console.log(JSON.stringify(response.data));
+                    }
+                }, /* istanbul ignore next */ function (errorResponse) {
                     console.log(JSON.stringify(errorResponse.data));
                 });
             }
@@ -61,7 +77,7 @@ app.controller('glFormController', ['$scope', '$http', '$window',
             $http.defaults.headers.post['X-CSRFToken'] = csrftoken;
         };
 
-        $window.onload = function(e) { 
+        $window.onload = function (e) {
             $scope.startTime = new Date();
         }
 

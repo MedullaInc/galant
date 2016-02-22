@@ -55,6 +55,7 @@ def load_quote():
 
     s = Service.objects.create(
         name={'en': 'Identity'},
+        index=0,
         cost=Money(2000.0, 'USD'),
         user=user, type=0, quantity=1,
         description={
@@ -64,6 +65,7 @@ def load_quote():
 
     s = Service.objects.create(
         name={'en': 'Stationery Set'},
+        index=1,
         cost=Money(500.0, 'USD'),
         user=user, type=0, quantity=1,
         description={
@@ -73,6 +75,7 @@ def load_quote():
 
     s = Service.objects.create(
         name={'en': 'Product Packaging'},
+        index=5,
         cost=Money(750.0, 'USD'),
         user=user, type=1, quantity=1,
         description={

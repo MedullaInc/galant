@@ -1,11 +1,11 @@
 app = angular.module('quotes.controllers.qtQuoteListController', ['quotes.services.qtServices','ngAnimate']);
 
-app.controller('qtQuoteListController', ['$scope', '$http', '$window', 'Quote', 'QuoteTemplate', 'Client',
-    function($scope, $http, $window, Quote, QuoteTemplate, Client) {
+app.controller('qtQuoteListController', ['$scope', '$http', '$window', '$rootScope', 'Quote', 'QuoteTemplate', 'Client',
+    function($scope, $http, $window, $rootScope, Quote, QuoteTemplate, Client) {
         $scope.quotes = [];
         $scope.quoteStatus = [];
         $scope.clients = [];
-
+        
         $scope.init = function(quoteDetailURL, currentLanguage) {
             $scope.quoteDetailURL = quoteDetailURL;
             $scope.currentLanguage = currentLanguage;
@@ -21,6 +21,7 @@ app.controller('qtQuoteListController', ['$scope', '$http', '$window', 'Quote', 
 
         QuoteTemplate.query().$promise.then(function(quoteTemplates) {
             $scope.quoteTemplates = quoteTemplates;
+            $rootScope.quoteTemplates = quoteTemplates;
         });    
 
         Client.query().$promise.then(function(clients) {
