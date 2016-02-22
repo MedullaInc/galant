@@ -53,7 +53,7 @@ INSTALLED_APPS = (
     'localflavor',
     'analytical',
     'breadcrumbs',
-    'djangular',
+    'djng',
     'rest_framework',
     'djmoney_rates',
 
