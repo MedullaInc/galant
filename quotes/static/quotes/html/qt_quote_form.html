@@ -6,8 +6,8 @@
             <span class="label label-success" uib-tooltip="Seconds" tooltip-placement="right"> {{ quote.session_duration }}</span>
         </div>
 
-        <h2 e-class="form-control" e-id="quote_name" editable-text="quote.name" class="section_title" e-form="quoteform"
-            e-required>{{ quote.name }}</h2>
+        <h2 ng-required="true" e-class="form-control" e-id="quote_name" editable-text="quote.name" class="section_title" e-form="quoteform"
+            e-required>{{ quote.name || "empty" }}  </h2>
     </div>
 
     <div ng-show="showEdit()">

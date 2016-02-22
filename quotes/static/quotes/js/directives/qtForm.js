@@ -1,13 +1,13 @@
 app = angular.module('quotes.directives.qtForm', [
+    'gallant.directives.glForm',
     'quotes.services.qtServices',
     'quotes.filters.qtCutFilter',
     'quotes.directives.qtServiceTable',
     'quotes.directives.qtSectionTable',
-    'gallant.directives.glForm',
     'ui.bootstrap',
     'as.sortable']);
 
-app.directive('qtQuoteForm', ['Quote', 'Service', 'Section', 'Client', '$filter', '$uibModal', function (Quote, Service, Section, Client, $filter, $uibModal) {
+app.directive('qtQuoteForm', ['Quote', '$uibModal', function (Quote, $uibModal) {
     return {
         restrict: 'A',
         scope: {
@@ -19,8 +19,8 @@ app.directive('qtQuoteForm', ['Quote', 'Service', 'Section', 'Client', '$filter'
             boolTemplate: '=',
             idType: '=',
         },
-        controller: ['$scope', '$attrs', '$filter', '$window', 'Quote', 'Service', 'Section', 'QuoteTemplate', 'Client',
-            function ($scope, $attrs, $filter, $window, Quote, Service, Section, QuoteTemplate, Client) {
+        controller: ['$scope', '$attrs', '$filter', '$window', 'Quote', 'Service', 'Section', 'QuoteTemplate', 'Client', 'LANGUAGES',
+            function ($scope, $attrs, $filter, $window, Quote, Service, Section, QuoteTemplate, Client, LANGUAGES) {
                 $scope.quoteFields   = [];
                 $scope.serviceFields = [];
                 $scope.quoteStatus   = {};
@@ -117,7 +117,6 @@ app.directive('qtQuoteForm', ['Quote', 'Service', 'Section', 'Client', '$filter'
                                 delete q.id;
                             });
 
-                            $scope.quoteTemplate.languages  = [];
                         }
 
                     });
@@ -139,6 +138,12 @@ app.directive('qtQuoteForm', ['Quote', 'Service', 'Section', 'Client', '$filter'
                                 delete q.id;
                             });
 
+                            if($scope.quoteTemplate.languages.length == 0){
+                                var lang = LANGUAGES.find(function (x) { return x.code == $scope.language;});
+                                $scope.quoteTemplate.languages  = [lang];
+                            }
+
+
                         });
                     } else {
                         $scope.quote                    = new Quote();
@@ -153,6 +158,11 @@ app.directive('qtQuoteForm', ['Quote', 'Service', 'Section', 'Client', '$filter'
 
                         $scope.quoteTemplate            = {"quote": $scope.quote};
                         $scope.quoteTemplate.languages  = [];
+
+                        if ($scope.language && LANGUAGES.length > 0) {
+                            var lang = LANGUAGES.find(function (x) { return x.code == $scope.language;});
+                            $scope.quoteTemplate.languages = [lang];
+                        }
 
                         $scope.addSection('intro');
                         $scope.addSection('important_notes');

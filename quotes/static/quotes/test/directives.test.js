@@ -170,8 +170,8 @@ describe('qtForm', function () {
             var element = $compile('<div qt-quote-form quote-template="quoteTemplate" bool-template="True" template-id="quoteTemplate.id"></div>')($scope);
             $scope.$digest();
 
-            element.isolateScope().addLanguage({'code': 'en', 'name': 'English'});
-            expect(element.isolateScope().quoteTemplate.languages.length).toEqual(1);
+            element.isolateScope().addLanguage({'code': 'es', 'name': 'Spanish'});
+            expect(element.isolateScope().quoteTemplate.languages.length).toEqual(2);
         });
 
         it('sets language', function () {
