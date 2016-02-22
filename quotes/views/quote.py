@@ -18,7 +18,7 @@ from django.utils.text import slugify
 from django.utils.translation import ugettext_lazy as _
 from django.core.mail import send_mail
 from uuid import uuid4
-from rest_framework import generics
+from rest_framework import generics, status
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED
@@ -200,17 +200,22 @@ class SectionViewSet(ModelViewSet):
         else:
             return self.model.objects.all_for(self.request.user)
 
-@permission_classes((IsAuthenticatedOrReadOnly, ))
+@permission_classes((AllowAny, ))
 class QuoteViewSet(UserModelViewSet):
     model = q.Quote
     serializer_class = serializers.QuoteSerializer
+    permission_classes = [
+         GallantViewSetPermissions
+     ]
 
     def get_queryset(self):
-        if self.request.query_params.get('user', None):
-            user = get_object_or_404(GallantUser, pk= self.request.query_params.get('user', None))
+        user = self.request.query_params.get('user', None)
+        if user:
+            user = get_object_or_404(GallantUser ,pk=user)
         else:
             user = self.request.user
 
+        self.request.user = user
         clients_only = self.request.query_params.get('clients_only', None)
         if clients_only is not None:
             return self.model.objects.all_for(user).exclude(client__isnull=clients_only)

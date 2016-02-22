@@ -33,6 +33,10 @@ app.factory("Quote", function ($resource) {
         },
         update: {
           method: 'PUT',
+        },
+        updateUser: {
+          method: 'PATCH',
+          url: '/en/quote/api/quote/:id?user=:user',
         }
 	});
 

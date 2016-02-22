@@ -77,7 +77,7 @@
                     <div class="row" style="padding-top:10px">
                         <div class="col-xs-12 section_content" >
                             <div e-class="form-control" editable-text="service.description[language]"
-                                 e-id="description_{{$index}}" e-form="rowform" e-required>
+                                 e-id="description_{{$index}}" e-form="rowform" e-required e-placeholder="Enter description">
                                 <div ng-init="moreShown = false; limit = 100">
                                     {{service.description[language] | cut:true:limit:'...'}}
                                     <a ng-show="service.description[language].length > limit"
