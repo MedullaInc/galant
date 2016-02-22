@@ -1,5 +1,4 @@
 from django.db.models.query import Prefetch
-from moneyed.classes import Money
 from rest_framework import serializers
 from gallant.models import Project
 from gallant import models as g
@@ -15,7 +14,7 @@ class ProjectSerializer(serializers.ModelSerializer):
         for q in project.quote_set.all_for(self.context['request'].user).prefetch_related(
                 Prefetch('payments', to_attr='payments_arr')):
             for p in q.payments_arr:
-                amt += p.amount
+                amt += float(p.amount.amount)
 
             for s in q.services.all_for(self.context['request'].user):
                 currency = s.cost_currency

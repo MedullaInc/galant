@@ -9,6 +9,7 @@ from gallant.serializers import payment
 from autofixture import AutoFixture
 from quotes import forms as qf
 from gallant import models as g
+from quotes.views import QuotePaymentsAPI
 from rest_framework import status
 from rest_framework.test import APIRequestFactory, force_authenticate
 
@@ -182,20 +183,20 @@ class QuoteTest(test.TransactionTestCase):
         payment7.save()
         payment8.save()
 
-        quote_two.payments.add(payment1)
-        quote_two.payments.add(payment2)
-        quote_two.payments.add(payment3)
-        quote_two.payments.add(payment4)
+        quote_two.payments.add(payment5)
+        quote_two.payments.add(payment6)
+        quote_two.payments.add(payment7)
+        quote_two.payments.add(payment8)
 
         quote_two.save()
 
-        request = factory.get(reverse('api_quote_payments', args=[client.id, quote.id]))
+        request = factory.get(reverse('api-quote-payment-detail', args=[client]))
         request.user = user
         force_authenticate(request, user=user)
 
         serializer = payment.PaymentSerializer(client, context={'request': request})
 
-        single_quote_payment_data = serializer.get_payments(client, quote)
+        single_quote_payment_data = serializer.get_payments_totals(client, quote)
 
         self.assertEqual(single_quote_payment_data['quote'], 'New Quote')
         self.assertEqual(single_quote_payment_data['currency'], 'USD')
@@ -205,7 +206,7 @@ class QuoteTest(test.TransactionTestCase):
         self.assertEqual(single_quote_payment_data['pending_amount'], 300)
         self.assertEqual(single_quote_payment_data['on_hold_amount'], 400)
 
-        total_quotes_payment_data = serializer.get_payments(client)
+        total_quotes_payment_data = serializer.get_payments_totals(client)
 
         self.assertEqual(total_quotes_payment_data['quote'], 'All quotes')
         self.assertEqual(total_quotes_payment_data['currency'], 'USD')
@@ -215,6 +216,59 @@ class QuoteTest(test.TransactionTestCase):
         self.assertEqual(total_quotes_payment_data['pending_amount'], 600)
         self.assertEqual(total_quotes_payment_data['on_hold_amount'], 800)
 
+        single_quote_payments = serializer.get_payments(client, quote)
+
+        self.assertEqual(len(single_quote_payments), 4)
+        self.assertEqual(single_quote_payments[0], payment1)
+        self.assertEqual(single_quote_payments[1], payment2)
+        self.assertEqual(single_quote_payments[2], payment3)
+        self.assertEqual(single_quote_payments[3], payment4)
+
+        total_quote_payments = serializer.get_payments(client)
+
+        self.assertEqual(len(total_quote_payments), 8)
+        self.assertEqual(total_quote_payments[0], payment1)
+        self.assertEqual(total_quote_payments[1], payment2)
+        self.assertEqual(total_quote_payments[2], payment3)
+        self.assertEqual(total_quote_payments[3], payment4)
+        self.assertEqual(total_quote_payments[4], payment5)
+        self.assertEqual(total_quote_payments[5], payment6)
+        self.assertEqual(total_quote_payments[6], payment7)
+        self.assertEqual(total_quote_payments[7], payment8)
+
+    def test_quote_payment_serialize_create(self):
+        factory = APIRequestFactory()
+        user = autofixture.create_one(g.GallantUser, generate_fk=True)
+        client = autofixture.create_one(g.Client, generate_fk=True, field_values={
+            'user': user, 'currency': 'USD'})
+        quote = autofixture.create_one(q.Quote, generate_fk=True, field_values={
+            'user': user, 'client': client, 'services': []})
+        service = autofixture.create_one(g.Service, generate_fk=True, field_values={
+            'user': user, 'quantity': 1})
+        service.cost = Money(500, 'USD')
+        service.save()
+        quote.services.add(service)
+
+        project = autofixture.create_one('gallant.Project', generate_fk=True,
+                                         field_values={'user': user})
+
+        project.quote_set.add(quote)
+        project.save
+
+        p = autofixture.create_one(g.Payment, generate_fk=True,
+                                         field_values={'user': user, 'due': timezone.now() + timedelta(days=1),
+                                                       'paid_on': None})
+
+        serialized_payment = {"project_id": project.id, "amount": {"currency": "USD", "amount": 100.0},
+                              "description": p.description,
+                              "due": p.due, "paid_on": p.paid_on, "notes": []}
+
+        request = factory.post('/en/quote/api/payment', data=serialized_payment, format='json')
+        force_authenticate(request, user=user)
+
+        response = QuotePaymentsAPI.as_view({'post': 'create'})(request)
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
     def test_access_api_quote(self):
         factory = APIRequestFactory()
@@ -228,7 +282,6 @@ class QuoteTest(test.TransactionTestCase):
         response = views.QuoteViewSet.as_view({'get': 'retrieve'})(request, pk=quote.id)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-
 
     def test_update_api_quote(self):
         factory = APIRequestFactory()
@@ -245,10 +298,10 @@ class QuoteTest(test.TransactionTestCase):
         class Object(object):
             def add(self, a, b):
                 pass
+
         request._messages = Object()
 
         force_authenticate(request, user=user)
-
 
         response = views.QuoteViewSet.as_view({'patch': 'partial_update'})(request, pk=quote.id)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -269,7 +322,7 @@ class QuoteTemplateTest(test.TestCase):
         quote.sections.add(i)
         quote.sections.add(m)
         quote_template = autofixture.create_one(q.QuoteTemplate, generate_fk=True,
-                                                field_values={'quote': quote, 'user': user, 'client':user})
+                                                field_values={'quote': quote, 'user': user, 'client': user})
 
         self.user = user
         self.quote = quote

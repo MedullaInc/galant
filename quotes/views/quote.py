@@ -18,7 +18,7 @@ from uuid import uuid4
 from rest_framework import generics
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
-from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED
+from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED, HTTP_400_BAD_REQUEST
 
 
 class QuoteUpdate(View):
@@ -26,7 +26,6 @@ class QuoteUpdate(View):
         self.object = get_one_or_404(request.user, 'change_quote', q.Quote, pk=kwargs['pk'])
         return self.render_to_response({'object': self.object,
                                         'title': 'Edit Quote'})
-
 
     def form_valid(self, form, section_forms): # pragma: no cover
         if 'preview' in self.request.POST:  
@@ -228,12 +227,17 @@ class QuoteViewSet(ModelViewSet):
             return response
 
 
-class QuotePaymentsAPI(generics.RetrieveUpdateAPIView):
-    model = g.Client
+class QuotePaymentsAPI(ModelViewSet):
+    model = g.Payment
     serializer_class = payment.PaymentSerializer
     permission_classes = [
-        GallantObjectPermissions
+        GallantViewSetPermissions
     ]
 
     def get_queryset(self):
-        return self.model.objects.all_for(self.request.user)
+        if 'pk' in self.kwargs:
+            # Return specific payment
+            return self.model.objects.all_for(self.request.user).filter(id=self.kwargs['pk'])
+        else:
+            # TODO: Return 404 if no pk is given?
+            return self.model.objects.all_for(self.request.user)

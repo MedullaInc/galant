@@ -22,7 +22,7 @@
                     <label>Project</label>
                 </div>
                 <div class="col-lg-9">
-                    <select ng-model="payment.quote" name="quote" class="form-control" ng-change="updateCurrency(payment.quote)" required ng-class="{'has-success has-feedback': paymentform.quote.$valid && paymentform.quote.$dirty,'has-error has-feedback': paymentform.quote.$invalid && paymentform.quote.$dirty}">
+                    <select ng-model="payment.project_id" name="quote" class="form-control" ng-change="updateCurrency(payment.project_id)" required ng-class="{'has-success has-feedback': paymentform.quote.$valid && paymentform.quote.$dirty,'has-error has-feedback': paymentform.quote.$invalid && paymentform.quote.$dirty}">
                         <option ng-selected="" ng-repeat="project in projects" value="{{ project.id }}">{{ project.name }}</option>
                     </select>
                 </div>
@@ -32,7 +32,7 @@
                     <label>Amount {{ currency }}</label>
                 </div>
                 <div class="col-lg-9">
-                    <input type="text" ng-model="payment.amount" name="amount" class="form-control" required ng-class="{'has-success has-feedback': paymentform.amount.$valid && paymentform.amount.$dirty,'has-error has-feedback': paymentform.amount.$invalid && paymentform.amount.$dirty}" />
+                    <input type="text" ng-model="payment.amount.amount" name="amount" class="form-control" required ng-class="{'has-success has-feedback': paymentform.amount.$valid && paymentform.amount.$dirty,'has-error has-feedback': paymentform.amount.$invalid && paymentform.amount.$dirty}" />
                 </div>
             </div>
             <div class="row form-group">
@@ -49,7 +49,7 @@
                 </div>
                 <div class="col-lg-9">
                     <div class="input-group popup-calendr">
-                        <input type="text" class="form-control" uib-datepicker-popup="dd.MM.yyyy" ng-model="payment.due" is-open="due_date_opened" ng-required="true" close-text="Close"/>
+                        <input type="text" class="form-control" uib-datepicker-popup="dd.MM.yyyy" ng-model="payment.due" init-date="payment.due" is-open="due_date_opened" ng-required="true" close-text="Close"/>
                           <span class="input-group-btn">
                             <button type="button" class="btn btn-default" ng-click="openDueDatePicker()">
                                 <i class="glyphicon glyphicon-calendar"></i></button>

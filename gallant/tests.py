@@ -217,9 +217,9 @@ class ClientTest(TransactionTestCase):
         quote.services.add(service)
 
         payment1 = autofixture.create_one(g.Payment, generate_fk=True, field_values=
-                                          {'user': user, 'due': timezone.now(), 'paid_on': timezone.now()})
+        {'user': user, 'due': timezone.now(), 'paid_on': timezone.now()})
         payment2 = autofixture.create_one(g.Payment, generate_fk=True, field_values=
-                                          {'user': user, 'due': timezone.now(), 'paid_on': None})
+        {'user': user, 'due': timezone.now(), 'paid_on': None})
         payment1.amount = Money(300, 'USD')
         payment2.amount = Money(200, 'USD')
         payment1.save()
@@ -257,7 +257,7 @@ class ClientTest(TransactionTestCase):
                                                 field_values={'user': user}))
         client.notes.add(autofixture.create_one('gallant.Note', generate_fk=True,
                                                 field_values={'user': user}))
-        
+
         data = {'notes': []}
 
         request = factory.patch(reverse('api_client_detail', args=[client.id]), data=data, format='json')
@@ -309,7 +309,7 @@ class NoteTest(TransactionTestCase):
         factory = APIRequestFactory()
         user = autofixture.create_one('gallant.GallantUser', generate_fk=True)
         note = autofixture.create_one('gallant.Note', generate_fk=True,
-                                    field_values={'user': user})
+                                      field_values={'user': user})
 
         request = factory.get(reverse('api_note_detail', args=[note.id]))
         request.user = user
@@ -322,7 +322,7 @@ class NoteTest(TransactionTestCase):
         factory = APIRequestFactory()
         user = autofixture.create_one('gallant.GallantUser', generate_fk=True)
         note = autofixture.create_one('gallant.Note', generate_fk=True,
-                                    field_values={'user': user})
+                                      field_values={'user': user})
         data = {'text': 'asdf'}
 
         request = factory.patch(reverse('api_note_detail', args=[note.id]), data=data, format='json')
@@ -402,8 +402,31 @@ class ProjectTest(TransactionTestCase):
     def test_access_api_project(self):
         factory = APIRequestFactory()
         user = autofixture.create_one('gallant.GallantUser', generate_fk=True)
+
+        client = autofixture.create_one(g.Client, generate_fk=True, field_values={
+            'user': user, 'currency': 'USD'})
+        quote = autofixture.create_one(q.Quote, generate_fk=True, field_values={
+            'user': user, 'client': client, 'services': []})
+        service = autofixture.create_one(g.Service, generate_fk=True, field_values={
+            'user': user, 'quantity': 1})
+        service.cost = Money(500, 'USD')
+        service.save()
+
+        quote.services.add(service)
+
+        payment = autofixture.create_one(g.Payment, generate_fk=True, field_values=
+        {'user': user, 'due': timezone.now(), 'paid_on': timezone.now()})
+        payment.amount = Money(100, 'USD')
+        payment.save()
+
+        quote.payments.add(payment)
+        quote.save
+
         project = autofixture.create_one('gallant.Project', generate_fk=True,
                                          field_values={'user': user})
+
+        project.quote_set.add(quote)
+        project.save
 
         request = factory.get(reverse('api_project_detail', args=[project.id]))
         request.user = user
@@ -411,6 +434,12 @@ class ProjectTest(TransactionTestCase):
 
         response = views.ProjectDetailAPI.as_view()(request, pk=project.id)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        serializer = serializers.ProjectSerializer(project, context={'request': request})
+        project_payments = serializer.get_payments(project)
+
+        self.assertEqual(project_payments['currency'], u'USD')
+        self.assertEqual(project_payments['amount'], 100.0)
 
     def test_update_api_project(self):
         factory = APIRequestFactory()
@@ -422,7 +451,7 @@ class ProjectTest(TransactionTestCase):
                                                  field_values={'user': user}))
         project.notes.add(autofixture.create_one('gallant.Note', generate_fk=True,
                                                  field_values={'user': user}))
-        
+
         data = {'notes': []}
 
         request = factory.patch(reverse('api_project_detail', args=[project.id]), data=data, format='json')

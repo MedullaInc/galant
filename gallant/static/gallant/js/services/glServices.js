@@ -44,35 +44,8 @@ app.factory('Client', function ($resource) {
 });
 
 /* istanbul ignore next */
-app.factory('Payment', function ($resource) {
-    return $resource('/api/quote/payments/:id', {}, {
-        query: {
-            method: 'GET',
-            params: {},
-            isArray: true
-        },
-        save: {
-            method: 'POST',
-            params: {
-                payment: '@payment'
-            },
-        },
-        update: {
-            method: 'PUT',
-            params: {
-                id: '@id'
-            },
-            url: '/en/quotes/api/payment/:id '
-        },
-        delete: {
-            method: 'DELETE',
-            params: {
-                id: '@id'
-            },
-            url: '/en/quotes/api/payment/:id '
-        }
-    });
-
+app.factory('PaymentAPI', function ($resource) {
+    return $resource('/en/quote/api/payment/:id');
 });
 
 /* istanbul ignore next  */

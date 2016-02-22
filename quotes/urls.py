@@ -7,6 +7,7 @@ router = DefaultRouter(trailing_slash=False)
 router.register(r'api/quote', views.QuoteViewSet, 'api-quote')
 router.register(r'api/quote_template', views.QuoteTemplateViewSet, 'api-quote-template')
 router.register(r'api/section', views.SectionViewSet, 'api-section')
+router.register(r'api/payment', views.QuotePaymentsAPI, 'api-quote-payment')
 
 urlpatterns = [
     url(r'^$', login_required(views.QuoteList.as_view()), name='quotes'),
@@ -31,7 +32,7 @@ urlpatterns = [
     url(r'^download/(?P<pk>[0-9]+)?$', login_required(views.QuotePDF.as_view()), name='quote_pdf'),
     url(r'^download/(?P<token>[a-f0-9]{32})?$', login_required(views.QuotePDF.as_view()), name='quote_pdf'),
 
-    url(r'^api/quote/payments/(?P<pk>[0-9]+)$', login_required(views.QuotePaymentsAPI.as_view()),
+    url(r'^api/quote/payments/(?P<pk>[0-9]+)?$', login_required(views.QuotePaymentsAPI.as_view({'get': 'list'})),
         name='api_quote_payments'),
 ]
 urlpatterns += router.urls
