@@ -19,8 +19,8 @@ app.directive('qtQuoteForm', ['Quote', 'Service', 'Section', 'Client', '$filter'
             boolTemplate: '=',
             idType: '=',
         },
-        controller: ['$scope', '$attrs', '$filter', '$window', 'Quote', 'Service', 'Section', 'QuoteTemplate', 'Client',
-            function ($scope, $attrs, $filter, $window, Quote, Service, Section, QuoteTemplate, Client) {
+        controller: ['$scope', '$attrs', '$filter', '$window', 'Quote', 'Service', 'Section', 'QuoteTemplate', 'Client', 'LANGUAGES',
+            function ($scope, $attrs, $filter, $window, Quote, Service, Section, QuoteTemplate, Client, LANGUAGES) {
                 $scope.quoteFields   = [];
                 $scope.serviceFields = [];
                 $scope.quoteStatus   = {};
@@ -118,6 +118,7 @@ app.directive('qtQuoteForm', ['Quote', 'Service', 'Section', 'Client', '$filter'
                             });
 
                             $scope.quoteTemplate.languages  = [];
+
                         }
 
                     });
@@ -153,6 +154,11 @@ app.directive('qtQuoteForm', ['Quote', 'Service', 'Section', 'Client', '$filter'
 
                         $scope.quoteTemplate            = {"quote": $scope.quote};
                         $scope.quoteTemplate.languages  = [];
+
+                        if ($attrs.language) {
+                            var lang = LANGUAGES.find(function (x) { return x.code == $scope.language;});
+                            $scope.quoteTemplate.languages = [lang];
+                        }
 
                         $scope.addSection('intro');
                         $scope.addSection('important_notes');
