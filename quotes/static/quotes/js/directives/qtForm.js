@@ -7,7 +7,7 @@ app = angular.module('quotes.directives.qtForm', [
     'ui.bootstrap',
     'as.sortable']);
 
-app.directive('qtQuoteForm', ['Quote', function (Quote) {
+app.directive('qtQuoteForm', ['Quote', '$uibModal', function (Quote, $uibModal) {
     return {
         restrict: 'A',
         scope: {
