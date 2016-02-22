@@ -25,19 +25,19 @@
             <div id="title" class="data">
                 <span>Title:</span>
                 <span editable-text="brief.title[language]" e-id="brief_title">
-                    {{ brief.title[language] || 'empty' }}
+                    {{ brief.title[language] || brief.errors.title || 'empty' }}
                 </span>
             </div>
-            <div id="title" class="data">
+            <div id="status" class="data">
                 <span>Status:</span>
                 <span editable-text="brief.status" e-id="brief_status">
-                    {{ brief.status || 'empty' }}
+                    {{ brief.status || brief.errors.status || 'empty' }}
                 </span>
             </div>
-            <div id="title" class="data">
+            <div id="greeting" class="data">
                 <span>Greeting:</span>
                 <pre editable-text="brief.greeting[language]" e-id="brief_greeting">
-                    {{ brief.greeting[language] || 'empty' }}
+                    {{ brief.greeting[language] || brief.errors.greeting || 'empty' }}
                 </pre>
             </div>
 
@@ -72,7 +72,7 @@
         <hr>
 
         <div ng-repeat="question in brief.questions">
-            <div id="question_{{ question.index }}" class="question" br-question-detail question="question" language="language"></div>
+            <div id="question_{{ question.index }}" class="question" br-question-detail question="question" language="language" errors="brief.errors"></div>
         </div>
 
         <hr>

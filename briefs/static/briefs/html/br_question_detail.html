@@ -3,7 +3,7 @@
         <div class="data">
             <span>Question{{ question.is_long_answer ? ' (Long-answer)' : '' }}:</span>
             <span editable-text="question.question[language]" e-id="question{{ question.index }}_question">
-                {{ question.question[language] || 'empty' }}
+                {{ question.question[language] || errors.questions[question.index].question || 'empty' }}
             </span>
         </div>
         <div class="data" ng-show="questionForm.$visible">
