@@ -1,6 +1,6 @@
 from django import forms
-from djangular.forms import NgModelForm, NgFormValidationMixin
-from djangular.styling.bootstrap3.forms import Bootstrap3ModelForm
+from djng.forms import NgModelForm, NgFormValidationMixin
+from djng.styling.bootstrap3.forms import Bootstrap3ModelForm
 from django.conf import settings
 from django.utils.translation import get_language
 from gallant import models as g
