@@ -23,11 +23,13 @@ app.directive('qtClient', ['Quote', function (Quote) {
                     $scope.quote = quote;
 
                     if($attrs.idType == "token"){
-                        $window.onload  = function () { 
-                            var token = window.location.href.split('/').slice(-1).pop();
+                        var token = window.location.href.split('/').slice(-1).pop();
+                        $scope.quote.views  = $scope.quote.views+1;
+                        $scope.quote.status = "3";
+                        Quote.updateUser({id: $scope.quote.id, user: $attrs.userId}, $scope.quote);
+
+                        $window.onbeforeunload  = function () { 
                             $scope.quote.session_duration = ((new Date() - $scope.$parent.startTime)/1000 );
-                            $scope.quote.views  = $scope.quote.views+1;
-                            $scope.quote.status = "3";
                             Quote.updateUser({id: $scope.quote.id, user: $attrs.userId}, $scope.quote);
                         }
                     }

@@ -107,6 +107,9 @@ app.directive('qtQuoteForm', ['Quote', '$uibModal', function (Quote, $uibModal) 
                             angular.forEach($scope.quote.services, function (q) {
                                 delete q.id;
                             });
+                            
+                            var lang = LANGUAGES.find(function (x) { return x.code == $scope.language;});
+                            $scope.quoteTemplate.languages  = [lang];
 
                         }
 

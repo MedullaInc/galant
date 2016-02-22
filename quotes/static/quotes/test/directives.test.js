@@ -204,12 +204,12 @@ describe('qtForm', function () {
             expect(element.html().substring(0, 4)).toEqual('<div');
         });
 
-        it('adds onload function', function () {
+        it('adds onbeforeload function', function () {
             var element = $compile('<div qt-client id-type="token"></div>')($scope);
             $scope.$digest();
-            var result = $window.onload();
+            var result = $window.onbeforeunload();
             expect(result).not.toBeNull();
-            $window.onload = null; // remove so browser doesn't get stuck
+            $window.onbeforeunload = null; // remove so browser doesn't get stuck
         });
 
     });
