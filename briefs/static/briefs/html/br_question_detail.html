@@ -10,6 +10,9 @@
             <input type="checkbox" ng-model="question.is_long_answer" id="question{{ question.index }}_long">
             Long-answer
         </div>
+        <div id="question{{ question.index }}_answer" class="text-success" ng-show="question.answer">
+            {{ question.answer.answer }}
+        </div>
 
         <span ng-show="questionForm.$visible">
             <button id="question{{ question.index }}_save" type="button" ng-click="questionForm.$save()"

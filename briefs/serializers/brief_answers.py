@@ -41,7 +41,8 @@ class MultipleChoiceAnswerSerializer(serializers.ModelSerializer):
         fields = ('id', 'type', 'question', 'choices')
 
     def get_choices(self, answer):
-        return answer.choices  # bypasses JSONField's transform
+        choices = [int(c) for c in answer.choices]
+        return choices  # bypasses JSONField's transform
 
 
 class BriefAnswersSerializer(serializers.ModelSerializer):

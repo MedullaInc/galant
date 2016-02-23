@@ -18,7 +18,8 @@
 
                             <span editable-text="choice[language]" e-form="questionForm"
                                   e-id="question{{ question.index }}_choice{{ $index }}"
-                                  e-form="innerFormC{{ $index }}">
+                                  e-form="innerFormC{{ $index }}"
+                                  ng-class="{'text-success': question.answer.choices.indexOf($index) >= 0}">
                                 - {{ choice[language]
                                      || errors.questions[question.index].choices || 'empty' }}
                             </span>
