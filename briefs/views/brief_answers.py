@@ -4,9 +4,11 @@ from briefs import models as b
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.template.response import TemplateResponse
+from gallant.views.user import UserModelViewSet
 from guardian.shortcuts import remove_perm
 from django.views.generic import View
 from briefs import forms as bf
+from briefs import serializers
 from django.db.models import Q
 
 
@@ -44,3 +46,15 @@ class BriefAnswer(View):
         return TemplateResponse(request=request,
                                 template="briefs/brief_answers.html",
                                 context={'form': form, 'answer_forms': answers, 'object': obj})
+
+
+class BriefAnswersViewSet(UserModelViewSet):
+    model = b.BriefAnswers
+    serializer_class = serializers.BriefAnswersSerializer
+
+    def get_queryset(self):
+        brief_id = self.request.GET.get('brief_id', None)
+        if brief_id:
+            return self.model.objects.filter(brief_id=brief_id)
+        else:
+            return self.model.objects.all()

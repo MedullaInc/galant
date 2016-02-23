@@ -5,6 +5,7 @@ from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter(trailing_slash=False)
 router.register(r'api/brief', views.BriefViewSet, 'api-brief')
+router.register(r'api/briefanswers', views.BriefAnswersViewSet, 'api-briefanswers')
 router.register(r'api/template', views.BriefTemplateViewSet, 'api-brief-template')
 
 urlpatterns = [
