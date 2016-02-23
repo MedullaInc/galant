@@ -13,8 +13,8 @@ app.directive('brBriefDetail', ['Question', function (Question) {
             language: '=',
             deleteObject: '&'
         },
-        controller: ['$scope', '$attrs', 'Brief', 'BriefTemplate', 'LANGUAGES',
-            function ($scope, $attrs, Brief, BriefTemplate, LANGUAGES) {
+        controller: ['$scope', '$attrs', 'Brief', 'BriefTemplate', 'BriefAnswers', 'LANGUAGES',
+            function ($scope, $attrs, Brief, BriefTemplate, BriefAnswers, LANGUAGES) {
                 var loadBriefAndTemplate = function(brief, template, language) {
                     $scope.brief = brief
                     $scope.brief.quote = $attrs.quoteId;
@@ -69,6 +69,21 @@ app.directive('brBriefDetail', ['Question', function (Question) {
                             id: $attrs.briefId
                         }).$promise.then(function (brief) {
                             loadBriefAndTemplate(brief);
+                            if (brief.answered) {
+                                BriefAnswers.query({
+                                    brief_id: $attrs.briefId
+                                }).$promise.then(function (answerList) {
+                                    var answers = answerList[0].answers;
+                                    angular.forEach(answers, function(a) {
+                                        var question = $scope.brief.questions.find(function (q) {
+                                            return q.id == a.question;
+                                        });
+                                        if (question) {
+                                            question.answer = a;
+                                        }
+                                    });
+                                });
+                            }
                         });
                     } else {
                         if ($attrs.templateId) {
@@ -128,6 +143,8 @@ app.directive('brQuestionDetail', function (Question) {
         scope: {
             question: '=',
             language: '=',
+            errors: '=',
+            answered: '=',
             removeQuestion: '&'
         },
         link: function ($scope, $element) {

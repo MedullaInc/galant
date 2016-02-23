@@ -316,3 +316,52 @@ class QuestionTest(test.TransactionTestCase):
 
         response = views.QuestionDetailAPI.as_view()(request, pk=question.id)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+
+class AnswerTest(test.TransactionTestCase):
+    def setUp(self):
+        user = autofixture.create_one(g.GallantUser)
+
+        brief = autofixture.create_one(b.Brief, generate_fk=True, field_values={'user': user})
+        question = b.TextQuestion.objects.create(user=user, question='What?')
+        multiple_choice_question = b.MultipleChoiceQuestion.objects.create(user=user, question='Huh?',
+                                                                           choices=['a', 'b', 'c'], index=1)
+        textanswer = b.TextAnswer.objects.create(user=user, question=question, answer='foo')
+        multianswer = b.MultipleChoiceAnswer.objects.create(
+            user=user, question=multiple_choice_question, choices=[1])
+        brief_answer = b.BriefAnswers.objects.create(user=user, brief=brief)
+        brief_answer.answers.add(textanswer)
+        brief_answer.answers.add(multianswer)
+        self.user = user
+        self.brief_answer = brief_answer
+        self.textanswer = textanswer
+
+    def test_brief_answer_serialize(self):
+        factory = APIRequestFactory()
+        brief_answer = self.brief_answer
+
+        request = factory.get(reverse('api-briefanswers-list'))
+        request.user = self.user
+        force_authenticate(request, user=self.user)
+
+        serializer = serializers.BriefAnswersSerializer(brief_answer, context={'request': request})
+        self.assertIsNotNone(serializer.data)
+
+        parser = serializers.BriefAnswersSerializer(brief_answer, data=serializer.data, context={'request': request})
+        self.assertTrue(parser.is_valid())
+
+    def test_answer_serialize(self):
+        factory = APIRequestFactory()
+        textanswer = self.textanswer
+
+        request = factory.get(reverse('api-briefanswers-list'))
+        request.user = self.user
+        force_authenticate(request, user=self.user)
+
+        serializer = serializers.AnswerSerializer(textanswer, context={'request': request})
+        self.assertIsNotNone(serializer.data)
+
+        parser = serializers.AnswerSerializer(textanswer, data=serializer.data, context={'request': request})
+        self.assertTrue(parser.is_valid())
+
+        self.assertEqual(parser.save(), textanswer)

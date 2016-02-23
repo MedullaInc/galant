@@ -12,6 +12,7 @@ class BriefSerializer(serializers.ModelSerializer):
     questions = QuestionSerializer(many=True)
     title = ULTextField()
     greeting = ULTextField()
+    answered = serializers.SerializerMethodField()
 
     def get_fields(self, *args, **kwargs):
         fields = super(BriefSerializer, self).get_fields(*args, **kwargs)
@@ -23,6 +24,9 @@ class BriefSerializer(serializers.ModelSerializer):
         fields['quote'] = serializers.PrimaryKeyRelatedField(queryset=model_queryset(q.Quote), allow_null=True)
 
         return fields
+
+    def get_answered(self, brief):
+        return int(brief.status) == b.BriefStatus.Answered.value
 
     def update(self, instance, validated_data):
         self._write_questions(self.context['request'].user, self.instance, validated_data.pop('questions'))
@@ -43,10 +47,11 @@ class BriefSerializer(serializers.ModelSerializer):
     class Meta:
         model = Brief
         fields = ('id', 'user', 'name', 'title', 'greeting', 'status', 'token',
-                  'modified', 'questions', 'language', 'client', 'quote')
+                  'modified', 'questions', 'language', 'client', 'quote', 'answered')
         extra_kwargs = {
             'id': {'read_only': False, 'required': False},
             'user': {'required': False},
+            'answered': {'required': False},
         }
 
     def _write_questions(self, user, instance, questions_data):

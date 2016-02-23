@@ -168,7 +168,9 @@ class QuoteTemplatesTest(browser.SignedInTest):
 
     def _add_language_and_text(self, b):
         browser.wait().until(lambda driver: driver.find_element_by_xpath('//*[@e-id="quote_name"]').text != 'empty')
-        browser.wait().until(lambda driver: driver.find_element_by_id('add_translation_button')).click()
+        browser.wait().until(lambda driver: driver.find_element_by_xpath('//*[@e-id="quote_name"]').text != '')
+        trans_btn = b.find_element_by_id('add_translation_button')
+        trans_btn.click()
         browser.wait().until(lambda driver: driver.find_element_by_xpath('//*[@id="id_language"]/option[@label="English"]'))
         b.find_element_by_xpath('//*[@id="id_language"]/option[@label="Spanish"]').click()
         b.find_element_by_id('language_add').click()

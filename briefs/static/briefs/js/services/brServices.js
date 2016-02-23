@@ -15,3 +15,8 @@ app.factory("BriefTemplate", function ($resource) {
 app.factory("Question", function ($resource) {
     return $resource("/en/briefs/api/question/:id");
 });
+
+/* istanbul ignore next  */
+app.factory("BriefAnswers", function ($resource) {
+    return $resource("/en/briefs/api/briefanswers/:id");
+});
