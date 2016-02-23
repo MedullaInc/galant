@@ -13,7 +13,7 @@ app.factory("Quote", function ($resource) {
 		getUser: {
 		  method: 'GET',
 		  params: {},
-		  url:"/en/quote/api/quote/:id?user=:user"
+		  url:"/en/quote/api/quote_client/:id?user=:user"
 		},
 		query: {
 		  method: 'GET',
@@ -36,11 +36,12 @@ app.factory("Quote", function ($resource) {
         },
         updateUser: {
           method: 'PATCH',
-          url: '/en/quote/api/quote/:id?user=:user',
+          url: '/en/quote/api/quote_client/:id?user=:user',
         }
 	});
 
 });
+
 
 /* istanbul ignore next  */
 app.factory("Service", function ($resource) {
