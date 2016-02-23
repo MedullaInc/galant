@@ -55,6 +55,6 @@ class BriefAnswersViewSet(UserModelViewSet):
     def get_queryset(self):
         brief_id = self.request.GET.get('brief_id', None)
         if brief_id:
-            return self.model.objects.filter(brief_id=brief_id)
+            return self.model.objects.all_for(self.request.user).filter(brief_id=brief_id)
         else:
-            return self.model.objects.all()
+            return self.model.objects.all_for(self.request.user)

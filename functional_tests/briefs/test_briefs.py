@@ -208,3 +208,8 @@ class BriefsSignedInTest(browser.SignedInTest):
                                    '?brief_id=%d' % self.brief.id)
         self.assertEqual(response.status_code, 200)
 
+    def test_can_access_brief_answers_endpoint(self):
+        brief_answers = autofixture.create_one('briefs.BriefAnswers', generate_fk=True,
+                                               field_values={'user': self.user})
+        response = self.client.get(self.live_server_url + reverse('api-briefanswers-detail', args=[brief_answers.id]))
+        self.assertEqual(response.status_code, 200)
