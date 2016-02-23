@@ -5,9 +5,11 @@ from django.http.response import JsonResponse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.core.urlresolvers import reverse
+from gallant.models import GallantUser
 from gallant import forms, serializers
 from gallant import models as g
 from gallant.utils import get_one_or_404, GallantObjectPermissions, GallantViewSetPermissions, get_field_choices
+from django.shortcuts import get_object_or_404
 from django.utils.translation import ugettext_lazy as _
 from rest_framework import generics
 from rest_framework.viewsets import ModelViewSet
@@ -116,7 +118,7 @@ def service_detail(request, *args, **kwargs):
 def service_fields_json(request):
     return JsonResponse(get_field_choices(g.Service), safe=False)
 
-
+@permission_classes((AllowAny, ))
 class ServiceDetailAPI(generics.RetrieveUpdateAPIView):
     model = g.Service
     serializer_class = serializers.ServiceSerializer
@@ -125,7 +127,11 @@ class ServiceDetailAPI(generics.RetrieveUpdateAPIView):
     ]
 
     def get_queryset(self):
-        return self.model.objects.all_for(self.request.user)
+        user = self.request.query_params.get('user', None)
+        if user:
+            return self.model.objects.all_for(get_object_or_404(GallantUser ,pk=user))
+        else:
+            return self.model.objects.all_for(self.request.user)
 
 @permission_classes((AllowAny, ))
 class ServiceAPI(ModelViewSet):

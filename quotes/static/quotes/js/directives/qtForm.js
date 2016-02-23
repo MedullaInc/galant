@@ -31,15 +31,6 @@ app.directive('qtQuoteForm', ['Quote', '$uibModal', function (Quote, $uibModal) 
                 $scope.idType = $attrs.idType;
                 $scope.boolTemplate = $attrs.boolTemplate;
 
-                if($attrs.idType == "token"){
-                    $window.onbeforeunload  = function () { 
-                        $scope.quote.session_duration = ((new Date() - $scope.$parent.startTime)/1000 );
-                        $scope.quote.views  = $scope.quote.views+1;
-                        $scope.quote.status = "3";
-                        Quote.update({id: $scope.quote.id}, $scope.quote);
-                    }
-                }
-
                 Client.get().$promise.then(function (clients) {
                     $scope.clients = clients;
                 });
@@ -116,6 +107,9 @@ app.directive('qtQuoteForm', ['Quote', '$uibModal', function (Quote, $uibModal) 
                             angular.forEach($scope.quote.services, function (q) {
                                 delete q.id;
                             });
+                            
+                            var lang = LANGUAGES.find(function (x) { return x.code == $scope.language;});
+                            $scope.quoteTemplate.languages  = [lang];
 
                         }
 

@@ -17,19 +17,24 @@ app.directive('qtClient', ['Quote', function (Quote) {
         },
         controller: ['$scope', '$attrs', '$filter', '$window', 'Quote',
             function ($scope, $attrs, $filter, $window, Quote) {
+                var token = window.location.href.split('/').slice(-1).pop();
                 $scope.idType = $attrs.idType;
-                
-                if($attrs.idType == "token"){
-                    $window.onbeforeunload  = function () { 
-                        $scope.quote.session_duration = ((new Date() - $scope.$parent.startTime)/1000 );
+                Quote.getUser({id: token, user: $attrs.userId}).$promise.then(function (quote) {
+                    $scope.quote = quote;
+                    delete $scope.quote.id;
+
+                    if($attrs.idType == "token"){
+                        
                         $scope.quote.views  = $scope.quote.views+1;
                         $scope.quote.status = "3";
-                        Quote.update({id: $scope.quote.id}, $scope.quote);
-                    }
-                }
+                        Quote.updateUser({id: token, user: $attrs.userId}, $scope.quote);
 
-                Quote.getUser({id: $attrs.quoteId, user: $attrs.userId}).$promise.then(function (quote) {
-                    $scope.quote = quote;
+                        $window.onbeforeunload  = function () { 
+                            $scope.quote.session_duration = ((new Date() - $scope.$parent.startTime)/1000 );
+                            Quote.updateUser({id: token, user: $attrs.userId}, $scope.quote);
+                        }
+                    }
+
                 });
 
                 }],

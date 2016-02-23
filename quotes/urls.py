@@ -5,6 +5,7 @@ from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter(trailing_slash=False)
 router.register(r'api/quote', views.QuoteViewSet, 'api-quote')
+router.register(r'api/quote_client', views.QuoteClientViewSet, 'api-quote-client')
 router.register(r'api/quote_template', views.QuoteTemplateViewSet, 'api-quote-template')
 router.register(r'api/section', views.SectionViewSet, 'api-section')
 

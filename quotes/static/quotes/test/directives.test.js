@@ -21,6 +21,7 @@ describe('qtForm', function () {
                 var Quote = function () { return {id: 0}; };
                 Quote.get = function () { return {$promise: $q.when({id: 0, sections: [{}], ervices: [{cost: [{amount: 0, currency:"USD"}]}]})}; };
                 Quote.getUser = function () { return {$promise: $q.when({id: 0, sections: [{}], ervices: [{cost: [{amount: 0, currency:"USD"}]}]})}; };
+                Quote.updateUser = function () { return {$promise: $q.when({id: 0, sections: [{}], ervices: [{cost: [{amount: 0, currency:"USD"}]}]})}; };
                 Quote.update = function () { return {$promise: $q.when({id: 0})}; };
                 Quote.fields = function () { return {$promise: $q.when({status: ['status', 'status'], language: ['language', 'language']})}; };
                 return Quote;
@@ -192,15 +193,6 @@ describe('qtForm', function () {
             expect($scope.quote.sections.length).toEqual(2);
         });
 
-        it('adds onload function', function () {
-            var element = $compile('<div qt-quote-form quote="quote" id-type="token"></div>')($scope);
-            $scope.$digest();
-            var result = $window.onbeforeunload();
-            expect(result).not.toBeNull();
-            $window.onbeforeunload = null; // remove so browser doesn't get stuck
-        });
-
-
     });
 
 
@@ -212,7 +204,7 @@ describe('qtForm', function () {
             expect(element.html().substring(0, 4)).toEqual('<div');
         });
 
-        it('adds onbeforeunload function', function () {
+        it('adds onbeforeload function', function () {
             var element = $compile('<div qt-client id-type="token"></div>')($scope);
             $scope.$digest();
             var result = $window.onbeforeunload();

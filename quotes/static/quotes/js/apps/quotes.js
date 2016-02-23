@@ -1,15 +1,15 @@
 var app = angular.module('quote', [
     'ngResource',
+    'ngAnimate',
     'smart-table',
+    'ui.bootstrap',
+    'xeditable',
     'gallant.controllers.glFormController',
     'quotes.controllers.qtQuoteListController',
     'quotes.controllers.qtQuoteTemplateListController',
     'quotes.controllers.qtPopoverController',
     'quotes.directives.qtForm',
     'quotes.directives.qtClientForm',
-    'ngAnimate',
-    'ui.bootstrap',
-    'xeditable'
 ]);
 
 /* istanbul ignore next */
