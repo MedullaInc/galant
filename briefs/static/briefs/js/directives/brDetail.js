@@ -68,21 +68,23 @@ app.directive('brBriefDetail', ['Question', function (Question) {
                         Brief.get({
                             id: $attrs.briefId
                         }).$promise.then(function (brief) {
-                            loadBriefAndTemplate(brief);
                             if (brief.answered) {
                                 BriefAnswers.query({
                                     brief_id: $attrs.briefId
                                 }).$promise.then(function (answerList) {
                                     var answers = answerList[0].answers;
                                     angular.forEach(answers, function(a) {
-                                        var question = $scope.brief.questions.find(function (q) {
+                                        var question = brief.questions.find(function (q) {
                                             return q.id == a.question;
                                         });
                                         if (question) {
                                             question.answer = a;
                                         }
                                     });
+                                    loadBriefAndTemplate(brief)
                                 });
+                            } else {
+                                loadBriefAndTemplate(brief);
                             }
                         });
                     } else {
