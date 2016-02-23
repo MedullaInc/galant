@@ -119,7 +119,7 @@ class MultipleChoiceAnswer(Answer):
             if self.question.can_select_multiple:
                 return [self.question.choices[c] for c in self.choices]
             else:
-                return self.question.choices[self.choices[0]]
+                return [self.question.choices[self.choices[0]]]
 
     class Meta:
         permissions = _get_answer_perms(('view_multiplechoiceanswer', 'View multiplechoiceanswer'))
