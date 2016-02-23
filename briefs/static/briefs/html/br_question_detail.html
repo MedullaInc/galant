@@ -24,7 +24,7 @@
         </span>
     </form>
 
-    <div class="buttons" ng-hide="questionForm.$visible">
+    <div class="buttons" ng-hide="questionForm.$visible || answered">
         <button id="question{{ question.index }}_edit" type="button" class="btn btn-default edit_button" aria-label="Edit"
                 ng-click="questionForm.$show()">
             <span class="glyphicon glyphicon-edit"/>

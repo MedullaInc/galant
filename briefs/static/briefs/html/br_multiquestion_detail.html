@@ -28,7 +28,7 @@
         </div>
         <div class="row margin-bottom-10">
             <div class="col-lg-12">
-                <button id="question{{ question.index }}_add_choice" type="button"
+                <button id="question{{ question.index }}_add_choice" type="button" ng-hide="answered"
                         class="btn btn-default add_choice" ng-click="addChoice()">
                     Add Choice
                 </button>
@@ -36,7 +36,7 @@
         </div>
     </form>
 
-    <div class="buttons" ng-hide="questionForm.$visible">
+    <div class="buttons" ng-hide="questionForm.$visible || answered">
         <button id="question{{ question.index }}_edit" type="button" class="btn btn-default edit_button"
                 aria-label="Edit"
                 ng-click="questionForm.$show()">

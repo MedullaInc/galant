@@ -54,7 +54,7 @@
     </div>
     <div class="buttons" ng-hide="briefForm.$visible">
         <button id="edit_brief" type="button" class="btn btn-default edit_button" aria-label="Edit"
-                ng-click="briefForm.$show()">
+                ng-click="briefForm.$show()" ng-hide="brief.answered">
             <span class="glyphicon glyphicon-edit"/>
         </button>
         <button id="delete_brief" type="button" class="btn btn-default delete_button" aria-label="Delete"
@@ -72,7 +72,7 @@
         <hr>
 
         <div ng-repeat="question in brief.questions">
-            <div id="question_{{ question.index }}" class="question" br-question-detail question="question" language="language" errors="brief.errors"></div>
+            <div id="question_{{ question.index }}" class="question" br-question-detail question="question" language="language" errors="brief.errors" answered="brief.answered"></div>
         </div>
 
         <hr>

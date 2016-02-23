@@ -129,6 +129,7 @@ app.directive('brQuestionDetail', function (Question) {
             question: '=',
             language: '=',
             errors: '=',
+            answered: '=',
             removeQuestion: '&'
         },
         link: function ($scope, $element) {
