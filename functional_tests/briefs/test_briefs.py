@@ -19,7 +19,7 @@ class BriefsSignedInTest(browser.SignedInTest):
         c = autofixture.create_one('gallant.Client', generate_fk=True,
                                    field_values={'user': self.user})
         brief = autofixture.create_one('briefs.Brief', generate_fk=True,
-                                       field_values={'user': self.user, 'client': c, 'quote': None})
+                                       field_values={'user': self.user, 'client': c, 'quote': None, 'status': 0})
         q = bm.TextQuestion.objects.create(user=brief.user, question='What?')
         mq = bm.MultipleChoiceQuestion.objects.create(user=brief.user, question='Huh?',
                                                       choices=['a', 'b', 'c'], index=1)
@@ -51,7 +51,6 @@ class BriefsSignedInTest(browser.SignedInTest):
         success_message = b.find_element_by_class_name('alert-success')
 
         self.assertTrue(u'Brief saved.' in success_message.text)
-
 
     def test_edit_client_brief(self):
         b = self.browser
