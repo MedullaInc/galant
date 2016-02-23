@@ -44,7 +44,6 @@ class Service(UserModel):
     type = m.CharField(max_length=2, choices=ServiceType.choices())
     index = m.IntegerField(default=0) 
     parent = m.ForeignKey('self', null=True, blank=True, related_name='sub_services')
-
     notes = m.ManyToManyField(Note)
     views = m.IntegerField(default=0)
 

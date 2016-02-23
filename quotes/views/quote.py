@@ -199,7 +199,7 @@ class SectionViewSet(ModelViewSet):
 
 
 @permission_classes((AllowAny,))
-class QuoteClientViewSet(UserModelViewSet):
+class QuoteClientViewSet(ModelViewSet):
     model = q.Quote
     serializer_class = serializers.QuoteSerializer
     permission_classes = [
@@ -212,6 +212,10 @@ class QuoteClientViewSet(UserModelViewSet):
         self.request.user = user
         return self.model.objects.all_for(user)
 
+    def update(self, request, *args, **kwargs):
+        self.request._messages = None
+        response = super(QuoteClientViewSet, self).update(request, *args, **kwargs)
+        return response
 
 class QuoteViewSet(UserModelViewSet):
     model = q.Quote

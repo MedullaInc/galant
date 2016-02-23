@@ -13,11 +13,15 @@ class SectionSerializer(serializers.ModelSerializer):
     title = ULTextField()
     text = ULTextField()
     views = serializers.IntegerField(required=False)
+    user = serializers.PrimaryKeyRelatedField(read_only=True)
 
     class Meta:
         model = q.Section
-        fields = ('title','text','name','index', 'id', 'views') 
-
+        fields = ('title','text','name','index', 'id', 'views', 'user') 
+        extra_kwargs = {
+            'id': {'read_only': False, 'required': False},
+            'user': {'required': False},
+        }
 
 class QuoteSerializer(serializers.ModelSerializer):
     user = serializers.PrimaryKeyRelatedField(read_only=True)
@@ -120,14 +124,13 @@ class QuoteSerializer(serializers.ModelSerializer):
         for section_data in sections_data:
             section_id = section_data.get('id', None)
             if section_id:
-                section_instance = g.Text.objects.get_for(user, 'change', pk=section_data)
+                section_instance = q.Section.objects.get_for(user, 'change', pk=section_id)
                 ss = SectionSerializer(data=section_data, instance=section_instance)
                 section = ss.update(section_instance, section_data)
             else:
                 section_data.update({'user': user})
                 ss = SectionSerializer(data=section_data)
                 section = ss.create(section_data)
-
             new_sections.add(section)
 
         instance.sections = new_sections

@@ -21,10 +21,8 @@ app.directive('qtClient', ['Quote', function (Quote) {
                 $scope.idType = $attrs.idType;
                 Quote.getUser({id: token, user: $attrs.userId}).$promise.then(function (quote) {
                     $scope.quote = quote;
-                    delete $scope.quote.id;
 
                     if($attrs.idType == "token"){
-                        
                         $scope.quote.views  = $scope.quote.views+1;
                         $scope.quote.status = "3";
                         Quote.updateUser({id: token, user: $attrs.userId}, $scope.quote);
