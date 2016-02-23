@@ -18,8 +18,14 @@ describe('brDetail', function () {
 
             $provide.factory('Brief', function ($q) {
                 var Brief = function () { return {id: 0}; };
-                Brief.get = function () { return {$promise: $q.when({id: 0})}; };
+                Brief.get = function () { return {$promise: $q.when({id: 0, answered: true})}; };
                 return Brief;
+            });
+
+            $provide.factory('BriefAnswers', function ($q) {
+                var BriefAnswers = function () { return {id: 0}; };
+                BriefAnswers.query = function () { return {$promise: $q.when([{id: 0, answers: [{}]}])}; };
+                return BriefAnswers;
             });
 
             $provide.factory('BriefTemplate', function ($q) {
