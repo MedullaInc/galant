@@ -212,11 +212,6 @@ class QuoteClientViewSet(ModelViewSet):
         self.request.user = user
         return self.model.objects.all_for(user)
 
-    def update(self, request, *args, **kwargs):
-        self.request._messages = None
-        response = super(QuoteClientViewSet, self).update(request, *args, **kwargs)
-        return response
-
 class QuoteViewSet(UserModelViewSet):
     model = q.Quote
     serializer_class = serializers.QuoteSerializer
