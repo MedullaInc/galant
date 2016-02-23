@@ -1,4 +1,4 @@
-from gallant.serializers.misc import ULTextField
+import json
 from rest_framework import serializers
 from briefs import models as b
 
@@ -34,10 +34,14 @@ class TextAnswerSerializer(serializers.ModelSerializer):
 class MultipleChoiceAnswerSerializer(serializers.ModelSerializer):
     question = serializers.PrimaryKeyRelatedField(read_only=True)
     type = serializers.CharField(read_only=False, required=False)
+    choices = serializers.SerializerMethodField()
 
     class Meta:
         model = b.MultipleChoiceAnswer
         fields = ('id', 'type', 'question', 'choices')
+
+    def get_choices(self, answer):
+        return answer.choices  # bypasses JSONField's transform
 
 
 class BriefAnswersSerializer(serializers.ModelSerializer):
