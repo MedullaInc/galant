@@ -24,12 +24,12 @@ app.controller('glClientPaymentController', ['$scope', '$attrs', '$uibModal', '$
                 $scope.getProjects();
 
                 // When selecting a project, currency will update as well as quote
-                $scope.updateCurrency = function (project) {
+                $scope.updateCurrency = function (project_id) {
                     $scope.payment.amount.currency = $.grep($scope.projects, function (e) {
-                        return e.id == project
+                        return e.id == project_id
                     })[0].payments.currency;
                     $scope.currency = '( in ' + $.grep($scope.projects, function (e) {
-                            return e.id == project
+                            return e.id == project_id
                         })[0].payments.currency + ' )';
                     if ($scope.currency == '( in  )') {
                         $scope.currency = '( N/A )'
