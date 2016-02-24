@@ -89,13 +89,13 @@ describe('glFormController', function () {
 
         $scope.objectEndpoint = {};
         $scope.objectEndpoint.save = function (a, b, callback) {
-            callback({ redirect: url });
+            callback({redirect: url});
         };
         $scope.objectEndpoint.update = function (a, b, callback) {
-            callback({ redirect: url });
+            callback({redirect: url});
         };
         $scope.objectEndpoint.delete = function (a, callback) {
-            callback({ redirect: url });
+            callback({redirect: url});
         };
 
         spyOn($scope.objectEndpoint, 'save').and.callThrough();
@@ -137,7 +137,9 @@ describe('glFormController', function () {
     it('deletes object', function () {
         $scope.object = {id: 1};
         var tmp = $window.confirm;
-        $window.confirm = function(a) { return true; }; // remove so browser doesn't get stuck
+        $window.confirm = function (a) {
+            return true;
+        }; // remove so browser doesn't get stuck
         $scope.deleteObject();
         expect($scope.objectEndpoint.delete).toHaveBeenCalled();
         $window.confirm = tmp;
@@ -169,4 +171,46 @@ describe('glFormController', function () {
 });
 
 
+describe('glClientPaymentController', function () {
+    var $rootScope;
+    var $controller;
+    var $injector;
+    var $scope;
+    var url = 'http://foo.com/';
 
+    beforeEach(function () {
+        angular.module('gallant.services.glServices', []);
+        module('gallant.services.glServices', function ($provide) {
+            $provide.factory('Payment', function ($q) {
+                var Payment = jasmine.createSpyObj('Payment', ['save']);
+
+                Payment.update.and.returnValue({$promise: $q.when({})});
+
+                return Payment;
+            });
+        });
+        module('gallant.controllers.glClientPaymentController', function ($provide) {
+            $provide.value('$uibModal', {open: function () {}});
+        });
+
+        inject(function (_$rootScope_, _$controller_, _$window_, _$injector_) {
+            // The injector unwraps the underscores (_) from around the parameter names when matching
+            $rootScope = _$rootScope_;
+            $controller = _$controller_;
+            $injector = _$injector_;
+        });
+    });
+
+    var $scope;
+
+     beforeEach(function () {
+        $scope = $rootScope.$new();
+        $controller('glClientPaymentController', {$scope: $scope});
+        $scope.init(url);
+        $rootScope.$apply();
+     });
+
+    it('alerts on new payment create', function () {
+    });
+
+});
