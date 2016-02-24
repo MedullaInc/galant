@@ -217,7 +217,10 @@ describe('glClientPaymentController', function () {
      });
 
     it('opens modal', function () {
+        var $uibModal = $injector.get('$uibModal');
+        spyOn($uibModal, 'open');
         $scope.openEditModal();
+        expect($uibModal.open).toHaveBeenCalled();
     });
 
 });
