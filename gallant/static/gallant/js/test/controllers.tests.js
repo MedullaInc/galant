@@ -191,7 +191,7 @@ describe('glClientPaymentController', function () {
             });
             $provide.factory('ClientProjects', function ($q) {
                 var ClientProjects = {};
-                ClientProjects.query = function (a) { return {$promise: $q.when([{id: 0}])}; };
+                ClientProjects.query = function (a) { return {$promise: $q.when([{id: 0, payments: {amount: 0, currency: 'MXN'}}])}; };
                 return ClientProjects;
             });
             $provide.factory('PaymentAPI', function ($q) {
@@ -221,7 +221,7 @@ describe('glClientPaymentController', function () {
      beforeEach(function () {
         $scope = $rootScope.$new();
         $controller('glClientPaymentController', {$scope: $scope});
-        $rootScope.$apply();
+        $scope.$apply();
      });
 
     it('opens modal', function () {
@@ -236,8 +236,17 @@ describe('glClientPaymentController', function () {
         var $subScope = $scope.$new();
         $scope.openEditModal();
         $controller($uibModal.args.controller, {$scope: $subScope});
-        $subScope.getProjects();
         $scope.$digest();
         expect($subScope.projects.length).toBe(1);
     });
+
+    it('it can run updateCurrency', function() {
+        var $uibModal = $injector.get('$uibModal');
+        var $subScope = $scope.$new();
+        $scope.openEditModal();
+        $controller($uibModal.args.controller, {$scope: $subScope});
+        $scope.$digest();
+        $subScope.updateCurrency(0);
+    });
+
 });
