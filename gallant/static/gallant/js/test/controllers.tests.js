@@ -195,10 +195,12 @@ describe('glClientPaymentController', function () {
                 return ClientProjects;
             });
             $provide.factory('PaymentAPI', function ($q) {
-               return {};
+                var PaymentAPI = {};
+                PaymentAPI.save = function (a) { return {}; };
+                return PaymentAPI;
             });
             $provide.factory('$uibModalInstance', function ($q) {
-               return {};
+               return { dismiss: function(a) {} };
             });
             $provide.factory('createPayment', function ($q) {
                return {};
@@ -256,6 +258,43 @@ describe('glClientPaymentController', function () {
             $subScope.openDueDatePicker();
             $scope.$digest();
             expect($subScope.due_date_opened).toBe(true);
+        });
+
+        it('can run openPaidDatePicker', function () {
+            $subScope.openPaidDatePicker();
+            $scope.$digest();
+            expect($subScope.paid_date_opened).toBe(true);
+        });
+
+        it('raises error for bogus payment', function () {
+            $subScope.submit();
+            $scope.$digest();
+            expect($subScope.errors).toBeDefined();
+        });
+
+        it('cancels', function() {
+            var $uibModalInstance = $injector.get('$uibModalInstance');
+            spyOn($uibModalInstance, 'dismiss');
+            $subScope.cancel();
+            $scope.$digest();
+            expect($uibModalInstance.dismiss).toHaveBeenCalled();
+        });
+
+        it('can submit form', function () {
+            var PaymentAPI = $injector.get('PaymentAPI');
+            $subScope.payment = {
+                project_id: 0,
+                amount: {amount: 1.0, currency: 'MXN'},
+                description: 'Payment',
+                due: new Date(),
+                paid_on: new Date(),
+                notes: []
+            };
+            $subScope.createPayment = $scope.createPayment;
+            spyOn(PaymentAPI, 'save').and.callThrough();
+            $subScope.submit();
+            $scope.$digest();
+            expect(PaymentAPI.save).toHaveBeenCalled();
         });
 
     });
