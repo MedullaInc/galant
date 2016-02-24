@@ -187,17 +187,25 @@ describe('glClientPaymentController', function () {
                 return Payment;
             });
             $provide.factory('$attrs', function ($q) {
-                return {};
+                return {clientId: 0};
             });
             $provide.factory('ClientProjects', function ($q) {
-               return {};
+                var ClientProjects = {};
+                ClientProjects.query = function (a) { return {$promise: $q.when([{id: 0}])}; };
+                return ClientProjects;
             });
             $provide.factory('PaymentAPI', function ($q) {
                return {};
             });
+            $provide.factory('$uibModalInstance', function ($q) {
+               return {};
+            });
+            $provide.factory('createPayment', function ($q) {
+               return {};
+            });
         });
         module('gallant.controllers.glClientPaymentController', function ($provide) {
-            $provide.value('$uibModal', {open: function () {}});
+            $provide.value('$uibModal', {args: {}, open: function (a) { this.args = a; }});
         });
 
         inject(function (_$rootScope_, _$controller_, _$window_, _$injector_) {
@@ -218,9 +226,18 @@ describe('glClientPaymentController', function () {
 
     it('opens modal', function () {
         var $uibModal = $injector.get('$uibModal');
-        spyOn($uibModal, 'open');
+        spyOn($uibModal, 'open').and.callThrough();
         $scope.openEditModal();
         expect($uibModal.open).toHaveBeenCalled();
     });
 
+    it('it can run getProjects', function() {
+        var $uibModal = $injector.get('$uibModal');
+        var $subScope = $scope.$new();
+        $scope.openEditModal();
+        $controller($uibModal.args.controller, {$scope: $subScope});
+        $subScope.getProjects();
+        $scope.$digest();
+        expect($subScope.projects.length).toBe(1);
+    });
 });
