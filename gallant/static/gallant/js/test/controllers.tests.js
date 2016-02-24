@@ -183,10 +183,17 @@ describe('glClientPaymentController', function () {
         module('gallant.services.glServices', function ($provide) {
             $provide.factory('Payment', function ($q) {
                 var Payment = jasmine.createSpyObj('Payment', ['save']);
-
                 Payment.update.and.returnValue({$promise: $q.when({})});
-
                 return Payment;
+            });
+            $provide.factory('$attrs', function ($q) {
+                return {};
+            });
+            $provide.factory('ClientProjects', function ($q) {
+               return {};
+            });
+            $provide.factory('PaymentAPI', function ($q) {
+               return {};
             });
         });
         module('gallant.controllers.glClientPaymentController', function ($provide) {
@@ -206,11 +213,11 @@ describe('glClientPaymentController', function () {
      beforeEach(function () {
         $scope = $rootScope.$new();
         $controller('glClientPaymentController', {$scope: $scope});
-        $scope.init(url);
         $rootScope.$apply();
      });
 
-    it('alerts on new payment create', function () {
+    it('opens modal', function () {
+        $scope.openEditModal();
     });
 
 });
