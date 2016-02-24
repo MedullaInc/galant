@@ -231,22 +231,33 @@ describe('glClientPaymentController', function () {
         expect($uibModal.open).toHaveBeenCalled();
     });
 
-    it('it can run getProjects', function() {
-        var $uibModal = $injector.get('$uibModal');
-        var $subScope = $scope.$new();
-        $scope.openEditModal();
-        $controller($uibModal.args.controller, {$scope: $subScope});
-        $scope.$digest();
-        expect($subScope.projects.length).toBe(1);
-    });
+    describe('uibModalController', function() {
+        var $subScope;
 
-    it('it can run updateCurrency', function() {
-        var $uibModal = $injector.get('$uibModal');
-        var $subScope = $scope.$new();
-        $scope.openEditModal();
-        $controller($uibModal.args.controller, {$scope: $subScope});
-        $scope.$digest();
-        $subScope.updateCurrency(0);
+        beforeEach(function() {
+            var $uibModal = $injector.get('$uibModal');
+            $subScope = $scope.$new();
+            $scope.openEditModal();
+            $controller($uibModal.args.controller, {$scope: $subScope});
+            $scope.$digest();
+        });
+
+        it('loads projects', function() {
+            expect($subScope.projects.length).toBe(1);
+        });
+
+        it('can run updateCurrency', function() {
+            $subScope.updateCurrency(0);
+            $scope.$digest();
+            expect($subScope.currency).toBe('( in MXN )')
+        });
+
+        it('can run openDueDatePicker', function() {
+            $subScope.openDueDatePicker();
+            $scope.$digest();
+            expect($subScope.due_date_opened).toBe(true);
+        });
+
     });
 
 });
