@@ -1,100 +1,0 @@
-{% extends "base_sidebar_enclosed.html" %}
-{% load bootstrap i18n %}
-
-{% block section_title %}
-    {% trans title %}
-{% endblock %}
-
-{% block sidebar %}
-{% endblock %}
-
-{% block center_content %}
-
-    <div class="row">
-        <div class="col-lg-10 col-md-10 col-sm-9 col-xs-9">
-            <h2 class="section_title">{{ object.brief.title.get_text }}</h2>
-        </div>
-        {% if not answer_set %}
-            <div class="col-lg-2 col-md-2 col-sm-3 col-xs-3 action_box"> 
-                <a href="{% url 'edit_brief_template' object.id %}{% if request.GET.urlencode %}?{% endif %}{{ request.GET.urlencode }}" class="edit_button" title="{% trans "Edit" %}"> 
-                <button id="section_edit" type="button" class="btn btn-default edit_button" aria-label="Edit"> 
-                    <span class="glyphicon glyphicon-edit"/> 
-                </button>
-                  </a> 
-                <a href="{% url 'delete_brief_template' object.id %}{% if request.GET.urlencode %}?{% endif %}{{ request.GET.urlencode }}" class="delete_button" title="{% trans "Delete" %}" onclick="return confirm('{% trans "Are you sure?" %}')"> 
-                <button id="section_delete" type="button" class="btn btn-default delete_button" aria-label="Delete"> 
-                    <span class="glyphicon glyphicon-trash"/> 
-                </button>
-                  </a> 
-            </div> 
-        {% endif %}
-    </div>
-
-    <p id="title" class="data">{% trans "Title" %}: {{ object.title.get_text }}</p>
-    <p id="status" class="data">{% trans "Greeting" %}: <br/>{{ object.greeting.get_text|linebreaks }}</p>
-    {% if object.status == "2" %}
-        <p id="public_link" class="data">Public Answer
-            Link:<br/>http://{{ request.get_host }}{% url 'brief_answer' token=object.token.hex %}</p>
-    {% endif %}
-    {% if answer_set %}
-        <p id="answered" class="text-success">
-            <b>{% trans "Answered on" %} {{ answer_set.created }}</b><br/>
-            {% trans "You can no longer edit this brief." %}
-        </p>
-    {% endif %}
-
-    <br/>
-    <h2 class="section_title">
-        Questions
-    </h2>
-
-    <hr>
-
-    {% if answer_set %}
-        {% for answer in answers %}
-            {% with question=answer.question %}
-                <div id="question_{{ question.index }}" class="question">
-                    {{ forloop.counter }} ) {{ question.question.get_text }}
-                    <div class="multiquestion_choices">
-                        {% for choice in question.choices %}
-                            {% if forloop.counter0|slugify in answer.choices %}
-                                <div class="text-success"><b>
-                                    — {{ choice.get_text }}
-                                </b></div>
-                            {% else %}
-                                <div>
-                                    — {{ choice.get_text }}
-                                </div>
-                            {% endif %}
-                            {% empty %}
-                            <div class="text-success"><b>
-                                {{ answer.answer }}
-                            </b></div>
-                        {% endfor %}
-                    </div>
-                </div>
-
-                <hr>
-            {% endwith %}
-        {% endfor %}
-    {% elif questions %}
-        {% for question in questions %}
-            <div id="question_{{ question.index }}" class="question">
-                {{ forloop.counter }} ) {{ question.question.get_text }}
-                <div class="multiquestion_choices">
-                    {% for choice in question.choices %}
-                        <div>
-                            — {{ choice.get_text }}
-                        </div>
-                    {% endfor %}
-                </div>
-            </div>
-
-            <hr>
-            {% empty %}
-            No questions have been added yet.<br/>
-            <a href="{% url "edit_brief" object.client.id object.id %}">Click here to add some.</a>
-        {% endfor %}
-    {% endif %}
-
-{% endblock %}
