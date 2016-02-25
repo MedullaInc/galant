@@ -26,6 +26,7 @@ app.directive('qtQuoteForm', ['Quote', '$uibModal', function (Quote, $uibModal) 
                 $scope.quoteStatus   = {};
                 $scope.quoteLanguage = {};
                 $scope.newQuote      = false;
+                $scope.sortDisabled = false;
                 $scope.tempStatus    = '0';
 
                 $scope.idType = $attrs.idType;
@@ -93,6 +94,9 @@ app.directive('qtQuoteForm', ['Quote', '$uibModal', function (Quote, $uibModal) 
                 if ($attrs.quoteId) {
                     Quote.get({id: $attrs.quoteId, user: $attrs.userId}).$promise.then(function (quote) {
                         $scope.quote = quote;
+                        $scope.quote.services = $filter('orderBy')($scope.quote.services, 'index');
+                        $scope.quote.sections = $filter('orderBy')($scope.quote.sections, 'index');
+
                         $scope.tempStatus = $scope.quote.status;
 
                         if ($attrs.boolTemplate == "True") {
@@ -120,6 +124,8 @@ app.directive('qtQuoteForm', ['Quote', '$uibModal', function (Quote, $uibModal) 
                         }).$promise.then(function (quoteTemplate) {
                             $scope.quoteTemplate = quoteTemplate;
                             $scope.quote = quoteTemplate.quote;
+                            $scope.quote.services = $filter('orderBy')($scope.quote.services, 'index');
+                            $scope.quote.sections = $filter('orderBy')($scope.quote.sections, 'index');
                             $scope.tempStatus = $scope.quote.status;
                             if ($attrs.boolTemplate != "True") {
                                 delete $scope.quote.id;
@@ -199,8 +205,13 @@ app.directive('qtQuoteForm', ['Quote', '$uibModal', function (Quote, $uibModal) 
 
             $scope.showRowForm = function (rowform) {
                 if ($scope.quote.status != '2') {
+                    $scope.sortDisabled = true;
                     rowform.$show();
                 }
+            };
+
+            $scope.saveRowForm = function (rowform) {
+                $scope.sortDisabled = false;
             };
 
             $scope.open = function () {

@@ -4,8 +4,8 @@
         Quote Sections
     </h2>
 
-    <ul data-as-sortable="dragControlListeners" data-ng-model="quote.sections">
-        <li data-ng-repeat="section in quote.sections | orderBy:'section.index'" data-as-sortable-item>
+    <ul data-as-sortable="dragControlListeners" data-ng-model="quote.sections" is-disabled="sortDisabled">
+        <li data-ng-repeat="section in quote.sections" data-as-sortable-item>
             <div id="section_{{$index}}" as-sortable-item-handle class="as-sortable-item-handle">
 
                 <div class="row">
@@ -46,6 +46,7 @@
                         <form editable-form name="rowform" onbeforesave="saveUser($data, user.id)"
                               ng-show="rowform.$visible" class="form-buttons form-inline" shown="inserted == section">
                             <button id="save_section_{{$index}}" type="submit" ng-disabled="rowform.$waiting"
+                                    ng-click="saveRowForm(rowform)"
                                     class="btn btn-default save_button">
                                 <span class="glyphicon glyphicon-floppy-disk">
                             </button>
