@@ -51,6 +51,7 @@ app.controller('glFormController', ['$scope', '$http', '$window',
                         console.log(JSON.stringify(response.data));
                     }
                 }, /* istanbul ignore next */ function (errorResponse) {
+                    $scope.object.errors = errorResponse.data;
                     console.log(JSON.stringify(errorResponse.data));
                 });
             }

@@ -7,7 +7,7 @@
         </div>
 
         <h2 ng-required="true" e-class="form-control" e-id="quote_name" editable-text="quote.name" class="section_title" e-form="quoteform"
-            e-required>{{ quote.name || "empty" }}  </h2>
+            e-required e-placeholder="Enter quote name">{{ quote.name || "empty" }}  </h2>
     </div>
 
     <div ng-show="showEdit()">

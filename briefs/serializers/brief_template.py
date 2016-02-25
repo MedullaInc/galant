@@ -5,6 +5,7 @@ from briefs.models import BriefTemplate
 from briefs import models as b
 from .brief import BriefSerializer
 
+
 class BriefTemplateSerializer(serializers.ModelSerializer):
     user = serializers.PrimaryKeyRelatedField(read_only=True)
     brief = BriefSerializer()

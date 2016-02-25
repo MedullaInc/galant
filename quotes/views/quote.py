@@ -18,18 +18,20 @@ from django.utils.text import slugify
 from django.utils.translation import ugettext_lazy as _
 from django.core.mail import send_mail
 from uuid import uuid4
+from rest_framework import generics, status
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, AllowAny
 from rest_framework.decorators import permission_classes
 
+
 class QuoteUpdate(View):
-    def get(self, request, **kwargs): # pragma: no cover
+    def get(self, request, **kwargs):  # pragma: no cover
         self.object = get_one_or_404(request.user, 'change_quote', q.Quote, pk=kwargs['pk'])
         return self.render_to_response({'object': self.object,
                                         'title': 'Edit Quote'})
 
-    def form_valid(self, form, section_forms): # pragma: no cover
-        if 'preview' in self.request.POST:  
+    def form_valid(self, form, section_forms):  # pragma: no cover
+        if 'preview' in self.request.POST:
             form.instance.pk = None
             form.instance.token = uuid4()
 
@@ -43,7 +45,7 @@ class QuoteUpdate(View):
 
             quote = self.object
             url = '%s://%s%s' % (
-            self.request.scheme, self.request.get_host(), reverse('quote_preview', args=[quote.id]))
+                self.request.scheme, self.request.get_host(), reverse('quote_preview', args=[quote.id]))
             filename = slugify(quote.client.name + "_" + quote.name)
 
             attach_or_inline = 'inline'
@@ -68,7 +70,7 @@ class QuoteUpdate(View):
             messages.success(self.request, 'Quote saved.')
             return HttpResponseRedirect(reverse('quote_detail', args=[self.object.id]))
 
-    def render_to_response(self, context): # pragma: no cover
+    def render_to_response(self, context):  # pragma: no cover
         self.request.breadcrumbs(_('Quotes'), reverse('quotes'))
         if self.object:
             self.request.breadcrumbs([(_('Quote: %s' % self.object.name),
@@ -83,7 +85,7 @@ class QuoteUpdate(View):
 
 
 class QuoteCreate(QuoteUpdate):
-    def get(self, request): 
+    def get(self, request):
         context = {'title': 'Add Quote'}
         template_id = request.GET.get('template_id', None)
         lang = request.GET.get('lang', None)
@@ -104,7 +106,7 @@ class QuoteCreate(QuoteUpdate):
                                 context=context)
 
 
-def _send_quote_email(email, from_name, link, site): # pragma: no cover
+def _send_quote_email(email, from_name, link, site):  # pragma: no cover
     message = '%s has sent you a Quote from %s.\n\n Click this link to view:\n %s' % \
               (from_name, site, link)
     send_mail('Client Quote', message,
@@ -135,19 +137,19 @@ class QuoteDetail(View):
                 id_type = key
                 if id_type == "pk":
                     template = "quotes/quote_detail_ng.html"
-                    quote = get_one_or_404(request.user, 'view_quote', q.Quote, **{ key: kwargs[key] })
+                    quote = get_one_or_404(request.user, 'view_quote', q.Quote, **{key: kwargs[key]})
                 elif id_type == "token":
                     template = "quotes/quote_detail_client_ng.html"
-                    quote = get_object_or_404(q.Quote, **{ key: kwargs[key] })
+                    quote = get_object_or_404(q.Quote, **{key: kwargs[key]})
 
         request.breadcrumbs([(_('Quotes'), reverse('quotes')),
                              (_('Quote: %s' % quote.name), request.path_info)])
         return TemplateResponse(request=request,
                                 template=template,
-                                context={'title': 'Quote', 'object': quote, 'id_type': id_type })  
+                                context={'title': 'Quote', 'object': quote, 'id_type': id_type})
 
 
-class QuoteSend(View): # pragma: no cover
+class QuoteSend(View):  # pragma: no cover
     def post(self, request, **kwargs):
         quote = get_one_or_404(request.user, 'view_quote', q.Quote, id=kwargs['pk'])
         quote.status = q.QuoteStatus.Sent.value
@@ -178,32 +180,54 @@ def quote_fields_json(request):
     return JsonResponse(get_field_choices(q.Quote), safe=False)
 
 
-@permission_classes((AllowAny, ))
+@permission_classes((AllowAny,))
 class SectionViewSet(ModelViewSet):
     model = q.Section
     serializer_class = serializers.SectionSerializer
     permission_classes = [
-         GallantViewSetPermissions
-     ]
+        GallantViewSetPermissions
+    ]
 
     def get_queryset(self):
         user = self.request.query_params.get('user', None)
         if user:
-            return self.model.objects.all_for(get_object_or_404(GallantUser ,pk=user))
+            return self.model.objects.all_for(get_object_or_404(GallantUser, pk=user))
         else:
             return self.model.objects.all_for(self.request.user)
 
-@permission_classes((IsAuthenticatedOrReadOnly, ))
+
+@permission_classes((AllowAny,))
+class QuoteClientViewSet(ModelViewSet):
+    model = q.Quote
+    serializer_class = serializers.QuoteSerializer
+    permission_classes = [
+        GallantViewSetPermissions
+    ]
+    lookup_field = 'token'
+
+    def get_queryset(self):
+        user = get_object_or_404(GallantUser, pk=self.request.query_params.get('user', None))
+        self.request.user = user
+        return self.model.objects.all_for(user)
+
+
 class QuoteViewSet(UserModelViewSet):
     model = q.Quote
     serializer_class = serializers.QuoteSerializer
+    permission_classes = [
+        GallantViewSetPermissions
+    ]
+    lookup_field = 'pk'
+    lookup_fields = ['token', 'pk']
 
     def get_queryset(self):
-        if self.request.query_params.get('user', None):
-            user = get_object_or_404(GallantUser, pk= self.request.query_params.get('user', None))
+        user = self.request.query_params.get('user', None)
+        if user:
+            user = get_object_or_404(GallantUser, pk=user)
         else:
             user = self.request.user
 
+        self.request.user = user
         clients_only = self.request.query_params.get('clients_only', None)
         if clients_only is not None:
             return self.model.objects.all_for(user).exclude(client__isnull=clients_only)

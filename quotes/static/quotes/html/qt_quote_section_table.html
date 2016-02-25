@@ -20,20 +20,23 @@
                     <div class="col-lg-10">
                         <h2 e-id="title_{{$index}}" e-class="form-control" data-inputclass="form-control"
                             class="section_subtitle" editable-text="section.title[language]" e-form="rowform"
-                            e-required>
+                            e-required e-placeholder="Section Title">
                             {{ section.title[language] || 'empty' }}
                         </h2>
                         <br>
                         <p e-id="text_{{$index}}" e-class="form-control" data-inputclass="form-control"
-                           editable-text="section.text[language]" e-name="text" e-form="rowform" e-required>
+                           editable-text="section.text[language]" e-name="text" e-form="rowform" e-required
+                           e-placeholder="Text">
 
-                            <div ng-init="limit = 100; moreShown = false">
-                                {{section.text[language] | cut:true:limit:'...'}}
-                                <a ng-show="section.text[language].length > limit"
-                                  href ng-click="showSection(section);limit=section.text[language].length; moreShown = true">  More
-                                </a>
-                                <a ng-show="moreShown" ng-click="limit=150; moreShown = false"> Less </a>
-                            </div>
+                        <div ng-init="limit = 100; moreShown = false">
+                            {{ section.text[language] | cut:true:limit:'...'}}
+                            <a ng-show="section.text[language].length > limit"
+                               href
+                               ng-click="showSection(section);limit=section.text[language].length; moreShown = true">
+                                More
+                            </a>
+                            <a ng-show="moreShown" ng-click="limit=100; moreShown = false"> Less </a>
+                        </div>
 
                         </p>
 
@@ -42,15 +45,17 @@
                     <div class="col-lg-2" ng-show="showEdit()">
                         <form editable-form name="rowform" onbeforesave="saveUser($data, user.id)"
                               ng-show="rowform.$visible" class="form-buttons form-inline" shown="inserted == section">
-                            <button id="save_section_{{$index}}" type="submit" ng-disabled="rowform.$waiting" class="btn btn-default save_button">
+                            <button id="save_section_{{$index}}" type="submit" ng-disabled="rowform.$waiting"
+                                    class="btn btn-default save_button">
                                 <span class="glyphicon glyphicon-floppy-disk">
                             </button>
-                            <button id="cancel_section_{{$index}}" type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()" class="btn btn-default save_button">
+                            <button id="cancel_section_{{$index}}" type="button" ng-disabled="rowform.$waiting"
+                                    ng-click="rowform.$cancel()" class="btn btn-default save_button">
                                 <span class="glyphicon glyphicon-remove ">
                             </button>
                         </form>
 
-                    <div class="buttons" ng-show="!rowform.$visible">
+                        <div class="buttons" ng-show="!rowform.$visible">
                             <button id="edit_section_{{$index}}" class="btn btn-default edit_button"
                                     ng-click="showRowForm(rowform)">
                                 <span class="glyphicon glyphicon-edit"/>
@@ -64,7 +69,8 @@
 
                     <div class="col-lg-2">
                         <p ng-show="showViews()">
-                            <span class="label label-success" uib-tooltip="Times Expanded" tooltip-placement="right">{{ section.views }}</span>
+                            <span class="label label-success" uib-tooltip="Times Expanded"
+                                  tooltip-placement="right">{{ section.views }}</span>
                         </p>
                     </div>
                 </div>

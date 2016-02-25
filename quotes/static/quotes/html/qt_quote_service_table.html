@@ -37,30 +37,35 @@
 
     <ul data-as-sortable="dragControlListeners" data-ng-model="quote.services">
         <li ng-repeat="service in quote.services | orderBy:'service.index'" data-as-sortable-item>
-            <div id="service_{{$index}}" style="padding: 30px 0px 30px 0px;" as-sortable-item-handle class="as-sortable-item-handle">
-                <div class="row" >
+            <div id="service_{{$index}}" style="padding: 30px 0px 30px 0px;" as-sortable-item-handle
+                 class="as-sortable-item-handle">
+                <div class="row">
                     <span ng-click="showRowForm(rowform)">
                     <div class="col-xs-offset-0 col-xs-2 section_content">
                         <div name="name" e-class="form-control" editable-text="service.name[language]"
-                             e-id="service_name_{{$index}}" e-form="rowform" e-required>
+                             e-id="service_name_{{$index}}" e-form="rowform" e-required
+                             e-placeholder="Service Name">
                             {{ service.name[language] || 'empty' }}
                         </div>
                     </div>
                     <div class="col-xs-2 section_content">
                         <div e-class="form-control" editable-text="service.quantity" e-id="quantity_{{$index}}"
-                             e-form="rowform" e-required>
+                             e-form="rowform" e-required
+                             e-placeholder="Quantity">
                             {{ service.quantity || 'empty' }}
                         </div>
                     </div>
                     <div class="col-xs-2 section_content">
-                        <div e-class="form-control" editable-select="service.type" e-id="type_{{$index}}" e-form="rowform"
+                        <div e-class="form-control" editable-select="service.type" e-id="type_{{$index}}"
+                             e-form="rowform"
                              e-ng-options="key as val for (key, val) in serviceFields">
                             {{ showType(service) }}
                         </div>
                     </div>
                     <div class="col-xs-2 section_content">
                         <div e-class="form-control" editable-text="service.cost.amount" e-id="amount_{{$index}}"
-                             e-form="rowform" e-required>
+                             e-form="rowform" e-required
+                             e-placeholder="Cost">
                             {{ service.cost.amount || 'empty'}}
                         </div>
                     </div>
@@ -70,20 +75,24 @@
                         </p>
                     </div>
                     <div class="col-xs-2 section_content" ng-show="showViews()">
-                        <span class="label label-success" uib-tooltip="Times Expanded" tooltip-placement="right">{{ service.views }}</span>
+                        <span class="label label-success" uib-tooltip="Times Expanded"
+                              tooltip-placement="right">{{ service.views }}</span>
                     </div>
                     </span>
 
                     <div class="row" style="padding-top:10px">
-                        <div class="col-xs-12 section_content" >
+                        <div class="col-xs-12 section_content">
                             <div e-class="form-control" editable-text="service.description[language]"
-                                 e-id="description_{{$index}}" e-form="rowform" e-required>
+                                 e-id="description_{{$index}}" e-form="rowform" e-required
+                                 e-placeholder="Description">
                                 <div ng-init="moreShown = false; limit = 100">
-                                    {{service.description[language] | cut:true:limit:'...'}}
+                                    {{ service.description[language] | cut:true:limit:'...'}}
                                     <a ng-show="service.description[language].length > limit"
-                                      href ng-click="showService(service); moreShown = true; limit=service.description[language].length;">  More
+                                       href
+                                       ng-click="showService(service); moreShown = true; limit=service.description[language].length;">
+                                        More
                                     </a>
-                                    <a ng-show="moreShown" ng-click="moreShown = false; limit=150"> Less </a>
+                                    <a ng-show="moreShown" ng-click="moreShown = false; limit=100"> Less </a>
                                 </div>
                             </div>
                         </div>
@@ -94,10 +103,12 @@
                         <!-- form -->
                         <form editable-form name="rowform" ng-show="rowform.$visible" class="form-buttons form-inline"
                               shown="inserted == service">
-                            <button id="save_service_{{$index}}" type="submit" ng-disabled="rowform.$waiting" class="btn btn-default save_button">
+                            <button id="save_service_{{$index}}" type="submit" ng-disabled="rowform.$waiting"
+                                    class="btn btn-default save_button">
                                 <span class="glyphicon glyphicon-floppy-disk">
                             </button>
-                            <button id="cancel_service_{{$index}}" type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()" class="btn btn-default save_button">
+                            <button id="cancel_service_{{$index}}" type="button" ng-disabled="rowform.$waiting"
+                                    ng-click="rowform.$cancel()" class="btn btn-default save_button">
                                 <span class="glyphicon glyphicon-remove">
                             </button>
                         </form>
@@ -115,7 +126,7 @@
                     </div>
                 </div>
             </div>
-    </li>
+        </li>
     </ul>
 
 

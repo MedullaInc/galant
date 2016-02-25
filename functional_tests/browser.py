@@ -37,6 +37,26 @@ class CustomPhantomJS(PhantomJS):
                     continue
 
 
+def save_driver_snapshot(driver):
+    driver.save_screenshot('test_out.png')
+    import codecs
+    with codecs.open('test_out.html', 'w+', 'utf8') as f:
+        f.write(driver.page_source)
+
+    with open('test_out.txt', 'w+') as f:
+        for entry in driver.get_log('browser'):
+            f.write(str(entry) + '\n')
+
+
+class CustomWait(ui.WebDriverWait):
+    def until(self, method, message=''):
+        try:
+            return super(CustomWait, self).until(method, message)
+        except TimeoutException, ex:
+            save_driver_snapshot(self._driver)
+            raise type(ex)(ex.message + 'Wait timed out. Driver snapshot saved to test_out.png/txt/html')
+
+
 def custom_phantomjs():
     b = CustomPhantomJS(desired_capabilities={'phantomjs.page.settings.resourceTimeout': '5000'})
     # hack while the python interface lags
@@ -76,7 +96,7 @@ def close():
 
 
 def wait(timeout=10):
-    return ui.WebDriverWait(instance(), timeout, 0.1)
+    return CustomWait(instance(), timeout, 0.1)
 
 
 @contextmanager
@@ -107,15 +127,7 @@ class BrowserTest(StaticLiveServerTestCase):
         b.execute_script("window.onbeforeunload = function(){}")
 
     def save_snapshot(self):  # pragma: no cover
-        b = instance()
-        b.save_screenshot('test_out.png')
-        import codecs
-        with codecs.open('test_out.html', 'w+', 'utf8') as f:
-            f.write(b.page_source)
-
-        with open('test_out.txt', 'w+') as f:
-            for entry in b.get_log('browser'):
-                f.write(str(entry) + '\n')
+        save_driver_snapshot(instance())
 
 
 class SignedInTest(BrowserTest):

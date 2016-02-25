@@ -17,10 +17,8 @@ class Section(g.UserModel):
         map(lambda l: language_set.add(l), self.text.keys())
         return language_set
 
-    def __eq__(self, other):
-        return self.name == other.name and \
-               self.title == other.title and \
-               self.text == other.text
+    def __unicode__(self):
+        return self.title.get_text()
 
     def __ne__(self, other):
         return not self.__eq__(other)
@@ -31,4 +29,3 @@ class Section(g.UserModel):
         )
 
     objects = UserModelManager()
-

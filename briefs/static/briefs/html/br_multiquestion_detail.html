@@ -3,7 +3,7 @@
         <div class="data">
             <span>Question{{ question.can_select_multiple ? ' (Can select multiple)' : '' }}:</span>
             <span editable-text="question.question[language]" e-id="question{{ question.index }}_question">
-            {{ question.question[language] || 'empty' }}
+            {{ question.question[language] || errors.questions[question.index].question || 'empty' }}
             </span>
         </div>
         <div class="data" ng-show="questionForm.$visible">
@@ -18,8 +18,10 @@
 
                             <span editable-text="choice[language]" e-form="questionForm"
                                   e-id="question{{ question.index }}_choice{{ $index }}"
-                                  e-form="innerFormC{{ $index }}">
-                                - {{ choice[language] || 'empty' }}
+                                  e-form="innerFormC{{ $index }}"
+                                  ng-class="{'text-success': question.answer.choices.indexOf($index) >= 0}">
+                                - {{ choice[language]
+                                     || errors.questions[question.index].choices || 'empty' }}
                             </span>
                     </div>
                 </div>
@@ -27,7 +29,7 @@
         </div>
         <div class="row margin-bottom-10">
             <div class="col-lg-12">
-                <button id="question{{ question.index }}_add_choice" type="button"
+                <button id="question{{ question.index }}_add_choice" type="button" ng-hide="answered"
                         class="btn btn-default add_choice" ng-click="addChoice()">
                     Add Choice
                 </button>
@@ -35,7 +37,7 @@
         </div>
     </form>
 
-    <div class="buttons" ng-hide="questionForm.$visible">
+    <div class="buttons" ng-hide="questionForm.$visible || answered">
         <button id="question{{ question.index }}_edit" type="button" class="btn btn-default edit_button"
                 aria-label="Edit"
                 ng-click="questionForm.$show()">
