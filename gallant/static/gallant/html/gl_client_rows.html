@@ -1,9 +1,9 @@
 <tr ng-repeat="client in clients" ng-click="redirect(client.id)" style="cursor: pointer">
     <td>{{ client.name }}</td>
     <td>${{ client.money_owed.amount }} {{ client.money_owed.currency }}</td>
-    <td style="border-right: none">{{ client.last_contacted  | date:'yyyy-MM-dd h:mm a' }}</td>
-    <td style="border-left: none" ng-click="$event.stopPropagation()">
-        <button ng-click="updateLastContacted($index)">Update</button>
-    </td>
+    <td>{{ client.last_contacted  | date:'yyyy-MM-dd h:mm a' }}</td>
     <td>{{ client.status.join(', ') }}</td>
+    <td ng-click="$event.stopPropagation()" class="centered">
+        <button class="btn-default small_edit_button" ng-click="updateLastContacted($index)">Update Contact Date</button>
+    </td>
 </tr>

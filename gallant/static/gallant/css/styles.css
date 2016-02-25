@@ -2546,6 +2546,16 @@ button.btn-default.edit_button {
     padding: 10px 15px 10px 15px;
 }
 
+button.btn-default.small_edit_button {
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 0px;
+    border: 1px solid #666666;
+    margin-top: 0px;
+    padding: 10px 10px 10px 10px;
+    font-size: 13px;
+}
+
 a.edit_button:hover {
     text-decoration: none;
 }

@@ -57,8 +57,9 @@
                     <tr>
                         <th st-sort="name">{% trans "Name" %}</th>
                         <th st-sort="money_owed.amount">{% trans "$ Owed" %}</th>
-                        <th colspan="2" st-sort="last_contacted">{% trans "Last Contacted" %}</th>
+                        <th st-sort="last_contacted">{% trans "Last Contacted" %}</th>
                         <th st-sort="status">{% trans "Status" %}</th>
+                        <th st-sort="actions">{% trans "Actions" %}</th>
                     </tr>
                     </thead>
                     <tbody ng-include src="'{% static "gallant/html/gl_client_rows.html" %}'">
