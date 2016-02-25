@@ -190,7 +190,7 @@ class QuoteTest(test.TransactionTestCase):
 
         quote_two.save()
 
-        request = factory.get(reverse('api-quote-payment-detail', args=[client]))
+        request = factory.get(reverse('api-quote-payment-detail', args=[payment1.id]))
         request.user = user
         force_authenticate(request, user=user)
 
