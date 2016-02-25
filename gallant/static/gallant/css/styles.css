@@ -2367,6 +2367,12 @@ ul.nav-tabs li a#add_translation_button {
     font-size: 16px;
 }
 
+label.search.control-label {
+    font-weight: 200;
+    font-size: 13px;
+    color: #7f8c8d;
+}
+
 .close {
     position: absolute;
     right: 15px;
