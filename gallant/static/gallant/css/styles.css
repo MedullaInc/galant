@@ -2552,7 +2552,7 @@ button.btn-default.small_edit_button {
     border-radius: 0px;
     border: 1px solid #666666;
     margin-top: 0px;
-    padding: 10px 10px 10px 10px;
+    padding: 10px 15px 10px 15px;
     font-size: 13px;
 }
 
@@ -2616,7 +2616,7 @@ div.breadcrumbs {
 }
 
 div.breadcrumbs a, div.breadcrumbs a:hover {
-    font-size: 16px;
+    font-size: 14px;
     margin-right: 2px;
     font-weight: 200;
     color: #666666;
@@ -2656,6 +2656,7 @@ div.breadcrumbs span {
     position: absolute;
     top: 50%;
     left: 50%;
+    font-size: 14px;
 }
 
 /* End logged in as */
