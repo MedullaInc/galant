@@ -2367,6 +2367,12 @@ ul.nav-tabs li a#add_translation_button {
     font-size: 16px;
 }
 
+label.search.control-label {
+    font-weight: 200;
+    font-size: 13px;
+    color: #7f8c8d;
+}
+
 .close {
     position: absolute;
     right: 15px;
@@ -2540,6 +2546,16 @@ button.btn-default.edit_button {
     padding: 10px 15px 10px 15px;
 }
 
+button.btn-default.small_edit_button {
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 0px;
+    border: 1px solid #666666;
+    margin-top: 0px;
+    padding: 10px 15px 10px 15px;
+    font-size: 13px;
+}
+
 a.edit_button:hover {
     text-decoration: none;
 }
@@ -2600,7 +2616,7 @@ div.breadcrumbs {
 }
 
 div.breadcrumbs a, div.breadcrumbs a:hover {
-    font-size: 16px;
+    font-size: 14px;
     margin-right: 2px;
     font-weight: 200;
     color: #666666;
@@ -2640,6 +2656,7 @@ div.breadcrumbs span {
     position: absolute;
     top: 50%;
     left: 50%;
+    font-size: 14px;
 }
 
 /* End logged in as */
