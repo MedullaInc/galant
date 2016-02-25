@@ -35,8 +35,8 @@
         </div>
     </div>
 
-    <ul data-as-sortable="dragControlListeners" data-ng-model="quote.services">
-        <li ng-repeat="service in quote.services | orderBy:'service.index'" data-as-sortable-item>
+    <ul data-as-sortable="dragControlListeners" data-ng-model="quote.services" is-disabled="sortDisabled">
+        <li ng-repeat="service in quote.services" data-as-sortable-item>
             <div id="service_{{$index}}" style="padding: 30px 0px 30px 0px;" as-sortable-item-handle
                  class="as-sortable-item-handle">
                 <div class="row">
@@ -104,6 +104,7 @@
                         <form editable-form name="rowform" ng-show="rowform.$visible" class="form-buttons form-inline"
                               shown="inserted == service">
                             <button id="save_service_{{$index}}" type="submit" ng-disabled="rowform.$waiting"
+                                    ng-click="saveRowForm(rowform)"
                                     class="btn btn-default save_button">
                                 <span class="glyphicon glyphicon-floppy-disk">
                             </button>

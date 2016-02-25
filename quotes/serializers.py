@@ -98,8 +98,9 @@ class QuoteSerializer(serializers.ModelSerializer):
         init_services = set(instance.services.all_for(user))
         new_services = set()
 
-        for service_data in services_data:
+        for id, service_data in enumerate(services_data):
             service_id = service_data.get('id', None)
+            service_data['index'] = id
             if service_id:
                 service_instance = g.Service.objects.get_for(user, 'change', pk=service_id)
                 ss = s.ServiceSerializer(data=service_data, instance=service_instance)
@@ -121,8 +122,9 @@ class QuoteSerializer(serializers.ModelSerializer):
         init_sections = set(instance.sections.all_for(user))
         new_sections = set()
 
-        for section_data in sections_data:
+        for id, section_data in enumerate(sections_data):
             section_id = section_data.get('id', None)
+            section_data['index'] = id
             if section_id:
                 section_instance = q.Section.objects.get_for(user, 'change', pk=section_id)
                 ss = SectionSerializer(data=section_data, instance=section_instance)

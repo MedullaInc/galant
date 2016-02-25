@@ -6,9 +6,15 @@ app.directive('qtServiceTable', ['Service', function (Service) {
         return {
             restrict: 'A',
             scope: true,
-            controller: ['$scope', 'Service',
-                function ($scope, Service) {
+            controller: ['$scope', '$filter', 'Service',
+            
+                function ($scope, $filter, Service) {
                     $scope.serviceFields = [];
+
+                    if($scope.quote){
+                        $filter('orderBy')($scope.quote.services, 'index');
+                    }
+
                     Service.fields({}).$promise.then(function (fields) {
                         $scope.serviceFields = fields.type;
                     });
