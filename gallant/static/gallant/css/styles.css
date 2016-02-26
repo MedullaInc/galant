@@ -2078,6 +2078,9 @@ pre {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 16px;
     font-weight: 200;
+    line-height: 1.0;
+    padding: 10px;
+    margin-top: 10px;
 }
 
 .label.label-default {
@@ -2485,6 +2488,13 @@ span.error {
 
 div.alert.alert-info {
     margin-bottom: 10px;
+    background: #efefef;
+    border: none;
+    color: #666666;
+}
+
+div.alert.alert-info p {
+    line-height: 1.4;
 }
 
 #feedback {
