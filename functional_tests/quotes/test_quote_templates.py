@@ -41,10 +41,10 @@ class QuoteTemplatesTest(browser.SignedInTest):
         b.find_element_by_xpath('//select[@id="type_0"]/option[2]').click()
         b.find_element_by_id('service0_save').click()
 
-        b.find_element_by_id('edit_section_1').click()
+        b.find_element_by_id('section1_edit').click()
         b.find_element_by_id('text_1').send_keys('test intro text')
         b.find_element_by_id('title_1').send_keys('test margin title')
-        b.find_element_by_id('save_section_1').click()
+        b.find_element_by_id('section1_save').click()
 
         #b.find_element_by_xpath('//select[@e-name="-service-2-type"]/option[@value="3"]').click()
 
@@ -89,18 +89,18 @@ class QuoteTemplatesTest(browser.SignedInTest):
         b.find_element_by_id('quote_name').send_keys('Quote test')
         b.find_element_by_id('quote_save').click()
 
-        browser.wait().until(lambda driver: driver.find_element_by_id('edit_section_0'))
-        b.find_element_by_id('edit_section_0').click()
+        browser.wait().until(lambda driver: driver.find_element_by_id('section0_edit'))
+        b.find_element_by_id('section0_edit').click()
         b.find_element_by_id('title_0').clear()
         b.find_element_by_id('title_0').send_keys('modified intro title')
         b.find_element_by_id('text_0').clear()
         b.find_element_by_id('text_0').send_keys('modified intro title')
-        b.find_element_by_id('save_section_0').click()
+        b.find_element_by_id('section0_save').click()
 
 
         self._submit_and_check(b)
 
-        browser.wait().until(lambda driver: driver.find_element_by_id('edit_section_0')).click()
+        browser.wait().until(lambda driver: driver.find_element_by_id('section0_edit')).click()
         intro = b.find_element_by_id('title_0')
         self.assertEqual(intro.get_attribute('value'), 'modified intro title')
 
@@ -124,7 +124,7 @@ class QuoteTemplatesTest(browser.SignedInTest):
         b.get(self.live_server_url + reverse('quotetemplate_detail', args=[qt.id]))
         self.disable_popups()
 
-        browser.wait().until(lambda driver: driver.find_element_by_id('edit_section_1'))
+        browser.wait().until(lambda driver: driver.find_element_by_id('section1_edit'))
         with browser.wait_for_page_load():
             b.find_element_by_id('quote_delete').click()
 
@@ -159,7 +159,7 @@ class QuoteTemplatesTest(browser.SignedInTest):
         q = get_blank_quote_autofixture(self.user)
         b.get(self.live_server_url + reverse('add_quote_template', kwargs={'quote_id': q.id}))
 
-        browser.wait().until(lambda driver: driver.find_element_by_id('edit_section_0')).click()
+        browser.wait().until(lambda driver: driver.find_element_by_id('section0_edit')).click()
         self.assertEqual(q.intro().title, {})
 
     def test_add_quote_from_template(self):
@@ -187,20 +187,20 @@ class QuoteTemplatesTest(browser.SignedInTest):
         b.find_element_by_xpath('//*[@id="id_language"]/option[@label="Spanish"]').click()
         b.find_element_by_id('language_add').click()
         b.find_element_by_id('en_tab').click()
-        b.find_element_by_id('edit_section_0').click()
+        b.find_element_by_id('section0_edit').click()
         b.find_element_by_id('title_0').send_keys('test intro title')
-        b.find_element_by_id('save_section_0').click()
+        b.find_element_by_id('section0_save').click()
         b.find_element_by_id('es_tab').click()
-        b.find_element_by_id('edit_section_0').click()
+        b.find_element_by_id('section0_edit').click()
         b.find_element_by_id('title_0').send_keys('titulo de intro prueba')
-        b.find_element_by_id('save_section_0').click()
+        b.find_element_by_id('section0_save').click()
         b.find_element_by_id('en_tab').click()
         self._submit_and_check(b)
 
         new_tab = browser.wait().until(lambda driver: driver.find_element_by_id('es_tab'))
         self.assertEqual(u'Spanish', new_tab.text)
 
-        b.find_element_by_id('edit_section_0').click()
+        b.find_element_by_id('section0_edit').click()
         b.find_element_by_id('es_tab').click()
         intro = b.find_element_by_id('title_0')
         self.assertEqual(intro.get_attribute('value'), 'titulo de intro prueba')
