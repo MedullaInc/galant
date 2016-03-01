@@ -14,5 +14,7 @@
             {{ question.answer.answer }}
         </div>
     </form>
-    <div gl-edit-buttons form='questionForm' hide="answered"></div>
+    <div gl-edit-buttons form='questionForm' hide="answered" delete="remove()"
+         prefix="question{{ question.index }}">
+    </div>
 </div>

@@ -13,10 +13,10 @@ class BriefTemplatesTest(browser.SignedInTest):
         b = browser.instance()
         b.get(self.live_server_url + reverse('add_brief_template'))
 
-        browser.wait().until(lambda driver: driver.find_element_by_id('edit_brief')).click()
+        browser.wait().until(lambda driver: driver.find_element_by_id('brief_edit')).click()
         b.find_element_by_id('brief_title').send_keys('Brief test')
         b.find_element_by_id('brief_greeting').send_keys('Brief test')
-        b.find_element_by_id('save_edit').click()
+        b.find_element_by_id('brief_save').click()
 
         self._submit_and_check(b)
 
@@ -35,15 +35,15 @@ class BriefTemplatesTest(browser.SignedInTest):
         b = browser.instance()
         b.get(self.live_server_url + reverse('add_brief_template'))
 
-        browser.wait().until(lambda driver: driver.find_element_by_id('edit_brief')).click()
+        browser.wait().until(lambda driver: driver.find_element_by_id('brief_edit')).click()
         b.find_element_by_id('brief_title').send_keys('Brief test')
         b.find_element_by_id('brief_greeting').send_keys('Brief test')
-        b.find_element_by_id('save_edit').click()
+        b.find_element_by_id('brief_save').click()
 
         self._add_language_and_text(b)
         self._submit_and_check(b)
 
-    def test_edit_brief_template(self):
+    def test_brief_edit_template(self):
         b = browser.instance()
         brief = autofixture.create_one('briefs.Brief', generate_fk=True,
                                        field_values={'questions': [], 'user': self.user})
@@ -64,7 +64,7 @@ class BriefTemplatesTest(browser.SignedInTest):
                                      driver.find_element_by_xpath('//span[@e-id="question0_question"]'))
         self.assertEqual(quest.text, 'modified question')
 
-    def test_edit_brief_lang_dropdown(self):
+    def test_brief_edit_lang_dropdown(self):
         b = browser.instance()
         brief = autofixture.create_one('briefs.Brief', generate_fk=True,
                                        field_values={'user': self.user})
@@ -153,7 +153,7 @@ class BriefTemplatesTest(browser.SignedInTest):
         client = autofixture.create_one('gallant.Client', generate_fk=True,
                                    field_values={'user': self.user})
         brief = autofixture.create_one('briefs.Brief', generate_fk=True,
-                                   field_values={'user': self.user, 'client': client})
+                                   field_values={'user': self.user, 'client': client, 'status': 0})
         q = bm.TextQuestion.objects.create(user=brief.user, question='What?')
         brief.questions.add(q)
         bt = autofixture.create_one('briefs.BriefTemplate', generate_fk=False,
@@ -164,7 +164,7 @@ class BriefTemplatesTest(browser.SignedInTest):
 
         browser.wait().until(lambda driver: driver.find_element_by_id('question_0'))
         with browser.wait_for_page_load():
-            b.find_element_by_id('delete_brief').click()
+            b.find_element_by_id('brief_delete').click()
 
         success_message = b.find_element_by_class_name('alert-success')
         self.assertTrue(u'Brieftemplate deleted.' in success_message.text)
