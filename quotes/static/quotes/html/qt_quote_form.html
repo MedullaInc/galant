@@ -10,27 +10,7 @@
             e-required e-placeholder="Enter quote name">{{ quote.name || "empty" }}  </h2>
     </div>
 
-    <div ng-show="showEdit()">
-        <!-- form -->
-        <form editable-form name="quoteform" ng-show="quoteform.$visible" class="form-buttons form-inline" shown="False">
-            <button id="save_quote" type="submit" ng-disabled="quoteform.$waiting" class="btn btn-default save_button">
-                <span class="glyphicon glyphicon-floppy-disk" </span>
-            </button>
-            <button id="cancel_quote" type="button" ng-disabled="quoteform.$waiting" ng-click="quoteform.$cancel()"
-                    class="btn btn-default save_button">
-                <span class="glyphicon glyphicon-remove"></span>
-            </button>
-        </form>
-
-        <div class="buttons" ng-show="!quoteform.$visible">
-            <button id="edit_quote" class="btn btn-default edit_button" ng-click="quoteform.$show()" ng-if="idType != 'token'">
-                <span class="glyphicon glyphicon-edit"/>
-            </button>
-            <button id="section_delete" type="button" class="btn btn-default delete_button" aria-label="Delete"
-                    ng-click="deleteObject()" ng-if="idType != 'token'">
-                <span class="glyphicon glyphicon-trash"/>
-            </button>
-        </div>
+    <div gl-edit-buttons form="quoteform" hide="!showEdit()" delete="deleteObject()('quote')" prefix="quote">
     </div>
 </div>
 
