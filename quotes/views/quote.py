@@ -126,7 +126,7 @@ class QuoteTemplateDelete(View):
         quote = get_one_or_404(request.user, 'change_quotetemplate', q.QuoteTemplate, id=kwargs['pk'])
         quote.soft_delete()
 
-        return HttpResponseRedirect(reverse('quote_templates'))
+        return HttpResponseRedirect(reverse('quotetemplates'))
 
 
 class QuoteDetail(View):

@@ -83,7 +83,7 @@ class QuoteTemplatesTest(browser.SignedInTest):
                                    field_values={'user': self.user})
         c.save()
 
-        b.get(self.live_server_url + reverse('quote_template_detail', args=[qt.id]))
+        b.get(self.live_server_url + reverse('quotetemplate_detail', args=[qt.id]))
 
         browser.wait().until(lambda driver: driver.find_element_by_id('quote_edit')).click()
         b.find_element_by_id('quote_name').send_keys('Quote test')
@@ -112,17 +112,16 @@ class QuoteTemplatesTest(browser.SignedInTest):
 
         b.get(self.live_server_url + reverse('delete_quote_template', args=[qt.id]))
 
-        response = self.client.get(self.live_server_url + reverse('quote_template_detail', args=[qt.id]))
+        response = self.client.get(self.live_server_url + reverse('quotetemplate_detail', args=[qt.id]))
         self.assertEqual(response.status_code, 404)
 
-    @skip("TODO")
     def test_soft_delete_quote_template(self):
         b = browser.instance()
         q = get_blank_quote_autofixture(self.user)
         qt = autofixture.create_one('quotes.QuoteTemplate', generate_fk=False,
                                     field_values={'quote': q, 'user': self.user})
 
-        b.get(self.live_server_url + reverse('quote_template_detail', args=[qt.id]))
+        b.get(self.live_server_url + reverse('quotetemplate_detail', args=[qt.id]))
         self.disable_popups()
 
         browser.wait().until(lambda driver: driver.find_element_by_id('edit_section_1'))
@@ -130,10 +129,10 @@ class QuoteTemplatesTest(browser.SignedInTest):
             b.find_element_by_id('quote_delete').click()
 
         success_message = b.find_element_by_class_name('alert-success')
-        self.assertTrue(u'Quote deleted.' in success_message.text)
+        self.assertTrue(u'Quotetemplate deleted.' in success_message.text)
 
         # check that brief access returns 404
-        response = self.client.get(self.live_server_url + reverse('quote_template_detail', args=[qt.id]))
+        response = self.client.get(self.live_server_url + reverse('quotetemplate_detail', args=[qt.id]))
         self.assertEqual(response.status_code, 404)
 
     def test_edit_quote_lang_dropdown(self):
@@ -146,7 +145,7 @@ class QuoteTemplatesTest(browser.SignedInTest):
                                    field_values={'user': self.user})
         c.save()     
 
-        b.get(self.live_server_url + reverse('quote_template_detail', args=[qt.id]))
+        b.get(self.live_server_url + reverse('quotetemplate_detail', args=[qt.id]))
         browser.wait().until(lambda driver: driver.find_element_by_id('quote_edit')).click()
         b.find_element_by_id('quote_name').send_keys('new quote')
         b.find_element_by_id('quote_save').click()
@@ -218,4 +217,4 @@ class QuoteTemplatesTest(browser.SignedInTest):
         with browser.wait_for_page_load():
             b.find_element_by_id('create_submit').click()
         success_message = b.find_element_by_class_name('alert-success')
-        self.assertTrue(u'Quote Template saved.' in success_message.text)
+        self.assertTrue(u'Quotetemplate saved.' in success_message.text)
