@@ -68,7 +68,7 @@ class QuotesSignedInTest(browser.SignedInTest):
         b.find_element_by_id('text_0').send_keys('test important notes text')
         b.find_element_by_id('save_section_0').click()
 
-        b.find_element_by_id('remove_service_0').click()
+        b.find_element_by_id('service0_delete').click()
 
         self._submit_and_check(b)
 
@@ -176,13 +176,14 @@ class QuotesSignedInTest(browser.SignedInTest):
 
         b.find_element_by_id('add_service').click()
         b.find_element_by_xpath('//*[@id="service_from_scratch"]').click()
-        b.find_element_by_id('edit_service_0').click()
+        b.find_element_by_id('service0_edit').click()
+        self.save_snapshot()
         b.find_element_by_id('service_name_0').send_keys('1234')
         b.find_element_by_id('quantity_0').send_keys('1')
         b.find_element_by_id('description_0').send_keys('desc')
 
         browser.wait().until(lambda driver: driver.find_element_by_xpath('//select[@id="type_0"]/option[2]')).click()
-        b.find_element_by_id('save_service_0').click()
+        b.find_element_by_id('service0_save').click()
         self._submit_and_check(b)
 
         browser.wait().until(lambda driver: driver.find_element_by_id('edit_section_0'))
