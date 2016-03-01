@@ -66,4 +66,12 @@ describe('glForm', function () {
             expect(element.html().substring(0, 3)).toEqual('<di');
         });
     });
+
+    describe('glEditButtons', function () {
+        it('compiles', function () {
+            var element = $compile('<div gl-edit-buttons></div>')($scope);
+            $scope.$digest();
+            expect(element.html().substring(0, 3)).toEqual('<sp');
+        });
+    });
 });

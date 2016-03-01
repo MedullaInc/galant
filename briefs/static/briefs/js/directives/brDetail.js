@@ -52,6 +52,7 @@ app.directive('brBriefDetail', ['Question', function (Question) {
                                 var brief_lang = brief.language ? brief.language : $scope.language;
                                 // we're creating a template from a saved brief, so delete IDs to create new one
                                 delete brief.id;
+                                brief.status = 0;
                                 angular.forEach(brief.questions, function (q) {
                                     delete q.id;
                                 });

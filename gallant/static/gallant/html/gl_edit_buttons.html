@@ -1,0 +1,20 @@
+<span class="buttons" ng-hide="hide || form.$visible">
+    <button id="{{ prefix }}_edit" type="button" class="btn btn-default edit_button" aria-label="Edit"
+            ng-click="form.$show()" ng-hide="hideEdit">
+        <span class="glyphicon glyphicon-edit"/>
+    </button>
+    <button id="{{ prefix }}_delete" type="button" class="btn btn-default delete_button" aria-label="Delete"
+            ng-click="delete()">
+        <span class="glyphicon glyphicon-trash"/>
+    </button>
+</span>
+<span ng-show="form.$visible">
+    <button id="{{ prefix }}_save" type="submit" class="btn btn-primary" ng-disabled="form.$waiting"
+            ng-click="form.$save()">
+        Save
+    </button>
+    <button id="{{ prefix }}_cancel" type="button" class="btn btn-default" ng-disabled="form.$waiting"
+            ng-click="form.$cancel()">
+        Cancel
+    </button>
+</span>

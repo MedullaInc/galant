@@ -139,3 +139,17 @@ app.directive('glLanguageForm', ['LANGUAGES', function (LANGUAGES) {
         templateUrl: '/static/gallant/html/gl_language_form.html',
     };
 }]);
+
+app.directive('glEditButtons', ['LANGUAGES', function (LANGUAGES) {
+    return {
+        restrict: 'A',
+        scope: {
+            prefix: '@',
+            form: '=',
+            hide: '=',
+            hideEdit: '=',
+            delete: '&',
+        },
+        templateUrl: '/static/gallant/html/gl_edit_buttons.html',
+    };
+}]);
