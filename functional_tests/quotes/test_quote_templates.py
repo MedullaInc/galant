@@ -31,17 +31,17 @@ class QuoteTemplatesTest(browser.SignedInTest):
 
         b.get(self.live_server_url + reverse('add_quote_template'))
 
-        browser.wait().until(lambda driver: driver.find_element_by_id('quote_edit')).click()
-        b.find_element_by_id('quote_name').send_keys('Quote test')
+        browser.wait().until(lambda driver: driver.find_element_by_id('quote_name')).send_keys('Quote test')
         b.find_element_by_id('quote_save').click()
-        browser.wait().until(lambda driver: driver.find_element_by_id('service0_edit')).click()
-        b.find_element_by_id('service_name_0').send_keys('1234')
+        browser.wait().until(lambda driver: driver.find_element_by_id('service_name_0')).send_keys('1234')
         b.find_element_by_id('quantity_0').send_keys('1')
         b.find_element_by_id('description_0').send_keys('desc')
         b.find_element_by_xpath('//select[@id="type_0"]/option[2]').click()
         b.find_element_by_id('service0_save').click()
 
-        b.find_element_by_id('section1_edit').click()
+        b.find_element_by_id('text_0').send_keys('test intro text')
+        b.find_element_by_id('title_0').send_keys('test margin title')
+        b.find_element_by_id('section0_save').click()
         b.find_element_by_id('text_1').send_keys('test intro text')
         b.find_element_by_id('title_1').send_keys('test margin title')
         b.find_element_by_id('section1_save').click()
@@ -58,11 +58,9 @@ class QuoteTemplatesTest(browser.SignedInTest):
         c.save()
 
         b.get(self.live_server_url + reverse('add_quote_template'))
-        browser.wait().until(lambda driver: driver.find_element_by_id('quote_edit')).click()
-        b.find_element_by_id('quote_name').send_keys('New quote')
+        browser.wait().until(lambda driver: driver.find_element_by_id('quote_name')).send_keys('New quote')
         b.find_element_by_id('quote_save').click()
-        browser.wait().until(lambda driver: driver.find_element_by_id('service0_edit')).click()
-        b.find_element_by_id('service_name_0').send_keys('1234')
+        browser.wait().until(lambda driver: driver.find_element_by_id('service_name_0')).send_keys('1234')
         b.find_element_by_id('quantity_0').send_keys('1')
         b.find_element_by_id('description_0').send_keys('desc')
         b.find_element_by_xpath('//select[@id="type_0"]/option[2]').click()
@@ -149,7 +147,7 @@ class QuoteTemplatesTest(browser.SignedInTest):
         browser.wait().until(lambda driver: driver.find_element_by_id('quote_edit')).click()
         b.find_element_by_id('quote_name').send_keys('new quote')
         b.find_element_by_id('quote_save').click()
-        self._add_language_and_text(b)
+        self._add_language_and_text(b, True)
 
         self._submit_and_check(b)
 
@@ -178,7 +176,7 @@ class QuoteTemplatesTest(browser.SignedInTest):
         success_message = b.find_element_by_class_name('alert-success')
         self.assertTrue(u'Quote saved.' in success_message.text)
 
-    def _add_language_and_text(self, b):
+    def _add_language_and_text(self, b, click_edit=False):
         browser.wait().until(lambda driver: driver.find_element_by_xpath('//*[@e-id="quote_name"]').text != 'empty')
         browser.wait().until(lambda driver: driver.find_element_by_xpath('//*[@e-id="quote_name"]').text != '')
         trans_btn = b.find_element_by_id('add_translation_button')
@@ -187,9 +185,15 @@ class QuoteTemplatesTest(browser.SignedInTest):
         b.find_element_by_xpath('//*[@id="id_language"]/option[@label="Spanish"]').click()
         b.find_element_by_id('language_add').click()
         b.find_element_by_id('en_tab').click()
-        b.find_element_by_id('section0_edit').click()
+        if click_edit:
+            b.find_element_by_id('section0_edit').click()
+            b.find_element_by_id('section1_edit').click()
         b.find_element_by_id('title_0').send_keys('test intro title')
+        b.find_element_by_id('text_0').send_keys('test intro text')
+        b.find_element_by_id('title_1').send_keys('test intro title')
+        b.find_element_by_id('title_1').send_keys('test intro text')
         b.find_element_by_id('section0_save').click()
+        b.find_element_by_id('section1_save').click()
         b.find_element_by_id('es_tab').click()
         b.find_element_by_id('section0_edit').click()
         b.find_element_by_id('title_0').send_keys('titulo de intro prueba')

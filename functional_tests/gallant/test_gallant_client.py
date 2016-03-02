@@ -123,11 +123,11 @@ class GallantClientTest(browser.SignedInTest):
         b = browser.instance()
         b.get(self.live_server_url + reverse('add_client'))
 
-        b.find_element_by_name('client.name').send_keys('Kanye West')
-        b.find_element_by_name('client.email').send_keys('kanye@imaletyoufinish.com')
         browser.wait().until(
             lambda driver: driver.find_element_by_xpath('//select[@name="client.type"]/option[@value="1"]')
         ).click()
+        b.find_element_by_name('client.name').send_keys('Kanye West')
+        b.find_element_by_name('client.email').send_keys('kanye@imaletyoufinish.com')
         b.find_element_by_xpath('//select[@name="client.size"]/option[@value="1"]').click()
         b.find_element_by_xpath('//select[@name="client.status"]/option[@value="1"]').click()
         # b.find_element_by_xpath('//textarea[@name="notes"]').send_keys('asdf')

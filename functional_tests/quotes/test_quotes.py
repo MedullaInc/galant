@@ -58,16 +58,18 @@ class QuotesSignedInTest(browser.SignedInTest):
                                    field_values={'user': self.user, 'status': '1'})
         c.save()
         b.get(self.live_server_url + reverse('add_quote'))
-        browser.wait().until(lambda driver: driver.find_element_by_id('quote_edit')).click()
-        b.find_element_by_id('quote_name').send_keys('Quote test')
-        browser.wait().until(lambda driver: driver.find_element_by_xpath('//select[@name="client"]/option[2]'))
+        browser.wait().until(lambda driver: driver.find_element_by_id('quote_name')).send_keys('Quote test')
+        browser.wait().until(lambda driver: driver.find_element_by_xpath('//select[@name="client"]/option[1]'))
         b.find_element_by_xpath('//select[@name="client"]/option[2]').click()
         b.find_element_by_id('quote_save').click()
-        b.find_element_by_id('section0_edit').click()
         b.find_element_by_id('title_0').send_keys('test important notes title')
         b.find_element_by_id('text_0').send_keys('test important notes text')
         b.find_element_by_id('section0_save').click()
+        b.find_element_by_id('title_1').send_keys('test important notes title')
+        b.find_element_by_id('text_1').send_keys('test important notes text')
+        b.find_element_by_id('section1_save').click()
 
+        b.find_element_by_id('service0_save').click()
         b.find_element_by_id('service0_delete').click()
 
         self._submit_and_check(b)
@@ -81,11 +83,10 @@ class QuotesSignedInTest(browser.SignedInTest):
         b.get(self.live_server_url + reverse('quote_detail', args=[q.id]))
         browser.wait().until(lambda driver: driver.find_element_by_id('quote_edit')).click()
         b.find_element_by_id('quote_name').send_keys('Quote test')
-        browser.wait().until(lambda driver: driver.find_element_by_xpath('//select[@name="client"]/option[2]'))
+        browser.wait().until(lambda driver: driver.find_element_by_xpath('//select[@name="client"]/option[1]'))
         b.find_element_by_xpath('//select[@name="client"]/option[2]').click()
         b.find_element_by_id('quote_save').click()
-        browser.wait().until(lambda driver: driver.find_element_by_id('section0_edit'))
-        b.find_element_by_id('section0_edit').click()
+        browser.wait().until(lambda driver: driver.find_element_by_id('section0_edit')).click()
         b.find_element_by_id('title_0').clear()
         b.find_element_by_id('title_0').send_keys('modified intro title')
         b.find_element_by_id('section0_save').click()
@@ -143,8 +144,6 @@ class QuotesSignedInTest(browser.SignedInTest):
 
         add_section = b.find_element_by_id('add_section')
         add_section.click()
-        add_section.click()
-        add_section.click()
         browser.wait().until(lambda driver: driver.find_element_by_id('section1_edit')).click()
         b.find_element_by_id('title_1').send_keys('1234')
         b.find_element_by_id('text_1').send_keys('4321')
@@ -168,16 +167,13 @@ class QuotesSignedInTest(browser.SignedInTest):
         c.save()
         b.get(self.live_server_url + reverse('quote_detail', args=[q.id]))
 
-        browser.wait().until(lambda driver: driver.find_element_by_id('section0_edit'))
-        b.find_element_by_id('quote_edit').click()
+        browser.wait().until(lambda driver: driver.find_element_by_id('quote_edit')).click()
         b.find_element_by_id('quote_name').send_keys('Quote test')
         browser.wait().until(lambda driver: driver.find_element_by_xpath('//select[@name="client"]/option[1]')).click()
         b.find_element_by_id('quote_save').click()
 
         b.find_element_by_id('add_service').click()
         b.find_element_by_xpath('//*[@id="service_from_scratch"]').click()
-        b.find_element_by_id('service0_edit').click()
-        self.save_snapshot()
         b.find_element_by_id('service_name_0').send_keys('1234')
         b.find_element_by_id('quantity_0').send_keys('1')
         b.find_element_by_id('description_0').send_keys('desc')
@@ -190,34 +186,6 @@ class QuotesSignedInTest(browser.SignedInTest):
         name = b.find_element_by_css_selector('div[e-id="service_name_0"]')
         self.assertEqual(name.text, '1234')
 
-    def test_section_order(self):
-        b = browser.instance()
-        q = get_blank_quote_autofixture(self.user)
-        b.get(self.live_server_url + reverse('quote_detail', args=[q.id]))
-
-        browser.wait().until(lambda driver: driver.find_element_by_id('section0_edit'))
-
-        add_section = b.find_element_by_id('add_section')
-        add_section.click()
-        add_section.click()
-        add_section.click()
-
-        browser.wait().until(lambda driver: driver.find_element_by_id('section1_edit')).click()
-        b.find_element_by_id('title_1').send_keys('s3title')
-        b.find_element_by_id('text_1').send_keys('s3title')
-        b.find_element_by_id('section1_save').click()
-
-        self._submit_and_check(b)
-
-        browser.wait().until(lambda driver: driver.find_element_by_id('section1_edit'))
-        b.find_element_by_id('section1_edit').click()
-
-        el = b.find_element_by_id('text_1')
-        self.assertEqual(el.get_attribute('value'), 's3title')
-
-        el = b.find_element_by_id('title_1')
-        self.assertEqual(el.get_attribute('value'), 's3title')
-
     def test_remove_section(self):
         b = browser.instance()
         q = get_blank_quote_autofixture(self.user)
@@ -227,9 +195,8 @@ class QuotesSignedInTest(browser.SignedInTest):
         add_section = b.find_element_by_id('add_section')
         add_section.click()
         add_section.click()
-        add_section.click()
         browser.wait().until(lambda driver: driver.find_element_by_id('section0_edit')).click()
-        b.find_element_by_id('section1_edit').click()
+        browser.wait().until(lambda driver: driver.find_element_by_id('section1_edit')).click()
         b.find_element_by_id('title_0').send_keys('s2title')
         b.find_element_by_id('text_0').send_keys('s2text')
         b.find_element_by_id('title_1').send_keys('s2title')
@@ -261,7 +228,10 @@ class QuotesSignedInTest(browser.SignedInTest):
         add_section = b.find_element_by_id('add_section')
         add_section.click()
 
-        self.assertEqual(len(b.find_elements_by_css_selector('h2[e-id="title_2"]')), 1)
+        self.assertIsNotNone(b.find_elements_by_id('title_2'))
+        b.find_element_by_id('title_2').send_keys('s2title')
+        b.find_element_by_id('text_2').send_keys('s2text')
+        b.find_element_by_id('section2_save').click()
 
         self._submit_and_check(b)
 
