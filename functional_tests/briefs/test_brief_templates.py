@@ -61,7 +61,7 @@ class BriefTemplatesTest(browser.SignedInTest):
         self._submit_and_check(b)
 
         quest = browser.wait().until(lambda driver:
-                                     driver.find_element_by_xpath('//span[@e-id="question0_question"]'))
+                                     driver.find_element_by_xpath('//p[@e-id="question0_question"]'))
         self.assertEqual(quest.text, 'modified question')
 
     def test_brief_edit_lang_dropdown(self):
@@ -85,8 +85,8 @@ class BriefTemplatesTest(browser.SignedInTest):
         b.get(self.live_server_url + reverse('add_brief_template') + '?brief_id=%d' % brief.id)
 
         question = browser.wait().until(lambda driver:
-                                        driver.find_element_by_xpath('//span[@e-id="question0_question"]'))
-        self.assertEqual('empty', question.text)
+                                        driver.find_element_by_xpath('//p[@e-id="question0_question"]'))
+        self.assertEqual('Not set', question.text)
 
     def test_add_brief_from_template(self):
         b = browser.instance()
@@ -112,7 +112,7 @@ class BriefTemplatesTest(browser.SignedInTest):
         self.assertTrue(u'Brief saved.' in success_message.text)
 
     def _add_language_and_text(self, b):
-        browser.wait().until(lambda driver: driver.find_element_by_xpath('//h2[@e-id="brief_title"]').text != 'empty')
+        browser.wait().until(lambda driver: driver.find_element_by_xpath('//h2[@e-id="brief_title"]').text != 'Not set')
         b.find_element_by_id('add_question').click()
         b.find_element_by_id('question0_edit').click()
         b.find_element_by_id('question0_question').clear()

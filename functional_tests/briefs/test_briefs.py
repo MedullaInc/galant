@@ -107,7 +107,7 @@ class BriefsSignedInTest(browser.SignedInTest):
         self.assertTrue(u'Brief saved.' in success_message.text)
 
         el = browser.wait().until(lambda driver:
-                                  driver.find_element_by_xpath('//span[@e-id="question2_choice0"]'))
+                                  driver.find_element_by_xpath('//p[@e-id="question2_choice0"]'))
         answer = el.text
         self.assertEqual(answer, u'- foo')
 
