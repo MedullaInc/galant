@@ -6,6 +6,7 @@ from django.conf import settings
 from django.contrib import messages
 from django.core.urlresolvers import reverse
 from gallant.utils import get_one_or_404, GallantObjectPermissions, GallantViewSetPermissions
+from gallant.views.user import UserModelViewSet
 from quotes import models as q, serializers
 from gallant import forms as gf
 from django.utils.translation import ugettext_lazy as _
@@ -35,7 +36,7 @@ class QuoteTemplateDetail(View):
                    'language_form': gf.LanguageForm()}
 
         request.breadcrumbs([(_('Quotes'), reverse('quotes')),
-                             (_('Quote Templates'), reverse('quote_templates')),
+                             (_('Quote Templates'), reverse('quotetemplates')),
                              (_('Quote: %s' % quote.quote.name), request.path_info)])
         return TemplateResponse(request=request,
                                 template="quotes/quotetemplate_detail_ng.html",
@@ -45,7 +46,7 @@ class QuoteTemplateDetail(View):
 class QuoteTemplateView(View):
     def get(self, request, **kwargs):
         self.request.breadcrumbs([(_('Quotes'), reverse('quotes')),
-                                  (_('Templates'), reverse('quote_templates'))])
+                                  (_('Templates'), reverse('quotetemplates'))])
 
         if 'pk' in kwargs:  # pragma: no cover
             self.object = get_one_or_404(request.user, 'view_quotetemplate', q.QuoteTemplate, pk=kwargs['pk'])
@@ -55,7 +56,7 @@ class QuoteTemplateView(View):
                                           'To save it as your own, use it to create a quote, then '
                                           'create a separate template from the new quote.')
 
-            self.request.breadcrumbs([(_('Quote: %s' % self.object.quote.name), reverse('quote_template_detail', args=[self.object.id])),
+            self.request.breadcrumbs([(_('Template: %s' % self.object.quote.name), reverse('quotetemplate_detail', args=[self.object.id])),
                                       (_('Edit Template'), request.path_info)])
         else: 
             self.object = None
@@ -97,12 +98,9 @@ class QuoteTemplateView(View):
                                 context=context)
 
 
-class QuoteTemplateViewSet(ModelViewSet):
+class QuoteTemplateViewSet(UserModelViewSet):
     model = q.QuoteTemplate
     serializer_class = serializers.QuoteTemplateSerializer
-    permission_classes = [
-         GallantViewSetPermissions
-     ]
 
     def get_queryset(self):
         clients_only = self.request.query_params.get('clients_only', None)
@@ -110,21 +108,3 @@ class QuoteTemplateViewSet(ModelViewSet):
             return self.model.objects.all_for(self.request.user).filter(quote__client__isnull=clients_only)
         else:
             return self.model.objects.all_for(self.request.user)
-
-
-
-    def update(self, request, *args, **kwargs):
-        response = super(QuoteTemplateViewSet, self).update(request, *args, **kwargs)
-        if response.status_code == HTTP_200_OK or response.status_code == HTTP_201_CREATED:
-            self.request._messages.add(messages.SUCCESS, 'Quote Template saved.')
-            return Response({'status': 0, 'redirect': reverse('quote_template_detail', args=[response.data['id']])})
-        else:
-            return response
-
-    def create(self, request, *args, **kwargs):
-        response = super(QuoteTemplateViewSet, self).create(request, *args, **kwargs)
-        if response.status_code == HTTP_201_CREATED:
-            self.request._messages.add(messages.SUCCESS, 'Quote Template saved.')
-            return Response({'status': 0, 'redirect': reverse('quote_template_detail', args=[response.data['id']])})
-        else:
-            return response

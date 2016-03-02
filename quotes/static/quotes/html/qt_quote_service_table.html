@@ -40,6 +40,7 @@
             <div id="service_{{$index}}" style="padding: 30px 0px 30px 0px;" as-sortable-item-handle
                  class="as-sortable-item-handle">
                 <div class="row">
+                    <form editable-form name="rowform"></form>
                     <span ng-click="showRowForm(rowform)">
                     <div class="col-xs-offset-0 col-xs-2 section_content">
                         <div name="name" e-class="form-control" editable-text="service.name[language]"
@@ -99,31 +100,8 @@
                     </div>
 
 
-                    <div ng-show="showEdit()">
-                        <!-- form -->
-                        <form editable-form name="rowform" ng-show="rowform.$visible" class="form-buttons form-inline"
-                              shown="inserted == service">
-                            <button id="save_service_{{$index}}" type="submit" ng-disabled="rowform.$waiting"
-                                    ng-click="saveRowForm(rowform)"
-                                    class="btn btn-default save_button">
-                                <span class="glyphicon glyphicon-floppy-disk">
-                            </button>
-                            <button id="cancel_service_{{$index}}" type="button" ng-disabled="rowform.$waiting"
-                                    ng-click="rowform.$cancel()" class="btn btn-default save_button">
-                                <span class="glyphicon glyphicon-remove">
-                            </button>
-                        </form>
-
-                        <div class="buttons" ng-show="!rowform.$visible">
-                            <button id="edit_service_{{$index}}" class="btn btn-default edit_button"
-                                    ng-click="showRowForm(rowform)">
-                                <span class="glyphicon glyphicon-edit"/>
-                            </button>
-                            <button id="remove_service_{{$index}}" class="btn btn-default delete_button"
-                                    ng-click="removeService($index)">
-                                <span class="glyphicon glyphicon-trash"/>
-                            </button>
-                        </div>
+                    <div gl-edit-buttons form="rowform" hide="!showEdit()"
+                         delete="removeService($index)" prefix="service{{ $index }}">
                     </div>
                 </div>
             </div>
