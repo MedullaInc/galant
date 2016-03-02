@@ -92,6 +92,7 @@ class QuoteSerializer(serializers.ModelSerializer):
         extra_kwargs = {
             'id': {'read_only': False, 'required': False, 'allow_null':True},
             'user': {'required': False},
+            'name': {'required': True},
         }
 
     def _write_services(self, user, instance, services_data):
