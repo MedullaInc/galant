@@ -40,7 +40,7 @@
             <div id="service_{{$index}}" style="padding: 30px 0px 30px 0px;" as-sortable-item-handle
                  class="as-sortable-item-handle">
                 <div class="row">
-                    <form editable-form name="rowform"></form>
+                    <form editable-form name="rowform" shown="!service.name"></form>
                     <span ng-click="showRowForm(rowform)">
                     <div class="col-xs-offset-0 col-xs-2 section_content">
                         <div name="name" e-class="form-control" editable-text="service.name[language]"

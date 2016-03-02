@@ -60,7 +60,7 @@ app.directive('qtQuoteForm', ['Quote', '$uibModal', function (Quote, $uibModal) 
                 } else {    
                     name = "section_" + (counter++);
                 }
-                $scope.section              = new Section({"name":name, "index":counter, "title":{}, "views":0});
+                $scope.section              = new Section({"name":name, "index":counter, "views":0});
                 $scope.section.index        = counter++;
                 delete $scope.section.id;
                 $scope.quote.sections.push($scope.section);
