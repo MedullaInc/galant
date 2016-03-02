@@ -102,7 +102,7 @@ class BriefTemplatesTest(browser.SignedInTest):
               reverse('add_brief') + '?template_id=%d&lang=en&client_id=%d' % (bt.id, client.id))
 
         browser.wait().until(lambda driver: driver.find_element_by_id('question0'))
-        question = b.find_element_by_xpath('//span[@e-id="question0_question"]')
+        question = b.find_element_by_xpath('//p[@e-id="question0_question"]')
         self.assertEqual(quest.question.get_text(), question.text)
 
         with browser.wait_for_page_load():
@@ -112,7 +112,7 @@ class BriefTemplatesTest(browser.SignedInTest):
         self.assertTrue(u'Brief saved.' in success_message.text)
 
     def _add_language_and_text(self, b):
-        browser.wait().until(lambda driver: driver.find_element_by_xpath('//span[@e-id="brief_title"]').text != 'empty')
+        browser.wait().until(lambda driver: driver.find_element_by_xpath('//h2[@e-id="brief_title"]').text != 'empty')
         b.find_element_by_id('add_question').click()
         b.find_element_by_id('question0_edit').click()
         b.find_element_by_id('question0_question').clear()
@@ -133,7 +133,7 @@ class BriefTemplatesTest(browser.SignedInTest):
         new_tab = browser.wait().until(lambda driver: driver.find_element_by_xpath('//*[@id="es_tab"]/a'))
         self.assertEqual(u'Spanish', new_tab.text)
 
-        question = b.find_element_by_xpath('//span[@e-id="question0_question"]')
+        question = b.find_element_by_xpath('//p[@e-id="question0_question"]')
         b.find_element_by_xpath('//*[@id="es_tab"]/a').click()
         self.assertEqual(question.text, 'Quien esta en primera?')
 
