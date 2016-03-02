@@ -2279,7 +2279,7 @@ ul.nav-tabs li.active a:hover {
 }
 
 ul.nav-tabs li a {
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 200;
     -webkit-border-radius: 0px;
     -moz-border-radius: 0px;
@@ -2301,7 +2301,7 @@ ul.nav-tabs li a {
 }
 
 ul.nav-tabs li a:hover {
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 200;
     -webkit-border-radius: 0px;
     -moz-border-radius: 0px;
@@ -2316,7 +2316,7 @@ ul.nav-tabs li a:hover {
 }
 
 ul.nav-tabs li.active a {
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 200;
     -webkit-border-radius: 0px;
     -moz-border-radius: 0px;
@@ -2329,7 +2329,7 @@ ul.nav-tabs li.active a {
 }
 
 ul.nav-tabs li.active a:hover {
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 200;
     -webkit-border-radius: 0px;
     -moz-border-radius: 0px;
