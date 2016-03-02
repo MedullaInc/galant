@@ -17,11 +17,11 @@
 
 <div class="row object_data" ng-show="showClient()">
     <div class="col-lg-6">
-        <p ng-required="true" e-class="form-control" e-name="client" class="data" editable-select="quote.client" e-form="quoteform"
+        <p ng-required="true" e-class="form-control" e-name="client" class="data" editable-select="quote.client" e-form="quoteform" editable-placeholder="Choose client..."
            e-required e-ng-options="s.id as s.name for s in clients"><span class="detail_title">Client</span>
             {{ (clients | filter:{id: quote.client})[0].name }} </p>
         <br>
-        <p e-class="form-control" id="status" class="data" editable-select="quote.status" e-form="quoteform" e-required e-ng-options="key as val for (key, val) in quoteStatus" >
+        <p e-class="form-control" id="status" class="data" editable-select="quote.status" e-form="quoteform" e-required e-ng-options="key as val for (key, val) in quoteStatus" editable-placeholder="Choose status...">
            <span class="label label-default">{{ quoteStatus[quote.status]  }}</span>
         </p>
     </div>

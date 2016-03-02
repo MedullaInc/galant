@@ -58,7 +58,7 @@
                     </div>
                     <div class="col-xs-2 section_content">
                         <div e-class="form-control" editable-select="service.type" e-id="type_{{$index}}"
-                             e-form="rowform"
+                             e-form="rowform" editable-placeholder="Choose type..."
                              e-ng-options="key as val for (key, val) in serviceFields">
                             {{ showType(service) }}
                         </div>
