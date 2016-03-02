@@ -2110,6 +2110,15 @@ h2.app_title, h2.section_title, h2.center_title {
     letter-spacing: -1px;
 }
 
+h2.inline_title {
+    font-size: 28px;
+    font-weight: 800;
+    margin-bottom: 10px;
+    margin-top: 0px;
+    color: #333333;
+    letter-spacing: -1px;
+}
+
 .btn-default.sidebar {
     padding: 10px;
     -webkit-border-radius: 0px;
@@ -2350,6 +2359,14 @@ ul.nav-tabs li a#add_translation_button {
 
 /* Forms */
 
+.editable-wrap {
+    width: 100%;
+}
+
+.editable-wrap div.form-group {
+    margin-bottom: 10px;
+}
+
 #form .section_title, .form-group .section_title {
     font-size: 22px;
     font-weight: 100;
@@ -2357,7 +2374,11 @@ ul.nav-tabs li a#add_translation_button {
 
 #form label, .form-group label {
     font-weight: 200;
-    font-size: 14px;
+    font-size: 12px;
+}
+
+#form label, .form-group label.in-place {
+    color: #999999;
 }
 
 #form label.control-label, .form-group label.control-label {
@@ -2576,7 +2597,7 @@ button.btn-default.delete_button {
     -moz-border-radius: 0px;
     border-radius: 0px;
     border: 1px solid #666666;
-    padding: 10px 15px 10px 10px;
+    padding: 10px 15px 10px 15px;
     margin-top: 10px;
 }
 

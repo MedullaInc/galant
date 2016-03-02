@@ -9,12 +9,12 @@
     </button>
 </span>
 <span ng-show="form.$visible">
-    <button id="{{ prefix }}_save" type="submit" class="btn btn-primary" ng-disabled="form.$waiting"
+    <button id="{{ prefix }}_save" type="submit" class="btn btn-default edit_button" ng-disabled="form.$waiting"
             ng-click="form.$save()">
-        Save
+        <span class="glyphicon glyphicon-floppy-disk"></span>
     </button>
-    <button id="{{ prefix }}_cancel" type="button" class="btn btn-default" ng-disabled="form.$waiting"
+    <button id="{{ prefix }}_cancel" type="button" class="btn btn-default delete_button" ng-disabled="form.$waiting"
             ng-click="form.$cancel()">
-        Cancel
+        <span class="glyphicon glyphicon-minus-sign"/>
     </button>
 </span>
