@@ -2,10 +2,6 @@
 
     <div class="col-lg-10 col-md-10 col-sm-9 col-xs-9">
         <form editable-form name="quoteform" shown="quote && !quote.name"></form>
-        <div ng-show="showViews()">
-            <span class="label label-success" uib-tooltip="Views" tooltip-placement="right"> {{ quote.views }} </span><br>
-            <span class="label label-success" uib-tooltip="Seconds" tooltip-placement="right"> {{ quote.session_duration }}</span>
-        </div>
 
         <h2 ng-required="true" e-class="form-control" e-id="quote_name" editable-text="quote.name" class="section_title" e-form="quoteform"
             e-required e-placeholder="Enter quote name">Name: {{ quote.name || quote.errors.name || "empty" }}  </h2>
@@ -15,19 +11,25 @@
     </div>
 </div>
 
-<div class="row object_data" ng-show="showClient()">
-    <div class="col-lg-6">
+<div class="row">
+    <div class="col-lg-6" ng-show="showClient()">
         <p ng-required="true" e-class="form-control" e-name="client" class="data" editable-select="quote.client" e-form="quoteform" editable-placeholder="Choose client..."
            e-required e-ng-options="s.id as s.name for s in clients"><span class="detail_title">Client</span>
-            {{ (clients | filter:{id: quote.client})[0].name }} </p>
-        <br>
-        <p e-class="form-control" id="status" class="data" editable-select="quote.status" e-form="quoteform" e-required e-ng-options="key as val for (key, val) in quoteStatus" editable-placeholder="Choose status...">
-           <span class="label label-default">{{ quoteStatus[quote.status]  }}</span>
+            {{ (clients | filter:{id: quote.client})[0].name }}
+            <br/><br/>
+        </p>
+        <p e-class="form-control" id="status" class="data" editable-select="quote.status" e-form="quoteform" e-required e-ng-options="key as val for (key, val) in quoteStatus">
+            <span class="label label-default">{{ quoteStatus[quote.status] }}</span>
+            <span ng-show="showViews()">
+                <span class="label label-default" uib-tooltip="Views" tooltip-placement="right">{{ quote.views }} times</span>
+                <span class="label label-default" uib-tooltip="Seconds" tooltip-placement="right">for {{ quote.session_duration }}s</span>
+            </span>
         </p>
     </div>
 </div>
 
-<br>
+<br/>
+<br/>
 
 <div>
     <script type="text/ng-template" id="translationTemplate.html">
@@ -51,7 +53,7 @@
             <li id="add_translation">
                  <a class="btn" id="add_translation_button"
                         popover-placement="bottom" uib-popover-template="'languageForm.html'" popover-trigger="outsideClick">Add Translation
-                </a> 
+                </a>
             </li>
         </ul>
     </div>
@@ -117,5 +119,4 @@
         </div>
     </script>
 </div>
-
 

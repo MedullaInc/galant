@@ -498,7 +498,7 @@ input[type="color"],
 }
 
 .form-group {
-    margin-bottom: 10px;
+    margin-bottom: 15px;
 }
 
 label {
@@ -1845,7 +1845,7 @@ a.login-btn.index.register:hover {
     background: #ffffff;
     color: #333333;
     font-weight: 100;
-    margin-top: 10px;
+    margin-top: 0px;
     letter-spacing: 1px;
     font-size: 16px;
     padding-left: 25px;
@@ -2061,7 +2061,6 @@ div.question {
 
 h2.section_subtitle {
     font-size: 28px;
-    font-weight: 100;
     margin-top: 0px;
 }
 
@@ -2104,7 +2103,7 @@ div.object_data p {
 h2.app_title, h2.section_title, h2.center_title {
     font-size: 28px;
     font-weight: 800;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     margin-top: 10px;
     color: #333333;
     letter-spacing: -1px;
@@ -2383,12 +2382,12 @@ ul.nav-tabs li a#add_translation_button {
 
 #form label.control-label, .form-group label.control-label {
     font-weight: 200;
-    font-size: 16px;
+    font-size: 14px;
 }
 
 #form label.form_label, .form-group label.form_label {
     font-weight: 200;
-    font-size: 16px;
+    font-size: 14px;
 }
 
 label.search.control-label {
@@ -2573,7 +2572,7 @@ button.btn-default.edit_button {
     -moz-border-radius: 0px;
     border-radius: 0px;
     border: 1px solid #666666;
-    margin-top: 10px;
+    margin-top: 0px;
     margin-right: 5px;
     padding: 10px 15px 10px 15px;
 }
@@ -2598,7 +2597,7 @@ button.btn-default.delete_button {
     border-radius: 0px;
     border: 1px solid #666666;
     padding: 10px 15px 10px 15px;
-    margin-top: 10px;
+    margin-top: 0px;
 }
 
 a.delete_button:hover {
@@ -2610,7 +2609,7 @@ button.btn-default.save_button {
     -moz-border-radius: 0px;
     border-radius: 0px;
     border: 1px solid #666666;
-    margin-top: 10px;
+    margin-top: 0px;
     padding: 10px 15px 10px 15px;
 }
 
@@ -2623,7 +2622,7 @@ button.btn-default.preview_button {
     -moz-border-radius: 0px;
     border-radius: 0px;
     border: 1px solid #666666;
-    margin-top: 10px;
+    margin-top: 0px;
     margin-left: 4px;
     padding: 10px 15px 10px 10px;
 }
@@ -2819,4 +2818,21 @@ div.breadcrumbs span {
 .as-sortable-item {
     border: 0px !important;
 }
+
+div.row.as-sortable-item-handle {
+    border-bottom: 1px solid #efefef;
+    padding-bottom: 15px;
+    margin-bottom: 25px;
+}
+
+div.row.as-sortable-item-handle p {
+    line-height: 1.4;
+}
+
 /* End Section Sortable Items */
+
+/* Table List */
+li.row {
+    border-bottom: 1px solid #999999;
+}
+/* End Table List*/

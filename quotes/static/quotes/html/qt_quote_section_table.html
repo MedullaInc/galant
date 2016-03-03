@@ -4,55 +4,60 @@
         Quote Sections
     </h2>
 
+    <hr/>
+
     <ul data-as-sortable="dragControlListeners" data-ng-model="quote.sections" is-disabled="sortDisabled">
         <li data-ng-repeat="section in quote.sections" data-as-sortable-item>
-            <div id="section_{{$index}}" as-sortable-item-handle class="as-sortable-item-handle">
+            <div id="section_{{$index}}" as-sortable-item-handle class="row as-sortable-item-handle">
 
-                <div class="row">
-                    <div class="col-lg-12" ng-click="isCollapsed = !isCollapsed">
-                        <p id="name_{{$index}}">
-                            {{ section.name }}:
-                        </p>
+                <div class="col-lg-12">
+
+                    <div class="row">
+                        <div class="col-lg-12" ng-click="isCollapsed = !isCollapsed">
+                            <p id="name_{{$index}}">
+                                {{ section.name }}:
+                            </p>
+                        </div>
                     </div>
-                </div>
 
-                <form editable-form name="rowform" shown="!section.title"></form>
-                <div class="row" uib-collapse="isCollapsed">
-                    <div class="col-lg-10">
-                        <h2 e-id="title_{{$index}}" e-class="form-control" data-inputclass="form-control"
-                            class="section_subtitle" editable-text="section.title[language]" e-form="rowform"
-                            e-required e-placeholder="Section Title">
-                            {{ section.title[language] || 'empty' }}
-                        </h2>
-                        <br>
-                        <p e-id="text_{{$index}}" e-class="form-control" data-inputclass="form-control"
-                           editable-text="section.text[language]" e-name="text" e-form="rowform" e-required
-                           e-placeholder="Text">
+                    <form editable-form name="rowform" shown="!section.title"></form>
+                    <div class="row" uib-collapse="isCollapsed">
+                        <div class="col-lg-10">
+                            <h2 e-id="title_{{$index}}" e-class="form-control" data-inputclass="form-control"
+                                class="section_subtitle" editable-text="section.title[language]" e-form="rowform"
+                                e-required e-placeholder="Section Title">
+                                {{ section.title[language] || 'empty' }}
+                            </h2>
+                            <p e-id="text_{{$index}}" e-class="form-control" data-inputclass="form-control"
+                               editable-textarea="section.text[language]" e-name="text" e-form="rowform" e-required
+                               e-placeholder="Section Content">
 
-                        <div ng-init="limit = 100; moreShown = false">
-                            {{ section.text[language] | cut:true:limit:'...'}}
-                            <a ng-show="section.text[language].length > limit"
-                               href
-                               ng-click="showSection(section);limit=section.text[language].length; moreShown = true">
-                                More
-                            </a>
-                            <a ng-show="moreShown" ng-click="limit=100; moreShown = false"> Less </a>
+                            <p ng-init="limit = 100; moreShown = false">
+                                {{ section.text[language] | cut:true:limit:'...'}}
+                                <a ng-show="section.text[language].length > limit"
+                                   href
+                                   ng-click="showSection(section);limit=section.text[language].length; moreShown = true">
+                                    More
+                                </a>
+                                <a ng-show="moreShown" ng-click="limit=100; moreShown = false"> Less </a>
+                            </p>
+
+                            </p>
+
                         </div>
 
-                        </p>
+                        <div gl-edit-buttons form="rowform" hide="!showEdit()"
+                             delete="removeSection($index)" prefix="section{{ $index }}">
+                        </div>
 
+                        <div class="col-lg-2">
+                            <p ng-show="showViews()">
+                            <span class="label label-default" uib-tooltip="Times Expanded"
+                                  tooltip-placement="right">{{ section.views }} times expanded</span>
+                            </p>
+                        </div>
                     </div>
 
-                    <div gl-edit-buttons form="rowform" hide="!showEdit()"
-                         delete="removeSection($index)" prefix="section{{ $index }}">
-                    </div>
-
-                    <div class="col-lg-2">
-                        <p ng-show="showViews()">
-                            <span class="label label-success" uib-tooltip="Times Expanded"
-                                  tooltip-placement="right">{{ section.views }}</span>
-                        </p>
-                    </div>
                 </div>
 
             </div>

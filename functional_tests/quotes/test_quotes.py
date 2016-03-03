@@ -183,7 +183,7 @@ class QuotesSignedInTest(browser.SignedInTest):
         self._submit_and_check(b)
 
         browser.wait().until(lambda driver: driver.find_element_by_id('section0_edit'))
-        name = b.find_element_by_css_selector('div[e-id="service_name_0"]')
+        name = b.find_element_by_css_selector('p[e-id="service_name_0"]')
         self.assertEqual(name.text, '1234')
 
     def test_remove_section(self):

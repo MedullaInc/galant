@@ -36,7 +36,7 @@
            width: 70px;
         }
         .as-sortable-item {
-           border: 0px; 
+           border: 0px;
         }
     </style>
 {% endblock %}
@@ -61,7 +61,7 @@
 
     <div ng-controller="glFormController" ng-init="init('{% firstof language LANGUAGE_CODE %}', '{{ csrf_token }}')">
         <div qt-client quote-id="{{ object.pk }}" quote="object" endpoint="objectEndpoint" language="currentLanguage" forms="forms" client-id="{{ client.id }}" project-id="{{ project.id }}" quote-id="{{ quote.id }}" user-id="{{ object.user.id }}" template-id="{{ template_id }}" bool-template="False" id-type="{{id_type}}">
-        </div> 
+        </div>
     </div>
 
 {% endblock %}
