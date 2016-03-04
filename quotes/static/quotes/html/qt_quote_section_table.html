@@ -30,7 +30,7 @@
                             </h2>
                             <p e-id="text_{{$index}}" e-class="form-control" data-inputclass="form-control"
                                editable-textarea="section.text[language]" e-name="text" e-form="rowform" e-required
-                               e-placeholder="Section Content">
+                               e-placeholder="Text">
 
                             <p ng-init="limit = 100; moreShown = false">
                                 {{ section.text[language] | cut:true:limit:'...'}}
