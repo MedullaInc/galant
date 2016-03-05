@@ -19,6 +19,7 @@ basehttp.WSGIServer.handle_error = my_handle_error
 
 MAX_TRIES = 3
 PAGE_TIMEOUT = 7
+SNAP_PREFIX = 'test_out'
 
 
 class CustomPhantomJS(PhantomJS):
@@ -37,13 +38,13 @@ class CustomPhantomJS(PhantomJS):
                     continue
 
 
-def save_driver_snapshot(driver):
-    driver.save_screenshot('test_out.png')
+def save_driver_snapshot(driver, prefix=SNAP_PREFIX):
+    driver.save_screenshot('%s.png' % prefix)
     import codecs
-    with codecs.open('test_out.html', 'w+', 'utf8') as f:
+    with codecs.open('%s.html' % prefix, 'w+', 'utf8') as f:
         f.write(driver.page_source)
 
-    with open('test_out.txt', 'w+') as f:
+    with open('%s.txt' % prefix, 'w+') as f:
         for entry in driver.get_log('browser'):
             f.write(str(entry) + '\n')
 
@@ -54,7 +55,7 @@ class CustomWait(ui.WebDriverWait):
             return super(CustomWait, self).until(method, message)
         except TimeoutException, ex:
             save_driver_snapshot(self._driver)
-            raise type(ex)(ex.message + 'Wait timed out. Driver snapshot saved to test_out.png/txt/html')
+            raise type(ex)(ex.message + 'Wait timed out. Driver snapshot saved to %s.png/txt/html' % SNAP_PREFIX)
 
 
 def custom_phantomjs():
@@ -126,8 +127,8 @@ class BrowserTest(StaticLiveServerTestCase):
         b.execute_script("window.alert = function(){}")
         b.execute_script("window.onbeforeunload = function(){}")
 
-    def save_snapshot(self):  # pragma: no cover
-        save_driver_snapshot(instance())
+    def save_snapshot(self, prefix=SNAP_PREFIX):  # pragma: no cover
+        save_driver_snapshot(instance(), prefix)
 
 
 class SignedInTest(BrowserTest):
