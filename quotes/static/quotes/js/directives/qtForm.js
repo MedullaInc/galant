@@ -22,13 +22,13 @@ app.directive('qtQuoteForm', ['Quote', '$uibModal', function (Quote, $uibModal) 
         },
         controller: ['$scope', '$attrs', '$filter', '$window', 'Quote', 'Service', 'Section', 'QuoteTemplate', 'Client', 'LANGUAGES',
             function ($scope, $attrs, $filter, $window, Quote, Service, Section, QuoteTemplate, Client, LANGUAGES) {
-                $scope.quoteFields   = [];
+                $scope.quoteFields = [];
                 $scope.serviceFields = [];
-                $scope.quoteStatus   = {};
+                $scope.quoteStatus = {};
                 $scope.quoteLanguage = {};
-                $scope.newQuote      = false;
+                $scope.newQuote = false;
                 $scope.sortDisabled = false;
-                $scope.tempStatus    = '0';
+                $scope.tempStatus = '0';
 
                 $scope.idType = $attrs.idType;
                 $scope.boolTemplate = $attrs.boolTemplate;
@@ -47,43 +47,43 @@ app.directive('qtQuoteForm', ['Quote', '$uibModal', function (Quote, $uibModal) 
                 });
 
                 Quote.fields().$promise.then(function (fields) {
-                    $scope.quoteStatus   = fields.status;
+                    $scope.quoteStatus = fields.status;
                     $scope.quoteLanguage = fields.language;
                 });
 
-            $scope.addSection = function (section_name) {
-                var counter = $scope.quote.sections.length;
-                var name = "";
+                $scope.addSection = function (section_name) {
+                    var counter = $scope.quote.sections.length;
+                    var name = "";
 
-                if (section_name) {
-                    name = section_name;
-                } else {    
-                    name = "section_" + (counter++);
-                }
-                $scope.section              = new Section({"name":name, "index":counter, "views":0});
-                $scope.section.index        = counter++;
-                delete $scope.section.id;
-                $scope.quote.sections.push($scope.section);
-            };
+                    if (section_name) {
+                        name = section_name;
+                    } else {
+                        name = "section_" + (counter++);
+                    }
+                    $scope.section = new Section({"name": name, "index": counter, "views": 0});
+                    $scope.section.index = counter++;
+                    delete $scope.section.id;
+                    $scope.quote.sections.push($scope.section);
+                };
 
-            $scope.addService = function (service) {
-                var counter = $scope.quote.services.length;
+                $scope.addService = function (service) {
+                    var counter = $scope.quote.services.length;
 
-                if (service) {
-                    $scope.service = service;
-                    $scope.modalInstance.close();
-                } else {
-                    $scope.service              = new Service();
-                    $scope.service.description  = {}
-                    $scope.service.user         = $scope.quote.user;
-                    $scope.service.cost         = {amount:0, currency:"USD"}
-                }
-                $scope.service.user         = $scope.quote.user;
-                $scope.service.index        = counter++;
-                delete $scope.service.id;
-                $scope.quote.services.push($scope.service);
-            };
-                
+                    if (service) {
+                        $scope.service = service;
+                        $scope.modalInstance.close();
+                    } else {
+                        $scope.service = new Service();
+                        $scope.service.description = {}
+                        $scope.service.user = $scope.quote.user;
+                        $scope.service.cost = {amount: 0, currency: "USD"}
+                    }
+                    $scope.service.user = $scope.quote.user;
+                    $scope.service.index = counter++;
+                    delete $scope.service.id;
+                    $scope.quote.services.push($scope.service);
+                };
+
 
                 if ($attrs.boolTemplate == "False") {
                     $scope.endpoint = Quote;
@@ -111,80 +111,81 @@ app.directive('qtQuoteForm', ['Quote', '$uibModal', function (Quote, $uibModal) 
                             angular.forEach($scope.quote.services, function (q) {
                                 delete q.id;
                             });
-                            
+
                             var lang = LANGUAGES.find(function (x) { return x.code == $scope.language;});
-                            $scope.quoteTemplate.languages  = [lang];
+                            $scope.quoteTemplate.languages = [lang];
 
                         }
 
                     });
                 } else if ($attrs.templateId) {
-                        QuoteTemplate.get({
-                            id: $attrs.templateId
-                        }).$promise.then(function (quoteTemplate) {
-                            $scope.quoteTemplate = quoteTemplate;
-                            $scope.quote = quoteTemplate.quote;
-                            $scope.quote.services = $filter('orderBy')($scope.quote.services, 'index');
-                            $scope.quote.sections = $filter('orderBy')($scope.quote.sections, 'index');
-                            $scope.tempStatus = $scope.quote.status;
-                            if ($attrs.boolTemplate != "True") {
-                                delete $scope.quote.id;
-                            }
+                    QuoteTemplate.get({
+                        id: $attrs.templateId
+                    }).$promise.then(function (quoteTemplate) {
+                        $scope.quoteTemplate = quoteTemplate;
+                        $scope.quote = quoteTemplate.quote;
+                        $scope.quote.services = $filter('orderBy')($scope.quote.services, 'index');
+                        $scope.quote.sections = $filter('orderBy')($scope.quote.sections, 'index');
+                        $scope.tempStatus = $scope.quote.status;
+                        if ($attrs.boolTemplate != "True") {
+                            delete $scope.quote.id;
+                        }
 
-                            angular.forEach($scope.quote.sections, function (q) {
-                                delete q.id;
-                            });
-                            angular.forEach($scope.quote.services, function (q) {
-                                delete q.id;
-                            });
-
-                            if($scope.quoteTemplate.languages.length == 0){
-                                var lang = LANGUAGES.find(function (x) { return x.code == $scope.language;});
-                                $scope.quoteTemplate.languages  = [lang];
-                            }
-
-
+                        angular.forEach($scope.quote.sections, function (q) {
+                            delete q.id;
                         });
-                    } else {
-                        $scope.quote                    = new Quote();
-                        $scope.quote.user               = $attrs.userId;
-                        $scope.quote.client             = $attrs.clientId;
-                        $scope.quote.projects           = [];
-                        $scope.quote.services           = [];
-                        $scope.quote.sections           = [];
-                        $scope.quote.status             = 0;
-                        $scope.quote.views              = 0;
-                        $scope.quote.session_duration   = 0.0;
+                        angular.forEach($scope.quote.services, function (q) {
+                            delete q.id;
+                        });
 
-                        $scope.quoteTemplate            = {"quote": $scope.quote};
-                        $scope.quoteTemplate.languages  = [];
-
-                        if ($scope.language && LANGUAGES.length > 0) {
+                        if ($scope.quoteTemplate.languages.length == 0) {
                             var lang = LANGUAGES.find(function (x) { return x.code == $scope.language;});
                             $scope.quoteTemplate.languages = [lang];
                         }
 
-                        $scope.addSection('intro');
-                        $scope.addSection('important_notes');
-                        $scope.addService();
-                        $scope.newQuote                 = true;
-                        $scope.tempStatus               = $scope.quote.status;
+
+                    });
+                } else {
+                    $scope.quote = new Quote();
+                    $scope.quote.user = $attrs.userId;
+                    $scope.quote.client = $attrs.clientId;
+                    $scope.quote.projects = [];
+                    $scope.quote.services = [];
+                    $scope.quote.sections = [];
+                    $scope.quote.status = 0;
+                    $scope.quote.views = 0;
+                    $scope.quote.session_duration = 0.0;
+
+                    $scope.quoteTemplate = {"quote": $scope.quote};
+                    $scope.quoteTemplate.languages = [];
+
+                    if ($scope.language && LANGUAGES.length > 0) {
+                        var lang = LANGUAGES.find(function (x) { return x.code == $scope.language;});
+                        $scope.quoteTemplate.languages = [lang];
                     }
-                }],
+
+                    $scope.addSection('intro');
+                    $scope.addSection('important_notes');
+                    $scope.addService();
+                    $scope.newQuote = true;
+                    $scope.tempStatus = $scope.quote.status;
+                }
+
+            }],
         templateUrl: '/static/quotes/html/qt_quote_form.html',
         link: function ($scope) {
-            
-            /*  TODO validate selected client onbeforesave
-            if($scope.newQuote){
-                //$scope.quoteform.$show();
-            }
 
-            $scope.checkClient = function (data){
-                if (!data) {
-                  return "Plase select a client";
-                }
-            }
-            */
+            /*  TODO validate selected client onbeforesave
+             if($scope.newQuote){
+             //$scope.quoteform.$show();
+             }
+
+             $scope.checkClient = function (data){
+             if (!data) {
+             return "Plase select a client";
+             }
+             }
+             */
 
             $scope.dynamicPopover = {
                 translationTemplateUrl: 'translationTemplate.html',
@@ -231,24 +232,24 @@ app.directive('qtQuoteForm', ['Quote', '$uibModal', function (Quote, $uibModal) 
 
             /* show functions depending on status */
             $scope.showViews = function () {
-                if ($scope.tempStatus == '3' && $scope.idType != 'token'){
+                if ($scope.tempStatus == '3' && $scope.idType != 'token') {
                     return true;
                 }
             }
 
-            $scope.showEdit = function() {
+            $scope.showEdit = function () {
                 if (( $scope.tempStatus == '0' || $scope.tempStatus == '1' )
-                    && $scope.idType != 'token'){
+                    && $scope.idType != 'token') {
                     return true;
                 }
             };
 
-            $scope.showClient = function() {
-                if ($scope.boolTemplate != 'True' && $scope.idType != 'token' ){
+            $scope.showClient = function () {
+                if ($scope.boolTemplate != 'True' && $scope.idType != 'token') {
                     return true;
                 }
             };
 
         }
     };
-    }]);
+}]);
