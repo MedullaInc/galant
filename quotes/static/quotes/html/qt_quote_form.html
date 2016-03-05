@@ -13,14 +13,15 @@
 
 <div class="row">
     <div class="col-lg-6" ng-show="showClient()">
-        <p ng-required="true" e-class="form-control" e-name="client" class="data" editable-select="quote.client"
-           e-form="quoteform" editable-placeholder="Choose client..." onbeforesave="validateSelected($data)"
-           e-required e-ng-options="s.id as s.name for s in clients"><span class="detail_title">Client</span>
+        <p e-class="form-control" e-name="client" class="data" editable-select="quote.client"
+           e-form="quoteform" editable-placeholder="Choose client..." onbeforesave="validateSelectedNonTemplate($data)"
+           e-ng-options="s.id as s.name for s in clients"><span class="detail_title">Client</span>
             {{ (clients | filter:{id: quote.client})[0].name }}
             <br/><br/>
         </p>
-        <p e-class="form-control" id="status" class="data" editable-select="quote.status" e-form="quoteform" e-required
-           e-ng-options="key as val for (key, val) in quoteStatus" editable-placeholder="Choose status..." onbeforesave="validateSelected($data)">
+        <p e-class="form-control" e-id="quote_status" class="data" editable-select="quote.status" e-form="quoteform" e-required
+           e-ng-options="key as val for (key, val) in quoteStatus" editable-placeholder="Choose status..."
+           onbeforesave="validateSelectedNonTemplate($data)">
             <span class="label label-default">{{ quoteStatus[quote.status] }}</span>
             <span ng-show="showViews()">
                 <span class="label label-default" uib-tooltip="Views" tooltip-placement="right">{{ quote.views }} times</span>

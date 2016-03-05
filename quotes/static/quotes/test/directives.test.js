@@ -203,6 +203,18 @@ describe('qtForm', function () {
             expect($scope.quote.sections.length).toEqual(2);
         });
 
+        it('validates data', function () {
+            var element = $compile('<div qt-quote-form quote="quote"></div>')($scope);
+            $scope.$digest();
+
+            var err = element.isolateScope().validateNonEmpty('');
+            expect(err.length > 0);
+            var err = element.isolateScope().validateSelected('');
+            expect(err.length > 0);
+            var err = element.isolateScope().validateSelectedNonTemplate('');
+            expect(err.length > 0);
+        });
+
     });
 
 
