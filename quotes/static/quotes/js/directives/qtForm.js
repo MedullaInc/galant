@@ -84,6 +84,17 @@ app.directive('qtQuoteForm', ['Quote', '$uibModal', function (Quote, $uibModal) 
                     $scope.quote.services.push($scope.service);
                 };
 
+                $scope.validateNonEmpty = function ($data) {
+                    if (!$data || $data == "") {
+                        return "This field cannot be empty.";
+                    }
+                };
+
+                $scope.validateSelected = function ($data) {
+                    if (!$data || $data == "") {
+                        return "You must choose a value.";
+                    }
+                };
 
                 if ($attrs.boolTemplate == "False") {
                     $scope.endpoint = Quote;

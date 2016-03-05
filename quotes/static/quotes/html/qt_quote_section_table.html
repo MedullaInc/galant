@@ -25,12 +25,12 @@
                         <div class="col-lg-10">
                             <h2 e-id="title_{{$index}}" e-class="form-control" data-inputclass="form-control"
                                 class="section_subtitle" editable-text="section.title[language]" e-form="rowform"
-                                e-required e-placeholder="Section Title">
+                                e-required e-placeholder="Section Title" onbeforesave="validateNonEmpty($data)">
                                 {{ section.title[language] || 'empty' }}
                             </h2>
                             <p e-id="text_{{$index}}" e-class="form-control" data-inputclass="form-control"
                                editable-textarea="section.text[language]" e-name="text" e-form="rowform" e-required
-                               e-placeholder="Text">
+                               e-placeholder="Text" onbeforesave="validateNonEmpty($data)">
 
                             <p ng-init="limit = 100; moreShown = false">
                                 {{ section.text[language] | cut:true:limit:'...'}}

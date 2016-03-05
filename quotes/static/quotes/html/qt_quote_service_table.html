@@ -44,20 +44,20 @@
                         <div class="col-lg-4">
                             <p name="name" e-class="form-control" editable-text="service.name[language]"
                                  e-id="service_name_{{$index}}" e-form="rowform" e-required
-                                 e-placeholder="Service Name">
+                                 e-placeholder="Service Name" onbeforesave="validateNonEmpty($data)">
                                 {{ service.name[language] || 'empty' }}
                             </p>
                         </div>
                         <div class="col-lg-2">
                             <p e-class="form-control" editable-select="service.type" e-id="type_{{$index}}"
-                                 e-form="rowform" editable-placeholder="Choose type..."
+                                 e-form="rowform" editable-placeholder="Choose type..." onbeforesave="validateSelected($data)"
                                  e-ng-options="key as val for (key, val) in serviceFields">
                                 {{ showType(service) }}
                             </p>
                         </div>
                         <div class="col-lg-2">
                             <p e-class="form-control" editable-text="service.quantity" e-id="quantity_{{$index}}"
-                                 e-form="rowform" e-required
+                                 e-form="rowform" e-required onbeforesave="validateNonEmpty($data)"
                                  e-placeholder="Quantity">
                                 {{ service.quantity || 'empty' }}
                             </p>

@@ -10,7 +10,7 @@
 </span>
 <span ng-show="form.$visible">
     <button id="{{ prefix }}_save" type="button" class="btn btn-default edit_button" ng-disabled="form.$waiting"
-            ng-click="form.$save()">
+            ng-click="form.$submit()">
         <span class="glyphicon glyphicon-floppy-disk"></span>
     </button>
     <button id="{{ prefix }}_cancel" type="button" class="btn btn-default edit_button" ng-disabled="form.$waiting"
