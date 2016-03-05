@@ -97,7 +97,7 @@ app.directive('qtQuoteForm', ['Quote', '$uibModal', function (Quote, $uibModal) 
                 };
 
                 $scope.validateSelectedNonTemplate = function ($data) {
-                    if (!$scope.boolTemplate && (!$data || $data == "")) {
+                    if ($scope.boolTemplate == "False" && (!$data || $data == "")) {
                         return "You must choose a value.";
                     }
                 };
