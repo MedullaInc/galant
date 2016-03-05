@@ -208,11 +208,11 @@ describe('qtForm', function () {
             $scope.$digest();
 
             var err = element.isolateScope().validateNonEmpty('');
-            expect(err.length > 0);
+            expect(!err);
             var err = element.isolateScope().validateSelected('');
-            expect(err.length > 0);
+            expect(!err);
             var err = element.isolateScope().validateSelectedNonTemplate('');
-            expect(err.length > 0);
+            expect(!err);
         });
 
     });

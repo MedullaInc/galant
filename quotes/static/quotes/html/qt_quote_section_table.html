@@ -20,16 +20,15 @@
                         </div>
                     </div>
 
-                    <form editable-form name="rowform" shown="!section.title"></form>
                     <div class="row" uib-collapse="isCollapsed">
                         <div class="col-lg-10">
                             <h2 e-id="title_{{$index}}" e-class="form-control" data-inputclass="form-control"
-                                class="section_subtitle" editable-text="section.title[language]" e-form="rowform"
+                                class="section_subtitle" editable-text="section.title[language]" e-form="quoteform"
                                 e-required e-placeholder="Section Title" onbeforesave="validateNonEmpty($data)">
                                 {{ section.title[language] || 'empty' }}
                             </h2>
                             <p e-id="text_{{$index}}" e-class="form-control" data-inputclass="form-control"
-                               editable-textarea="section.text[language]" e-name="text" e-form="rowform" e-required
+                               editable-textarea="section.text[language]" e-name="text" e-form="quoteform" e-required
                                e-placeholder="Text" onbeforesave="validateNonEmpty($data)">
 
                             <p ng-init="limit = 100; moreShown = false">
@@ -46,11 +45,11 @@
 
                         </div>
 
-                        <div gl-edit-buttons form="rowform" hide="!showEdit()"
-                             delete="removeSection($index)" prefix="section{{ $index }}">
-                        </div>
-
                         <div class="col-lg-2">
+                            <button id="section{{ $index }}_delete" type="button" class="btn btn-default delete_button" aria-label="Delete"
+                                    ng-click="removeSection($index)">
+                                <span class="glyphicon glyphicon-trash"/>
+                            </button>
                             <p ng-show="showViews()">
                             <span class="label label-default" uib-tooltip="Times Expanded"
                                   tooltip-placement="right">{{ section.views }} times expanded</span>

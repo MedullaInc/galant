@@ -39,32 +39,31 @@
             <div class="row as-sortable-item-handle" id="service_{{$index}}" as-sortable-item-handle>
                 <div class="col-lg-10">
                     <div class="row">
-                        <form editable-form name="rowform" shown="!service.name"></form>
-                        <span ng-click="showRowForm(rowform)">
+                        <span ng-click="showRowForm(quoteform)">
                         <div class="col-lg-4">
                             <p name="name" e-class="form-control" editable-text="service.name[language]"
-                                 e-id="service_name_{{$index}}" e-form="rowform" e-required
+                                 e-id="service_name_{{$index}}" e-form="quoteform" e-required
                                  e-placeholder="Service Name" onbeforesave="validateNonEmpty($data)">
                                 {{ service.name[language] || 'empty' }}
                             </p>
                         </div>
                         <div class="col-lg-2">
                             <p e-class="form-control" editable-select="service.type" e-id="type_{{$index}}"
-                                 e-form="rowform" editable-placeholder="Choose type..." onbeforesave="validateSelected($data)"
+                                 e-form="quoteform" editable-placeholder="Choose type..." onbeforesave="validateSelected($data)"
                                  e-ng-options="key as val for (key, val) in serviceFields">
                                 {{ showType(service) }}
                             </p>
                         </div>
                         <div class="col-lg-2">
                             <p e-class="form-control" editable-text="service.quantity" e-id="quantity_{{$index}}"
-                                 e-form="rowform" e-required onbeforesave="validateNonEmpty($data)"
+                                 e-form="quoteform" e-required onbeforesave="validateNonEmpty($data)"
                                  e-placeholder="Quantity">
                                 {{ service.quantity || 'empty' }}
                             </p>
                         </div>
                         <div class="col-lg-2">
                             <p e-class="form-control" editable-text="service.cost.amount" e-id="amount_{{$index}}"
-                                 e-form="rowform" e-required
+                                 e-form="quoteform" e-required
                                  e-placeholder="Cost">
                                 {{ service.cost.amount || 'empty' | currency}}
                             </p>
@@ -79,7 +78,7 @@
                     <div class="row">
                         <div class="col-lg-6">
                             <p e-class="form-control" editable-textarea="service.description[language]"
-                               e-id="description_{{$index}}" e-form="rowform" e-required
+                               e-id="description_{{$index}}" e-form="quoteform" e-required
                                e-placeholder="Description">
                                 <p ng-init="moreShown = false; limit = 100">
                                     {{ service.description[language] | cut:true:limit:'...'}}
@@ -95,7 +94,10 @@
                     </div>
                 </div>
                 <div class="col-lg-2">
-                    <p gl-edit-buttons form="rowform" hide="!showEdit()" delete="removeService($index)" prefix="service{{ $index }}"></p>
+                    <button id="service{{ $index }}_delete" type="button" class="btn btn-default delete_button" aria-label="Delete"
+                            ng-click="removeService($index)">
+                        <span class="glyphicon glyphicon-trash"/>
+                    </button>
                     <p><span ng-show="showViews()" class="label label-default" uib-tooltip="Times Expanded" tooltip-placement="right">{{ service.views }} times expanded</span></p>
                 </div>
             </div>

@@ -11,8 +11,8 @@ def get_blank_quote_autofixture(user):
     q = autofixture.create_one('quotes.Quote', generate_fk=True,
                                field_values={'sections': [],'services': [], 'language': 'en',
                                              'user': user, 'client': c, 'status': '1'})
-    i = qm.Section.objects.create(user=q.user, name='intro', index=0)
-    m = qm.Section.objects.create(user=q.user, name='important_notes', index=1)
+    i = qm.Section.objects.create(user=q.user, name='intro', title='intro', text='intro text', index=0)
+    m = qm.Section.objects.create(user=q.user, name='important_notes', title='notes', text='notes text', index=1)
     q.sections.add(i)
     q.sections.add(m)
     return q
@@ -32,20 +32,16 @@ class QuoteTemplatesTest(browser.SignedInTest):
         b.get(self.live_server_url + reverse('add_quote_template'))
 
         browser.wait().until(lambda driver: driver.find_element_by_id('quote_name')).send_keys('Quote test')
-        b.find_element_by_id('quote_save').click()
-        self.save_snapshot()
         browser.wait().until(lambda driver: driver.find_element_by_id('service_name_0')).send_keys('1234')
         b.find_element_by_id('quantity_0').send_keys('1')
         b.find_element_by_id('description_0').send_keys('desc')
         b.find_element_by_xpath('//select[@id="type_0"]/option[2]').click()
-        b.find_element_by_id('service0_save').click()
 
         b.find_element_by_id('text_0').send_keys('test intro text')
         b.find_element_by_id('title_0').send_keys('test margin title')
-        b.find_element_by_id('section0_save').click()
         b.find_element_by_id('text_1').send_keys('test intro text')
         b.find_element_by_id('title_1').send_keys('test margin title')
-        b.find_element_by_id('section1_save').click()
+        b.find_element_by_id('quote_save').click()
 
         #b.find_element_by_xpath('//select[@e-name="-service-2-type"]/option[@value="3"]').click()
 
@@ -60,17 +56,10 @@ class QuoteTemplatesTest(browser.SignedInTest):
 
         b.get(self.live_server_url + reverse('add_quote_template'))
         browser.wait().until(lambda driver: driver.find_element_by_id('quote_name')).send_keys('New quote')
-        b.find_element_by_id('quote_save').click()
-        browser.wait().until(lambda driver: driver.find_element_by_id('service_name_0')).send_keys('1234')
-        b.find_element_by_id('quantity_0').send_keys('1')
-        b.find_element_by_id('description_0').send_keys('desc')
-        b.find_element_by_xpath('//select[@id="type_0"]/option[2]').click()
-        b.find_element_by_id('service0_save').click()
+        browser.wait().until(lambda driver: driver.find_element_by_id('service0_delete')).click()
 
         #b.find_element_by_xpath('//select[@e-name="-service-2-type"]/option[@value="3"]').click()
         self._add_language_and_text(b)
-
-        self._submit_and_check(b)
 
     def test_quote_template_detail(self):
         b = browser.instance()
@@ -84,22 +73,21 @@ class QuoteTemplatesTest(browser.SignedInTest):
 
         b.get(self.live_server_url + reverse('quotetemplate_detail', args=[qt.id]))
 
-        browser.wait().until(lambda driver: driver.find_element_by_id('quote_edit')).click()
+        browser.wait().until(lambda driver: driver.find_element_by_id('section_0'))
+        b.find_element_by_id('quote_edit').click()
         b.find_element_by_id('quote_name').send_keys('Quote test')
-        b.find_element_by_id('quote_save').click()
 
-        browser.wait().until(lambda driver: driver.find_element_by_id('section0_edit'))
-        b.find_element_by_id('section0_edit').click()
         b.find_element_by_id('title_0').clear()
         b.find_element_by_id('title_0').send_keys('modified intro title')
         b.find_element_by_id('text_0').clear()
         b.find_element_by_id('text_0').send_keys('modified intro title')
-        b.find_element_by_id('section0_save').click()
+        b.find_element_by_id('quote_save').click()
 
 
         self._submit_and_check(b)
 
-        browser.wait().until(lambda driver: driver.find_element_by_id('section0_edit')).click()
+        browser.wait().until(lambda driver: driver.find_element_by_id('section_0'))
+        b.find_element_by_id('quote_edit').click()
         intro = b.find_element_by_id('title_0')
         self.assertEqual(intro.get_attribute('value'), 'modified intro title')
 
@@ -123,7 +111,7 @@ class QuoteTemplatesTest(browser.SignedInTest):
         b.get(self.live_server_url + reverse('quotetemplate_detail', args=[qt.id]))
         self.disable_popups()
 
-        browser.wait().until(lambda driver: driver.find_element_by_id('section1_edit'))
+        browser.wait().until(lambda driver: driver.find_element_by_id('section_0'))
         with browser.wait_for_page_load():
             b.find_element_by_id('quote_delete').click()
 
@@ -147,10 +135,7 @@ class QuoteTemplatesTest(browser.SignedInTest):
         b.get(self.live_server_url + reverse('quotetemplate_detail', args=[qt.id]))
         browser.wait().until(lambda driver: driver.find_element_by_id('quote_edit')).click()
         b.find_element_by_id('quote_name').send_keys('new quote')
-        b.find_element_by_id('quote_save').click()
-        self._add_language_and_text(b, True)
-
-        self._submit_and_check(b)
+        self._add_language_and_text(b)
 
     def test_add_from_quote(self):
         b = browser.instance()
@@ -158,8 +143,8 @@ class QuoteTemplatesTest(browser.SignedInTest):
         q = get_blank_quote_autofixture(self.user)
         b.get(self.live_server_url + reverse('add_quote_template', kwargs={'quote_id': q.id}))
 
-        browser.wait().until(lambda driver: driver.find_element_by_id('section0_edit')).click()
-        self.assertEqual(q.intro().title, {})
+        browser.wait().until(lambda driver: driver.find_element_by_id('quote_edit')).click()
+        self.assertEqual(q.intro().title, {u'en': u'intro'})
 
     def test_add_quote_from_template(self):
 
@@ -177,7 +162,7 @@ class QuoteTemplatesTest(browser.SignedInTest):
         success_message = b.find_element_by_class_name('alert-success')
         self.assertTrue(u'Quote saved.' in success_message.text)
 
-    def _add_language_and_text(self, b, click_edit=False):
+    def _add_language_and_text(self, b):
         browser.wait().until(lambda driver: driver.find_element_by_xpath('//*[@e-id="quote_name"]').text != 'empty')
         browser.wait().until(lambda driver: driver.find_element_by_xpath('//*[@e-id="quote_name"]').text != '')
         trans_btn = b.find_element_by_id('add_translation_button')
@@ -186,27 +171,26 @@ class QuoteTemplatesTest(browser.SignedInTest):
         b.find_element_by_xpath('//*[@id="id_language"]/option[@label="Spanish"]').click()
         b.find_element_by_id('language_add').click()
         b.find_element_by_id('en_tab').click()
-        if click_edit:
-            b.find_element_by_id('section0_edit').click()
-            b.find_element_by_id('section1_edit').click()
         b.find_element_by_id('title_0').send_keys('test intro title')
         b.find_element_by_id('text_0').send_keys('test intro text')
-        b.find_element_by_id('title_1').send_keys('test intro title')
-        b.find_element_by_id('text_1').send_keys('test intro text')
-        b.find_element_by_id('section0_save').click()
-        b.find_element_by_id('section1_save').click()
+        b.find_element_by_id('title_1').send_keys('test notes title')
+        b.find_element_by_id('text_1').send_keys('test notes text')
+        b.find_element_by_id('quote_save').click()
         b.find_element_by_id('es_tab').click()
-        b.find_element_by_id('section0_edit').click()
+        b.find_element_by_id('quote_edit').click()
+        b.find_element_by_id('title_0').clear()
         b.find_element_by_id('title_0').send_keys('titulo de intro prueba')
         b.find_element_by_id('text_0').send_keys('texto de intro prueba')
-        b.find_element_by_id('section0_save').click()
-        b.find_element_by_id('en_tab').click()
+        b.find_element_by_id('title_1').send_keys('titulo de notas prueba')
+        b.find_element_by_id('text_1').send_keys('texto de notas prueba')
+        b.find_element_by_id('quote_save').click()
+        self.save_snapshot('t')
         self._submit_and_check(b)
 
         new_tab = browser.wait().until(lambda driver: driver.find_element_by_id('es_tab'))
         self.assertEqual(u'Spanish', new_tab.text)
 
-        b.find_element_by_id('section0_edit').click()
+        b.find_element_by_id('quote_edit').click()
         b.find_element_by_id('es_tab').click()
         intro = b.find_element_by_id('title_0')
         self.assertEqual(intro.get_attribute('value'), 'titulo de intro prueba')
