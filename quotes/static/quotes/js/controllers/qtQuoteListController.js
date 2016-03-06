@@ -1,4 +1,4 @@
-app = angular.module('quotes.controllers.qtQuoteListController', ['quotes.services.qtServices','ngAnimate']);
+app = angular.module('quotes.controllers.qtQuoteListController', ['quotes.services.qtServices', 'gallant.services.glServices', 'ngAnimate']);
 
 app.controller('qtQuoteListController', ['$scope', '$http', '$window', '$rootScope', 'Quote', 'QuoteTemplate', 'Client',
     function($scope, $http, $window, $rootScope, Quote, QuoteTemplate, Client) {

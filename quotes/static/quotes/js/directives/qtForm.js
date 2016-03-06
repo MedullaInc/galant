@@ -4,6 +4,7 @@ app = angular.module('quotes.directives.qtForm', [
     'quotes.filters.qtCutFilter',
     'quotes.directives.qtServiceTable',
     'quotes.directives.qtSectionTable',
+    'gallant.services.glServices',
     'ui.bootstrap',
     'as.sortable']);
 
@@ -34,7 +35,7 @@ app.directive('qtQuoteForm', ['Quote', '$uibModal', function (Quote, $uibModal) 
                 $scope.idType = $attrs.idType;
                 $scope.boolTemplate = $attrs.boolTemplate;
 
-                Client.get().$promise.then(function (clients) {
+                Client.retrieve().$promise.then(function (clients) {
                     $scope.clients = clients;
                 });
 

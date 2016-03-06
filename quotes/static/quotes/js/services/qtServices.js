@@ -76,19 +76,6 @@ app.factory("Section", function ($resource) {
 });
 
 /* istanbul ignore next  */
-app.factory("Client", function ($resource) {
-    // TODO: this shouldn't start with /en/
-
-	return $resource("/api/client ", {}, {
-        get: {
-            method: 'GET',
-            isArray: true,
-        },
-	});
-
-});
-
-/* istanbul ignore next  */
 app.factory("QuoteTemplate", function ($resource) {
     // TODO: this shouldn't start with /en/
 
