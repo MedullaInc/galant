@@ -13,9 +13,10 @@ class BriefTemplatesTest(browser.SignedInTest):
         b = browser.instance()
         b.get(self.live_server_url + reverse('add_brief_template'))
 
-        browser.wait().until(lambda driver: driver.find_element_by_id('brief_edit')).click()
+        browser.wait().until(lambda driver: driver.find_element_by_id('brief_save')).click()
         b.find_element_by_id('brief_title').send_keys('Brief test')
         b.find_element_by_id('brief_greeting').send_keys('Brief test')
+        b.find_element_by_xpath('//select[@id="brief_status"]/option[2]').click()
         b.find_element_by_id('brief_save').click()
 
         self._submit_and_check(b)
@@ -35,9 +36,10 @@ class BriefTemplatesTest(browser.SignedInTest):
         b = browser.instance()
         b.get(self.live_server_url + reverse('add_brief_template'))
 
-        browser.wait().until(lambda driver: driver.find_element_by_id('brief_edit')).click()
+        browser.wait().until(lambda driver: driver.find_element_by_id('brief_save')).click()
         b.find_element_by_id('brief_title').send_keys('Brief test')
         b.find_element_by_id('brief_greeting').send_keys('Brief test')
+        b.find_element_by_xpath('//select[@id="brief_status"]/option[2]').click()
         b.find_element_by_id('brief_save').click()
 
         self._add_language_and_text(b)
@@ -53,10 +55,10 @@ class BriefTemplatesTest(browser.SignedInTest):
                                     field_values={'brief': brief, 'user': self.user})
         b.get(self.live_server_url + reverse('brieftemplate_detail', args=[bt.id]))
 
-        browser.wait().until(lambda driver: driver.find_element_by_id('question0_edit')).click()
+        browser.wait().until(lambda driver: driver.find_element_by_id('brief_edit')).click()
         b.find_element_by_id('question0_question').clear()
         b.find_element_by_id('question0_question').send_keys('modified question')
-        b.find_element_by_id('question0_save').click()
+        b.find_element_by_id('brief_save').click()
 
         self._submit_and_check(b)
 
@@ -114,18 +116,20 @@ class BriefTemplatesTest(browser.SignedInTest):
     def _add_language_and_text(self, b):
         browser.wait().until(lambda driver: driver.find_element_by_xpath('//h2[@e-id="brief_title"]').text != 'Not set')
         b.find_element_by_id('add_question').click()
-        b.find_element_by_id('question0_edit').click()
+        b.find_element_by_id('brief_edit').click()
         b.find_element_by_id('question0_question').clear()
         b.find_element_by_id('question0_question').send_keys('Who\'s on first?')
-        b.find_element_by_id('question0_save').click()
+        b.find_element_by_id('brief_save').click()
         b.find_element_by_id('add_translation_button').click()
         b.find_element_by_xpath('//select[@id="id_language"]/option[text()[1]="Spanish"]').click()
         b.find_element_by_id('language_add').click()
         b.find_element_by_xpath('//*[@id="es_tab"]/a').click()
-        b.find_element_by_id('question0_edit').click()
+        b.find_element_by_id('brief_edit').click()
+        b.find_element_by_id('brief_title').send_keys('Brief prueba')
+        b.find_element_by_id('brief_greeting').send_keys('Brief prueba')
         b.find_element_by_id('question0_question').clear()
         b.find_element_by_id('question0_question').send_keys('Quien esta en primera?')
-        b.find_element_by_id('question0_save').click()
+        b.find_element_by_id('brief_save').click()
         b.find_element_by_xpath('//*[@id="en_tab"]/a').click()
 
         self._submit_and_check(b)

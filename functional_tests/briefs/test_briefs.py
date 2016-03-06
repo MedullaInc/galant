@@ -73,14 +73,12 @@ class BriefsSignedInTest(browser.SignedInTest):
         b.get(self.live_server_url + reverse('brief_detail', args=[self.brief.id]) +
               '?client_id=%d' % self.brief.client.id)
 
-        browser.wait().until(lambda driver: driver.find_element_by_id('question0_edit')).click()
+        browser.wait().until(lambda driver: driver.find_element_by_id('brief_edit')).click()
         b.find_element_by_id('question0_question').send_keys('Who is your daddy, and what does he do?')
-        b.find_element_by_id('question0_save').click()
 
         b.find_element_by_id('question1_add_choice').click()
-        b.find_element_by_id('question1_edit').click()
         b.find_element_by_id('question1_choice3').send_keys('foo')
-        b.find_element_by_id('question1_save').click()
+        b.find_element_by_id('brief_save').click()
 
         with browser.wait_for_page_load():
             b.find_element_by_id('create_submit').click()
@@ -93,13 +91,13 @@ class BriefsSignedInTest(browser.SignedInTest):
         b.get(self.live_server_url + reverse('brief_detail', args=[self.brief.id]) +
               '?client_id=%d' % self.brief.client.id)
 
-        browser.wait().until(lambda driver: driver.find_element_by_id('question1_edit'))
+        browser.wait().until(lambda driver: driver.find_element_by_id('question0'))
         b.find_element_by_id('add_multiquestion').click()
-        browser.wait().until(lambda driver: driver.find_element_by_id('question2_edit')).click()
+        browser.wait().until(lambda driver: driver.find_element_by_id('brief_edit')).click()
         b.find_element_by_id('question2_question').send_keys('Who is your daddy, and what does he do?')
         b.find_element_by_id('question2_choice0').send_keys('foo')
         b.find_element_by_id('question2_choice1').send_keys('bar')
-        b.find_element_by_id('question2_save').click()
+        b.find_element_by_id('brief_save').click()
 
         with browser.wait_for_page_load():
             b.find_element_by_id('create_submit').click()
@@ -133,6 +131,7 @@ class BriefsSignedInTest(browser.SignedInTest):
         browser.wait().until(lambda driver: driver.find_element_by_id('brief_edit')).click()
         b.find_element_by_id('brief_title').send_keys('Brief test')
         b.find_element_by_id('brief_greeting').send_keys('Brief test')
+        b.find_element_by_xpath('//select[@id="brief_status"]/option[2]').click()
         b.find_element_by_id('brief_save').click()
         with browser.wait_for_page_load():
             b.find_element_by_id('create_submit').click()
@@ -150,9 +149,10 @@ class BriefsSignedInTest(browser.SignedInTest):
 
         b.get(self.live_server_url + reverse('add_brief') + '?project_id=%d' % p.id)
         
-        browser.wait().until(lambda driver: driver.find_element_by_id('brief_edit')).click()
+        browser.wait().until(lambda driver: driver.find_element_by_id('brief_save'))
         b.find_element_by_id('brief_title').send_keys('Brief test')
         b.find_element_by_id('brief_greeting').send_keys('Brief test')
+        b.find_element_by_xpath('//select[@id="brief_status"]/option[2]').click()
         b.find_element_by_id('brief_save').click()
         with browser.wait_for_page_load():
             b.find_element_by_id('create_submit').click()
