@@ -1,7 +1,8 @@
 app = angular.module('briefs.directives.brDetail', [
     'briefs.services.brServices',
     'ui.bootstrap',
-    'gallant.directives.glForm'
+    'gallant.directives.glForm',
+    'gallant.services.glServices'
 ]);
 
 app.directive('brBriefDetail', ['Question', function (Question) {
@@ -13,8 +14,10 @@ app.directive('brBriefDetail', ['Question', function (Question) {
             language: '=',
             deleteObject: '&'
         },
-        controller: ['$scope', '$attrs', 'Brief', 'BriefTemplate', 'BriefAnswers', 'LANGUAGES',
-            function ($scope, $attrs, Brief, BriefTemplate, BriefAnswers, LANGUAGES) {
+        controller: ['$scope', '$attrs', 'Brief', 'BriefTemplate', 'BriefAnswers', 'LANGUAGES', 'glValidate',
+            function ($scope, $attrs, Brief, BriefTemplate, BriefAnswers, LANGUAGES, glValidate) {
+                $scope.validate = glValidate;
+
                 var loadBriefAndTemplate = function(brief, template, language) {
                     $scope.brief = brief
                     $scope.brief.quote = $attrs.quoteId;
@@ -140,7 +143,7 @@ app.directive('brBriefDetail', ['Question', function (Question) {
 }]);
 
 
-app.directive('brQuestionDetail', function (Question) {
+app.directive('brQuestionDetail', ['glValidate', function (glValidate) {
     return {
         restrict: 'A',
         scope: {
@@ -148,7 +151,11 @@ app.directive('brQuestionDetail', function (Question) {
             language: '=',
             errors: '=',
             answered: '=',
+            form: '=',
             removeQuestion: '&'
+        },
+        controller: function ($scope) {
+            $scope.validate = glValidate;
         },
         link: function ($scope, $element) {
             var template = '/static/briefs/html/br_question_detail.html';
@@ -177,4 +184,4 @@ app.directive('brQuestionDetail', function (Question) {
         },
         template: "<div ng-include='myTemplate'></div>",
     };
-});
+}]);

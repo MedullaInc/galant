@@ -1,41 +1,37 @@
 <div class="row" id="question{{ question.index }}">
     <div class="col-lg-10 col-md-10 col-sm-9 col-xs-9">
-        <form editable-form name="questionForm" id="form">
-            <div class="data">
-                <label class="control-label in-place">Question{{ question.can_select_multiple ? ' (Can select multiple)' : '' }}</label>
-                <p editable-text="question.question[language]" e-id="question{{ question.index }}_question">
-                {{ question.question[language] || errors.questions[question.index].question || 'Not set' }}
+        <div class="data">
+            <label class="control-label in-place">Question{{ question.can_select_multiple ? ' (Can select multiple)' : '' }}</label>
+            <p editable-text="question.question[language]" e-id="question{{ question.index }}_question"
+               e-placeholder="Enter question" onbeforesave="validate.nonEmpty($data)" e-form="form">
+            {{ question.question[language] || errors.questions[question.index].question || 'Not set' }}
+            </p>
+        </div>
+        <div class="data" ng-show="form.$visible">
+            <input type="checkbox" ng-model="question.can_select_multiple"
+                   id="question{{ question.index }}_mult">
+            <span class="small">Can select multiple</span>
+        </div>
+        <div class="choices">
+            <div ng-repeat="choice in question.choices track by $index">
+                <label class="control-label in-place">Choice</label>
+                <p editable-text="choice[language]" e-form="form"
+                   e-id="question{{ question.index }}_choice{{ $index }}"
+                   e-placeholder="Enter choice" onbeforesave="validate.nonEmpty($data)"
+                   ng-class="{'text-success': question.answer.choices.indexOf($index) >= 0}">
+                    - {{ choice[language]
+                                     || errors.questions[question.index].choices || 'Not set' }}
                 </p>
             </div>
-            <div class="data" ng-show="questionForm.$visible">
-                <input type="checkbox" ng-model="question.can_select_multiple"
-                       id="question{{ question.index }}_mult">
-                <span class="small">Can select multiple</span>
+        </div>
+        <div class="row margin-bottom-10">
+            <div class="col-lg-12">
+                <button id="question{{ question.index }}_add_choice" type="button" ng-hide="answered"
+                        class="btn btn-default add_choice" ng-click="addChoice()">
+                    Add Choice
+                </button>
             </div>
-            <div class="choices">
-                <div ng-repeat="choice in question.choices track by $index">
-                    <label class="control-label in-place">Choice</label>
-                    <p editable-text="choice[language]" e-form="questionForm"
-                       e-id="question{{ question.index }}_choice{{ $index }}"
-                       e-form="innerFormC{{ $index }}"
-                       ng-class="{'text-success': question.answer.choices.indexOf($index) >= 0}">
-                        - {{ choice[language]
-                                         || errors.questions[question.index].choices || 'Not set' }}
-                    </p>
-                </div>
-            </div>
-            <div class="row margin-bottom-10">
-                <div class="col-lg-12">
-                    <button id="question{{ question.index }}_add_choice" type="button" ng-hide="answered"
-                            class="btn btn-default add_choice" ng-click="addChoice()">
-                        Add Choice
-                    </button>
-                </div>
-            </div>
-        </form>
-    </div>
-    <div gl-edit-buttons form='questionForm' hide="answered" delete="remove()"
-         prefix="question{{ question.index }}" class="col-lg-2 col-md-2 col-sm-3 col-xs-3">
+        </div>
     </div>
 </div>
 

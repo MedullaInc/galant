@@ -1,24 +1,20 @@
 <div class="row" id="question{{ question.index }}">
     <div class="col-lg-10 col-md-10 col-sm-9 col-xs-9">
-        <form editable-form name="questionForm" id="form">
-            <div class="data">
-                <label class="control-label in-place">Question</label>
-                <label class="control-label in-place">{{ question.is_long_answer ? ' (Long-answer)' : '' }}</label>
-                <p editable-text="question.question[language]" e-id="question{{ question.index }}_question">
-                    {{ question.question[language] || errors.questions[question.index].question || 'Not set' }}
-                </p>
-            </div>
-            <div class="data" ng-show="questionForm.$visible">
-                <input type="checkbox" ng-model="question.is_long_answer" id="question{{ question.index }}_long">
-                <span class="small">Long-answer</span>
-            </div>
-            <div id="question{{ question.index }}_answer" class="text-success" ng-show="question.answer">
-                {{ question.answer.answer }}
-            </div>
-        </form>
-    </div>
-    <div gl-edit-buttons form='questionForm' hide="answered" delete="remove()"
-         prefix="question{{ question.index }}" class="col-lg-2 col-md-2 col-sm-3 col-xs-3">
+        <div class="data">
+            <label class="control-label in-place">Question</label>
+            <label class="control-label in-place">{{ question.is_long_answer ? ' (Long-answer)' : '' }}</label>
+            <p editable-text="question.question[language]" e-id="question{{ question.index }}_question"
+               e-placeholder="Enter question" onbeforesave="validate.nonEmpty($data)" e-form="form">
+                {{ question.question[language] || errors.questions[question.index].question || 'Not set' }}
+            </p>
+        </div>
+        <div class="data" ng-show="form.$visible">
+            <input type="checkbox" ng-model="question.is_long_answer" id="question{{ question.index }}_long">
+            <span class="small">Long-answer</span>
+        </div>
+        <div id="question{{ question.index }}_answer" class="text-success" ng-show="question.answer">
+            {{ question.answer.answer }}
+        </div>
     </div>
 </div>
 

@@ -20,22 +20,27 @@
 
 <div ng-class="briefTemplate ? 'rounded-border col-lg-12 col-md-12 col-sm-11 col-xs-11' : 'row'">
     <div ng-class="briefTemplate ? 'col-lg-10 col-md-10 col-sm-9 col-xs-9 rounded-border' : 'col-lg-10 col-md-10 col-sm-9 col-xs-9'">
-        <form editable-form name="briefForm" id="form">
+        <form editable-form name="briefForm" id="form" shown="brief && !brief.title">
             <div id="title" class="data">
                 <label class="control-label in-place">Title</label>
-                <h2 class="inline_title" data-inputclass="form-control" editable-text="brief.title[language]" e-id="brief_title">
+                <h2 class="inline_title" data-inputclass="form-control"
+                    editable-text="brief.title[language]" e-id="brief_title"
+                    e-placeholder="Enter brief title"
+                    onbeforesave="validate.nonEmpty($data)">
                     {{ brief.title[language] || brief.errors.title || 'Not set' }}
                 </h2>
             </div>
             <div id="status" class="data">
                 <label class="control-label in-place">Status</label>
-                <p editable-text="brief.status" e-id="brief_status">
+                <p editable-text="brief.status" e-id="brief_status"
+                   onbeforesave="validate.nonEmpty($data)">
                     {{ brief.status || brief.errors.status || 'Not set' }}
                 </p>
             </div>
             <div id="greeting" class="data">
                 <label class="control-label in-place">Greeting</label>
-                <p editable-textarea="brief.greeting[language]" e-id="brief_greeting">
+                <p editable-textarea="brief.greeting[language]" e-id="brief_greeting"
+                   e-placeholder="Enter greeting" onbeforesave="validate.nonEmpty($data)">
                     {{ brief.greeting[language] || brief.errors.greeting || 'Not set' }}</p>
             </div>
         </form>
@@ -54,7 +59,7 @@
 </div>
 
 <div ng-repeat="question in brief.questions">
-    <div id="question_{{ question.index }}" class="question" br-question-detail question="question" language="language" errors="brief.errors" answered="brief.answered"></div>
+    <div id="question_{{ question.index }}" class="question" br-question-detail question="question" language="language" errors="brief.errors" answered="brief.answered" form="briefForm"></div>
 </div>
 
 <div ng-show="questions.length == 0">
