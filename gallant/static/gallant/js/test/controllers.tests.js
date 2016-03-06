@@ -2,7 +2,7 @@ describe('glClientListController', function () {
     var $rootScope;
     var $controller;
     var $window;
-    var url = 'http://foo.com/';
+    var url = 'about:blank';
 
     beforeEach(function () {
         angular.module('gallant.services.glServices', []);
@@ -176,7 +176,7 @@ describe('glClientPaymentController', function () {
     var $controller;
     var $injector;
     var $scope;
-    var url = 'http://foo.com/';
+    var url = 'about:blank';
 
     beforeEach(function () {
         angular.module('gallant.services.glServices', []);

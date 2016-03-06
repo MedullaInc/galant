@@ -12,6 +12,7 @@ describe('qtForm', function () {
         module('quotes.filters.qtCutFilter');
         module('staticNgTemplates');
         angular.module('ngAnimate', []);
+        angular.module('ngResource', []);
         angular.module('as.sortable', []);
         angular.module('ui.bootstrap', []); 
 
@@ -19,9 +20,9 @@ describe('qtForm', function () {
         module('quotes.services.qtServices', function ($provide) { 
             $provide.factory('Quote', function ($q) {
                 var Quote = function () { return {id: 0}; };
-                Quote.get = function () { return {$promise: $q.when({id: 0, sections: [{}], ervices: [{cost: [{amount: 0, currency:"USD"}]}]})}; };
-                Quote.getUser = function () { return {$promise: $q.when({id: 0, sections: [{}], ervices: [{cost: [{amount: 0, currency:"USD"}]}]})}; };
-                Quote.updateUser = function () { return {$promise: $q.when({id: 0, sections: [{}], ervices: [{cost: [{amount: 0, currency:"USD"}]}]})}; };
+                Quote.get = function () { return {$promise: $q.when({id: 0, sections: [{}], services: [{cost: [{amount: 0, currency:"USD"}]}]})}; };
+                Quote.getUser = function () { return {$promise: $q.when({id: 0, sections: [{}], services: [{cost: [{amount: 0, currency:"USD"}]}]})}; };
+                Quote.updateUser = function () { return {$promise: $q.when({id: 0, sections: [{}], services: [{cost: [{amount: 0, currency:"USD"}]}]})}; };
                 Quote.update = function () { return {$promise: $q.when({id: 0})}; };
                 Quote.fields = function () { return {$promise: $q.when({status: ['status', 'status'], language: ['language', 'language']})}; };
                 return Quote;
@@ -38,8 +39,8 @@ describe('qtForm', function () {
             });
 
             $provide.factory('Client', function ($q) {
-                var Client = jasmine.createSpyObj('Client', ['get', 'fields']);
-                Client.get.and.returnValue({$promise: $q.when([{id: 0}])});
+                var Client = jasmine.createSpyObj('Client', ['retrieve', 'fields']);
+                Client.retrieve.and.returnValue({$promise: $q.when([{id: 0}])});
                 return Client;
             });
 
@@ -58,6 +59,7 @@ describe('qtForm', function () {
                 return Service;
             });
 
+            $provide.factory('glValidate', function ($q) { return {}; });
         });
         module('quotes.directives.qtForm', function ($provide) {
             $provide.value('$uibModal', {open: function () {}});
@@ -182,19 +184,6 @@ describe('qtForm', function () {
             element.isolateScope().setLanguage('en');
             expect(element.isolateScope().language).toEqual('en');
         });
-
-        it('validates data', function () {
-            var element = $compile('<div qt-quote-form quote="quote"></div>')($scope);
-            $scope.$digest();
-
-            var err = element.isolateScope().validateNonEmpty('');
-            expect(!err);
-            var err = element.isolateScope().validateSelected('');
-            expect(!err);
-            var err = element.isolateScope().validateSelectedNonTemplate('');
-            expect(!err);
-        });
-
     });
 
 

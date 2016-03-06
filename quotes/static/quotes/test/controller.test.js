@@ -2,11 +2,13 @@ describe('qtQuoteListController', function () {
     var $rootScope;
     var $controller;
     var $window;
-    var url = 'http://foo.com/';
+    var url = 'about:blank';
  
     beforeEach(function () {
         angular.module('quotes.services.qtServices', []);
         angular.module('ngAnimate', []);
+        angular.module('ngResource', []);
+        angular.module('ui.bootstrap', []);
         module('quotes.services.qtServices', function ($provide) {
             $provide.factory('Quote', function ($q) {
                 var Quote = jasmine.createSpyObj('Quote', ['query','queryNC', 'fields']);
@@ -25,13 +27,6 @@ describe('qtQuoteListController', function () {
  
                 return QuoteTemplate;
             });
-            $provide.factory('Client', function ($q) {
-                var Client = jasmine.createSpyObj('Client', ['query', 'fields']);
- 
-                Client.query.and.returnValue({$promise: $q.when([{id: 0}])});
- 
-                return Client;
-            });
             $provide.factory('Service', function ($q) {
                 var Service = jasmine.createSpyObj('Service', ['query', 'fields']);
  
@@ -43,6 +38,13 @@ describe('qtQuoteListController', function () {
         module('quotes.controllers.qtQuoteListController', function ($provide) {
         	$provide.value('$uibModal', {open: function () {}});
             $provide.value('$window', {location: {href: null}});
+            $provide.factory('Client', function ($q) {
+                var Client = jasmine.createSpyObj('Client', ['query', 'fields']);
+
+                Client.query.and.returnValue({$promise: $q.when([{id: 0}])});
+
+                return Client;
+            });
         });
  
         inject(function (_$rootScope_, _$controller_, _$window_) {
@@ -135,7 +137,7 @@ describe('qtPopoverController', function () {
     var $rootScope;
     var $controller;
     var $window;
-    var url = 'http://foo.com/';
+    var url = 'about:blank';
  
     beforeEach(function () {
         angular.module('quotes.services.qtServices', []);
