@@ -184,7 +184,6 @@ class QuoteTemplatesTest(browser.SignedInTest):
         b.find_element_by_id('title_1').send_keys('titulo de notas prueba')
         b.find_element_by_id('text_1').send_keys('texto de notas prueba')
         b.find_element_by_id('quote_save').click()
-        self.save_snapshot('t')
         self._submit_and_check(b)
 
         new_tab = browser.wait().until(lambda driver: driver.find_element_by_id('es_tab'))
