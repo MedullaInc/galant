@@ -4,7 +4,7 @@
         <form editable-form name="quoteform" shown="quote && !quote.name"></form>
 
         <h2 e-class="form-control" e-id="quote_name" editable-text="quote.name" class="section_title" e-form="quoteform"
-            e-placeholder="Enter quote name" onbeforesave="validateNonEmpty($data)">Name: {{ quote.name || quote.errors.name || "empty" }}  </h2>
+            e-placeholder="Enter quote name" onbeforesave="validate.nonEmpty($data)">Name: {{ quote.name || quote.errors.name || "empty" }}  </h2>
     </div>
 
     <div gl-edit-buttons form="quoteform" hide="!showEdit()" delete="deleteObject()('quote')" prefix="quote">
@@ -14,14 +14,14 @@
 <div class="row">
     <div class="col-lg-6" ng-show="showClient()">
         <p e-class="form-control" e-name="client" class="data" editable-select="quote.client"
-           e-form="quoteform" editable-placeholder="Choose client..." onbeforesave="validateSelectedNonTemplate($data)"
+           e-form="quoteform" editable-placeholder="Choose client..." onbeforesave="validate.selectedIf($data, boolTemplate == 'False')"
            e-ng-options="s.id as s.name for s in clients"><span class="detail_title">Client</span>
             {{ (clients | filter:{id: quote.client})[0].name }}
             <br/><br/>
         </p>
         <p e-class="form-control" e-id="quote_status" class="data" editable-select="quote.status" e-form="quoteform" e-required
            e-ng-options="key as val for (key, val) in quoteStatus" editable-placeholder="Choose status..."
-           onbeforesave="validateSelectedNonTemplate($data)">
+           onbeforesave="validate.selectedIf($data, boolTemplate == 'False')">
             <span class="label label-default">{{ quoteStatus[quote.status] }}</span>
             <span ng-show="showViews()">
                 <span class="label label-default" uib-tooltip="Views" tooltip-placement="right">{{ quote.views }} times</span>

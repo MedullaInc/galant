@@ -67,3 +67,25 @@ app.factory('ClientProjects', function ($resource) {
 app.factory('User', function ($resource) {
     return $resource('/en/api/users');
 });
+
+app.factory('glValidate', function () {
+    return {
+        nonEmpty: function ($data) {
+            if (!$data || $data == "") {
+                return "This field cannot be empty.";
+            }
+        },
+
+        selected: function ($data) {
+            if (!$data || $data == "") {
+                return "You must choose a value.";
+            }
+        },
+
+        selectedIf: function ($data, condition) {
+            if (condition && (!$data || $data == "")) {
+                return "You must choose a value.";
+            }
+        },
+    };
+});

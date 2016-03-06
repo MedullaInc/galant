@@ -5,6 +5,7 @@ var app = angular.module('quote', [
     'ui.bootstrap',
     'xeditable',
     'gallant.controllers.glFormController',
+    'gallant.services.glServices',
     'quotes.controllers.qtQuoteListController',
     'quotes.controllers.qtQuoteTemplateListController',
     'quotes.controllers.qtPopoverController',

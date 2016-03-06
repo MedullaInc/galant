@@ -20,8 +20,8 @@ app.directive('qtQuoteForm', ['Quote', '$uibModal', function (Quote, $uibModal) 
             idType: '=',
             deleteObject: '&',
         },
-        controller: ['$scope', '$attrs', '$filter', '$window', 'Quote', 'Service', 'Section', 'QuoteTemplate', 'Client', 'LANGUAGES',
-            function ($scope, $attrs, $filter, $window, Quote, Service, Section, QuoteTemplate, Client, LANGUAGES) {
+        controller: ['$scope', '$attrs', '$filter', '$window', 'Quote', 'Service', 'Section', 'QuoteTemplate', 'Client', 'LANGUAGES', 'glValidate',
+            function ($scope, $attrs, $filter, $window, Quote, Service, Section, QuoteTemplate, Client, LANGUAGES, glValidate) {
                 $scope.quoteFields = [];
                 $scope.serviceFields = [];
                 $scope.quoteStatus = {};
@@ -29,6 +29,7 @@ app.directive('qtQuoteForm', ['Quote', '$uibModal', function (Quote, $uibModal) 
                 $scope.newQuote = false;
                 $scope.sortDisabled = false;
                 $scope.tempStatus = '0';
+                $scope.validate = glValidate;
 
                 $scope.idType = $attrs.idType;
                 $scope.boolTemplate = $attrs.boolTemplate;
@@ -82,24 +83,6 @@ app.directive('qtQuoteForm', ['Quote', '$uibModal', function (Quote, $uibModal) 
                     $scope.service.index = counter++;
                     delete $scope.service.id;
                     $scope.quote.services.push($scope.service);
-                };
-
-                $scope.validateNonEmpty = function ($data) {
-                    if (!$data || $data == "") {
-                        return "This field cannot be empty.";
-                    }
-                };
-
-                $scope.validateSelected = function ($data) {
-                    if (!$data || $data == "") {
-                        return "You must choose a value.";
-                    }
-                };
-
-                $scope.validateSelectedNonTemplate = function ($data) {
-                    if ($scope.boolTemplate == "False" && (!$data || $data == "")) {
-                        return "You must choose a value.";
-                    }
                 };
 
                 if ($attrs.boolTemplate == "False") {
