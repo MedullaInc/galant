@@ -34,9 +34,9 @@
         </div>
     </div>
 
-    <ul data-as-sortable="dragControlListeners" data-ng-model="quote.services" is-disabled="sortDisabled">
+    <ul data-as-sortable="dragControlListeners" data-ng-model="quote.services" is-disabled="quoteform.$visible">
         <li ng-repeat="service in quote.services" data-as-sortable-item>
-            <div class="row as-sortable-item-handle" id="service_{{$index}}" as-sortable-item-handle>
+            <div class="row" id="service_{{$index}}">
                 <div class="col-lg-10">
                     <div class="row">
                         <span ng-click="showRowForm(quoteform)">
@@ -94,6 +94,10 @@
                     </div>
                 </div>
                 <div class="col-lg-2">
+                    <button id="service{{ $index }}_move" type="button" class="btn btn-default move_button"
+                                    as-sortable-item-handle>
+                        <span class="glyphicon glyphicon-move"/>
+                    </button>
                     <button id="service{{ $index }}_delete" type="button" class="btn btn-default delete_button" aria-label="Delete"
                             ng-click="removeService($index)">
                         <span class="glyphicon glyphicon-trash"/>

@@ -183,26 +183,6 @@ describe('qtForm', function () {
             expect(element.isolateScope().language).toEqual('en');
         });
 
-        it('show rowform', function () {
-            $scope.quote = {};
-            $scope.rowform = {$show: function(){}};
-            var element = $compile('<div qt-quote-form quote="quote"></div>')($scope);
-            $scope.$digest();
- 
-            element.isolateScope().showRowForm($scope.rowform);
-            expect($scope.quote.sections.length).toEqual(2);
-        });
-
-        it('save rowform', function () {
-            $scope.quote = {};
-            $scope.rowform = {$show: function(){}};
-            var element = $compile('<div qt-quote-form quote="quote"></div>')($scope);
-            $scope.$digest();
- 
-            element.isolateScope().saveRowForm($scope.rowform);
-            expect($scope.quote.sections.length).toEqual(2);
-        });
-
         it('validates data', function () {
             var element = $compile('<div qt-quote-form quote="quote"></div>')($scope);
             $scope.$digest();

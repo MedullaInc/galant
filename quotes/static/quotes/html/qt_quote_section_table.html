@@ -6,9 +6,9 @@
 
     <hr/>
 
-    <ul data-as-sortable="dragControlListeners" data-ng-model="quote.sections" is-disabled="sortDisabled">
+    <ul data-as-sortable="dragControlListeners" data-ng-model="quote.sections" is-disabled="quoteform.$visible">
         <li data-ng-repeat="section in quote.sections" data-as-sortable-item>
-            <div id="section_{{$index}}" as-sortable-item-handle class="row as-sortable-item-handle">
+            <div id="section_{{$index}}" class="row">
 
                 <div class="col-lg-12">
 
@@ -46,6 +46,10 @@
                         </div>
 
                         <div class="col-lg-2">
+                            <button id="section{{ $index }}_move" type="button" class="btn btn-default delete_button"
+                                    as-sortable-item-handle>
+                                <span class="glyphicon glyphicon-move"/>
+                            </button>
                             <button id="section{{ $index }}_delete" type="button" class="btn btn-default delete_button" aria-label="Delete"
                                     ng-click="removeSection($index)">
                                 <span class="glyphicon glyphicon-trash"/>

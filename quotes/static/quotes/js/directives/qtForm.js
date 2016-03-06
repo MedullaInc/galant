@@ -187,6 +187,11 @@ app.directive('qtQuoteForm', ['Quote', '$uibModal', function (Quote, $uibModal) 
                     $scope.newQuote = true;
                     $scope.tempStatus = $scope.quote.status;
                 }
+                $scope.dragControlListeners = {
+                    accept: function (sourceItemHandleScope, destSortableScope) {
+                        return sourceItemHandleScope.itemScope.sortableScope.$id === destSortableScope.$id;
+                    }
+                };
 
             }],
         templateUrl: '/static/quotes/html/qt_quote_form.html',
@@ -219,17 +224,6 @@ app.directive('qtQuoteForm', ['Quote', '$uibModal', function (Quote, $uibModal) 
 
             $scope.addLanguage = function (language) {
                 $scope.quoteTemplate.languages.push(language);
-            };
-
-            $scope.showRowForm = function (rowform) {
-                if ($scope.quote.status != '2') {
-                    $scope.sortDisabled = true;
-                    rowform.$show();
-                }
-            };
-
-            $scope.saveRowForm = function (rowform) {
-                $scope.sortDisabled = false;
             };
 
             $scope.open = function () {
@@ -266,7 +260,6 @@ app.directive('qtQuoteForm', ['Quote', '$uibModal', function (Quote, $uibModal) 
                     return true;
                 }
             };
-
         }
     };
 }]);

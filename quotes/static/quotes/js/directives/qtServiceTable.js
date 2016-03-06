@@ -7,7 +7,7 @@ app.directive('qtServiceTable', ['Service', function (Service) {
             restrict: 'A',
             scope: true,
             controller: ['$scope', '$filter', 'Service',
-            
+
                 function ($scope, $filter, Service) {
                     $scope.serviceFields = [];
 
