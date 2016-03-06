@@ -22,4 +22,8 @@ urlpatterns = [
     url(r'^api/questions/$', login_required(views.QuestionsAPI.as_view()), name='api_questions'),
 ]
 
+urlpatterns += url(r'^api/brief/fields',
+                   views.brief_fields_json,
+                   name='api-briefs-fields'),
+
 urlpatterns += router.urls

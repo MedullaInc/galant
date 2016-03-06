@@ -17,9 +17,10 @@ app.directive('brBriefDetail', ['Question', function (Question) {
         controller: ['$scope', '$attrs', 'Brief', 'BriefTemplate', 'BriefAnswers', 'LANGUAGES', 'glValidate',
             function ($scope, $attrs, Brief, BriefTemplate, BriefAnswers, LANGUAGES, glValidate) {
                 $scope.validate = glValidate;
+                $scope.isTemplate = $attrs.isTemplate;
 
                 var loadBriefAndTemplate = function(brief, template, language) {
-                    $scope.brief = brief
+                    $scope.brief = brief;
                     $scope.brief.quote = $attrs.quoteId;
                     $scope.brief.client = $attrs.clientId;
                     if (template) {
@@ -36,6 +37,12 @@ app.directive('brBriefDetail', ['Question', function (Question) {
                     }
                     if (!$scope.brief.questions) {
                         $scope.brief.questions = [];
+                    }
+
+                    if (!$scope.brief.field_choices) {
+                        Brief.fields().$promise.then(function (fieldChoices) {
+                            $scope.brief.field_choices = fieldChoices;
+                        });
                     }
                 };
 

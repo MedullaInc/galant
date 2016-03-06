@@ -41,8 +41,9 @@ class BriefsSignedInTest(browser.SignedInTest):
         b.get(self.live_server_url + reverse('add_brief') + '?client_id=%s' % self.brief.client.id)
 
         # fill out brief & save
-        browser.wait().until(lambda driver: driver.find_element_by_id('brief_edit')).click()
+        browser.wait().until(lambda driver: driver.find_element_by_id('brief_save'))
         b.find_element_by_id('brief_title').send_keys('Brief test')
+        b.find_element_by_xpath('//select[@id="brief_status"]/option[2]').click()
         b.find_element_by_id('brief_greeting').send_keys('Brief test')
         b.find_element_by_id('brief_save').click()
         with browser.wait_for_page_load():

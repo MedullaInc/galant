@@ -1,4 +1,5 @@
 from gallant.serializers.misc import ULTextField
+from gallant.utils import get_field_choices
 from rest_framework import serializers
 from briefs.models import Brief
 from gallant import models as g
@@ -13,6 +14,7 @@ class BriefSerializer(serializers.ModelSerializer):
     title = ULTextField()
     greeting = ULTextField()
     answered = serializers.SerializerMethodField()
+    field_choices = serializers.SerializerMethodField()
 
     def get_fields(self, *args, **kwargs):
         fields = super(BriefSerializer, self).get_fields(*args, **kwargs)
@@ -24,6 +26,9 @@ class BriefSerializer(serializers.ModelSerializer):
         fields['quote'] = serializers.PrimaryKeyRelatedField(queryset=model_queryset(q.Quote), allow_null=True)
 
         return fields
+
+    def get_field_choices(self, brief):
+        return get_field_choices(type(brief))
 
     def get_answered(self, brief):
         return int(brief.status) == b.BriefStatus.Answered.value
@@ -46,7 +51,7 @@ class BriefSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Brief
-        fields = ('id', 'user', 'name', 'title', 'greeting', 'status', 'token',
+        fields = ('id', 'user', 'name', 'title', 'greeting', 'status', 'token', 'field_choices',
                   'modified', 'questions', 'language', 'client', 'quote', 'answered')
         extra_kwargs = {
             'id': {'read_only': False, 'required': False},

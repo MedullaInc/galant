@@ -3,7 +3,12 @@ app = angular.module('briefs.services.brServices', []);
 /* istanbul ignore next  */
 app.factory("Brief", function ($resource) {
     // TODO: this shouldn't start with /en/
-    return $resource("/en/briefs/api/brief/:id");
+    return $resource("/en/briefs/api/brief/:id", {}, {
+        fields: {
+          method: 'GET',
+          url: '/en/briefs/api/brief/fields/ '
+        },
+    });
 });
 
 /* istanbul ignore next  */

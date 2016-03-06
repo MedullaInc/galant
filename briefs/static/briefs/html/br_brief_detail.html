@@ -32,9 +32,13 @@
             </div>
             <div id="status" class="data">
                 <label class="control-label in-place">Status</label>
-                <p editable-text="brief.status" e-id="brief_status"
-                   onbeforesave="validate.nonEmpty($data)">
-                    {{ brief.status || brief.errors.status || 'Not set' }}
+
+                <p e-class="form-control" e-id="brief_status" class="data"
+                   editable-select="brief.status" e-form="briefForm" e-required
+                   e-ng-options="key as val for (key, val) in brief.field_choices.status"
+                   editable-placeholder="Choose status..."
+                   onbeforesave="validate.selectedIf($data, isTemplate)">
+                    <span class="label label-default">{{ brief.fields.status[brief.status] }}</span>
                 </p>
             </div>
             <div id="greeting" class="data">

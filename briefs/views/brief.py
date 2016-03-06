@@ -3,12 +3,13 @@ from django.contrib import messages
 from django.core.mail import send_mail
 from django.core.urlresolvers import reverse
 from briefs import models as b, serializers
+from django.http.response import JsonResponse
 from django.template.response import TemplateResponse
 from gallant import models as g
 from gallant.views.user import UserModelViewSet
 from quotes import models as q
 from django.views.generic import View
-from gallant.utils import get_one_or_404, query_url, get_site_from_host
+from gallant.utils import get_one_or_404, query_url, get_site_from_host, get_field_choices
 from django.utils.translation import ugettext_lazy as _
 
 
@@ -71,6 +72,10 @@ def _send_brief_email(email, from_name, link, site):
     send_mail('Client Questionnaire', message,
               '%s via %s <%s>' % (from_name, site, settings.EMAIL_HOST_USER),
               [email], fail_silently=False)
+
+
+def brief_fields_json(request):
+    return JsonResponse(get_field_choices(b.Brief), safe=False)
 
 
 class BriefDetail(View):
