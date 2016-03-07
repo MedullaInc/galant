@@ -1,4 +1,4 @@
-<div class="row" id="question{{ question.index }}">
+<div id="question{{ question.index }}">
     <div class="col-lg-10 col-md-10 col-sm-9 col-xs-9">
         <div class="data">
             <label class="control-label in-place">Question{{ question.can_select_multiple ? ' (Can select multiple)' : '' }}</label>
@@ -13,7 +13,7 @@
             <span class="small">Can select multiple</span>
         </div>
         <div class="choices">
-            <div ng-repeat="choice in question.choices track by $index" class="row">
+            <div ng-repeat="choice in question.choices track by $index">
                 <div class="col-lg-10">
                     <label class="control-label in-place">Choice</label>
                     <p editable-text="choice[language]" e-form="form"
@@ -46,16 +46,6 @@
                 </button>
             </div>
         </div>
-    </div>
-    <div class="col-lg-2">
-        <button id="question{{ $index }}_move" type="button" class="btn btn-default move_button"
-                as-sortable-item-handle>
-            <span class="glyphicon glyphicon-move"/>
-        </button>
-        <button id="question{{ $index }}_delete" type="button" class="btn btn-default delete_button" aria-label="Delete"
-                ng-click="remove()">
-            <span class="glyphicon glyphicon-trash"/>
-        </button>
     </div>
 </div>
 

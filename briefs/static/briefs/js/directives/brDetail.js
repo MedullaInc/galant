@@ -2,7 +2,8 @@ app = angular.module('briefs.directives.brDetail', [
     'briefs.services.brServices',
     'ui.bootstrap',
     'gallant.directives.glForm',
-    'gallant.services.glServices'
+    'gallant.services.glServices',
+    'as.sortable'
 ]);
 
 app.directive('brBriefDetail', ['Question', function (Question) {
