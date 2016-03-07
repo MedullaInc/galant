@@ -33,6 +33,16 @@
             </div>
         </div>
     </div>
+    <div class="col-lg-2">
+        <button id="question{{ $index }}_move" type="button" class="btn btn-default move_button"
+                as-sortable-item-handle>
+            <span class="glyphicon glyphicon-move"/>
+        </button>
+        <button id="section{{ $index }}_delete" type="button" class="btn btn-default delete_button" aria-label="Delete"
+                ng-click="remove()">
+            <span class="glyphicon glyphicon-trash"/>
+        </button>
+    </div>
 </div>
 
 <hr/>
