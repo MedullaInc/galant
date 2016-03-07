@@ -148,6 +148,7 @@ app.directive('glEditButtons', ['LANGUAGES', function (LANGUAGES) {
             form: '=',
             hide: '=',
             hideEdit: '=',
+            hideCancel: '=',
             delete: '&',
         },
         templateUrl: '/static/gallant/html/gl_edit_buttons.html',

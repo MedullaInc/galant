@@ -20,7 +20,8 @@
 
 <div ng-class="briefTemplate ? 'rounded-border col-lg-12 col-md-12 col-sm-11 col-xs-11' : 'row'">
     <div ng-class="briefTemplate ? 'col-lg-10 col-md-10 col-sm-9 col-xs-9 rounded-border' : 'col-lg-10 col-md-10 col-sm-9 col-xs-9'">
-        <form editable-form name="briefForm" id="form" shown="brief && !brief.title">
+        <form editable-form name="briefForm" id="form" shown="brief && !brief.title"
+              onshow="storeBrief()" oncancel="loadStoredBrief()">
             <div id="title" class="data">
                 <label class="control-label in-place">Title</label>
                 <h2 class="inline_title" data-inputclass="form-control"
@@ -49,7 +50,8 @@
             </div>
         </form>
     </div>
-    <div gl-edit-buttons form="briefForm" hide-edit="brief.answered" delete="deleteObject()('brief')" prefix="brief" class="col-lg-2 col-md-2 col-sm-3 col-xs-3"></div>
+    <div gl-edit-buttons form="briefForm" hide-edit="brief.answered" delete="deleteObject()('brief')"
+         prefix="brief" class="col-lg-2 col-md-2 col-sm-3 col-xs-3" hide-cancel="!brief.title[language]"></div>
 </div>
 
 <div class="row">

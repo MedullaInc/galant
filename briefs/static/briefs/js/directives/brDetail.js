@@ -121,6 +121,14 @@ app.directive('brBriefDetail', ['Question', function (Question) {
                         return sourceItemHandleScope.itemScope.sortableScope.$id === destSortableScope.$id;
                     }
                 };
+
+                $scope.storeBrief = function() {
+                    $scope.storedBrief = JSON.stringify($scope.brief);
+                };
+
+                $scope.loadStoredBrief = function() {
+                    $scope.brief = JSON.parse($scope.storedBrief);
+                };
             }],
         templateUrl: '/static/briefs/html/br_brief_detail.html',
         link: function ($scope) {
@@ -133,8 +141,10 @@ app.directive('brBriefDetail', ['Question', function (Question) {
                     question.type = 'TextQuestion';
                 }
                 question.index = $scope.brief.questions.length;
+                if (!$scope.briefForm.$visible) {
+                    $scope.briefForm.$show();
+                }
                 $scope.brief.questions.push(question);
-                $scope.briefForm.$show();
             };
 
             $scope.removeQuestion = function (question) {

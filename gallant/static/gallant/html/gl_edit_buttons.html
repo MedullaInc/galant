@@ -14,7 +14,7 @@
         <span class="glyphicon glyphicon-floppy-disk"></span>
     </button>
     <button id="{{ prefix }}_cancel" type="button" class="btn btn-default edit_button" ng-disabled="form.$waiting"
-            ng-click="form.$cancel()">
+            ng-click="form.$cancel()" ng-hide="hideCancel">
         <span class="glyphicon glyphicon-remove"></span>
     </button>
 </span>
