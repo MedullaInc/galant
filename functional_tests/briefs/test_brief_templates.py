@@ -9,6 +9,10 @@ def tearDownModule():
 
 
 class BriefTemplatesTest(browser.SignedInTest):
+    def setUp(self):
+        super(BriefTemplatesTest, self).setUp()
+        self.disable_popups()
+
     def test_add_brief_template(self):
         b = browser.instance()
         b.get(self.live_server_url + reverse('add_brief_template'))
