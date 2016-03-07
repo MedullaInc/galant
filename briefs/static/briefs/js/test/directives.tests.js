@@ -129,6 +129,7 @@ describe('brDetail', function () {
             $scope.brief = {};
             var element = $compile('<div br-brief-detail object="brief"></div>')($scope);
             $scope.$digest();
+            element.isolateScope().briefForm = {$show: function() {}};
 
             element.isolateScope().addQuestion();
             element.isolateScope().addQuestion('multi');
@@ -138,22 +139,38 @@ describe('brDetail', function () {
         });
 
         it('sets language', function () {
-            var element = $compile('<div br-brief-detail object="brief"></div>')($scope);
+            $scope.language = 'en';
+            var element = $compile('<div br-brief-detail object="brief" language="language"></div>')($scope);
             $scope.$digest();
+            element.isolateScope().briefForm = {$show: function() {}};
+            element.isolateScope().brief = {title: {en: ''}};
 
             element.isolateScope().setLanguage('en');
             expect(element.isolateScope().language).toEqual('en');
         });
 
         it('adds language', function () {
-            $scope.language = 'en';
+            $scope.language = 'en';;
             var element = $compile(
                 '<div br-brief-detail object="brief" is-template="true" language="language"></div>'
             )($scope);
             $scope.$digest();
+            element.isolateScope().briefForm = {$show: function() {}};
+            element.isolateScope().brief = {title: {en: ''}};
 
             element.isolateScope().addLanguage({'code': 'es', 'name': 'Spanish'});
             expect(element.isolateScope().briefTemplate.languages.length).toEqual(2);
+        });
+
+        it('stores and loads brief', function () {
+            var element = $compile('<div br-brief-detail object="brief"></div>')($scope);
+            $scope.$digest();
+            element.isolateScope().brief = {id: 11};
+            element.isolateScope().storeBrief();
+            element.isolateScope().brief = {id: 12};
+            element.isolateScope().loadStoredBrief();
+            expect(element.isolateScope().brief.id).toEqual(11);
+
         });
     });
 });
