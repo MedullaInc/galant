@@ -115,6 +115,12 @@ app.directive('brBriefDetail', ['Question', function (Question) {
                         }
                     }
                 }
+
+                $scope.dragControlListeners = {
+                    accept: function (sourceItemHandleScope, destSortableScope) {
+                        return sourceItemHandleScope.itemScope.sortableScope.$id === destSortableScope.$id;
+                    }
+                };
             }],
         templateUrl: '/static/briefs/html/br_brief_detail.html',
         link: function ($scope) {
@@ -164,6 +170,12 @@ app.directive('brQuestionDetail', ['glValidate', function (glValidate) {
         },
         controller: function ($scope) {
             $scope.validate = glValidate;
+
+            $scope.dragControlListeners = {
+                accept: function (sourceItemHandleScope, destSortableScope) {
+                    return sourceItemHandleScope.itemScope.sortableScope.$id === destSortableScope.$id;
+                }
+            };
         },
         link: function ($scope, $element) {
             var template = '/static/briefs/html/br_question_detail.html';

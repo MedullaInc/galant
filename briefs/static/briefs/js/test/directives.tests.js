@@ -18,7 +18,7 @@ describe('brDetail', function () {
 
             $provide.factory('Brief', function ($q) {
                 var Brief = function () { return {id: 0}; };
-                Brief.get = function () { return {$promise: $q.when({id: 0, answered: true, questions: []})}; };
+                Brief.get = function () { return {$promise: $q.when({id: 0, answered: true, questions: [{}]})}; };
                 Brief.fields = function () { return {$promise: $q.when({})}; };
                 return Brief;
             });
