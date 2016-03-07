@@ -4,7 +4,7 @@
             <label class="control-label in-place">Question{{ question.can_select_multiple ? ' (Can select multiple)' : '' }}</label>
             <p editable-text="question.question[language]" e-id="question{{ question.index }}_question"
                e-placeholder="Enter question" onbeforesave="validate.nonEmpty($data)" e-form="form">
-            {{ question.question[language] || errors.questions[question.index].question || 'Not set' }}
+                {{ question.question[language] || errors.questions[question.index].question || 'Not set' }}
             </p>
         </div>
         <div class="data" ng-show="form.$visible">
@@ -13,15 +13,29 @@
             <span class="small">Can select multiple</span>
         </div>
         <div class="choices">
-            <div ng-repeat="choice in question.choices track by $index">
-                <label class="control-label in-place">Choice</label>
-                <p editable-text="choice[language]" e-form="form"
-                   e-id="question{{ question.index }}_choice{{ $index }}"
-                   e-placeholder="Enter choice" onbeforesave="validate.nonEmpty($data)"
-                   ng-class="{'text-success': question.answer.choices.indexOf($index) >= 0}">
-                    - {{ choice[language]
+            <div ng-repeat="choice in question.choices track by $index" class="row">
+                <div class="col-lg-10">
+                    <label class="control-label in-place">Choice</label>
+                    <p editable-text="choice[language]" e-form="form"
+                       e-id="question{{ question.index }}_choice{{ $index }}"
+                       e-placeholder="Enter choice" onbeforesave="validate.nonEmpty($data)"
+                       ng-class="{'text-success': question.answer.choices.indexOf($index) >= 0}">
+                        - {{ choice[language]
                                      || errors.questions[question.index].choices || 'Not set' }}
-                </p>
+                    </p>
+                </div>
+                <div class="col-lg-2">
+                    <button id="question{{ question.index }}_choice{{ $index }}_move" type="button"
+                            class="btn btn-default move_button"
+                            as-sortable-item-handle>
+                        <span class="glyphicon glyphicon-move"/>
+                    </button>
+                    <button id="question{{ question.index }}_choice{{ $index }}_move" type="button"
+                            class="btn btn-default delete_button" aria-label="Delete"
+                            ng-click="removeChoice($index)">
+                        <span class="glyphicon glyphicon-trash"/>
+                    </button>
+                </div>
             </div>
         </div>
         <div class="row margin-bottom-10">
@@ -38,7 +52,7 @@
                 as-sortable-item-handle>
             <span class="glyphicon glyphicon-move"/>
         </button>
-        <button id="section{{ $index }}_delete" type="button" class="btn btn-default delete_button" aria-label="Delete"
+        <button id="question{{ $index }}_delete" type="button" class="btn btn-default delete_button" aria-label="Delete"
                 ng-click="remove()">
             <span class="glyphicon glyphicon-trash"/>
         </button>
