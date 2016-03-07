@@ -116,7 +116,6 @@ class BriefTemplatesTest(browser.SignedInTest):
     def _add_language_and_text(self, b):
         browser.wait().until(lambda driver: driver.find_element_by_xpath('//h2[@e-id="brief_title"]').text != 'Not set')
         b.find_element_by_id('add_question').click()
-        b.find_element_by_id('brief_edit').click()
         b.find_element_by_id('question0_question').clear()
         b.find_element_by_id('question0_question').send_keys('Who\'s on first?')
         b.find_element_by_id('brief_save').click()
@@ -124,7 +123,6 @@ class BriefTemplatesTest(browser.SignedInTest):
         b.find_element_by_xpath('//select[@id="id_language"]/option[text()[1]="Spanish"]').click()
         b.find_element_by_id('language_add').click()
         b.find_element_by_xpath('//*[@id="es_tab"]/a').click()
-        b.find_element_by_id('brief_edit').click()
         b.find_element_by_id('brief_title').send_keys('Brief prueba')
         b.find_element_by_id('brief_greeting').send_keys('Brief prueba')
         b.find_element_by_id('question0_question').clear()

@@ -157,14 +157,26 @@ app.directive('brBriefDetail', ['Question', function (Question) {
             };
 
             $scope.setLanguage = function (language) {
-                $scope.language = language;
-                if (!$scope.brief.title[language]) {
-                    $scope.briefForm.$show();
+                if ($scope.briefForm.$visible) {
+                    $scope.briefForm.$submit();
+                }
+                if (!$scope.briefForm.$visible) {
+                    $scope.language = language;
+                    if (!$scope.brief.title[language]) {
+                        $scope.briefForm.$show();
+                    }
                 }
             };
 
             $scope.addLanguage = function (language) {
-                $scope.briefTemplate.languages.push(language);
+                if ($scope.briefForm.$visible) {
+                    $scope.briefForm.$submit();
+                }
+
+                if (!$scope.briefForm.$visible) {
+                    $scope.briefTemplate.languages.push(language);
+                    $scope.setLanguage(language.code);
+                }
             };
         }
     };

@@ -93,7 +93,6 @@ class BriefsSignedInTest(browser.SignedInTest):
 
         browser.wait().until(lambda driver: driver.find_element_by_id('question0'))
         b.find_element_by_id('add_multiquestion').click()
-        browser.wait().until(lambda driver: driver.find_element_by_id('brief_edit')).click()
         b.find_element_by_id('question2_question').send_keys('Who is your daddy, and what does he do?')
         b.find_element_by_id('question2_choice0').send_keys('foo')
         b.find_element_by_id('question2_choice1').send_keys('bar')
