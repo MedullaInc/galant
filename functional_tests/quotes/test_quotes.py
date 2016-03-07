@@ -24,6 +24,10 @@ def get_blank_quote_autofixture(user):
 
 
 class QuotesSignedInTest(browser.SignedInTest):
+    def setUp(self):
+        super(QuotesSignedInTest, self).setUp()
+        self.disable_popups()
+
     def test_can_access_quotes(self):
         # check 'Quotes' h1
         browser.instance().get(self.live_server_url + reverse('quotes'))

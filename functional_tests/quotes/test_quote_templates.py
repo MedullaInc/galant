@@ -23,6 +23,10 @@ def tearDownModule():
 
 
 class QuoteTemplatesTest(browser.SignedInTest):
+    def setUp(self):
+        super(QuoteTemplatesTest, self).setUp()
+        self.disable_popups()
+
     def test_add_quote_template(self):
         b = browser.instance()
 
