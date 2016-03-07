@@ -134,6 +134,7 @@ app.directive('brBriefDetail', ['Question', function (Question) {
                 }
                 question.index = $scope.brief.questions.length;
                 $scope.brief.questions.push(question);
+                $scope.briefForm.$show();
             };
 
             $scope.removeQuestion = function (question) {
@@ -147,6 +148,9 @@ app.directive('brBriefDetail', ['Question', function (Question) {
 
             $scope.setLanguage = function (language) {
                 $scope.language = language;
+                if (!$scope.brief.title[language]) {
+                    $scope.briefForm.$show();
+                }
             };
 
             $scope.addLanguage = function (language) {
