@@ -49,6 +49,14 @@
 
 {% endblock %}
 
+
+{% block extra_wrapper_attrs %} ng-app="quote" {% endblock %}
+
+{% block messages %}
+    <div gl-alerts></div>
+    {{ block.super }}
+{% endblock %}
+
 {% block center_content %}
 
     <div ng-controller="glFormController"

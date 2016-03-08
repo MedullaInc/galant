@@ -49,7 +49,7 @@ class QuoteTemplatesTest(browser.SignedInTest):
 
         #b.find_element_by_xpath('//select[@e-name="-service-2-type"]/option[@value="3"]').click()
 
-        self._submit_and_check(b)
+        self._submit_and_check(b, True)
 
     def test_add_quote_lang_dropdown(self):
         b = browser.instance()
@@ -63,7 +63,7 @@ class QuoteTemplatesTest(browser.SignedInTest):
         browser.wait().until(lambda driver: driver.find_element_by_id('service0_delete')).click()
 
         #b.find_element_by_xpath('//select[@e-name="-service-2-type"]/option[@value="3"]').click()
-        self._add_language_and_text(b)
+        self._add_language_and_text(b, True)
 
     def test_quote_template_detail(self):
         b = browser.instance()
@@ -166,7 +166,7 @@ class QuoteTemplatesTest(browser.SignedInTest):
         success_message = b.find_element_by_class_name('alert-success')
         self.assertTrue(u'Quote saved.' in success_message.text)
 
-    def _add_language_and_text(self, b):
+    def _add_language_and_text(self, b, redirect=False):
         browser.wait().until(lambda driver: driver.find_element_by_xpath('//*[@e-id="quote_name"]').text != 'empty')
         browser.wait().until(lambda driver: driver.find_element_by_xpath('//*[@e-id="quote_name"]').text != '')
         b.find_element_by_id('title_0').send_keys('test intro title')
@@ -184,7 +184,7 @@ class QuoteTemplatesTest(browser.SignedInTest):
         b.find_element_by_id('title_1').send_keys('titulo de notas prueba')
         b.find_element_by_id('text_1').send_keys('texto de notas prueba')
         b.find_element_by_id('quote_save').click()
-        self._submit_and_check(b)
+        self._submit_and_check(b, redirect)
 
         new_tab = browser.wait().until(lambda driver: driver.find_element_by_id('es_tab'))
         self.assertEqual(u'Spanish', new_tab.text)
@@ -202,8 +202,13 @@ class QuoteTemplatesTest(browser.SignedInTest):
         response = self.client.get(self.live_server_url + reverse('api-quote-template-detail', args=[qt.id]))
         self.assertEqual(response.status_code, 200)
 
-    def _submit_and_check(self, b):
-        with browser.wait_for_page_load():
+    def _submit_and_check(self, b, redirect=False):
+        if redirect:
+            with browser.wait_for_page_load():
+                b.find_element_by_id('create_submit').click()
+            success_message = b.find_element_by_class_name('alert-success')
+            self.assertTrue(u'Quotetemplate saved.' in success_message.text)
+        else:
             b.find_element_by_id('create_submit').click()
-        success_message = b.find_element_by_class_name('alert-success')
-        self.assertTrue(u'Quotetemplate saved.' in success_message.text)
+            success_message = browser.wait().until(lambda driver: driver.find_element_by_class_name('alert-success'))
+            self.assertTrue(u'Saved.' in success_message.text)

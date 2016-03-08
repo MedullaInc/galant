@@ -20,6 +20,7 @@ app.directive('qtQuoteForm', ['Quote', '$uibModal', function (Quote, $uibModal) 
             boolTemplate: '=',
             idType: '=',
             deleteObject: '&',
+            submit: '&',
         },
         controller: ['$scope', '$attrs', '$filter', '$window', 'Quote', 'Service', 'Section', 'QuoteTemplate', 'Client', 'LANGUAGES', 'glValidate',
             function ($scope, $attrs, $filter, $window, Quote, Service, Section, QuoteTemplate, Client, LANGUAGES, glValidate) {
@@ -31,6 +32,7 @@ app.directive('qtQuoteForm', ['Quote', '$uibModal', function (Quote, $uibModal) 
                 $scope.sortDisabled = false;
                 $scope.tempStatus = '0';
                 $scope.validate = glValidate;
+                $scope.submitForm = angular.noop;
 
                 $scope.idType = $attrs.idType;
                 $scope.boolTemplate = $attrs.boolTemplate;

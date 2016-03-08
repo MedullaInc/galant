@@ -76,7 +76,7 @@ class QuotesSignedInTest(browser.SignedInTest):
         b.find_element_by_id('quote_save').click()
         b.find_element_by_id('service0_delete').click()
 
-        self._submit_and_check(b)
+        self._submit_and_check(b, True)
 
     def test_edit_quote(self):
         b = browser.instance()
@@ -242,8 +242,13 @@ class QuotesSignedInTest(browser.SignedInTest):
         response = self.client.get(self.live_server_url + reverse('api-quote-detail', args=[q.id]))
         self.assertEqual(response.status_code, 200)
 
-    def _submit_and_check(self, b):
-        with browser.wait_for_page_load():
-            b.find_element_by_xpath('//button[@id="create_submit"]').click()
-        success_message = b.find_element_by_class_name('alert-success')
-        self.assertTrue(u'Quote saved.' in success_message.text)
+    def _submit_and_check(self, b, redirect=False):
+        if redirect:
+            with browser.wait_for_page_load():
+                b.find_element_by_id('create_submit').click()
+            success_message = b.find_element_by_class_name('alert-success')
+            self.assertTrue(u'Quote saved.' in success_message.text)
+        else:
+            b.find_element_by_id('create_submit').click()
+            success_message = browser.wait().until(lambda driver: driver.find_element_by_class_name('alert-success'))
+            self.assertTrue(u'Saved.' in success_message.text)

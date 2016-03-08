@@ -42,6 +42,13 @@
     </style>
 {% endblock %}
 
+{% block extra_wrapper_attrs %} ng-app="quote" {% endblock %}
+
+{% block messages %}
+    <div gl-alerts></div>
+    {{ block.super }}
+{% endblock %}
+
 {% block section_title %}
     {% trans "Quote" %}
 {% endblock %}
