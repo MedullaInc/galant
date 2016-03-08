@@ -157,14 +157,14 @@ app.directive('brBriefDetail', ['Question', function (Question) {
             };
 
             $scope.setLanguage = function (language) {
-                if ($scope.briefForm.$visible) {
+                var initVis = $scope.briefForm.$visible;
+                if (initVis) {
                     $scope.briefForm.$submit();
                 }
                 if (!$scope.briefForm.$visible) {
                     $scope.language = language;
-                    if (!$scope.brief.title[language]) {
+                    if (initVis)
                         $scope.briefForm.$show();
-                    }
                 }
             };
 
@@ -176,6 +176,7 @@ app.directive('brBriefDetail', ['Question', function (Question) {
                 if (!$scope.briefForm.$visible) {
                     $scope.briefTemplate.languages.push(language);
                     $scope.setLanguage(language.code);
+                    $scope.briefForm.$show();
                 }
             };
         }

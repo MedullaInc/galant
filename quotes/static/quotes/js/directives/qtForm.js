@@ -184,11 +184,11 @@ app.directive('qtQuoteForm', ['Quote', '$uibModal', function (Quote, $uibModal) 
                 };
 
 
-                $scope.storeQuote = function() {
+                $scope.storeQuote = function () {
                     $scope.storedQuote = JSON.stringify($scope.quote);
                 };
 
-                $scope.loadStoredQuote = function() {
+                $scope.loadStoredQuote = function () {
                     $scope.quote = JSON.parse($scope.storedQuote);
                 };
             }],
@@ -213,11 +213,14 @@ app.directive('qtQuoteForm', ['Quote', '$uibModal', function (Quote, $uibModal) 
             };
 
             $scope.setLanguage = function (language) {
-                if ($scope.quoteform.$visible) {
+                var initVis = $scope.quoteform.$visible;
+                if (initVis) {
                     $scope.quoteform.$submit();
                 }
                 if (!$scope.quoteform.$visible) {
                     $scope.language = language;
+                    if (initVis)
+                        $scope.quoteform.$show();
                 }
             };
 
