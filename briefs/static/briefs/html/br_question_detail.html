@@ -2,7 +2,7 @@
     <div class="data">
         <label class="control-label in-place">Question</label>
         <label class="control-label in-place">{{ question.is_long_answer ? ' (Long-answer)' : '' }}</label>
-        <p editable-text="question.question[language]" e-id="question{{ question.index }}_question"
+        <p editable-textarea="question.question[language]" e-id="question{{ question.index }}_question"
            e-placeholder="Enter question" onbeforesave="validate.nonEmpty($data)" e-form="form">
             {{ question.question[language] || errors.questions[question.index].question || 'Not set' }}
         </p>

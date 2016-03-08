@@ -18,12 +18,11 @@
     </ul>
 </div>
 
-<div ng-class="briefTemplate ? 'rounded-border col-lg-12 col-md-12 col-sm-11 col-xs-11' : 'row'">
+<div ng-class="briefTemplate ? 'rounded-border col-lg-12 col-md-12 col-sm-11 col-xs-11' : ''">
     <div ng-class="briefTemplate ? 'col-lg-10 col-md-10 col-sm-9 col-xs-9 rounded-border' : 'col-lg-10 col-md-10 col-sm-9 col-xs-9'">
         <form editable-form name="briefForm" id="form" shown="brief && !brief.title"
               onshow="storeBrief()" oncancel="loadStoredBrief()" onaftersave="submitForm()">
-            <div id="title" class="data">
-                <label class="control-label in-place">Title</label>
+            <div id="title" class="data row">
                 <h2 class="inline_title" data-inputclass="form-control"
                     editable-text="brief.title[language]" e-id="brief_title"
                     e-placeholder="Enter brief title"
@@ -31,22 +30,21 @@
                     {{ brief.title[language] || brief.errors.title || 'Not set' }}
                 </h2>
             </div>
-            <div id="status" class="data">
-                <label class="control-label in-place">Status</label>
-
+            <div id="status" class="data row">
                 <p e-class="form-control" e-id="brief_status" class="data"
                    editable-select="brief.status" e-form="briefForm" e-required
                    e-ng-options="key as val for (key, val) in brief.field_choices.status"
                    editable-placeholder="Choose status..."
                    onbeforesave="validate.selectedIf($data, isTemplate)">
                     <span class="label label-default">{{ brief.field_choices.status[brief.status] }}</span>
+                    <br/><br/>
                 </p>
             </div>
-            <div id="greeting" class="data">
-                <label class="control-label in-place">Greeting</label>
+            <div id="greeting" class="data row">
                 <p editable-textarea="brief.greeting[language]" e-id="brief_greeting"
                    e-placeholder="Enter greeting" onbeforesave="validate.nonEmpty($data)">
-                    {{ brief.greeting[language] || brief.errors.greeting || 'Not set' }}</p>
+                    {{ brief.greeting[language] || brief.errors.greeting || 'Not set' }}
+                </p>
             </div>
         </form>
     </div>
@@ -64,13 +62,14 @@
     </div>
 </div>
 
-<div data-as-sortable="dragControlListeners" data-ng-model="brief.questions">
-    <div ng-repeat="question in brief.questions" data-as-sortable-item>
-        <div id="question_{{ question.index }}" class="question"
+<div data-as-sortable="dragControlListeners" data-ng-model="brief.questions" class="row">
+    <div ng-repeat="question in brief.questions" data-as-sortable-item class="row">
+        <div id="question_{{ question.index }}" class="question col-lg-10"
              br-question-detail question="question"
-             language="language" errors="brief.errors" answered="brief.answered" form="briefForm"></div>
+             language="language" errors="brief.errors" answered="brief.answered" form="briefForm">
+        </div>
 
-        <div>
+        <div class="col-lg-2 margin-top-25">
             <button id="question{{ $index }}_move" type="button" class="btn btn-default move_button"
                     as-sortable-item-handle>
                 <span class="glyphicon glyphicon-move"/>

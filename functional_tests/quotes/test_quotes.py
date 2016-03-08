@@ -145,7 +145,8 @@ class QuotesSignedInTest(browser.SignedInTest):
         q = get_blank_quote_autofixture(self.user)
         b.get(self.live_server_url + reverse('quote_detail', args=[q.id]))
 
-        browser.wait().until(lambda driver: driver.find_element_by_id('quote_edit')).click()
+        browser.wait().until(lambda driver: driver.find_element_by_id('section_0'))
+        b.find_element_by_id('quote_edit').click()
         add_section = b.find_element_by_id('add_section')
         add_section.click()
         browser.wait().until(lambda driver: driver.find_element_by_id('title_2')).clear()
