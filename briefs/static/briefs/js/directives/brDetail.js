@@ -13,12 +13,14 @@ app.directive('brBriefDetail', ['Question', function (Question) {
             object: '=',
             endpoint: '=',
             language: '=',
-            deleteObject: '&'
+            deleteObject: '&',
+            submit: '&'
         },
         controller: ['$scope', '$attrs', 'Brief', 'BriefTemplate', 'BriefAnswers', 'LANGUAGES', 'glValidate',
             function ($scope, $attrs, Brief, BriefTemplate, BriefAnswers, LANGUAGES, glValidate) {
                 $scope.validate = glValidate;
                 $scope.isTemplate = $attrs.isTemplate;
+                $scope.submitForm = $scope.submit();
 
                 var loadBriefAndTemplate = function(brief, template, language) {
                     $scope.brief = brief;
