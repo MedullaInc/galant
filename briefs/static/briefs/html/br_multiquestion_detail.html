@@ -2,39 +2,43 @@
     <div>
         <div class="data">
             <label class="control-label in-place">Question{{ question.can_select_multiple ? ' (Can select multiple)' : '' }}</label>
-            <p editable-text="question.question[language]" e-id="question{{ question.index }}_question"
+            <p editable-textarea="question.question[language]" e-id="question{{ question.index }}_question"
                e-placeholder="Enter question" onbeforesave="validate.nonEmpty($data)" e-form="form">
                 {{ question.question[language] || errors.questions[question.index].question || 'Not set' }}
             </p>
+
+            <div class="data" ng-show="form.$visible">
+                <input type="checkbox" ng-model="question.can_select_multiple"
+                       id="question{{ question.index }}_mult">
+                <span class="small">Can select multiple choices</span>
+            </div>
+
         </div>
-        <div class="data" ng-show="form.$visible">
-            <input type="checkbox" ng-model="question.can_select_multiple"
-                   id="question{{ question.index }}_mult">
-            <span class="small">Can select multiple</span>
-        </div>
-        <div class="choices" data-as-sortable="dragControlListeners" data-ng-model="question.choices">
-            <div ng-repeat="choice in question.choices track by $index" data-as-sortable-item>
-                <div>
-                    <label class="control-label in-place">Choice</label>
-                    <p editable-text="choice[language]" e-form="form"
-                       e-id="question{{ question.index }}_choice{{ $index }}"
-                       e-placeholder="Enter choice" onbeforesave="validate.nonEmpty($data)"
-                       ng-class="{'text-success': question.answer.choices.indexOf($index) >= 0}">
-                        - {{ choice[language]
+        <div>
+            <div class="row choices" data-as-sortable="dragControlListeners" data-ng-model="question.choices">
+                <div ng-repeat="choice in question.choices track by $index" data-as-sortable-item class="row">
+                    <div class="col-lg-9">
+                        <label class="control-label in-place">Choice</label>
+                        <p editable-textarea="choice[language]" e-form="form"
+                           e-id="question{{ question.index }}_choice{{ $index }}"
+                           e-placeholder="Enter choice" onbeforesave="validate.nonEmpty($data)"
+                           ng-class="{'text-success': question.answer.choices.indexOf($index) >= 0}">
+                            - {{ choice[language]
                                      || errors.questions[question.index].choices || 'Not set' }}
-                    </p>
-                </div>
-                <div class=>
-                    <button id="question{{ question.index }}_choice{{ $index }}_move" type="button"
-                            class="btn btn-default move_button"
-                            as-sortable-item-handle>
-                        <span class="glyphicon glyphicon-move"/>
-                    </button>
-                    <button id="question{{ question.index }}_choice{{ $index }}_move" type="button"
-                            class="btn btn-default delete_button" aria-label="Delete"
-                            ng-click="removeChoice($index)">
-                        <span class="glyphicon glyphicon-trash"/>
-                    </button>
+                        </p>
+                    </div>
+                    <div class="col-lg-3 margin-top-25">
+                        <button id="question{{ question.index }}_choice{{ $index }}_move" type="button"
+                                class="btn btn-default move_button"
+                                as-sortable-item-handle>
+                            <span class="glyphicon glyphicon-move"/>
+                        </button>
+                        <button id="question{{ question.index }}_choice{{ $index }}_move" type="button"
+                                class="btn btn-default delete_button" aria-label="Delete"
+                                ng-click="removeChoice($index)">
+                            <span class="glyphicon glyphicon-trash"/>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
