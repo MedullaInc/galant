@@ -111,6 +111,7 @@ app.directive('brBriefDetail', ['Question', function (Question) {
                                 angular.forEach($scope.brief.questions, function (q) {
                                     delete q.id;
                                 });
+                                $scope.briefForm.$show();
                             });
                         } else {
                             loadBriefAndTemplate(new Brief());
@@ -158,10 +159,17 @@ app.directive('brBriefDetail', ['Question', function (Question) {
                 return (typeof $scope.addQuestion === 'function');
             };
 
+            var submitWithoutOnAfterSave = function(form) {
+                var tmpFn = form.$onaftersave;
+                form.$onaftersave = angular.noop;
+                form.$submit();
+                form.$onaftersave = tmpFn;
+            };
+
             $scope.setLanguage = function (language) {
                 var initVis = $scope.briefForm.$visible;
                 if (initVis) {
-                    $scope.briefForm.$submit();
+                    submitWithoutOnAfterSave($scope.briefForm);
                 }
                 if (!$scope.briefForm.$visible) {
                     $scope.language = language;
@@ -172,7 +180,7 @@ app.directive('brBriefDetail', ['Question', function (Question) {
 
             $scope.addLanguage = function (language) {
                 if ($scope.briefForm.$visible) {
-                    $scope.briefForm.$submit();
+                    submitWithoutOnAfterSave($scope.briefForm);
                 }
 
                 if (!$scope.briefForm.$visible) {

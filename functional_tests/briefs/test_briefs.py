@@ -184,8 +184,8 @@ class BriefsSignedInTest(browser.SignedInTest):
         if redirect:
             with browser.wait_for_page_load():
                 b.find_element_by_id('brief_save').click()
-                success_message = b.find_element_by_class_name('alert-success')
-                self.assertTrue(u'Brief saved.' in success_message.text)
+            success_message = b.find_element_by_class_name('alert-success')
+            self.assertTrue(u'Brief saved.' in success_message.text)
         else:
             b.find_element_by_id('brief_save').click()
             success_message = browser.wait().until(lambda driver: driver.find_element_by_class_name('alert-success'))
