@@ -1,7 +1,8 @@
 <div class="row">
 
     <div class="col-lg-10 col-md-10 col-sm-9 col-xs-9">
-        <form editable-form name="quoteform" shown="quote && !quote.name"></form>
+        <form editable-form name="quoteform" shown="quote && !quote.name"
+              onshow="storeQuote()" oncancel="loadStoredQuote()"></form>
 
         <h2 e-class="form-control" e-id="quote_name" editable-text="quote.name" class="section_title" e-form="quoteform"
             e-placeholder="Enter quote name" onbeforesave="validate.nonEmpty($data)">Name: {{ quote.name || quote.errors.name || "empty" }}  </h2>

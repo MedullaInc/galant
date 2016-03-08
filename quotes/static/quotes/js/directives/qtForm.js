@@ -65,6 +65,9 @@ app.directive('qtQuoteForm', ['Quote', '$uibModal', function (Quote, $uibModal) 
                     $scope.section = new Section({"name": name, "index": counter, "views": 0});
                     $scope.section.index = counter++;
                     delete $scope.section.id;
+                    if ($scope.quoteform && !$scope.quoteform.$visible) {
+                        $scope.quoteform.$show();
+                    }
                     $scope.quote.sections.push($scope.section);
                 };
 
@@ -83,6 +86,9 @@ app.directive('qtQuoteForm', ['Quote', '$uibModal', function (Quote, $uibModal) 
                     $scope.service.user = $scope.quote.user;
                     $scope.service.index = counter++;
                     delete $scope.service.id;
+                    if ($scope.quoteform && !$scope.quoteform.$visible) {
+                        $scope.quoteform.$show();
+                    }
                     $scope.quote.services.push($scope.service);
                 };
 
@@ -177,6 +183,14 @@ app.directive('qtQuoteForm', ['Quote', '$uibModal', function (Quote, $uibModal) 
                     }
                 };
 
+
+                $scope.storeQuote = function() {
+                    $scope.storedQuote = JSON.stringify($scope.quote);
+                };
+
+                $scope.loadStoredQuote = function() {
+                    $scope.quote = JSON.parse($scope.storedQuote);
+                };
             }],
         templateUrl: '/static/quotes/html/qt_quote_form.html',
         link: function ($scope) {
@@ -198,16 +212,25 @@ app.directive('qtQuoteForm', ['Quote', '$uibModal', function (Quote, $uibModal) 
                 serviceTemplateUrl: 'serviceTemplate.html'
             };
 
-            $scope.changeLanguage = function (lang) {
-                $scope.language = lang;
-            };
-
             $scope.setLanguage = function (language) {
-                $scope.language = language;
+                if ($scope.quoteform.$visible) {
+                    $scope.quoteform.$submit();
+                }
+                if (!$scope.quoteform.$visible) {
+                    $scope.language = language;
+                }
             };
 
             $scope.addLanguage = function (language) {
-                $scope.quoteTemplate.languages.push(language);
+                if ($scope.quoteform.$visible) {
+                    $scope.quoteform.$submit();
+                }
+
+                if (!$scope.quoteform.$visible) {
+                    $scope.quoteTemplate.languages.push(language);
+                    $scope.setLanguage(language.code);
+                    $scope.quoteform.$show();
+                }
             };
 
             $scope.open = function () {

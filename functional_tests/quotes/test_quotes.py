@@ -145,22 +145,22 @@ class QuotesSignedInTest(browser.SignedInTest):
         q = get_blank_quote_autofixture(self.user)
         b.get(self.live_server_url + reverse('quote_detail', args=[q.id]))
 
+        browser.wait().until(lambda driver: driver.find_element_by_id('quote_edit')).click()
         add_section = b.find_element_by_id('add_section')
         add_section.click()
-        browser.wait().until(lambda driver: driver.find_element_by_id('quote_edit')).click()
-        b.find_element_by_id('title_1').clear()
-        b.find_element_by_id('text_1').clear()
-        b.find_element_by_id('title_1').send_keys('1234')
-        b.find_element_by_id('text_1').send_keys('4321')
+        browser.wait().until(lambda driver: driver.find_element_by_id('title_2')).clear()
+        b.find_element_by_id('text_2').clear()
+        b.find_element_by_id('title_2').send_keys('1234')
+        b.find_element_by_id('text_2').send_keys('4321')
         b.find_element_by_id('quote_save').click()
 
         self._submit_and_check(b)
 
         browser.wait().until(lambda driver: driver.find_element_by_id('quote_edit')).click()
 
-        self.assertEqual(b.find_element_by_id('title_1').get_attribute('value'), '1234')
+        self.assertEqual(b.find_element_by_id('title_2').get_attribute('value'), '1234')
 
-        self.assertEqual(b.find_element_by_id('text_1').get_attribute('value'), '4321')
+        self.assertEqual(b.find_element_by_id('text_2').get_attribute('value'), '4321')
 
     def test_add_service(self):
         b = browser.instance()
@@ -197,7 +197,6 @@ class QuotesSignedInTest(browser.SignedInTest):
         browser.wait().until(lambda driver: driver.find_element_by_id('section_0'))
         add_section = b.find_element_by_id('add_section')
         add_section.click()
-        browser.wait().until(lambda driver: driver.find_element_by_id('quote_edit')).click()
         b.find_element_by_id('title_1').clear()
         b.find_element_by_id('text_1').clear()
         b.find_element_by_id('title_1').send_keys('s1title')
@@ -230,7 +229,6 @@ class QuotesSignedInTest(browser.SignedInTest):
         add_section = b.find_element_by_id('add_section')
         add_section.click()
 
-        b.find_element_by_id('quote_edit').click()
         self.assertIsNotNone(b.find_elements_by_id('title_2'))
         b.find_element_by_id('title_2').send_keys('s2title')
         b.find_element_by_id('text_2').send_keys('s2text')

@@ -148,6 +148,7 @@ describe('qtForm', function () {
             $scope.quote = {};
             var element = $compile('<div qt-quote-form quote="quote" ></div>')($scope);
             $scope.$digest();
+            element.isolateScope().quoteform = {$show: function() {}};
             element.isolateScope().open();
             element.isolateScope().addService();
             expect($scope.quote.services.length).toEqual(2);
@@ -156,22 +157,15 @@ describe('qtForm', function () {
         it('adds section', function () {
             var element = $compile('<div qt-quote-form quote="quote" ></div>')($scope);
             $scope.$digest();
+            element.isolateScope().quoteform = {$show: function() {}};
             element.isolateScope().addSection();
             expect($scope.quote.sections.length).toEqual(3);
-        });
-
-        it('changes language', function () {
-            $scope.quote = {};
-            var element = $compile('<div qt-quote-form  quote-template="quoteTemplate" is-template="true"></div>')($scope);
-            $scope.$digest();
- 
-            element.isolateScope().changeLanguage(["en","en"]);
-            expect($scope.language.length).toEqual(2);
         });
 
         it('adds language', function () {
             var element = $compile('<div qt-quote-form quote-template="quoteTemplate" bool-template="True" template-id="quoteTemplate.id"></div>')($scope);
             $scope.$digest();
+            element.isolateScope().quoteform = {$show: function() {}};
 
             element.isolateScope().addLanguage({'code': 'es', 'name': 'Spanish'});
             expect(element.isolateScope().quoteTemplate.languages.length).toEqual(2);
@@ -180,9 +174,21 @@ describe('qtForm', function () {
         it('sets language', function () {
             var element = $compile('<div qt-quote-form quote-template="quoteTemplate" bool-template="True"></div>')($scope);
             $scope.$digest();
+            element.isolateScope().quoteform = {$show: function() {}};
 
             element.isolateScope().setLanguage('en');
             expect(element.isolateScope().language).toEqual('en');
+        });
+
+        it('stores and loads quote', function () {
+            var element = $compile('<div qt-quote-form></div>')($scope);
+            $scope.$digest();
+            element.isolateScope().quote = {id: 11};
+            element.isolateScope().storeQuote();
+            element.isolateScope().quote = {id: 12};
+            element.isolateScope().loadStoredQuote();
+            expect(element.isolateScope().quote.id).toEqual(11);
+
         });
     });
 
