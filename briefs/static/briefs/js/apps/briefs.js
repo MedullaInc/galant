@@ -3,6 +3,7 @@ var app = angular.module('brief', [
     'xeditable',
     'briefs.directives.brDetail',
     'gallant.controllers.glFormController',
+    'gallant.directives.glAlerts',
 ]);
 
 /* istanbul ignore next */
