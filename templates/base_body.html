@@ -15,7 +15,7 @@
 
 {% block body %}
 
-    <div class="page-wrapper">
+    <div class="page-wrapper" {% block extra_wrapper_attrs %}{% endblock %}>
 
         {% block header_div %}
         <header class="header-5">

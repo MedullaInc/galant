@@ -19,9 +19,12 @@
     <link rel="stylesheet" href="{% static "css/ng-sortable.style.min.css" %}">
 {% endblock %}
 
+{% block extra_wrapper_attrs %} ng-app="brief" {% endblock %}
+
 {% block section_title %}
     {% trans title %}
 {% endblock %}
+
 
 {% block sidebar %}
     {% if is_template %}
@@ -50,7 +53,7 @@
 {% endblock %}
 
 {% block center_content %}
-    <div ng-app="brief" ng-controller="glFormController"
+    <div ng-controller="glFormController"
          ng-init="init('{% firstof language LANGUAGE_CODE %}', '{{ csrf_token }}')">
 
         {% if answer_set or object.status == "2" %}
