@@ -203,7 +203,6 @@ app.directive('brQuestionDetail', ['glValidate', function (glValidate) {
             errors: '=',
             answered: '=',
             form: '=',
-            removeQuestion: '&'
         },
         controller: function ($scope) {
             $scope.validate = glValidate;
@@ -220,13 +219,6 @@ app.directive('brQuestionDetail', ['glValidate', function (glValidate) {
                 template = '/static/briefs/html/br_multiquestion_detail.html';
             }
             $scope.myTemplate = template;
-
-            $scope.remove = function () {
-                if (confirm('Remove question?')) {
-                    $element.remove();
-                    $scope.removeQuestion()($scope.question);
-                }
-            };
 
             $scope.addChoice = function () {
                 if ($scope.question.choices) {
