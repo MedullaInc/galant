@@ -21,6 +21,11 @@
 
 {% block extra_wrapper_attrs %} ng-app="brief" {% endblock %}
 
+{% block messages %}
+    <div gl-alerts></div>
+    {{ block.super }}
+{% endblock %}
+
 {% block section_title %}
     {% trans title %}
 {% endblock %}
