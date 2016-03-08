@@ -16,8 +16,8 @@ app.directive('brBriefDetail', ['Question', function (Question) {
             deleteObject: '&',
             submit: '&'
         },
-        controller: ['$scope', '$attrs', 'Brief', 'BriefTemplate', 'BriefAnswers', 'LANGUAGES', 'glValidate',
-            function ($scope, $attrs, Brief, BriefTemplate, BriefAnswers, LANGUAGES, glValidate) {
+        controller: ['$scope', '$attrs', '$filter', 'Brief', 'BriefTemplate', 'BriefAnswers', 'LANGUAGES', 'glValidate',
+            function ($scope, $attrs, $filter, Brief, BriefTemplate, BriefAnswers, LANGUAGES, glValidate) {
                 $scope.validate = glValidate;
                 $scope.isTemplate = $attrs.isTemplate;
                 $scope.submitForm = $scope.submit();
@@ -40,6 +40,8 @@ app.directive('brBriefDetail', ['Question', function (Question) {
                     }
                     if (!$scope.brief.questions) {
                         $scope.brief.questions = [];
+                    } else {
+                        $scope.brief.questions = $filter('orderBy')($scope.brief.questions, 'index');
                     }
 
                     if (!$scope.brief.field_choices) {
