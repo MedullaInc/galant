@@ -33,7 +33,6 @@ app.controller('glFormController', ['$scope', '$http', '$window', 'glAlertServic
             var valid = setFormsDirty($scope.forms);
 
             if (valid) {
-                $window.onbeforeunload = null;
                 var method = null;
                 if ($scope.object.id) {
                     method = $scope.objectEndpoint.update;
@@ -42,6 +41,7 @@ app.controller('glFormController', ['$scope', '$http', '$window', 'glAlertServic
                 }
 
                 method({id: $scope.object.id}, $scope.object, function (response) {
+                    $window.onbeforeunload = null;
                     if (response.redirect) {
                         window.location.href = response.redirect;
                     } else {
