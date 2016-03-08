@@ -42,12 +42,10 @@ app.controller('glFormController', ['$scope', '$http', '$window', 'glAlertServic
                 }
 
                 method({id: $scope.object.id}, $scope.object, function (response) {
-                    /* istanbul ignore else  */
                     if (response.redirect) {
-                        glAlertService.add('success', 'Saved.');
+                        window.location.href = response.redirect;
                     } else {
-                        // handle errors
-                        glAlertService.add('danger', 'Error: ' + JSON.stringify(response.data));
+                        glAlertService.add('success', 'Saved.');
                     }
                 }, /* istanbul ignore next */ function (errorResponse) {
                     $scope.object.errors = errorResponse.data;

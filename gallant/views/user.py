@@ -259,23 +259,12 @@ class UserModelViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         return self.model.objects.all_for(self.request.user)
 
-    def update(self, request, *args, **kwargs):
-        response = super(UserModelViewSet, self).update(request, *args, **kwargs)
-        if response.status_code == status.HTTP_200_OK or response.status_code == status.HTTP_201_CREATED:
-            self.request._messages.add(messages.SUCCESS, '%s saved.' % self.model._meta.model_name.title())
-            return Response({'status': 0, 'redirect':
-                             reverse('%s_detail' % self.model._meta.model_name, args=[response.data['id']])})
-        else:
-            return response
-
     def create(self, request, *args, **kwargs):
         response = super(UserModelViewSet, self).create(request, *args, **kwargs)
+        self.request._messages.add(messages.SUCCESS, '%s saved.' % self.model._meta.model_name.title())
         if response.status_code == status.HTTP_201_CREATED:
-            self.request._messages.add(messages.SUCCESS, '%s saved.' % self.model._meta.model_name.title())
-            return Response({'status': 0, 'redirect':
-                             reverse('%s_detail' % self.model._meta.model_name, args=[response.data['id']])})
-        else:
-            return response
+            response.data['redirect'] = reverse('%s_detail' % self.model._meta.model_name, args=[response.data['id']])
+        return response
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
