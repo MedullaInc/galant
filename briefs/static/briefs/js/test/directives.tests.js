@@ -62,22 +62,6 @@ describe('brDetail', function () {
             expect(element.html().substring(0, 3)).toEqual('<!-');
         });
 
-        it('removes question', function () {
-            $scope.removeQuestion = function () { $scope.question = null; };
-            var element = $compile(
-                '<div br-question-detail question="question" remove-question="removeQuestion"></div>'
-            )($scope);
-            $scope.$digest();
-
-            var tmp = window.confirm;
-            window.confirm = function (str) { return true; };
-
-            element.isolateScope().remove();
-            window.confirm = tmp;
-
-            expect($scope.question).toBeNull();
-        });
-
         it('adds and removes choices', function () {
             $scope.question.choices = [];
             var element = $compile('<div br-question-detail question="question"></div>')($scope);
@@ -142,7 +126,7 @@ describe('brDetail', function () {
             $scope.language = 'en';
             var element = $compile('<div br-brief-detail object="brief" language="language"></div>')($scope);
             $scope.$digest();
-            element.isolateScope().briefForm = {$show: function() {}};
+            element.isolateScope().briefForm = {$show: function() {}, $visible: true, $submit: function() {}};
             element.isolateScope().brief = {title: {en: ''}};
 
             element.isolateScope().setLanguage('en');

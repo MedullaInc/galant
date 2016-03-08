@@ -66,7 +66,11 @@ describe('glFormController', function () {
     var window;
 
     beforeEach(function () {
-        module('gallant.controllers.glFormController');
+        module('gallant.controllers.glFormController', function ($provide) {
+            $provide.factory('glAlertService', function ($q) {
+                return {};
+            });
+        });
 
         inject(function (_$rootScope_, _$controller_, _$window_) {
             // The injector unwraps the underscores (_) from around the parameter names when matching

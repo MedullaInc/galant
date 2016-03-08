@@ -113,7 +113,9 @@ app.directive('brBriefDetail', ['Question', function (Question) {
                                 angular.forEach($scope.brief.questions, function (q) {
                                     delete q.id;
                                 });
-                                $scope.briefForm.$show();
+                                if ($scope.briefForm.$show) {
+                                    $scope.briefForm.$show();
+                                }
                             });
                         } else {
                             loadBriefAndTemplate(new Brief());

@@ -75,3 +75,34 @@ describe('glForm', function () {
         });
     });
 });
+
+describe('glAlerts', function () {
+    var $rootScope;
+    var $compile;
+    var $scope;
+
+    beforeEach(function () {
+        module('gallant.services.glServices', function($provide) {
+            $provide.factory('glAlertService', function () {
+                return {get: function() { return {type:'success', msg:'0'}; }};
+            });
+        });
+        module('gallant.directives.glAlerts');
+
+        inject(function (_$rootScope_, _$compile_) {
+            // The injector unwraps the underscores (_) from around the parameter names when matching
+            $rootScope = _$rootScope_;
+            $compile = _$compile_;
+        });
+
+        $scope = $rootScope.$new();
+    });
+
+    describe('glAlerts', function () {
+        it('compiles', function () {
+            var element = $compile('<div gl-alerts></div>')($scope);
+            $scope.$digest();
+            expect(element.html().substring(0, 3)).toEqual('<!-');
+        });
+    });
+});
