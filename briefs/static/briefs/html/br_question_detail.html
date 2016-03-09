@@ -1,18 +1,26 @@
 <div id="question{{ question.index }}">
-    <div class="data">
-        <label class="control-label in-place">Question</label>
-        <label class="control-label in-place">{{ question.is_long_answer ? ' (Long-answer)' : '' }}</label>
-        <p editable-textarea="question.question[language]" e-id="question{{ question.index }}_question"
-           e-placeholder="Enter question" onbeforesave="validate.nonEmpty($data)" e-form="form">
-            {{ question.question[language] || errors.questions[question.index].question || 'Not set' }}
-        </p>
+    <div class="data row">
+        <div class="col-lg-12">
+            <label class="control-label in-place">Question</label>
+            <label class="control-label in-place">{{ question.is_long_answer ? ' (Long-answer)' : '' }}</label>
+            <p editable-textarea="question.question[language]" e-id="question{{ question.index }}_question"
+               e-placeholder="Enter question" onbeforesave="validate.nonEmpty($data)" e-form="form">
+                {{ question.question[language] || errors.questions[question.index].question || 'Not set' }}
+            </p>
+        </div>
     </div>
-    <div class="data" ng-show="form.$visible">
-        <input type="checkbox" ng-model="question.is_long_answer" id="question{{ question.index }}_long">
-        <span class="small">Long-answer</span>
+    <div class="data row" ng-show="form.$visible">
+        <div class="col-lg-12">
+            <input type="checkbox" ng-model="question.is_long_answer" id="question{{ question.index }}_long">
+            <span class="small">Long-answer</span>
+        </div>
     </div>
-    <div id="question{{ question.index }}_answer" class="text-success" ng-show="question.answer">
-        {{ question.answer.answer }}
+    <div class="row">
+        <div class="col-lg-12">
+            <p id="question{{ question.index }}_answer" class="text-success" ng-show="question.answer">
+                {{ question.answer.answer }}
+            </p>
+        </div>
     </div>
 </div>
 

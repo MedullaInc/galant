@@ -1,23 +1,24 @@
 <div id="question{{ question.index }}">
     <div>
-        <div class="data">
-            <label class="control-label in-place">Question{{ question.can_select_multiple ? ' (Can select multiple)' : '' }}</label>
-            <p editable-textarea="question.question[language]" e-id="question{{ question.index }}_question"
-               e-placeholder="Enter question" onbeforesave="validate.nonEmpty($data)" e-form="form">
-                {{ question.question[language] || errors.questions[question.index].question || 'Not set' }}
-            </p>
+        <div class="data row">
+            <div class="col-lg-12">
+                <label class="control-label in-place">Question{{ question.can_select_multiple ? ' (Can select multiple)' : '' }}</label>
+                <p editable-textarea="question.question[language]" e-id="question{{ question.index }}_question"
+                   e-placeholder="Enter question" onbeforesave="validate.nonEmpty($data)" e-form="form">
+                    {{ question.question[language] || errors.questions[question.index].question || 'Not set' }}
+                </p>
 
-            <div class="data" ng-show="form.$visible">
-                <input type="checkbox" ng-model="question.can_select_multiple"
-                       id="question{{ question.index }}_mult">
-                <span class="small">Can select multiple choices</span>
+                <p class="data" ng-show="form.$visible">
+                    <input type="checkbox" ng-model="question.can_select_multiple"
+                           id="question{{ question.index }}_mult">
+                    <span class="small">Can select multiple choices</span>
+                </p>
             </div>
-
         </div>
         <div>
             <div class="row choices" data-as-sortable="dragControlListeners" data-ng-model="question.choices">
                 <div ng-repeat="choice in question.choices track by $index" data-as-sortable-item class="row">
-                    <div class="col-lg-9">
+                    <div class="col-lg-9 col-md-9 col-sm-9 col-xs-8">
                         <label class="control-label in-place">Choice</label>
                         <p editable-textarea="choice[language]" e-form="form"
                            e-id="question{{ question.index }}_choice{{ $index }}"
@@ -27,7 +28,7 @@
                                      || errors.questions[question.index].choices || 'Not set' }}
                         </p>
                     </div>
-                    <div class="col-lg-3 margin-top-25"  ng-show="form.$visible">
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-4 padding-top-25"  ng-show="form.$visible">
                         <button id="question{{ question.index }}_choice{{ $index }}_move" type="button"
                                 class="btn btn-default move_button"
                                 as-sortable-item-handle>
@@ -42,7 +43,7 @@
                 </div>
             </div>
         </div>
-        <div class="row margin-bottom-10">
+        <div class="row margin-bottom-10 padding-top-10">
             <div class="col-lg-12">
                 <button id="question{{ question.index }}_add_choice" type="button" ng-hide="answered"
                         class="btn btn-default add_choice" ng-click="addChoice()">
