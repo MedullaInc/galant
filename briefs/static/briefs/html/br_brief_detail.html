@@ -69,7 +69,7 @@
              language="language" errors="brief.errors" answered="brief.answered" form="briefForm">
         </div>
 
-        <div class="col-lg-2 margin-top-25">
+        <div class="col-lg-2 margin-top-25" ng-show="briefForm.$visible">
             <button id="question{{ $index }}_move" type="button" class="btn btn-default move_button"
                     as-sortable-item-handle>
                 <span class="glyphicon glyphicon-move"/>
