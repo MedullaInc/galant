@@ -155,8 +155,10 @@ app.directive('brBriefDetail', ['Question', function (Question) {
             };
 
             $scope.removeQuestion = function (question) {
-                var index = $scope.brief.questions.indexOf(question);
-                $scope.brief.questions.splice(index, 1);
+                if (confirm('Remove question?')) {
+                    var index = $scope.brief.questions.indexOf(question);
+                    $scope.brief.questions.splice(index, 1);
+                }
             };
 
             $scope.showButtons = function () {
