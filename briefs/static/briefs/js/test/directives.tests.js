@@ -39,6 +39,8 @@ describe('brDetail', function () {
             });
 
             $provide.factory('glValidate', function ($q) { return {}; });
+
+            $provide.factory('$window', function () { return {confirm: function(m) { return true; }}; });
         });
 
         inject(function (_$rootScope_, _$compile_) {
