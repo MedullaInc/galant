@@ -29,9 +29,9 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
             $scope.asideInstance = $aside.open({
                 templateUrl: '/static/calendr/html/aside.html',
                 backdrop: false,
-                controller: function ($scope, $uibModalInstance, userEvents, openEditModal) {
+                controller: function ($scope, $uibModalInstance, userEvents, openEditModalandgotoDate) {
                     $scope.events = userEvents;
-                    $scope.openEditModal = openEditModal;
+                    $scope.openEditModalandgotoDate = openEditModalandgotoDate;
                     $scope.ok = function (e) {
                         $uibModalInstance.close();
                         e.stopPropagation();
@@ -50,9 +50,9 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
                             resourceId: currentUserId
                         });
                     },
-                    openEditModal: function () {
+                    openEditModalandgotoDate: function () {
                         // Return current user tasks
-                        return $scope.openEditModal;
+                        return $scope.openEditModalandgotoDate;
                     },
                 }
             });
@@ -104,9 +104,6 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
     $scope.getResources = function (project) {
         options = {};
         if (project) {
-            options = {
-                project_id: project.id
-            };
         }
         User.query(options).$promise.then(function (response) {
             angular.forEach(response, function (value, key) {
@@ -139,6 +136,12 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
     $scope.getProjects();
     $scope.getTasks();
 
+    /* Open edit Modal */
+    /* istanbul ignore next */
+    $scope.openEditModalandgotoDate = function (event) {
+        $scope.gotoDate(event.start);
+        $scope.openEditModal(event);
+    };
 
     /* Open edit Modal */
     /* istanbul ignore next */
@@ -148,13 +151,14 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
             templateUrl: '/static/calendr/html/calendar_modal.html',
             backdrop: true,
             windowClass: 'modal',
-            controller: function ($scope, $uibModalInstance, $log, event, events, resources, projects, updateEvent, createTask) {
+            controller: function ($scope, $uibModalInstance, $log, event, events, resources, projects, updateEvent, createTask, gotoDate) {
                 $scope.event = event;
                 $scope.events = events;
                 $scope.resources = resources;
                 $scope.projects = projects;
                 $scope.updateEvent = updateEvent;
                 $scope.createTask = createTask;
+                $scope.gotoDate = gotoDate;
 
                 $scope.submit = function (e) {
                     $uibModalInstance.dismiss('cancel');
@@ -178,6 +182,7 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
 
                         $scope.createTask(task);
                     }
+                    $scope.gotoDate(e.start);
                 };
                 $scope.cancel = function () {
                     $uibModalInstance.dismiss('cancel');
@@ -194,6 +199,9 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
                 };
             },
             resolve: {
+                gotoDate: function () {
+                  return $scope.gotoDate;
+                },
                 event: function () {
                     return $scope.event;
                 },
@@ -353,7 +361,6 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
     /* Update an existing Task using API Service */
     $scope.updateTask = function (task) {
 
-
         Task.update(task).$promise.then(function (response) {
 
             for (i = 0; i < $scope.events.length; i++) {
@@ -369,9 +376,7 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
 
     /* Change View */
     $scope.changeView = function (view, calendar) {
-
         uiCalendarConfig.calendars[calendar].fullCalendar('changeView', view);
-
     };
 
     /* Change View */

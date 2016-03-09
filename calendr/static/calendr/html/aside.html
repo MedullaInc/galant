@@ -7,7 +7,7 @@
 
         <div ng-repeat="e in filteredEvents = (events | filter: searchText | orderBy: '-start')">
             <div class="well">
-                <a ng-click="openEditModal(e)"><p>{{ e.title }}</p> <span class="date">{{ e.start | date:"MMM dd"}} - {{ e.end | date:"MMM dd"}}</span></a>
+                <a ng-click="openEditModalandgotoDate(e)"><p>{{ e.title }}</p> <span class="date">{{ e.start | date:"MMM dd"}} - {{ e.end | date:"MMM dd"}}</span></a>
             </div>
         </div>
 
