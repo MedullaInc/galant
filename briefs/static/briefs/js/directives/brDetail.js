@@ -6,7 +6,7 @@ app = angular.module('briefs.directives.brDetail', [
     'as.sortable'
 ]);
 
-app.directive('brBriefDetail', ['Question', function (Question) {
+app.directive('brBriefDetail', ['Question', '$window', function (Question, $window) {
     return {
         restrict: 'A',
         scope: {
@@ -155,8 +155,10 @@ app.directive('brBriefDetail', ['Question', function (Question) {
             };
 
             $scope.removeQuestion = function (question) {
-                var index = $scope.brief.questions.indexOf(question);
-                $scope.brief.questions.splice(index, 1);
+                if ($window.confirm('Remove question?')) {
+                    var index = $scope.brief.questions.indexOf(question);
+                    $scope.brief.questions.splice(index, 1);
+                }
             };
 
             $scope.showButtons = function () {
@@ -198,7 +200,7 @@ app.directive('brBriefDetail', ['Question', function (Question) {
 }]);
 
 
-app.directive('brQuestionDetail', ['glValidate', function (glValidate) {
+app.directive('brQuestionDetail', ['$window', 'glValidate', function ($window, glValidate) {
     return {
         restrict: 'A',
         scope: {
@@ -217,7 +219,7 @@ app.directive('brQuestionDetail', ['glValidate', function (glValidate) {
                 }
             };
         },
-        link: function ($scope, $element) {
+        link: function ($scope) {
             var template = '/static/briefs/html/br_question_detail.html';
             if ($scope.question.type == 'MultipleChoiceQuestion') {
                 template = '/static/briefs/html/br_multiquestion_detail.html';
@@ -226,11 +228,11 @@ app.directive('brQuestionDetail', ['glValidate', function (glValidate) {
 
             $scope.addChoice = function () {
                 if ($scope.question.choices) {
-                    $scope.question.choices.push(null);
+                    $scope.question.choices.push({});
                 }
             };
             $scope.removeChoice = function ($index) {
-                if (confirm('Remove choice?')) {
+                if ($window.confirm('Remove choice?')) {
                     $scope.question.choices.splice($index, 1);
                 }
             };

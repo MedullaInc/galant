@@ -12,7 +12,6 @@ describe('brDetail', function () {
         module('brief.services.brServices', function ($provide) {
             $provide.factory('Question', function ($q) {
                 var Question = function () { return {id: 0}; };
-                Question.get = function () { return {$promise: $q.when([{id: 0}])}; };
                 return Question;
             });
 
@@ -24,7 +23,7 @@ describe('brDetail', function () {
             });
 
             $provide.factory('BriefAnswers', function ($q) {
-                var BriefAnswers = function () { return {id: 0}; };
+                var BriefAnswers = {};
                 BriefAnswers.query = function () { return {$promise: $q.when([{id: 0, answers: [{}]}])}; };
                 return BriefAnswers;
             });
@@ -39,6 +38,8 @@ describe('brDetail', function () {
             });
 
             $provide.factory('glValidate', function ($q) { return {}; });
+
+            $provide.factory('$window', function () { return {confirm: function(m) { return true; }}; });
         });
 
         inject(function (_$rootScope_, _$compile_) {
