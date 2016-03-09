@@ -45,7 +45,6 @@ class QuoteTemplatesTest(browser.SignedInTest):
         b.find_element_by_id('title_0').send_keys('test margin title')
         b.find_element_by_id('text_1').send_keys('test intro text')
         b.find_element_by_id('title_1').send_keys('test margin title')
-        b.find_element_by_id('quote_save').click()
 
         #b.find_element_by_xpath('//select[@e-name="-service-2-type"]/option[@value="3"]').click()
 
@@ -85,7 +84,6 @@ class QuoteTemplatesTest(browser.SignedInTest):
         b.find_element_by_id('title_0').send_keys('modified intro title')
         b.find_element_by_id('text_0').clear()
         b.find_element_by_id('text_0').send_keys('modified intro title')
-        b.find_element_by_id('quote_save').click()
 
 
         self._submit_and_check(b)
@@ -159,10 +157,8 @@ class QuoteTemplatesTest(browser.SignedInTest):
         b.get(self.live_server_url + reverse('add_quote') + '?template_id=%d&lang=en' % qt.id)
         browser.wait().until(lambda driver: driver.find_element_by_id('quote_edit')).click()
         b.find_element_by_id('quote_name').send_keys('new quote')
-        b.find_element_by_id('quote_save').click()
-        browser.wait().until(lambda driver: driver.find_element_by_xpath('//*[@e-id="quote_name"]').text != 'empty')
         with browser.wait_for_page_load():
-            b.find_element_by_id('create_submit').click()
+            b.find_element_by_id('quote_save').click()
         success_message = b.find_element_by_class_name('alert-success')
         self.assertTrue(u'Quote saved.' in success_message.text)
 
@@ -183,7 +179,6 @@ class QuoteTemplatesTest(browser.SignedInTest):
         b.find_element_by_id('text_0').send_keys('texto de intro prueba')
         b.find_element_by_id('title_1').send_keys('titulo de notas prueba')
         b.find_element_by_id('text_1').send_keys('texto de notas prueba')
-        b.find_element_by_id('quote_save').click()
         self._submit_and_check(b, redirect)
 
         new_tab = browser.wait().until(lambda driver: driver.find_element_by_id('es_tab'))
@@ -205,10 +200,10 @@ class QuoteTemplatesTest(browser.SignedInTest):
     def _submit_and_check(self, b, redirect=False):
         if redirect:
             with browser.wait_for_page_load():
-                b.find_element_by_id('create_submit').click()
+                b.find_element_by_id('quote_save').click()
             success_message = b.find_element_by_class_name('alert-success')
             self.assertTrue(u'Quotetemplate saved.' in success_message.text)
         else:
-            b.find_element_by_id('create_submit').click()
+            b.find_element_by_id('quote_save').click()
             success_message = browser.wait().until(lambda driver: driver.find_element_by_class_name('alert-success'))
             self.assertTrue(u'Saved.' in success_message.text)

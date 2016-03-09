@@ -73,7 +73,6 @@ class QuotesSignedInTest(browser.SignedInTest):
         b.find_element_by_id('quantity_0').send_keys('2')
         b.find_element_by_xpath('//*[@id="type_0"]/option[2]').click()
 
-        b.find_element_by_id('quote_save').click()
         b.find_element_by_id('service0_delete').click()
 
         self._submit_and_check(b, True)
@@ -92,7 +91,6 @@ class QuotesSignedInTest(browser.SignedInTest):
         b.find_element_by_id('title_0').clear()
         b.find_element_by_id('title_0').send_keys('modified intro title')
         b.find_element_by_id('text_0').send_keys('modified intro text')
-        b.find_element_by_id('quote_save').click()
 
         self._submit_and_check(b)
 
@@ -153,7 +151,6 @@ class QuotesSignedInTest(browser.SignedInTest):
         b.find_element_by_id('text_2').clear()
         b.find_element_by_id('title_2').send_keys('1234')
         b.find_element_by_id('text_2').send_keys('4321')
-        b.find_element_by_id('quote_save').click()
 
         self._submit_and_check(b)
 
@@ -184,7 +181,6 @@ class QuotesSignedInTest(browser.SignedInTest):
         b.find_element_by_id('description_0').send_keys('desc')
 
         browser.wait().until(lambda driver: driver.find_element_by_xpath('//select[@id="type_0"]/option[2]')).click()
-        b.find_element_by_id('quote_save').click()
         self._submit_and_check(b)
 
         name = browser.wait().until(lambda driver: driver.find_element_by_css_selector('p[e-id="service_name_0"]'))
@@ -204,8 +200,6 @@ class QuotesSignedInTest(browser.SignedInTest):
         b.find_element_by_id('text_1').send_keys('s1text')
         b.find_element_by_id('title_2').send_keys('s2title')
         b.find_element_by_id('text_2').send_keys('s2text')
-
-        b.find_element_by_id('quote_save').click()
 
         # click remove thingie
         b.find_element_by_id('section0_delete').click()
@@ -233,7 +227,6 @@ class QuotesSignedInTest(browser.SignedInTest):
         self.assertIsNotNone(b.find_elements_by_id('title_2'))
         b.find_element_by_id('title_2').send_keys('s2title')
         b.find_element_by_id('text_2').send_keys('s2text')
-        b.find_element_by_id('quote_save').click()
 
         self._submit_and_check(b)
 
@@ -246,10 +239,10 @@ class QuotesSignedInTest(browser.SignedInTest):
     def _submit_and_check(self, b, redirect=False):
         if redirect:
             with browser.wait_for_page_load():
-                b.find_element_by_id('create_submit').click()
+                b.find_element_by_id('quote_save').click()
             success_message = b.find_element_by_class_name('alert-success')
             self.assertTrue(u'Quote saved.' in success_message.text)
         else:
-            b.find_element_by_id('create_submit').click()
+            b.find_element_by_id('quote_save').click()
             success_message = browser.wait().until(lambda driver: driver.find_element_by_class_name('alert-success'))
             self.assertTrue(u'Saved.' in success_message.text)

@@ -32,7 +32,7 @@ app.directive('qtQuoteForm', ['Quote', '$uibModal', function (Quote, $uibModal) 
                 $scope.sortDisabled = false;
                 $scope.tempStatus = '0';
                 $scope.validate = glValidate;
-                $scope.submitForm = angular.noop;
+                $scope.submitForm = $scope.submit();
 
                 $scope.idType = $attrs.idType;
                 $scope.boolTemplate = $attrs.boolTemplate;
@@ -123,6 +123,9 @@ app.directive('qtQuoteForm', ['Quote', '$uibModal', function (Quote, $uibModal) 
 
                             var lang = LANGUAGES.find(function (x) { return x.code == $scope.language;});
                             $scope.quoteTemplate.languages = [lang];
+                            if ($scope.quoteform.$show) {
+                                $scope.quoteform.$show();
+                            }
 
                         }
 
@@ -214,10 +217,17 @@ app.directive('qtQuoteForm', ['Quote', '$uibModal', function (Quote, $uibModal) 
                 serviceTemplateUrl: 'serviceTemplate.html'
             };
 
+            var submitWithoutOnAfterSave = function(form) {
+                var tmpFn = form.$onaftersave;
+                form.$onaftersave = angular.noop;
+                form.$submit();
+                form.$onaftersave = tmpFn;
+            };
+
             $scope.setLanguage = function (language) {
                 var initVis = $scope.quoteform.$visible;
                 if (initVis) {
-                    $scope.quoteform.$submit();
+                    submitWithoutOnAfterSave($scope.quoteform);
                 }
                 if (!$scope.quoteform.$visible) {
                     $scope.language = language;
@@ -228,7 +238,7 @@ app.directive('qtQuoteForm', ['Quote', '$uibModal', function (Quote, $uibModal) 
 
             $scope.addLanguage = function (language) {
                 if ($scope.quoteform.$visible) {
-                    $scope.quoteform.$submit();
+                    submitWithoutOnAfterSave($scope.quoteform);
                 }
 
                 if (!$scope.quoteform.$visible) {

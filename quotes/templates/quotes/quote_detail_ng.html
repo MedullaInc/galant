@@ -2,9 +2,6 @@
 {% load bootstrap i18n %}
 {% load static %}
 
-{% block ng_app %} ng-app="quote" {% endblock %}
-
-
 {% block scripts %}
     {{ block.super }}
     <script src="{% static "js/angular.js" %}"></script>
@@ -84,7 +81,7 @@
         <div qt-quote-form quote-id="{{ object.pk }}" quote="object" endpoint="objectEndpoint"
              language="currentLanguage" forms="forms" delete-object="deleteObject"
              client-id="{{ client.id }}" project-id="{{ project.id }}" quote-id="{{ quote.id }}"
-             template-id="{{ template_id }}" bool-template="False" id-type="{{id_type}}">
+             template-id="{{ template_id }}" bool-template="False" id-type="{{id_type}}" submit="submitForm">
         </div>
 
         <div id="form_actions" ng-if="{{id_type}} != 'token'">
@@ -92,10 +89,6 @@
               <div class="col-lg-12">
                   <div class="form-actions">
                       {% block form_actions %}
-                          <button id="create_submit" class="btn btn-default pull-left" type="submit"
-                                  ng-click="submitForm()">
-                              {{ submit_text|default:_("Save") }}
-                          </button>
                       {% endblock %}
                   </div>
               </div>

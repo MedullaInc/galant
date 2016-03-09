@@ -165,7 +165,8 @@ describe('qtForm', function () {
         it('adds language', function () {
             var element = $compile('<div qt-quote-form quote-template="quoteTemplate" bool-template="True" template-id="quoteTemplate.id"></div>')($scope);
             $scope.$digest();
-            element.isolateScope().quoteform = {$show: function() {}};
+            element.isolateScope().quoteform = {$show: function() {}, $visible: true,
+                $submit: function() { this.$visible = false; }};
 
             element.isolateScope().addLanguage({'code': 'es', 'name': 'Spanish'});
             expect(element.isolateScope().quoteTemplate.languages.length).toEqual(2);
