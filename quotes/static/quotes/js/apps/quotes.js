@@ -10,6 +10,7 @@ var app = angular.module('quote', [
     'quotes.controllers.qtPopoverController',
     'quotes.directives.qtForm',
     'quotes.directives.qtClientForm',
+    'gallant.directives.glAlerts',
 ]);
 
 /* istanbul ignore next */

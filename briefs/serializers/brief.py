@@ -63,8 +63,9 @@ class BriefSerializer(serializers.ModelSerializer):
         init_questions = set(instance.questions.all_for(user))
         new_questions = set()
 
-        for question_data in questions_data:
+        for idx, question_data in enumerate(questions_data):
             question_id = question_data.get('id', None)
+            question_data['index'] = idx
             if question_id:
                 question_instance = b.Question.objects.get_for(user, 'change', pk=question_id)
                 qs = QuestionSerializer(data=question_data, instance=question_instance)

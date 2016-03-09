@@ -27,7 +27,7 @@
                                      || errors.questions[question.index].choices || 'Not set' }}
                         </p>
                     </div>
-                    <div class="col-lg-3 margin-top-25">
+                    <div class="col-lg-3 margin-top-25"  ng-show="form.$visible">
                         <button id="question{{ question.index }}_choice{{ $index }}_move" type="button"
                                 class="btn btn-default move_button"
                                 as-sortable-item-handle>

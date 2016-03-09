@@ -20,6 +20,7 @@ app.directive('qtQuoteForm', ['Quote', '$uibModal', function (Quote, $uibModal) 
             boolTemplate: '=',
             idType: '=',
             deleteObject: '&',
+            submit: '&',
         },
         controller: ['$scope', '$attrs', '$filter', '$window', 'Quote', 'Service', 'Section', 'QuoteTemplate', 'Client', 'LANGUAGES', 'glValidate',
             function ($scope, $attrs, $filter, $window, Quote, Service, Section, QuoteTemplate, Client, LANGUAGES, glValidate) {
@@ -31,6 +32,7 @@ app.directive('qtQuoteForm', ['Quote', '$uibModal', function (Quote, $uibModal) 
                 $scope.sortDisabled = false;
                 $scope.tempStatus = '0';
                 $scope.validate = glValidate;
+                $scope.submitForm = $scope.submit();
 
                 $scope.idType = $attrs.idType;
                 $scope.boolTemplate = $attrs.boolTemplate;
@@ -121,6 +123,9 @@ app.directive('qtQuoteForm', ['Quote', '$uibModal', function (Quote, $uibModal) 
 
                             var lang = LANGUAGES.find(function (x) { return x.code == $scope.language;});
                             $scope.quoteTemplate.languages = [lang];
+                            if ($scope.quoteform.$show) {
+                                $scope.quoteform.$show();
+                            }
 
                         }
 
@@ -184,11 +189,11 @@ app.directive('qtQuoteForm', ['Quote', '$uibModal', function (Quote, $uibModal) 
                 };
 
 
-                $scope.storeQuote = function() {
+                $scope.storeQuote = function () {
                     $scope.storedQuote = JSON.stringify($scope.quote);
                 };
 
-                $scope.loadStoredQuote = function() {
+                $scope.loadStoredQuote = function () {
                     $scope.quote = JSON.parse($scope.storedQuote);
                 };
             }],
@@ -212,18 +217,28 @@ app.directive('qtQuoteForm', ['Quote', '$uibModal', function (Quote, $uibModal) 
                 serviceTemplateUrl: 'serviceTemplate.html'
             };
 
+            var submitWithoutOnAfterSave = function(form) {
+                var tmpFn = form.$onaftersave;
+                form.$onaftersave = angular.noop;
+                form.$submit();
+                form.$onaftersave = tmpFn;
+            };
+
             $scope.setLanguage = function (language) {
-                if ($scope.quoteform.$visible) {
-                    $scope.quoteform.$submit();
+                var initVis = $scope.quoteform.$visible;
+                if (initVis) {
+                    submitWithoutOnAfterSave($scope.quoteform);
                 }
                 if (!$scope.quoteform.$visible) {
                     $scope.language = language;
+                    if (initVis)
+                        $scope.quoteform.$show();
                 }
             };
 
             $scope.addLanguage = function (language) {
                 if ($scope.quoteform.$visible) {
-                    $scope.quoteform.$submit();
+                    submitWithoutOnAfterSave($scope.quoteform);
                 }
 
                 if (!$scope.quoteform.$visible) {

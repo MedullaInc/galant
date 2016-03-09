@@ -1,8 +1,7 @@
-app = angular.module('gallant.controllers.glFormController', []);
+app = angular.module('gallant.controllers.glFormController', ['gallant.services.glServices']);
 
-app.controller('glFormController', ['$scope', '$http', '$window',
-    function ($scope, $http, $window) {
-
+app.controller('glFormController', ['$scope', '$http', '$window', 'glAlertService',
+    function ($scope, $http, $window, glAlertService) {
         var setFormsDirty = function (forms) {
             var valid = true;
             var inner = [];
@@ -34,7 +33,6 @@ app.controller('glFormController', ['$scope', '$http', '$window',
             var valid = setFormsDirty($scope.forms);
 
             if (valid) {
-                $window.onbeforeunload = null;
                 var method = null;
                 if ($scope.object.id) {
                     method = $scope.objectEndpoint.update;
@@ -43,16 +41,15 @@ app.controller('glFormController', ['$scope', '$http', '$window',
                 }
 
                 method({id: $scope.object.id}, $scope.object, function (response) {
-                    /* istanbul ignore else  */
+                    $window.onbeforeunload = null;
                     if (response.redirect) {
                         window.location.href = response.redirect;
                     } else {
-                        // handle errors
-                        console.log(JSON.stringify(response.data));
+                        glAlertService.add('success', 'Saved.');
                     }
                 }, /* istanbul ignore next */ function (errorResponse) {
                     $scope.object.errors = errorResponse.data;
-                    console.log(JSON.stringify(errorResponse.data));
+                    glAlertService.add('danger', 'Error: ' + JSON.stringify(errorResponse.data));
                 });
             }
         };
@@ -65,10 +62,10 @@ app.controller('glFormController', ['$scope', '$http', '$window',
                         window.location.href = response.redirect;
                     } else {
                         // handle errors
-                        console.log(JSON.stringify(response.data));
+                        glAlertService.add('danger', 'Server returned error.');
                     }
                 }, /* istanbul ignore next */ function (errorResponse) {
-                    console.log(JSON.stringify(errorResponse.data));
+                    glAlertService.add('danger', 'Server returned error.');
                 });
             }
         };

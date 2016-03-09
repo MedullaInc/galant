@@ -21,9 +21,8 @@ class BriefTemplatesTest(browser.SignedInTest):
         b.find_element_by_id('brief_title').send_keys('Brief test')
         b.find_element_by_id('brief_greeting').send_keys('Brief test')
         b.find_element_by_xpath('//select[@id="brief_status"]/option[2]').click()
-        b.find_element_by_id('brief_save').click()
 
-        self._submit_and_check(b)
+        self._submit_and_check(b, True)
 
     def test_brieftemplate_detail(self):
         b = browser.instance()
@@ -44,10 +43,8 @@ class BriefTemplatesTest(browser.SignedInTest):
         b.find_element_by_id('brief_title').send_keys('Brief test')
         b.find_element_by_id('brief_greeting').send_keys('Brief test')
         b.find_element_by_xpath('//select[@id="brief_status"]/option[2]').click()
-        b.find_element_by_id('brief_save').click()
 
-        self._add_language_and_text(b)
-        self._submit_and_check(b)
+        self._add_language_and_text(b, True)
 
     def test_brief_edit_template(self):
         b = browser.instance()
@@ -62,7 +59,6 @@ class BriefTemplatesTest(browser.SignedInTest):
         browser.wait().until(lambda driver: driver.find_element_by_id('brief_edit')).click()
         b.find_element_by_id('question0_question').clear()
         b.find_element_by_id('question0_question').send_keys('modified question')
-        b.find_element_by_id('brief_save').click()
 
         self._submit_and_check(b)
 
@@ -78,8 +74,8 @@ class BriefTemplatesTest(browser.SignedInTest):
                                     field_values={'brief': brief, 'user': self.user})
         b.get(self.live_server_url + reverse('brieftemplate_detail', args=[bt.id]))
 
+        browser.wait().until(lambda driver: driver.find_element_by_xpath('//h2[@e-id="brief_title"]').text != 'Not set')
         self._add_language_and_text(b)
-        self._submit_and_check(b)
 
     def test_add_from_brief(self):
         b = browser.instance()
@@ -112,17 +108,15 @@ class BriefTemplatesTest(browser.SignedInTest):
         self.assertEqual(quest.question.get_text(), question.text)
 
         with browser.wait_for_page_load():
-            b.find_element_by_id('create_submit').click()
+            b.find_element_by_id('brief_save').click()
 
         success_message = b.find_element_by_class_name('alert-success')
         self.assertTrue(u'Brief saved.' in success_message.text)
 
-    def _add_language_and_text(self, b):
-        browser.wait().until(lambda driver: driver.find_element_by_xpath('//h2[@e-id="brief_title"]').text != 'Not set')
+    def _add_language_and_text(self, b, redirect=False):
         b.find_element_by_id('add_question').click()
         b.find_element_by_id('question0_question').clear()
         b.find_element_by_id('question0_question').send_keys('Who\'s on first?')
-        b.find_element_by_id('brief_save').click()
         b.find_element_by_id('add_translation_button').click()
         b.find_element_by_xpath('//select[@id="id_language"]/option[text()[1]="Spanish"]').click()
         b.find_element_by_id('language_add').click()
@@ -131,10 +125,8 @@ class BriefTemplatesTest(browser.SignedInTest):
         b.find_element_by_id('brief_greeting').send_keys('Brief prueba')
         b.find_element_by_id('question0_question').clear()
         b.find_element_by_id('question0_question').send_keys('Quien esta en primera?')
-        b.find_element_by_id('brief_save').click()
-        b.find_element_by_xpath('//*[@id="en_tab"]/a').click()
 
-        self._submit_and_check(b)
+        self._submit_and_check(b, redirect)
 
         new_tab = browser.wait().until(lambda driver: driver.find_element_by_xpath('//*[@id="es_tab"]/a'))
         self.assertEqual(u'Spanish', new_tab.text)
@@ -179,9 +171,13 @@ class BriefTemplatesTest(browser.SignedInTest):
         response = self.client.get(self.live_server_url + reverse('brieftemplate_detail', args=[bt.id]))
         self.assertEqual(response.status_code, 404)
 
-    def _submit_and_check(self, b):
-        with browser.wait_for_page_load():
-            b.find_element_by_id('create_submit').click()
-
-        success_message = b.find_element_by_class_name('alert-success')
-        self.assertTrue(u'Brieftemplate saved.' in success_message.text)
+    def _submit_and_check(self, b, redirect=False):
+        if redirect:
+            with browser.wait_for_page_load():
+                b.find_element_by_id('brief_save').click()
+            success_message = b.find_element_by_class_name('alert-success')
+            self.assertTrue(u'Brieftemplate saved.' in success_message.text)
+        else:
+            b.find_element_by_id('brief_save').click()
+            success_message = browser.wait().until(lambda driver: driver.find_element_by_class_name('alert-success'))
+            self.assertTrue(u'Saved.' in success_message.text)

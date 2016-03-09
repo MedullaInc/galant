@@ -45,13 +45,7 @@ class BriefsSignedInTest(browser.SignedInTest):
         b.find_element_by_id('brief_title').send_keys('Brief test')
         b.find_element_by_xpath('//select[@id="brief_status"]/option[2]').click()
         b.find_element_by_id('brief_greeting').send_keys('Brief test')
-        b.find_element_by_id('brief_save').click()
-        with browser.wait_for_page_load():
-            b.find_element_by_id('create_submit').click()
-
-        success_message = b.find_element_by_class_name('alert-success')
-
-        self.assertTrue(u'Brief saved.' in success_message.text)
+        self._submit_and_check(b, True)
 
     def test_edit_client_brief(self):
         b = self.browser
@@ -61,12 +55,7 @@ class BriefsSignedInTest(browser.SignedInTest):
         browser.wait().until(lambda driver: driver.find_element_by_id('brief_edit')).click()
         b.find_element_by_id('brief_title').send_keys('Brief test')
         b.find_element_by_id('brief_greeting').send_keys('Brief test')
-        b.find_element_by_id('brief_save').click()
-        with browser.wait_for_page_load():
-            b.find_element_by_id('create_submit').click()
-
-        success_message = b.find_element_by_class_name('alert-success')
-        self.assertTrue(u'Brief saved.' in success_message.text)
+        self._submit_and_check(b)
 
     def test_edit_client_brief_question(self):
         b = self.browser
@@ -78,13 +67,7 @@ class BriefsSignedInTest(browser.SignedInTest):
 
         b.find_element_by_id('question1_add_choice').click()
         b.find_element_by_id('question1_choice3').send_keys('foo')
-        b.find_element_by_id('brief_save').click()
-
-        with browser.wait_for_page_load():
-            b.find_element_by_id('create_submit').click()
-
-        success_message = b.find_element_by_class_name('alert-success')
-        self.assertTrue(u'Brief saved.' in success_message.text)
+        self._submit_and_check(b)
 
     def test_add_client_brief_multiquestion(self):
         b = self.browser
@@ -96,13 +79,7 @@ class BriefsSignedInTest(browser.SignedInTest):
         b.find_element_by_id('question2_question').send_keys('Who is your daddy, and what does he do?')
         b.find_element_by_id('question2_choice0').send_keys('foo')
         b.find_element_by_id('question2_choice1').send_keys('bar')
-        b.find_element_by_id('brief_save').click()
-
-        with browser.wait_for_page_load():
-            b.find_element_by_id('create_submit').click()
-
-        success_message = b.find_element_by_class_name('alert-success')
-        self.assertTrue(u'Brief saved.' in success_message.text)
+        self._submit_and_check(b)
 
         el = browser.wait().until(lambda driver:
                                   driver.find_element_by_xpath('//p[@e-id="question2_choice0"]'))
@@ -131,12 +108,7 @@ class BriefsSignedInTest(browser.SignedInTest):
         b.find_element_by_id('brief_title').send_keys('Brief test')
         b.find_element_by_id('brief_greeting').send_keys('Brief test')
         b.find_element_by_xpath('//select[@id="brief_status"]/option[2]').click()
-        b.find_element_by_id('brief_save').click()
-        with browser.wait_for_page_load():
-            b.find_element_by_id('create_submit').click()
-
-        success_message = b.find_element_by_class_name('alert-success')
-        self.assertTrue(u'Brief saved.' in success_message.text)
+        self._submit_and_check(b)
 
     def test_add_project_brief(self):
         b = self.browser
@@ -152,12 +124,7 @@ class BriefsSignedInTest(browser.SignedInTest):
         b.find_element_by_id('brief_title').send_keys('Brief test')
         b.find_element_by_id('brief_greeting').send_keys('Brief test')
         b.find_element_by_xpath('//select[@id="brief_status"]/option[2]').click()
-        b.find_element_by_id('brief_save').click()
-        with browser.wait_for_page_load():
-            b.find_element_by_id('create_submit').click()
-
-        success_message = b.find_element_by_class_name('alert-success')
-        self.assertTrue(u'Brief saved.' in success_message.text)
+        self._submit_and_check(b, True)
 
     def test_send_answers_link(self):
         b = self.browser
@@ -212,3 +179,14 @@ class BriefsSignedInTest(browser.SignedInTest):
                                                field_values={'user': self.user})
         response = self.client.get(self.live_server_url + reverse('api-briefanswers-detail', args=[brief_answers.id]))
         self.assertEqual(response.status_code, 200)
+
+    def _submit_and_check(self, b, redirect=False):
+        if redirect:
+            with browser.wait_for_page_load():
+                b.find_element_by_id('brief_save').click()
+            success_message = b.find_element_by_class_name('alert-success')
+            self.assertTrue(u'Brief saved.' in success_message.text)
+        else:
+            b.find_element_by_id('brief_save').click()
+            success_message = browser.wait().until(lambda driver: driver.find_element_by_class_name('alert-success'))
+            self.assertTrue(u'Saved.' in success_message.text)

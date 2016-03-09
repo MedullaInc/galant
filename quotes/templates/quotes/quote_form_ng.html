@@ -2,9 +2,6 @@
 {% load bootstrap i18n gallant_tags static %}
 {% load static %}
 
-{% block ng_app %} ng-app="quote" {% endblock %}
-
-
 {% block scripts %}
     {{ block.super }}
     <script src="{% static "js/angular.js" %}"></script>
@@ -49,12 +46,20 @@
 
 {% endblock %}
 
+
+{% block extra_wrapper_attrs %} ng-app="quote" {% endblock %}
+
+{% block messages %}
+    <div gl-alerts></div>
+    {{ block.super }}
+{% endblock %}
+
 {% block center_content %}
 
     <div ng-controller="glFormController"
          ng-init="init('{% firstof language LANGUAGE_CODE %}', '{{ csrf_token }}')">
         <div qt-quote-form quote-id="{{ object.pk |default_if_none:"" }}" quote="object" endpoint="objectEndpoint"
-             language="currentLanguage" forms="forms" delete-object="deleteObject"
+             language="currentLanguage" forms="forms" delete-object="deleteObject" submit="submitForm"
              client-id="{{ client.id }}" project-id="{{ project.id }}" quote-id="{{ quote.id|default_if_none:"" }}"
              bool-template="False" template-id="{{ template_id }}" user-id="{{ user.id }}">
         </div>

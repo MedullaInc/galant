@@ -13,12 +13,14 @@ app.directive('brBriefDetail', ['Question', function (Question) {
             object: '=',
             endpoint: '=',
             language: '=',
-            deleteObject: '&'
+            deleteObject: '&',
+            submit: '&'
         },
-        controller: ['$scope', '$attrs', 'Brief', 'BriefTemplate', 'BriefAnswers', 'LANGUAGES', 'glValidate',
-            function ($scope, $attrs, Brief, BriefTemplate, BriefAnswers, LANGUAGES, glValidate) {
+        controller: ['$scope', '$attrs', '$filter', 'Brief', 'BriefTemplate', 'BriefAnswers', 'LANGUAGES', 'glValidate',
+            function ($scope, $attrs, $filter, Brief, BriefTemplate, BriefAnswers, LANGUAGES, glValidate) {
                 $scope.validate = glValidate;
                 $scope.isTemplate = $attrs.isTemplate;
+                $scope.submitForm = $scope.submit();
 
                 var loadBriefAndTemplate = function(brief, template, language) {
                     $scope.brief = brief;
@@ -38,6 +40,8 @@ app.directive('brBriefDetail', ['Question', function (Question) {
                     }
                     if (!$scope.brief.questions) {
                         $scope.brief.questions = [];
+                    } else {
+                        $scope.brief.questions = $filter('orderBy')($scope.brief.questions, 'index');
                     }
 
                     if (!$scope.brief.field_choices) {
@@ -109,6 +113,9 @@ app.directive('brBriefDetail', ['Question', function (Question) {
                                 angular.forEach($scope.brief.questions, function (q) {
                                     delete q.id;
                                 });
+                                if ($scope.briefForm.$show) {
+                                    $scope.briefForm.$show();
+                                }
                             });
                         } else {
                             loadBriefAndTemplate(new Brief());
@@ -156,26 +163,34 @@ app.directive('brBriefDetail', ['Question', function (Question) {
                 return (typeof $scope.addQuestion === 'function');
             };
 
+            var submitWithoutOnAfterSave = function(form) {
+                var tmpFn = form.$onaftersave;
+                form.$onaftersave = angular.noop;
+                form.$submit();
+                form.$onaftersave = tmpFn;
+            };
+
             $scope.setLanguage = function (language) {
-                if ($scope.briefForm.$visible) {
-                    $scope.briefForm.$submit();
+                var initVis = $scope.briefForm.$visible;
+                if (initVis) {
+                    submitWithoutOnAfterSave($scope.briefForm);
                 }
                 if (!$scope.briefForm.$visible) {
                     $scope.language = language;
-                    if (!$scope.brief.title[language]) {
+                    if (initVis)
                         $scope.briefForm.$show();
-                    }
                 }
             };
 
             $scope.addLanguage = function (language) {
                 if ($scope.briefForm.$visible) {
-                    $scope.briefForm.$submit();
+                    submitWithoutOnAfterSave($scope.briefForm);
                 }
 
                 if (!$scope.briefForm.$visible) {
                     $scope.briefTemplate.languages.push(language);
                     $scope.setLanguage(language.code);
+                    $scope.briefForm.$show();
                 }
             };
         }
@@ -192,7 +207,6 @@ app.directive('brQuestionDetail', ['glValidate', function (glValidate) {
             errors: '=',
             answered: '=',
             form: '=',
-            removeQuestion: '&'
         },
         controller: function ($scope) {
             $scope.validate = glValidate;
@@ -209,13 +223,6 @@ app.directive('brQuestionDetail', ['glValidate', function (glValidate) {
                 template = '/static/briefs/html/br_multiquestion_detail.html';
             }
             $scope.myTemplate = template;
-
-            $scope.remove = function () {
-                if (confirm('Remove question?')) {
-                    $element.remove();
-                    $scope.removeQuestion()($scope.question);
-                }
-            };
 
             $scope.addChoice = function () {
                 if ($scope.question.choices) {

@@ -21,7 +21,7 @@
 <div ng-class="briefTemplate ? 'rounded-border col-lg-12 col-md-12 col-sm-11 col-xs-11' : ''">
     <div ng-class="briefTemplate ? 'col-lg-10 col-md-10 col-sm-9 col-xs-9 rounded-border' : 'col-lg-10 col-md-10 col-sm-9 col-xs-9'">
         <form editable-form name="briefForm" id="form" shown="brief && !brief.title"
-              onshow="storeBrief()" oncancel="loadStoredBrief()">
+              onshow="storeBrief()" oncancel="loadStoredBrief()" onaftersave="submitForm()">
             <div id="title" class="data row">
                 <h2 class="inline_title" data-inputclass="form-control"
                     editable-text="brief.title[language]" e-id="brief_title"
@@ -69,14 +69,14 @@
              language="language" errors="brief.errors" answered="brief.answered" form="briefForm">
         </div>
 
-        <div class="col-lg-2 margin-top-25">
+        <div class="col-lg-2 margin-top-25" ng-show="briefForm.$visible">
             <button id="question{{ $index }}_move" type="button" class="btn btn-default move_button"
                     as-sortable-item-handle>
                 <span class="glyphicon glyphicon-move"/>
             </button>
             <button id="question{{ $index }}_delete" type="button" class="btn btn-default delete_button"
                     aria-label="Delete"
-                    ng-click="remove()">
+                    ng-click="removeQuestion(question)">
                 <span class="glyphicon glyphicon-trash"/>
             </button>
         </div>
