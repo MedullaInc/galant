@@ -226,7 +226,7 @@ app.directive('brQuestionDetail', ['glValidate', function (glValidate) {
 
             $scope.addChoice = function () {
                 if ($scope.question.choices) {
-                    $scope.question.choices.push(null);
+                    $scope.question.choices.push({});
                 }
             };
             $scope.removeChoice = function ($index) {
