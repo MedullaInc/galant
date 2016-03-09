@@ -16,7 +16,7 @@
         </div>
         <div>
             <div class="row choices" data-as-sortable="dragControlListeners" data-ng-model="question.choices">
-                <div ng-repeat="choice in question.choices track by $index" data-as-sortable-item class="row">
+                <div ng-repeat="choice in question.choices" data-as-sortable-item class="row">
                     <div class="col-lg-9">
                         <label class="control-label in-place">Choice</label>
                         <p editable-textarea="choice[language]" e-form="form"
