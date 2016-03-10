@@ -33,6 +33,7 @@
 
                             <p ng-init="limit = 100; moreShown = false">
                                 {{ section.text[language] | cut:true:limit:'...'}}
+                                <br/>
                                 <a ng-show="section.text[language].length > limit"
                                    href
                                    ng-click="showSection(section);limit=section.text[language].length; moreShown = true">
@@ -60,7 +61,7 @@
                             </p>
                         </div>
                     </div>
-
+                    <hr/>
                 </div>
 
             </div>

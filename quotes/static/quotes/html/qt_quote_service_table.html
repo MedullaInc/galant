@@ -76,12 +76,13 @@
                         </span>
                     </div>
                     <div class="row">
-                        <div class="col-lg-6">
+                        <div class="col-lg-12">
                             <p e-class="form-control" editable-textarea="service.description[language]"
                                e-id="description_{{$index}}" e-form="quoteform" e-required
                                e-placeholder="Description">
                                 <p ng-init="moreShown = false; limit = 100">
                                     {{ service.description[language] | cut:true:limit:'...'}}
+                                    <br/>
                                     <a ng-show="service.description[language].length > limit"
                                        href
                                        ng-click="showService(service); moreShown = true; limit=service.description[language].length;">
@@ -105,6 +106,7 @@
                     <p><span ng-show="showViews()" class="label label-default" uib-tooltip="Times Expanded" tooltip-placement="right">{{ service.views }} times expanded</span></p>
                 </div>
             </div>
+            <hr/>
         </li>
     </ul>
 
