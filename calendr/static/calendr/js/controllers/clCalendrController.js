@@ -207,6 +207,9 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
                     var project = $scope.projects.find(function (p) { return p.id == projectId});
                     $scope.services = project.services;
                 };
+                $scope.addService = function () {
+                    $scope.event.services.push(-1);
+                };
             },
             resolve: {
                 gotoDate: function () {

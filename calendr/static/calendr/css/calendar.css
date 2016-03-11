@@ -211,4 +211,24 @@ button.btn.btn-default {
     text-decoration: none;
 }
 
+#calendar_modal .services .service_add_button {
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 0px;
+    border: 1px solid #666666;
+    margin-left: 0px;
+    margin-top: 0px;
+    margin-bottom: 10px;
+    padding: 5px 10px 5px 10px;
+}
+
+
+#calendar_modal .services .col-lg-8 {
+    padding-right: 10px;
+}
+
+#calendar_modal .services .col-lg-1 {
+    padding-left: 0px;
+}
+
 /* END CALENDAR MODAL */
