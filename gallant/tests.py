@@ -107,6 +107,13 @@ class ServiceTest(TransactionTestCase):
 
         self.assertNotEqual(parser.save(user=user).id, service.id)
 
+    def test_service_serialize_to_rep_lang(self):
+        user = autofixture.create_one(g.GallantUser, generate_fk=True)
+        service = autofixture.create_one(g.Service, generate_fk=True, field_values={'user': user, 'name': {}})
+
+        serializer = serializers.ServiceSerializer(service)
+        self.assertIsNotNone(serializer.to_representation_lang(service, 'en'))
+
 
 class ClientTest(TransactionTestCase):
     def test_many_to_many(self):
