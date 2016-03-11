@@ -155,7 +155,8 @@ class QuoteTemplatesTest(browser.SignedInTest):
         qt = autofixture.create_one('quotes.QuoteTemplate', generate_fk=False,
                                     field_values={'quote': q, 'user': self.user})
         b.get(self.live_server_url + reverse('add_quote') + '?template_id=%d&lang=en' % qt.id)
-        browser.wait().until(lambda driver: driver.find_element_by_id('quote_edit')).click()
+        browser.wait().until(lambda driver: driver.find_element_by_id('section_0'))
+        b.find_element_by_id('quote_edit').click()
         b.find_element_by_id('quote_name').send_keys('new quote')
         with browser.wait_for_page_load():
             b.find_element_by_id('quote_save').click()
