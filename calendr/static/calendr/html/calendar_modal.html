@@ -19,9 +19,8 @@
                     <label>Project</label>
                 </div>
                 <div class="col-lg-9">
-                    <select ng-model="event.projectId" class="form-control">
-                        <option ng-selected="{{ project.id == event.projectId }}" ng-repeat="project in projects" value="{{ project.id }}"> {{ project.name }}
-                        </option>
+                    <select ng-model="event.projectId" class="form-control"
+                            ng-options="project.id as project.name for project in projects">
                     </select>
                 </div>
             </div>
