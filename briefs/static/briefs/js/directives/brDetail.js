@@ -10,9 +10,9 @@ app.directive('brBriefDetail', ['Question', '$window', function (Question, $wind
     return {
         restrict: 'A',
         scope: {
-            object: '=',
-            endpoint: '=',
-            language: '=',
+            object: '=?',
+            endpoint: '=?',
+            language: '=?',
             deleteObject: '&',
             submit: '&'
         },
