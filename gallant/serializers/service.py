@@ -23,3 +23,16 @@ class ServiceSerializer(serializers.ModelSerializer):
         instance = super(ServiceSerializer, self).create(validated_data)
 
         return instance
+
+    def to_representation_lang(self, instance, language):
+        ret = super(ServiceSerializer, self).to_representation(instance)
+        for key in ['name', 'description']:
+            if language and language in ret[key]:
+                ret[key] = ret[key][language]
+            else:
+                try:
+                    ret[key] = ret[key].itervalues().next()
+                except StopIteration:
+                    ret[key] = ''
+
+        return ret

@@ -1,4 +1,5 @@
 from django.db.models.query import Prefetch
+from gallant.serializers.service import ServiceSerializer
 from rest_framework import serializers
 from gallant.models import Project
 from gallant import models as g
@@ -7,6 +8,7 @@ from gallant import models as g
 class ProjectSerializer(serializers.ModelSerializer):
     user = serializers.PrimaryKeyRelatedField(read_only=True)
     payments = serializers.SerializerMethodField()
+    services = serializers.SerializerMethodField()
 
     def get_payments(self, project):
         currency = ''
@@ -21,6 +23,15 @@ class ProjectSerializer(serializers.ModelSerializer):
 
         return {'amount': amt, 'currency': currency}
 
+    def get_services(self, project):
+        ret = []
+        for q in project.quote_set.all_for(self.context['request'].user).prefetch_related(
+                Prefetch('services', to_attr='services_arr')):
+            for s in q.services_arr:
+                ret.append(ServiceSerializer(instance=s).to_representation_lang(s, q.language))
+
+        return ret
+
     def get_fields(self, *args, **kwargs):
         fields = super(ProjectSerializer, self).get_fields(*args, **kwargs)
         fields['notes'] = serializers.PrimaryKeyRelatedField(
@@ -30,4 +41,4 @@ class ProjectSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Project
-        fields = ('id', 'user', 'name', 'status', 'notes', 'payments')
+        fields = ('id', 'user', 'name', 'status', 'notes', 'payments', 'services')
