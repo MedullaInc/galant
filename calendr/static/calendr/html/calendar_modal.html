@@ -19,8 +19,25 @@
                     <label>Project</label>
                 </div>
                 <div class="col-lg-9">
+<<<<<<< HEAD
                     <select ng-model="event.projectId" class="form-control"
                             ng-options="project.id as project.name for project in projects">
+=======
+                    <select ng-model="event.projectId" class="form-control" ng-change="projectChanged(event.projectId)"
+                            ng-options="project.id as project.name for project in projects">
+                        <option value="?">Select Project...</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-lg-3">
+                    <label>Services</label>
+                </div>
+                <div class="col-lg-9" ng-show="event.services[0] || services">
+                    <select ng-model="event.services[0]" class="form-control"
+                            ng-options="service.id as service.name for service in services">
+                        <option value="?">Select Service...</option>
+>>>>>>> 9abec8c... added service to event / task
                     </select>
                 </div>
             </div>
