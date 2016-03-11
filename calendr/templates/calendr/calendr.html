@@ -69,7 +69,7 @@
                 <div class="row">
                     <div class="has-feedback form-group col-lg-3">
                         <label class="control-label">Filter Resources by Project</label>
-                        <select ng-change="projectChanged(event.projectId)" ng-model="event.projectId" class="form-control">
+                        <select ng-change="projectChanged(event.projectId)" ng-model="currentProject" class="form-control">
                             <option ng-selected="" value="">All Projects</option>
                             <option ng-selected="{{ project.id == event.projectId }}" ng-repeat="project in projects" value="{{ project.id }}"> {{ project.name }}</option>
                         </select>
