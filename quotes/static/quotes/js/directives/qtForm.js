@@ -148,7 +148,7 @@ app.directive('qtQuoteForm', ['Quote', '$uibModal', function (Quote, $uibModal) 
                             angular.forEach($scope.quote.services, function (q) {
                                 delete q.id;
                             });
-                            
+
                             if ($scope.quoteform.$show) {
                                 $scope.quoteform.$show();
                             }
@@ -273,11 +273,18 @@ app.directive('qtQuoteForm', ['Quote', '$uibModal', function (Quote, $uibModal) 
                 if ($scope.tempStatus == '3' && $scope.idType != 'token') {
                     return true;
                 }
-            }
+            };
 
             $scope.showEdit = function () {
                 if (( $scope.tempStatus == '0' || $scope.tempStatus == '1' )
                     && $scope.idType != 'token') {
+                    return true;
+                }
+            };
+
+            $scope.hideCancel = function () {
+                if (($scope.quote && !$scope.quote.name) ||
+                    ($scope.boolTemplate == "False" && $scope.quote && !$scope.quote.client)) {
                     return true;
                 }
             };
