@@ -141,14 +141,19 @@ app.directive('qtQuoteForm', ['Quote', '$uibModal', function (Quote, $uibModal) 
                         $scope.tempStatus = $scope.quote.status;
                         if ($attrs.boolTemplate != "True") {
                             delete $scope.quote.id;
+
+                            angular.forEach($scope.quote.sections, function (q) {
+                                delete q.id;
+                            });
+                            angular.forEach($scope.quote.services, function (q) {
+                                delete q.id;
+                            });
+                            
+                            if ($scope.quoteform.$show) {
+                                $scope.quoteform.$show();
+                            }
                         }
 
-                        angular.forEach($scope.quote.sections, function (q) {
-                            delete q.id;
-                        });
-                        angular.forEach($scope.quote.services, function (q) {
-                            delete q.id;
-                        });
 
                         if ($scope.quoteTemplate.languages.length == 0) {
                             var lang = LANGUAGES.find(function (x) { return x.code == $scope.language;});
