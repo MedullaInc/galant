@@ -246,9 +246,9 @@ class UsersAPI(generics.ListAPIView):
         project = self.request.GET.get('project_id', None)
         if project:
             assignee_ids = Task.objects.filter(project_id=project).values('assignee').distinct()
-            return self.model.objects.filter(pk__in=assignee_ids)
+            return self.model.objects.filter(is_active=True, pk__gte=0, pk__in=assignee_ids)
         else:
-            return self.model.objects.all()
+            return self.model.objects.filter(is_active=True, pk__gte=0)
 
 
 class UserModelViewSet(viewsets.ModelViewSet):
