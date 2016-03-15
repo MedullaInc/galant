@@ -31,7 +31,7 @@
                                editable-textarea="section.text[language]" e-name="text" e-form="quoteform" e-required
                                e-placeholder="Text" onbeforesave="validate.nonEmpty($data)">
 
-                            <p ng-init="limit = 100; moreShown = false">
+                            <pre ng-init="limit = 100; moreShown = false" ng-hide="quoteform.$visible">
                                 {{ section.text[language] | cut:true:limit:'...'}}
                                 <br/>
                                 <a ng-show="section.text[language].length > limit"
@@ -40,7 +40,7 @@
                                     More
                                 </a>
                                 <a ng-show="moreShown" ng-click="limit=100; moreShown = false"> Less </a>
-                            </p>
+                            </pre>
 
                             </p>
 
