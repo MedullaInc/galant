@@ -3,9 +3,10 @@ app = angular.module('gallant.directives.glAlerts', ['gallant.services.glService
 app.directive('glAlerts', ['glAlertService', function (glAlertService) {
     return {
         restrict: 'A',
-        template: '<uib-alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</uib-alert>',
+        template: '<uib-alert ng-repeat="alert in alerts.get()" type="{{alert.type}}" ' +
+                  'close="alerts.closeAlertIdx($index)">{{alert.msg}}</uib-alert>',
         controller: function($scope) {
-            $scope.alerts = glAlertService.get();
+            $scope.alerts = glAlertService;
         },
     };
 }]);
