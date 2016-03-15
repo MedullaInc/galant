@@ -12,13 +12,13 @@ app.directive('qtQuoteForm', ['Quote', '$uibModal', function (Quote, $uibModal) 
     return {
         restrict: 'A',
         scope: {
-            quote: '=',
-            quoteTemplate: '=',
-            endpoint: '=',
-            language: '=',
-            forms: '=',
-            boolTemplate: '=',
-            idType: '=',
+            quote: '=?',
+            quoteTemplate: '=?',
+            endpoint: '=?',
+            language: '=?',
+            forms: '=?',
+            boolTemplate: '=?',
+            idType: '=?',
             deleteObject: '&',
             submit: '&',
         },
@@ -141,14 +141,19 @@ app.directive('qtQuoteForm', ['Quote', '$uibModal', function (Quote, $uibModal) 
                         $scope.tempStatus = $scope.quote.status;
                         if ($attrs.boolTemplate != "True") {
                             delete $scope.quote.id;
+
+                            angular.forEach($scope.quote.sections, function (q) {
+                                delete q.id;
+                            });
+                            angular.forEach($scope.quote.services, function (q) {
+                                delete q.id;
+                            });
+
+                            if ($scope.quoteform.$show) {
+                                $scope.quoteform.$show();
+                            }
                         }
 
-                        angular.forEach($scope.quote.sections, function (q) {
-                            delete q.id;
-                        });
-                        angular.forEach($scope.quote.services, function (q) {
-                            delete q.id;
-                        });
 
                         if ($scope.quoteTemplate.languages.length == 0) {
                             var lang = LANGUAGES.find(function (x) { return x.code == $scope.language;});
@@ -268,11 +273,18 @@ app.directive('qtQuoteForm', ['Quote', '$uibModal', function (Quote, $uibModal) 
                 if ($scope.tempStatus == '3' && $scope.idType != 'token') {
                     return true;
                 }
-            }
+            };
 
             $scope.showEdit = function () {
                 if (( $scope.tempStatus == '0' || $scope.tempStatus == '1' )
                     && $scope.idType != 'token') {
+                    return true;
+                }
+            };
+
+            $scope.hideCancel = function () {
+                if (($scope.quote && !$scope.quote.name) ||
+                    ($scope.boolTemplate == "False" && $scope.quote && !$scope.quote.client)) {
                     return true;
                 }
             };

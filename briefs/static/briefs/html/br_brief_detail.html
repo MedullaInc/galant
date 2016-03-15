@@ -48,8 +48,9 @@
             </div>
         </form>
     </div>
-    <div gl-edit-buttons form="briefForm" hide-edit="brief.answered" delete="deleteObject()('brief')"
-         prefix="brief" class="col-lg-2 col-md-2 col-sm-3 col-xs-3" hide-cancel="!brief.title[language]"></div>
+    <div gl-edit-buttons form="briefForm" hide-edit="brief.answered || brief.status == 2 || brief.status == 3"
+         delete="deleteObject()('brief')" prefix="brief"
+         class="col-lg-2 col-md-2 col-sm-3 col-xs-3" hide-cancel="!brief.title[language]"></div>
 </div>
 
 <div class="row">

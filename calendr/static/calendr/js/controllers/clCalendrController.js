@@ -101,10 +101,7 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
     };
 
     /* Retrieve users from API service */
-    $scope.getResources = function (project) {
-        options = {};
-        if (project) {
-        }
+    $scope.getResources = function (options) {
         User.query(options).$promise.then(function (response) {
             angular.forEach(response, function (value, key) {
                 $scope.eventResources.push({
@@ -153,12 +150,20 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
             windowClass: 'modal',
             controller: function ($scope, $uibModalInstance, $log, event, events, resources, projects, updateEvent, createTask, gotoDate) {
                 $scope.event = event;
+                if (!$scope.event.services)
+                    $scope.event.services = [];
                 $scope.events = events;
                 $scope.resources = resources;
                 $scope.projects = projects;
                 $scope.updateEvent = updateEvent;
                 $scope.createTask = createTask;
                 $scope.gotoDate = gotoDate;
+
+                var project = $scope.projects.find(function (p) { return p.id == $scope.event.projectId});
+                if (project) {
+                    $scope.services = project.services;
+                }
+
 
                 $scope.submit = function (e) {
                     $uibModalInstance.dismiss('cancel');
@@ -175,7 +180,7 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
                             "end": e.end,
                             "daily_estimate": e.daily_estimate,
                             "project": e.projectId,
-                            "services": [],
+                            "services": e.services,
                             "assignee": String(e.resourceId),
                             "notes": []
                         };
@@ -196,6 +201,13 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
                         });
                     }
 
+                };
+                $scope.projectChanged = function (projectId) {
+                    var project = $scope.projects.find(function (p) { return p.id == projectId});
+                    $scope.services = project.services;
+                };
+                $scope.addService = function () {
+                    $scope.event.services.push(-1);
                 };
             },
             resolve: {
@@ -225,16 +237,16 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
     };
 
     /* event triggered on project change */
-    $scope.projectChanged = function (project_id) {
-        var proj = {
-            id: project_id
-        };
+    $scope.projectChanged = function (projectId) {
+        var options = {};
+        if (projectId)
+            options.project_id = projectId;
 
         // Remove existing resources in calendar.
         $scope.eventResources.splice(0, $scope.eventResources.length);
 
         // Fetch selected project resources
-        $scope.getResources(proj);
+        $scope.getResources(options);
     };
 
     /* update on Calendar */
@@ -247,7 +259,7 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
             "end": moment(event.end).format(),
             "daily_estimate": event.daily_estimate,
             "project": event.projectId,
-            "services": [],
+            "services": event.services,
             "assignee": String(event.resourceId),
             "notes": []
         };
@@ -281,7 +293,7 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
             "end": event.end,
             "daily_estimate": event.daily_estimate,
             "project": event.projectId,
-            "services": [],
+            "services": event.services,
             "assignee": String(event.resourceId),
             "notes": []
         };
@@ -300,6 +312,7 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
             end: e.end,
             resourceId: String(e.assignee),
             projectId: e.project,
+            services: e.services,
             allDay: false,
             daily_estimate: parseFloat(e.daily_estimate),
         };
@@ -336,7 +349,7 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
             "end": moment(task.end).format(),
             "daily_estimate": task.daily_estimate,
             "project": task.project,
-            "services": [],
+            "services": task.services,
             "assignee": task.assignee,
             "notes": []
         };

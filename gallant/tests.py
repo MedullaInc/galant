@@ -11,7 +11,7 @@ from gallant import forms as gallant_forms
 from briefs import models as b
 from gallant import serializers
 from gallant import views
-from gallant.fields import ULTextDictArray, _ultext_array_to_python
+from gallant.fields import ULTextDictArray, _ultext_array_to_python, _ultext_to_python
 from moneyed.classes import Money
 from quotes import models as q
 from autofixture import AutoFixture
@@ -106,6 +106,13 @@ class ServiceTest(TransactionTestCase):
         self.assertTrue(parser.is_valid())
 
         self.assertNotEqual(parser.save(user=user).id, service.id)
+
+    def test_service_serialize_to_rep_lang(self):
+        user = autofixture.create_one(g.GallantUser, generate_fk=True)
+        service = autofixture.create_one(g.Service, generate_fk=True, field_values={'user': user, 'name': {}})
+
+        serializer = serializers.ServiceSerializer(service)
+        self.assertIsNotNone(serializer.to_representation_lang(service, 'en'))
 
 
 class ClientTest(TransactionTestCase):
@@ -498,6 +505,16 @@ class ULTextTest(TestCase):
         ulta2 = _ultext_array_to_python('[{"en": "choice 1", "es": "opcion 1"},'
                                         '{"en": "choice 2", "es": "opcion 2"}]')
         self.assertEqual(ulta, ulta2)
+
+    def test_ultext_string(self):
+        ulta = _ultext_array_to_python('')
+        self.assertEqual([], ulta)
+
+        ulta = _ultext_array_to_python('{')
+        self.assertEqual(['{'], ulta)
+
+        ult = _ultext_to_python('{}')
+        self.assertEqual({}, ult)
 
 
 class GallantUserTest(TestCase):

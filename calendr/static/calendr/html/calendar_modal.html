@@ -19,10 +19,38 @@
                     <label>Project</label>
                 </div>
                 <div class="col-lg-9">
-                    <select ng-model="event.projectId" class="form-control">
-                        <option ng-selected="{{ project.id == event.projectId }}" ng-repeat="project in projects" value="{{ project.id }}"> {{ project.name }}
-                        </option>
+                    <select ng-model="event.projectId" class="form-control" ng-change="projectChanged(event.projectId)"
+                            ng-options="project.id as project.name for project in projects">
+                        <option value="?">Select Project...</option>
                     </select>
+                </div>
+            </div>
+            <div class="row form-group services" ng-hide="!services || event.services.length">
+                <div class="col-lg-3">
+                    <label>Services</label>
+                </div>
+                <div class="col-lg-8">
+                    <select ng-model="event.services[0]" class="form-control"
+                            ng-options="service.id as service.name for service in services">
+                        <option value="?">Select Service...</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row form-group services" ng-repeat="service in event.services" ng-show="event.services.length">
+                <div class="col-lg-3" ng-show="$first">
+                    <label>Services</label>
+                </div>
+                <div class="col-lg-8" ng-class="{'col-lg-offset-3': !$first}">
+                    <select ng-model="event.services[$index]" class="form-control"
+                            ng-options="service.id as service.name for service in services">
+                        <option value="?">Select Service...</option>
+                    </select>
+                </div>
+                <div class="col-lg-1" ng-show="$last">
+                    <button id="service_add" type="button" class="service_add_button btn btn-default"
+                            ng-click="addService()">
+                        <span class="glyphicon glyphicon-plus-sign"/>
+                    </button>
                 </div>
             </div>
             <div class="row form-group">

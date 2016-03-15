@@ -11,9 +11,9 @@ app.directive('qtClient', ['Quote', function (Quote) {
     return {
         restrict: 'A',
         scope: {
-            quote: '=',
-            language: '=',
-            idType: '=',
+            quote: '=?',
+            language: '=?',
+            idType: '=?',
         },
         controller: ['$scope', '$attrs', '$filter', '$window', 'Quote',
             function ($scope, $attrs, $filter, $window, Quote) {

@@ -133,6 +133,12 @@ describe('qtForm', function () {
             expect(element.html().substring(0, 8)).toEqual('<div cla');
         });
 
+        it('compiles with quote template id and bool-template false', function () {
+            var element = $compile('<div qt-quote-form quote="quote" template-id="0" bool-template="False"></div>')($scope);
+            $scope.$digest();
+            expect(element.html().substring(0, 8)).toEqual('<div cla');
+        });
+
         it('check client', function () {
             /* TODO */
             pending();

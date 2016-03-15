@@ -8,7 +8,8 @@
             e-placeholder="Enter quote name" onbeforesave="validate.nonEmpty($data)">Name: {{ quote.name || quote.errors.name || "empty" }}  </h2>
     </div>
 
-    <div gl-edit-buttons form="quoteform" hide="!showEdit()" delete="deleteObject()('quote')" prefix="quote">
+    <div gl-edit-buttons form="quoteform" hide="!showEdit()" delete="deleteObject()('quote')"
+         prefix="quote" hide-cancel="hideCancel()">
     </div>
 </div>
 
