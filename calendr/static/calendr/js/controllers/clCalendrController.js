@@ -101,10 +101,7 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
     };
 
     /* Retrieve users from API service */
-    $scope.getResources = function (project) {
-        options = {};
-        if (project) {
-        }
+    $scope.getResources = function (options) {
         User.query(options).$promise.then(function (response) {
             angular.forEach(response, function (value, key) {
                 $scope.eventResources.push({
@@ -153,6 +150,8 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
             windowClass: 'modal',
             controller: function ($scope, $uibModalInstance, $log, event, events, resources, projects, updateEvent, createTask, gotoDate) {
                 $scope.event = event;
+                if (!$scope.event.services)
+                    $scope.event.services = [];
                 $scope.events = events;
                 $scope.resources = resources;
                 $scope.projects = projects;
@@ -238,16 +237,16 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
     };
 
     /* event triggered on project change */
-    $scope.projectChanged = function (project_id) {
-        var proj = {
-            id: project_id
-        };
+    $scope.projectChanged = function (projectId) {
+        var options = {};
+        if (projectId)
+            options.project_id = projectId;
 
         // Remove existing resources in calendar.
         $scope.eventResources.splice(0, $scope.eventResources.length);
 
         // Fetch selected project resources
-        $scope.getResources(proj);
+        $scope.getResources(options);
     };
 
     /* update on Calendar */
