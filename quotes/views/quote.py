@@ -18,6 +18,8 @@ from django.utils.text import slugify
 from django.utils.translation import ugettext_lazy as _
 from django.core.mail import send_mail
 from uuid import uuid4
+
+from quotes.models.quote import QuoteStatus
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, AllowAny
 from rest_framework.decorators import permission_classes
@@ -232,6 +234,14 @@ class QuoteViewSet(UserModelViewSet):
             return self.model.objects.all_for(user).exclude(client__isnull=clients_only)
         else:
             return self.model.objects.all_for(user)
+
+    def create(self, request, *args, **kwargs):
+        request.data['status'] = QuoteStatus.Not_Sent.value
+        return super(QuoteViewSet, self).create(request, *args, **kwargs)
+
+    def update(self, request, *args, **kwargs):
+        request.data['status'] = QuoteStatus.Not_Sent.value
+        return super(QuoteViewSet, self).update(request, *args, **kwargs)
 
 
 class QuotePaymentsAPI(ModelViewSet):
