@@ -20,7 +20,6 @@ class BriefTemplatesTest(browser.SignedInTest):
         browser.wait().until(lambda driver: driver.find_element_by_id('brief_save')).click()
         b.find_element_by_id('brief_title').send_keys('Brief test')
         b.find_element_by_id('brief_greeting').send_keys('Brief test')
-        b.find_element_by_xpath('//select[@id="brief_status"]/option[2]').click()
 
         self._submit_and_check(b, True)
 
@@ -42,7 +41,6 @@ class BriefTemplatesTest(browser.SignedInTest):
         browser.wait().until(lambda driver: driver.find_element_by_id('brief_save')).click()
         b.find_element_by_id('brief_title').send_keys('Brief test')
         b.find_element_by_id('brief_greeting').send_keys('Brief test')
-        b.find_element_by_xpath('//select[@id="brief_status"]/option[2]').click()
 
         self._add_language_and_text(b, True)
 

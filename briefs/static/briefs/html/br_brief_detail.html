@@ -30,16 +30,6 @@
                     {{ brief.title[language] || brief.errors.title || 'Not set' }}
                 </h2>
             </div>
-            <div id="status" class="data row">
-                <p e-class="form-control" e-id="brief_status" class="data"
-                   editable-select="brief.status" e-form="briefForm" e-required
-                   e-ng-options="key as val for (key, val) in brief.field_choices.status"
-                   editable-placeholder="Choose status..."
-                   onbeforesave="validate.selectedIf($data, isTemplate)">
-                    <span class="label label-default">{{ brief.field_choices.status[brief.status] }}</span>
-                    <br/><br/>
-                </p>
-            </div>
             <div id="greeting" class="data row">
                 <pre editable-textarea="brief.greeting[language]" e-id="brief_greeting"
                    e-placeholder="Enter greeting" onbeforesave="validate.nonEmpty($data)">
