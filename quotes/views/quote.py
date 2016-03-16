@@ -245,6 +245,8 @@ class QuotePaymentsAPI(ModelViewSet):
         if 'pk' in self.kwargs:
             # Return specific payment
             return self.model.objects.all_for(self.request.user).filter(id=self.kwargs['pk'])
+        elif self.request.query_params.get('client_id', None) is not None:
+            return g.Payment.objects.filter(quote__client_id=self.request.query_params.get('client_id', None))
         else:
             # TODO: Return 404 if no pk is given?
             return self.model.objects.all_for(self.request.user)

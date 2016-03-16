@@ -1,12 +1,17 @@
 app = angular.module('gallant.controllers.glClientPaymentController', ['gallant.services.glServices']);
 
-app.controller('glClientPaymentController', ['$scope', '$attrs', '$uibModal', '$log', 'ClientProjects', '$http', '$window', 'PaymentAPI', function ($scope, $attrs, $uibModal, $log, ClientProjects, $http, $window, PaymentAPI) {
+app.controller('glClientPaymentController', ['$scope', '$attrs', '$uibModal', '$log', 'ClientProjects', '$http', '$window', 'Payment', function ($scope, $attrs, $uibModal, $log, ClientProjects, $http, $window, Payment) {
+
+    Payment.query({client_id: $attrs.clientId}).$promise.then(function (response) {
+        $scope.payments = response;
+    });
+
     $scope.openEditModal = function () {
         $uibModal.open({
             templateUrl: '/static/gallant/html/gl_client_payment_modal.html',
             backdrop: true,
             windowClass: 'modal',
-            controller: function ($scope, $uibModalInstance, ClientProjects, createPayment, PaymentAPI) {
+            controller: function ($scope, $uibModalInstance, ClientProjects, createPayment, Payment) {
 
                 // When form loads, it will load projects
                 $scope.projects = [];
@@ -88,7 +93,7 @@ app.controller('glClientPaymentController', ['$scope', '$attrs', '$uibModal', '$
     };
 
     $scope.postPayment = function (payment) {
-        var response = PaymentAPI.save(payment);
+        var response = Payment.save(payment);
         $scope.renderPayment(response);
     };
 

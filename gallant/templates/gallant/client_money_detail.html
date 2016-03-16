@@ -27,6 +27,7 @@
             <div class="row">
                 <div class="col-lg-10 col-md-10 col-sm-9 col-xs-9">
                     <h2 class="section_title">{% trans 'Payments' %}</h2>
+                    <br/>
                 </div>
                 <div class="col-lg-2 col-md-2 col-sm-3 col-xs-3 action_box">
                     <button id="section_edit" type="button" class="btn btn-default edit_button" aria-label="Edit" ng-click="openEditModal()">
@@ -34,6 +35,7 @@
                     </button>
                 </div>
             </div>
+            <ng-include src="'{% static 'gallant/html/gl_client_payments.html' %}'"></ng-include>
         </div>
 
     {% endblock %}

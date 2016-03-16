@@ -1,0 +1,22 @@
+<div class="enclosed" ng-repeat="p in payments">
+    <div class="row">
+        <div class="col-lg-8 col-md-8 col-sm-6 col-xs-6">
+            <p class="small">
+                Description
+            </p>
+            <p>
+                {{ p.description }}
+            </p>
+        </div>
+        <div class="col-lg-2 col-md-2 col-sm-3 col-xs-3 action_box">
+            <p class="small">
+                Amount
+            </p>
+            <p>
+                {{ p.amount.currency }} ${{ p.amount.amount }}
+            </p>
+        </div>
+        <div class="col-lg-2 col-md-2 col-sm-3 col-xs-3 action_box">
+        </div>
+    </div>
+</div>
