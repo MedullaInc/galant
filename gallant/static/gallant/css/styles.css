@@ -2574,6 +2574,7 @@ button.btn-default.edit_button {
     border: 1px solid #666666;
     margin-top: 0px;
     margin-right: 5px;
+    margin-bottom: 5px;
     padding: 10px 15px 10px 15px;
 }
 
@@ -2598,6 +2599,8 @@ button.btn-default.delete_button {
     border: 1px solid #666666;
     padding: 10px 15px 10px 15px;
     margin-top: 0px;
+    margin-right: 5px;
+    margin-bottom: 5px;
 }
 
 
@@ -2608,7 +2611,9 @@ button.btn-default.move_button {
     border: 1px solid #666666;
     padding: 10px 15px 10px 15px;
     margin-top: 0px;
+    margin-right: 5px;
     cursor: move;
+    margin-bottom: 5px;
 }
 
 a.delete_button:hover {
@@ -2854,4 +2859,15 @@ div.row.as-sortable-item-handle p {
 li.row {
     border-bottom: 1px solid #999999;
 }
+
+.fixed {
+    position: fixed;
+    width: 15%;
+}
+
+.scrollit {
+    float: left;
+    width: 85%;
+}
+
 /* End Table List*/

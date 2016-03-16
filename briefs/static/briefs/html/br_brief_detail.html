@@ -19,10 +19,10 @@
 </div>
 
 <div ng-class="briefTemplate ? 'rounded-border col-lg-12 col-md-12 col-sm-11 col-xs-11' : ''">
-    <div ng-class="briefTemplate ? 'col-lg-10 col-md-10 col-sm-9 col-xs-9 rounded-border' : 'col-lg-10 col-md-10 col-sm-9 col-xs-9'">
+    <div ng-class="briefTemplate ? 'col-lg-10 col-md-10 col-sm-8 col-xs-8 rounded-border' : 'col-lg-10 col-md-10 col-sm-9 col-xs-9'">
         <form editable-form name="briefForm" id="form" shown="brief && !brief.title"
               onshow="storeBrief()" oncancel="loadStoredBrief()" onaftersave="submitForm()">
-            <div id="title" class="data row">
+            <div id="title" class="data">
                 <h2 class="inline_title" data-inputclass="form-control"
                     editable-text="brief.title[language]" e-id="brief_title"
                     e-placeholder="Enter brief title"
@@ -30,7 +30,7 @@
                     {{ brief.title[language] || brief.errors.title || 'Not set' }}
                 </h2>
             </div>
-            <div id="greeting" class="data row">
+            <div id="greeting" class="data">
                 <pre editable-textarea="brief.greeting[language]" e-id="brief_greeting"
                    e-placeholder="Enter greeting" onbeforesave="validate.nonEmpty($data)">
                     {{ brief.greeting[language] || brief.errors.greeting || 'Not set' }}
@@ -38,9 +38,12 @@
             </div>
         </form>
     </div>
-    <div gl-edit-buttons form="briefForm" hide-edit="brief.answered || brief.status == 2 || brief.status == 3"
-         delete="deleteObject()('brief')" prefix="brief"
-         class="col-lg-2 col-md-2 col-sm-3 col-xs-3" hide-cancel="!brief.title[language]"></div>
+    <div ng-class="briefTemplate ? 'col-lg-2 col-md-2 col-sm-3 col-xs-3' : 'col-lg-2 col-md-2 col-sm-3 col-xs-3'">
+        <div gl-edit-buttons form="briefForm" hide-edit="brief.answered || brief.status == 2 || brief.status == 3"
+             delete="deleteObject()('brief')" prefix="brief"
+             hide-cancel="!brief.title[language]" class="affix affix-top">
+        </div>
+    </div>
 </div>
 
 <div class="row">
@@ -55,7 +58,7 @@
 
 <div data-as-sortable="dragControlListeners" data-ng-model="brief.questions" class="row">
     <div ng-repeat="question in brief.questions" data-as-sortable-item class="row">
-        <div id="question_{{ question.index }}" class="question col-lg-10 col-md-10 col-sm-9 col-xs-9"
+        <div id="question_{{ question.index }}" class="question col-lg-8 col-md-8 col-sm-7 col-xs-7"
              br-question-detail question="question"
              language="language" errors="brief.errors" answered="brief.answered" form="briefForm">
         </div>
