@@ -19,7 +19,8 @@ class BriefsSignedInTest(browser.SignedInTest):
         c = autofixture.create_one('gallant.Client', generate_fk=True,
                                    field_values={'user': self.user})
         brief = autofixture.create_one('briefs.Brief', generate_fk=True,
-                                       field_values={'user': self.user, 'client': c, 'quote': None, 'status': 0})
+                                       field_values={'user': self.user, 'client': c, 'quote': None,
+                                                     'status': bm.BriefStatus.Draft.value})
         q = bm.TextQuestion.objects.create(user=brief.user, question='What?')
         mq = bm.MultipleChoiceQuestion.objects.create(user=brief.user, question='Huh?',
                                                       choices=['a', 'b', 'c'], index=1)
@@ -43,7 +44,6 @@ class BriefsSignedInTest(browser.SignedInTest):
         # fill out brief & save
         browser.wait().until(lambda driver: driver.find_element_by_id('brief_save'))
         b.find_element_by_id('brief_title').send_keys('Brief test')
-        b.find_element_by_xpath('//select[@id="brief_status"]/option[2]').click()
         b.find_element_by_id('brief_greeting').send_keys('Brief test')
         self._submit_and_check(b, True)
 
@@ -107,7 +107,6 @@ class BriefsSignedInTest(browser.SignedInTest):
         browser.wait().until(lambda driver: driver.find_element_by_id('brief_edit')).click()
         b.find_element_by_id('brief_title').send_keys('Brief test')
         b.find_element_by_id('brief_greeting').send_keys('Brief test')
-        b.find_element_by_xpath('//select[@id="brief_status"]/option[2]').click()
         self._submit_and_check(b)
 
     def test_add_project_brief(self):
@@ -123,16 +122,16 @@ class BriefsSignedInTest(browser.SignedInTest):
         browser.wait().until(lambda driver: driver.find_element_by_id('brief_save'))
         b.find_element_by_id('brief_title').send_keys('Brief test')
         b.find_element_by_id('brief_greeting').send_keys('Brief test')
-        b.find_element_by_xpath('//select[@id="brief_status"]/option[2]').click()
         self._submit_and_check(b, True)
 
     def test_send_answers_link(self):
         b = self.browser
         brief = self.brief
-
         b.get(self.live_server_url + reverse('brief_detail', args=[brief.id]))
         browser.wait().until(lambda driver: driver.find_element_by_id('send_brief'))
-        b.find_element_by_id('send_brief').click()
+
+        with browser.wait_for_page_load():
+            b.find_element_by_id('send_brief').click()
 
         success_message = b.find_element_by_class_name('alert-success')
         self.assertTrue(u'Brief link sent to %s.' % brief.client.email in success_message.text)

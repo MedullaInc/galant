@@ -57,6 +57,7 @@ class BriefSerializer(serializers.ModelSerializer):
             'id': {'read_only': False, 'required': False},
             'user': {'required': False},
             'answered': {'required': False},
+            'status': {'required': False},
         }
 
     def _write_questions(self, user, instance, questions_data):

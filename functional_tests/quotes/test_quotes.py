@@ -64,7 +64,6 @@ class QuotesSignedInTest(browser.SignedInTest):
         b.get(self.live_server_url + reverse('add_quote'))
         browser.wait().until(lambda driver: driver.find_element_by_id('quote_name')).send_keys('Quote test')
         browser.wait().until(lambda driver: driver.find_element_by_xpath('//select[@name="client"]/option[2]')).click()
-        b.find_element_by_xpath('//select[@id="quote_status"]/option[2]').click()
         b.find_element_by_id('title_0').send_keys('test important notes title')
         b.find_element_by_id('text_0').send_keys('test important notes text')
         b.find_element_by_id('title_1').send_keys('test important notes title')
@@ -87,7 +86,6 @@ class QuotesSignedInTest(browser.SignedInTest):
         browser.wait().until(lambda driver: driver.find_element_by_id('quote_edit')).click()
         b.find_element_by_id('quote_name').send_keys('Quote test')
         browser.wait().until(lambda driver: driver.find_element_by_xpath('//select[@name="client"]/option[2]')).click()
-        b.find_element_by_xpath('//select[@id="quote_status"]/option[2]').click()
         b.find_element_by_id('title_0').clear()
         b.find_element_by_id('title_0').send_keys('modified intro title')
         b.find_element_by_id('text_0').send_keys('modified intro text')
@@ -172,7 +170,6 @@ class QuotesSignedInTest(browser.SignedInTest):
         browser.wait().until(lambda driver: driver.find_element_by_id('quote_edit')).click()
         b.find_element_by_id('quote_name').send_keys('Quote test')
         browser.wait().until(lambda driver: driver.find_element_by_xpath('//select[@name="client"]/option[1]')).click()
-        b.find_element_by_xpath('//select[@id="quote_status"]/option[2]').click()
 
         b.find_element_by_id('add_service').click()
         b.find_element_by_xpath('//*[@id="service_from_scratch"]').click()

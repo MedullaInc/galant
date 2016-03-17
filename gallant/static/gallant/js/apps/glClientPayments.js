@@ -5,6 +5,7 @@ var app = angular.module('glClientPayments', [
     'gallant.services.glServices',
     'gallant.controllers.glClientPaymentController',
     'gallant.directives.glPayments',
+    'quotes.controllers.qtPopoverController',
 ]);
 
 /* istanbul ignore next */

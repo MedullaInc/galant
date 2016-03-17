@@ -8,7 +8,18 @@
 {% block scripts %}
     {{ block.super }}
     <script src="{% static "js/Chart.min.js" %}"></script>
+    <script src="{% static "js/angular.js" %}"></script>
+    <script src="{% static "js/angular-resource.js" %}"></script>
+    <script src="{% static "js/angular-animate.js" %}"></script>
+    <script src="{% static "js/ui-bootstrap-tpls.js" %}"></script>
+    <script src="{% static "djng/js/django-angular.js" %}"></script>
+    <script src="{% static "gallant/js/services/glServices.js" %}"></script>
+    <script src="{% static "gallant/js/apps/glClientPayments.js" %}"></script>
+    <script src="{% static "gallant/js/controllers/glClientPaymentController.js" %}"></script>
+    <script src="{% static "js/quotes.js" %}"></script>
 {% endblock %}
+
+{% block extra_wrapper_attrs %} ng-app="glClientPayments" {% endblock %}
 
 {% block css %}
     <link rel="stylesheet" href="{% static "gallant/css/chart.css" %}">
@@ -27,6 +38,12 @@
             {% trans "New Brief..." %}
         </button>
     </a>
+    <div ng-controller="qtPopoverController"
+         ng-init="init('{% url 'add_quote' %}', '{% firstof language LANGUAGE_CODE %}')">
+        <a>
+            <button popover-placement="bottom" uib-popover-template="dynamicPopover.templateUrl" type="button" class="btn btn-default sidebar" popover-trigger="focus">{% trans "New Quote..." %}</button>
+        </a>
+    </div>
 
 {% endblock %}
 
@@ -247,6 +264,31 @@
     </div>
     {% endblock %}
 
+    <script type="text/ng-template" id="myPopoverTemplate.html">
+        <a class="from_template_button" ng-click="open()">
+            <button type="button" class="btn btn-default from_template_button sidebar">From Template</button>
+        </a>
+        <a ng-click="addQuoteRedirect()">
+            <button type="button" class="btn btn-default from_scratch_button sidebar">From Scratch</button>
+        </a>
+    </script>
+    <script type="text/ng-template" id="myModalContent.html">
+        <div class="modal-header">
+            <h2 class="section_title">Select Template</h2>
+        </div>
+        <div class="modal-body">
+            <table st-table="quoteTemplate" class="table table-striped table-bordered">
+                <thead>
+                <tr>
+                    <th st-sort="name">{% trans "Name" %}</th>
+                    <th st-sort="date">{% trans "Date" %}</th>
+                    <th st-sort="language">{% trans "Language" %}</th>
+                </tr>
+                </thead>
+                <tbody ng-include src="'{% static "quotes/html/qt_quotetemplate_modal_rows.html" %}'"></tbody>
+            </table>
+        </div>
+    </script>
 {% endblock %}
 
 {% block extra_body %}

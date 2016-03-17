@@ -16,6 +16,10 @@ class BriefAnswer(View):
     # Brief may be answered by anonymous user via token link
     def get(self, request, **kwargs):
         obj = get_object_or_404(b.Brief, Q(status=2) | Q(status=3), token=kwargs['token'])
+
+        obj.status = b.BriefStatus.Viewed.value
+        obj.save()
+
         form = bf.BriefAnswersForm(request.user, instance=b.BriefAnswers(brief=obj))
 
         return TemplateResponse(request=self.request,

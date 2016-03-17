@@ -67,7 +67,6 @@ app.directive('brBriefDetail', ['Question', '$window', function (Question, $wind
                                 var brief_lang = brief.language ? brief.language : $scope.language;
                                 // we're creating a template from a saved brief, so delete IDs to create new one
                                 delete brief.id;
-                                brief.status = 0;
                                 angular.forEach(brief.questions, function (q) {
                                     delete q.id;
                                 });
@@ -110,6 +109,10 @@ app.directive('brBriefDetail', ['Question', '$window', function (Question, $wind
                             }).$promise.then(function (briefTemplate) {
                                 loadBriefAndTemplate(briefTemplate.brief);
                                 delete $scope.brief.id;
+
+                                if ($attrs.clientId)
+                                    $scope.brief.client = $attrs.clientId;
+
                                 angular.forEach($scope.brief.questions, function (q) {
                                     delete q.id;
                                 });
@@ -118,7 +121,10 @@ app.directive('brBriefDetail', ['Question', '$window', function (Question, $wind
                                 }
                             });
                         } else {
-                            loadBriefAndTemplate(new Brief());
+                            var b = new Brief();
+                            if ($attrs.clientId)
+                                b.client = $attrs.clientId;
+                            loadBriefAndTemplate(b);
                         }
                     }
                 }

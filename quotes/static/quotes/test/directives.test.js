@@ -39,8 +39,8 @@ describe('qtForm', function () {
             });
 
             $provide.factory('Client', function ($q) {
-                var Client = jasmine.createSpyObj('Client', ['retrieve', 'fields']);
-                Client.retrieve.and.returnValue({$promise: $q.when([{id: 0}])});
+                var Client = jasmine.createSpyObj('Client', ['query', 'fields']);
+                Client.query.and.returnValue({$promise: $q.when([{id: 0}])});
                 return Client;
             });
 

@@ -1,3 +1,4 @@
+from briefs.models.brief import BriefStatus
 from django.conf import settings
 from django.contrib import messages
 from django.core.mail import send_mail
@@ -98,6 +99,9 @@ class BriefDetail(View):
                             'questions': brief.questions
                            .all_for(request.user) \
                            .order_by('index')})
+            if brief.client:
+                request.breadcrumbs([(_('Clients'), reverse('clients')),
+                                     (brief.client.name, reverse('client_detail', args=[brief.client.id]))])
             request.breadcrumbs(_('Brief: ') + brief.name, request.path_info + query_url(request))
         else:
             template_id = request.GET.get('template_id', None)
@@ -112,8 +116,9 @@ class BriefDetail(View):
 
     def post(self, request, **kwargs):
         brief = get_one_or_404(request.user, 'change_brief', b.Brief, id=kwargs['pk'])
-        brief.status = b.BriefStatus.Sent.value
-        brief.save()
+        if int(brief.status) == b.BriefStatus.Draft.value or int(brief.status) == b.BriefStatus.Not_Sent.value:
+            brief.status = b.BriefStatus.Sent.value
+            brief.save()
 
         _send_brief_email(brief.client.email, request.user.name,
                           (request.build_absolute_uri(
@@ -126,3 +131,11 @@ class BriefDetail(View):
 class BriefViewSet(UserModelViewSet):
     model = b.Brief
     serializer_class = serializers.BriefSerializer
+
+    def create(self, request, *args, **kwargs):
+        request.data['status'] = BriefStatus.Not_Sent.value
+        return super(BriefViewSet, self).create(request, *args, **kwargs)
+
+    def update(self, request, *args, **kwargs):
+        request.data['status'] = BriefStatus.Not_Sent.value
+        return super(BriefViewSet, self).update(request, *args, **kwargs)
