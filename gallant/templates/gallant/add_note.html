@@ -1,6 +1,6 @@
 {% load i18n %}
 
-<form id="add_note_form" class="form" method="post">
+<form action="" id="add_note_form" class="form" method="post">
     {% csrf_token %}
     {{ form.as_div }}
     {% if form.is_bound and not form.is_valid %}
