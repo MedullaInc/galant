@@ -26,7 +26,7 @@
     <div ng-controller="qtPopoverController"
          ng-init="init('{% url 'add_quote' %}', '{% firstof language LANGUAGE_CODE %}')">
         <a>
-            <button popover-placement="bottom" uib-popover-template="dynamicPopover.templateUrl" type="button" class="btn btn-default sidebar" popover-trigger="focus">{% trans "Add New Quotes" %}</button>
+            <button popover-placement="bottom" uib-popover-template="dynamicPopover.templateUrl" type="button" class="btn btn-default sidebar" popover-trigger="focus">{% trans "Add New Quote" %}</button>
         </a>
 
         <a href="{% url 'quotetemplates' %}">

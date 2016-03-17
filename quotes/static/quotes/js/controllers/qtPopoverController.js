@@ -3,7 +3,13 @@ app = angular.module('quotes.controllers.qtPopoverController', ['ngAnimate','ui.
 app.controller('qtPopoverController', ['$scope', '$http', '$window', '$rootScope', '$uibModal', 'Quote', 'QuoteTemplate',
     function($scope, $http, $window, $rootScope, $uibModal, Quote, QuoteTemplate) {
 
-    $scope.quoteTemplates = $rootScope.quoteTemplates;
+        if ($rootScope.quoteTemplates) {
+            $scope.quoteTemplates = $rootScope.quoteTemplates;
+        } else {
+            QuoteTemplate.query().$promise.then(function (response) {
+                $scope.quoteTemplates = response;
+            });
+        }
 
     $scope.init = function(addQuoteURL, currentLanguage) {
         $scope.addQuoteURL = addQuoteURL;
