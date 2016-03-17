@@ -1,41 +1,50 @@
 app = angular.module('gallant.controllers.glClientPaymentController', ['gallant.services.glServices']);
 
-app.controller('glClientPaymentController', ['$scope', '$attrs', '$uibModal', '$log', 'ClientProjects', '$http', '$window', 'Payment', function ($scope, $attrs, $uibModal, $log, ClientProjects, $http, $window, Payment) {
+app.controller('glClientPaymentController', ['$scope', '$attrs', '$uibModal', '$log', 'Quote', '$http', '$window', 'Payment', function ($scope, $attrs, $uibModal, $log, Quote, $http, $window, Payment) {
 
     Payment.query({client_id: $attrs.clientId}).$promise.then(function (response) {
         $scope.payments = response;
     });
 
-    $scope.openEditModal = function () {
+    $scope.openEditModal = function (payment_id) {
         $uibModal.open({
             templateUrl: '/static/gallant/html/gl_client_payment_modal.html',
             backdrop: true,
             windowClass: 'modal',
-            controller: function ($scope, $uibModalInstance, ClientProjects, createPayment, Payment) {
+            controller: function ($scope, $uibModalInstance, Quote, createPayment, Payment) {
 
-                // When form loads, it will load projects
-                $scope.projects = [];
+                // When form loads, it will load quotes
+                $scope.quotes = [];
 
-                // Load default payment formant & due date
-                $scope.payment = {amount: {currency: '', amount: null}};
-                $scope.payment.due = new Date();
-
-                $scope.getProjects = function () {
-                    ClientProjects.query({id: $attrs.clientId}).$promise.then(function (response) {
-                        $scope.projects = response;
+                $scope.getQuotes = function () {
+                    Quote.query({client_id: $attrs.clientId}).$promise.then(function (response) {
+                        $scope.quotes = response;
                     });
                 };
 
-                $scope.getProjects();
+                $scope.hasServices = function (quote) {
+                    return quote.services.length > 0 && quote.status == 5;
+                };
+                // Load default payment formant & due date
+                if (payment_id) {
+                    Payment.get({id: payment_id}).$promise.then(function (response) {
+                        $scope.payment = response;
+                    });
+                } else {
+                    $scope.payment = {amount: {currency: '', amount: null}};
+                    $scope.payment.due = new Date();
+                }
 
-                // When selecting a project, currency will update as well as quote
-                $scope.updateCurrency = function (project_id) {
-                    $scope.payment.amount.currency = $.grep($scope.projects, function (e) {
-                        return e.id == project_id
-                    })[0].payments.currency;
-                    $scope.currency = '( in ' + $.grep($scope.projects, function (e) {
-                            return e.id == project_id
-                        })[0].payments.currency + ' )';
+                $scope.getQuotes();
+
+                // When selecting a quote, currency will update as well as quote
+                $scope.updateCurrency = function (quote_id) {
+                    $scope.payment.amount.currency = $.grep($scope.quotes, function (e) {
+                        return e.id == quote_id
+                    })[0].services[0].cost.currency;
+                    $scope.currency = '( in ' + $.grep($scope.quotes, function (e) {
+                            return e.id == quote_id
+                        })[0].services[0].cost.currency + ' )';
                     if ($scope.currency == '( in  )') {
                         $scope.currency = '( N/A )'
                     }
@@ -53,8 +62,8 @@ app.controller('glClientPaymentController', ['$scope', '$attrs', '$uibModal', '$
                 // Form functions
                 $scope.createPayment = createPayment;
                 $scope.submit = function () {
-                    if (typeof $scope.payment == 'undefined' || typeof $scope.payment.project_id == 'undefined' || typeof $scope.payment.amount.amount == 'undefined' || $scope.payment.amount.amount <= 0.0 || typeof $scope.payment.description == 'undefined' ) {
-                        $scope.errors = "Project, Amount & Description are required!";
+                    if (typeof $scope.payment == 'undefined' || typeof $scope.payment.quote_id == 'undefined' || typeof $scope.payment.amount.amount == 'undefined' || $scope.payment.amount.amount <= 0.0 || typeof $scope.payment.description == 'undefined' ) {
+                        $scope.errors = "Quote, Amount & Description are required!";
                     } else {
                         $scope.errors = "";
                         // TODO: Change form to ng-model='amount.amount'
@@ -78,7 +87,7 @@ app.controller('glClientPaymentController', ['$scope', '$attrs', '$uibModal', '$
 
     $scope.createPayment = function (payment) {
         var newPayment = {
-            project_id: payment.project_id,
+            quote_id: payment.quote_id,
             amount: payment.amount,
             description: payment.description,
             due: payment.due,

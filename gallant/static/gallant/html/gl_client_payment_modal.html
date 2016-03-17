@@ -19,11 +19,11 @@
 
             <div class="row form-group">
                 <div class="col-lg-3">
-                    <label>Project</label>
+                    <label>Quote</label>
                 </div>
                 <div class="col-lg-9">
-                    <select ng-model="payment.project_id" name="quote" class="form-control" ng-change="updateCurrency(payment.project_id)" required ng-class="{'has-success has-feedback': paymentform.quote.$valid && paymentform.quote.$dirty,'has-error has-feedback': paymentform.quote.$invalid && paymentform.quote.$dirty}">
-                        <option ng-selected="" ng-repeat="project in projects" value="{{ project.id }}">{{ project.name }}</option>
+                    <select ng-model="payment.quote_id" name="quote" class="form-control" ng-change="updateCurrency(payment.quote_id)" required ng-class="{'has-success has-feedback': paymentform.quote.$valid && paymentform.quote.$dirty,'has-error has-feedback': paymentform.quote.$invalid && paymentform.quote.$dirty}">
+                        <option ng-selected="" ng-repeat="quote in quotes | filter: hasServices" value="{{ quote.id }}">{{ quote.name }}</option>
                     </select>
                 </div>
             </div>

@@ -227,8 +227,13 @@ class QuoteViewSet(UserModelViewSet):
             user = self.request.user
 
         self.request.user = user
+
+        client_id = self.request.query_params.get('client_id', None)
         clients_only = self.request.query_params.get('clients_only', None)
-        if clients_only is not None:
+
+        if client_id is not None:
+            return self.model.objects.all_for(user).filter(client_id=client_id)
+        elif clients_only is not None:
             return self.model.objects.all_for(user).exclude(client__isnull=clients_only)
         else:
             return self.model.objects.all_for(user)
