@@ -2853,6 +2853,27 @@ div.row.as-sortable-item-handle p {
     line-height: 1.4;
 }
 
+th[st-sort]:after {
+    font-family: "Glyphicons Halflings";
+    content: "\e150";
+    text-align: right;
+    float: right;
+}
+
+th.st-sort-ascent:after {
+    font-family: "Glyphicons Halflings";
+    content:"\e155";
+    text-align: right;
+    float: right;
+}
+
+th.st-sort-descent:after {
+    font-family: "Glyphicons Halflings";
+    content:"\e156";
+    text-align: right;
+    float: right;
+}
+
 /* End Section Sortable Items */
 
 /* Table List */
