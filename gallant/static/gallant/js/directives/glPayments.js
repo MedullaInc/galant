@@ -13,6 +13,14 @@ app.directive('glPayments', ['Payment', function (Payment) {
         controller: ['$scope', function ($scope) {}],
         templateUrl: '/static/gallant/html/gl_client_payments.html',
         link: function ($scope) {
+
+            $scope.deletePayment = function(payment) {
+                if (confirm('Are you sure?')) {
+                    Payment.delete({id: payment.id});
+                    $scope.payments.splice($scope.payments.indexOf(payment),1);
+                }
+            }
+
         }
     };
 }]);
