@@ -4,6 +4,7 @@ var app = angular.module('glClientPayments', [
     'ng.django.forms',
     'gallant.services.glServices',
     'gallant.controllers.glClientPaymentController',
+    'gallant.directives.glPayments',
 ]);
 
 /* istanbul ignore next */

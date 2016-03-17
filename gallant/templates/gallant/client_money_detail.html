@@ -10,6 +10,7 @@
     <script src="{% static "gallant/js/services/glServices.js" %}"></script>
     <script src="{% static "gallant/js/apps/glClientPayments.js" %}"></script>
     <script src="{% static "gallant/js/controllers/glClientPaymentController.js" %}"></script>
+    <script src="{% static "gallant/js/directives/glPayments.js" %}"></script>
 {% endblock %}
 
 {% block section_title %}
@@ -35,7 +36,6 @@
                     </button>
                 </div>
             </div>
-            <ng-include src="'{% static 'gallant/html/gl_client_payments.html' %}'"></ng-include>
         </div>
 
     {% endblock %}
