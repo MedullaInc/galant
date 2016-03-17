@@ -8,15 +8,11 @@ app.directive('glPayments', ['Payment', function (Payment) {
         scope: {
             clientId: '@',
             openEditModal: '&',
+            payments: '=?'
         },
         controller: ['$scope', function ($scope) {}],
         templateUrl: '/static/gallant/html/gl_client_payments.html',
         link: function ($scope) {
-
-            Payment.query({client_id: $scope.clientId}).$promise.then(function (response) {
-                $scope.payments = response;
-            });
-
         }
     };
 }]);

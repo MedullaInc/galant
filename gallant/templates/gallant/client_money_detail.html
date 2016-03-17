@@ -3,10 +3,6 @@
 
 {% block scripts %}
     {{ block.super }}
-    <script src="{% static "js/angular.js" %}"></script>
-    <script src="{% static "js/angular-resource.js" %}"></script>
-    <script src="{% static "js/ui-bootstrap-tpls.js" %}"></script>
-    <script src="{% static "djng/js/django-angular.js" %}"></script>
     <script src="{% static "gallant/js/services/glServices.js" %}"></script>
     <script src="{% static "gallant/js/apps/glClientPayments.js" %}"></script>
     <script src="{% static "gallant/js/directives/glPayments.js" %}"></script>
@@ -36,7 +32,7 @@
                     </button>
                 </div>
             </div>
-            <div gl-payments  client_id="{{ object.id }}" open-edit-modal="openEditModal">
+            <div gl-payments  client_id="{{ object.id }}" open-edit-modal="openEditModal" payments="payments">
             </div>
         </div>
 

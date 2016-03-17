@@ -2,6 +2,10 @@ app = angular.module('gallant.controllers.glClientPaymentController', ['gallant.
 
 app.controller('glClientPaymentController', ['$scope', '$attrs', '$uibModal', '$log', 'Quote', '$http', '$window', 'Payment', function ($scope, $attrs, $uibModal, $log, Quote, $http, $window, Payment) {
 
+    Payment.query({client_id: $attrs.clientId}).$promise.then(function (response) {
+        $scope.payments = response;
+    });
+
     $scope.openEditModal = function (payment_id) {
         $uibModal.open({
             templateUrl: '/static/gallant/html/gl_client_payment_modal.html',
@@ -93,9 +97,7 @@ app.controller('glClientPaymentController', ['$scope', '$attrs', '$uibModal', '$
 
         newPayment.amount.amount = parseFloat(payment.amount.amount);
         var new_payment = Payment.save(newPayment);
-        console.log($scope.payments);
         $scope.payments.push(new_payment);
-        console.log($scope.payments);
     };
 
 }]);
