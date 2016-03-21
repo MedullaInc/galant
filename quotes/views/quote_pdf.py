@@ -8,16 +8,24 @@ from quotes import models as q
 from django.utils.text import slugify
 
 
+def get_quote(request, **kwargs):
+    if 'pk' in kwargs:
+        # Quote for a logged-in user
+        quote = q.Quote.objects.get_for(request.user, pk=kwargs['pk'])
+    elif 'token' in kwargs:
+        # Quote for visitor directly from url with token
+        quote = get_object_or_404(q.Quote, token=kwargs['token'])
+
+    return quote
+
 class QuotePDF(View):  # pragma: no cover
     def get(self, request, *args, **kwargs):
-        if 'pk' in kwargs:
-            # Quote for a logged-in user
-            quote = q.Quote.objects.get_for(request.user, pk=kwargs['pk'])
-        elif 'token' in kwargs:
-            # Quote for visitor directly from url with token
-            quote = get_object_or_404(q.Quote, token=kwargs['token'])
+        quote = get_quote(request, **kwargs)
 
-        url = '%s://%s%s' % (request.scheme, request.get_host(), reverse('quote_preview', args=[quote.id]))
+        if 'token' in kwargs:
+            url = '%s://%s%s' % (request.scheme, request.get_host(), reverse('quote_preview', args=[quote.token.hex]))
+        else:
+            url = '%s://%s%s' % (request.scheme, request.get_host(), reverse('quote_preview', args=[quote.id]))
         filename = slugify(quote.client.name + "_" + quote.name)
 
         # load page with ?dl=inline to show PDF in browser
@@ -39,7 +47,7 @@ class QuotePDF(View):  # pragma: no cover
 
 def quote_preview(request, *args, **kwargs):
     # Get quote
-    quote = q.Quote.objects.get_for(request.user, pk=kwargs['pk'])
+    quote = get_quote(request, **kwargs)
 
     # Render HTML
     context = {'object': quote}
@@ -48,7 +56,7 @@ def quote_preview(request, *args, **kwargs):
 
 def quote_header(request, *args, **kwargs):
     # Get quote
-    quote = q.Quote.objects.get_for(request.user, pk=kwargs['pk'])
+    quote = get_quote(request, **kwargs)
 
     # Render HTML
     context = {'object': quote}
@@ -57,7 +65,7 @@ def quote_header(request, *args, **kwargs):
 
 def quote_footer(request, *args, **kwargs):
     # Get quote
-    quote = q.Quote.objects.get_for(request.user, pk=kwargs['pk'])
+    quote = get_quote(request, **kwargs)
 
     # Render HTML
     context = {'object': quote}

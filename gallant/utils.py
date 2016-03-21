@@ -109,8 +109,10 @@ def debug_processor(request):
 
 
 def url_to_pdf(url, session_key, header_url=None, footer_url=None): # pragma: no cover
-    args = ['wkhtmltopdf', '--lowquality', '-T', '65mm', '-B', '32mm', '--encoding', u'utf8', '--cookie', 'sessionid', session_key,
-            '--quiet', url]
+    args = ['wkhtmltopdf', '--lowquality', '-T', '65mm', '-B', '32mm', '--encoding', u'utf8', '--quiet']
+    if session_key:
+        args.extend(['--cookie', 'sessionid', session_key])
+    args.append(url)
 
     if header_url:
         args.extend(['--header-html', header_url])

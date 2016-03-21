@@ -31,7 +31,10 @@ urlpatterns = [
     url(r'^preview/header/(?P<pk>[0-9]+)?$', login_required(views.quote_header), name='quote_header'),
     url(r'^preview/footer/(?P<pk>[0-9]+)?$', login_required(views.quote_footer), name='quote_footer'),
     url(r'^download/(?P<pk>[0-9]+)?$', login_required(views.QuotePDF.as_view()), name='quote_pdf'),
-    url(r'^download/(?P<token>[a-f0-9]{32})?$', login_required(views.QuotePDF.as_view()), name='quote_pdf'),
+    url(r'^download/(?P<token>[a-f0-9]{32})?$', views.QuotePDF.as_view(), name='quote_pdf'),
+    url(r'^preview/(?P<token>[a-f0-9]{32})?$', views.quote_preview, name='quote_preview'),
+    url(r'^preview/header/(?P<token>[a-f0-9]{32})?$', views.quote_header, name='quote_header'),
+    url(r'^preview/footer/(?P<token>[a-f0-9]{32})?$', views.quote_footer, name='quote_footer'),
 
     url(r'^api/quote/payments/(?P<pk>[0-9]+)?$', login_required(views.QuotePaymentsAPI.as_view({'get': 'list'})),
         name='api_quote_payments'),

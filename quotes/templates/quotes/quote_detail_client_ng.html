@@ -50,7 +50,7 @@
 
 {% block sidebar %}
 
-    <a href="{% url 'quote_pdf' object.id %}">
+    <a href="{% url 'quote_pdf' object.token.hex %}">
         <button type="button" class="btn btn-default sidebar">
             {% trans "Download Quote" %}
         </button>
