@@ -138,6 +138,7 @@ app.directive('qtQuoteForm', ['Quote', '$uibModal', function (Quote, $uibModal) 
                         $scope.quote = quoteTemplate.quote;
                         $scope.quote.services = $filter('orderBy')($scope.quote.services, 'index');
                         $scope.quote.sections = $filter('orderBy')($scope.quote.sections, 'index');
+                        $scope.quote.client = parseInt($attrs.clientId);
                         $scope.tempStatus = $scope.quote.status;
                         if ($attrs.boolTemplate != "True") {
                             delete $scope.quote.id;
@@ -164,7 +165,7 @@ app.directive('qtQuoteForm', ['Quote', '$uibModal', function (Quote, $uibModal) 
                 } else {
                     $scope.quote = new Quote();
                     $scope.quote.user = $attrs.userId;
-                    $scope.quote.client = $attrs.clientId;
+                    $scope.quote.client = parseInt($attrs.clientId);
                     $scope.quote.projects = [];
                     $scope.quote.services = [];
                     $scope.quote.sections = [];
