@@ -154,13 +154,12 @@ app.directive('qtQuoteForm', ['Quote', '$uibModal', function (Quote, $uibModal) 
                             }
                         }
 
-
                         if ($scope.quoteTemplate.languages.length == 0) {
                             var lang = LANGUAGES.find(function (x) { return x.code == $scope.language;});
                             $scope.quoteTemplate.languages = [lang];
                         }
 
-
+                        $scope.quote.language = $scope.language;
                     });
                 } else {
                     $scope.quote = new Quote();
@@ -169,6 +168,7 @@ app.directive('qtQuoteForm', ['Quote', '$uibModal', function (Quote, $uibModal) 
                     $scope.quote.projects = [];
                     $scope.quote.services = [];
                     $scope.quote.sections = [];
+                    $scope.quote.language = $scope.language;
                     $scope.quote.status = 0;
                     $scope.quote.views = 0;
                     $scope.quote.session_duration = 0.0;
