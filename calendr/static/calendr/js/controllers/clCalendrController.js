@@ -242,6 +242,11 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
                     $scope.event.services.push(-1);
                     $scope.updateAvailableServices();
                 };
+
+                $scope.removeService = function (index) {
+                    $scope.event.services.splice(index, 1);
+                    $scope.updateAvailableServices();
+                };
             },
             resolve: {
                 gotoDate: function () {

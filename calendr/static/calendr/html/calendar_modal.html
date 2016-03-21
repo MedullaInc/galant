@@ -47,9 +47,14 @@
                     </select>
                 </div>
                 <div class="col-lg-1" ng-show="$last && event.services.length < project.services.length">
-                    <button id="service_add" type="button" class="service_add_button btn btn-default"
+                    <button id="service_add" type="button" class="service_button btn btn-default"
                             ng-click="addService()">
                         <span class="glyphicon glyphicon-plus-sign"/>
+                    </button>
+                </div>
+                <div class="col-lg-1" ng-show="!$last || event.services.length >= project.services.length">
+                    <button type="button" class="btn-default service_button" ng-click="removeService($index)">
+                        <span class="glyphicon glyphicon-trash"/>
                     </button>
                 </div>
             </div>
