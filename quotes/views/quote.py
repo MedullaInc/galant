@@ -101,7 +101,7 @@ class QuoteCreate(QuoteUpdate):
                 context.update({'language': lang, 'object': quote})
 
         if client_id:
-            client = get_one_or_404(request.user, 'view', g.Client, pk=client_id)
+            client = get_one_or_404(request.user, 'view_client', g.Client, pk=client_id)
             request.breadcrumbs([(_('Clients'), reverse('clients')),
                                  (client.name, reverse('client_detail', args=[client.id]))])
             context.update({'client': client})
