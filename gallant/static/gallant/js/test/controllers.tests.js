@@ -193,15 +193,21 @@ describe('glClientPaymentController', function () {
             $provide.factory('$attrs', function ($q) {
                 return {clientId: 0};
             });
+            $provide.factory('ClientQuote', function ($q) {
+                var ClientQuote = {};
+                ClientQuote.query = function (a) { return {$promise: $q.when([{}])}; };
+                return ClientQuote;
+            });
             $provide.factory('ClientProjects', function ($q) {
                 var ClientProjects = {};
                 ClientProjects.query = function (a) { return {$promise: $q.when([{id: 0, payments: {amount: 0, currency: 'MXN'}}])}; };
                 return ClientProjects;
             });
-            $provide.factory('PaymentAPI', function ($q) {
-                var PaymentAPI = {};
-                PaymentAPI.save = function (a) { return {}; };
-                return PaymentAPI;
+            $provide.factory('Payment', function ($q) {
+                var Payment = {};
+                Payment.save = function (a) { return {}; };
+                Payment.delete = function (a) { return {}; };
+                return Payment;
             });
             $provide.factory('$uibModalInstance', function ($q) {
                return { dismiss: function(a) {} };
@@ -285,7 +291,7 @@ describe('glClientPaymentController', function () {
         });
 
         it('can submit form', function () {
-            var PaymentAPI = $injector.get('PaymentAPI');
+            var Payment = $injector.get('Payment');
             $subScope.payment = {
                 project_id: 0,
                 amount: {amount: 1.0, currency: 'MXN'},
@@ -295,10 +301,10 @@ describe('glClientPaymentController', function () {
                 notes: []
             };
             $subScope.createPayment = $scope.createPayment;
-            spyOn(PaymentAPI, 'save').and.callThrough();
+            spyOn(Payment, 'save').and.callThrough();
             $subScope.submit();
             $scope.$digest();
-            expect(PaymentAPI.save).toHaveBeenCalled();
+            expect(Payment.save).toHaveBeenCalled();
         });
 
     });

@@ -1,6 +1,6 @@
 app = angular.module('gallant.controllers.glClientPaymentController', ['gallant.services.glServices']);
 
-app.controller('glClientPaymentController', ['$scope', '$attrs', '$uibModal', '$log', 'Quote', '$http', '$window', 'Payment', function ($scope, $attrs, $uibModal, $log, Quote, $http, $window, Payment) {
+app.controller('glClientPaymentController', ['$scope', '$attrs', '$uibModal', '$log', 'ClientQuote', '$http', '$window', 'Payment', function ($scope, $attrs, $uibModal, $log, ClientQuote, $http, $window, Payment) {
 
     Payment.query({client_id: $attrs.clientId}).$promise.then(function (response) {
         $scope.payments = response;
@@ -11,13 +11,13 @@ app.controller('glClientPaymentController', ['$scope', '$attrs', '$uibModal', '$
             templateUrl: '/static/gallant/html/gl_client_payment_modal.html',
             backdrop: true,
             windowClass: 'modal',
-            controller: function ($scope, $uibModalInstance, Quote, createPayment, Payment) {
+            controller: function ($scope, $uibModalInstance, ClientQuote, createPayment, Payment) {
 
                 // When form loads, it will load quotes
                 $scope.quotes = [];
 
                 $scope.getQuotes = function () {
-                    Quote.query({client_id: $attrs.clientId}).$promise.then(function (response) {
+                    ClientQuote.query({client_id: $attrs.clientId}).$promise.then(function (response) {
                         $scope.quotes = response;
                     });
                 };
