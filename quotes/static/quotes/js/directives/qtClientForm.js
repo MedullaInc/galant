@@ -24,12 +24,20 @@ app.directive('qtClient', ['Quote', function (Quote) {
 
                     if($attrs.idType == "token"){
                         $scope.quote.views  = $scope.quote.views+1;
-                        $scope.quote.status = "3";
+                        if (parseInt($scope.quote.status) < 3) {
+                            $scope.quote.status = "3";
+                        }
+
                         Quote.updateUser({id: token, user: $attrs.userId}, $scope.quote);
 
-                        $window.onbeforeunload  = function () { 
-                            $scope.quote.session_duration = ((new Date() - $scope.$parent.startTime)/1000 );
-                            Quote.updateUser({id: token, user: $attrs.userId}, $scope.quote);
+                        $window.onbeforeunload  = function () {
+                            Quote.updateUser({id: token, user: $attrs.userId}, {
+                                id: $scope.quote.id,
+                                views: $scope.quote.views,
+                                session_duration: ((new Date() - $scope.$parent.startTime)/1000 ),
+                                sections: $scope.quote.sections,
+                                services: $scope.quote.services,
+                            });
                         }
                     }
 

@@ -55,6 +55,25 @@
             {% trans "Download Quote" %}
         </button>
     </a>
+
+    {% if object.status != "5" and object.status != "6" %}
+        <form action="" method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="accept">
+            <button type="submit" class="btn btn-default sidebar">
+                {% trans "Accept Quote" %}
+            </button>
+        </form>
+
+        <form action="" method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="reject">
+            <button type="submit" class="btn btn-default sidebar">
+                {% trans "Reject Quote" %}
+            </button>
+        </form>
+    {% endif %}
+
 {% endblock %}
 
 {% block center_content %}

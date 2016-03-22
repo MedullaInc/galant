@@ -158,6 +158,18 @@ class QuoteDetail(View):
                                 template=template,
                                 context={'title': 'Quote', 'object': quote, 'id_type': id_type})
 
+    def post(self, request, **kwargs):
+        quote = get_object_or_404(q.Quote, **kwargs)
+        action = request.POST.get('action', None)
+        if action == 'accept':
+            quote.status = QuoteStatus.Accepted.value
+            quote.save()
+        elif action == 'reject':
+            quote.status = QuoteStatus.Rejected.value
+            quote.save()
+
+        return self.get(request, **kwargs)
+
 
 class QuoteSend(View):  # pragma: no cover
     def post(self, request, **kwargs):
@@ -249,7 +261,8 @@ class QuoteViewSet(UserModelViewSet):
         return super(QuoteViewSet, self).create(request, *args, **kwargs)
 
     def update(self, request, *args, **kwargs):
-        request.data['status'] = QuoteStatus.Not_Sent.value
+        if 'status' in request.data and int(request.data['status']) < QuoteStatus.Sent.value:
+            request.data['status'] = QuoteStatus.Not_Sent.value
         return super(QuoteViewSet, self).update(request, *args, **kwargs)
 
 
