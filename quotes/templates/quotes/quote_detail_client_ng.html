@@ -60,7 +60,7 @@
         <form action="" method="POST">
             {% csrf_token %}
             <input type="hidden" name="action" value="accept">
-            <button type="submit" class="btn btn-default sidebar">
+            <button id="quote_accept" type="submit" class="btn btn-default sidebar">
                 {% trans "Accept Quote" %}
             </button>
         </form>
@@ -68,7 +68,7 @@
         <form action="" method="POST">
             {% csrf_token %}
             <input type="hidden" name="action" value="reject">
-            <button type="submit" class="btn btn-default sidebar">
+            <button id="quote_reject" type="submit" class="btn btn-default sidebar">
                 {% trans "Reject Quote" %}
             </button>
         </form>
