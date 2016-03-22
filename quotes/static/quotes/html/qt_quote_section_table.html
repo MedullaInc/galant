@@ -31,16 +31,7 @@
                                editable-textarea="section.text[language]" e-name="text" e-form="quoteform" e-required
                                e-placeholder="Text" onbeforesave="validate.nonEmpty($data)">
 
-                            <pre ng-init="limit = 100; moreShown = false" ng-hide="quoteform.$visible">
-                                {{ section.text[language] | cut:true:limit:'...'}}
-                                <br/>
-                                <a ng-show="section.text[language].length > limit"
-                                   href
-                                   ng-click="showSection(section);limit=section.text[language].length; moreShown = true">
-                                    More
-                                </a>
-                                <a ng-show="moreShown" ng-click="limit=100; moreShown = false"> Less </a>
-                            </pre>
+                            <pre ng-init="limit = 100; moreShown = false" ng-hide="quoteform.$visible">{{ section.text[language] | cut:true:limit:'...'}}<br/><br/><a ng-show="section.text[language].length > limit" href ng-click="showSection(section);limit=section.text[language].length; moreShown = true">More</a><a href ng-show="moreShown" ng-click="limit=100; moreShown = false"> Less </a></pre>
 
                             </p>
 
@@ -51,7 +42,8 @@
                                     as-sortable-item-handle>
                                 <span class="glyphicon glyphicon-move"/>
                             </button>
-                            <button id="section{{ $index }}_delete" type="button" class="btn btn-default delete_button" aria-label="Delete"
+                            <button id="section
+                                    {{ $index }}_delete" type="button" class="btn btn-default delete_button" aria-label="Delete"
                                     ng-click="removeSection($index)">
                                 <span class="glyphicon glyphicon-trash"/>
                             </button>

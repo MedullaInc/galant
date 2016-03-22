@@ -1,3 +1,4 @@
+import datetime
 from django.http.response import HttpResponse, JsonResponse
 from django.views.generic import View
 from django.template.response import TemplateResponse
@@ -107,7 +108,7 @@ class QuoteCreate(QuoteUpdate):
             context.update({'client': client})
 
         request.breadcrumbs([(_('Quotes'), reverse('quotes')),
-                                 (_('Add'), request.path_info)])
+                             (_('Add'), request.path_info)])
 
         return TemplateResponse(request=self.request,
                                 template="quotes/quote_form_ng.html",
@@ -177,11 +178,18 @@ class QuoteSend(View):  # pragma: no cover
         quote.status = q.QuoteStatus.Sent.value
         quote.save()
 
+        # Send email
         _send_quote_email(quote.client.email, request.user.name,
                           (request.build_absolute_uri(
                               reverse('quote_detail', args=[quote.token.hex]))),
                           get_site_from_host(request))
         messages.success(request, 'Quote link sent to %s.' % quote.client.email)
+
+        # Generate new note
+        note = g.Note.objects.create(text="Quote '%s' sent to client on %s" % (
+            quote.name, str(datetime.datetime.now().strftime('%Y-%m-%d %H:%M'))), user=self.request.user)
+        quote.client.notes.add(note)
+
         return HttpResponseRedirect(reverse('quote_detail', args=[quote.id]))
 
 

@@ -125,7 +125,6 @@ class QuotesSignedInTest(browser.SignedInTest):
         response = self.client.get(self.live_server_url + reverse('quote_detail', args=[q.id]))
         self.assertEqual(response.status_code, 404)
 
-    @skip("TODO")
     def test_email_quote(self):
         b = browser.instance()
         q = get_blank_quote_autofixture(self.user)
@@ -136,6 +135,10 @@ class QuotesSignedInTest(browser.SignedInTest):
         q.refresh_from_db()
         self.assertEqual(q.status, '2')
 
+        b.get(self.live_server_url + reverse('client_detail', args=[q.client_id]))
+        self.assertTrue(b.find_element_by_id('note_%s' % q.client.notes.all_for(self.user).reverse()[0].id))
+
+    @skip("TODO")
     def test_add_sections(self):
         b = browser.instance()
         q = get_blank_quote_autofixture(self.user)
