@@ -259,11 +259,12 @@ class QuoteTest(test.TransactionTestCase):
                                          field_values={'user': user, 'due': timezone.now() + timedelta(days=1),
                                                        'paid_on': None})
 
-        serialized_payment = {"project_id": project.id, "amount": {"currency": "USD", "amount": 100.0},
+        serialized_payment = {"project_id": project.id, "quote_id": quote.id, "amount": {"currency": "USD", "amount": 100.0},
                               "description": p.description,
                               "due": p.due, "paid_on": p.paid_on, "notes": []}
 
         request = factory.post('/en/quote/api/payment', data=serialized_payment, format='json')
+
         force_authenticate(request, user=user)
 
         response = QuotePaymentsAPI.as_view({'post': 'create'})(request)

@@ -26,7 +26,7 @@ app.controller('glClientPaymentController', ['$scope', '$attrs', '$uibModal', '$
                     return quote.services.length > 0 && quote.status == 5;
                 };
                 // Load default payment formant & due date
-                if (payment_id) {
+                if (typeof payment_id !== 'undefined') {
                     Payment.get({id: payment_id}).$promise.then(function (response) {
                         $scope.payment = response;
                     });

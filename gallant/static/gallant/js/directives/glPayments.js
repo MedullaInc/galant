@@ -2,7 +2,7 @@ app = angular.module('gallant.directives.glPayments', [
     'gallant.services.glServices',
 ]);
 
-app.directive('glPayments', ['Payment', function (Payment) {
+app.directive('glPayments', ['$window','Payment', function ($window,Payment) {
     return {
         restrict: 'A',
         scope: {
@@ -15,7 +15,7 @@ app.directive('glPayments', ['Payment', function (Payment) {
         link: function ($scope) {
 
             $scope.deletePayment = function(payment) {
-                if (confirm('Are you sure?')) {
+                if ($window.confirm('Are you sure?')) {
                     Payment.delete({id: payment.id});
                     $scope.payments.splice($scope.payments.indexOf(payment),1);
                 }
