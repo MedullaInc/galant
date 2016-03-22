@@ -1,5 +1,6 @@
 import datetime
 
+from django.core.urlresolvers import reverse
 from django.db.models.query import Prefetch
 from django.utils import timezone
 from moneyed.classes import Money
@@ -12,6 +13,7 @@ class ClientSerializer(serializers.ModelSerializer):
     contact_info = serializers.PrimaryKeyRelatedField(read_only=True)
     money_owed = serializers.SerializerMethodField()
     status = serializers.SerializerMethodField()
+    link = serializers.SerializerMethodField()
 
     def get_money_owed(self, client):
         amt = Money(0.00, client.currency)
@@ -35,6 +37,9 @@ class ClientSerializer(serializers.ModelSerializer):
 
         return status
 
+    def get_link(self, client):
+        return reverse('client_detail', args=[client.id])
+
     def get_fields(self, *args, **kwargs):
         fields = super(ClientSerializer, self).get_fields(*args, **kwargs)
         fields['notes'] = serializers.PrimaryKeyRelatedField(
@@ -44,5 +49,5 @@ class ClientSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = g.Client
-        fields = ('id', 'user', 'name', 'email', 'contact_info', 'type', 'size',
+        fields = ('id', 'user', 'name', 'email', 'contact_info', 'type', 'size', 'link',
                   'status', 'language', 'currency', 'notes', 'money_owed', 'last_contacted')

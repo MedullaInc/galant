@@ -138,6 +138,7 @@ app.directive('qtQuoteForm', ['Quote', '$uibModal', function (Quote, $uibModal) 
                         $scope.quote = quoteTemplate.quote;
                         $scope.quote.services = $filter('orderBy')($scope.quote.services, 'index');
                         $scope.quote.sections = $filter('orderBy')($scope.quote.sections, 'index');
+                        $scope.quote.client = parseInt($attrs.clientId);
                         $scope.tempStatus = $scope.quote.status;
                         if ($attrs.boolTemplate != "True") {
                             delete $scope.quote.id;
@@ -154,21 +155,21 @@ app.directive('qtQuoteForm', ['Quote', '$uibModal', function (Quote, $uibModal) 
                             }
                         }
 
-
                         if ($scope.quoteTemplate.languages.length == 0) {
                             var lang = LANGUAGES.find(function (x) { return x.code == $scope.language;});
                             $scope.quoteTemplate.languages = [lang];
                         }
 
-
+                        $scope.quote.language = $scope.language;
                     });
                 } else {
                     $scope.quote = new Quote();
                     $scope.quote.user = $attrs.userId;
-                    $scope.quote.client = $attrs.clientId;
+                    $scope.quote.client = parseInt($attrs.clientId);
                     $scope.quote.projects = [];
                     $scope.quote.services = [];
                     $scope.quote.sections = [];
+                    $scope.quote.language = $scope.language;
                     $scope.quote.status = 0;
                     $scope.quote.views = 0;
                     $scope.quote.session_duration = 0.0;

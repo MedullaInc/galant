@@ -89,6 +89,7 @@ class QuoteCreate(QuoteUpdate):
     def get(self, request):
         context = {'title': 'Add Quote'}
         template_id = request.GET.get('template_id', None)
+        client_id = request.GET.get('client_id', None)
         lang = request.GET.get('lang', None)
         if template_id is not None:
             template = get_one_or_404(request.user, 'view_quotetemplate', q.QuoteTemplate, pk=template_id)
@@ -99,8 +100,14 @@ class QuoteCreate(QuoteUpdate):
                 quote.language = lang
                 context.update({'language': lang, 'object': quote})
 
+        if client_id:
+            client = get_one_or_404(request.user, 'view_client', g.Client, pk=client_id)
+            request.breadcrumbs([(_('Clients'), reverse('clients')),
+                                 (client.name, reverse('client_detail', args=[client.id]))])
+            context.update({'client': client})
+
         request.breadcrumbs([(_('Quotes'), reverse('quotes')),
-                             (_('Add'), request.path_info)])
+                                 (_('Add'), request.path_info)])
 
         return TemplateResponse(request=self.request,
                                 template="quotes/quote_form_ng.html",
@@ -143,11 +150,25 @@ class QuoteDetail(View):
                     template = "quotes/quote_detail_client_ng.html"
                     quote = get_object_or_404(q.Quote, **{key: kwargs[key]})
 
-        request.breadcrumbs([(_('Quotes'), reverse('quotes')),
-                             (_('Quote: %s' % quote.name), request.path_info)])
+        if quote.client:
+            request.breadcrumbs([(_('Clients'), reverse('clients')),
+                                 (quote.client.name, reverse('client_detail', args=[quote.client.id]))])
+        request.breadcrumbs(_('Quote: %s' % quote.name), request.path_info)
         return TemplateResponse(request=request,
                                 template=template,
                                 context={'title': 'Quote', 'object': quote, 'id_type': id_type})
+
+    def post(self, request, **kwargs):
+        quote = get_object_or_404(q.Quote, **kwargs)
+        action = request.POST.get('action', None)
+        if action == 'accept':
+            quote.status = QuoteStatus.Accepted.value
+            quote.save()
+        elif action == 'reject':
+            quote.status = QuoteStatus.Rejected.value
+            quote.save()
+
+        return self.get(request, **kwargs)
 
 
 class QuoteSend(View):  # pragma: no cover
@@ -245,7 +266,8 @@ class QuoteViewSet(UserModelViewSet):
         return super(QuoteViewSet, self).create(request, *args, **kwargs)
 
     def update(self, request, *args, **kwargs):
-        request.data['status'] = QuoteStatus.Not_Sent.value
+        if 'status' in request.data and int(request.data['status']) < QuoteStatus.Sent.value:
+            request.data['status'] = QuoteStatus.Not_Sent.value
         return super(QuoteViewSet, self).update(request, *args, **kwargs)
 
 

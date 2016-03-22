@@ -20,11 +20,19 @@ describe('qtForm', function () {
         module('quotes.services.qtServices', function ($provide) { 
             $provide.factory('Quote', function ($q) {
                 var Quote = function () { return {id: 0}; };
-                Quote.get = function () { return {$promise: $q.when({id: 0, sections: [{}], services: [{cost: [{amount: 0, currency:"USD"}]}]})}; };
-                Quote.getUser = function () { return {$promise: $q.when({id: 0, sections: [{}], services: [{cost: [{amount: 0, currency:"USD"}]}]})}; };
-                Quote.updateUser = function () { return {$promise: $q.when({id: 0, sections: [{}], services: [{cost: [{amount: 0, currency:"USD"}]}]})}; };
+                Quote.get = function () { return {$promise: $q.when({
+                    id: 0, sections: [{}], services: [{cost: [{amount: 0, currency:"USD"}]}]
+                })}; };
+                Quote.getUser = function () { return {$promise: $q.when({
+                    id: 0, sections: [{}], services: [{cost: [{amount: 0, currency:"USD"}]}], status: "0",
+                })}; };
+                Quote.updateUser = function () { return {$promise: $q.when({
+                    id: 0, sections: [{}], services: [{cost: [{amount: 0, currency:"USD"}]}]
+                })}; };
                 Quote.update = function () { return {$promise: $q.when({id: 0})}; };
-                Quote.fields = function () { return {$promise: $q.when({status: ['status', 'status'], language: ['language', 'language']})}; };
+                Quote.fields = function () { return {$promise: $q.when({
+                    status: ['status', 'status'], language: ['language', 'language']
+                })}; };
                 return Quote;
             });
 

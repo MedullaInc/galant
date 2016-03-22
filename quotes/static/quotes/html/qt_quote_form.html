@@ -18,7 +18,7 @@
         <p e-class="form-control" e-name="client" class="data" editable-select="quote.client"
            e-form="quoteform" editable-placeholder="Choose client..." onbeforesave="validate.selectedIf($data, boolTemplate == 'False')"
            e-ng-options="s.id as s.name for s in clients"><span class="detail_title">Client</span>
-            {{ (clients | filter:{id: quote.client})[0].name }}
+            <a href="{{ (clients | filter:{id: quote.client})[0].link }}">{{ (clients | filter:{id: quote.client})[0].name }}</a>
             <br/><br/>
         </p>
     </div>

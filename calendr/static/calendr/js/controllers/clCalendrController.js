@@ -159,9 +159,36 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
                 $scope.createTask = createTask;
                 $scope.gotoDate = gotoDate;
 
-                var project = $scope.projects.find(function (p) { return p.id == $scope.event.projectId});
-                if (project) {
-                    $scope.services = project.services;
+                $scope.project = $scope.projects.find(function (p) { return p.id == $scope.event.projectId});
+
+                /**
+                 * availableServices is an array containing available choices for each service select. When a service
+                 * is selected, it's removed from the other dropdowns via this function.
+                 */
+                $scope.updateAvailableServices = function () {
+                    if ($scope.event.services.length) {
+                        $scope.availableServices = [];
+                        angular.forEach($scope.event.services, function () {
+                            $scope.availableServices.push($scope.project.services.slice());
+                        });
+                        angular.forEach($scope.event.services, function (s, si) {
+                            angular.forEach($scope.availableServices, function (arr, i) {
+                                if (i != si) {
+                                    var idx = $scope.availableServices[i].findIndex(function (element) {
+                                        return element.id == s;
+                                    });
+                                    if (idx >= 0)
+                                        $scope.availableServices[i].splice(idx, 1);
+                                }
+                            });
+                        });
+                    } else {
+                        $scope.availableServices = [$scope.project.services.slice()];
+                    }
+                };
+
+                if ($scope.project) {
+                    $scope.updateAvailableServices();
                 }
 
 
@@ -189,9 +216,11 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
                     }
                     $scope.gotoDate(e.start);
                 };
+
                 $scope.cancel = function () {
                     $uibModalInstance.dismiss('cancel');
                 };
+
                 $scope.deleteTask = function (event) {
                     if (confirm('Are you sure you want to permanently delete this task?')) {
                         Task.delete({id: event.id}).$promise.then(function (response) {
@@ -202,12 +231,21 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
                     }
 
                 };
+
                 $scope.projectChanged = function (projectId) {
-                    var project = $scope.projects.find(function (p) { return p.id == projectId});
-                    $scope.services = project.services;
+                    $scope.project = $scope.projects.find(function (p) { return p.id == projectId});
+                    $scope.availableServices = [$scope.project.services];
+                    $scope.event.services = [];
                 };
+
                 $scope.addService = function () {
                     $scope.event.services.push(-1);
+                    $scope.updateAvailableServices();
+                };
+
+                $scope.removeService = function (index) {
+                    $scope.event.services.splice(index, 1);
+                    $scope.updateAvailableServices();
                 };
             },
             resolve: {
