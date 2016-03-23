@@ -80,16 +80,7 @@
                             <p e-class="form-control" editable-textarea="service.description[language]"
                                e-id="description_{{$index}}" e-form="quoteform" e-required
                                e-placeholder="Description">
-                                <pre ng-init="moreShown = false; limit = 100" ng-hide="quoteform.$visible">
-                                    {{ service.description[language] | cut:true:limit:'...'}}
-                                    <br/>
-                                    <a ng-show="service.description[language].length > limit"
-                                       href
-                                       ng-click="showService(service); moreShown = true; limit=service.description[language].length;">
-                                        More
-                                    </a>
-                                    <a ng-show="moreShown" ng-click="moreShown = false; limit=100"> Less </a>
-                                </pre>
+                                <pre ng-init="moreShown = false; limit = 100" ng-hide="quoteform.$visible">{{ service.description[language] | cut:true:limit:'...'}}<br/><br/><a ng-show="service.description[language].length > limit" href ng-click="showService(service); moreShown = true; limit=service.description[language].length;">More</a><a href ng-show="moreShown" ng-click="moreShown = false; limit=100"> Less </a></pre>
                             </p>
                         </div>
                     </div>

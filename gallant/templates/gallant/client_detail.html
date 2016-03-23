@@ -131,7 +131,21 @@
     {% block main_client_data %}
         <div class="row">
         <div class="col-lg-6">
-            <div class="enclosed chart_box">
+            <div class="enclosed welcome_box hidden">
+                <h2 class="chart_title">{% trans 'Send a Brief' %}</h2>
+                <p>
+                    Briefs help you better understand client needs. You can customize briefs with questions and save them as templates. Once a brief is sent, we will notify your client and let you know when they answer it.
+                </p>
+                <br/>
+                <p>
+                    <a href="{% url 'briefs' %}?client_id={{ object.id }}">
+                        <button type="button" class="btn btn-default sidebar">
+                            {% trans "Client Briefs" %}
+                        </button>
+                    </a>
+                </p>
+            </div>
+            <div class="enclosed chart_box hidden">
                 <h2 class="chart_title">{% trans 'Work Summary' %}</h2>
 
                 <div class="chart">
@@ -147,7 +161,21 @@
         </div>
 
         <div class="col-lg-6">
-            <div class="enclosed chart_box">
+            <div class="enclosed welcome_box hidden">
+                <h2 class="chart_title">{% trans 'Send a Quote' %}</h2>
+                <p>
+                    We'll help you build a custom quote for your client. Once your quote is sent, we'll let you know when they access it, and you'll be able to edit it to suit both your client and your needs.
+                </p>
+                <br/>
+                <p>
+                    <a href="{% url 'quotes' %}?client_id={{ object.id }}">
+                        <button type="button" class="btn btn-default sidebar">
+                            {% trans "Client Quotes" %}
+                        </button>
+                    </a>
+                </p>
+            </div>
+            <div class="enclosed chart_box hidden">
                 <h2 class="chart_title">{% trans 'Money Summary' %}</h2>
 
                 <div class="chart">
@@ -426,32 +454,38 @@
 
         // Examples based on:
         // http://www.chartjs.org/docs/#doughnut-pie-chart-example-usage
-        var work = $("#work_chart").get(0).getContext("2d");
-        var work_pie_chart = new Chart(work).Doughnut(work_data, {animateScale: false, animateRotate: true});
 
-        var money = $("#money_chart").get(0).getContext("2d");
-        var money_pie_chart = new Chart(money).Doughnut(money_data, {animateRotate: false, animateScale: true});
+        if (work_data[0].value == 0 && work_data[1].value == 0 && work_data[2].value == 0 && work_data[3].value == 0) {
+            $(".enclosed.welcome_box").removeClass('hidden');
+        } else {
+            $(".enclosed.chart_box").removeClass('hidden');
 
-        work_data.forEach(function (data) {
-            $('#work_chart_labels').append('<p>' + data.value + ' ' + data.label + '</p>');
-        });
+            var work = $("#work_chart").get(0).getContext("2d");
+            var work_pie_chart = new Chart(work).Doughnut(work_data, {animateScale: false, animateRotate: true});
 
-        money_data.forEach(function (data) {
-            $('#money_chart_labels').append('<p>$' + data.value + ' ' + data.label + '</p>');
-        });
+            var money = $("#money_chart").get(0).getContext("2d");
+            var money_pie_chart = new Chart(money).Doughnut(money_data, {animateRotate: false, animateScale: true});
 
-        var highestBox = 0;
+            work_data.forEach(function (data) {
+                $('#work_chart_labels').append('<p>' + data.value + ' ' + data.label + '</p>');
+            });
 
-        $('.chart_box').each(function () {
-            if ($(this).height() > highestBox) {
-                highestBox = $(this).height() + 60;
-            }
-        });
+            money_data.forEach(function (data) {
+                $('#money_chart_labels').append('<p>$' + data.value + ' ' + data.label + '</p>');
+            });
 
-        $('.chart_box').each(function () {
-            $(this).css({'height': highestBox});
-        });
+            var highestBox = 0;
 
+            $('.chart_box').each(function () {
+                if ($(this).height() > highestBox) {
+                    highestBox = $(this).height() + 60;
+                }
+            });
+
+            $('.chart_box').each(function () {
+                $(this).css({'height': highestBox});
+            });
+        }
 
     </script>
 {% endblock %}

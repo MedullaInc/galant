@@ -1,3 +1,4 @@
+import datetime
 from django.http.response import HttpResponse, JsonResponse
 from django.views.generic import View
 from django.template.response import TemplateResponse
@@ -108,7 +109,7 @@ class QuoteCreate(QuoteUpdate):
             context.update({'client': client})
 
         request.breadcrumbs([(_('Quotes'), reverse('quotes')),
-                                 (_('Add'), request.path_info)])
+                             (_('Add'), request.path_info)])
 
         return TemplateResponse(request=self.request,
                                 template="quotes/quote_form_ng.html",
@@ -178,11 +179,18 @@ class QuoteSend(View):  # pragma: no cover
         quote.status = q.QuoteStatus.Sent.value
         quote.save()
 
+        # Send email
         _send_quote_email(quote.client.email, request.user.name,
                           (request.build_absolute_uri(
                               reverse('quote_detail', args=[quote.token.hex]))),
                           get_site_from_host(request))
         messages.success(request, 'Quote link sent to %s.' % quote.client.email)
+
+        # Generate new note
+        note = g.Note.objects.create(text="Quote '%s' sent to client on %s" % (
+            quote.name, str(datetime.datetime.now().strftime('%Y-%m-%d %H:%M'))), user=self.request.user)
+        quote.client.notes.add(note)
+
         return HttpResponseRedirect(reverse('quote_detail', args=[quote.id]))
 
 
@@ -253,8 +261,12 @@ class QuoteViewSet(UserModelViewSet):
     ]
 
     def get_queryset(self):
+        client_id = self.request.query_params.get('client_id', None)
         clients_only = self.request.query_params.get('clients_only', None)
-        if clients_only is not None:
+
+        if client_id is not None:
+            return self.model.objects.all_for(self.request.user).filter(client_id=client_id)
+        elif clients_only is not None:
             return self.model.objects.all_for(self.request.user).exclude(client__isnull=clients_only)
         else:
             return self.model.objects.all_for(self.request.user)
@@ -280,6 +292,8 @@ class QuotePaymentsAPI(ModelViewSet):
         if 'pk' in self.kwargs:
             # Return specific payment
             return self.model.objects.all_for(self.request.user).filter(id=self.kwargs['pk'])
+        elif self.request.query_params.get('client_id', None) is not None:
+            return g.Payment.objects.filter(quote__client_id=self.request.query_params.get('client_id', None))
         else:
             # TODO: Return 404 if no pk is given?
             return self.model.objects.all_for(self.request.user)

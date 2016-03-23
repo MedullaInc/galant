@@ -106,3 +106,61 @@ describe('glAlerts', function () {
         });
     });
 });
+
+describe('glPayments', function() {
+    var $rootScope;
+    var $compile;
+    var $scope;
+
+    beforeEach(function () {
+        module('gallant.services.glServices', function($provide) {
+
+            $provide.factory('Payment', function ($q) {
+                var Payment = {};
+                Payment.delete = function (a) { return {}; };
+                return Payment;
+            });
+
+            $provide.factory('$window', function () {
+                return {
+                    confirm: function (m) {
+                        return true;
+                    }
+                };
+            });
+
+        });
+
+        module('gallant.directives.glPayments');
+        module('staticNgTemplates');
+
+        inject(function (_$rootScope_, _$compile_) {
+            // The injector unwraps the underscores (_) from around the parameter names when matching
+            $rootScope = _$rootScope_;
+            $compile = _$compile_;
+        });
+
+        $scope = $rootScope.$new();
+    });
+
+    describe('glPayments', function() {
+
+        var element;
+
+        beforeEach(function() {
+            $scope.payments = [{id: 0}];
+            element = $compile('<div gl-payments payments="payments"></div>')($scope);
+            $scope.$digest();
+        });
+
+        it('compiles', function () {
+            expect(element.html().substring(0, 3)).toEqual('<!-');
+        });
+
+        it('deletes a payment', function () {
+            element.isolateScope().deletePayment($scope.payments[0]);
+        });
+
+    });
+
+});

@@ -135,6 +135,8 @@ class QuotesSignedInTest(browser.SignedInTest):
         self.assertTrue(u'Quote link sent to %s.' % q.client.email in success_message.text)
         q.refresh_from_db()
         self.assertEqual(q.status, '2')
+        b.get(self.live_server_url + reverse('client_detail', args=[q.client_id]))
+        self.assertTrue(b.find_element_by_id('note_%s' % q.client.notes.all_for(self.user).reverse()[0].id))
 
     def test_add_sections(self):
         b = browser.instance()

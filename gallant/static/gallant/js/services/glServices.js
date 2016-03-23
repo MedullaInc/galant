@@ -11,7 +11,12 @@ app.factory('Client', function ($resource) {
 });
 
 /* istanbul ignore next */
-app.factory('PaymentAPI', function ($resource) {
+app.factory('ClientQuote', function ($resource) {
+    return $resource('/en/quote/api/quote/:id');
+});
+
+/* istanbul ignore next */
+app.factory('Payment', function ($resource) {
     return $resource('/en/quote/api/payment/:id');
 });
 

@@ -185,23 +185,21 @@ describe('glClientPaymentController', function () {
     beforeEach(function () {
         angular.module('gallant.services.glServices', []);
         module('gallant.services.glServices', function ($provide) {
-            $provide.factory('Payment', function ($q) {
-                var Payment = jasmine.createSpyObj('Payment', ['save']);
-                Payment.update.and.returnValue({$promise: $q.when({})});
-                return Payment;
-            });
             $provide.factory('$attrs', function ($q) {
                 return {clientId: 0};
             });
-            $provide.factory('ClientProjects', function ($q) {
-                var ClientProjects = {};
-                ClientProjects.query = function (a) { return {$promise: $q.when([{id: 0, payments: {amount: 0, currency: 'MXN'}}])}; };
-                return ClientProjects;
+            $provide.factory('ClientQuote', function ($q) {
+                var ClientQuote = {};
+                ClientQuote.query = function (a) { return {$promise: $q.when([{id: 0, services: [{ cost: {amount: 0, currency: 'MXN'} }] }])}; };
+                return ClientQuote;
             });
-            $provide.factory('PaymentAPI', function ($q) {
-                var PaymentAPI = {};
-                PaymentAPI.save = function (a) { return {}; };
-                return PaymentAPI;
+            $provide.factory('Payment', function ($q) {
+                var Payment = {};
+                Payment.query = function (a) { return {$promise: $q.when([{}])}; };
+                Payment.get = function (a) { return {$promise: $q.when({id: 0, amount: {currency: '', amount: null}})}; };
+                Payment.save = function (a) { return {}; };
+                Payment.delete = function (a) { return {}; };
+                return Payment;
             });
             $provide.factory('$uibModalInstance', function ($q) {
                return { dismiss: function(a) {} };
@@ -232,8 +230,11 @@ describe('glClientPaymentController', function () {
 
     it('opens modal', function () {
         var $uibModal = $injector.get('$uibModal');
+        var $subScope = $scope.$new();
         spyOn($uibModal, 'open').and.callThrough();
         $scope.openEditModal();
+        $controller($uibModal.args.controller, {$scope: $subScope});
+        $scope.$digest();
         expect($uibModal.open).toHaveBeenCalled();
     });
 
@@ -243,13 +244,18 @@ describe('glClientPaymentController', function () {
         beforeEach(function() {
             var $uibModal = $injector.get('$uibModal');
             $subScope = $scope.$new();
-            $scope.openEditModal();
+            $scope.openEditModal(0);
             $controller($uibModal.args.controller, {$scope: $subScope});
             $scope.$digest();
         });
 
-        it('loads projects', function() {
-            expect($subScope.projects.length).toBe(1);
+        it('loads quotes', function() {
+            expect($subScope.quotes.length).toBe(1);
+        });
+
+        it('can validate quote has services', function () {
+            var service_length = $subScope.hasServices({services: [{},{}], status: 5});
+            expect(service_length).toBe(true);
         });
 
         it('can run updateCurrency', function() {
@@ -285,9 +291,9 @@ describe('glClientPaymentController', function () {
         });
 
         it('can submit form', function () {
-            var PaymentAPI = $injector.get('PaymentAPI');
+            var Payment = $injector.get('Payment');
             $subScope.payment = {
-                project_id: 0,
+                quote_id: 0,
                 amount: {amount: 1.0, currency: 'MXN'},
                 description: 'Payment',
                 due: new Date(),
@@ -295,10 +301,10 @@ describe('glClientPaymentController', function () {
                 notes: []
             };
             $subScope.createPayment = $scope.createPayment;
-            spyOn(PaymentAPI, 'save').and.callThrough();
+            spyOn(Payment, 'save').and.callThrough();
             $subScope.submit();
             $scope.$digest();
-            expect(PaymentAPI.save).toHaveBeenCalled();
+            expect(Payment.save).toHaveBeenCalled();
         });
 
     });

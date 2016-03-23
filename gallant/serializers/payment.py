@@ -4,15 +4,23 @@ from gallant.utils import get_one_or_404
 from moneyed import Money
 from rest_framework import serializers
 from gallant import models as g
+from quotes import models as q
 from gallant.serializers.misc import MoneyField
 
 
 class PaymentSerializer(serializers.ModelSerializer):
     amount = MoneyField()
+    quote = serializers.SerializerMethodField()
+
+    def get_quote(self, payment):
+        if len(payment.quote_set.all_for(self.context['request'].user)) > 0:
+            return payment.quote_set.all_for(self.context['request'].user)[0].id
+        else:
+            return None
 
     class Meta:
         model = g.Payment
-        fields = ('id', 'due', 'paid_on', 'amount', 'description', 'notes', 'user')
+        fields = ('id', 'due', 'paid_on', 'amount', 'description', 'notes', 'user', 'quote')
         extra_kwargs = {
             'id': {'read_only': False, 'required': False},
             'user': {'required': False},
@@ -79,9 +87,8 @@ class PaymentSerializer(serializers.ModelSerializer):
         instance = super(PaymentSerializer, self).create(validated_data)
 
         # Link payment to quote
-        if self.context['request'].data['project_id']:
-            project = get_one_or_404(user, 'change_project', g.Project, id=self.context['request'].data['project_id'])
-            quote = project.quote_set.all_for(user)[0]
+        if self.context['request'].data['quote_id']:
+            quote = get_one_or_404(user, 'change_quote', q.Quote, id=self.context['request'].data['quote_id'])
             quote.payments.add(instance)
             quote.save()
 

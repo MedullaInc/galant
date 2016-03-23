@@ -13,15 +13,15 @@ app.directive('qtSectionTable', ['Section', function (Section) {
             ],
             templateUrl: '/static/quotes/html/qt_quote_section_table.html',
             link: function ($scope) {
-                
-                
-                
+
+
+
                 $scope.showSection = function (section){
                     if($scope.idType == "token"){
                         id = section.id;
                         section.views = section.views+1;
-                        Section.update({id: id, user: $scope.quote.user}, section);    
-                    }                   
+                        Section.update({id: id, user: $scope.quote.user}, section);
+                    }
                 }
 
                 $scope.removeSection = function (index) {
