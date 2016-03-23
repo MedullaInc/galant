@@ -36,3 +36,13 @@ class ServiceSerializer(serializers.ModelSerializer):
                     ret[key] = ''
 
         return ret
+
+
+# Special serializer for client update section view count without logging in
+class ServiceClientSerializer(ServiceSerializer):
+    class Meta:
+        model = Service
+        fields = ('id', 'views')
+        extra_kwargs = {
+            'id': {'read_only': False, 'required': True},
+        }

@@ -20,8 +20,9 @@ from django.core.mail import send_mail
 from uuid import uuid4
 
 from quotes.models.quote import QuoteStatus
-from rest_framework.viewsets import ModelViewSet
-from rest_framework.permissions import IsAuthenticatedOrReadOnly, AllowAny
+from rest_framework.viewsets import ModelViewSet, GenericViewSet
+from rest_framework.permissions import AllowAny
+from rest_framework import mixins
 from rest_framework.decorators import permission_classes
 
 
@@ -218,19 +219,30 @@ class SectionViewSet(ModelViewSet):
             return self.model.objects.all_for(self.request.user)
 
 
-@permission_classes((AllowAny,))
-class QuoteClientViewSet(ModelViewSet):
+class QuoteClientUpdate(mixins.UpdateModelMixin,
+                         GenericViewSet):
     model = q.Quote
-    serializer_class = serializers.QuoteSerializer
+    serializer_class = serializers.QuoteClientSerializer
     permission_classes = [
-        GallantViewSetPermissions
+        AllowAny
     ]
     lookup_field = 'token'
 
     def get_queryset(self):
-        user = get_object_or_404(GallantUser, pk=self.request.query_params.get('user', None))
-        self.request.user = user
-        return self.model.objects.all_for(user)
+        return self.model.objects.filter()
+
+
+class QuoteClientDetail(mixins.RetrieveModelMixin,
+                         GenericViewSet):
+    model = q.Quote
+    serializer_class = serializers.QuoteSerializer
+    permission_classes = [
+        AllowAny
+    ]
+    lookup_field = 'token'
+
+    def get_queryset(self):
+        return self.model.objects.filter()
 
 
 class QuoteViewSet(UserModelViewSet):
@@ -239,22 +251,13 @@ class QuoteViewSet(UserModelViewSet):
     permission_classes = [
         GallantViewSetPermissions
     ]
-    lookup_field = 'pk'
-    lookup_fields = ['token', 'pk']
 
     def get_queryset(self):
-        user = self.request.query_params.get('user', None)
-        if user:
-            user = get_object_or_404(GallantUser, pk=user)
-        else:
-            user = self.request.user
-
-        self.request.user = user
         clients_only = self.request.query_params.get('clients_only', None)
         if clients_only is not None:
-            return self.model.objects.all_for(user).exclude(client__isnull=clients_only)
+            return self.model.objects.all_for(self.request.user).exclude(client__isnull=clients_only)
         else:
-            return self.model.objects.all_for(user)
+            return self.model.objects.all_for(self.request.user)
 
     def create(self, request, *args, **kwargs):
         request.data['status'] = QuoteStatus.Not_Sent.value

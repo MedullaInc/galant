@@ -309,6 +309,36 @@ class QuoteTest(test.TransactionTestCase):
         quote.refresh_from_db()
         self.assertEqual(quote.projects.count(), 0)
 
+    def test_access_api_quote_client(self):
+        quote = self.quote
+        request = APIRequestFactory().get("")
+        quote_detail = views.QuoteClientDetail.as_view({'get': 'retrieve'})
+        response = quote_detail(request, token=quote.token)
+        self.assertEqual(response.status_code, 200)
+
+    def test_update_api_quote_client(self):
+        quote = self.quote
+        s1 = q.Section.objects.create(user=self.user, name='intro', title='intro', index='0')
+        s2 = q.Section.objects.create(user=self.user, name='notes', title='notes', index='1')
+        quote.sections.add(s1)
+        quote.sections.add(s2)
+
+        request = APIRequestFactory().patch("", data={
+            'token': quote.token,
+            'name': 'bogus name',
+            'views': 2,
+            'sections': [{'id': s1.id, 'views': 3}],
+            'services': [{}]
+        }, format='json')
+
+        quote_detail = views.QuoteClientUpdate.as_view({'patch': 'partial_update'})
+        quote_detail(request, token=quote.token)
+        quote.refresh_from_db()
+        s1.refresh_from_db()
+        self.assertEqual(quote.views, 2)
+        self.assertEqual(len(quote.sections.all_for(quote.user)), 2)
+        self.assertEqual(s1.views, 3)
+
 
 class QuoteTemplateTest(test.TestCase):
     def setUp(self):

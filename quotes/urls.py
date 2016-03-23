@@ -5,7 +5,6 @@ from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter(trailing_slash=False)
 router.register(r'api/quote', views.QuoteViewSet, 'api-quote')
-router.register(r'api/quote_client', views.QuoteClientViewSet, 'api-quote-client')
 router.register(r'api/quote_template', views.QuoteTemplateViewSet, 'api-quote-template')
 router.register(r'api/section', views.SectionViewSet, 'api-section')
 router.register(r'api/payment', views.QuotePaymentsAPI, 'api-quote-payment')
@@ -38,6 +37,12 @@ urlpatterns = [
 
     url(r'^api/quote/payments/(?P<pk>[0-9]+)?$', login_required(views.QuotePaymentsAPI.as_view({'get': 'list'})),
         name='api_quote_payments'),
+
+    # Special views for client to view / update quote data via token, without logging in
+    url(r'^api/quote_client/(?P<token>[a-f0-9]{32})?', views.QuoteClientUpdate.as_view({'patch': 'update'}),
+        name='api-quote-client-detail'),
+    url(r'^api/quote_token/(?P<token>[a-f0-9]{32})?', views.QuoteClientDetail.as_view({'get': 'retrieve'}),
+        name='api-quote-client-token'),
 ]
 urlpatterns += router.urls
 

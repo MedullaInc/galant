@@ -23,7 +23,7 @@ def get_blank_quote_autofixture(user):
     return q
 
 
-class QuotesSignedInTest(browser.BrowserTest):
+class QuotesSignedOutTest(browser.BrowserTest):
     def setUp(self):
         super(browser.BrowserTest, self).setUp()
         self.user = autofixture.create_one('gallant.GallantUser', generate_fk=True,

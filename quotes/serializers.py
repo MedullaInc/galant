@@ -9,6 +9,7 @@ from gallant import serializers as s
 from django.http import HttpResponse
 import json
 
+
 class SectionSerializer(serializers.ModelSerializer):
     title = ULTextField()
     text = ULTextField()
@@ -17,11 +18,22 @@ class SectionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = q.Section
-        fields = ('title','text','name','index', 'id', 'views', 'user') 
+        fields = ('title','text','name','index', 'id', 'views', 'user')
         extra_kwargs = {
             'id': {'read_only': False, 'required': False},
             'user': {'required': False},
         }
+
+
+# Special serializer for client update section view count without logging in
+class SectionClientSerializer(SectionSerializer):
+    class Meta:
+        model = q.Section
+        fields = ('id', 'views')
+        extra_kwargs = {
+            'id': {'read_only': False, 'required': True},
+        }
+
 
 class QuoteSerializer(serializers.ModelSerializer):
     user = serializers.PrimaryKeyRelatedField(read_only=True)
@@ -40,8 +52,8 @@ class QuoteSerializer(serializers.ModelSerializer):
         def model_queryset(m): return m.objects.all_for(user)
 
         fields['client'] = serializers.PrimaryKeyRelatedField(queryset=model_queryset(g.Client), allow_null=True)
-        fields['sections'] = SectionSerializer(many=True)
-        fields['services'] = s.ServiceSerializer(many=True)
+        fields['sections'] = SectionSerializer(many=True, partial=self.partial)
+        fields['services'] = s.ServiceSerializer(many=True, partial=self.partial)
         fields['projects'] = serializers.PrimaryKeyRelatedField(many=True, queryset=model_queryset(g.Project))
 
         return fields
@@ -54,12 +66,6 @@ class QuoteSerializer(serializers.ModelSerializer):
             user = self.context['request'].user
         else:
             user = self.context.get("user")
-
-        if self.instance is None:
-            quote_instance = instance
-        else:
-            quote_instance = self.instance
-
 
         self._write_services(user, instance, services_data)
         self._write_sections(user, instance, sections_data)
@@ -140,6 +146,46 @@ class QuoteSerializer(serializers.ModelSerializer):
 
         for section in (init_sections- new_sections):
             section.delete()
+
+
+class QuoteClientSerializer(QuoteSerializer):
+    def get_fields(self, *args, **kwargs):
+        fields = super(serializers.ModelSerializer, self).get_fields(*args, **kwargs)
+
+        fields['services'] = s.ServiceClientSerializer(many=True, partial=self.partial)
+        fields['sections'] = SectionClientSerializer(many=True, partial=self.partial)
+
+        return fields
+
+    class Meta:
+        model = Quote
+        fields = ('sections', 'services',
+                  'views', 'session_duration')
+
+    def update(self, instance, validated_data):
+        services_data = validated_data.pop('services')
+        sections_data = validated_data.pop('sections')
+
+        self._write_services(instance.user, instance, services_data)
+        self._write_sections(instance.user, instance, sections_data)
+
+        return super(QuoteSerializer, self).update(instance, validated_data)
+
+    def _write_sections(self, user, instance, sections_data):
+        for section_data in sections_data:
+            section_id = section_data.get('id', None)
+            if section_id:
+                section_instance = q.Section.objects.get_for(user, 'change', pk=section_id)
+                ss = SectionClientSerializer(data=section_data, instance=section_instance)
+                ss.update(section_instance, section_data)
+
+    def _write_services(self, user, instance, services_data):
+        for service_data in services_data:
+            service_id = service_data.get('id', None)
+            if service_id:
+                service_instance = q.Service.objects.get_for(user, 'change', pk=service_id)
+                ss = s.ServiceClientSerializer(data=service_data, instance=service_instance)
+                ss.update(service_instance, service_data)
 
 
 class QuoteTemplateSerializer(serializers.ModelSerializer):

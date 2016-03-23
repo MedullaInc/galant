@@ -19,7 +19,7 @@ app.directive('qtClient', ['Quote', function (Quote) {
             function ($scope, $attrs, $filter, $window, Quote) {
                 var token = window.location.href.split('/').slice(-1).pop();
                 $scope.idType = $attrs.idType;
-                Quote.getUser({id: token, user: $attrs.userId}).$promise.then(function (quote) {
+                Quote.getUser({token: token}).$promise.then(function (quote) {
                     $scope.quote = quote;
 
                     if($attrs.idType == "token"){
@@ -28,11 +28,10 @@ app.directive('qtClient', ['Quote', function (Quote) {
                             $scope.quote.status = "3";
                         }
 
-                        Quote.updateUser({id: token, user: $attrs.userId}, $scope.quote);
+                        Quote.updateUser({token: token}, $scope.quote);
 
                         $window.onbeforeunload  = function () {
-                            Quote.updateUser({id: token, user: $attrs.userId}, {
-                                id: $scope.quote.id,
+                            Quote.updateUser({token: token}, {
                                 views: $scope.quote.views,
                                 session_duration: ((new Date() - $scope.$parent.startTime)/1000 ),
                                 sections: $scope.quote.sections,
