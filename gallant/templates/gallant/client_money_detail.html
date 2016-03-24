@@ -1,14 +1,6 @@
 {% extends "../templates/gallant/client_detail.html" %}
 {% load bootstrap i18n gallant_tags staticfiles static djng_tags %}
 
-{% block scripts %}
-    {{ block.super }}
-    <script src="{% static "gallant/js/services/glServices.js" %}"></script>
-    <script src="{% static "gallant/js/apps/glClientPayments.js" %}"></script>
-    <script src="{% static "gallant/js/directives/glPayments.js" %}"></script>
-    <script src="{% static "gallant/js/controllers/glClientPaymentController.js" %}"></script>
-{% endblock %}
-
 {% block section_title %}
     {% trans "Client Money" %}
 {% endblock %}
