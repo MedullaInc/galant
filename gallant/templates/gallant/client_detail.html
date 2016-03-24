@@ -32,7 +32,7 @@
     </a>
 
     <a>
-        <button type="button" class="btn btn-default sidebar" id="add_brief">
+        <button type="button" class="btn btn-default sidebar add_brief" id="add_brief">
             {% trans "New Brief..." %}
         </button>
     </a>
@@ -136,9 +136,9 @@
                 </p>
                 <br/>
                 <p>
-                    <a href="{% url 'briefs' %}?client_id={{ object.id }}">
-                        <button type="button" class="btn btn-default sidebar">
-                            {% trans "Client Briefs" %}
+                    <a>
+                        <button type="button" class="btn btn-default sidebar add_brief" id="add_brief">
+                            {% trans "New Brief..." %}
                         </button>
                     </a>
                 </p>
@@ -166,11 +166,14 @@
                 </p>
                 <br/>
                 <p>
-                    <a href="{% url 'quotes' %}?client_id={{ object.id }}">
-                        <button type="button" class="btn btn-default sidebar">
-                            {% trans "Client Quotes" %}
-                        </button>
-                    </a>
+
+                    <div ng-controller="qtPopoverController"
+                         ng-init="init('{% url 'add_quote' %}', '{% firstof language LANGUAGE_CODE %}')">
+                        <a>
+                            <button popover-placement="bottom" uib-popover-template="dynamicPopover.templateUrl" type="button" class="btn btn-default sidebar" popover-trigger="focus">{% trans "New Quote..." %}</button>
+                        </a>
+                    </div>
+
                 </p>
             </div>
             <div class="enclosed chart_box hidden">
@@ -343,7 +346,7 @@
         </div>
     </div>
     <script>
-        $('#add_brief').popover({
+        $('.add_brief').popover({
             html: true,
             container: 'body',
             content: $('#add_button_popover').html(),
