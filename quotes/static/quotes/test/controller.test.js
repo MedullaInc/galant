@@ -178,7 +178,7 @@ describe('qtPopoverController', function () {
     beforeEach(function () {
         $scope = $rootScope.$new();
         $controller('qtPopoverController', {$scope: $scope});
-        $scope.init(url, url);
+        $scope.init(url, url, 1);
         $rootScope.$apply();
         $scope.quotes = $scope.quotes;
     });

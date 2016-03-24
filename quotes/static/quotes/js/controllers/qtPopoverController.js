@@ -11,10 +11,11 @@ app.controller('qtPopoverController', ['$scope', '$http', '$window', '$rootScope
             });
         }
 
-    $scope.init = function(addQuoteURL, currentLanguage) {
+    $scope.init = function(addQuoteURL, currentLanguage, clientId) {
         $scope.addQuoteURL = addQuoteURL;
         $scope.currentLanguage = currentLanguage;
         $scope.selectedLanguage = currentLanguage;
+        $scope.clientId = clientId;
     };
 
 	$scope.dynamicPopover = {
@@ -26,11 +27,17 @@ app.controller('qtPopoverController', ['$scope', '$http', '$window', '$rootScope
         if(! quoteTemplate.languageSelection){
             quoteTemplate.languageSelection = $scope.currentLanguage;
         }       
-        $window.location.href = $scope.addQuoteURL + "?template_id=" + quoteTemplate.id + "&lang=" + quoteTemplate.languageSelection;
+        var ref = $scope.addQuoteURL + "?template_id=" + quoteTemplate.id + "&lang=" + quoteTemplate.languageSelection;
+        if ($scope.clientId)
+            ref += '&client_id=' + $scope.clientId;
+        $window.location.href = ref;
     };
 
     $scope.addQuoteRedirect = function() {
-        $window.location.href = $scope.addQuoteURL;
+        var ref = $scope.addQuoteURL;
+        if ($scope.clientId)
+            ref += '?client_id=' + $scope.clientId;
+        $window.location.href = ref;
     };
 
     $scope.languageSelection = function(quoteTemplate, lang) {
