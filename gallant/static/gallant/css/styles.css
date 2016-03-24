@@ -2519,13 +2519,13 @@ div.alert.alert-info p {
 
 #feedback {
     position: fixed;
-    top: 40%;
-    right: -100%;
+    right: 5%;
+    bottom: -60px;
     z-index: 999;
-    transform: rotate(-90deg);
-    -webkit-transform: rotate(-90deg);
-    -moz-transform: rotate(-90deg);
-    -o-transform: rotate(-90deg);
+    transform: rotate(0deg);
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
     filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
     border: 1px solid #666;
     border-bottom: 0px;
