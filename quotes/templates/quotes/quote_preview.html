@@ -59,7 +59,6 @@
 
                     {% for section in object.all_sections %}
 
-
                         {% if section.cost %}
 
                                 <div class="pdf_element service">
@@ -198,6 +197,23 @@
                                 </div>
                             </div>
                         </div>
+                    {% endif %}
+
+                    {% if object.important_notes %}
+                    <div class="pdf_element intro">
+                        <div class="row">
+                            <div class="col-xs-offset-2 col-xs-8 section_title">
+                                <h2>
+                                    {{ object.important_notes.title.get_text }}
+                                </h2>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-offset-4 col-xs-8 section_content">
+                                {{ object.important_notes.text.get_text|linebreaks }}
+                            </div>
+                        </div>
+                    </div>
                     {% endif %}
 
                 </div>
