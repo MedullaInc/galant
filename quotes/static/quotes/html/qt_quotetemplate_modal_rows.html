@@ -2,8 +2,9 @@
     <td>{{ template.quote.name }}</td>
     <td>{{ template.quote.modified | date:'y-M-d h:m'  }}</td>
     <td ng-click="$event.stopPropagation()">
-        <select ng-if="template.languages" class="template_lang form-control" name="language" ng-change="languageSelection(template, selectedLanguage)" ng-model="selectedLanguage">
-                <option ng-repeat="language in template.languages" value="{{ language.code }}">{{ language.name }}</option>
+        <select ng-if="template.languages" class="template_lang form-control" name="language"
+                ng-change="languageSelection(template, selectedLanguage)" ng-model="selectedLanguage"
+                ng-options="language.code as language.name for language in template.languages">
         </select>
     </td>
 </tr>
