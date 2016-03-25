@@ -166,24 +166,28 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
                  * is selected, it's removed from the other dropdowns via this function.
                  */
                 $scope.updateAvailableServices = function () {
-                    if ($scope.event.services.length) {
-                        $scope.availableServices = [];
-                        angular.forEach($scope.event.services, function () {
-                            $scope.availableServices.push($scope.project.services.slice());
-                        });
-                        angular.forEach($scope.event.services, function (s, si) {
-                            angular.forEach($scope.availableServices, function (arr, i) {
-                                if (i != si) {
-                                    var idx = $scope.availableServices[i].findIndex(function (element) {
-                                        return element.id == s;
-                                    });
-                                    if (idx >= 0)
-                                        $scope.availableServices[i].splice(idx, 1);
-                                }
+                    if ($scope.project && $scope.project.services.length) {
+                        if ($scope.event.services.length) {
+                            $scope.availableServices = [];
+                            angular.forEach($scope.event.services, function () {
+                                $scope.availableServices.push($scope.project.services.slice());
                             });
-                        });
+                            angular.forEach($scope.event.services, function (s, si) {
+                                angular.forEach($scope.availableServices, function (arr, i) {
+                                    if (i != si) {
+                                        var idx = $scope.availableServices[i].findIndex(function (element) {
+                                            return element.id == s;
+                                        });
+                                        if (idx >= 0)
+                                            $scope.availableServices[i].splice(idx, 1);
+                                    }
+                                });
+                            });
+                        } else {
+                            $scope.availableServices = [$scope.project.services.slice()];
+                        }
                     } else {
-                        $scope.availableServices = [$scope.project.services.slice()];
+                        $scope.availableServices = [];
                     }
                 };
 
@@ -234,7 +238,10 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
 
                 $scope.projectChanged = function (projectId) {
                     $scope.project = $scope.projects.find(function (p) { return p.id == projectId});
-                    $scope.availableServices = [$scope.project.services];
+                    if ($scope.project && $scope.project.services)
+                        $scope.availableServices = [$scope.project.services];
+                    else
+                        $scope.availableServices = [];
                     $scope.event.services = [];
                 };
 
