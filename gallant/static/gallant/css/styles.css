@@ -18,7 +18,7 @@ button,
 select,
 textarea {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-size: 16px;
+    font-size: 14px;
 }
 
 a {
@@ -663,7 +663,7 @@ input[type="tel"],
 input[type="color"],
 .uneditable-input {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-size: 16px;
+    font-size: 14px;
     color: #7f8c8d;
     font-weight: 200;
     letter-spacing: 0px;
@@ -1065,7 +1065,7 @@ header .brand img:first-child {
 
 .header-5 .navbar .nav > li > a {
     /*padding: 35px 0 27px;*/
-    font-size: 16px;
+    font-size: 14px;
     font-weight: normal;
     font-weight: 100;
     letter-spacing: 1px;
@@ -1256,7 +1256,7 @@ header .brand img:first-child {
     padding-right: 20px;
     padding-top: 10px;
     padding-bottom: 10px;
-    font-size: 16px;
+    font-size: 14px;
 }
 
 .login .login-title {
@@ -1354,7 +1354,7 @@ header .brand img:first-child {
     list-style-type: none;
     padding-left: 0px;
     margin-bottom: 0px;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 400;
 }
 
@@ -1847,7 +1847,7 @@ a.login-btn.index.register:hover {
     font-weight: 100;
     margin-top: 0px;
     letter-spacing: 1px;
-    font-size: 16px;
+    font-size: 14px;
     padding-left: 25px;
     padding-right: 25px;
     -webkit-border-radius: 0px;
@@ -2002,7 +2002,7 @@ h3.area_title {
 
 #settings-toggle-group .dropdown-menu li a {
     color: #000000;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 100;
     text-align: center;
     padding-bottom: 10px;
@@ -2055,7 +2055,7 @@ p.data {
 }
 
 div.question {
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 200;
 }
 
@@ -2075,7 +2075,7 @@ i.note {
 pre {
     background-color: white;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 200;
     line-height: 1.0;
     padding: 10px;
@@ -2131,7 +2131,7 @@ h2.inline_title {
 
 a .btn-default.sidebar {
     color: #000000;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 100;
 }
 
@@ -2206,13 +2206,13 @@ table.table-striped.table-bordered thead th, table.table-striped.table-bordered 
     border-radius: 0px;
     border: 1px solid #666666;
     margin-bottom: 10px;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 100;
 }
 
 .help-block div {
     margin-bottom: 20px;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 200;
 }
 
@@ -2227,7 +2227,7 @@ div.modal-backdrop {
 /* End List View*/
 
 p {
-    font-size: 16px;
+    font-size: 14px;
 }
 
 /* Popover */
@@ -2416,7 +2416,7 @@ label.search.control-label {
     border-radius: 0px;
     margin-top: 0px;
     border: 1px solid #666666;
-    font-size: 16px;
+    font-size: 14px;
 }
 
 input[type="text"].form-control {
@@ -2540,7 +2540,7 @@ div.alert.alert-info p {
     padding-right: 20px;
     color: #666;
     font-family: Arial, sans-serif;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 100;
     text-decoration: none;
     cursor: pointer;
@@ -2691,7 +2691,7 @@ div.breadcrumbs span {
     border: 1px solid #666666;
     margin-bottom: 10px;
     margin-top: 10px;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 100;
     letter-spacing: 1px;
     text-align: center;

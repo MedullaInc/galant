@@ -152,12 +152,12 @@
     {% endblock %}
 
     {% block main_client_data %}
-        <div class="row">
+        <div class="row row-eq-height">
         <div class="col-lg-6">
             <div class="enclosed welcome_box hidden">
                 <h2 class="chart_title">{% trans 'Send a Brief' %}</h2>
                 <p>
-                    Briefs help you better understand client needs. You can customize briefs with questions and save them as templates. Once a brief is sent, we will notify your client and let you know when they answer it.
+                    Briefs help understand client needs. You can customize briefs with questions and save them as templates. Once a brief is sent, we'll notify your client & let you know when they respond.
                 </p>
                 <br/>
                 <p>
@@ -190,15 +190,12 @@
                     We'll help you build a custom quote for your client. Once your quote is sent, we'll let you know when they access it, and you'll be able to edit it to suit both your client and your needs.
                 </p>
                 <br/>
-                <p>
+                <p ng-controller="qtPopoverController"
+                   ng-init="init('{% url 'add_quote' %}?client_id={{ object.id }}', '{% firstof language LANGUAGE_CODE %}')">
 
-                    <div ng-controller="qtPopoverController"
-                         ng-init="init('{% url 'add_quote' %}?client_id={{ object.id }}', '{% firstof language LANGUAGE_CODE %}')">
-                        <a>
-                            <button popover-placement="bottom" uib-popover-template="dynamicPopover.templateUrl" type="button" class="btn btn-default sidebar" popover-trigger="focus">{% trans "New Quote..." %}</button>
-                        </a>
-                    </div>
-
+                    <a>
+                        <button popover-placement="bottom" uib-popover-template="dynamicPopover.templateUrl" type="button" class="btn btn-default sidebar" popover-trigger="focus">{% trans "New Quote..." %}</button>
+                    </a>
                 </p>
             </div>
             <div class="enclosed chart_box hidden">
