@@ -1,6 +1,6 @@
 <tr ng-repeat="quote in quotes" ng-click="redirect(quote.id)" style="cursor: pointer">
     <td>{{ quote.modified|date:'y-M-d h:m' }}</td>
-    <td>{{ (clients | filter:{id: quote.client})[0].name }}</td>
+    <td>{{ quote.client_name }}</td>
     <td>{{ quote.name }}</td>
     <td>{{ quoteStatus[quote.status]  }}</td>
 </tr>

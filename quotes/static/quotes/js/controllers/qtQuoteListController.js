@@ -22,10 +22,6 @@ app.controller('qtQuoteListController', ['$scope', '$http', '$window', '$rootSco
         QuoteTemplate.query().$promise.then(function(quoteTemplates) {
             $scope.quoteTemplates = quoteTemplates;
             $rootScope.quoteTemplates = quoteTemplates;
-        });    
-
-        Client.query().$promise.then(function(clients) {
-            $scope.clients = clients;
         });
 
         $scope.redirect = function(id) {
