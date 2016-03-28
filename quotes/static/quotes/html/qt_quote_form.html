@@ -22,6 +22,10 @@
             <br/><br/>
         </p>
     </div>
+    <span ng-show="showViews()">
+        <span class="label label-default" uib-tooltip="Client Views" tooltip-placement="right">Viewed {{ quote.views }} times</span>
+        <span class="label label-default" uib-tooltip="Time spent viewing" tooltip-placement="right">for {{ quote.session_duration }}s</span>
+    </span>
 </div>
 
 <br/>
