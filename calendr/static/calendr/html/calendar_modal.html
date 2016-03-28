@@ -21,29 +21,30 @@
                 <div class="col-lg-9">
                     <select ng-model="event.projectId" class="form-control" ng-change="projectChanged(event.projectId)"
                             ng-options="project.id as project.name for project in projects">
-                        <option value="?">Select Project...</option>
+                        <option value="" style="display: none;">Select Project...</option>
                     </select>
                 </div>
             </div>
-            <div class="row form-group services" ng-hide="!availableServices[0] || event.services.length">
+            <div class="row form-group services" ng-hide="!availableServices[0].length || event.services.length">
                 <div class="col-lg-3">
                     <label>Services</label>
                 </div>
                 <div class="col-lg-8">
                     <select ng-model="event.services[0]" class="form-control" ng-change="updateAvailableServices()"
                             ng-options="service.id as service.name for service in availableServices[0]">
-                        <option value="?">Select Service...</option>
+                        <option value="" style="display: none;">Select Service...</option>
                     </select>
                 </div>
             </div>
-            <div class="row form-group services" ng-repeat="service in event.services" ng-show="event.services.length">
+            <div class="row form-group services" ng-repeat="service in event.services"
+                 ng-show="availableServices[0].length && event.services.length">
                 <div class="col-lg-3" ng-show="$first">
                     <label>Services</label>
                 </div>
                 <div class="col-lg-8" ng-class="{'col-lg-offset-3': !$first}">
                     <select ng-model="event.services[$index]" class="form-control" ng-change="updateAvailableServices()"
                             ng-options="service.id as service.name for service in availableServices[$index]">
-                        <option value="?">Select Service...</option>
+                        <option value="" style="display: none;">Select Service...</option>
                     </select>
                 </div>
                 <div class="col-lg-1" ng-show="$last && event.services.length < project.services.length">

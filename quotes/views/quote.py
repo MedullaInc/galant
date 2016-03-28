@@ -1,4 +1,6 @@
 import datetime
+
+from django.db.models.query import Prefetch
 from django.http.response import HttpResponse, JsonResponse
 from django.views.generic import View
 from django.template.response import TemplateResponse
@@ -263,13 +265,16 @@ class QuoteViewSet(UserModelViewSet):
     def get_queryset(self):
         client_id = self.request.query_params.get('client_id', None)
         clients_only = self.request.query_params.get('clients_only', None)
+        client_names = self.request.query_params.get('client_names', None)
+
+        qs = self.model.objects.all_for(self.request.user)
 
         if client_id is not None:
-            return self.model.objects.all_for(self.request.user).filter(client_id=client_id)
+            qs = qs.filter(client_id=client_id)
         elif clients_only is not None:
-            return self.model.objects.all_for(self.request.user).exclude(client__isnull=clients_only)
-        else:
-            return self.model.objects.all_for(self.request.user)
+            qs = qs.exclude(client__isnull=clients_only)
+
+        return qs.select_related('client')
 
     def create(self, request, *args, **kwargs):
         request.data['status'] = QuoteStatus.Not_Sent.value

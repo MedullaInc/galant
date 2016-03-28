@@ -130,7 +130,9 @@ def client_work_detail(request, pk):
 
     return TemplateResponse(request=request,
                             template="gallant/client_work_detail.html",
-                            context={'object': client,'title': client.name,'projects': projects })
+                            context={'object': client,
+                                     'template_list': b.BriefTemplate.objects
+                                                       .all_for(request.user),'title': client.name,'projects': projects })
 
 
 def client_money_detail(request, pk):
@@ -141,7 +143,9 @@ def client_money_detail(request, pk):
 
     return TemplateResponse(request=request,
                             template="gallant/client_money_detail.html",
-                            context={'object': client, 'title': client.name})
+                            context={'object': client,
+                                     'template_list': b.BriefTemplate.objects
+                                                       .all_for(request.user), 'title': client.name})
 
 
 class ClientDelete(View):

@@ -94,8 +94,11 @@
                             ng-click="removeService($index)">
                         <span class="glyphicon glyphicon-trash"/>
                     </button>
-                    <p><span ng-show="showViews()" class="label label-default" uib-tooltip="Times Expanded" tooltip-placement="right">{{ service.views }} times expanded</span></p>
                 </div>
+                <p><span ng-show="showViews()" class="label label-default"
+                         uib-tooltip="Nubmer of times client clicked 'more' to expand description" tooltip-placement="right">
+                    Times expanded: {{ service.views }}
+                </span></p>
             </div>
             <hr/>
         </li>

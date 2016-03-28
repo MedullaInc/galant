@@ -45,10 +45,10 @@
 
     <script type="text/ng-template" id="myPopoverTemplate.html">
         <a class="from_template_button" ng-click="open()">
-            <button type="button" class="btn btn-default from_template_button sidebar">From Template</button>
+            <button type="button" class="btn btn-default quote_from_template_button sidebar">From Template</button>
         </a>
         <a ng-click="addQuoteRedirect()">
-            <button type="button" class="btn btn-default from_scratch_button sidebar">From Scratch</button>
+            <button type="button" class="btn btn-default quote_from_scratch_button sidebar">From Scratch</button>
         </a>
     </script>
     <script type="text/ng-template" id="myModalContent.html">
@@ -290,7 +290,7 @@
 
 {% block extra_body %}
     <div id="add_button_popover" class="popover" style="display: none">
-        <a class="from_template_button">
+        <a class="brief_from_template_button">
             <button type="button" class="btn btn-default from_template_button sidebar">From Template</button>
         </a>
         <a href="{% url 'add_brief' %}?client_id={{ object.id }}">
@@ -349,11 +349,11 @@
             title: false,
             placement: "bottom"
         }).click(function () {
-            $('body').on('click', '.popover-content > button.from_template_button', function () {
+            $('body').on('click', '.popover-content > button.brief_from_template_button', function () {
                 $('#add_brief').popover('hide');
                 $('#template_select').modal('show');
             });
-            $('body').on('click', '.popover-content > a.from_template_button', function () {
+            $('body').on('click', '.popover-content > a.brief_from_template_button', function () {
                 $('#add_brief').popover('hide');
                 $('#template_select').modal('show');
             });
