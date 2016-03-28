@@ -198,6 +198,7 @@ describe('glClientPaymentController', function () {
                 Payment.query = function (a) { return {$promise: $q.when([{}])}; };
                 Payment.get = function (a) { return {$promise: $q.when({id: 0, amount: {currency: '', amount: null}})}; };
                 Payment.save = function (a) { return {}; };
+                Payment.update = function (a) { return {}; };
                 Payment.delete = function (a) { return {}; };
                 return Payment;
             });
@@ -205,6 +206,9 @@ describe('glClientPaymentController', function () {
                return { dismiss: function(a) {} };
             });
             $provide.factory('createPayment', function ($q) {
+               return {};
+            });
+            $provide.factory('updatePayment', function ($q) {
                return {};
             });
         });
@@ -293,7 +297,7 @@ describe('glClientPaymentController', function () {
         it('can submit form', function () {
             var Payment = $injector.get('Payment');
             $subScope.payment = {
-                quote_id: 0,
+                quote: 0,
                 amount: {amount: 1.0, currency: 'MXN'},
                 description: 'Payment',
                 due: new Date(),
@@ -305,6 +309,20 @@ describe('glClientPaymentController', function () {
             $subScope.submit();
             $scope.$digest();
             expect(Payment.save).toHaveBeenCalled();
+        });
+
+        it('can update payment', function () {
+            var Payment = $injector.get('Payment');
+            $subScope.payment.id = 1;
+            $subScope.payment.description = 'Payment';
+            $subScope.payment.quote = 0;
+            $subScope.payment.amount.amount = 1.0;
+            $subScope.payment.amount.currency = 'MXN';
+            $subScope.updatePayment = $scope.updatePayment;
+            spyOn(Payment, 'update').and.callThrough();
+            $subScope.submit();
+            $scope.$digest();
+            expect(Payment.update).toHaveBeenCalled();
         });
 
     });

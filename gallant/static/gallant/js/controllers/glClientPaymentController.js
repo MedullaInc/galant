@@ -11,7 +11,7 @@ app.controller('glClientPaymentController', ['$scope', '$attrs', '$uibModal', '$
             templateUrl: '/static/gallant/html/gl_client_payment_modal.html',
             backdrop: true,
             windowClass: 'modal',
-            controller: function ($scope, $uibModalInstance, ClientQuote, createPayment, Payment) {
+            controller: function ($scope, $uibModalInstance, ClientQuote, createPayment, updatePayment, Payment) {
 
                 // When form loads, it will load quotes
                 $scope.quotes = [];
@@ -61,14 +61,21 @@ app.controller('glClientPaymentController', ['$scope', '$attrs', '$uibModal', '$
 
                 // Form functions
                 $scope.createPayment = createPayment;
+                $scope.updatePayment = updatePayment;
                 $scope.submit = function () {
-                    if (typeof $scope.payment == 'undefined' || typeof $scope.payment.quote_id == 'undefined' || typeof $scope.payment.amount.amount == 'undefined' || $scope.payment.amount.amount <= 0.0 || typeof $scope.payment.description == 'undefined' ) {
+                    if (typeof $scope.payment == 'undefined' || typeof $scope.payment.quote == 'undefined' || typeof $scope.payment.amount.amount == 'undefined' || $scope.payment.amount.amount <= 0.0 || typeof $scope.payment.description == 'undefined') {
                         $scope.errors = "Quote, Amount & Description are required!";
                     } else {
                         $scope.errors = "";
                         // TODO: Change form to ng-model='amount.amount'
-                        $scope.createPayment($scope.payment);
+                        if ($scope.payment.id) {
+                            $scope.updatePayment($scope.payment);
+                        } else {
+                            $scope.createPayment($scope.payment);
+                        }
+
                         $uibModalInstance.dismiss('close');
+
                     }
                 };
 
@@ -78,16 +85,21 @@ app.controller('glClientPaymentController', ['$scope', '$attrs', '$uibModal', '$
                 };
             },
             resolve: {
-                createPayment: function () {
+
+                createPayment: /* istanbul ignore next */ function () {
                     return $scope.createPayment;
+                },
+                updatePayment: /* istanbul ignore next */ function () {
+                    return $scope.updatePayment;
                 },
             }
         });
     };
 
     $scope.createPayment = function (payment) {
+
         var newPayment = {
-            quote_id: payment.quote_id,
+            quote_id: payment.quote,
             amount: payment.amount,
             description: payment.description,
             due: payment.due,
@@ -96,8 +108,25 @@ app.controller('glClientPaymentController', ['$scope', '$attrs', '$uibModal', '$
         };
 
         newPayment.amount.amount = parseFloat(payment.amount.amount);
+
         var new_payment = Payment.save(newPayment);
         $scope.payments.push(new_payment);
+
+    };
+
+    $scope.updatePayment = function (payment) {
+
+        var updated_payment = $scope.payments.find(
+            function (a) {
+                if (a.id == payment.id) {
+                    return a
+                }
+            });
+
+        $scope.payments.splice($scope.payments.indexOf(updated_payment), 1);
+        Payment.update({id: payment.id}, payment, function (response) {
+            $scope.payments.push(payment);
+        });
     };
 
 }]);

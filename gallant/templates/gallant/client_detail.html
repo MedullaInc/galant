@@ -454,7 +454,7 @@
 
         if (work_data[0].value == 0 && work_data[1].value == 0 && work_data[2].value == 0 && work_data[3].value == 0) {
             $(".enclosed.welcome_box").removeClass('hidden');
-        } else {
+        } else if ( $("#work_chart").length != 0 && $("#money_chart").length != 0 ) {
             $(".enclosed.chart_box").removeClass('hidden');
 
             var work = $("#work_chart").get(0).getContext("2d");
