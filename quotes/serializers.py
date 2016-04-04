@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.core.urlresolvers import reverse
 from gallant.serializers.misc import ULTextField
 from django.utils.translation import get_language
 from rest_framework import serializers
@@ -41,10 +42,17 @@ class QuoteSerializer(serializers.ModelSerializer):
     views = serializers.IntegerField()
     session_duration = serializers.FloatField()
     client_name = serializers.SerializerMethodField(read_only=True)
+    client_link = serializers.SerializerMethodField(read_only=True)
 
     def get_client_name(self, quote):
         if quote.client:
             return quote.client.name
+        else:
+            return None
+
+    def get_client_link(self, quote):
+        if quote.client:
+            return reverse('client_detail', args=[quote.client.id])
         else:
             return None
 
@@ -101,7 +109,7 @@ class QuoteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Quote
         fields = ('id', 'user', 'name', 'client', 'sections', 'services', 'language', 'status',
-                  'modified', 'token', 'parent', 'projects', 'views', 'session_duration', 'client_name')
+                  'modified', 'token', 'parent', 'projects', 'views', 'session_duration', 'client_name', 'client_link')
         extra_kwargs = {
             'id': {'read_only': False, 'required': False, 'allow_null':True},
             'user': {'required': False},
