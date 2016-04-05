@@ -236,7 +236,7 @@ app.directive('brQuestionDetail', ['$window', 'glValidate', function ($window, g
                 if ($scope.question.choices) {
                     $scope.question.choices.push({});
                 }
-                if (!$scope.form.$visible) {
+                if ($scope.form && !$scope.form.$visible) {
                     $scope.form.$show();
                 }
 
