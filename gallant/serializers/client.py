@@ -31,8 +31,9 @@ class ClientSerializer(serializers.ModelSerializer):
         for q in client.quote_set.all_for(self.context['request'].user)\
                 .prefetch_related(Prefetch('payments', to_attr='payments_arr')):
             for p in q.payments_arr:
-                if p.due < current_time and p.paid_on is None or p.paid_on > current_time:
-                    status.append('Overdue')
+                if p.due < current_time and p.paid_on is None:
+                    if 'Overdue' not in status:
+                        status.append('Overdue')
                     break
 
         return status
