@@ -2080,6 +2080,10 @@ pre {
     line-height: 1.3;
     padding: 10px;
     margin-top: 10px;
+    margin-bottom: 20px;
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 0px;
 }
 
 .label.label-default {
@@ -2358,6 +2362,10 @@ ul.nav-tabs li a#add_translation_button {
 
 /* Forms */
 
+.no-padding {
+    padding: 0px;
+}
+
 .editable-wrap {
     width: 100%;
 }
@@ -2415,8 +2423,10 @@ label.search.control-label {
     -moz-border-radius: 0px;
     border-radius: 0px;
     margin-top: 0px;
+    margin-bottom: 0px;
     border: 1px solid #666666;
-    font-size: 14px;
+    font-size: 15px;
+    height: 93px;
 }
 
 input[type="text"].form-control {
@@ -2779,6 +2789,10 @@ div.breadcrumbs span {
 
 .padding-top-25 {
     padding-top: 25px;
+}
+
+.padding-top-44 {
+    padding-top: 44px;
 }
 
 #modal_form .margin-left-10 {

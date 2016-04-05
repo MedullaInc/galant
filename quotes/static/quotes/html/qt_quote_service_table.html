@@ -3,7 +3,7 @@
         Services
     </h2>
     <div class="row">
-        <div class="col-lg-10">
+        <div class="col-lg-11">
             <div class="row">
                 <div class="col-lg-4">
                     <p>
@@ -37,34 +37,34 @@
     <ul data-as-sortable="dragControlListeners" data-ng-model="quote.services" is-disabled="quoteform.$visible">
         <li ng-repeat="service in quote.services" data-as-sortable-item>
             <div class="row" id="service_{{$index}}">
-                <div class="col-lg-10">
+                <div class="col-lg-11">
                     <div class="row">
                         <span ng-click="showRowForm(quoteform)">
                         <div class="col-lg-4">
                             <p name="name" e-class="form-control" editable-text="service.name[language]"
-                                 e-id="service_name_{{$index}}" e-form="quoteform" e-required
-                                 e-placeholder="Service Name" onbeforesave="validate.nonEmpty($data)">
+                               e-id="service_name_{{$index}}" e-form="quoteform" e-required
+                               e-placeholder="Service Name" onbeforesave="validate.nonEmpty($data)">
                                 {{ service.name[language] || 'empty' }}
                             </p>
                         </div>
                         <div class="col-lg-2">
                             <p e-class="form-control" editable-select="service.type" e-id="type_{{$index}}"
-                                 e-form="quoteform" editable-placeholder="Choose type..." onbeforesave="validate.selected($data)"
-                                 e-ng-options="key as val for (key, val) in serviceFields">
+                               e-form="quoteform" editable-placeholder="Choose type..." onbeforesave="validate.selected($data)"
+                               e-ng-options="key as val for (key, val) in serviceFields">
                                 {{ showType(service) }}
                             </p>
                         </div>
                         <div class="col-lg-2">
                             <p e-class="form-control" editable-text="service.quantity" e-id="quantity_{{$index}}"
-                                 e-form="quoteform" e-required onbeforesave="validate.nonEmpty($data)"
-                                 e-placeholder="Quantity">
+                               e-form="quoteform" e-required onbeforesave="validate.nonEmpty($data)"
+                               e-placeholder="Quantity">
                                 {{ service.quantity || 'empty' }}
                             </p>
                         </div>
                         <div class="col-lg-2">
                             <p e-class="form-control" editable-text="service.cost.amount" e-id="amount_{{$index}}"
-                                 e-form="quoteform" e-required
-                                 e-placeholder="Cost">
+                               e-form="quoteform" e-required
+                               e-placeholder="Cost">
                                 {{ service.cost.amount || 'empty' | currency}}
                             </p>
                         </div>
@@ -80,34 +80,37 @@
                             <p e-class="form-control" editable-textarea="service.description[language]"
                                e-id="description_{{$index}}" e-form="quoteform" e-required
                                e-placeholder="Description">
-                                <pre ng-init="moreShown = false; limit = 100" ng-hide="quoteform.$visible">{{ service.description[language] | cut:true:limit:'...'}}<br/><br/><a ng-show="service.description[language].length > limit" href ng-click="showService(service); moreShown = true; limit=service.description[language].length;">More</a><a href ng-show="moreShown" ng-click="moreShown = false; limit=100"> Less </a></pre>
+                            <pre ng-init="moreShown = false; limit = 100" ng-hide="quoteform.$visible">{{ service.description[language] | cut:true:limit:'...'}}<br/><br/><a ng-show="service.description[language].length > limit" href ng-click="showService(service); moreShown = true; limit=service.description[language].length;">More</a><a href ng-show="moreShown" ng-click="moreShown = false; limit=100"> Less </a></pre>
                             </p>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-2" ng-show="quoteform.$visible">
+                <div class="col-lg-1 no-padding padding-top-44" ng-show="quoteform.$visible">
                     <button id="service{{ $index }}_move" type="button" class="btn btn-default move_button"
-                                    as-sortable-item-handle>
+                            as-sortable-item-handle>
                         <span class="glyphicon glyphicon-move"/>
                     </button>
-                    <button id="service{{ $index }}_delete" type="button" class="btn btn-default delete_button" aria-label="Delete"
-                            ng-click="removeService($index)">
+                    <button id="service{{ $index }}_delete" type="button" class="btn btn-default delete_button" aria-label="Delete" ng-click="removeService($index)">
                         <span class="glyphicon glyphicon-trash"/>
                     </button>
                 </div>
-                <p><span ng-show="showViews()" class="label label-default"
-                         uib-tooltip="Nubmer of times client clicked 'more' to expand description" tooltip-placement="right">
-                    Times expanded: {{ service.views }}
-                </span></p>
+                <div class="col-lg-12">
+                    <span ng-show="showViews()" class="label label-default" uib-tooltip="Nubmer of times client clicked 'more' to expand description" tooltip-placement="right">
+                        Times expanded: {{ service.views }}
+                    </span>
+                </div>
             </div>
             <hr/>
         </li>
     </ul>
 
     <div class="row">
-        <div class="col-lg-10">
+        <div class="col-lg-11">
             <div class="row">
-                <div class="col-lg-offset-8 col-lg-2">
+                <div class="col-lg-4">
+
+                </div>
+                <div class="col-lg-offset-4 col-lg-2">
                     <p>
                         <strong>Total</strong>
                     </p>

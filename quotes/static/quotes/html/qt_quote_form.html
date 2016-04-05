@@ -1,15 +1,17 @@
 <div class="row">
-
     <div class="col-lg-10 col-md-10 col-sm-9 col-xs-9">
         <form editable-form name="quoteform" shown="quote && !quote.name"
               onshow="storeQuote()" oncancel="loadStoredQuote()" onaftersave="submitForm()"></form>
 
         <h2 e-class="form-control" e-id="quote_name" editable-text="quote.name" class="section_title" e-form="quoteform"
-            e-placeholder="Enter quote name" onbeforesave="validate.nonEmpty($data)">Name: {{ quote.name || quote.errors.name || "empty" }}  </h2>
+            e-placeholder="Enter quote name" onbeforesave="validate.nonEmpty($data)">Name:
+            {{ quote.name || quote.errors.name || "empty" }}  </h2>
     </div>
 
-    <div gl-edit-buttons form="quoteform" hide="!showEdit()" delete="deleteObject()('quote')"
-         prefix="quote" hide-cancel="hideCancel()">
+    <div class="col-lg-2 col-md-2 col-sm-3 col-xs-3">
+        <div class="affix affix-top" gl-edit-buttons form="quoteform" hide="!showEdit()" delete="deleteObject()('quote')"
+             prefix="quote" hide-cancel="hideCancel()">
+        </div>
     </div>
 </div>
 
@@ -22,16 +24,20 @@
             <br/><br/>
         </p>
     </div>
-    <span ng-show="showViews()">
-        <span class="label label-default" uib-tooltip="Client Views" tooltip-placement="right">Viewed {{ quote.views }} times</span>
-        <span class="label label-default" uib-tooltip="Time spent viewing" tooltip-placement="right">for {{ quote.session_duration }}s</span>
-    </span>
 </div>
-
+<div class="row">
+    <div class="col-lg-12">
+        <br/>
+        <span ng-show="showViews()">
+            <span class="label label-default" uib-tooltip="Client Views" tooltip-placement="right">Viewed {{ quote.views }} times</span>
+            <span class="label label-default" uib-tooltip="Time spent viewing" tooltip-placement="right">for {{ quote.session_duration }}s</span>
+        </span>
+    </div>
+</div>
 <br/>
 <br/>
 
-<div>
+<div class="row">
     <script type="text/ng-template" id="translationTemplate.html">
         <select id="id_language" class="form-control" ng-model="language"
                 ng-options="key as val for (key, val) in quoteLanguage"></select>
@@ -39,28 +45,28 @@
     </script>
 
     <script type="text/ng-template" id="languageForm.html">
-          <gl-language-form></gl-language-form>
+        <gl-language-form></gl-language-form>
     </script>
 
-    <div ng-show="boolTemplate == 'True'">
+    <div ng-show="boolTemplate == 'True'" class="col-lg-12">
         <ul id="tabs" class="nav nav-tabs" style="margin-bottom: -1px; border-bottom: 0">
             <li ng-repeat="lang in quoteTemplate.languages"
-                 data="{{ lang.code }}">
+                data="{{ lang.code }}">
                 <a id="{{ lang.code }}_tab" ng-click="setLanguage(lang.code)">
                     {{ lang.name }}
                 </a>
             </li>
             <li id="add_translation">
-                 <a class="btn" id="add_translation_button"
-                        popover-placement="bottom" uib-popover-template="'languageForm.html'" popover-trigger="outsideClick">Add Translation
+                <a class="btn" id="add_translation_button"
+                   popover-placement="bottom" uib-popover-template="'languageForm.html'" popover-trigger="outsideClick">Add Translation
                 </a>
             </li>
         </ul>
     </div>
 
-    <div qt-service-table></div>
+    <div qt-service-table class="container col-lg-10"></div>
 
-    <div qt-section-table></div>
+    <div qt-section-table class="container col-lg-10"></div>
 
     <div class="row" ng-show="showEdit()">
         <div class="col-lg-12">
