@@ -11,7 +11,7 @@ from gallant.models import GallantUser
 from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404
 from gallant.utils import get_one_or_404, url_to_pdf, get_site_from_host, get_field_choices, \
-    GallantViewSetPermissions
+    GallantViewSetPermissions, query_url
 from gallant.views.user import UserModelViewSet
 from quotes import models as q
 from quotes import serializers
@@ -200,6 +200,13 @@ class QuoteList(View):
     def get(self, request):
         self.request.breadcrumbs(_('Quotes'), request.path_info)
         client_id = request.GET.get('client_id', None)
+        if client_id:
+            client = get_one_or_404(request.user, 'view_client', g.Client, pk=client_id)
+            request.breadcrumbs([(_('Clients'), reverse('clients')),
+                                 (client.name, reverse('client_detail', args=[client.id]))])
+            request.breadcrumbs(_('Quotes'), reverse('quotes') + query_url(request))
+        else:
+            client = None
         return TemplateResponse(request=request,
                                 template="quotes/quote_list_ng.html",
                                 context={'title': 'Quotes',
@@ -208,7 +215,7 @@ class QuoteList(View):
                                 .filter(client__isnull=False),
                                          'template_list': q.QuoteTemplate.objects
                                 .all_for(request.user),
-                                         'client_id': client_id})
+                                         'client': client})
 
 
 def quote_fields_json(request):

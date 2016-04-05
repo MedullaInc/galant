@@ -39,8 +39,11 @@
 {% endblock %}
 
 {% block center_content %}
+    {% if client %}
+        <h2 class="center_title">{{ client }}</h2>
+    {% endif %}
     <div ng-controller="qtQuoteListController">
-    <div ng-init="init('{% url 'quote_detail' %}', '{% firstof language LANGUAGE_CODE %}', {% firstof client_id 'null' %})">
+    <div ng-init="init('{% url 'quote_detail' %}', '{% firstof language LANGUAGE_CODE %}', {% firstof client.id 'null' %})">
 
         <div class="row">
 
