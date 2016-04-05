@@ -1,22 +1,24 @@
 app = angular.module('quotes.controllers.qtQuoteListController', ['quotes.services.qtServices', 'gallant.services.glServices', 'ngAnimate']);
 
 app.controller('qtQuoteListController', ['$scope', '$http', '$window', '$rootScope', 'Quote', 'QuoteTemplate', 'Client',
-    function($scope, $http, $window, $rootScope, Quote, QuoteTemplate, Client) {
+    function($scope, $http, $window, $rootScope, Quote, QuoteTemplate) {
         $scope.quotes = [];
         $scope.quoteStatus = [];
         $scope.clients = [];
         
-        $scope.init = function(quoteDetailURL, currentLanguage) {
+        $scope.init = function(quoteDetailURL, currentLanguage, clientId) {
             $scope.quoteDetailURL = quoteDetailURL;
             $scope.currentLanguage = currentLanguage;
+
+            var options = clientId ? {client_id: clientId} : {};
+
+            Quote.query(options).$promise.then(function(quotes) {
+                $scope.quotesSafe = quotes;
+            });
         };
 
         Quote.fields().$promise.then(function (fields) {
             $scope.quoteStatus = fields.status;
-        });
-
-        Quote.query().$promise.then(function(quotes) {
-            $scope.quotesSafe = quotes;
         });
 
         QuoteTemplate.query().$promise.then(function(quoteTemplates) {

@@ -4,7 +4,7 @@ app = angular.module('quotes.services.qtServices', []);
 app.factory("Quote", function ($resource) {
     // TODO: this shouldn't start with /en/
 
-	return $resource("/en/quote/api/quote/:id", {}, {
+	return $resource("/en/quote/api/quote/:id", {client_id: '@client_id'}, {
 		retrieve: {
 		  method: 'GET',
 		  params: {},
@@ -17,9 +17,9 @@ app.factory("Quote", function ($resource) {
 		},
 		query: {
 		  method: 'GET',
-		  params: {},
+		  params: {clients_only: true},
 		  isArray: true,
-		  url: '/en/quote/api/quote?clients_only=True',	
+		  url: '/en/quote/api/quote',
 		},
 		queryNC: {
 		  method: 'GET',

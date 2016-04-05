@@ -199,6 +199,7 @@ class QuoteSend(View):  # pragma: no cover
 class QuoteList(View):
     def get(self, request):
         self.request.breadcrumbs(_('Quotes'), request.path_info)
+        client_id = request.GET.get('client_id', None)
         return TemplateResponse(request=request,
                                 template="quotes/quote_list_ng.html",
                                 context={'title': 'Quotes',
@@ -206,7 +207,8 @@ class QuoteList(View):
                                 .all_for(request.user)
                                 .filter(client__isnull=False),
                                          'template_list': q.QuoteTemplate.objects
-                                .all_for(request.user)})
+                                .all_for(request.user),
+                                         'client_id': client_id})
 
 
 def quote_fields_json(request):
@@ -265,7 +267,6 @@ class QuoteViewSet(UserModelViewSet):
     def get_queryset(self):
         client_id = self.request.query_params.get('client_id', None)
         clients_only = self.request.query_params.get('clients_only', None)
-        client_names = self.request.query_params.get('client_names', None)
 
         qs = self.model.objects.all_for(self.request.user)
 

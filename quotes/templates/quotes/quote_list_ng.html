@@ -40,7 +40,7 @@
 
 {% block center_content %}
     <div ng-controller="qtQuoteListController">
-    <div ng-init="init('{% url 'quote_detail' %}', '{% firstof language LANGUAGE_CODE %}')">
+    <div ng-init="init('{% url 'quote_detail' %}', '{% firstof language LANGUAGE_CODE %}', {% firstof client_id 'null' %})">
 
         <div class="row">
 
