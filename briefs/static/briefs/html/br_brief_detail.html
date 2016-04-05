@@ -18,7 +18,7 @@
     </ul>
 </div>
 
-<div ng-class="briefTemplate ? 'rounded-border col-lg-12 col-md-12 col-sm-11 col-xs-11' : ''">
+<div ng-class="briefTemplate ? 'rounded-border col-lg-12 col-md-12 col-sm-11 col-xs-11' : 'row'">
     <div ng-class="briefTemplate ? 'col-lg-10 col-md-10 col-sm-8 col-xs-8 rounded-border' : 'col-lg-10 col-md-10 col-sm-9 col-xs-9'">
         <form editable-form name="briefForm" id="form" shown="brief && !brief.title"
               onshow="storeBrief()" oncancel="loadStoredBrief()" onaftersave="submitForm()">
@@ -44,7 +44,7 @@
 </div>
 
 <div class="row">
-    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
         <hr>
         <h2 class="section_title">
             Questions

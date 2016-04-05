@@ -236,6 +236,10 @@ app.directive('brQuestionDetail', ['$window', 'glValidate', function ($window, g
                 if ($scope.question.choices) {
                     $scope.question.choices.push({});
                 }
+                if (!$scope.form.$visible) {
+                    $scope.form.$show();
+                }
+
             };
             $scope.removeChoice = function ($index) {
                 if ($window.confirm('Remove choice?')) {
