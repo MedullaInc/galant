@@ -457,7 +457,7 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
             resourceId: resource.id,
             start: start,
             end: end,
-            title: "New Task",
+            title: "",
         };
 
         $scope.openEditModal(event);
