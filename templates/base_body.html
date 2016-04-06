@@ -93,6 +93,7 @@
                             {% endblock section_title %}
                         </h2>
                     </div>
+                    {% block breadcrumbs %}
                     <div id="breadcrumbs" class="col-xs-12 col-sm-12 col-md-12 {% if user.is_authenticated %}col-lg-5{% else %}col-lg-10{% endif %}">
                         <div class="breadcrumbs">
                             {% for breadcrumb in request.breadcrumbs %}
@@ -101,6 +102,7 @@
                             {% endfor %}
                         </div>
                     </div>
+                    {% endblock %}
                 </div>
             </div>
             {% endblock %}
