@@ -29,6 +29,14 @@ app.controller('glClientPaymentController', ['$scope', '$attrs', '$uibModal', '$
                 if (typeof payment_id !== 'undefined') {
                     Payment.get({id: payment_id}).$promise.then(function (response) {
                         $scope.payment = response;
+                        if ($scope.payment.due) {
+                            $scope.payment.due = new Date($scope.payment.due);
+                        } else {
+                            $scope.payment.due = new Date();
+                        }
+                        if ($scope.payment.paid_on) {
+                            $scope.payment.paid_on = new Date($scope.payment.paid_on);
+                        }
                     });
                 } else {
                     $scope.payment = {amount: {currency: '', amount: null}};
