@@ -31,6 +31,12 @@
         </button>
     </a>
 
+    <a href="{% url 'quotes' %}?client_id={{ object.id }}">
+        <button type="button" class="btn btn-default sidebar">
+            {% trans "Client Quotes" %}
+        </button>
+    </a>
+
     <a>
         <button type="button" class="btn btn-default sidebar add_brief" id="add_brief">
             {% trans "New Brief..." %}
