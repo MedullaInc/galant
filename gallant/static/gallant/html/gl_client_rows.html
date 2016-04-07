@@ -7,3 +7,13 @@
         <button class="btn-default small_edit_button" ng-click="updateLastContacted($index)">Update Contact Date</button>
     </td>
 </tr>
+<tr ng-show="!clients">
+    <td colspan="5">
+        <img class="table-loading" src="/static/img/loading.gif">
+    </td>
+</tr>
+<tr ng-show="clients && clients.length == 0">
+    <td colspan="5">
+        No clients yet.
+    </td>
+</tr>

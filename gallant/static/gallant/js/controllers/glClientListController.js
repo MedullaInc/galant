@@ -2,8 +2,6 @@ app = angular.module('gallant.controllers.glClientListController', ['gallant.ser
 
 app.controller('glClientListController', ['$scope', '$http', '$window', 'Client',
     function ($scope, $http, $window, Client) {
-        $scope.clients = [];
-
         Client.query().$promise.then(function (clients) {
             $scope.clientsSafe = clients;
         });

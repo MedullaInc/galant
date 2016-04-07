@@ -63,7 +63,7 @@ describe('qtQuoteListController', function () {
         $controller('qtQuoteListController', {$scope: $scope});
         $scope.init(url, url);
         $rootScope.$apply();
-        $scope.quotes = $scope.quotes;
+        $scope.quotes = [];
         $scope.quote = $scope.quotes[0];
     });
  
