@@ -1,6 +1,6 @@
-<div class="enclosed">
+<div ng-class="sectionInclude == null && sectionExclude == null ? 'enclosed' : '' ">
 
-    <h2 class="section_title">
+    <h2 class="section_title" ng-hide="sectionInclude != null || sectionExclude != null">
         Quote Sections
     </h2>
 
@@ -8,11 +8,11 @@
 
     <ul data-as-sortable="dragControlListeners" data-ng-model="quote.sections" is-disabled="quoteform.$visible">
         <li data-ng-repeat="section in quote.sections" data-as-sortable-item>
-            <div id="section_{{$index}}" class="row">
+            <div id="section_{{$index}}" class="row" ng-hide="section.name == sectionExclude || ( sectionInclude != null && section.name != sectionInclude )">
 
                 <div class="col-lg-12">
 
-                    <div class="row">
+                    <div class="row" ng-hide="sectionInclude != null || sectionExclude != null">
                         <div class="col-lg-12" ng-click="isCollapsed = !isCollapsed">
                             <p id="name_{{$index}}">
                                 {{ section.name }}:
@@ -53,7 +53,7 @@
                         </div>
 
                     </div>
-                    <hr/>
+                    <hr ng-hide="sectionInclude != null || sectionExclude != null" />
                 </div>
 
             </div>

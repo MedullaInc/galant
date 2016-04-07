@@ -12,9 +12,18 @@ app.directive('qtSectionTable', ['Section', function (Section) {
                 }
             ],
             templateUrl: '/static/quotes/html/qt_quote_section_table.html',
-            link: function ($scope) {
+            link: function ($scope, $element, $attrs) {
 
+                $scope.sectionInclude = null;
+                $scope.sectionExclude = null;
 
+                if ( $attrs.sectionInclude != null ) {
+                    $scope.sectionInclude = $attrs.sectionInclude;
+                }
+
+                if ( $attrs.sectionExclude != null ) {
+                    $scope.sectionExclude = $attrs.sectionExclude;
+                }
 
                 $scope.showSection = function (section){
                     if($scope.idType == "token"){

@@ -43,7 +43,7 @@ app.directive('qtClient', ['Quote', function (Quote) {
                 });
 
                 }],
-        templateUrl: '/static/quotes/html/qt_quote_form.html',
+        templateUrl: '/static/quotes/html/qt_client_quote_form.html',
         link: function ($scope) {}
     };
     }]);

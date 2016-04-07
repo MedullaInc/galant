@@ -198,7 +198,7 @@ class QuoteClientSerializer(QuoteSerializer):
         for service_data in services_data:
             service_id = service_data.get('id', None)
             if service_id:
-                service_instance = q.Service.objects.get_for(user, 'change', pk=service_id)
+                service_instance = instance.services.get_for(user, 'change', pk=service_id)
                 ss = s.ServiceClientSerializer(data=service_data, instance=service_instance)
                 ss.update(service_instance, service_data)
 
