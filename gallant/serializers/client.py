@@ -21,7 +21,7 @@ class ClientSerializer(serializers.ModelSerializer):
         for q in client.quote_set.all_for(self.context['request'].user)\
                 .prefetch_related(Prefetch('payments', to_attr='payments_arr')):
             for p in q.payments_arr:
-                if p.paid_on is None or p.paid_on > current_time:
+                if (p.paid_on is None or p.paid_on > current_time) and amt.currency == p.amount.currency:
                     amt += p.amount
         return {'amount': amt.amount, 'currency': str(amt.currency)}
 
