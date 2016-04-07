@@ -4,7 +4,12 @@
     <td>{{ quote.name }}</td>
     <td>{{ quoteStatus[quote.status]  }}</td>
 </tr>
-<tr ng-if="quotes.length == 0">
+<tr ng-show="!quotes">
+    <td colspan="4">
+        <img class="table-loading" src="/static/img/loading.gif">
+    </td>
+</tr>
+<tr ng-show="quotes && quotes.length == 0">
     <td colspan="4">
         No quotes yet.
     </td>

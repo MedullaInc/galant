@@ -2,7 +2,6 @@ app = angular.module('quotes.controllers.qtQuoteListController', ['quotes.servic
 
 app.controller('qtQuoteListController', ['$scope', '$http', '$window', '$rootScope', 'Quote', 'QuoteTemplate', 'Client',
     function($scope, $http, $window, $rootScope, Quote, QuoteTemplate) {
-        $scope.quotes = [];
         $scope.quoteStatus = [];
         $scope.clients = [];
         
