@@ -1,5 +1,3 @@
-import datetime
-
 from django.core.urlresolvers import reverse
 from django.db.models.query import Prefetch
 from django.utils import timezone
