@@ -2197,6 +2197,14 @@ table.table-striped.table-bordered thead th, table.table-striped.table-bordered 
     font-size: 14px;
 }
 
+.table-loading {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 60px;
+    height: 60px;
+}
+
 #add_note_form, #form {
     padding-bottom: 20px;
 }
