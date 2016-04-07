@@ -1,17 +1,27 @@
 {% extends "base_sidebar.html" %}
 {% load bootstrap i18n %}
 
+{% block head_title %}
+    {% trans 'Answer Brief' %}
+{% endblock head_title %}
+
 {% block section_title %}
     {% trans 'Answer Brief' %}
 {% endblock %}
 
 {% block sidebar %}
+{% endblock %}
 
+{% block breadcrumbs %}
 {% endblock %}
 
 {% block center_content %}
-    <p id="title">{% trans "Title" %}: {{ object.title.get_text }}</p>
-
+    <p id="title">
+        {{ object.title.get_text }}
+    </p>
+    <p id="title">
+        {{ object.greeting.get_text | linebreaks }}
+    </p>
     <hr>
     <form id="form" class="form" method="post">
         {% csrf_token %}
