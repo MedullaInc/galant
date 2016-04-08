@@ -36,7 +36,7 @@ class PaymentSerializer(serializers.ModelSerializer):
         # Link payment to quote
         if quote_id:
             quote = get_one_or_404(user, 'change_quote', q.Quote, id=quote_id)
-            if quote.client and quote.client.currency == validated_data['amount'].currency:
+            if quote.client and quote.client.currency == validated_data['amount'].currency.code:
                 instance = super(PaymentSerializer, self).create(validated_data)
                 quote.payments.add(instance)
             else:

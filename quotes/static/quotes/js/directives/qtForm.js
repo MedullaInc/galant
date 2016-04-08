@@ -17,8 +17,8 @@ app.directive('qtQuoteForm', ['Quote', '$uibModal', function (Quote, $uibModal) 
             endpoint: '=?',
             language: '=?',
             forms: '=?',
-            boolTemplate: '=?',
-            idType: '=?',
+            boolTemplate: '@',
+            serviceCurrency: '@',
             deleteObject: '&',
             submit: '&',
         },
@@ -34,9 +34,6 @@ app.directive('qtQuoteForm', ['Quote', '$uibModal', function (Quote, $uibModal) 
                 $scope.validate = glValidate;
                 $scope.submitForm = $scope.submit();
 
-                $scope.idType = $attrs.idType;
-                $scope.boolTemplate = $attrs.boolTemplate;
-
                 Client.query().$promise.then(function (clients) {
                     $scope.clients = clients;
                 });
@@ -44,7 +41,6 @@ app.directive('qtQuoteForm', ['Quote', '$uibModal', function (Quote, $uibModal) 
                 Service.get().$promise.then(function (services) {
                     $scope.services = services;
                 });
-
 
                 Service.fields({}).$promise.then(function (fields) {
                     $scope.serviceFields = fields.type;
@@ -80,10 +76,11 @@ app.directive('qtQuoteForm', ['Quote', '$uibModal', function (Quote, $uibModal) 
                         $scope.service = service;
                         $scope.modalInstance.close();
                     } else {
+                        var currency = $attrs.serviceCurrency ? $attrs.serviceCurrency : "USD";
                         $scope.service = new Service();
                         $scope.service.description = {}
                         $scope.service.user = $scope.quote.user;
-                        $scope.service.cost = {amount: 0, currency: "USD"}
+                        $scope.service.cost = {amount: 0, currency: currency}
                     }
                     $scope.service.user = $scope.quote.user;
                     $scope.service.index = counter++;
@@ -94,7 +91,7 @@ app.directive('qtQuoteForm', ['Quote', '$uibModal', function (Quote, $uibModal) 
                     $scope.quote.services.push($scope.service);
                 };
 
-                if ($attrs.boolTemplate == "False") {
+                if ($scope.boolTemplate == "False") {
                     $scope.endpoint = Quote;
                 } else {
                     $scope.endpoint = QuoteTemplate;
@@ -108,7 +105,7 @@ app.directive('qtQuoteForm', ['Quote', '$uibModal', function (Quote, $uibModal) 
 
                         $scope.tempStatus = $scope.quote.status;
 
-                        if ($attrs.boolTemplate == "True") {
+                        if ($scope.boolTemplate == "True") {
                             $scope.quoteTemplate = {
                                 "quote": $scope.quote
                             };
@@ -140,7 +137,7 @@ app.directive('qtQuoteForm', ['Quote', '$uibModal', function (Quote, $uibModal) 
                         $scope.quote.sections = $filter('orderBy')($scope.quote.sections, 'index');
                         $scope.quote.client = parseInt($attrs.clientId);
                         $scope.tempStatus = $scope.quote.status;
-                        if ($attrs.boolTemplate != "True") {
+                        if ($scope.boolTemplate != "True") {
                             delete $scope.quote.id;
 
                             angular.forEach($scope.quote.sections, function (q) {
@@ -148,6 +145,9 @@ app.directive('qtQuoteForm', ['Quote', '$uibModal', function (Quote, $uibModal) 
                             });
                             angular.forEach($scope.quote.services, function (q) {
                                 delete q.id;
+                                if ($attrs.serviceCurrency) {
+                                    q.cost.currency = $attrs.serviceCurrency;
+                                }
                             });
 
                             if ($scope.quoteform.$show) {
@@ -204,7 +204,7 @@ app.directive('qtQuoteForm', ['Quote', '$uibModal', function (Quote, $uibModal) 
                 };
             }],
         templateUrl: '/static/quotes/html/qt_quote_form.html',
-        link: function ($scope) {
+        link: function ($scope, $element, $attrs) {
 
             /*  TODO validate selected client onbeforesave
              if($scope.newQuote){
@@ -271,14 +271,14 @@ app.directive('qtQuoteForm', ['Quote', '$uibModal', function (Quote, $uibModal) 
 
             /* show functions depending on status */
             $scope.showViews = function () {
-                if ($scope.idType != 'token') {
+                if ($attrs.idType != 'token' && $scope.boolTemplate != 'True') {
                     return true;
                 }
             };
 
             $scope.showEdit = function () {
                 if (( $scope.tempStatus == '0' || $scope.tempStatus == '1' )
-                    && $scope.idType != 'token') {
+                    && $attrs.idType != 'token') {
                     return true;
                 }
             };

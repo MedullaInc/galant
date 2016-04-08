@@ -69,7 +69,8 @@
         <div qt-quote-form quote-id="{{ object.pk |default_if_none:"" }}" quote="object" endpoint="objectEndpoint"
              language="currentLanguage" forms="forms" delete-object="deleteObject" submit="submitForm"
              client-id="{{ client.id }}" project-id="{{ project.id }}" quote-id="{{ quote.id|default_if_none:"" }}"
-             bool-template="False" template-id="{{ template_id }}" user-id="{{ user.id }}">
+             bool-template="False" template-id="{{ template_id }}" user-id="{{ user.id }}"
+             service-currency="{{ user.currency }}">
         </div>
     </div>
 
