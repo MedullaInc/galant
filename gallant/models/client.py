@@ -31,9 +31,20 @@ class ClientStatus(gf.ChoiceEnum):
     Blacklisted = 8
 
 
+class ClientReferral(gf.ChoiceEnum):
+    Search = 0
+    Paid_Advertisement = 1
+    Social_Media = 2
+    Client = 3
+    Networking = 4
+    Word_Of_Mouth = 5
+    Other = 6
+
+
 class Client(UserModel):
     name = m.CharField(max_length=255)
     email = m.EmailField()
+    company = m.CharField(max_length=255, blank=True)
     contact_info = m.ForeignKey(ContactInfo, null=True, blank=True)
 
     type = m.CharField(max_length=2, choices=ClientType.choices(), blank=True)
@@ -43,6 +54,8 @@ class Client(UserModel):
     language = m.CharField(max_length=7, choices=settings.LANGUAGES)
     currency = m.CharField(max_length=3, choices=CURRENCY_CHOICES, default='USD',)
     last_contacted = m.DateTimeField(null=True, blank=True)
+
+    referred_by = m.CharField(max_length=3, choices=ClientReferral.choices(), blank=True)
 
     notes = m.ManyToManyField(Note)
 

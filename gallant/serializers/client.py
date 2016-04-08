@@ -48,5 +48,6 @@ class ClientSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = g.Client
-        fields = ('id', 'user', 'name', 'email', 'contact_info', 'type', 'size', 'link',
-                  'status', 'language', 'currency', 'notes', 'money_owed', 'last_contacted')
+        fields = ('id', 'user', 'name', 'email', 'company', 'contact_info', 'type', 'size',
+                  'link', 'status', 'language', 'currency', 'notes', 'money_owed',
+                  'last_contacted', 'referred_by')
