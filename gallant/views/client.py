@@ -76,6 +76,7 @@ class ClientUpdate(View):
         note.save()
         obj.notes.add(note)
         obj.contact_info = contact_form.save()
+        obj.currency = obj.user.currency
         obj.save()
         messages.success(self.request, 'Client saved.')
         response = {'status': 0, 'redirect': reverse('client_detail', args=[obj.id])}

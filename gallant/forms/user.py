@@ -66,7 +66,7 @@ class CreateUserForm(forms.Form):
 class GallantUserForm(forms.ModelForm):
     class Meta:
         model = g.GallantUser
-        fields = ['name', 'company_name']
+        fields = ['name', 'company_name', 'currency']
 
 
 class ContactInfoForm(GallantNgModelForm):
