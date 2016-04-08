@@ -6,7 +6,7 @@
 
     <hr/>
 
-    <ul data-as-sortable="dragControlListeners" data-ng-model="quote.sections" is-disabled="quoteform.$visible">
+    <ul data-as-sortable="dragControlListeners" data-ng-model="quote.sections">
         <li data-ng-repeat="section in quote.sections" data-as-sortable-item>
             <div id="section_{{$index}}" class="row" ng-hide="section.name == sectionExclude || ( sectionInclude != null && section.name != sectionInclude )">
 
