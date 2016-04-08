@@ -1,4 +1,5 @@
 from datetime import timedelta
+from unittest.case import skip
 
 from django.core.urlresolvers import reverse
 from django.utils import timezone
@@ -55,7 +56,7 @@ class CalendrTest(browser.SignedInTest):
 
         submit_task = b.find_element_by_css_selector('#submitTask')
         self.assertTrue(submit_task)
-    
+
     def test_can_edit_project(self):
         s = autofixture.create_one('calendr.Task', generate_fk=True,
                                    field_values={'user': self.user})
@@ -73,6 +74,7 @@ class CalendrTest(browser.SignedInTest):
         timeline_view = b.find_element_by_class_name('fc-timelineWeek-view')
         self.assertTrue(timeline_view)
 
+    @skip("TODO")
     def test_can_filter_task(self):
         b = self.browser
 

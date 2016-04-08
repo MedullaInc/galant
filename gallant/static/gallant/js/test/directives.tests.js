@@ -164,3 +164,43 @@ describe('glPayments', function() {
     });
 
 });
+
+describe('glProjectList', function() {
+    var $rootScope;
+    var $compile;
+    var $scope;
+
+    beforeEach(function () {
+        module('gallant.services.glServices', function($provide) {
+            $provide.factory('Project', function ($q) {
+                var Project = {};
+                return Project;
+            });
+        });
+
+        module('gallant.directives.glProjectList');
+        module('staticNgTemplates');
+
+        inject(function (_$rootScope_, _$compile_) {
+            // The injector unwraps the underscores (_) from around the parameter names when matching
+            $rootScope = _$rootScope_;
+            $compile = _$compile_;
+        });
+
+        $scope = $rootScope.$new();
+    });
+
+    describe('glProjectList', function() {
+
+        var element;
+
+        beforeEach(function() {
+            element = $compile('<div gl-project-list=""></div>')($scope);
+            $scope.$digest();
+        });
+
+        it('compiles', function () {
+            expect(element.html().substring(0, 6)).toEqual('<div c');
+        });
+    });
+});

@@ -10,6 +10,9 @@ var app = angular.module('gallant', [
         'calendr.controllers.clCalendrController',
         'calendr.services.clServices',
         'gallant.services.glServices',
+        'gallant.directives.glProjectList',
+        'calendr.directives.clTaskList',
+        'ui.bootstrap.tabs',
     ])
     .config(['$httpProvider', /* istanbul ignore next  */ function ($httpProvider) {
         $httpProvider.defaults.headers.common['X-CSRFToken'] = $.cookie("csrftoken");

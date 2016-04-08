@@ -28,6 +28,8 @@
     </script>
 {% endblock %}
 
+{% block extra_wrapper_attrs %} ng-app="gallant" {% endblock %}
+
 {% block extra_head %}
     {{ block.super }}
     <div id="add_task" class="modal fade" role="dialog">
@@ -55,7 +57,7 @@
 
 {% block content_div %}
     {% verbatim %}
-        <div ng-app="gallant" id="calendar_container">
+        <div id="calendar_container">
             <section id="directives-calendar" ng-controller="clCalendrController">
 
                 <div class="row">
@@ -67,16 +69,9 @@
                 </div>
 
                 <div class="row">
-                    <div class="has-feedback form-group col-lg-3">
-                        <label class="control-label">Filter Resources by Project</label>
-                        <select ng-change="projectChanged(currentProject)" ng-model="currentProject" class="form-control"
-                                ng-options="project.id as project.name for project in projects">
-                            <option ng-selected="" value="">All Projects</option>
-                        </select>
-                    </div>
 
                     <div class="form-group col-lg-4">
-                        <label class="control-label">Filter by Date</label>
+                        <label class="control-label">View</label>
                         <br/>
 
                         <div class="btn-group date-buttons">
@@ -86,7 +81,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group col-lg-3">
+                    <div class="form-group col-lg-offset-4 col-lg-4 col-lg-pull-right">
                         <label class="control-label">&nbsp;</label>
                         <br/>
 
@@ -96,15 +91,6 @@
                                 <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
                             </span>
                         </p>
-                    </div>
-
-                    <div class="form-group col-lg-2 col-lg-pull-right">
-                        <label class="control-label">&nbsp;</label>
-                        <br/>
-
-                        <div class="btn-group">
-                            <button id="filterTask" class="btn btn-default" ng-click="openAsideModal()">My Task List</button>
-                        </div>
                     </div>
                 </div>
 
@@ -119,6 +105,15 @@
 
 
     {% endverbatim %}
+    <br>
+    <uib-tabset active="active">
+        <uib-tab index="0" heading="Projects">
+            <div gl-project-list></div>
+        </uib-tab>
+        <uib-tab index="1" heading="My Tasks">
+            <div cl-task-list></div>
+        </uib-tab>
+    </uib-tabset>
 {% endblock %}
 
 {% block footer_div %}
