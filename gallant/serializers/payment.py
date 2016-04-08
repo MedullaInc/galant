@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from django.db.models import Prefetch
 from django.utils import timezone
 from gallant.utils import get_one_or_404
@@ -30,13 +31,18 @@ class PaymentSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         user = self.context['request'].user
         validated_data.update({'user': user})
-        instance = super(PaymentSerializer, self).create(validated_data)
+        quote_id = self.context['request'].data.get('quote_id', None)
 
         # Link payment to quote
-        if self.context['request'].data['quote_id']:
-            quote = get_one_or_404(user, 'change_quote', q.Quote, id=self.context['request'].data['quote_id'])
-            quote.payments.add(instance)
-            quote.save()
+        if quote_id:
+            quote = get_one_or_404(user, 'change_quote', q.Quote, id=quote_id)
+            if quote.client and quote.client.currency == validated_data['amount'].currency:
+                instance = super(PaymentSerializer, self).create(validated_data)
+                quote.payments.add(instance)
+            else:
+                raise ValidationError('Payment currency must match quote currency.')
+        else:
+            instance = super(PaymentSerializer, self).create(validated_data)
 
         return instance
 
