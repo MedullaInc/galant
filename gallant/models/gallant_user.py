@@ -4,6 +4,7 @@ from custom_user.models import AbstractEmailUser, EmailUserManager
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
 from django.db import models as m
+from djmoney.settings import CURRENCY_CHOICES
 from guardian.utils import get_user_obj_perms_model, get_group_obj_perms_model
 from polymorphic import PolymorphicModel
 from guardian.shortcuts import assign_perm, get_objects_for_user, get_perms_for_model
@@ -40,6 +41,7 @@ class GallantUser(AbstractEmailUser):
     """
     name = m.CharField(max_length=255)
     company_name = m.CharField(max_length=255, blank=True)
+    currency = m.CharField(max_length=3, choices=CURRENCY_CHOICES, default='USD',)
     contact_info = m.ForeignKey(ContactInfo, null=True)
 
     """
