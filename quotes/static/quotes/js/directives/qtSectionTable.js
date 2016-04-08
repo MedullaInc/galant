@@ -2,7 +2,7 @@ app = angular.module('quotes.directives.qtSectionTable', [
     'quotes.services.qtServices',
     ]);
 
-app.directive('qtSectionTable', ['Section', function (Section) {
+app.directive('qtSectionTable', ['$window', 'Section', function ($window, Section) {
         return {
             restrict: 'A',
             scope: true,
@@ -26,7 +26,7 @@ app.directive('qtSectionTable', ['Section', function (Section) {
                 }
 
                 $scope.showSection = function (section){
-                    if($scope.idType == "token"){
+                    if($scope.idType == 'token'){
                         id = section.id;
                         section.views = section.views+1;
                         Section.update({id: id, user: $scope.quote.user}, section);
@@ -34,7 +34,9 @@ app.directive('qtSectionTable', ['Section', function (Section) {
                 }
 
                 $scope.removeSection = function (index) {
-                    $scope.quote.sections.splice(index, 1);
+                    if ($window.confirm('Remove section?')) {
+                        $scope.quote.sections.splice(index, 1);
+                    }
                 };
 
             }

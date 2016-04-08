@@ -2,7 +2,7 @@ app = angular.module('quotes.directives.qtServiceTable', [
     'quotes.services.qtServices',
     ]);
 
-app.directive('qtServiceTable', ['Service', function (Service) {
+app.directive('qtServiceTable', ['$window', 'Service', function ($window, Service) {
         return {
             restrict: 'A',
             scope: true,
@@ -33,7 +33,9 @@ app.directive('qtServiceTable', ['Service', function (Service) {
                 }
 
                 $scope.removeService = function (index) {
-                    $scope.quote.services.splice(index, 1);
+                    if ($window.confirm('Remove service?')) {
+                        $scope.quote.services.splice(index, 1);
+                    }
                 };
 
                 $scope.getTotal = function () {

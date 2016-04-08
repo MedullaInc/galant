@@ -18,6 +18,7 @@ app.directive('qtQuoteForm', ['Quote', '$uibModal', function (Quote, $uibModal) 
             language: '=?',
             forms: '=?',
             boolTemplate: '@',
+            idType: '@',
             serviceCurrency: '@',
             deleteObject: '&',
             submit: '&',
@@ -271,14 +272,14 @@ app.directive('qtQuoteForm', ['Quote', '$uibModal', function (Quote, $uibModal) 
 
             /* show functions depending on status */
             $scope.showViews = function () {
-                if ($attrs.idType != 'token' && $scope.boolTemplate != 'True') {
+                if ($scope.idType != 'token' && $scope.boolTemplate != 'True') {
                     return true;
                 }
             };
 
             $scope.showEdit = function () {
                 if (( $scope.tempStatus == '0' || $scope.tempStatus == '1' )
-                    && $attrs.idType != 'token') {
+                    && $scope.idType != 'token') {
                     return true;
                 }
             };

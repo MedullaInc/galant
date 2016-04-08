@@ -71,7 +71,7 @@ describe('qtForm', function () {
         });
         module('quotes.directives.qtForm', function ($provide) {
             $provide.value('$uibModal', {open: function () {}});
-            $provide.value('$window', {location: {href: null}});
+            $provide.value('$window', {location: {href: null}, confirm: function() { return true; }});
         });
         inject(function (_$rootScope_, _$compile_, _$window_) {
             // The injector unwraps the underscores (_) from around the parameter names when matching

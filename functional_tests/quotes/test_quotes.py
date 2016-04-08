@@ -190,6 +190,8 @@ class QuotesSignedInTest(browser.SignedInTest):
         q = get_blank_quote_autofixture(self.user)
         b.get(self.live_server_url + reverse('quote_detail', args=[q.id]))
 
+        self.disable_angular_popups(b)
+
         browser.wait().until(lambda driver: driver.find_element_by_id('section_0'))
         add_section = b.find_element_by_id('add_section')
         add_section.click()

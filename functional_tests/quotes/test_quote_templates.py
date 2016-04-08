@@ -3,6 +3,7 @@ from functional_tests import browser
 import autofixture
 from unittest import skip
 from quotes import models as qm
+from selenium.common.exceptions import NoSuchElementException
 
 
 def get_blank_quote_autofixture(user):
@@ -59,7 +60,9 @@ class QuoteTemplatesTest(browser.SignedInTest):
 
         b.get(self.live_server_url + reverse('add_quote_template'))
         browser.wait().until(lambda driver: driver.find_element_by_id('quote_name')).send_keys('New quote')
-        browser.wait().until(lambda driver: driver.find_element_by_id('service0_delete')).click()
+        b.find_element_by_id('service_name_0').send_keys('1234')
+        b.find_element_by_id('quantity_0').send_keys('1')
+        b.find_element_by_xpath('//select[@id="type_0"]/option[2]').click()
 
         #b.find_element_by_xpath('//select[@e-name="-service-2-type"]/option[@value="3"]').click()
         self._add_language_and_text(b, True)
@@ -179,6 +182,10 @@ class QuoteTemplatesTest(browser.SignedInTest):
         b.find_element_by_id('text_0').send_keys('texto de intro prueba')
         b.find_element_by_id('title_1').send_keys('titulo de notas prueba')
         b.find_element_by_id('text_1').send_keys('texto de notas prueba')
+        try:
+            b.find_element_by_id('service_name_0').send_keys('1234')
+        except NoSuchElementException:
+            pass
         self._submit_and_check(b, redirect)
 
         new_tab = browser.wait().until(lambda driver: driver.find_element_by_id('es_tab'))

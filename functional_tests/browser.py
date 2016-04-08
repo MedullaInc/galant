@@ -127,6 +127,19 @@ class BrowserTest(StaticLiveServerTestCase):
         b.execute_script("window.alert = function(){}")
         b.execute_script("window.onbeforeunload = function(){}")
 
+    def disable_angular_popups(self, b):
+        b.execute_script('''
+            var elem = angular.element(document.querySelector('[ng-controller]'));
+            var injector = elem.injector();
+            var w = injector.get('$window');
+
+            w.confirm = function() { return true; };
+            w.alert = function() { return true; };
+            w.onbeforeunload = function() { return true; };
+            elem.scope().$apply();
+        ''')
+
+
     def save_snapshot(self, prefix=SNAP_PREFIX):  # pragma: no cover
         save_driver_snapshot(instance(), prefix)
 
