@@ -7,7 +7,6 @@
 
 {% block scripts %}
     {{ block.super }}
-    <script src="{% static "js/Chart.min.js" %}"></script>
     <script src="{% static "js/angular.js" %}"></script>
     <script src="{% static "js/angular-resource.js" %}"></script>
     <script src="{% static "js/angular-animate.js" %}"></script>
@@ -15,6 +14,8 @@
     <script src="{% static "djng/js/django-angular.js" %}"></script>
     <script src="{% static "js/gallant.js" %}"></script>
     <script src="{% static "js/quotes.js" %}"></script>
+    <script src="{% static "js/Chart.min.js" %}"></script>
+    <script src="{% static "js/angular-chart.js" %}"></script>
 {% endblock %}
 
 {% block extra_wrapper_attrs %} ng-app="glClientPayments" {% endblock %}
@@ -174,12 +175,11 @@
                     </a>
                 </p>
             </div>
-            <div class="enclosed chart_box hidden">
+            <div class="enclosed chart_box">
                 <h2 class="chart_title">{% trans 'Work Summary' %}</h2>
 
-                <div class="chart">
-                    <canvas id="work_chart"></canvas>
-                </div>
+                <canvas id="doughnut" gl-client-money-chart class="chart chart-doughnut" chart-data="data" chart-labels="labels">
+                </canvas>
 
                 <div class="chart_labels" id="work_chart_labels">
                     <p>
@@ -204,7 +204,7 @@
                     </a>
                 </p>
             </div>
-            <div class="enclosed chart_box hidden">
+            <div class="enclosed chart_box">
                 <h2 class="chart_title">{% trans 'Money Summary' %}</h2>
 
                 <div class="chart">
@@ -455,40 +455,17 @@
             }
         ]
 
-        // Examples based on:
-        // http://www.chartjs.org/docs/#doughnut-pie-chart-example-usage
+        var highestBox = 0;
 
-        if (work_data[0].value == 0 && work_data[1].value == 0 && work_data[2].value == 0 && work_data[3].value == 0) {
-            $(".enclosed.welcome_box").removeClass('hidden');
-        } else if ( $("#work_chart").length != 0 && $("#money_chart").length != 0 ) {
-            $(".enclosed.chart_box").removeClass('hidden');
+        $('.chart_box').each(function () {
+            if ($(this).height() > highestBox) {
+                highestBox = $(this).height() + 60;
+            }
+        });
 
-            var work = $("#work_chart").get(0).getContext("2d");
-            var work_pie_chart = new Chart(work).Doughnut(work_data, {animateScale: false, animateRotate: true});
-
-            var money = $("#money_chart").get(0).getContext("2d");
-            var money_pie_chart = new Chart(money).Doughnut(money_data, {animateRotate: false, animateScale: true});
-
-            work_data.forEach(function (data) {
-                $('#work_chart_labels').append('<p>' + data.value + ' ' + data.label + '</p>');
-            });
-
-            money_data.forEach(function (data) {
-                $('#money_chart_labels').append('<p>$' + data.value + ' ' + data.label + '</p>');
-            });
-
-            var highestBox = 0;
-
-            $('.chart_box').each(function () {
-                if ($(this).height() > highestBox) {
-                    highestBox = $(this).height() + 60;
-                }
-            });
-
-            $('.chart_box').each(function () {
-                $(this).css({'height': highestBox});
-            });
-        }
+        $('.chart_box').each(function () {
+            $(this).css({'height': highestBox});
+        });
 
     </script>
 {% endblock %}
