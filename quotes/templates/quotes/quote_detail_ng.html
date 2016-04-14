@@ -1,6 +1,7 @@
 {% extends "base_sidebar_enclosed.html" %}
 {% load bootstrap i18n %}
 {% load static %}
+{% load gallant_tags %}
 
 {% block scripts %}
     {{ block.super }}
@@ -23,17 +24,20 @@
     <link rel="stylesheet" href="{% static "css/ng-sortable.style.min.css" %}">
     <link rel="stylesheet" href="{% static "css/ng-sortable.min.css" %}">
     <style>
-        [name="name"]{
-           width: 110px;
+        [name="name"] {
+            width: 110px;
         }
-        [name="quantity"]{
-           width: 70px;
+
+        [name="quantity"] {
+            width: 70px;
         }
-        [name="amount"]{
-           width: 70px;
+
+        [name="amount"] {
+            width: 70px;
         }
+
         .as-sortable-item {
-           border: 0px;
+            border: 0px;
         }
 
     </style>
@@ -52,13 +56,23 @@
 
 
 {% block sidebar %}
+    {% if object.client.email and object.status == '0' or object.status == '5' %}
+        {% objects_for object.projects as projects %}
+        {% if projects|length == 0 %}
+            <a>
+                <button id="add_project_button" type="button" class="btn btn-default sidebar">
+                    {% trans "Add New Project" %}
+                </button>
+            </a>
+        {% endif %}
+    {% endif %}
 
     {% if object.client.email and object.status == '0' or object.status == '1' %}
         <form method="post" action="{% url 'send_quote' pk=object.id %}">
             {% csrf_token %}
-                <button type="submit" class="btn btn-default sidebar" id="send_quote">
-                    {% trans "Send to Client" %}
-                </button>
+            <button type="submit" class="btn btn-default sidebar" id="send_quote">
+                {% trans "Send to Client" %}
+            </button>
         </form>
     {% endif %}
 
@@ -89,21 +103,56 @@
         <div qt-quote-form quote-id="{{ object.pk }}" quote="object" endpoint="objectEndpoint"
              language="currentLanguage" forms="forms" delete-object="deleteObject"
              client-id="{{ client.id }}" project-id="{{ project.id }}" quote-id="{{ quote.id }}"
-             template-id="{{ template_id }}" bool-template="False" id-type="{{id_type}}" submit="submitForm"
+             template-id="{{ template_id }}" bool-template="False" id-type="{{ id_type }}" submit="submitForm"
              service-currency="{{ user.currency }}">
         </div>
 
-        <div id="form_actions" ng-if="{{id_type}} != 'token'">
-          <div class="row">
-              <div class="col-lg-12">
-                  <div class="form-actions">
-                      {% block form_actions %}
-                      {% endblock %}
-                  </div>
-              </div>
-          </div>
-          </div>
+        <div id="form_actions" ng-if="{{ id_type }} != 'token'">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="form-actions">
+                        {% block form_actions %}
+                        {% endblock %}
+                    </div>
+                </div>
+            </div>
+        </div>
 
     </div>
 
+{% endblock %}
+
+{% block extra_body %}
+    <div id="quote_select" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h2 class="section_title">Select Quote</h2>
+                    <p>New projects must be linked to a quote. Please select an unlinked quote.</p>
+                </div>
+                <div class="modal-body" style="height: 500px; overflow: auto;">
+                    {% objects_for object.client.quote_set as accepted_quotes %}
+                    {% with object_list=accepted_quotes %}
+                        {% include "quotes/quote_table.html" %}
+                    {% endwith %}
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $('#add_project_button').click(function () {
+            $('#quote_select').modal('show');
+        });
+
+        $('.table .project_row').click(function () {
+            window.location.href = "{% url 'project_detail' %}" + $(this).attr('data-rel')
+        });
+
+        $('.table .quote_row').click(function (e) {
+            window.location.href = "{% url 'add_project' %}" + $(this).attr('data-rel');
+        });
+    </script>
 {% endblock %}

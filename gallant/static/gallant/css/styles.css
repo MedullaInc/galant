@@ -2914,3 +2914,20 @@ li.row {
 }
 
 /* End Table List*/
+
+/* Charts */
+
+.tc-chart-js-legend li span {
+	width: 50px;
+	height: 25px;
+	display: block;
+	float: left;
+	clear: left;
+	margin-right: 10px
+}
+
+.tc-chart-js-legend li {
+    margin-bottom: 10px;
+}
+
+/* End Charts */
