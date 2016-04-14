@@ -257,7 +257,7 @@ describe('glClientWorkChart', function() {
         angular.mock.module('gallant.services.glServices', function($provide) {
             $provide.factory('Service', function ($q) {
                 var Service = jasmine.createSpyObj('Service', ['query']);
-                Service.query.and.returnValue({$promise: $q.when([])});
+                Service.query.and.returnValue({$promise: $q.when([{status:0},{status:1},{status:2},{status:3},{status:4}])});
 
                 return Service;
             });
