@@ -22,6 +22,9 @@ def get_one_or_404(user, perm, klass, *args, **kwargs):
 
 
 class GallantObjectPermissions(DjangoModelPermissions):
+    """
+    Permissions for retrieve / update
+    """
     perms_map = {
         'GET': ['view_%(model_name)s'],
         'OPTIONS': [],
@@ -48,6 +51,9 @@ class GallantObjectPermissions(DjangoModelPermissions):
 
 
 class GallantViewSetPermissions(DjangoModelPermissions):
+    """
+    Permissions for full viewset
+    """
     perms_map = {
         'GET': ['view_%(model_name)s'],
         'OPTIONS': [],

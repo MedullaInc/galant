@@ -29,6 +29,7 @@ from rest_framework.routers import SimpleRouter
 router = SimpleRouter(trailing_slash=False)
 router.register(r'api/client', views.ClientsAPI, 'api-client')
 router.register(r'api/service', views.ServiceAPI, 'api-service')
+router.register(r'api/project', views.ProjectsAPI, 'api-project')
 
 urlpatterns = i18n_patterns(
     # ==============
@@ -101,7 +102,6 @@ urlpatterns = i18n_patterns(
         name='api_client_detail'),
     url(r'^api/note/(?P<pk>[0-9]+)$', login_required(gallant.views.NoteDetailAPI.as_view()), name='api_note_detail'),
     url(r'^api/users/?$', login_required(gallant.views.UsersAPI.as_view()), name='api_users'),
-    url(r'^api/projects/?$', login_required(gallant.views.ProjectsAPI.as_view()), name='api_projects'),
 
     url(r'^register/(?P<pk>[0-9]+)', gallant.views.Register.as_view(), name='register'),
     url(r'^account/add/', login_required(gallant.views.AccountAdd.as_view()), name='add_account'),
@@ -116,6 +116,10 @@ urlpatterns += patterns('',
 urlpatterns += url(r'^api/client/fields',
                    gallant.views.client_fields_json,
                    name='api-client-fields'),
+
+urlpatterns += url(r'^api/project/fields',
+                   gallant.views.project_fields_json,
+                   name='api-project-fields'),
 
 urlpatterns += url(r'^api/service/fields',
                    gallant.views.service_fields_json,
