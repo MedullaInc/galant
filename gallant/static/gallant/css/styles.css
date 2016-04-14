@@ -2931,3 +2931,11 @@ li.row {
 }
 
 /* End Charts */
+
+/* Tooltips */
+
+.help-tooltip {
+    font-size: 20px;
+}
+
+/* End Tooltips*/

@@ -14,7 +14,10 @@
     </div>
 
     <div class="enclosed chart_box" ng-if="payments.length > 0">
-        <h2 class="chart_title">Money Summary</h2>
+        <h2 class="chart_title">
+            Money Summary
+            <span class="pull-right glyphicon glyphicon-question-sign help-tooltip" uib-tooltip="Shows amount of money from all client payments according to status." tooltip-placement="top-right"></span>
+        </h2>
         <canvas tc-chartjs-doughnut chart-options="money_options" chart-data="money_data" auto-legend></canvas>
     </div>
 
