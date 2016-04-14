@@ -20,6 +20,10 @@ app.directive('glProjectList', ['$window', '$uibModal', 'Project', function ($wi
                 });
                 return 0;
             }
+
+            $scope.cancel = function () {
+                $scope.modalInstance.dismiss('cancel');
+            }
         }
     };
 }]);
