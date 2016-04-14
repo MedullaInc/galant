@@ -1,0 +1,22 @@
+<div class="col-lg-6">
+
+    <div class="enclosed welcome_box" ng-if="work.length == 0">
+        <h2 class="chart_title">Send a Brief</h2>
+        <p>
+            Briefs help understand client needs. You can customize briefs with questions and save them as templates. Once a brief is sent, we'll notify your client & let you know when they respond.
+        </p>
+        <br/>
+        <p>
+            <a>
+                <button type="button" class="btn btn-default sidebar add_brief" id="add_brief">
+                    New Brief
+                </button>
+            </a>
+        </p>
+    </div>
+    <div class="enclosed chart_box" ng-if="work.length > 0">
+        <h2 class="chart_title">Work Summary</h2>
+        <canvas tc-chartjs-doughnut chart-options="work_options" chart-data="work_data" auto-legend></canvas>
+    </div>
+
+</div>

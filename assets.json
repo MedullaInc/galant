@@ -20,7 +20,8 @@
     "./node_modules/jquery/dist/*",
     "./node_modules/angular-smart-table/dist/*",
     "./node_modules/ng-sortable/dist/ng-sortable?(.min).js",
-    "./node_modules/fullcalendar-scheduler/dist/scheduler?(.min).js"
+    "./node_modules/fullcalendar-scheduler/dist/scheduler?(.min).js",
+    "./node_modules/tc-angular-chartjs/dist/*"
   ],
   "css": [
     "./node_modules/bootstrap/dist/css/*",

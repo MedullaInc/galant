@@ -257,3 +257,89 @@ describe('glProjectAdd', function() {
         });
     });
 });
+
+describe('glClientMoneyChart', function() {
+    var $rootScope;
+    var $compile;
+    var $scope;
+
+    beforeEach(function () {
+        angular.mock.module('gallant.services.glServices', function($provide) {
+            $provide.factory('Payment', function ($q) {
+                var Payment = jasmine.createSpyObj('Payment', ['query']);
+                Payment.query.and.returnValue({$promise: $q.when([{paid_on: new Date(), amount: {amount: 1.0}},{paid_on: null, due: new Date()+10, amount: {amount: 1.0}},{paid_on: null, due: new Date()-10, amount: {amount: 1.0}}])});
+
+                return Payment;
+            });
+        });
+
+        angular.mock.module('gallant.directives.glClientMoneyChart');
+        angular.mock.module('staticNgTemplates');
+        angular.module('tc.chartjs',[]);
+
+        angular.mock.inject(function (_$rootScope_, _$compile_) {
+            // The injector unwraps the underscores (_) from around the parameter names when matching
+            $rootScope = _$rootScope_;
+            $compile = _$compile_;
+        });
+
+        $scope = $rootScope.$new();
+    });
+
+    describe('glClientMoneyChart', function() {
+
+        var element;
+
+        beforeEach(function() {
+            element = $compile('<span gl-client-money-chart=""></span>')($scope);
+            $scope.$digest();
+        });
+
+        it('compiles', function () {
+            expect(element.html().substring(0, 6)).toEqual('<div c');
+        });
+    });
+});
+
+describe('glClientWorkChart', function() {
+    var $rootScope;
+    var $compile;
+    var $scope;
+
+    beforeEach(function () {
+        angular.mock.module('gallant.services.glServices', function($provide) {
+            $provide.factory('Service', function ($q) {
+                var Service = jasmine.createSpyObj('Service', ['query']);
+                Service.query.and.returnValue({$promise: $q.when([])});
+
+                return Service;
+            });
+        });
+
+        angular.mock.module('gallant.directives.glClientWorkChart');
+        angular.mock.module('staticNgTemplates');
+        angular.module('tc.chartjs',[]);
+
+        angular.mock.inject(function (_$rootScope_, _$compile_) {
+            // The injector unwraps the underscores (_) from around the parameter names when matching
+            $rootScope = _$rootScope_;
+            $compile = _$compile_;
+        });
+
+        $scope = $rootScope.$new();
+    });
+
+    describe('glClientWorkChart', function() {
+
+        var element;
+
+        beforeEach(function() {
+            element = $compile('<span gl-client-work-chart=""></span>')($scope);
+            $scope.$digest();
+        });
+
+        it('compiles', function () {
+            expect(element.html().substring(0, 6)).toEqual('<div c');
+        });
+    });
+});

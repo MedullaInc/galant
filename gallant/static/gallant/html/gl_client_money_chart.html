@@ -1,0 +1,21 @@
+<div class="col-lg-6">
+
+    <div class="enclosed welcome_box" ng-if="payments.length == 0">
+        <h2 class="chart_title">Send a Quote</h2>
+        <p>
+            We'll help you build a custom quote for your client. Once your quote is sent, we'll let you know when they access it, and you'll be able to edit it to suit both your client and your needs.
+        </p>
+        <br/>
+        <p ng-controller="qtPopoverController" ng-init="init(addQuoteUrl, language, clientId)">
+            <a>
+                <button popover-placement="bottom" uib-popover-template="dynamicPopover.templateUrl" type="button" class="btn btn-default sidebar" popover-trigger="focus">New Quote</button>
+            </a>
+        </p>
+    </div>
+
+    <div class="enclosed chart_box" ng-if="payments.length > 0">
+        <h2 class="chart_title">Money Summary</h2>
+        <canvas tc-chartjs-doughnut chart-options="money_options" chart-data="money_data" auto-legend></canvas>
+    </div>
+
+</div>
