@@ -1,5 +1,6 @@
 from django.db.models.query import Prefetch
 from gallant.serializers.service import ServiceSerializer
+from gallant.utils import get_field_choices
 from rest_framework import serializers
 from gallant.models import Project
 from gallant import models as g
@@ -9,6 +10,8 @@ class ProjectSerializer(serializers.ModelSerializer):
     user = serializers.PrimaryKeyRelatedField(read_only=True)
     payments = serializers.SerializerMethodField()
     services = serializers.SerializerMethodField()
+    client = serializers.SerializerMethodField()
+    field_choices = serializers.SerializerMethodField()
 
     def get_payments(self, project):
         currency = ''
@@ -32,6 +35,16 @@ class ProjectSerializer(serializers.ModelSerializer):
 
         return ret
 
+    def get_client(self, project):
+        try:
+            quote = project.quote_set.all_for(self.context['request'].user)[0]
+            return quote.client.name
+        except IndexError:
+            return ''
+
+    def get_field_choices(self, project):
+        return get_field_choices(type(project))
+
     def get_fields(self, *args, **kwargs):
         fields = super(ProjectSerializer, self).get_fields(*args, **kwargs)
         fields['notes'] = serializers.PrimaryKeyRelatedField(
@@ -41,7 +54,7 @@ class ProjectSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Project
-        fields = ('id', 'user', 'name', 'status', 'notes', 'payments', 'services')
+        fields = ('id', 'user', 'name', 'status', 'notes', 'payments', 'services', 'client', 'field_choices')
 
     def create(self, validated_data):
         validated_data.update({'user': self.context['request'].user})

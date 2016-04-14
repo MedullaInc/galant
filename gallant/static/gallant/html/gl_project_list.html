@@ -33,20 +33,10 @@
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <td>Project 1</td>
-                <td>Kanye West</td>
-                <td>Pending_Assignment</td>
-            </tr>
-            <tr>
-                <td>Tight Logo</td>
-                <td>Wes Anderson</td>
-                <td>Assigned</td>
-            </tr>
-            <tr>
-                <td>Company Branding</td>
-                <td>Lil Wayne</td>
-                <td>Assigned</td>
+            <tr ng-repeat="project in projects">
+                <td>{{ project.name }}</td>
+                <td>{{ project.client }}</td>
+                <td>{{ project.field_choices.status[project.status] }}</td>
             </tr>
             </tbody>
         </table>
