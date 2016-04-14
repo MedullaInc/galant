@@ -42,3 +42,8 @@ class ProjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = Project
         fields = ('id', 'user', 'name', 'status', 'notes', 'payments', 'services')
+
+    def create(self, validated_data):
+        validated_data.update({'user': self.context['request'].user})
+
+        return super(ProjectSerializer, self).create(validated_data)

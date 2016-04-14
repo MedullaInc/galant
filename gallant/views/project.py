@@ -10,10 +10,10 @@ from gallant import forms
 from gallant import models as g
 from gallant.serializers.project import ProjectSerializer
 from quotes import models as q
-from gallant.utils import get_one_or_404, GallantObjectPermissions, get_field_choices
+from gallant.utils import get_one_or_404, GallantObjectPermissions, get_field_choices, GallantViewSetPermissions
 from rest_framework.permissions import IsAuthenticated
 from django.utils.translation import ugettext_lazy as _
-from rest_framework import generics
+from rest_framework import generics, viewsets
 
 
 class ProjectList(View):
@@ -181,11 +181,11 @@ def project_fields_json(request):
     return JsonResponse(get_field_choices(g.Project), safe=False)
 
 
-class ProjectsAPI(generics.ListAPIView):
+class ProjectsAPI(viewsets.ModelViewSet):
     model = g.Project
     serializer_class = ProjectSerializer
     permission_classes = [
-        IsAuthenticated
+        GallantViewSetPermissions
     ]
 
     def get_queryset(self):

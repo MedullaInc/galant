@@ -22,10 +22,10 @@ app.factory('Payment', function ($resource) {
 
 /* istanbul ignore next  */
 app.factory('Project', function ($resource) {
-    return $resource('/en/api/projects', {}, {
+    return $resource('/api/project/:id', {}, {
         fields: {
             method: 'GET',
-            url: '/api/projects/fields'
+            url: '/api/project/fields'
         },
     });
 });
