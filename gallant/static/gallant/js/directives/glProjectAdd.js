@@ -8,7 +8,11 @@ app.directive('glProjectAdd', ['$window', 'Project', function ($window, Project)
         restrict: 'A',
         scope: {
         },
-        controller: ['$scope', function ($scope) {}],
+        controller: ['$scope', function ($scope) {
+            Project.fields({}).$promise.then(function (fields) {
+                $scope.statusChoices = fields.status;
+            });
+        }],
         templateUrl: '/static/gallant/html/gl_project_add.html',
         link: function ($scope) {
         }

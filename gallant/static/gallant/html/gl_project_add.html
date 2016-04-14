@@ -9,12 +9,9 @@
     <div class="form-group">
         <label class="control-label  " for="id_status">Status</label>
         <div class=" ">
-            <select class=" form-control" id="id_status" name="status">
-                <option value="0">On_Hold</option>
-                <option value="1" selected="selected">Pending_Assignment</option>
-                <option value="2">Active</option>
-                <option value="3">Overdue</option>
-                <option value="4">Completed</option>
+            <select class=" form-control" id="id_status" name="status" ng-model="status"
+                    ng-options="key as val for (key, val) in statusChoices">
+                <option value="">Select Status...</option>
             </select>
         </div>
     </div>

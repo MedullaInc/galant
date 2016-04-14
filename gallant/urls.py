@@ -117,6 +117,10 @@ urlpatterns += url(r'^api/client/fields',
                    gallant.views.client_fields_json,
                    name='api-client-fields'),
 
+urlpatterns += url(r'^api/projects/fields',
+                   gallant.views.project_fields_json,
+                   name='api-project-fields'),
+
 urlpatterns += url(r'^api/service/fields',
                    gallant.views.service_fields_json,
                    name='api-service-fields'),

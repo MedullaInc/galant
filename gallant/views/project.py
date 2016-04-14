@@ -1,5 +1,6 @@
 from django.contrib import messages
 from django.db.models import Count
+from django.http.response import JsonResponse
 from django.views.generic import View
 from django.template.response import TemplateResponse
 from django.http import HttpResponseRedirect
@@ -9,7 +10,7 @@ from gallant import forms
 from gallant import models as g
 from gallant.serializers.project import ProjectSerializer
 from quotes import models as q
-from gallant.utils import get_one_or_404, GallantObjectPermissions
+from gallant.utils import get_one_or_404, GallantObjectPermissions, get_field_choices
 from rest_framework.permissions import IsAuthenticated
 from django.utils.translation import ugettext_lazy as _
 from rest_framework import generics
@@ -174,6 +175,10 @@ class ProjectDetailAPI(generics.RetrieveUpdateAPIView):
 
     def get_queryset(self):
         return self.model.objects.all_for(self.request.user)
+
+
+def project_fields_json(request):
+    return JsonResponse(get_field_choices(g.Project), safe=False)
 
 
 class ProjectsAPI(generics.ListAPIView):
