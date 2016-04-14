@@ -13,9 +13,9 @@ class ServiceSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Service
-        fields = ('id', 'user', 'name', 'description', 'cost', 'quantity', 'type', 'parent', 'notes', 'views', 'index')
+        fields = ('id', 'user', 'name', 'description', 'cost', 'quantity', 'type', 'parent', 'notes', 'views', 'index', 'status')
         extra_kwargs = {
-            'id': {'read_only': False, 'required': False},
+            'id': {'read_only': False, 'required': False}
         }
 
     def create(self, validated_data):

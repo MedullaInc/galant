@@ -144,4 +144,9 @@ class ServiceAPI(ModelViewSet):
     def get_queryset(self):
         quoteTemplates_qs = q.QuoteTemplate.objects.all_for(self.request.user).values_list('quote_id', flat=True)
         quotes_qs = q.Quote.objects.filter(pk__in=quoteTemplates_qs)
-        return self.model.objects.all_for(self.request.user).filter(quote__in=quotes_qs)
+        client_id = self.request.query_params.get('client_id', None)
+
+        if client_id:
+            return self.model.objects.all_for(self.request.user).filter(quote__client_id=client_id)
+        else:
+            return self.model.objects.all_for(self.request.user).filter(quote__in=quotes_qs)
