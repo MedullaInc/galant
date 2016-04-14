@@ -10,15 +10,13 @@ app.directive('glProjectList', ['$window', '$uibModal', 'Project', function ($wi
         scope: {
         },
         controller: ['$scope', function ($scope) {
-            $scope.projects = [
-                {name: 'Project 1', client: 'Kanye West', status: 0, field_choices: {status: ['Assigned']}},
-                {name: 'Tight Logo', client: 'Lil Wayne', status: 0, field_choices: {status: ['Assigned']}},
-                {name: 'Company Branding', client: 'Wes Anderson', status: 0, field_choices: {status: ['Assigned']}},
-            ];
+            Project.query().$promise.then(function (response) {
+                $scope.projects = response;
+            });
         }],
         templateUrl: '/static/gallant/html/gl_project_list.html',
         link: function ($scope) {
-            $scope.addProject = function() {
+            $scope.addProject = function () {
                 $scope.modalInstance = $uibModal.open({
                     scope: $scope,
                     animation: true,
