@@ -9,7 +9,9 @@ app.directive('glProjectAdd', ['$window', 'Project', function ($window, Project)
         scope: {
             project: '=',
             endpoint: '=',
-            submit: '&'
+            projects: '=',
+            modal: '=',
+            submit: '&',
         },
         controller: ['$scope', function ($scope) {
             $scope.project = new Project();

@@ -27,6 +27,11 @@ app.directive('glProjectList', ['$window', '$uibModal', 'Project', function ($wi
                 return 0;
             }
 
+            $scope.projectSaved = function (project) {
+                $scope.projects.push(project);
+                $scope.modalInstance.dismiss('cancel');
+            }
+
             $scope.cancel = function () {
                 $scope.modalInstance.dismiss('cancel');
             }

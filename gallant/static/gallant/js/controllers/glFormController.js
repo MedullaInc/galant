@@ -46,6 +46,9 @@ app.controller('glFormController', ['$scope', '$http', '$window', 'glAlertServic
                         window.location.href = response.redirect;
                     } else {
                         glAlertService.add('success', 'Saved.');
+
+                        if ($scope.onaftersave)
+                            $scope.onaftersave(response);
                     }
                 }, /* istanbul ignore next */ function (errorResponse) {
                     $scope.object.errors = errorResponse.data;
@@ -70,9 +73,11 @@ app.controller('glFormController', ['$scope', '$http', '$window', 'glAlertServic
             }
         };
 
-        $scope.init = function (currentLanguage, csrftoken) {
+        $scope.init = function (currentLanguage, csrftoken, onaftersave) {
             $scope.currentLanguage = currentLanguage;
-            $http.defaults.headers.post['X-CSRFToken'] = csrftoken;
+            if (csrftoken)
+                $http.defaults.headers.post['X-CSRFToken'] = csrftoken;
+            $scope.onaftersave = onaftersave;
         };
 
         $window.onload = function (e) {
