@@ -18,9 +18,7 @@ app.directive('glClientWorkChart', ['$window', 'Service', function ($window, Ser
 
             Service.query({client_id: $scope.clientId}).$promise.then(function (response) {
             });
-
-            console.log($scope.work.length);
-
+            
             $scope.work_data = [
                 {
                     value: 1,

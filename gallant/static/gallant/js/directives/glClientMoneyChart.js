@@ -9,7 +9,7 @@ app.directive('glClientMoneyChart', ['$window', 'Payment', function ($window, Pa
         scope: {
             addQuoteUrl: '@',
             language: '@',
-            clientId: '@',
+            clientId: '@'
         },
         controller: ['$scope', function ($scope) {
         }],
