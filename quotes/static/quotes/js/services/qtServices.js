@@ -46,14 +46,10 @@ app.factory("Quote", function ($resource) {
 /* istanbul ignore next  */
 app.factory("Service", function ($resource) {
 	//
-	return $resource("/api/service/fields", {}, {
+	return $resource("/api/service/:id", {}, {
         fields: {
             method: 'GET',
-        },
-        get: {
-          method: 'GET',
-          url: '/api/service ',
-          isArray: true
+			url: '/api/service/fields'
         },
         update: {
           method: 'PATCH',

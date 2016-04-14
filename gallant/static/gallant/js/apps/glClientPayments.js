@@ -5,6 +5,7 @@ var app = angular.module('glClientPayments', [
     'gallant.services.glServices',
     'gallant.controllers.glClientPaymentController',
     'gallant.directives.glPayments',
+    'gallant.directives.glClientWorkChart',
     'gallant.directives.glClientMoneyChart',
     'tc.chartjs',
     'quotes.controllers.qtPopoverController'
