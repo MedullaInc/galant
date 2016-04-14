@@ -168,6 +168,7 @@ describe('glPayments', function() {
 describe('glProjectList', function() {
     var $rootScope;
     var $compile;
+    var $injector;
     var $scope;
 
     beforeEach(function () {
@@ -178,13 +179,16 @@ describe('glProjectList', function() {
             });
         });
 
-        module('gallant.directives.glProjectList');
+        module('gallant.directives.glProjectList', function($provide) {
+            $provide.value('$uibModal', {open: function () {}});
+        });
         module('staticNgTemplates');
 
-        inject(function (_$rootScope_, _$compile_) {
+        inject(function (_$rootScope_, _$compile_, _$injector_) {
             // The injector unwraps the underscores (_) from around the parameter names when matching
             $rootScope = _$rootScope_;
             $compile = _$compile_;
+            $injector = _$injector_;
         });
 
         $scope = $rootScope.$new();
@@ -200,7 +204,56 @@ describe('glProjectList', function() {
         });
 
         it('compiles', function () {
-            expect(element.html().substring(0, 6)).toEqual('<div c');
+            expect(element.html().substring(0, 6)).toEqual('<scrip');
+        });
+
+        it('adds project', function () {
+            var $uibModal = $injector.get('$uibModal');
+            spyOn($uibModal, 'open');
+            element.isolateScope().addProject();
+            $scope.$apply();
+            expect($uibModal.open).toHaveBeenCalled();
+        });
+    });
+});
+
+describe('glProjectAdd', function() {
+    var $rootScope;
+    var $compile;
+    var $scope;
+
+    beforeEach(function () {
+        module('gallant.services.glServices', function($provide) {
+            $provide.factory('Project', function ($q) {
+                var Project = {};
+                return Project;
+            });
+        });
+
+        module('gallant.directives.glProjectAdd');
+
+        module('staticNgTemplates');
+
+        inject(function (_$rootScope_, _$compile_, _$injector_) {
+            // The injector unwraps the underscores (_) from around the parameter names when matching
+            $rootScope = _$rootScope_;
+            $compile = _$compile_;
+        });
+
+        $scope = $rootScope.$new();
+    });
+
+    describe('glProjectAdd', function() {
+
+        var element;
+
+        beforeEach(function() {
+            element = $compile('<div gl-project-add=""></div>')($scope);
+            $scope.$digest();
+        });
+
+        it('compiles', function () {
+            expect(element.html().substring(0, 6)).toEqual('<form ');
         });
     });
 });
