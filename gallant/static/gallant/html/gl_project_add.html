@@ -1,29 +1,35 @@
-<div class="form-group">
-    <label class="control-label  " for="id_name">Name</label>
-    <div class=" ">
-        <input class=" form-control" id="id_name" ng-model="project.name"
-               maxlength="255" name="name" type="text" required>
+<form>
+    <div class="row form-group">
+        <div class="col-lg-3">
+            <label>Project Name</label>
+        </div>
+        <div class="col-lg-9">
+            <input class=" form-control" id="id_name" ng-model="project.name"
+                   maxlength="255" name="name" type="text" required>
+        </div>
     </div>
-</div>
 
-<div class="form-group">
-    <label class="control-label  " for="id_status">Status</label>
-    <div class=" ">
-        <select class=" form-control" id="id_status" name="status" ng-model="project.status"
-                ng-options="key as val for (key, val) in statusChoices" required>
-            <option value="">Select Status...</option>
-        </select>
+    <div class="row form-group">
+        <div class="col-lg-3">
+            <label>Status</label>
+        </div>
+        <div class="col-lg-9">
+            <select class=" form-control" id="id_status" name="status" ng-model="project.status"
+                    ng-options="key as val for (key, val) in statusChoices" required>
+                <option value="" style="display: none;">Select Status...</option>
+            </select>
+        </div>
     </div>
-</div>
 
-<div id="form_actions">
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="form-actions">
-                <button id="create_submit" class="btn btn-default pull-left" ng-click="submitForm()">
-                    Save
-                </button>
+    <div id="form_actions">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="form-actions">
+                    <button id="create_submit" class="btn btn-default pull-left" ng-click="submitForm()">
+                        Save
+                    </button>
+                </div>
             </div>
         </div>
     </div>
-</div>
+</form>

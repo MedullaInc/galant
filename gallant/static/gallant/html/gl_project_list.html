@@ -1,14 +1,17 @@
 <script type="text/ng-template" id="addProjectModal.html">
-    <div class="modal-header">
+    <div class="modal-header" id="calendar_modal">
         <h2 class="section_title">Add Project</h2>
         <button type="button" class="close" data-dismiss="modal" ng-click="cancel()">&times;</button>
     </div>
-    <div class="modal-body">
-        <div ng-controller="glFormController" ng-init="init('', null, projectSaved)">
-            <div gl-project-add project="object" endpoint="objectEndpoint"
-                 submit="submitForm" projects="projects"></div>
+    <div class="container" id="calendar_modal">
+        <div class="modal-body">
+            <div ng-controller="glFormController" ng-init="init('', null, projectSaved)">
+                <div gl-project-add project="object" endpoint="objectEndpoint"
+                     submit="submitForm" projects="projects"></div>
+            </div>
         </div>
     </div>
+
 </script>
 
 <div class="col-lg-12 enclosed">
