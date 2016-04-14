@@ -11,6 +11,7 @@ var app = angular.module('gallant', [
         'calendr.services.clServices',
         'gallant.services.glServices',
         'gallant.directives.glProjectList',
+        'gallant.controllers.glFormController',
         'calendr.directives.clTaskList',
         'ui.bootstrap.tabs',
     ])

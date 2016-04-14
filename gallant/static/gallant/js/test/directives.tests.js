@@ -225,7 +225,8 @@ describe('glProjectAdd', function() {
     beforeEach(function () {
         module('gallant.services.glServices', function($provide) {
             $provide.factory('Project', function ($q) {
-                var Project = {};
+                var Project = function () {};
+                Project.fields = function () { return {$promise: $q.when([])}; };
                 return Project;
             });
         });
@@ -248,12 +249,12 @@ describe('glProjectAdd', function() {
         var element;
 
         beforeEach(function() {
-            element = $compile('<div gl-project-add=""></div>')($scope);
+            element = $compile('<div gl-project-add="" project="project" endpoint="endpoint"></div>')($scope);
             $scope.$digest();
         });
 
         it('compiles', function () {
-            expect(element.html().substring(0, 6)).toEqual('<form ');
+            expect(element.html().substring(0, 6)).toEqual('<div c');
         });
     });
 });

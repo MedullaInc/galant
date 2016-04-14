@@ -4,7 +4,9 @@
         <button type="button" class="close" data-dismiss="modal" ng-click="cancel()">&times;</button>
     </div>
     <div class="modal-body">
-        <div gl-project-add></div>
+        <div ng-controller="glFormController">
+            <div gl-project-add project="object" endpoint="objectEndpoint" submit="submitForm"></div>
+        </div>
     </div>
 </script>
 
