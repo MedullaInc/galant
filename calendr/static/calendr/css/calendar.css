@@ -211,7 +211,7 @@ button.btn.btn-default {
     text-decoration: none;
 }
 
-#calendar_modal .services .service_button {
+#calendar_modal .multidropdown_elements .multidropdown_button {
     -webkit-border-radius: 0px;
     -moz-border-radius: 0px;
     border-radius: 0px;
@@ -222,11 +222,11 @@ button.btn.btn-default {
     padding: 5px 10px 5px 10px;
 }
 
-#calendar_modal .services .col-lg-8 {
+#calendar_modal .multidropdown_elements .col-lg-8 {
     padding-right: 10px;
 }
 
-#calendar_modal .services .col-lg-1 {
+#calendar_modal .multidropdown_elements .col-lg-1 {
     padding-left: 0px;
 }
 

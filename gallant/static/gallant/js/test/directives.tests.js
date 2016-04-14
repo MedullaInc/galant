@@ -175,12 +175,13 @@ describe('glProjectList', function() {
         module('gallant.services.glServices', function($provide) {
             $provide.factory('Project', function ($q) {
                 var Project = {};
+                Project.query = function () { return { $promise: $q.when([]) }; };
                 return Project;
             });
         });
 
         module('gallant.directives.glProjectList', function($provide) {
-            $provide.value('$uibModal', {open: function () {}});
+            $provide.value('$uibModal', {open: function () { return { dismiss: function () {}}; }});
         });
         module('staticNgTemplates');
 
@@ -213,6 +214,23 @@ describe('glProjectList', function() {
             element.isolateScope().addProject();
             $scope.$apply();
             expect($uibModal.open).toHaveBeenCalled();
+        });
+
+        it('saves project', function () {
+            element.isolateScope().addProject();
+            spyOn(element.isolateScope().modalInstance, 'dismiss');
+            element.isolateScope().projectSaved({});
+            $scope.$apply();
+            expect(element.isolateScope().projects.length).toEqual(1);
+            expect(element.isolateScope().modalInstance.dismiss).toHaveBeenCalled();
+        });
+
+        it('cancels', function () {
+            element.isolateScope().addProject();
+            spyOn(element.isolateScope().modalInstance, 'dismiss');
+            element.isolateScope().cancel();
+            $scope.$apply();
+            expect(element.isolateScope().modalInstance.dismiss).toHaveBeenCalled();
         });
     });
 });
@@ -254,7 +272,7 @@ describe('glProjectAdd', function() {
         });
 
         it('compiles', function () {
-            expect(element.html().substring(0, 6)).toEqual('<div c');
+            expect(element.html().substring(0, 6)).toEqual('<form ');
         });
     });
 });
@@ -341,6 +359,55 @@ describe('glClientWorkChart', function() {
 
         it('compiles', function () {
             expect(element.html().substring(0, 6)).toEqual('<div c');
+        });
+    });
+});
+
+describe('glMultiDropdown', function() {
+    var $rootScope;
+    var $compile;
+    var $scope;
+
+    beforeEach(function () {
+        module('gallant.directives.glMultiDropdown');
+        module('staticNgTemplates');
+
+        inject(function (_$rootScope_, _$compile_) {
+            // The injector unwraps the underscores (_) from around the parameter names when matching
+            $rootScope = _$rootScope_;
+            $compile = _$compile_;
+        });
+
+        $scope = $rootScope.$new();
+    });
+
+    describe('glMultiDropdown', function() {
+
+        var element;
+        it('compiles', function () {
+            element = $compile('<span gl-multi-dropdown=""></span>')($scope);
+            $scope.$digest();
+            expect(element.html().substring(0, 6)).toEqual('<div c');
+        });
+
+        it('adds element', function () {
+            $scope.elements = [];
+            $scope.availableElements = [{id: 0}, {}];
+            element = $compile('<span gl-multi-dropdown="" elements="elements" ' +
+                'available-elements="availableElements"></span>')($scope);
+            $scope.$digest();
+            element.isolateScope().addElement();
+            expect(element.isolateScope().elements.length).toEqual(1);
+        });
+
+        it('removes element', function () {
+            $scope.elements = [0, -1];
+            $scope.availableElements = [{}, {id: 0}];
+            element = $compile('<span gl-multi-dropdown="" elements="elements" ' +
+                'available-elements="availableElements"></span>')($scope);
+            $scope.$digest();
+            element.isolateScope().removeElement(0);
+            expect(element.isolateScope().elements.length).toEqual(1);
         });
     });
 });

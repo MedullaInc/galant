@@ -1,13 +1,17 @@
 <script type="text/ng-template" id="addProjectModal.html">
-    <div class="modal-header">
+    <div class="modal-header" id="calendar_modal">
         <h2 class="section_title">Add Project</h2>
         <button type="button" class="close" data-dismiss="modal" ng-click="cancel()">&times;</button>
     </div>
-    <div class="modal-body">
-        <div ng-controller="glFormController">
-            <div gl-project-add project="object" endpoint="objectEndpoint" submit="submitForm"></div>
+    <div class="container" id="calendar_modal">
+        <div class="modal-body">
+            <div ng-controller="glFormController" ng-init="init('', null, projectSaved)">
+                <div gl-project-add project="object" endpoint="objectEndpoint"
+                     submit="submitForm" projects="projects"></div>
+            </div>
         </div>
     </div>
+
 </script>
 
 <div class="col-lg-12 enclosed">
@@ -33,20 +37,20 @@
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <td>Project 1</td>
-                <td>Kanye West</td>
-                <td>Pending_Assignment</td>
+            <tr ng-repeat="project in projects">
+                <td>{{ project.name }}</td>
+                <td>{{ project.client }}</td>
+                <td>{{ project.field_choices.status[project.status] }}</td>
             </tr>
-            <tr>
-                <td>Tight Logo</td>
-                <td>Wes Anderson</td>
-                <td>Assigned</td>
+            <tr ng-show="!projects">
+                <td colspan="5">
+                    <img class="table-loading" src="/static/img/loading.gif">
+                </td>
             </tr>
-            <tr>
-                <td>Company Branding</td>
-                <td>Lil Wayne</td>
-                <td>Assigned</td>
+            <tr ng-show="projects && projects.length == 0">
+                <td colspan="5">
+                    No projects yet.
+                </td>
             </tr>
             </tbody>
         </table>
