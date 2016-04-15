@@ -1,5 +1,6 @@
 app = angular.module('gallant.directives.glProjectList', [
     'ui.bootstrap',
+    'smart-table',
     'gallant.services.glServices',
     'gallant.directives.glProjectAdd',
 ]);
@@ -12,7 +13,7 @@ app.directive('glProjectList', ['$window', '$uibModal', 'Project', function ($wi
         },
         controller: ['$scope', function ($scope) {
             Project.query().$promise.then(function (response) {
-                $scope.projects = response;
+                $scope.projectsSafe = response;
             });
         }],
         templateUrl: '/static/gallant/html/gl_project_list.html',
@@ -27,7 +28,7 @@ app.directive('glProjectList', ['$window', '$uibModal', 'Project', function ($wi
             }
 
             $scope.projectSaved = function (project) {
-                $scope.projects.push(project);
+                $scope.projectsSafe.push(project);
                 $scope.modalInstance.dismiss('cancel');
             }
 
