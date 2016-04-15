@@ -8,11 +8,8 @@ app.directive('glMultiDropdown', [ function () {
             elements: '=',
             availableElements: '=',
             elementDisplayName: '@',
-            addElementCallback: '&',
         },
         controller: ['$scope', function ($scope) {
-            $scope.addElement = $scope.addElementCallback();
-
             /**
              * availableServices is an array containing available choices for each service select. When a service
              * is selected, it's removed from the other dropdowns via this function.
