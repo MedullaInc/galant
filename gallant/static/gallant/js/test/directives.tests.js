@@ -247,6 +247,12 @@ describe('glProjectAdd', function() {
                 Project.fields = function () { return {$promise: $q.when([])}; };
                 return Project;
             });
+
+            $provide.factory('Quote', function ($q) {
+                var Quote = function () {};
+                Quote.query = function () { return {$promise: $q.when([])}; };
+                return Quote;
+            });
         });
 
         module('gallant.directives.glProjectAdd');
