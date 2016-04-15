@@ -1,3 +1,8 @@
+<h2 class="center_title">
+    Quote
+    <span class="pull-right glyphicon glyphicon-question-sign help-tooltip" uib-tooltip="Aids in communicating to your client what you will deliver and how much it will cost." tooltip-placement="top-right"></span>
+</h2>
+
 <div class="row">
     <div class="col-lg-10 col-md-10 col-sm-9 col-xs-9">
         <form editable-form name="quoteform" shown="quote && !quote.name"
@@ -115,7 +120,7 @@
                     <td>{{ showType(service) }}</td>
                     <td>{{ service.cost.amount }}</td>
                 </tr>
-                <tr ng-if="services.length == 0">
+                <tr ng-if="services.y == 0">
                     <td colspan="4">
                         No services yet.
                     </td>

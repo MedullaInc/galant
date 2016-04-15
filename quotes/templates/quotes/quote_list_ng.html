@@ -40,7 +40,10 @@
 
 {% block center_content %}
     {% if client %}
-        <h2 class="center_title">{{ client }}</h2>
+        <h2 class="center_title">
+            {{ client }}
+            <span class="pull-right glyphicon glyphicon-question-sign help-tooltip" uib-tooltip="Shows client's quotes. You can create one from scratch or from a template. You can also create one and save it as a template for later use." tooltip-placement="top-right"></span>
+        </h2>
     {% endif %}
     <div ng-controller="qtQuoteListController">
     <div ng-init="init('{% url 'quote_detail' %}', '{% firstof language LANGUAGE_CODE %}', {% firstof client.id 'null' %})">
