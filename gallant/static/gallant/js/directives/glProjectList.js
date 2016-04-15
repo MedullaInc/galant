@@ -8,6 +8,7 @@ app.directive('glProjectList', ['$window', '$uibModal', 'Project', function ($wi
     return {
         restrict: 'A',
         scope: {
+            redirectUrl: '@',
         },
         controller: ['$scope', function ($scope) {
             Project.query().$promise.then(function (response) {
@@ -33,6 +34,10 @@ app.directive('glProjectList', ['$window', '$uibModal', 'Project', function ($wi
             $scope.cancel = function () {
                 $scope.modalInstance.dismiss('cancel');
             }
+
+            $scope.redirect = function(id) {
+                $window.location.href = $scope.redirectUrl + id;
+            };
         }
     };
 }]);
