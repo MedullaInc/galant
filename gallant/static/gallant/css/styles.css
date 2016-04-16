@@ -2919,8 +2919,8 @@ li.row {
 /* Charts */
 
 .tc-chart-js-legend li span {
-	width: 50px;
-	height: 25px;
+	width: 30px;
+	height: 20px;
 	display: block;
 	float: left;
 	clear: left;
@@ -2929,6 +2929,11 @@ li.row {
 
 .tc-chart-js-legend li {
     margin-bottom: 10px;
+    font-size: 12px;
+}
+
+.chart_box.dashboard {
+    height: 270px;
 }
 
 /* End Charts */
@@ -2940,3 +2945,11 @@ li.row {
 }
 
 /* End Tooltips*/
+
+/* Coming soon */
+
+.yellow {
+    color: #ffc520;
+}
+
+/* End Coming soon */

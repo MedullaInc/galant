@@ -1,0 +1,30 @@
+<div class="row">
+    <div class="col-lg-12">
+        <h2 class="section_title">
+            Money Summary
+        </h2>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-4">
+        <div class="enclosed chart_box dashboard">
+            <div class="col-lg-11">
+                <canvas tc-chartjs-polararea chart-options="money_polar_chart_options" chart-data="money_polar_chart_data" auto-legend></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="enclosed chart_box dashboard">
+            <div class="col-lg-11">
+                <canvas tc-chartjs-doughnut chart-options="money_doughnut_chart_options" chart-data="money_doughnut_chart_data" auto-legend></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="enclosed chart_box dashboard">
+            <div class="col-lg-11">
+                <canvas tc-chartjs-bar chart-options="money_bar_chart_options" chart-data="money_bar_chart_data" auto-legend></canvas>
+            </div>
+        </div>
+    </div>
+</div>

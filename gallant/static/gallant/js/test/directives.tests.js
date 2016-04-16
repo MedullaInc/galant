@@ -82,9 +82,13 @@ describe('glAlerts', function () {
     var $scope;
 
     beforeEach(function () {
-        module('gallant.services.glServices', function($provide) {
+        module('gallant.services.glServices', function ($provide) {
             $provide.factory('glAlertService', function () {
-                return {get: function() { return {type:'success', msg:'0'}; }};
+                return {
+                    get: function () {
+                        return {type: 'success', msg: '0'};
+                    }
+                };
             });
         });
         module('gallant.directives.glAlerts');
@@ -107,17 +111,19 @@ describe('glAlerts', function () {
     });
 });
 
-describe('glPayments', function() {
+describe('glPayments', function () {
     var $rootScope;
     var $compile;
     var $scope;
 
     beforeEach(function () {
-        module('gallant.services.glServices', function($provide) {
+        module('gallant.services.glServices', function ($provide) {
 
             $provide.factory('Payment', function ($q) {
                 var Payment = {};
-                Payment.delete = function (a) { return {}; };
+                Payment.delete = function (a) {
+                    return {};
+                };
                 return Payment;
             });
 
@@ -143,11 +149,11 @@ describe('glPayments', function() {
         $scope = $rootScope.$new();
     });
 
-    describe('glPayments', function() {
+    describe('glPayments', function () {
 
         var element;
 
-        beforeEach(function() {
+        beforeEach(function () {
             $scope.payments = [{id: 0}];
             element = $compile('<div gl-payments payments="payments"></div>')($scope);
             $scope.$digest();
@@ -165,7 +171,7 @@ describe('glPayments', function() {
 
 });
 
-describe('glProjectList', function() {
+describe('glProjectList', function () {
     var $rootScope;
     var $compile;
     var $injector;
@@ -174,16 +180,25 @@ describe('glProjectList', function() {
     beforeEach(function () {
         angular.module('smart-table', []);
 
-        module('gallant.services.glServices', function($provide) {
+        module('gallant.services.glServices', function ($provide) {
             $provide.factory('Project', function ($q) {
                 var Project = {};
-                Project.query = function () { return { $promise: $q.when([{}]) }; };
+                Project.query = function () {
+                    return {$promise: $q.when([{}])};
+                };
                 return Project;
             });
         });
 
-        module('gallant.directives.glProjectList', function($provide) {
-            $provide.value('$uibModal', {open: function () { return { dismiss: function () {}}; }});
+        module('gallant.directives.glProjectList', function ($provide) {
+            $provide.value('$uibModal', {
+                open: function () {
+                    return {
+                        dismiss: function () {
+                        }
+                    };
+                }
+            });
             $provide.value('$window', {location: {}});
         });
         module('staticNgTemplates');
@@ -198,11 +213,11 @@ describe('glProjectList', function() {
         $scope = $rootScope.$new();
     });
 
-    describe('glProjectList', function() {
+    describe('glProjectList', function () {
 
         var element;
 
-        beforeEach(function() {
+        beforeEach(function () {
             element = $compile('<div gl-project-list=""></div>')($scope);
             $scope.$digest();
         });
@@ -250,22 +265,28 @@ describe('glProjectList', function() {
     });
 });
 
-describe('glProjectAdd', function() {
+describe('glProjectAdd', function () {
     var $rootScope;
     var $compile;
     var $scope;
 
     beforeEach(function () {
-        module('gallant.services.glServices', function($provide) {
+        module('gallant.services.glServices', function ($provide) {
             $provide.factory('Project', function ($q) {
-                var Project = function () {};
-                Project.fields = function () { return {$promise: $q.when([])}; };
+                var Project = function () {
+                };
+                Project.fields = function () {
+                    return {$promise: $q.when([])};
+                };
                 return Project;
             });
 
             $provide.factory('Quote', function ($q) {
-                var Quote = function () {};
-                Quote.query = function () { return {$promise: $q.when([])}; };
+                var Quote = function () {
+                };
+                Quote.query = function () {
+                    return {$promise: $q.when([])};
+                };
                 return Quote;
             });
         });
@@ -283,11 +304,11 @@ describe('glProjectAdd', function() {
         $scope = $rootScope.$new();
     });
 
-    describe('glProjectAdd', function() {
+    describe('glProjectAdd', function () {
 
         var element;
 
-        beforeEach(function() {
+        beforeEach(function () {
             element = $compile('<div gl-project-add="" project="project" endpoint="endpoint"></div>')($scope);
             $scope.$digest();
         });
@@ -298,16 +319,25 @@ describe('glProjectAdd', function() {
     });
 });
 
-describe('glClientMoneyChart', function() {
+describe('glClientMoneyChart', function () {
     var $rootScope;
     var $compile;
     var $scope;
 
     beforeEach(function () {
-        angular.mock.module('gallant.services.glServices', function($provide) {
+        angular.mock.module('gallant.services.glServices', function ($provide) {
             $provide.factory('Payment', function ($q) {
                 var Payment = jasmine.createSpyObj('Payment', ['query']);
-                Payment.query.and.returnValue({$promise: $q.when([{paid_on: new Date(), amount: {amount: 1.0}},{paid_on: null, due: new Date()+10, amount: {amount: 1.0}},{paid_on: null, due: new Date()-10, amount: {amount: 1.0}}])});
+                Payment.query.and.returnValue({
+                    $promise: $q.when([{
+                        paid_on: new Date(),
+                        amount: {amount: 1.0}
+                    }, {paid_on: null, due: new Date() + 10, amount: {amount: 1.0}}, {
+                        paid_on: null,
+                        due: new Date() - 10,
+                        amount: {amount: 1.0}
+                    }])
+                });
 
                 return Payment;
             });
@@ -315,7 +345,7 @@ describe('glClientMoneyChart', function() {
 
         angular.mock.module('gallant.directives.glClientMoneyChart');
         angular.mock.module('staticNgTemplates');
-        angular.module('tc.chartjs',[]);
+        angular.module('tc.chartjs', []);
 
         angular.mock.inject(function (_$rootScope_, _$compile_) {
             // The injector unwraps the underscores (_) from around the parameter names when matching
@@ -326,11 +356,11 @@ describe('glClientMoneyChart', function() {
         $scope = $rootScope.$new();
     });
 
-    describe('glClientMoneyChart', function() {
+    describe('glClientMoneyChart', function () {
 
         var element;
 
-        beforeEach(function() {
+        beforeEach(function () {
             element = $compile('<span gl-client-money-chart=""></span>')($scope);
             $scope.$digest();
         });
@@ -341,16 +371,16 @@ describe('glClientMoneyChart', function() {
     });
 });
 
-describe('glClientWorkChart', function() {
+describe('glClientWorkChart', function () {
     var $rootScope;
     var $compile;
     var $scope;
 
     beforeEach(function () {
-        angular.mock.module('gallant.services.glServices', function($provide) {
+        angular.mock.module('gallant.services.glServices', function ($provide) {
             $provide.factory('Service', function ($q) {
                 var Service = jasmine.createSpyObj('Service', ['query']);
-                Service.query.and.returnValue({$promise: $q.when([{status:0},{status:1},{status:2},{status:3},{status:4}])});
+                Service.query.and.returnValue({$promise: $q.when([{status: 0}, {status: 1}, {status: 2}, {status: 3}, {status: 4}])});
 
                 return Service;
             });
@@ -358,7 +388,7 @@ describe('glClientWorkChart', function() {
 
         angular.mock.module('gallant.directives.glClientWorkChart');
         angular.mock.module('staticNgTemplates');
-        angular.module('tc.chartjs',[]);
+        angular.module('tc.chartjs', []);
 
         angular.mock.inject(function (_$rootScope_, _$compile_) {
             // The injector unwraps the underscores (_) from around the parameter names when matching
@@ -369,11 +399,11 @@ describe('glClientWorkChart', function() {
         $scope = $rootScope.$new();
     });
 
-    describe('glClientWorkChart', function() {
+    describe('glClientWorkChart', function () {
 
         var element;
 
-        beforeEach(function() {
+        beforeEach(function () {
             element = $compile('<span gl-client-work-chart=""></span>')($scope);
             $scope.$digest();
         });
@@ -384,7 +414,7 @@ describe('glClientWorkChart', function() {
     });
 });
 
-describe('glMultiDropdown', function() {
+describe('glMultiDropdown', function () {
     var $rootScope;
     var $compile;
     var $scope;
@@ -402,7 +432,7 @@ describe('glMultiDropdown', function() {
         $scope = $rootScope.$new();
     });
 
-    describe('glMultiDropdown', function() {
+    describe('glMultiDropdown', function () {
 
         var element;
         it('compiles', function () {
@@ -429,6 +459,77 @@ describe('glMultiDropdown', function() {
             $scope.$digest();
             element.isolateScope().removeElement(0);
             expect(element.isolateScope().elements.length).toEqual(1);
+        });
+    });
+
+});
+
+describe('glDashboardWorkSummary', function () {
+    var $rootScope;
+    var $compile;
+    var $scope;
+
+    beforeEach(function () {
+
+        angular.mock.module('gallant.directives.glDashboardWorkSummary');
+        angular.mock.module('staticNgTemplates');
+        angular.module('tc.chartjs', []);
+
+        angular.mock.inject(function (_$rootScope_, _$compile_) {
+            // The injector unwraps the underscores (_) from around the parameter names when matching
+            $rootScope = _$rootScope_;
+            $compile = _$compile_;
+        });
+
+        $scope = $rootScope.$new();
+    });
+
+    describe('glDashboardWorkSummary', function () {
+
+        var element;
+
+        beforeEach(function () {
+            element = $compile('<div gl-dashboard-work-summary=""></div>')($scope);
+            $scope.$digest();
+        });
+
+        it('compiles', function () {
+            expect(element.html().substring(0, 6)).toEqual('<div c');
+        });
+    });
+});
+
+describe('glDashboardMoneySummary', function () {
+    var $rootScope;
+    var $compile;
+    var $scope;
+
+    beforeEach(function () {
+
+        angular.mock.module('gallant.directives.glDashboardMoneySummary');
+        angular.mock.module('staticNgTemplates');
+        angular.module('tc.chartjs', []);
+
+        angular.mock.inject(function (_$rootScope_, _$compile_) {
+            // The injector unwraps the underscores (_) from around the parameter names when matching
+            $rootScope = _$rootScope_;
+            $compile = _$compile_;
+        });
+
+        $scope = $rootScope.$new();
+    });
+
+    describe('glDashboardMoneySummary', function () {
+
+        var element;
+
+        beforeEach(function () {
+            element = $compile('<div gl-dashboard-money-summary=""></div>')($scope);
+            $scope.$digest();
+        });
+
+        it('compiles', function () {
+            expect(element.html().substring(0, 6)).toEqual('<div c');
         });
     });
 });

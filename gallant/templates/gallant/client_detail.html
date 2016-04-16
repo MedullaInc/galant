@@ -172,7 +172,7 @@
             <div class="col-lg-12">
                 <div class="enclosed">
                     <h2 class="section_title">
-                        {% trans 'Alerts' %}
+                        {% trans 'Alerts' %} <span class="yellow">( Coming soon... )</span>
                         <span class="pull-right glyphicon glyphicon-question-sign help-tooltip" uib-tooltip="Displays important past and/or upcoming alerts related to your client." tooltip-placement="top-right"></span>
                     </h2>
 
@@ -337,41 +337,5 @@
                 p.popover('hide');
             }
         });
-    </script>
-    <script>
-
-        var work_data = [
-            {
-                value: {% get_client_services_count request object 0 %},
-                color: "#999999",
-                highlight: "#5AFF70",
-                label: "On Hold"
-            },
-            {
-                value: {% get_client_services_count request object 1 %},
-                color: "#666666",
-                highlight: "#FFC870",
-                label: "Pending Assignment"
-            },
-            {
-                value: {% get_client_services_count request object 2 %},
-                color: "#333333",
-                highlight: "#5AD3D1",
-                label: "Active"
-            },
-            {
-                value: {% get_client_services_count request object 3 %},
-                color: "#999999",
-                highlight: "#FFC870",
-                label: "Overdue"
-            },
-            {
-                value: {% get_client_services_count request object 4 %},
-                color: "#999999",
-                highlight: "#FFC870",
-                label: "Completed"
-            }
-        ]
-
     </script>
 {% endblock %}
