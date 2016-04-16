@@ -25,19 +25,25 @@ app.directive('glProjectList', ['$window', '$uibModal', 'Project', function ($wi
                     templateUrl: 'addProjectModal.html',
                 });
                 return 0;
-            }
+            };
 
             $scope.projectSaved = function (project) {
                 $scope.projectsSafe.push(project);
                 $scope.modalInstance.dismiss('cancel');
-            }
+            };
 
             $scope.cancel = function () {
                 $scope.modalInstance.dismiss('cancel');
-            }
+            };
 
-            $scope.redirect = function(id) {
+            $scope.redirect = function (id) {
                 $window.location.href = $scope.redirectUrl + id;
+            };
+
+            $scope.checkAll = function () {
+                angular.forEach($scope.projectsSafe, function (p) {
+                    p.checked = $scope.selectedAll;
+                });
             };
         }
     };
