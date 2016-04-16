@@ -132,8 +132,7 @@
                     <p>New projects must be linked to a quote. Please select an unlinked quote.</p>
                 </div>
                 <div class="modal-body" style="height: 500px; overflow: auto;">
-                    {% objects_for object.client.quote_set as accepted_quotes %}
-                    {% with object_list=accepted_quotes %}
+                    {% with object_list=quote_list %}
                         {% include "quotes/quote_table.html" %}
                     {% endwith %}
                 </div>

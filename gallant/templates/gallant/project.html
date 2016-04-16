@@ -2,7 +2,6 @@
 <div class="project enclosed">
     <div class="row">
 
-
         <div class="col-lg-6">
             <p>
                 <a href="{% url 'project_detail' project.id %}">
@@ -76,6 +75,9 @@
     ]
 
     var project_work_{{ project.id }} = $("#project_chart_{{ project.id }}").get(0).getContext("2d");
-    var project_work_chart_{{ project.id }} = new Chart(project_work_{{ project.id }}).Doughnut(project_work_data_{{ project.id }}, {animateRotate: true, animateScale: false});
+    var project_work_chart_{{ project.id }} = new Chart(project_work_{{ project.id }}).Doughnut(project_work_data_{{ project.id }}, {
+        animateRotate: true,
+        animateScale: false
+    });
 
 </script>

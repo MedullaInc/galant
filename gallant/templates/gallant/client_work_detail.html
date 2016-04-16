@@ -13,7 +13,10 @@
 
     {% block main_client_data %}
         <div class="projects enclosed">
-            <h2 class="section_title">{% trans 'Projects' %}</h2>
+            <h2 class="section_title">
+                {% trans 'Projects' %}
+                <span class="pull-right glyphicon glyphicon-question-sign help-tooltip" uib-tooltip="Shows project list with status summary of all services from each project according to status." tooltip-placement="top-right"></span>
+            </h2>
             {% if projects|length > 0 %}
                 {% for project in projects %}
                     {% include "gallant/project.html" %}
