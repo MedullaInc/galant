@@ -29,5 +29,12 @@ describe('clTaskList', function() {
         it('compiles', function () {
             expect(element.html().substring(0, 6)).toEqual('<div c');
         });
+
+        it('filters by assignee', function () {
+            expect(element.isolateScope().byAssignee({assignee: 1})).toEqual(false);
+            element.isolateScope().assignee = null;
+            $scope.$digest();
+            expect(element.isolateScope().byAssignee({assignee: 1})).toEqual(true);
+        });
     });
 });
