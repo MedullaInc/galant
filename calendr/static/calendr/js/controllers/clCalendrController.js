@@ -1,9 +1,9 @@
 app = angular.module('calendr.controllers.clCalendrController', [
-    'ui.calendar', 'ui.bootstrap', 'ng.django.forms', 'ngAside', 'gallant.directives.glMultiDropdown'
+    'ui.calendar', 'ui.bootstrap', 'ng.django.forms', 'gallant.directives.glMultiDropdown'
 ]);
 
 app.controller('clCalendrController', function ($scope, Project, User, Task, $compile,
-                                           $timeout, uiCalendarConfig, $uibModal, $filter, $aside, FC, moment) {
+                                           $timeout, uiCalendarConfig, $uibModal, $filter, FC, moment) {
     var date = new Date();
     var d = date.getDate();
     var m = date.getMonth();
@@ -24,47 +24,6 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
     $scope.events = [];
     $scope.projects = [];
     $scope.eventResources = [];
-
-    $scope.openAsideModal = function () {
-        if ($scope.asideInstance) {
-            $scope.asideInstance.close();
-            delete $scope.asideInstance;
-        } else {
-
-            /* istanbul ignore next */
-            $scope.asideInstance = $aside.open({
-                templateUrl: '/static/calendr/html/aside.html',
-                backdrop: true,
-                controller: function ($scope, $uibModalInstance, userEvents, openEditModalandgotoDate) {
-                    $scope.events = userEvents;
-                    $scope.openEditModalandgotoDate = openEditModalandgotoDate;
-                    $scope.ok = function (e) {
-                        $uibModalInstance.close();
-                        e.stopPropagation();
-                    };
-                    $scope.cancel = function (e) {
-                        $uibModalInstance.dismiss();
-                        e.stopPropagation();
-                    };
-                },
-                placement: 'right',
-                size: 'sm',
-                resolve: {
-                    userEvents: function () {
-                        // Return current user tasks
-                        return $filter('filter')($scope.events, {
-                            resourceId: $scope.currentUserId
-                        });
-                    },
-                    openEditModalandgotoDate: function () {
-                        // Return current user tasks
-                        return $scope.openEditModalandgotoDate;
-                    },
-                }
-            });
-        }
-
-    };
 
     $scope.gotoDate = function (date) {
         uiCalendarConfig.calendars.myCalendar1.fullCalendar('gotoDate', date);

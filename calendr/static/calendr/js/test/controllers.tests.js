@@ -56,14 +56,6 @@ describe('CalendrControl', function () {
         expect($scope).not.toBeNull();
     });
 
-    it('opens and closes aside', function () {
-        expect($scope.asideInstance).not.toBeDefined();
-        $scope.openAsideModal();
-        expect($scope.asideInstance).toBeDefined();
-        $scope.openAsideModal();
-        expect($scope.asideInstance).not.toBeDefined();
-    });
-
     it('calls fullcalendar via today()', function () {
         var uiCalendarConfig = $injector.get('uiCalendarConfig');
         spyOn(uiCalendarConfig.calendars.myCalendar1, 'fullCalendar');
