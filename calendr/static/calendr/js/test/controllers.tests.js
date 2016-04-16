@@ -12,8 +12,7 @@ describe('CalendrControl', function () {
         angular.module('gallant.services.glServices', []);
         module('gallant.services.glServices', function ($provide) {
             var getMockResource = function ($q) {
-                var MockResource = function () { return {id: 0}; };
-                MockResource.get = function () { return {$promise: $q.when({id: 0})}; };
+                var MockResource = {};
                 MockResource.update = function (t) { return {$promise: $q.when(t)}; };
                 MockResource.save = function (t) { return {$promise: $q.when(t)}; };
                 MockResource.query = function () { return {$promise: $q.when([{id: 0}])}; };
@@ -31,7 +30,6 @@ describe('CalendrControl', function () {
         module('calendr.controllers.clCalendrController', function ($provide) {
             $provide.value('uiCalendarConfig', {calendars:{myCalendar1: {fullCalendar: function (a, b) {}}}});
             $provide.value('$uibModal', {open: function () {}});
-            $provide.value('$aside', {open: function () { return {close: function () {}}; }});
             $provide.value('FC', {views: {}});
             $provide.value('moment', function () { return {format: function () {}}; });
             $provide.value('glAlertService', {
@@ -62,14 +60,6 @@ describe('CalendrControl', function () {
 
     it('loads', function () {
         expect($scope).not.toBeNull();
-    });
-
-    it('opens and closes aside', function () {
-        expect($scope.asideInstance).not.toBeDefined();
-        $scope.openAsideModal();
-        expect($scope.asideInstance).toBeDefined();
-        $scope.openAsideModal();
-        expect($scope.asideInstance).not.toBeDefined();
     });
 
     it('calls fullcalendar via today()', function () {

@@ -1,13 +1,17 @@
 app = angular.module('calendr.controllers.clCalendrController', [
-    'ui.calendar', 'ui.bootstrap', 'ng.django.forms', 'ngAside', 'gallant.directives.glMultiDropdown'
+    'ui.calendar', 'ui.bootstrap', 'ng.django.forms', 'gallant.directives.glMultiDropdown'
 ]);
 
 app.controller('clCalendrController', function ($scope, Project, User, Task, $compile,
-                                           $timeout, uiCalendarConfig, $uibModal, $filter, $aside, FC, moment, glAlertService) {
+                                                $timeout, uiCalendarConfig, $uibModal, $filter, FC, moment, glAlertService) {
     var date = new Date();
     var d = date.getDate();
     var m = date.getMonth();
     var y = date.getFullYear();
+
+    $scope.init = function (currentUserId) {
+        $scope.currentUserId = currentUserId
+    }
 
     FC.views.timelineThreeMonths = {
         type: 'timeline',
@@ -20,48 +24,6 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
     $scope.events = [];
     $scope.projects = [];
     $scope.eventResources = [];
-
-    $scope.openAsideModal = function () {
-        if ($scope.asideInstance) {
-            $scope.asideInstance.close();
-            delete $scope.asideInstance;
-        } else {
-
-            /* istanbul ignore next */
-            $scope.asideInstance = $aside.open({
-                templateUrl: '/static/calendr/html/aside.html',
-                backdrop: true,
-                controller: function ($scope, $uibModalInstance, userEvents, openEditModalandgotoDate) {
-
-                    $scope.events = userEvents;
-                    $scope.openEditModalandgotoDate = openEditModalandgotoDate;
-                    $scope.ok = function (e) {
-                        $uibModalInstance.close();
-                        e.stopPropagation();
-                    };
-                    $scope.cancel = function (e) {
-                        $uibModalInstance.dismiss();
-                        e.stopPropagation();
-                    };
-                },
-                placement: 'right',
-                size: 'sm',
-                resolve: {
-                    userEvents: function () {
-                        // Return current user tasks
-                        return $filter('filter')($scope.events, {
-                            resourceId: currentUserId
-                        });
-                    },
-                    openEditModalandgotoDate: function () {
-                        // Return current user tasks
-                        return $scope.openEditModalandgotoDate;
-                    },
-                }
-            });
-        }
-
-    };
 
     $scope.gotoDate = function (date) {
         uiCalendarConfig.calendars.myCalendar1.fullCalendar('gotoDate', date);
@@ -152,6 +114,7 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
             backdrop: true,
             windowClass: 'modal',
             controller: function ($scope, $uibModalInstance, $log, event, events, resources, projects, updateEvent, createTask, gotoDate) {
+                $scope.event = event || {};
 
                 // Date pickers
                 $scope.openStartDatePicker = function () {
@@ -185,7 +148,9 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
                 $scope.createTask = createTask;
                 $scope.gotoDate = gotoDate;
 
-                $scope.project = $scope.projects.find(function (p) { return p.id == $scope.event.projectId});
+                $scope.project = $scope.projects.find(function (p) {
+                    return p.id == $scope.event.projectId
+                });
 
                 if ($scope.project && $scope.project.services.length) {
                     $scope.availableServices = $scope.project.services;
@@ -201,7 +166,7 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
 
                         var task = {
                             "id": "",
-                            "user": currentUserId,
+                            "user": $scope.currentUserId,
                             "name": e.title,
                             "start": e.start,
                             "end": e.end,
@@ -233,7 +198,9 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
                 };
 
                 $scope.projectChanged = function (projectId) {
-                    $scope.project = $scope.projects.find(function (p) { return p.id == projectId});
+                    $scope.project = $scope.projects.find(function (p) {
+                        return p.id == projectId
+                    });
                     if ($scope.project && $scope.project.services)
                         $scope.availableServices = $scope.project.services;
                     else
@@ -243,7 +210,7 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
             },
             resolve: {
                 gotoDate: function () {
-                  return $scope.gotoDate;
+                    return $scope.gotoDate;
                 },
                 event: function () {
                     return $scope.event;
@@ -297,7 +264,7 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
 
 
         $scope.updateTask(task);
-        glAlertService.add('success','Task "' + event.title + '" has been relocated.');
+        glAlertService.add('success', 'Task "' + event.title + '" has been relocated.');
 
         //alert(event.title);
     };
@@ -333,18 +300,11 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
 
     /* add custom event*/
     $scope.renderEvent = function (e) {
-        var event = {
-            id: e.id,
-            user: e.user,
-            title: e.name || 'n/a',
-            start: e.start,
-            end: e.end,
-            resourceId: String(e.assignee),
-            projectId: e.project,
-            services: e.services,
-            allDay: false,
-            daily_estimate: parseFloat(e.daily_estimate),
-        };
+        var event = e;
+        event.projectId = e.project;
+        event.resourceId = e.assignee;
+        event.allDay = false;
+        event.title = e.name || 'n/a';
 
         $scope.events.push(event);
         // $scope.eventRender(event);
@@ -372,7 +332,7 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
         // Event to task
         var myTask = {
             "id": "",
-            "user": currentUserId,
+            "user": $scope.currentUserId,
             "name": task.name,
             "start": moment(task.start).format(),
             "end": moment(task.end).format(),
@@ -388,7 +348,7 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
 
     /* remove event from calendar */
     $scope.remove = function (index) {
-        glAlertService.add('success','Task "' + $scope.events[index].title + '" has been removed.');
+        glAlertService.add('success', 'Task "' + $scope.events[index].title + '" has been removed.');
         $scope.events.splice(index, 1);
     };
 
@@ -438,7 +398,7 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
     $scope.selectFunction = function (start, end, x, y, resource) {
         var event;
         event = {
-            daily_estimate: 0.0,
+            daily_estimate: 0,
             resourceId: resource.id,
             start: start,
             end: end,
