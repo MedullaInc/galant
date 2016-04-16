@@ -70,7 +70,7 @@ class ProjectUpdate(View):
     def render_to_response(self, context):
         context.update({'title': 'Edit Project'})
 
-        self.request.breadcrumbs(_('Projects'), reverse('projects'))
+        self.request.breadcrumbs(_('Projects'), reverse('calendr'))
         if self.object:
             self.request.breadcrumbs([(_('Project: %s' % self.object.name),
                                        reverse('project_detail', args=[self.object.id])),
@@ -120,7 +120,7 @@ class ProjectUpdate(View):
 class ProjectCreate(ProjectUpdate):
     def get(self, request, **kwargs):
         form = forms.ProjectOnlyForm(request.user)
-        request.breadcrumbs([(_('Projects'), reverse('projects')),
+        request.breadcrumbs([(_('Projects'), reverse('calendr')),
                              (_('Add'), request.path_info)])
 
         context = {'title': 'Add Project', 'form': form}
@@ -134,7 +134,7 @@ class ProjectDelete(View):
         project = get_one_or_404(request.user, 'change_project', g.Project, id=kwargs['pk'])
         project.soft_delete()
 
-        return HttpResponseRedirect(reverse('projects'))
+        return HttpResponseRedirect(reverse('calendr'))
 
 
 def project_detail(request, pk):
@@ -156,7 +156,7 @@ def project_detail(request, pk):
     else:
         form = forms.NoteForm(request.user)
 
-    request.breadcrumbs([(_('Projects'), reverse('projects')),
+    request.breadcrumbs([(_('Projects'), reverse('calendr')),
                          (_('Project: %s' % project.name), request.path_info)])
     return render(request, 'gallant/project_detail.html', {
         'object': project,
