@@ -171,59 +171,33 @@ button.btn.btn-default {
     font-size: 24px;
 }
 
-#calendar_modal .form-group .btn {
+#calendar_modal .form-group .btn.btn-submit {
     margin-left: 10px;
     margin-top: 10px;
     margin-bottom: 10px;
     font-size: 14px;
+    padding-bottom: 6px;
 }
 
-#calendar_modal .well {
-    margin-top: 10px;
-    margin-bottom: 0px;
+#calendar_modal .form-group .btn.btn-add {
+    font-size: 14px;
+    height: 34px;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
-#calendar_modal .margin-top-10 {
-    margin-top: 10px;
-}
-
-#calendar_modal .margin-left-10 {
+#calendar_modal .form-group .btn.mini-calendar {
     margin-left: 10px;
-}
-
-#calendar_modal span.date {
-    font-size: 12px;
-    cursor: pointer;
-}
-
-#calendar_modal .well p {
-    margin-bottom: 0px;
-    line-height: 1.2;
-    cursor: pointer;
-}
-
-#calendar_modal .well a {
-    color: #333333;
-    cursor: pointer;
-}
-
-#calendar_modal .well a:hover {
-    text-decoration: none;
-}
-
-#calendar_modal .multidropdown_elements .multidropdown_button {
-    -webkit-border-radius: 0px;
-    -moz-border-radius: 0px;
-    border-radius: 0px;
-    border: 1px solid #666666;
-    margin-left: 0px;
     margin-top: 0px;
     margin-bottom: 10px;
-    padding: 5px 10px 5px 10px;
+    font-size: 14px;
+    height: 34px;
+    padding-bottom: 4px;
 }
 
 #calendar_modal .multidropdown_elements .col-lg-8 {
     padding-right: 10px;
+    width: 66%;
 }
 
 #calendar_modal .multidropdown_elements .col-lg-1 {

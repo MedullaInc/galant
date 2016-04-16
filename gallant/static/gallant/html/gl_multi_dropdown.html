@@ -22,13 +22,13 @@
         </select>
     </div>
     <div class="col-lg-1" ng-show="$last && availableElementsSafe.length">
-        <button id="multidropdown_add" type="button" class="multidropdown_button btn btn-default"
+        <button id="multidropdown_add" type="button" class="multidropdown_button btn btn-default btn-add"
                 ng-click="addElement()">
             <span class="glyphicon glyphicon-plus-sign"/>
         </button>
     </div>
     <div class="col-lg-1" ng-show="!$last || !availableElementsSafe.length">
-        <button type="button" class="btn-default multidropdown_button" ng-click="removeElement($index)">
+        <button type="button" class="multidropdown_button btn btn-default btn-add" ng-click="removeElement($index)">
             <span class="glyphicon glyphicon-trash"/>
         </button>
     </div>
