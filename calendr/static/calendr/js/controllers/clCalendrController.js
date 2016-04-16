@@ -3,7 +3,7 @@ app = angular.module('calendr.controllers.clCalendrController', [
 ]);
 
 app.controller('clCalendrController', function ($scope, Project, User, Task, $compile,
-                                           $timeout, uiCalendarConfig, $uibModal, $filter, $aside, FC, moment) {
+                                           $timeout, uiCalendarConfig, $uibModal, $filter, $aside, FC, moment, glAlertService) {
     var date = new Date();
     var d = date.getDate();
     var m = date.getMonth();
@@ -297,21 +297,19 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
 
 
         $scope.updateTask(task);
-        $scope.alertMessage = ('Task "' + event.title + '" has been relocated.');
+        glAlertService.add('success','Task "' + event.title + '" has been relocated.');
 
         //alert(event.title);
     };
 
     /* alert on eventClick */
     $scope.alertOnEventClick = function (event, jsEvent, view) {
-        //$scope.alertMessage = (event.title + ' was clicked ');
         $scope.openEditModal(event, $scope.eventResources);
-        //alert($scope.alertMessage);
     };
 
     /* alert on Drop */
     $scope.alertOnDrop = function (event, delta, revertFunc, jsEvent, ui, view) {
-        $scope.alertMessage = ('Event Dropped to make dayDelta ' + delta);
+        glAlertService.add('success', 'Event Dropped to make dayDelta ' + delta);
     };
 
     /* alert on Resize */
@@ -330,7 +328,7 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
         };
 
         $scope.updateTask(task);
-        $scope.alertMessage = ('Task "' + event.title + '" has been resized.');
+        glAlertService.add('success', 'Task "' + event.title + '" has been resized.');
     };
 
     /* add custom event*/
