@@ -22,8 +22,14 @@ class TasksAPI(ModelViewSet):
 
     def get_queryset(self):
         user = self.request.GET.get('user', None)
+        assignee = self.request.GET.get('assignee', None)
+
+        qs = self.model.objects.all_for(self.request.user)
+
         if user:
-            return self.model.objects.all_for(self.request.user).filter(user_id=user)
-        else:
-            return self.model.objects.all_for(self.request.user)
+            qs = qs.filter(user_id=user)
+        if assignee:
+            qs = qs.filter(assignee=assignee)
+
+        return qs
 

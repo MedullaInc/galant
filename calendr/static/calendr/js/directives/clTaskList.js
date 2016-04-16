@@ -7,10 +7,14 @@ app.directive('clTaskList', ['$window','Task', function ($window, Task) {
     return {
         restrict: 'A',
         scope: {
-            byUser: '@',
+            assignee: '@',
         },
         controller: ['$scope', function ($scope) {
-            Task.query().$promise.then(function (response) {
+            var options = {};
+            if ($scope.assignee)
+                options.assignee = $scope.assignee;
+
+            Task.query(options).$promise.then(function (response) {
                 $scope.tasks = response;
             });
         }],
