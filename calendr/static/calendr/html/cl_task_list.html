@@ -18,7 +18,7 @@
             </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="task in tasksTable">
+                <tr ng-repeat="task in tasksTable | filter:byAssignee">
                     <td>{{ task.name }}</td>
                     <td>{{ task.project_name }}</td>
                     <td>{{ task.end }}</td>

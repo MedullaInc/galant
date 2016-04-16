@@ -12,7 +12,10 @@ app.directive('clTaskList', [function () {
         },
         controller: ['$scope', function ($scope) {
             $scope.byAssignee = function (task) {
-                return task.assignee == $scope.assignee;
+                if ($scope.assignee)
+                    return task.assignee == $scope.assignee;
+                else
+                    return true;
             };
         }],
         templateUrl: '/static/calendr/html/cl_task_list.html',
