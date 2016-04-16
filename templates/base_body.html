@@ -30,10 +30,9 @@
                         <div id="menu" class="collapse navbar-collapse">
                             <ul class="nav pull-right">
                                 {% if user.is_authenticated %}
+                                    <li><a href="{% url 'calendr' %}">{% trans 'Projects' %}</a></li>
                                     <li><a href="{% url 'clients' %}">{% trans 'Clients' %}</a></li>
-                                    <li><a href="{% url 'quotes' %}">{% trans 'Quotes' %}</a></li>
-                                    <li><a href="{% url 'projects' %}">{% trans 'Projects' %}</a></li>
-                                    <li><a href="{% url 'calendr' %}">{% trans 'Calendar' %}</a></li>
+                                    <li><a href="{% url 'quotes' %}">{% trans 'Money' %}</a></li>
                                     <li class="btn-group" id="settings-toggle-group">
 
                                         <button type="button" class="btn btn-default dropdown-toggle"
