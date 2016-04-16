@@ -53,10 +53,9 @@
 {% endblock %}
 
 {% block content_div %}
+    <div id="calendr" ng-controller="clCalendrController" ng-init="init({{ user.id }})">
         <div id="calendar_container">
-            <section id="directives-calendar" ng-controller="clCalendrController" ng-init="init({{ user.id }})">
-
-    {% verbatim %}
+            <section id="directives-calendar">
                 <div class="row">
                     <div class="col-lg-12" data-ng-init="renderCalendar('myCalendar1');">
                         <div class="alert-success calAlert" ng-show="alertMessage != undefined && alertMessage != ''">
@@ -99,19 +98,16 @@
 
             </section>
         </div>
-
-
-
-    {% endverbatim %}
-    <br>
-    <uib-tabset active="active">
-        <uib-tab index="0" heading="Projects">
-            <div gl-project-list redirect-url="{% url 'project_detail' %}"></div>
-        </uib-tab>
-        <uib-tab index="1" heading="My Tasks">
-            <div cl-task-list assignee="{{ user.id }}"></div>
-        </uib-tab>
-    </uib-tabset>
+        <br>
+        <uib-tabset active="active">
+            <uib-tab index="0" heading="Projects">
+                <div gl-project-list redirect-url="{% url 'project_detail' %}"></div>
+            </uib-tab>
+            <uib-tab index="1" heading="My Tasks">
+                <div cl-task-list tasks="events" assignee="{{ user.id }}"></div>
+            </uib-tab>
+        </uib-tabset>
+    </div>
 {% endblock %}
 
 {% block footer_div %}

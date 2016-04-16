@@ -274,18 +274,11 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
 
     /* add custom event*/
     $scope.renderEvent = function (e) {
-        var event = {
-            id: e.id,
-            user: e.user,
-            title: e.name || 'n/a',
-            start: e.start,
-            end: e.end,
-            resourceId: String(e.assignee),
-            projectId: e.project,
-            services: e.services,
-            allDay: false,
-            daily_estimate: parseFloat(e.daily_estimate),
-        };
+        var event = e;
+        event.projectId = e.project;
+        event.resourceId = e.assignee;
+        event.allDay = false;
+        event.title = e.name || 'n/a';
 
         $scope.events.push(event);
         // $scope.eventRender(event);
@@ -378,7 +371,7 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
     $scope.selectFunction = function (start, end, x, y, resource) {
         var event;
         event = {
-            daily_estimate: 0.0,
+            daily_estimate: 0,
             resourceId: resource.id,
             start: start,
             end: end,

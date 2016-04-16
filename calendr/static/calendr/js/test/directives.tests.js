@@ -5,14 +5,6 @@ describe('clTaskList', function() {
     var $scope;
 
     beforeEach(function () {
-        module('calendr.services.clServices', function($provide) {
-            $provide.factory('Task', function ($q) {
-                var Task = {};
-                Task.query = function () { return { $promise: $q.when([])}; };
-                return Task;
-            });
-        });
-
         module('calendr.directives.clTaskList');
         module('staticNgTemplates');
 

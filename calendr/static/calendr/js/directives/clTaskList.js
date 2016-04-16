@@ -3,20 +3,17 @@ app = angular.module('calendr.directives.clTaskList', [
     'smart-table',
 ]);
 
-app.directive('clTaskList', ['$window','Task', function ($window, Task) {
+app.directive('clTaskList', [function () {
     return {
         restrict: 'A',
         scope: {
+            tasks: '=',
             assignee: '@',
         },
         controller: ['$scope', function ($scope) {
-            var options = {};
-            if ($scope.assignee)
-                options.assignee = $scope.assignee;
-
-            Task.query(options).$promise.then(function (response) {
-                $scope.tasks = response;
-            });
+            $scope.byAssignee = function (task) {
+                return task.assignee == $scope.assignee;
+            };
         }],
         templateUrl: '/static/calendr/html/cl_task_list.html',
         link: function ($scope) {
