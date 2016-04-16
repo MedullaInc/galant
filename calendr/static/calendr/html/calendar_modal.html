@@ -4,14 +4,14 @@
 </div>
 <div class="container" id="calendar_modal">
 
-    <form ng-submit="submit(event)" class="form">
+    <form ng-submit="submit(task)" class="form">
         <div class="modal-body">
             <div class="row form-group">
                 <div class="col-lg-3">
                     <label>Task Title</label>
                 </div>
                 <div class="col-lg-9">
-                    <input type="text" placeholder="Task Title" ng-model="event.title" class="form-control"/>
+                    <input type="text" placeholder="Task Title" ng-model="task.name" class="form-control"/>
                 </div>
             </div>
             <div class="row form-group">
@@ -19,21 +19,21 @@
                     <label>Project</label>
                 </div>
                 <div class="col-lg-9">
-                    <select ng-model="event.projectId" class="form-control" ng-change="projectChanged(event.projectId)"
+                    <select ng-model="task.projectId" class="form-control" ng-change="projectChanged(task.projectId)"
                             ng-options="project.id as project.name for project in projects">
                         <option value="" style="display: none;">Select Project...</option>
                     </select>
                 </div>
             </div>
-            <div gl-multi-dropdown elements="event.services" available-elements="availableServices"
+            <div gl-multi-dropdown elements="task.services" available-elements="availableServices"
                  element-display-name="Service"></div>
             <div class="row form-group">
                 <div class="col-lg-3">
                     <label>Assignee</label>
                 </div>
                 <div class="col-lg-9">
-                    <select ng-model="event.resourceId" class="form-control">
-                        <option ng-selected="{{ resource.id == event.resourceId }}" ng-repeat="resource in resources" value="{{ resource.id }}"> {{ resource.title }}
+                    <select ng-model="task.resourceId" class="form-control">
+                        <option ng-selected="{{ resource.id == task.resourceId }}" ng-repeat="resource in resources" value="{{ resource.id }}"> {{ resource.title }}
                         </option>
                     </select>
                 </div>
@@ -44,7 +44,7 @@
                 </div>
                 <div class="col-lg-9">
                     <div class="input-group popup-calendr">
-                        <input type="text" class="form-control" uib-datepicker-popup="dd.MM.yyyy" ng-model="event.start" is-open="start_date_opened" ng-required="true" close-text="Close"/>
+                        <input type="text" class="form-control" uib-datepicker-popup="dd.MM.yyyy" ng-model="task.start" is-open="start_date_opened" ng-required="true" close-text="Close"/>
                         <span class="input-group-btn">
                         <button type="button" class="btn btn-default  mini-calendar" ng-click="openStartDatePicker()">
                             <i class="glyphicon glyphicon-calendar"></i></button>
@@ -58,7 +58,7 @@
                 </div>
                 <div class="col-lg-9">
                     <div class="input-group popup-calendr">
-                        <input type="text" class="form-control" uib-datepicker-popup="dd.MM.yyyy" ng-model="event.end" is-open="end_date_opened" ng-required="true" close-text="Close"/>
+                        <input type="text" class="form-control" uib-datepicker-popup="dd.MM.yyyy" ng-model="task.end" is-open="end_date_opened" ng-required="true" close-text="Close"/>
                         <span class="input-group-btn">
                         <button type="button" class="btn btn-default mini-calendar" ng-click="openEndDatePicker()">
                             <i class="glyphicon glyphicon-calendar"></i></button>
@@ -72,12 +72,12 @@
                     <span style="font-size: 16px;" class="glyphicon glyphicon-question-sign help-tooltip" uib-tooltip="How many hours per day will be dedicated to this specific task over the course of its duration." tooltip-placement="top-right"></span>
                 </div>
                 <div class="col-lg-9">
-                    <input type="number" ng-model="event.daily_estimate" class="form-control"/>
+                    <input type="number" ng-model="task.daily_estimate" class="form-control"/>
                 </div>
             </div>
             <div class="row form-group">
                 <div class="col-lg-12">
-                    <button type="button" class="delete btn btn-default pull-right btn-submit" ng-click="deleteTask(event)">Delete Task</button>
+                    <button type="button" class="delete btn btn-default pull-right btn-submit" ng-click="deleteTask(task)">Delete Task</button>
                     <input id="submitTask" type="submit" class="btn btn-default pull-right btn-submit" value="Submit"/>
                 </div>
             </div>

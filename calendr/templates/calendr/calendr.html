@@ -99,7 +99,7 @@
                 <div gl-project-list redirect-url="{% url 'project_detail' %}"></div>
             </uib-tab>
             <uib-tab index="1" heading="My Tasks">
-                <div cl-task-list tasks="events" assignee="{{ user.id }}" add-task-fn="openEditModal"></div>
+                <div cl-task-list tasks="tasks" assignee="{{ user.id }}" add-task-fn="openEditModal"></div>
             </uib-tab>
         </uib-tabset>
     </div>

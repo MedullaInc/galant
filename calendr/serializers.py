@@ -4,10 +4,19 @@ from gallant import models as g
 
 
 class TaskSerializer(serializers.ModelSerializer):
+    user = serializers.PrimaryKeyRelatedField(read_only=True)
     project_name = serializers.SerializerMethodField()
+    daily_estimate = serializers.FloatField()
 
     def get_project_name(self, task):
         return task.project.name
+
+    def create(self, validated_data):
+        user = self.context['request'].user
+        validated_data.pop('id', None)
+        validated_data.update({'user': user})
+
+        return super(TaskSerializer, self).create(validated_data)
 
     def get_fields(self, *args, **kwargs):
         fields = super(TaskSerializer, self).get_fields(*args, **kwargs)

@@ -21,8 +21,9 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
     };
 
     /* event source that contains custom events on the scope */
-    $scope.events = [];
+    $scope.tasks = [];
     $scope.projects = [];
+    $scope.eventSources = [];
     $scope.eventResources = [];
 
     $scope.gotoDate = function (date) {
@@ -77,15 +78,35 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
         });
     };
 
-    /* Retrieve all Tasks from API service */
-    $scope.getTasks = function () {
-        Task.query().$promise.then(function (response) {
-            angular.forEach(response, function (value, key) {
-                $scope.renderEvent(value);
-            });
-
+    var wrapTask = function (task) {
+        Object.defineProperty(task, 'title', {
+            get: function () { return this.name; },
+            set: function (t) { this.name = t; },
         });
+        Object.defineProperty(task, 'projectId', {
+            get: function () { return this.project; },
+            set: function (p) { this.project = p; },
+        });
+        Object.defineProperty(task, 'resourceId', {
+            get: function () { return this.assignee; },
+            set: function (a) { this.assignee = a; },
+        });
+        task.allDay = false;
     };
+
+    /* Retrieve all Tasks from API service and add wrapper to calendar event */
+    Task.query().$promise.then(function (response) {
+        angular.forEach(response, function (task) {
+            wrapTask(task);
+            $scope.tasks.push(task);
+        });
+    });
+
+    $scope.updateTask = function (task) {
+        Task.update(task).$promise.then(function (response) {
+            $scope.tasks.push(response);
+        });
+    }
 
     /* Retrieve all Tasks from API service */
     $scope.getProjects = function () {
@@ -96,25 +117,24 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
 
     $scope.getResources();
     $scope.getProjects();
-    $scope.getTasks();
 
     /* Open edit Modal */
     /* istanbul ignore next */
-    $scope.openEditModalandgotoDate = function (event) {
-        $scope.gotoDate(event.start);
-        $scope.openEditModal(event);
+    $scope.openEditModalandgotoDate = function (task) {
+        $scope.gotoDate(task.start);
+        $scope.openEditModal(task);
     };
 
     /* Open edit Modal */
     /* istanbul ignore next */
-    $scope.openEditModal = function (event) {
-        $scope.event = event;
+    $scope.openEditModal = function (task) {
+        $scope.task = task;
         $uibModal.open({
             templateUrl: '/static/calendr/html/calendar_modal.html',
             backdrop: true,
             windowClass: 'modal',
-            controller: function ($scope, $uibModalInstance, $log, event, events, resources, projects, updateEvent, createTask, gotoDate) {
-                $scope.event = event || {};
+            controller: function ($scope, $uibModalInstance, $log, task, tasks, resources, projects, updateTask, gotoDate) {
+                $scope.task = task || {};
 
                 // Date pickers
                 $scope.openStartDatePicker = function () {
@@ -125,31 +145,30 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
                     $scope.end_date_opened = true;
                 };
 
-                $scope.event = event;
+                $scope.task = task;
 
-                if ($scope.event.start) {
-                    $scope.event.start = new Date($scope.event.start);
+                if ($scope.task.start) {
+                    $scope.task.start = new Date($scope.task.start);
                 } else {
-                    $scope.event.start = new Date();
+                    $scope.task.start = new Date();
                 }
 
-                if ($scope.event.end) {
-                    $scope.event.end = new Date($scope.event.end);
+                if ($scope.task.end) {
+                    $scope.task.end = new Date($scope.task.end);
                 } else {
-                    $scope.event.end = new Date();
+                    $scope.task.end = new Date();
                 }
 
-                if (!$scope.event.services)
-                    $scope.event.services = [];
-                $scope.events = events;
+                if (!$scope.task.services)
+                    $scope.task.services = [];
+                $scope.tasks = tasks;
                 $scope.resources = resources;
                 $scope.projects = projects;
-                $scope.updateEvent = updateEvent;
-                $scope.createTask = createTask;
+                $scope.updateTask = updateTask;
                 $scope.gotoDate = gotoDate;
 
                 $scope.project = $scope.projects.find(function (p) {
-                    return p.id == $scope.event.projectId
+                    return p.id == $scope.task.projectId
                 });
 
                 if ($scope.project && $scope.project.services.length) {
@@ -157,40 +176,30 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
                 }
 
 
-                $scope.submit = function (e) {
+                $scope.submit = function (task) {
                     $uibModalInstance.dismiss('cancel');
                     // var found = $filter('filter')($scope.events, {id: $scope.event.id}, true)
-                    if (e.id) {
-                        $scope.updateEvent($scope.event);
+                    if (task.id) {
+                        updateTask(task);
                     } else {
-
-                        var task = {
-                            "id": "",
-                            "user": $scope.currentUserId,
-                            "name": e.title,
-                            "start": e.start,
-                            "end": e.end,
-                            "daily_estimate": e.daily_estimate,
-                            "project": e.projectId,
-                            "services": e.services,
-                            "assignee": String(e.resourceId),
-                            "notes": []
-                        };
-
-                        $scope.createTask(task);
+                        Task.save(task).$promise.then(function (response) {
+                            $scope.tasks.push(response);
+                        }, function (error) {
+                            glAlertService.add('danger', error.data);
+                        });
                     }
-                    $scope.gotoDate(e.start);
+                    $scope.gotoDate(task.start);
                 };
 
                 $scope.cancel = function () {
                     $uibModalInstance.dismiss('cancel');
                 };
 
-                $scope.deleteTask = function (event) {
+                $scope.deleteTask = function (task) {
                     if (confirm('Are you sure you want to permanently delete this task?')) {
-                        Task.delete({id: event.id}).$promise.then(function (response) {
-                            var index = $scope.events.indexOf(event);
-                            $scope.events.splice(index, 1);
+                        Task.delete({id: task.id}).$promise.then(function (response) {
+                            var index = $scope.tasks.indexOf(task);
+                            $scope.tasks.splice(index, 1);
                             $uibModalInstance.dismiss('cancel');
                         });
                     }
@@ -205,27 +214,24 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
                         $scope.availableServices = $scope.project.services;
                     else
                         $scope.availableServices = [];
-                    $scope.event.services = [];
+                    $scope.task.services = [];
                 };
             },
             resolve: {
                 gotoDate: function () {
                     return $scope.gotoDate;
                 },
-                event: function () {
-                    return $scope.event;
+                task: function () {
+                    return $scope.task;
                 },
-                events: function () {
-                    return $scope.events;
+                tasks: function () {
+                    return $scope.tasks;
+                },
+                updateTask: function () {
+                    return $scope.updateTask;
                 },
                 projects: function () {
                     return $scope.projects;
-                },
-                updateEvent: function () {
-                    return $scope.updateEvent;
-                },
-                createTask: function () {
-                    return $scope.createTask;
                 },
                 resources: function () {
                     return $scope.eventResources;
@@ -247,68 +253,19 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
         $scope.getResources(options);
     };
 
-    /* update on Calendar */
-    $scope.updateEvent = function (event, element) {
-        var task = {
-            "id": event.id,
-            "user": event.user,
-            "name": event.title,
-            "start": moment(event.start).format(),
-            "end": moment(event.end).format(),
-            "daily_estimate": event.daily_estimate,
-            "project": event.projectId,
-            "services": event.services,
-            "assignee": String(event.resourceId),
-            "notes": []
-        };
-
-
-        $scope.updateTask(task);
-        glAlertService.add('success', 'Task "' + event.title + '" has been relocated.');
-
-        //alert(event.title);
-    };
-
     /* alert on eventClick */
-    $scope.alertOnEventClick = function (event, jsEvent, view) {
-        $scope.openEditModal(event, $scope.eventResources);
+    $scope.alertOnEventClick = function (task, jsEvent, view) {
+        $scope.openEditModal(task, $scope.eventResources);
     };
 
     /* alert on Drop */
-    $scope.alertOnDrop = function (event, delta, revertFunc, jsEvent, ui, view) {
+    $scope.alertOnDrop = function (task, delta, revertFunc, jsEvent, ui, view) {
         glAlertService.add('success', 'Event Dropped to make dayDelta ' + delta);
     };
 
     /* alert on Resize */
-    $scope.alertOnResize = function (event, delta, revertFunc, jsEvent, ui, view) {
-        var task = {
-            "id": event.id,
-            "user": event.user,
-            "name": event.title,
-            "start": event.start,
-            "end": event.end,
-            "daily_estimate": event.daily_estimate,
-            "project": event.projectId,
-            "services": event.services,
-            "assignee": String(event.resourceId),
-            "notes": []
-        };
-
-        $scope.updateTask(task);
-        glAlertService.add('success', 'Task "' + event.title + '" has been resized.');
-    };
-
-    /* add custom event*/
-    $scope.renderEvent = function (e) {
-        var event = e;
-        event.projectId = e.project;
-        event.resourceId = e.assignee;
-        event.allDay = false;
-        event.title = e.name || 'n/a';
-
-        $scope.events.push(event);
-        // $scope.eventRender(event);
-
+    $scope.alertOnResize = function (task, delta, revertFunc, jsEvent, ui, view) {
+        glAlertService.add('success', 'Task "' + task.title + '" has been resized.');
     };
 
     /* Event fired on day click */
@@ -326,55 +283,10 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
 
     // };
 
-
-    /* Create a new Task using API Service */
-    $scope.createTask = function (task) {
-        // Event to task
-        var myTask = {
-            "id": "",
-            "user": $scope.currentUserId,
-            "name": task.name,
-            "start": moment(task.start).format(),
-            "end": moment(task.end).format(),
-            "daily_estimate": task.daily_estimate,
-            "project": task.project,
-            "services": task.services,
-            "assignee": task.assignee,
-            "notes": []
-        };
-
-        $scope.postTask(myTask);
-    };
-
     /* remove event from calendar */
     $scope.remove = function (index) {
-        glAlertService.add('success', 'Task "' + $scope.events[index].title + '" has been removed.');
-        $scope.events.splice(index, 1);
-    };
-
-    /* postTask controller Wrapper */
-    $scope.postTask = function (task) {
-        Task.save(task).$promise.then(function (response) {
-            $scope.renderEvent(response);
-
-        });
-    };
-
-
-    /* Update an existing Task using API Service */
-    $scope.updateTask = function (task) {
-
-        Task.update(task).$promise.then(function (response) {
-
-            for (i = 0; i < $scope.events.length; i++) {
-                if ($scope.events[i].id == response.id) {
-                    $scope.events.splice(i, 1);
-                }
-            }
-
-            $scope.renderEvent(response);
-        });
-
+        glAlertService.add('success', 'Task "' + $scope.tasks[index].title + '" has been removed.');
+        $scope.tasks.splice(index, 1);
     };
 
     /* Change View */
@@ -389,23 +301,18 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
         }
     };
 
-    $scope.eventRender = function (event, element, view) {
-    };
-
-    $scope.refetchEvents = function () {
-    };
-
     $scope.selectFunction = function (start, end, x, y, resource) {
-        var event;
-        event = {
+        var task = {
+            name: '',
             daily_estimate: 0,
-            resourceId: resource.id,
+            assignee: resource.id,
             start: start,
             end: end,
-            title: "",
         };
 
-        $scope.openEditModal(event);
+        wrapTask(task);
+
+        $scope.openEditModal(task);
         uiCalendarConfig.calendars.myCalendar1.fullCalendar('unselect');
     };
 
@@ -424,7 +331,7 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
             selectable: true,
             select: $scope.selectFunction,
             eventClick: $scope.alertOnEventClick,
-            updateEvent: $scope.updateEvent,
+            updateEvent: $scope.updateTask,
             dayClick: $scope.dayClick,
             eventDrop: $scope.updateEvent,
             eventResize: $scope.alertOnResize,
@@ -433,6 +340,5 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
         }
     };
 
-    $scope.eventSources = [$scope.events];
-
+    $scope.eventSources = [$scope.tasks];
 });
