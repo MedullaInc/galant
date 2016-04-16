@@ -6,31 +6,37 @@
     Manage clients, send quotes, track projects.
 {% endblock %}
 
+{% block extra_head %}
+    {% if user.is_authenticated == True %}
+        <meta http-equiv="REFRESH" content="0;url={% url 'user_dashboard' %}">
+    {% endif %}
+{% endblock %}
+
 {% block content %}
     <div>
         <div class="row">
             {% if user.is_authenticated == True %}
-            <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+                <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
             {% else %}
-            <div class="col-xs-12 col-sm-6 col-md-8">
+                <div class="col-xs-12 col-sm-6 col-md-8">
             {% endif %}
-                <p class="main">
-                    Manage clients, send quotes, track projects &mdash; all in one place.
-                </p>
+            <p class="main">
+                Manage clients, send quotes, track projects &mdash; all in one place.
+            </p>
 
-                <p class="sub-main">
-                    {{ site.name }} was brewed in the heart of Silicon Valley, in close collaboration
-                    with internationally acclaimed creative agencies.<br><br>Our sole purpose is to
-                    help agencies and freelancers operate their business. That way you can focus on what
-                    you do best: create.
-                    <br><br>
-                </p>
+            <p class="sub-main">
+                {{ site.name }} was brewed in the heart of Silicon Valley, in close collaboration
+                with internationally acclaimed creative agencies.<br><br>Our sole purpose is to
+                help agencies and freelancers operate their business. That way you can focus on what
+                you do best: create.
+                <br><br>
+            </p>
 
-                {% if user.is_authenticated == False %}
-                    <a href="{% url 'signup' %}" type="button" class="btn btn-default giant" name="signup">
-                        {% trans 'Get organized.' %}
-                    </a>
-                {% endif %}
+            {% if user.is_authenticated == False %}
+                <a href="{% url 'signup' %}" type="button" class="btn btn-default giant" name="signup">
+                    {% trans 'Get organized.' %}
+                </a>
+            {% endif %}
 
             </div>
 
@@ -67,6 +73,6 @@
                     </form>
                 </div>
             {% endif %}
+            </div>
         </div>
-    </div>
 {% endblock %}

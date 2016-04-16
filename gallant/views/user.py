@@ -46,7 +46,6 @@ def _send_feedback_email(form, path):
 
 class UserDashboard(View):
     def get(self, request):
-        request.breadcrumbs(_('Dashboard'), request.path_info)
         return TemplateResponse(request=request,
                                 template="gallant/user_dashboard.html",
                                 context={'title': 'Dashboard'})
