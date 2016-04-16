@@ -25,9 +25,6 @@
     <script src="{% static "quotes/js/services/qtServices.js" %}"></script>
     <script src="{% static "js/calendr.js" %}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
-    <script>
-        var currentUserId = "{{user.id}}";
-    </script>
 {% endblock %}
 
 {% block extra_wrapper_attrs %} ng-app="gallant" {% endblock %}
@@ -58,10 +55,10 @@
 {% endblock %}
 
 {% block content_div %}
-    {% verbatim %}
         <div id="calendar_container">
-            <section id="directives-calendar" ng-controller="clCalendrController">
+            <section id="directives-calendar" ng-controller="clCalendrController" ng-init="init({{ user.id }})">
 
+    {% verbatim %}
                 <div class="row">
                     <div class="col-lg-12" data-ng-init="renderCalendar('myCalendar1');">
                         <div class="alert-success calAlert" ng-show="alertMessage != undefined && alertMessage != ''">
@@ -114,7 +111,7 @@
             <div gl-project-list redirect-url="{% url 'project_detail' %}"></div>
         </uib-tab>
         <uib-tab index="1" heading="My Tasks">
-            <div cl-task-list></div>
+            <div cl-task-list tasks="events" by-user="{{ user.id }}"></div>
         </uib-tab>
     </uib-tabset>
 {% endblock %}

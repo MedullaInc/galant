@@ -9,6 +9,10 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
     var m = date.getMonth();
     var y = date.getFullYear();
 
+    $scope.init = function (currentUserId) {
+        $scope.currentUserId = currentUserId
+    }
+
     FC.views.timelineThreeMonths = {
         type: 'timeline',
         duration: {
@@ -49,7 +53,7 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
                     userEvents: function () {
                         // Return current user tasks
                         return $filter('filter')($scope.events, {
-                            resourceId: currentUserId
+                            resourceId: $scope.currentUserId
                         });
                     },
                     openEditModalandgotoDate: function () {
@@ -177,7 +181,7 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
 
                         var task = {
                             "id": "",
-                            "user": currentUserId,
+                            "user": $scope.currentUserId,
                             "name": e.title,
                             "start": e.start,
                             "end": e.end,
@@ -350,7 +354,7 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
         // Event to task
         var myTask = {
             "id": "",
-            "user": currentUserId,
+            "user": $scope.currentUserId,
             "name": task.name,
             "start": moment(task.start).format(),
             "end": moment(task.end).format(),
