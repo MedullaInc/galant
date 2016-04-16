@@ -8,6 +8,7 @@ describe('clTaskList', function() {
         module('calendr.services.clServices', function($provide) {
             $provide.factory('Task', function ($q) {
                 var Task = {};
+                Task.query = function () { return { $promise: $q.when([])}; };
                 return Task;
             });
         });
@@ -29,7 +30,7 @@ describe('clTaskList', function() {
         var element;
 
         beforeEach(function() {
-            element = $compile('<div cl-task-list=""></div>')($scope);
+            element = $compile('<div cl-task-list="" assignee="0"></div>')($scope);
             $scope.$digest();
         });
 
