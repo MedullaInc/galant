@@ -32,6 +32,7 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
                 templateUrl: '/static/calendr/html/aside.html',
                 backdrop: true,
                 controller: function ($scope, $uibModalInstance, userEvents, openEditModalandgotoDate) {
+
                     $scope.events = userEvents;
                     $scope.openEditModalandgotoDate = openEditModalandgotoDate;
                     $scope.ok = function (e) {
@@ -151,7 +152,30 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
             backdrop: true,
             windowClass: 'modal',
             controller: function ($scope, $uibModalInstance, $log, event, events, resources, projects, updateEvent, createTask, gotoDate) {
+
+                // Date pickers
+                $scope.openStartDatePicker = function () {
+                    $scope.start_date_opened = true;
+                };
+
+                $scope.openEndDatePicker = function () {
+                    $scope.end_date_opened = true;
+                };
+
                 $scope.event = event;
+
+                if ($scope.event.start) {
+                    $scope.event.start = new Date($scope.event.start);
+                } else {
+                    $scope.event.start = new Date();
+                }
+
+                if ($scope.event.end) {
+                    $scope.event.end = new Date($scope.event.end);
+                } else {
+                    $scope.event.end = new Date();
+                }
+
                 if (!$scope.event.services)
                     $scope.event.services = [];
                 $scope.events = events;
