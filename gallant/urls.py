@@ -68,7 +68,7 @@ urlpatterns = i18n_patterns(
     url(r'^admin/', include(admin.site.urls)),
     url(r'^quote/', include('quotes.urls')),
     url(r'^briefs/', include('briefs.urls')),
-    url(r'^calendar/', include('calendr.urls')),
+    url(r'^projects/', include('calendr.urls')),
 
     url(r'^clients/$', login_required(gallant.views.ClientList.as_view()), name='clients'),
     url(r'^client/add/$', login_required(gallant.views.ClientCreate.as_view()), name='add_client'),
@@ -79,7 +79,6 @@ urlpatterns = i18n_patterns(
     url(r'^client/(?P<pk>[0-9]+)/money/$', login_required(gallant.views.client_money_detail),
         name='client_money_detail'),
 
-    url(r'^projects/$', login_required(gallant.views.ProjectList.as_view()), name='projects'),
     url(r'^project/add/quote/(?P<quote_id>[0-9]+)?$', login_required(gallant.views.ProjectCreate.as_view()),
         name='add_project'),
     url(r'^project/edit/(?P<pk>[0-9]+)$', login_required(gallant.views.ProjectUpdate.as_view()), name='edit_project'),

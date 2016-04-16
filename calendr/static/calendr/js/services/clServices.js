@@ -2,7 +2,7 @@ app = angular.module('calendr.services.clServices', ['ngResource']);
 
 /* istanbul ignore next  */
 app.factory('Task', function ($resource) {
-    return $resource('/en/calendar/api/task ', {}, {
+    return $resource('/en/projects/api/task ', {}, {
         query: {
             method: 'GET',
             params: {},
@@ -19,14 +19,14 @@ app.factory('Task', function ($resource) {
             params: {
                 id: '@id'
             },
-            url: '/en/calendar/api/task/:id '
+            url: '/en/projects/api/task/:id '
         },
         delete: {
             method: 'DELETE',
             params: {
                 id: '@id'
             },
-            url: '/en/calendar/api/task/:id '
+            url: '/en/projects/api/task/:id '
         }
     });
 

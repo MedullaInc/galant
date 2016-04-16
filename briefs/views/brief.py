@@ -31,7 +31,7 @@ def _update_from_query(request, context):
         quote = project.quote_set.all_for(request.user)[0]
         initial = {'client': quote.client_id, 'quote': quote.id or None}
         context.update({'project': project, 'quote': quote, 'client': quote.client})
-        request.breadcrumbs([(_('Projects'), reverse('projects')),
+        request.breadcrumbs([(_('Projects'), reverse('calendr')),
                              (_('Project:') + project.name, reverse('project_detail', args=[project.id]))])
     elif client_id:
         client = get_one_or_404(request.user, 'view_client', g.Client, pk=client_id)

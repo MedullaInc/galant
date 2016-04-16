@@ -1,5 +1,6 @@
 app = angular.module('gallant.directives.glProjectList', [
     'ui.bootstrap',
+    'smart-table',
     'gallant.services.glServices',
     'gallant.directives.glProjectAdd',
 ]);
@@ -8,10 +9,11 @@ app.directive('glProjectList', ['$window', '$uibModal', 'Project', function ($wi
     return {
         restrict: 'A',
         scope: {
+            redirectUrl: '@',
         },
         controller: ['$scope', function ($scope) {
             Project.query().$promise.then(function (response) {
-                $scope.projects = response;
+                $scope.projectsSafe = response;
             });
         }],
         templateUrl: '/static/gallant/html/gl_project_list.html',
@@ -23,16 +25,26 @@ app.directive('glProjectList', ['$window', '$uibModal', 'Project', function ($wi
                     templateUrl: 'addProjectModal.html',
                 });
                 return 0;
-            }
+            };
 
             $scope.projectSaved = function (project) {
-                $scope.projects.push(project);
+                $scope.projectsSafe.push(project);
                 $scope.modalInstance.dismiss('cancel');
-            }
+            };
 
             $scope.cancel = function () {
                 $scope.modalInstance.dismiss('cancel');
-            }
+            };
+
+            $scope.redirect = function (id) {
+                $window.location.href = $scope.redirectUrl + id;
+            };
+
+            $scope.checkAll = function () {
+                angular.forEach($scope.projectsSafe, function (p) {
+                    p.checked = $scope.selectedAll;
+                });
+            };
         }
     };
 }]);

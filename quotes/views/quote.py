@@ -274,6 +274,7 @@ class QuoteViewSet(UserModelViewSet):
     def get_queryset(self):
         client_id = self.request.query_params.get('client_id', None)
         clients_only = self.request.query_params.get('clients_only', None)
+        unlinked = self.request.query_params.get('unlinked', None)
 
         qs = self.model.objects.all_for(self.request.user)
 
@@ -281,6 +282,9 @@ class QuoteViewSet(UserModelViewSet):
             qs = qs.filter(client_id=client_id)
         elif clients_only is not None:
             qs = qs.exclude(client__isnull=clients_only)
+
+        if unlinked is not None:
+            qs = qs.filter(projects=None)
 
         return qs.select_related('client')
 

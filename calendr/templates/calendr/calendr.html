@@ -21,6 +21,8 @@
     <script src="{% static "js/scheduler.js" %}"></script>
     <script src="{% static "js/calendar.js" %}"></script>
     <script src="{% static "js/gallant.js" %}"></script>
+    <script src="{% static "js/smart-table.js" %}"></script>
+    <script src="{% static "quotes/js/services/qtServices.js" %}"></script>
     <script src="{% static "js/calendr.js" %}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
     <script>
@@ -109,7 +111,7 @@
     <br>
     <uib-tabset active="active">
         <uib-tab index="0" heading="Projects">
-            <div gl-project-list></div>
+            <div gl-project-list redirect-url="{% url 'project_detail' %}"></div>
         </uib-tab>
         <uib-tab index="1" heading="My Tasks">
             <div cl-task-list></div>

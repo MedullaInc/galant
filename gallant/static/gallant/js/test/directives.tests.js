@@ -172,16 +172,19 @@ describe('glProjectList', function() {
     var $scope;
 
     beforeEach(function () {
+        angular.module('smart-table', []);
+
         module('gallant.services.glServices', function($provide) {
             $provide.factory('Project', function ($q) {
                 var Project = {};
-                Project.query = function () { return { $promise: $q.when([]) }; };
+                Project.query = function () { return { $promise: $q.when([{}]) }; };
                 return Project;
             });
         });
 
         module('gallant.directives.glProjectList', function($provide) {
             $provide.value('$uibModal', {open: function () { return { dismiss: function () {}}; }});
+            $provide.value('$window', {location: {}});
         });
         module('staticNgTemplates');
 
@@ -221,7 +224,7 @@ describe('glProjectList', function() {
             spyOn(element.isolateScope().modalInstance, 'dismiss');
             element.isolateScope().projectSaved({});
             $scope.$apply();
-            expect(element.isolateScope().projects.length).toEqual(1);
+            expect(element.isolateScope().projectsSafe.length).toEqual(2);
             expect(element.isolateScope().modalInstance.dismiss).toHaveBeenCalled();
         });
 
@@ -231,6 +234,18 @@ describe('glProjectList', function() {
             element.isolateScope().cancel();
             $scope.$apply();
             expect(element.isolateScope().modalInstance.dismiss).toHaveBeenCalled();
+        });
+
+        it('redirects', function () {
+            var $window = $injector.get('$window');
+            element.isolateScope().redirect();
+            expect($window.location.href).toBeDefined();
+        });
+
+        it('selects projects', function () {
+            element.isolateScope().selectedAll = true;
+            element.isolateScope().checkAll();
+            expect(element.isolateScope().projectsSafe[0].checked).toEqual(true);
         });
     });
 });
@@ -246,6 +261,12 @@ describe('glProjectAdd', function() {
                 var Project = function () {};
                 Project.fields = function () { return {$promise: $q.when([])}; };
                 return Project;
+            });
+
+            $provide.factory('Quote', function ($q) {
+                var Quote = function () {};
+                Quote.query = function () { return {$promise: $q.when([])}; };
+                return Quote;
             });
         });
 

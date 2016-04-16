@@ -42,7 +42,7 @@ class ServiceUpdate(View):
 
         project = get_one_or_404(self.request.user, 'view_project', g.Project, pk=self.kwargs['project_id'])
 
-        self.request.breadcrumbs([(_('Projects'), reverse('projects')),
+        self.request.breadcrumbs([(_('Projects'), reverse('calendr')),
                                   (_('Project: %s' % project),
                                    reverse('project_detail', args=[self.kwargs['project_id']])),
                                   (_('Service: %s' % self.object.name.get_text()),
@@ -76,7 +76,7 @@ class ServiceCreate(ServiceUpdate):
 
         project = get_one_or_404(self.request.user, 'view_project', g.Project, pk=self.kwargs['project_id'])
 
-        self.request.breadcrumbs([(_('Projects'), reverse('projects')),
+        self.request.breadcrumbs([(_('Projects'), reverse('calendr')),
                                   (_('Project: %s' % project),
                                    reverse('project_detail', args=[self.kwargs['project_id']])),
                                   (_('Add Service'), reverse('add_service', args=[self.kwargs['project_id']]))
@@ -91,7 +91,7 @@ def service_detail(request, *args, **kwargs):
     service = get_one_or_404(request.user, 'view_service', g.Service, pk=kwargs['pk'])
     project = get_one_or_404(request.user, 'view_project', g.Project, pk=kwargs['project_id'])
 
-    request.breadcrumbs([(_('Projects'), reverse('projects')),
+    request.breadcrumbs([(_('Projects'), reverse('calendr')),
                          (_('Project: %s' % project), reverse('project_detail', args=[kwargs['project_id']])),
                          (_('Service: %s' % service.name.get_text()),
                           reverse('service_detail', args=[kwargs['project_id'], kwargs['pk']]))
