@@ -9,8 +9,10 @@ app.directive('clTaskList', [function () {
         scope: {
             tasks: '=',
             assignee: '@',
+            addTaskFn: '&',
         },
         controller: ['$scope', function ($scope) {
+            $scope.addTask = $scope.addTaskFn();
             $scope.byAssignee = function (task) {
                 if ($scope.assignee)
                     return task.assignee == $scope.assignee;

@@ -114,7 +114,7 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
             backdrop: true,
             windowClass: 'modal',
             controller: function ($scope, $uibModalInstance, $log, event, events, resources, projects, updateEvent, createTask, gotoDate) {
-                $scope.event = event;
+                $scope.event = event || {};
                 if (!$scope.event.services)
                     $scope.event.services = [];
                 $scope.events = events;
