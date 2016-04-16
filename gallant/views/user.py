@@ -5,6 +5,7 @@ from django.contrib.auth.forms import SetPasswordForm
 from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import send_mail
 from django.http.response import Http404, HttpResponse
+from django.template.response import TemplateResponse
 from django.utils.safestring import mark_safe
 from django.views.generic import View
 from django.http import HttpResponseRedirect
@@ -41,6 +42,13 @@ def _send_feedback_email(form, path):
     )
     send_mail('User feedback', message, settings.EMAIL_HOST_USER,
               ['contact@galant.co'], fail_silently=False)
+
+
+class UserDashboard(View):
+    def get(self, request):
+        return TemplateResponse(request=request,
+                                template="gallant/user_dashboard.html",
+                                context={'title': 'Dashboard'})
 
 
 class SignUpRequest(View):

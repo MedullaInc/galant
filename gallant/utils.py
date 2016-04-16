@@ -3,6 +3,7 @@ from subprocess import check_output
 from allauth.account.adapter import DefaultAccountAdapter
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
+from django.core.urlresolvers import reverse
 from django.http.response import Http404
 from django.db import models as m
 from django.contrib.sites.models import Site
@@ -88,6 +89,9 @@ class GallantViewSetPermissions(DjangoModelPermissions):
 
 # Disable allauth signup for now
 class NoNewUsersAccountAdapter(DefaultAccountAdapter):
+    def get_login_redirect_url(self, request):
+        return reverse('user_dashboard')
+
     def is_open_for_signup(self, request):
         return False
 

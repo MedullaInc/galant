@@ -64,6 +64,8 @@ urlpatterns = i18n_patterns(
     url(r'^signup/', gallant.views.SignUpRequest.as_view(), name='signup'),
     # url(r'^contact/', gallant.views.contact, name='contact'),
 
+    url(r'^dashboard/', login_required(gallant.views.UserDashboard.as_view()), name='user_dashboard'),
+
     url(r'^accounts/', include(allauth.urls)),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^quote/', include('quotes.urls')),
