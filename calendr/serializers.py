@@ -4,6 +4,11 @@ from gallant import models as g
 
 
 class TaskSerializer(serializers.ModelSerializer):
+    project_name = serializers.SerializerMethodField()
+
+    def get_project_name(self, task):
+        return task.project.name
+
     def get_fields(self, *args, **kwargs):
         fields = super(TaskSerializer, self).get_fields(*args, **kwargs)
         fields['project'] = serializers.PrimaryKeyRelatedField(
@@ -20,4 +25,4 @@ class TaskSerializer(serializers.ModelSerializer):
     class Meta:
         model = Task
         fields = ('id', 'user', 'name', 'start', 'end', 'daily_estimate',
-                  'project', 'services', 'assignee', 'notes')
+                  'project', 'services', 'assignee', 'notes', 'project_name')
