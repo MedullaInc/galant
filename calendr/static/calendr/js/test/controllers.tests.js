@@ -34,6 +34,14 @@ describe('CalendrControl', function () {
             $provide.value('$aside', {open: function () { return {close: function () {}}; }});
             $provide.value('FC', {views: {}});
             $provide.value('moment', function () { return {format: function () {}}; });
+            $provide.value('glAlertService', {
+                get: function () {
+                    return []
+                },
+                add: function (a,b) {
+                    return [{type: 'success', msg: 'a'}]
+                }
+            });
         });
 
         inject(function (_$rootScope_, _$controller_, _$injector_) {
@@ -122,15 +130,19 @@ describe('CalendrControl', function () {
     });
 
     it('alerts on event drop', function () {
+        var glAlertService = $injector.get('glAlertService');
+        spyOn(glAlertService, 'add');
         $scope.alertOnDrop({});
         $scope.$apply();
-        expect($scope.alertMessage).toBeDefined();
+        expect(glAlertService.add).toHaveBeenCalled();
     });
 
     it('removes event', function () {
+        var glAlertService = $injector.get('glAlertService');
+        spyOn(glAlertService, 'add');
         $scope.remove(0);
         $scope.$apply();
-        expect($scope.events.length).toEqual(0);
+        expect(glAlertService.add).toHaveBeenCalled();
     });
 
     it('selectFunction', function () {

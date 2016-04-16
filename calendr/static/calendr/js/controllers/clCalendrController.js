@@ -388,6 +388,7 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
 
     /* remove event from calendar */
     $scope.remove = function (index) {
+        glAlertService.add('success','Task "' + $scope.events[index].title + '" has been removed.');
         $scope.events.splice(index, 1);
     };
 
