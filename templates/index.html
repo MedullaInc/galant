@@ -6,12 +6,6 @@
     Manage clients, send quotes, track projects.
 {% endblock %}
 
-{% block extra_head %}
-    {% if user.is_authenticated == True %}
-        <meta http-equiv="REFRESH" content="0;url={% url 'user_dashboard' %}">
-    {% endif %}
-{% endblock %}
-
 {% block content %}
     <div>
         <div class="row">

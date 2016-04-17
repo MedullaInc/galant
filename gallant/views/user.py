@@ -44,6 +44,16 @@ def _send_feedback_email(form, path):
               ['contact@galant.co'], fail_silently=False)
 
 
+class Home(View):
+    def get(self, request):
+        if request.user.is_authenticated():
+            return HttpResponseRedirect(reverse('user_dashboard'))
+        else:
+            return TemplateResponse(request=request,
+                                    template="index.html",
+                                    context={'title': 'Home'})
+
+
 class UserDashboard(View):
     def get(self, request):
         return TemplateResponse(request=request,
