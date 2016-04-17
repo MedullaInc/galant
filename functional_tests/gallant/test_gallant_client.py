@@ -100,6 +100,14 @@ class GallantClientTest(browser.SignedInTest):
 
         self.assertNotEqual(rendered, u'[]')
 
+        context = {'request': request, 'project': project, 'status': 1}
+        rendered = self.render_template(
+            '{% load gallant_tags %}'
+            '{% get_project_services request project status=1 %}', context
+        )
+
+        self.assertGreater(len(rendered), 0)
+
         context = {'request': request, 'project': project, 'status': None}
         rendered = self.render_template(
             '{% load gallant_tags %}'

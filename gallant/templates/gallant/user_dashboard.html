@@ -1,1 +1,129 @@
-Hello World!
+{% extends 'base_body.html' %}
+
+{% load bootstrap i18n staticfiles %}
+
+{% block section_title %}
+    {% trans "Dashboard" %}
+{% endblock %}
+
+{% block scripts %}
+    {{ block.super }}
+    <script src="{% static "js/Chart.min.js" %}"></script>
+    <script src="{% static "js/angular.js" %}"></script>
+    <script src="{% static "js/angular-resource.js" %}"></script>
+    <script src="{% static "js/angular-animate.js" %}"></script>
+    <script src="{% static "js/ui-bootstrap-tpls.js" %}"></script>
+    <script src="{% static "djng/js/django-angular.js" %}"></script>
+    <script src="{% static "js/gallant.js" %}"></script>
+    <script src="{% static "js/quotes.js" %}"></script>
+    <script src="{% static "js/tc-angular-chartjs.js" %}"></script>
+
+{% endblock %}
+
+{% block extra_wrapper_attrs %} ng-app="glUserDashboard" {% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-lg-12">
+            <div id="center_content_enclosed" gl-dashboard-work-summary>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class="row">
+        <div class="col-lg-12">
+            <div id="center_content_enclosed" gl-dashboard-money-summary>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class="row">
+        <div class="col-lg-12">
+            <div id="center_content_enclosed">
+                <h2 class="section_title">
+                    Alerts <span class="yellow">( Coming soon... )</span>
+                </h2>
+                <div class="enclosed">
+
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <span class="label label-default">Deliverable past due</span>
+                        </div>
+                        <div class="col-lg-9">
+                            <p>
+                                The deliverable 'Logo' was due on October 3rd, 2015.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <span class="label label-default">Upcoming deliverable</span>
+                        </div>
+                        <div class="col-lg-9">
+                            <p>
+                                Deliverable 'Name' is due tomorrow.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <span class="label label-default">Payment due</span>
+                        </div>
+                        <div class="col-lg-9">
+                            <p>
+                                The payment for $1,000 was due last month.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <span class="label label-default">Last contact date</span>
+                        </div>
+                        <div class="col-lg-9">
+                            <p>
+                                {{ object }} was last contacted on September 16th, 2015.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <span class="label label-default">Deliverable past due</span>
+                        </div>
+                        <div class="col-lg-9">
+                            <p>
+                                The deliverable 'Logo' was due on October 3rd, 2015.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <span class="label label-default">Upcoming deliverable</span>
+                        </div>
+                        <div class="col-lg-9">
+                            <p>
+                                Deliverable 'Name' is due tomorrow.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <span class="label label-default">Payment due</span>
+                        </div>
+                        <div class="col-lg-9">
+                            <p>
+                                The payment for $1,000 was due last month.
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
