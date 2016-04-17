@@ -79,32 +79,31 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
     };
 
     var wrapTask = function (task) {
-        Object.defineProperty(task, 'title', {
-            get: function () { return this.name; },
-            set: function (t) { this.name = t; },
-        });
-        Object.defineProperty(task, 'projectId', {
-            get: function () { return this.project; },
-            set: function (p) { this.project = p; },
-        });
-        Object.defineProperty(task, 'resourceId', {
-            get: function () { return this.assignee; },
-            set: function (a) { this.assignee = a; },
-        });
+        task.title = task.name;
+        task.projectId = task.project;
+        task.resourceId = task.assignee;
         task.allDay = false;
+        return task;
+    };
+
+    var unwrapTask = function (task) {
+        task.name = task.title;
+        task.project = task.projectId;
+        task.assignee = task.resourceId;
+        delete task.source;
+        return task;
     };
 
     /* Retrieve all Tasks from API service and add wrapper to calendar event */
     Task.query().$promise.then(function (response) {
         angular.forEach(response, function (task) {
-            wrapTask(task);
-            $scope.tasks.push(task);
+            $scope.tasks.push(wrapTask(task));
         });
     });
 
     $scope.updateTask = function (task) {
-        Task.update(task).$promise.then(function (response) {
-            $scope.tasks.push(response);
+        Task.update({id: task.id}, unwrapTask(task)).$promise.then(function (response) {
+            glAlertService.add('success', 'Task ' + task.name + 'updated.');
         });
     }
 
@@ -175,15 +174,22 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
                     $scope.availableServices = $scope.project.services;
                 }
 
-
                 $scope.submit = function (task) {
                     $uibModalInstance.dismiss('cancel');
                     // var found = $filter('filter')($scope.events, {id: $scope.event.id}, true)
                     if (task.id) {
-                        updateTask(task);
+                        Task.update({id: task.id}, task).$promise.then(function (response) {
+                            var idx = $scope.tasks.findIndex(function (t) { return t.id == task.id });
+                            if (~idx)
+                                $scope.tasks[idx] = wrapTask(response);
+                            glAlertService.add('success', 'Task updated.');
+                        }, function (error) {
+                            glAlertService.add('danger', error.data);
+                        });
                     } else {
                         Task.save(task).$promise.then(function (response) {
-                            $scope.tasks.push(response);
+                            $scope.tasks.push(wrapTask(response));
+                            glAlertService.add('success', 'Task created.');
                         }, function (error) {
                             glAlertService.add('danger', error.data);
                         });
@@ -255,19 +261,8 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
 
     /* alert on eventClick */
     $scope.alertOnEventClick = function (task, jsEvent, view) {
-        $scope.openEditModal(task, $scope.eventResources);
+        $scope.openEditModal(unwrapTask(task), $scope.eventResources);
     };
-
-    /* alert on Drop */
-    $scope.alertOnDrop = function (task, delta, revertFunc, jsEvent, ui, view) {
-        glAlertService.add('success', 'Event Dropped to make dayDelta ' + delta);
-    };
-
-    /* alert on Resize */
-    $scope.alertOnResize = function (task, delta, revertFunc, jsEvent, ui, view) {
-        glAlertService.add('success', 'Task "' + task.title + '" has been resized.');
-    };
-
     /* Event fired on day click */
     /* Deprecated use select instead */
     // $scope.dayClick = function(date, jsEvent, view, resource) {
@@ -305,14 +300,10 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
         var task = {
             name: '',
             daily_estimate: 0,
-            assignee: resource.id,
-            start: start,
-            end: end,
+            resourceId: +resource.id,
         };
 
-        wrapTask(task);
-
-        $scope.openEditModal(task);
+        $scope.openEditModal(unwrapTask(task));
         uiCalendarConfig.calendars.myCalendar1.fullCalendar('unselect');
     };
 
@@ -333,9 +324,8 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
             eventClick: $scope.alertOnEventClick,
             updateEvent: $scope.updateTask,
             dayClick: $scope.dayClick,
-            eventDrop: $scope.updateEvent,
-            eventResize: $scope.alertOnResize,
-            eventRender: $scope.eventRender,
+            eventDrop: $scope.updateTask,
+            eventResize: $scope.updateTask,
             gotoDate: $scope.gotoDate,
         }
     };

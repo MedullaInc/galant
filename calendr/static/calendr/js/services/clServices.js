@@ -2,7 +2,11 @@ app = angular.module('calendr.services.clServices', ['ngResource']);
 
 /* istanbul ignore next  */
 app.factory('Task', function ($resource) {
-    return $resource('/en/projects/api/task/:id');
+    return $resource('/en/projects/api/task/:id', {}, {
+        update: {
+          method: 'PATCH',
+        }
+    });
 
 });
 

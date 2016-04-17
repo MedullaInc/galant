@@ -19,7 +19,7 @@
                     <label>Project</label>
                 </div>
                 <div class="col-lg-9">
-                    <select ng-model="task.projectId" class="form-control" ng-change="projectChanged(task.projectId)"
+                    <select ng-model="task.project" class="form-control" ng-change="projectChanged(task.project)"
                             ng-options="project.id as project.name for project in projects">
                         <option value="" style="display: none;">Select Project...</option>
                     </select>
@@ -32,9 +32,7 @@
                     <label>Assignee</label>
                 </div>
                 <div class="col-lg-9">
-                    <select ng-model="task.resourceId" class="form-control">
-                        <option ng-selected="{{ resource.id == task.resourceId }}" ng-repeat="resource in resources" value="{{ resource.id }}"> {{ resource.title }}
-                        </option>
+                    <select ng-model="task.assignee" class="form-control" ng-options="resource.id as resource.title for resource in resources">
                     </select>
                 </div>
             </div>
