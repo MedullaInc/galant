@@ -55,6 +55,7 @@
 {% block content_div %}
     <div id="calendr" ng-controller="clCalendrController" ng-init="init({{ user.id }})">
         <div id="calendar_container">
+
             <section id="directives-calendar">
 
                 <div gl-alerts></div>
@@ -77,12 +78,12 @@
                         <br/>
 
                         <p class="input-group popup-calendr" id="popup-calendr">
-                            <input id="id_date" class="form-control" type="date" uib-datepicker-popup ng-model="dt" is-open="status.opened" min-date="minDate" max-date="maxDate" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" ng-change="gotoDate(dt)"/>
+                            <input id="id_date" class="form-control" type="text" uib-datepicker-popup ng-model="dt" is-open="status.opened" min-date="minDate" max-date="maxDate" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" ng-change="gotoDate(dt)"/>
                             <span class="input-group-btn">
-                                <button type="button" class="btn btn-default" ng-click="open($event)">
-                                    <i class="glyphicon glyphicon-calendar"></i></button>
+                                <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
                             </span>
                         </p>
+
                     </div>
                 </div>
 
