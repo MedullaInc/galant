@@ -13,8 +13,7 @@ describe('CalendrControl', function () {
         module('gallant.services.glServices', function ($provide) {
             var getMockResource = function ($q) {
                 var MockResource = {};
-                MockResource.update = function (t) { return {$promise: $q.when(t)}; };
-                MockResource.save = function (t) { return {$promise: $q.when(t)}; };
+                MockResource.update = function (id, t) { return {$promise: $q.when(t)}; };
                 MockResource.query = function () { return {$promise: $q.when([{id: 0}])}; };
                 return MockResource;
             }
@@ -28,14 +27,11 @@ describe('CalendrControl', function () {
         angular.module('ng.django.forms', []);
         angular.module('ngAside', []);
         module('calendr.controllers.clCalendrController', function ($provide) {
-            $provide.value('uiCalendarConfig', {calendars:{myCalendar1: {fullCalendar: function (a, b) {}}}});
+            $provide.value('uiCalendarConfig', {calendars:{myCalendar1: {fullCalendar: {}}}});
             $provide.value('$uibModal', {open: function () {}});
             $provide.value('FC', {views: {}});
-            $provide.value('moment', function () { return {format: function () {}}; });
+            $provide.value('moment', {});
             $provide.value('glAlertService', {
-                get: function () {
-                    return []
-                },
                 add: function (a,b) {
                     return [{type: 'success', msg: 'a'}]
                 }
@@ -94,21 +90,11 @@ describe('CalendrControl', function () {
     });
 
     it('updates event', function () {
-        $scope.updateEvent({id:0, title: 'foo'}, {});
+        var glAlertService = $injector.get('glAlertService');
+        spyOn(glAlertService, 'add').and.callThrough();
+        $scope.updateTask({id:0, title: 'foo'});
         $scope.$apply();
-        expect($scope.events[0].title).toEqual('foo');
-    });
-
-    it('creates task', function () {
-        $scope.createTask({});
-        $scope.$apply();
-        expect($scope.events.length).toEqual(2);
-    });
-
-    it('alerts on resize', function () {
-        $scope.alertOnResize({id:0, title: 'bar'});
-        $scope.$apply();
-        expect($scope.events[0].title).toEqual('bar');
+        expect(glAlertService.add).toHaveBeenCalled();
     });
 
     it('alerts on event click', function () {
@@ -117,14 +103,6 @@ describe('CalendrControl', function () {
         $scope.alertOnEventClick({id:0, title: 'bar'});
         $scope.$apply();
         expect($uibModal.open).toHaveBeenCalled();
-    });
-
-    it('alerts on event drop', function () {
-        var glAlertService = $injector.get('glAlertService');
-        spyOn(glAlertService, 'add');
-        $scope.alertOnDrop({});
-        $scope.$apply();
-        expect(glAlertService.add).toHaveBeenCalled();
     });
 
     it('removes event', function () {
