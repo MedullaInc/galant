@@ -1,5 +1,5 @@
 {% extends "base_sidebar_enclosed.html" %}
-{% load bootstrap i18n gallant_tags %}
+{% load bootstrap i18n gallant_tags static %}
 
 {% block section_title %}
     {% trans "Project" %}
@@ -41,6 +41,7 @@
     <hr>
 
     <h4>Deliverables</h4>
+    <img src="{% static "img/deliverables_kanban_dashboard.png" %}" alt="Kanban mockup"/>
     <hr>
     {% for service in services %}
         <div id="{{ section.name }}">
