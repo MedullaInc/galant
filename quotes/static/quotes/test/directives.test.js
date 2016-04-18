@@ -62,6 +62,7 @@ describe('qtForm', function () {
             $provide.factory('Service', function ($q) {
                 var Service = function () { return {id: 0}; };
                 Service.get = function () { return {$promise: $q.when({id: 0})}; };
+                Service.query = function () { return {$promise: $q.when([{id: 0}])}; };
                 Service.fields = function () { return {$promise: $q.when({type: ['type', 'type']})};  };
                 Service.update = function () { return {$promise: $q.when({type: ['type', 'type']})};  };
                 return Service;
