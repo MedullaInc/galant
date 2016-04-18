@@ -1,9 +1,12 @@
+from django.conf import settings
 from django.contrib import messages
+from django.core.mail import send_mail
 from django.core.urlresolvers import reverse
 from briefs import models as b
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.template.response import TemplateResponse
+from gallant.utils import get_site_from_host
 from gallant.views.user import UserModelViewSet
 from guardian.shortcuts import remove_perm
 from django.views.generic import View
@@ -43,6 +46,11 @@ class BriefAnswer(View):
             messages.success(request, 'Brief answered.')
             obj.status = b.BriefStatus.Answered.value
             obj.save()
+
+            _send_brief_answered_email(obj.user.email, obj.client.name,
+                              (request.build_absolute_uri(
+                                  reverse('brief_detail', args=[obj.id]))),
+                              get_site_from_host(request))
             
             remove_perm('change_brief', obj.user, obj)
             return HttpResponseRedirect(reverse('home'))
@@ -50,6 +58,14 @@ class BriefAnswer(View):
         return TemplateResponse(request=request,
                                 template="briefs/brief_answers.html",
                                 context={'form': form, 'answer_forms': answers, 'object': obj})
+
+
+def _send_brief_answered_email(email, from_name, link, site):
+    message = '%s has answered a %s brief.\n\n Click this link to view:\n %s' % \
+              (from_name, site, link)
+    send_mail('Brief Answered', message,
+              '%s via %s <%s>' % (from_name, site, settings.EMAIL_HOST_USER),
+              [email], fail_silently=False)
 
 
 class BriefAnswersViewSet(UserModelViewSet):
