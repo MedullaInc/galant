@@ -42,7 +42,7 @@ app.directive('glProjectList', ['$window', '$uibModal', 'Project', function ($wi
 
             $scope.checkAll = function () {
                 angular.forEach($scope.projectsSafe, function (p) {
-                    p.checked = $scope.selectedAll;
+                    p.isSelected = $scope.selectedAll;
                 });
             };
         }

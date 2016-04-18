@@ -39,9 +39,10 @@
             </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="project in projects" ng-click="redirect(project.id)" style="cursor: pointer">
+            <tr ng-repeat="project in projects" ng-click="redirect(project.id)" st-select-row="project"
+               st-select-mode="multiple" style="cursor: pointer">
                 <td style="width: 1%" ng-click="$event.stopPropagation()">
-                    <input type="checkbox" ng-model="project.checked">
+                    <input type="checkbox" ng-model="project.isSelected">
                 </td>
                 <td>{{ project.name }}</td>
                 <td>{{ project.client }}</td>

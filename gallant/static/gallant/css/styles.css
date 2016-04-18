@@ -2369,6 +2369,11 @@ ul.nav-tabs li a#add_translation_button {
 
 /* End Tabs */
 
+.st-selected{
+    background: #7eb6ff !important;
+    color: white !important;
+}
+
 /* Forms */
 
 .no-padding {
