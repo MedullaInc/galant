@@ -98,6 +98,19 @@
             </p>
         </div>
     {% endif %}
+    {% if object.status == "4" %}
+        <div class="alert alert-danger" role="alert">
+            <p id="public_link" class="data">
+                This quote has been rejected.
+            </p>
+        </div>
+    {% elif object.status == "5" %}
+        <div class="alert alert-success" role="alert">
+            <p id="public_link" class="data">
+                This quote has been accepted.
+            </p>
+        </div>
+    {% endif %}
     <div ng-controller="glFormController"
          ng-init="init('{% firstof language LANGUAGE_CODE %}', '{{ csrf_token }}')">
         <div qt-quote-form quote-id="{{ object.pk }}" quote="object" endpoint="objectEndpoint"

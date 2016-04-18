@@ -172,8 +172,28 @@ class QuoteDetail(View):
             quote.status = QuoteStatus.Rejected.value
             quote.save()
 
+        _send_quote_response_email(quote, request)
+
         return self.get(request, **kwargs)
 
+
+def _send_quote_response_email(instance, request):
+    email = instance.user.email
+    from_name = instance.client.name
+    link = (request.build_absolute_uri(
+                              reverse('quote_detail', args=[instance.id])))
+
+    if instance.status == QuoteStatus.Accepted.value:
+        response = 'accepted'
+    else:
+        response = 'rejected'
+
+    message = '%s has %s your %s quote.\n\n Click this link to view:\n %s' % \
+              (from_name, response, get_site_from_host(request), link)
+    send_mail('Client Quote Response', message,
+              '%s via %s <%s>' % (from_name, get_site_from_host(request),
+                                  settings.EMAIL_HOST_USER),
+              [email], fail_silently=False)
 
 class QuoteSend(View):  # pragma: no cover
     def post(self, request, **kwargs):
