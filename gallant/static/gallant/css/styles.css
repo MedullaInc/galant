@@ -2919,8 +2919,8 @@ li.row {
 /* Charts */
 
 .tc-chart-js-legend li span {
-	width: 30px;
-	height: 20px;
+	width: 25px;
+	height: 15px;
 	display: block;
 	float: left;
 	clear: left;
@@ -2928,12 +2928,17 @@ li.row {
 }
 
 .tc-chart-js-legend li {
-    margin-bottom: 10px;
+    margin-bottom: 0px;
     font-size: 12px;
+    color: #666666;
 }
 
 .chart_box.dashboard {
-    height: 270px;
+    min-height: 280px;
+}
+
+.chart_box.dashboard canvas {
+    margin-bottom: 25px;
 }
 
 /* End Charts */
@@ -2954,3 +2959,207 @@ li.row {
 }
 
 /* End Coming soon */
+
+/* Color Scheme */
+
+.content-1 {
+    padding-top: 0px;
+}
+
+a.brand, a.brand#hover {
+    color: transparent;
+    background: transparent url("/static/img/galant/galant_logo.png") 0px 8px no-repeat;
+    background-size: contain;
+    width: 160px;
+}
+
+.header-5, .footer-3 {
+    background-color: #f9f9f9;
+    border: none;
+}
+
+.footer-3 {
+    color: #999999;
+    font-family: "Courier New";
+    padding-top: 40px;
+    font-size: 12px;
+}
+
+.header-5 .navbar-header .brand {
+    margin-top: 35px;
+}
+
+#settings-toggle-group {
+    border: none;
+}
+
+#settings-toggle-group button {
+    -webkit-border-radius: 40px;
+    -moz-border-radius: 40px;
+    border-radius: 40px;
+    background-color: #d40371;
+    color: #ffffff;
+    border: none;
+    letter-spacing: -1px;
+    padding-left: 0px;
+    padding-right: 0px;
+    width: 40px;
+}
+
+.header-5 .navbar .nav li a {
+    border: none;
+    font-family: "Courier New";
+    font-size: 13px;
+    color: #666666;
+}
+
+.header-5 .navbar .brand:hover, .header-5 .navbar .brand:focus, .header-5 .navbar .brand.active {
+    color: transparent;
+}
+
+h2.app_title {
+    font-family: "Courier New";
+    font-weight: 500;
+    padding-top: 10px;
+    line-height: 1.0;
+    letter-spacing: -1px;
+    word-spacing: -5px;
+}
+
+div.breadcrumbs, div.logged_in_as {
+    border: none;
+    border-bottom: 1px solid #d0d0d0;
+    text-align: center;
+    font-family: "Courier New";
+    font-weight: 100;
+    font-size: 13px;
+    letter-spacing: 0px;
+}
+
+div.breadcrumbs a, div.logged_in_as a {
+    color: #999999;
+}
+
+div.enclosed {
+    border: 1px solid #d0d0d0;
+}
+
+div#center_content_enclosed {
+    border: none;
+    background-color: #ffffff;
+    padding: 0px;
+    padding-left: 3px;
+}
+
+h2.section_title, h2.center_title {
+    font-family: "Courier New";
+    font-size: 14px;
+    letter-spacing: 0px;
+    font-weight: 400;
+    text-decoration: underline;
+    color: #666666;
+}
+
+h2.section_title span {
+    text-decoration: none;
+}
+
+.chart_box.dashboard.enclosed {
+    border: 1px solid #d0d0d0;
+    background-color: #ffffff;
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 0px;
+    margin-bottom: 15px;
+}
+
+span.label.label-default {
+    font-family: "Courier New";
+    font-size: 12px;
+    letter-spacing: 0px;
+    word-spacing: 0px;
+    padding-left: 20px;
+    padding-right: 40px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    text-align: left;
+}
+
+p {
+    font-family: "Courier New";
+    letter-spacing: 0px;
+    word-spacing: 0px;
+    margin-bottom: 10px;
+    font-size: 13px;
+}
+
+ul.nav.nav-tabs, a.nav-link.ng-binding, ul.nav-tabs li.active a, ul.nav-tabs li.active a:hover, ul.nav-tabs li a:hover {
+    border: none;
+    background: transparent;
+}
+
+ul.nav-tabs {
+    font-family: "Courier New";
+    margin-bottom: 20px;
+}
+
+ul.nav-tabs a {
+    margin-right: 10px;
+}
+
+ul.nav-tabs a.nav-link {
+    border-bottom: 1px solid #d0d0d0;
+    color: #666666;
+    font-size: 13px;
+}
+
+ul.nav-tabs a.nav-link.ng-binding, ul.nav-tabs a.nav-link.ng-binding:hover {
+    border-bottom: 1px solid #d0d0d0;
+    color: #d0d0d0;
+    font-size: 13px;
+    padding-bottom: 10px;
+}
+
+li.uib-tab.nav-item.ng-scope.ng-isolate-scope.active, li.uib-tab.nav-item.ng-scope.ng-isolate-scope {
+    margin-right: 20px;
+    width: 170px;
+    text-align: center;
+}
+
+li.uib-tab.nav-item.ng-scope.ng-isolate-scope.active a.nav-link.ng-binding {
+    color: #666666;
+}
+
+.btn.btn-default.btn-add {
+    padding-left: 15px;
+    padding-right: 15px;
+    height: 40px;
+    background-color: #d40371;
+    color: #ffffff;
+    border: none;
+    -webkit-border-radius: 40px;
+    -moz-border-radius: 40px;
+    border-radius: 40px;
+}
+
+.btn.btn-default.btn-add span {
+    font-size: 12px;
+}
+
+table.table-striped.table-bordered, table.table-striped.table-bordered thead th, table.table-striped.table-bordered tr td {
+    border-color: #d0d0d0;
+    font-family: "Courier New";
+    font-size: 13px;
+    color: #666666;
+}
+
+table.table-striped.table-bordered, table.table-striped.table-bordered thead th {
+    font-weight: 100;
+    color: #000000;
+}
+
+.table-striped>tbody>tr:nth-of-type(odd) {
+    background-color: #f0f0f0;
+}
+
+/* End Color Scheme */

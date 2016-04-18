@@ -56,6 +56,7 @@ class Home(View):
 
 class UserDashboard(View):
     def get(self, request):
+        request.breadcrumbs([('Dashboard', request.path_info)])
         return TemplateResponse(request=request,
                                 template="gallant/user_dashboard.html",
                                 context={'title': 'Dashboard'})
