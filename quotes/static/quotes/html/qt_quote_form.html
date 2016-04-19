@@ -67,21 +67,27 @@
                 </a>
             </li>
         </ul>
+        <br/>
+        <br/>
     </div>
 
-    <div qt-service-table class="container col-lg-10"></div>
+    <div class="row">
+        <div qt-service-table class="container col-lg-10"></div>
+    </div>
+    <div class="row">
+        <div qt-section-table class="container col-lg-10"></div>
+    </div>
 
-    <div qt-section-table class="container col-lg-10"></div>
 
     <div class="row" ng-show="showEdit()">
-        <div class="col-lg-12">
-            <button type="button" id="add_service" class="btn btn-default pull-right margin-left-10"
+        <div class="col-lg-10">
+            <button type="button" id="add_service" class="btn btn-default pull-right margin-left-10 btn-submit"
                     popover-placement="bottom" uib-popover-template="dynamicPopover.serviceTemplateUrl"
                     popover-trigger="focus">Add Service
             </button>
 
-            <button type="button" id="add_section" class="btn btn-default pull-right" ng-click="addSection()">Add
-                Section
+            <button type="button" id="add_section" class="btn btn-default pull-right btn-submit" ng-click="addSection()">
+                Add Section
             </button>
         </div>
     </div>

@@ -60,7 +60,7 @@
         {% objects_for object.projects as projects %}
         {% if projects|length == 0 %}
             <a>
-                <button id="add_project_button" type="button" class="btn btn-default sidebar">
+                <button id="add_project_button" type="button" class="btn btn-default sidebar btn-side">
                     {% trans "Add New Project" %}
                 </button>
             </a>
@@ -70,19 +70,19 @@
     {% if object.client.email and object.status == '0' or object.status == '1' %}
         <form method="post" action="{% url 'send_quote' pk=object.id %}">
             {% csrf_token %}
-            <button type="submit" class="btn btn-default sidebar" id="send_quote">
+            <button type="submit" class="btn btn-default sidebar btn-side" id="send_quote">
                 {% trans "Send to Client" %}
             </button>
         </form>
     {% endif %}
 
     <a href="{% url 'quote_pdf' object.id %}">
-        <button type="button" class="btn btn-default sidebar">
+        <button type="button" class="btn btn-default sidebar btn-side">
             {% trans "Download Quote" %}
         </button>
     </a>
     <a href="{% url 'add_quote_template' quote_id=object.id %}">
-        <button type="button" class="btn btn-default sidebar" title="Create template from this quote.">
+        <button type="button" class="btn btn-default sidebar btn-side" title="Create template from this quote.">
             {% trans "Use as Template" %}
         </button>
     </a>

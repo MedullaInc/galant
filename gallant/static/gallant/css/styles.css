@@ -3055,7 +3055,7 @@ div#center_content_enclosed {
     padding-left: 3px;
 }
 
-h2.inline_title.ng-scope.ng-binding.editable, h2.section_title, h2.center_title, h2.chart_title {
+h2.section_subtitle.ng-scope.ng-binding.editable, h2.inline_title.ng-scope.ng-binding.editable, h2.section_title, h2.center_title, h2.chart_title {
     font-family: "Courier New";
     font-size: 14px;
     letter-spacing: 0px;
@@ -3077,7 +3077,7 @@ h2.section_title span {
     margin-bottom: 15px;
 }
 
-span.label.label-default {
+span.label.label-default.ng-binding, span.label.label-default, .label.label-default {
     font-family: "Courier New";
     font-size: 12px;
     letter-spacing: 0px;
@@ -3087,6 +3087,7 @@ span.label.label-default {
     padding-top: 5px;
     padding-bottom: 5px;
     text-align: left;
+    font-weight: 200;
 }
 
 p {
@@ -3142,15 +3143,16 @@ ul.nav-tabs li, ul.nav-tabs li, li.nav-item.ng-scope.ng-isolate-scope.active a.n
 #add_note_form .btn-default, #form .btn-default, button.btn.btn-default.btn-add, .btn.btn-default.btn-add, .btn.btn-default.btn-submit, .btn.btn-default.btn-side {
     padding-left: 15px;
     padding-right: 15px;
-    height: 40px;
+    height: 36px;
     background-color: #d40371;
     color: #ffffff;
     border: none;
     -webkit-border-radius: 40px;
     -moz-border-radius: 40px;
     border-radius: 40px;
-    max-width: 90%;
+    max-width: 95%;
     font-weight: 100;
+    padding-top: 7px;
 }
 
 .btn.btn-default.btn-side {
@@ -3229,6 +3231,17 @@ pre {
     padding: 0px;
     font-family: "Courier New";
     padding-top: 10px;
+}
+
+.editable-wrap .editable-controls > input, .editable-wrap .editable-controls > select, .editable-wrap .editable-controls > textarea {
+    border-color: #d0d0d0;
+    font-size: 13px;
+    outline: none;
+    color: #999999;
+    font-weight: 100;
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 0px;
 }
 
 /* End Color Scheme */

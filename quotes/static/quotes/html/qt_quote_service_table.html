@@ -71,7 +71,7 @@
                         </div>
                         <div class="col-lg-2">
                             <p>
-                                {{ service.cost.amount * service.quantity | currency }}
+                                {{ service.cost.amount * service.quantity || 0.00 | currency }}
                             </p>
                         </div>
                         </span>
@@ -87,17 +87,17 @@
                     </div>
                 </div>
                 <div class="col-lg-1 no-padding padding-top-44" ng-show="quoteform.$visible">
-                    <button id="service{{ $index }}_move" type="button" class="btn btn-default move_button"
+                    <button id="service{{ $index }}_move" type="button" class="btn btn-default move_button btn-add"
                             as-sortable-item-handle>
                         <span class="glyphicon glyphicon-move"/>
                     </button>
-                    <button id="service{{ $index }}_delete" type="button" class="btn btn-default delete_button" aria-label="Delete" ng-click="removeService($index)">
+                    <button id="service{{ $index }}_delete" type="button" class="btn btn-default delete_button btn-add" aria-label="Delete" ng-click="removeService($index)">
                         <span class="glyphicon glyphicon-trash"/>
                     </button>
                 </div>
                 <div class="col-lg-12">
                     <span ng-show="showViews()" class="label label-default" uib-tooltip="Nubmer of times client clicked 'more' to expand description" tooltip-placement="right">
-                        Times expanded: {{ service.views }}
+                        {{ service.views || 0 }} times expanded
                     </span>
                 </div>
             </div>
