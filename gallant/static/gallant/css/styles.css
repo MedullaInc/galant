@@ -1289,7 +1289,7 @@ header .brand img:first-child {
 }
 
 .container.login label {
-    color: #ababab;
+    color: #666666;
 }
 
 .container.login input[type="text"] {
@@ -1377,10 +1377,13 @@ header .brand img:first-child {
     height: 520px;
 }
 
-.content-1 .holder.v-center,
-.content-1 .holder .v-center {
-    display: table;
-    width: 100%;
+@media (min-width: 768px) {
+
+    .content-1 .holder.v-center {
+        display: table;
+        width: 100%;
+    }
+
 }
 
 .content-1 .holder.v-center > div,
@@ -2383,7 +2386,7 @@ ul.nav-tabs li a#add_translation_button {
 
 /* End Tabs */
 
-.st-selected{
+.st-selected {
     background: #7eb6ff !important;
     color: white !important;
 }
@@ -2413,7 +2416,7 @@ ul.nav-tabs li a#add_translation_button {
 }
 
 #form label, .form-group label.in-place {
-    color: #999999;
+    color: #666666;
 }
 
 #form label.control-label, .form-group label.control-label {
@@ -3169,7 +3172,7 @@ ul.nav-tabs li, ul.nav-tabs li, li.nav-item.ng-scope.ng-isolate-scope.active a.n
     color: #666666;
 }
 
-#add_note_form .btn-default, button.btn.btn-default.btn-add, .btn.btn-default.btn-add, .btn.btn-default.btn-submit, .btn.btn-default.btn-side {
+#form .btn.btn-default.btn-submit, #add_note_form .btn-default, button.btn.btn-default.btn-add, .btn.btn-default.btn-add, .btn.btn-default.btn-submit, .btn.btn-default.btn-side {
     padding-left: 15px;
     padding-right: 15px;
     height: 36px;
@@ -3212,7 +3215,7 @@ button#section_delete.btn.btn-default.delete_button.btn-add.btn-list {
     padding-left: 20px;
 }
 
-#add_note_form .btn-default, .btn.btn-default.btn-submit {
+#form .btn.btn-default.btn-submit, #add_note_form .btn-default, .btn.btn-default.btn-submit {
     padding-left: 33px;
     padding-right: 35px;
     padding-top: 7px;
@@ -3335,9 +3338,27 @@ p.sub-main.home {
 
 .alert.alert-success {
     font-family: "Courier New";
-    background-color: #b2ffaf;
+    background-color: rgba(178, 255, 175, 0.46);
     border: none;
     color: #666666;
+}
+
+p i {
+    color: #666666;
+}
+
+label.control-label {
+    color: #666666;
+}
+
+label span {
+    color: #666666;
+}
+
+span.help-block, li.invalid, div.editable-error {
+    font-family: "Courier New";
+    font-style: italic;
+    font-size: 13px;
 }
 
 /* End Color Scheme */
