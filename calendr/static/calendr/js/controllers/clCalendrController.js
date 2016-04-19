@@ -78,14 +78,14 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
     //    });
     //};
 
-    var wrapTask = function (task) {
+    var convertToFCFormat = function (task) {
         task.title = task.name;
         task.resourceId = task.project;
         task.allDay = false;
         return task;
     };
 
-    var unwrapTask = function (task) {
+    var convertFromFCFormat = function (task) {
         task.name = task.title;
         task.project = task.resourceId;
         delete task.source;
@@ -95,17 +95,17 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
     /* Retrieve all Tasks from API service and add wrapper to calendar event */
     Task.query().$promise.then(function (response) {
         angular.forEach(response, function (task) {
-            $scope.tasks.push(wrapTask(task));
+            $scope.tasks.push(convertToFCFormat(task));
         });
     });
 
     $scope.updateTask = function (task) {
-        Task.update({id: task.id}, unwrapTask(task)).$promise.then(function (response) {
+        Task.update({id: task.id}, convertFromFCFormat(task)).$promise.then(function (response) {
             var idx = $scope.tasks.findIndex(function (t) {
                 return t.id == task.id
             });
             if (~idx)
-                $scope.tasks[idx] = wrapTask(response);
+                $scope.tasks[idx] = convertToFCFormat(response);
             glAlertService.add('success', 'Task ' + task.name + ' updated.');
         }, function (error) {
             glAlertService.add('danger', error.data);
@@ -193,14 +193,14 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
                                 return t.id == task.id
                             });
                             if (~idx)
-                                $scope.tasks[idx] = wrapTask(response);
+                                $scope.tasks[idx] = convertToFCFormat(response);
                             glAlertService.add('success', 'Task ' + task.name + ' updated.');
                         }, function (error) {
                             glAlertService.add('danger', error.data);
                         });
                     } else {
                         Task.save(task).$promise.then(function (response) {
-                            $scope.tasks.push(wrapTask(response));
+                            $scope.tasks.push(convertToFCFormat(response));
                             glAlertService.add('success', 'Task ' + task.name + ' created.');
                         }, function (error) {
                             glAlertService.add('danger', error.data);
@@ -273,7 +273,7 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
 
     /* alert on eventClick */
     $scope.alertOnEventClick = function (task, jsEvent, view) {
-        $scope.openEditModal(unwrapTask(task), $scope.projects);
+        $scope.openEditModal(convertFromFCFormat(task), $scope.projects);
     };
     /* Event fired on day click */
     /* Deprecated use select instead */
@@ -317,7 +317,7 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
             end: end
         };
 
-        $scope.openEditModal(unwrapTask(task));
+        $scope.openEditModal(convertFromFCFormat(task));
         uiCalendarConfig.calendars.myCalendar1.fullCalendar('unselect');
     };
 

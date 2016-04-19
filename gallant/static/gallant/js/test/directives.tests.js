@@ -253,7 +253,7 @@ describe('glProjectList', function () {
 
         it('redirects', function () {
             var $window = $injector.get('$window');
-            element.isolateScope().redirect();
+            element.isolateScope().redirect({link: ''});
             expect($window.location.href).toBeDefined();
         });
 

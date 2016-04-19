@@ -9,7 +9,6 @@ app.directive('glProjectList', ['$window', '$uibModal', 'Project', function ($wi
     return {
         restrict: 'A',
         scope: {
-            redirectUrl: '@',
         },
         controller: ['$scope', function ($scope) {
             Project.query().$promise.then(function (response) {
@@ -36,8 +35,8 @@ app.directive('glProjectList', ['$window', '$uibModal', 'Project', function ($wi
                 $scope.modalInstance.dismiss('cancel');
             };
 
-            $scope.redirect = function (id) {
-                $window.location.href = $scope.redirectUrl + id;
+            $scope.redirect = function (project) {
+                $window.location.href = project.link;
             };
 
             $scope.checkAll = function () {
