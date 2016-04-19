@@ -1,8 +1,8 @@
 app = angular.module('calendr.controllers.clCalendrController', [
-    'ui.calendar', 'ui.bootstrap', 'ng.django.forms', 'gallant.directives.glMultiDropdown'
+    'ui.calendar', 'ui.bootstrap', 'ng.django.forms', 'gallant.directives.glMultiDropdown',
 ]);
 
-app.controller('clCalendrController', function ($scope, Project, User, Task, $compile,
+app.controller('clCalendrController', function ($scope, Project, User, Task, $compile, $sce,
                                                 $timeout, uiCalendarConfig, $uibModal, $filter, FC, moment, glAlertService) {
     var date = new Date();
     var d = date.getDate();
@@ -67,29 +67,27 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
     };
 
     /* Retrieve users from API service */
-    $scope.getResources = function (options) {
-        User.query(options).$promise.then(function (response) {
-            angular.forEach(response, function (value, key) {
-                $scope.eventResources.push({
-                    id: value.id,
-                    title: value.email
-                });
-            });
-        });
-    };
+    //$scope.getResources = function (options) {
+    //    User.query(options).$promise.then(function (response) {
+    //        angular.forEach(response, function (value, key) {
+    //            $scope.eventResources.push({
+    //                id: value.id,
+    //                title: value.email
+    //            });
+    //        });
+    //    });
+    //};
 
     var wrapTask = function (task) {
         task.title = task.name;
-        task.projectId = task.project;
-        task.resourceId = task.assignee;
+        task.resourceId = task.project;
         task.allDay = false;
         return task;
     };
 
     var unwrapTask = function (task) {
         task.name = task.title;
-        task.project = task.projectId;
-        task.assignee = task.resourceId;
+        task.project = task.resourceId;
         delete task.source;
         return task;
     };
@@ -103,7 +101,14 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
 
     $scope.updateTask = function (task) {
         Task.update({id: task.id}, unwrapTask(task)).$promise.then(function (response) {
-            glAlertService.add('success', 'Task ' + task.name + 'updated.');
+            var idx = $scope.tasks.findIndex(function (t) {
+                return t.id == task.id
+            });
+            if (~idx)
+                $scope.tasks[idx] = wrapTask(response);
+            glAlertService.add('success', 'Task ' + task.name + ' updated.');
+        }, function (error) {
+            glAlertService.add('danger', error.data);
         });
     }
 
@@ -111,10 +116,17 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
     $scope.getProjects = function () {
         Project.query().$promise.then(function (response) {
             $scope.projects = response;
+            angular.forEach(response, function (p) {
+                $scope.eventResources.push({
+                    id: p.id,
+                    title: p.name,
+                    link: p.link,
+                });
+            });
         });
     };
 
-    $scope.getResources();
+    // $scope.getResources();
     $scope.getProjects();
 
     /* Open edit Modal */
@@ -182,14 +194,14 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
                             });
                             if (~idx)
                                 $scope.tasks[idx] = wrapTask(response);
-                            glAlertService.add('success', 'Task updated.');
+                            glAlertService.add('success', 'Task ' + task.name + ' updated.');
                         }, function (error) {
                             glAlertService.add('danger', error.data);
                         });
                     } else {
                         Task.save(task).$promise.then(function (response) {
                             $scope.tasks.push(wrapTask(response));
-                            glAlertService.add('success', 'Task created.');
+                            glAlertService.add('success', 'Task ' + task.name + ' created.');
                         }, function (error) {
                             glAlertService.add('danger', error.data);
                         });
@@ -247,21 +259,21 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
     };
 
     /* event triggered on project change */
-    $scope.projectChanged = function (projectId) {
-        var options = {};
-        if (projectId)
-            options.project_id = projectId;
-
-        // Remove existing resources in calendar.
-        $scope.eventResources.splice(0, $scope.eventResources.length);
-
-        // Fetch selected project resources
-        $scope.getResources(options);
-    };
+    //$scope.projectChanged = function (projectId) {
+    //    var options = {};
+    //    if (projectId)
+    //        options.project_id = projectId;
+    //
+    //    // Remove existing resources in calendar.
+    //    $scope.eventResources.splice(0, $scope.eventResources.length);
+    //
+    //    // Fetch selected project resources
+    //    $scope.getResources(options);
+    //};
 
     /* alert on eventClick */
     $scope.alertOnEventClick = function (task, jsEvent, view) {
-        $scope.openEditModal(unwrapTask(task), $scope.eventResources);
+        $scope.openEditModal(unwrapTask(task), $scope.projects);
     };
     /* Event fired on day click */
     /* Deprecated use select instead */
@@ -309,6 +321,10 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
         uiCalendarConfig.calendars.myCalendar1.fullCalendar('unselect');
     };
 
+    $scope.projectLink = function (resource, labelTd) {
+        labelTd.find('.fc-cell-text').html('<a href="' + resource.link + '">' + resource.title.encodeHtml() + '</a>');
+    };
+
     /* config object */
     $scope.uiConfig = {
         calendar: {
@@ -330,7 +346,9 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
             eventDrop: $scope.updateTask,
             eventResize: $scope.updateTask,
             gotoDate: $scope.gotoDate,
-            slotWidth: 70
+            slotWidth: 70,
+            resourceLabelText: 'Projects',
+            resourceRender: $scope.projectLink,
         }
     };
 

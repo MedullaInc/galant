@@ -7,6 +7,12 @@ describe('Gallant utility script', function () {
         });
     });
 
+    describe('toHtml function', function() {
+        it('substitutes strings for escaped characters', function () {
+            expect('<a>'.encodeHtml()).toEqual('&#60;a&#62;');
+        });
+    });
+
     describe('gallant.humanize function', function() {
         it('changes underscores to uppercase', function () {
             expect(window.gallant.humanize('hello_world')).toEqual('Hello World');

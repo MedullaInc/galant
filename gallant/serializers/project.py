@@ -1,3 +1,4 @@
+from django.core.urlresolvers import reverse
 from django.db.models.query import Prefetch
 from gallant.serializers.service import ServiceSerializer
 from gallant.utils import get_field_choices
@@ -12,6 +13,7 @@ class ProjectSerializer(serializers.ModelSerializer):
     payments = serializers.SerializerMethodField()
     services = serializers.SerializerMethodField()
     client = serializers.SerializerMethodField()
+    link = serializers.SerializerMethodField()
     field_choices = serializers.SerializerMethodField()
 
     def get_payments(self, project):
@@ -43,6 +45,9 @@ class ProjectSerializer(serializers.ModelSerializer):
         except IndexError:
             return ''
 
+    def get_link(self, project):
+        return reverse('project_detail', args=[project.id])
+
     def get_field_choices(self, project):
         return get_field_choices(type(project))
 
@@ -57,7 +62,7 @@ class ProjectSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Project
-        fields = ('id', 'user', 'name', 'status', 'notes', 'payments', 'services', 'client', 'field_choices')
+        fields = ('id', 'user', 'name', 'status', 'notes', 'payments', 'services', 'client', 'field_choices', 'link')
 
     def create(self, validated_data):
         validated_data.update({'user': self.context['request'].user})

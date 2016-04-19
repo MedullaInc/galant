@@ -36,6 +36,12 @@ String.prototype.format = function () {
     return str;
 };
 
+String.prototype.encodeHtml = function (str) {
+  return this.replace(/[\u00A0-\u9999\<\>\&\'\"\\\/]/gim, function(c) {
+    return '&#' + c.charCodeAt(0) + ';' ;
+  });
+}
+
 if (!Array.prototype.find) {
   Array.prototype.find = function (callback, thisArg) {
       "use strict";
