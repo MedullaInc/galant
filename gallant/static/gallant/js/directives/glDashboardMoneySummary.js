@@ -14,14 +14,14 @@ app.directive('glDashboardMoneySummary', ['$window', function ($window) {
             $scope.money_polar_chart_data = [
                 {
                     value: 150000,
-                    color: '#FDB45C',
-                    highlight: '#FFC870',
+                    color: '#ffa861',
+                    highlight: '#ff7300',
                     label: 'Quoted'
                 },
                 {
                     value: 70000,
-                    color: '#00ff5f',
-                    highlight: '#FFC870',
+                    color: '#b2ffaf',
+                    highlight: '#00ff5f',
                     label: 'Became Clients'
                 }
             ];
@@ -78,20 +78,20 @@ app.directive('glDashboardMoneySummary', ['$window', function ($window) {
             $scope.money_doughnut_chart_data = [
                 {
                     value: 7000,
-                    color: "#02deff",
-                    highlight: "#93f1ff",
+                    color: '#ffa861',
+                    highlight: '#ff7300',
                     label: "Pending Payments"
                 },
                 {
                     value: 3000,
-                    color: "#ff022c",
+                    color: "#ff0054",
                     highlight: "#FF5A5E",
                     label: "Overdue Payments"
                 },
                 {
                     value: 20000,
-                    color: '#00ff5f',
-                    highlight: '#FFC870',
+                    color: '#b2ffaf',
+                    highlight: '#00ff5f',
                     label: "Paid"
                 }
             ];
@@ -112,7 +112,7 @@ app.directive('glDashboardMoneySummary', ['$window', function ($window) {
                 segmentStrokeWidth: 5,
 
                 //Number - The percentage of the chart that we cut out of the middle
-                percentageInnerCutout: 70, // This is 0 for Pie charts
+                percentageInnerCutout: 65, // This is 0 for Pie charts
 
                 //Number - Amount of animation steps
                 animationSteps: 100,
@@ -136,18 +136,18 @@ app.directive('glDashboardMoneySummary', ['$window', function ($window) {
                 datasets: [
                     {
                         label: 'Income in 2015',
-                        fillColor: '#02deff',
-                        strokeColor: '#02deff',
-                        highlightFill: '#02deff',
-                        highlightStroke: '#02deff',
+                        fillColor: '#93f1ff',
+                        strokeColor: '#93f1ff',
+                        highlightFill: '#00a6ff',
+                        highlightStroke: '#00a6ff',
                         data: [50000, 60000, 80000, 110000, 120000, 120000]
                     },
                     {
                         label: 'Income in 2016',
-                        fillColor: '#00ff00',
-                        strokeColor: '#00ff00',
-                        highlightFill: '#00ff00',
-                        highlightStroke: '#00ff00',
+                        fillColor: '#00a6ff',
+                        strokeColor: '#00a6ff',
+                        highlightFill: '#93f1ff',
+                        highlightStroke: '#93f1ff',
                         data: [140000, 160000, 180000, 190000, 180000, 180000]
                     }
                 ]
@@ -169,23 +169,22 @@ app.directive('glDashboardMoneySummary', ['$window', function ($window) {
                 scaleGridLineColor: "rgba(0,0,0,.05)",
 
                 //Number - Width of the grid lines
-                scaleGridLineWidth: 1,
+                scaleGridLineWidth: 0,
 
                 //Boolean - If there is a stroke on each bar
                 barShowStroke: true,
 
                 //Number - Pixel width of the bar stroke
-                barStrokeWidth: 1,
+                barStrokeWidth: 2,
 
                 //Number - Spacing between each of the X value sets
                 barValueSpacing: 3,
 
                 //Number - Spacing between data sets within X values
-                barDatasetSpacing: 3,
+                barDatasetSpacing: 0,
 
                 //String - A legend template
                 legendTemplate: '<ul class="tc-chart-js-legend"><% for (var i=0; i<datasets.length; i++){%><li><span style="background-color:<%=datasets[i].fillColor%>"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>'
-
             };
 
         }

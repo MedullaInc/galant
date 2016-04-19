@@ -28,15 +28,15 @@
             <p class="small">
                 Paid
             </p>
-            <p>
+            <p ng-class="p.paid_on === null ? 'pending' : 'done'">
                 {{ p.paid_on === null ? "Not Paid Yet" : p.paid_on | date:"MMM dd, yyyy" }}
             </p>
         </div>
         <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 action_box">
-            <button id="section_edit" type="button" class="btn btn-default edit_button" aria-label="Edit" ng-click="openEditModal()(p.id)">
+            <button id="section_edit" type="button" class="btn btn-default edit_button btn-add btn-list" aria-label="Edit" ng-click="openEditModal()(p.id)">
                 <span class="glyphicon glyphicon-edit"/>
             </button>
-            <button id="section_delete" type="button" class="btn btn-default delete_button" aria-label="Edit" ng-click="deletePayment(p)" ng-confirm-click="Are you sure?">
+            <button id="section_delete" type="button" class="btn btn-default delete_button btn-add btn-list" aria-label="Edit" ng-click="deletePayment(p)" ng-confirm-click="Are you sure?">
                 <span class="glyphicon glyphicon-trash"/>
             </button>
         </div>

@@ -126,7 +126,7 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
 
     /* Open edit Modal */
     /* istanbul ignore next */
-    $scope.openEditModal = function (task) {
+    $scope.openEditModal = function (task, date) {
         $scope.task = task;
         $uibModal.open({
             templateUrl: '/static/calendr/html/calendar_modal.html',
@@ -143,8 +143,6 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
                 $scope.openEndDatePicker = function () {
                     $scope.end_date_opened = true;
                 };
-
-                $scope.task = task;
 
                 if ($scope.task.start) {
                     $scope.task.start = new Date($scope.task.start);
@@ -179,7 +177,9 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
                     // var found = $filter('filter')($scope.events, {id: $scope.event.id}, true)
                     if (task.id) {
                         Task.update({id: task.id}, task).$promise.then(function (response) {
-                            var idx = $scope.tasks.findIndex(function (t) { return t.id == task.id });
+                            var idx = $scope.tasks.findIndex(function (t) {
+                                return t.id == task.id
+                            });
                             if (~idx)
                                 $scope.tasks[idx] = wrapTask(response);
                             glAlertService.add('success', 'Task updated.');
@@ -301,6 +301,8 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
             name: '',
             daily_estimate: 0,
             resourceId: +resource.id,
+            start: start,
+            end: end
         };
 
         $scope.openEditModal(unwrapTask(task));
@@ -311,6 +313,7 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
     $scope.uiConfig = {
         calendar: {
             schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
+            ignoreTimezone: false,
             defaultView: 'timelineMonth',
             header: {
                 left: 'title',
@@ -327,6 +330,7 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
             eventDrop: $scope.updateTask,
             eventResize: $scope.updateTask,
             gotoDate: $scope.gotoDate,
+            slotWidth: 70
         }
     };
 

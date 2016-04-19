@@ -16,10 +16,12 @@
                id="add_translation_button" class="btn" data-original-title="" title="">Add Translation</a>
         </li>
     </ul>
+    <br/>
+
 </div>
 
-<div ng-class="briefTemplate ? 'rounded-border col-lg-12 col-md-12 col-sm-11 col-xs-11' : 'row'">
-    <div ng-class="briefTemplate ? 'col-lg-10 col-md-10 col-sm-8 col-xs-8 rounded-border' : 'col-lg-10 col-md-10 col-sm-9 col-xs-9'">
+<div class="row">
+    <div ng-class="briefTemplate ? 'col-lg-10 col-md-10 col-sm-9 col-xs-9' : 'col-lg-10 col-md-10 col-sm-9 col-xs-9'">
         <form editable-form name="briefForm" id="form" shown="brief && !brief.title"
               onshow="storeBrief()" oncancel="loadStoredBrief()" onaftersave="submitForm()">
             <div id="title" class="data">
@@ -62,11 +64,11 @@
         </div>
 
         <div class="col-lg-2 col-md-2 col-sm-3 col-xs-3 padding-top-25" ng-show="briefForm.$visible">
-            <button id="question{{ $index }}_move" type="button" class="btn btn-default move_button"
+            <button id="question{{ $index }}_move" type="button" class="btn btn-default move_button btn-add"
                     as-sortable-item-handle>
                 <span class="glyphicon glyphicon-move"/>
             </button>
-            <button id="question{{ $index }}_delete" type="button" class="btn btn-default delete_button"
+            <button id="question{{ $index }}_delete" type="button" class="btn btn-default delete_button btn-add"
                     aria-label="Delete"
                     ng-click="removeQuestion(question)">
                 <span class="glyphicon glyphicon-trash"/>
@@ -79,9 +81,9 @@
     No questions have been added yet.<br/>
 </div>
 
-<button type="button" id="add_question" class="btn btn-default pull-left margin-right-10" ng-click="addQuestion()" ng-show="showButtons()">
+<button type="button" id="add_question" class="btn btn-default pull-left margin-right-10 btn-submit" ng-click="addQuestion()" ng-show="showButtons()">
     Add Question
 </button>
-<button type="button" id="add_multiquestion" class="btn btn-default pull-left" ng-click="addQuestion('multi')" ng-show="showButtons()">
+<button type="button" id="add_multiquestion" class="btn btn-default pull-left btn-submit" ng-click="addQuestion('multi')" ng-show="showButtons()">
     Add Multiple Choice Question
 </button>

@@ -34,7 +34,7 @@
 {% block sidebar %}
     {% if is_template %}
         <a href="{% url 'add_brief' %}?template_id={{ template_id }}">
-            <button type="button" class="btn btn-default sidebar" id="add_brief">
+            <button type="button" class="btn btn-default sidebar btn-side" id="add_brief">
                 Use For New Brief
             </button>
         </a>
@@ -42,13 +42,13 @@
         {% if object.client and not answer_set %}
             <form method="post" action="">
                 {% csrf_token %}
-                <button type="submit" class="btn btn-default sidebar" id="send_brief">
+                <button type="submit" class="btn btn-default sidebar btn-side" id="send_brief">
                     {% trans "Send Brief" %}
                 </button>
             </form>
         {% endif %}
         <a href="{% url 'add_brief_template' %}?brief_id={{ object.id }}">
-            <button type="button" class="btn btn-default sidebar" title="Create template from this brief.">
+            <button type="button" class="btn btn-default sidebar btn-side" title="Create template from this brief.">
                 {% trans "Use as Template" %}
             </button>
         </a>
