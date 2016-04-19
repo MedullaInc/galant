@@ -3289,6 +3289,7 @@ pre {
     padding: 0px;
     font-family: "Courier New";
     padding-top: 10px;
+    word-wrap: normal;
 }
 
 select, .editable-wrap .editable-controls > input, .editable-wrap .editable-controls > select, .editable-wrap .editable-controls > textarea {
@@ -3296,10 +3297,15 @@ select, .editable-wrap .editable-controls > input, .editable-wrap .editable-cont
     font-size: 13px;
     outline: none;
     color: #666666;
-    font-weight: 100;
+    font-weight: 200;
     -webkit-border-radius: 0px;
     -moz-border-radius: 0px;
     border-radius: 0px;
+    letter-spacing: 1px;
+}
+
+.editable-wrap .editable-controls > textarea {
+    font-size: 13px;
 }
 
 button.btn.btn-default.mini-calendar {
