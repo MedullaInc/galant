@@ -229,7 +229,7 @@ class GallantClientTest(browser.SignedInTest):
         b.get(self.live_server_url + reverse('client_detail', args=[c.id]))
 
         app_title = b.find_element_by_class_name('app_title')
-        self.assertEqual('Client', app_title.text)
+        self.assertEqual('Client Overview', app_title.text)
 
         b.get(self.live_server_url + reverse('client_detail', args=[c2.id]))
 
