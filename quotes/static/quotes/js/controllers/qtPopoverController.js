@@ -19,7 +19,7 @@ app.controller('qtPopoverController', ['$scope', '$http', '$window', '$rootScope
         };
 
         $scope.dynamicPopover = {
-            templateUrl: 'myPopoverTemplate.html',
+            templateUrl: 'addQuotePopoverTemplate.html',
         };
 
         $scope.redirectTemplate = function (quoteTemplate) {
@@ -48,7 +48,7 @@ app.controller('qtPopoverController', ['$scope', '$http', '$window', '$rootScope
             $scope.modalInstance = $uibModal.open({
                 scope: $scope,
                 animation: true,
-                templateUrl: 'myModalContent.html',
+                templateUrl: 'quoteTemplateModalContent.html',
                 controller: 'qtPopoverController',
             });
             return 0;

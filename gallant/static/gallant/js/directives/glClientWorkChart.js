@@ -7,7 +7,9 @@ app.directive('glClientWorkChart', ['$window', 'Service', function ($window, Ser
     return {
         restrict: 'A',
         scope: {
-            clientId: '@',
+            addBriefUrl: '@',
+            language: '@',
+            clientId: '@'
         },
         controller: ['$scope', function ($scope) {
         }],

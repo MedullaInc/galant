@@ -8,9 +8,11 @@
         <br/>
         <p>
             <a>
-                <button type="button" class="btn btn-default sidebar add_brief" id="add_brief">
-                    New Brief
-                </button>
+                <p ng-controller="brPopoverController" ng-init="init(addBriefUrl, language, clientId)">
+                    <a>
+                        <button popover-placement="bottom" uib-popover-template="dynamicPopover.templateUrl" type="button" class="btn btn-default sidebar" popover-trigger="focus">New Brief</button>
+                    </a>
+                </p>
             </a>
         </p>
     </div>
