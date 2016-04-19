@@ -3373,4 +3373,8 @@ a h2.section_subtitle {
     color: #5439ff;
 }
 
+.welcome_box {
+    min-height: 300px;
+}
+
 /* End Color Scheme */
