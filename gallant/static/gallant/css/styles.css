@@ -1233,7 +1233,6 @@ header .brand img:first-child {
 }
 
 .login {
-    margin-top: 0px;
     background: #ffffff;
     padding-top: 30px;
     padding-bottom: 30px;
@@ -1688,7 +1687,7 @@ a.login-btn.index.register:hover {
 
     div.container p.main {
         font-size: 44px;
-        font-weight: 800;
+        font-weight: 200;
         line-height: 42px;
     }
 
@@ -1709,6 +1708,21 @@ a.login-btn.index.register:hover {
         font-size: 14px;
         font-weight: 400;
         color: #464646;
+    }
+
+}
+
+@media (max-width: 767px) {
+    div.login {
+        margin-top: 0px;
+    }
+
+}
+
+@media (min-width: 768px) {
+
+    div.login {
+        margin-top: 35px;
     }
 
 }
@@ -2622,7 +2636,6 @@ button.btn-default.delete_button {
     margin-bottom: 5px;
 }
 
-
 button.btn-default.move_button {
     -webkit-border-radius: 0px;
     -moz-border-radius: 0px;
@@ -2837,7 +2850,7 @@ div.breadcrumbs span {
 /* CALENDAR */
 
 .popup-calendr ul.dropdown-menu.ng-pristine.ng-untouched.ng-valid.ng-scope.ng-valid-date-disabled {
-    display:none;
+    display: none;
     border-radius: 0px;
 }
 
@@ -2856,7 +2869,7 @@ div.breadcrumbs span {
 }
 
 #popup-calendr .dropdown-menu ul.dropdown-menu li.ng-scope {
-    padding:10px 0px 0px;
+    padding: 10px 0px 0px;
 }
 
 /* END CALENDAR */
@@ -2885,14 +2898,14 @@ th[st-sort]:after {
 
 th.st-sort-ascent:after {
     font-family: "Glyphicons Halflings";
-    content:"\e155";
+    content: "\e155";
     text-align: right;
     float: right;
 }
 
 th.st-sort-descent:after {
     font-family: "Glyphicons Halflings";
-    content:"\e156";
+    content: "\e156";
     text-align: right;
     float: right;
 }
@@ -2919,12 +2932,12 @@ li.row {
 /* Charts */
 
 .tc-chart-js-legend li span {
-	width: 25px;
-	height: 15px;
-	display: block;
-	float: left;
-	clear: left;
-	margin-right: 10px
+    width: 25px;
+    height: 15px;
+    display: block;
+    float: left;
+    clear: left;
+    margin-right: 10px
 }
 
 .tc-chart-js-legend li {
@@ -2975,6 +2988,17 @@ a.brand, a.brand#hover {
     background: transparent url("/static/img/galant/galant_logo.png") 0px 8px no-repeat;
     background-size: contain;
     width: 160px;
+    position: relative;
+}
+
+a.brand span {
+    color: red;
+    font-size: 12px;
+    font-weight: 100;
+    position: absolute;
+    right: -33px;
+    bottom: 12px;
+    font-family: "Courier New";
 }
 
 .header-5, .footer-3 {
@@ -3156,6 +3180,12 @@ ul.nav-tabs li, ul.nav-tabs li, li.nav-item.ng-scope.ng-isolate-scope.active a.n
     margin-right: 3px;
 }
 
+.btn.btn-default.giant.btn-add {
+    padding: 35px;
+    padding-top: 13px;
+    background-color: #61b1dc;
+}
+
 button.btn.btn-default.btn-add, .btn.btn-default.btn-add {
     padding-top: 7px;
 }
@@ -3178,7 +3208,7 @@ button#section_delete.btn.btn-default.delete_button.btn-add.btn-list {
 }
 
 #add_note_form .btn-default, .btn.btn-default.btn-submit {
-    padding-left: 35px;
+    padding-left: 33px;
     padding-right: 35px;
     padding-top: 7px;
 }
@@ -3203,7 +3233,7 @@ table.table-striped.table-bordered, table.table-striped.table-bordered thead th 
     color: #000000;
 }
 
-.table-striped>tbody>tr:nth-of-type(odd) {
+.table-striped > tbody > tr:nth-of-type(odd) {
     background-color: #f0f0f0;
 }
 
@@ -3272,6 +3302,36 @@ button.btn.btn-default.mini-calendar {
 
 .modal-header h2.section_title {
     padding-left: 10px;
+}
+
+div.login {
+    border-color: #d0d0d0;
+}
+
+a.forgot {
+    font-family: "Courier New";
+    font-size: 13px;
+    top: 0px;
+}
+
+p.main.home {
+    font-size: 50px;
+    font-weight: 100;
+    line-height: 1.0;
+}
+
+p.sub-main.home {
+    font-weight: 100;
+    font-size: 14px;
+    line-height: 1.3;
+    letter-spacing: 0px;
+}
+
+.alert.alert-success {
+    font-family: "Courier New";
+    background-color: #b2ffaf;
+    border: none;
+    color: #666666;
 }
 
 /* End Color Scheme */

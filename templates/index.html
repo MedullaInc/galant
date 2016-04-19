@@ -14,11 +14,11 @@
             {% else %}
                 <div class="col-xs-12 col-sm-6 col-md-8">
             {% endif %}
-            <p class="main">
+            <p class="main home">
                 Manage clients, send quotes, track projects &mdash; all in one place.
             </p>
 
-            <p class="sub-main">
+            <p class="sub-main home">
                 {{ site.name }} was brewed in the heart of Silicon Valley, in close collaboration
                 with internationally acclaimed creative agencies.<br><br>Our sole purpose is to
                 help agencies and freelancers operate their business. That way you can focus on what
@@ -27,8 +27,8 @@
             </p>
 
             {% if user.is_authenticated == False %}
-                <a href="{% url 'signup' %}" type="button" class="btn btn-default giant" name="signup">
-                    {% trans 'Get organized.' %}
+                <a href="{% url 'signup' %}" type="button" class="btn btn-default giant btn-add" name="signup">
+                    {% trans 'Request an Account' %}
                 </a>
             {% endif %}
 
@@ -41,7 +41,7 @@
                         <div class="login">
                             <div class="row">
                                 <div class="col-sm-12">
-                                    <div class="login-title">{% trans 'Account Login' %}</div>
+                                    <h2 class="section_title">{% trans 'Account Login' %}</h2>
                                     <input autofocus="autofocus" class="form-control" placeholder="Email"
                                            type="email" value="" id="id_login" name="login"/>
                                     <input autocomplete="off" class="form-control" placeholder="{% trans 'Password' %}"
@@ -50,7 +50,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-sm-5">
-                                    <button type="submit" class="btn btn-default" id="submit_login" name="submit_login">
+                                    <button type="submit" class="btn btn-default btn-submit" name="submit_login">
                                         {% trans 'Login' %}
                                     </button>
                                 </div>
