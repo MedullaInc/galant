@@ -2933,6 +2933,10 @@ li.row {
     color: #666666;
 }
 
+.chart_box {
+    min-height: 450px;
+}
+
 .chart_box.dashboard {
     min-height: 280px;
 }
@@ -3051,7 +3055,7 @@ div#center_content_enclosed {
     padding-left: 3px;
 }
 
-h2.section_title, h2.center_title {
+h2.section_title, h2.center_title, h2.chart_title {
     font-family: "Courier New";
     font-size: 14px;
     letter-spacing: 0px;
@@ -3093,7 +3097,7 @@ p {
     font-size: 13px;
 }
 
-ul.nav.nav-tabs, a.nav-link.ng-binding, ul.nav-tabs li.active a, ul.nav-tabs li.active a:hover, ul.nav-tabs li a:hover {
+ul#tabs.nav.nav-tabs li.nav-item a, ul.nav.nav-tabs, a.nav-link.ng-binding, ul.nav-tabs li.active a, ul.nav-tabs li.active a:hover, ul.nav-tabs li a:hover {
     border: none;
     background: transparent;
 }
@@ -3107,30 +3111,30 @@ ul.nav-tabs a {
     margin-right: 10px;
 }
 
-ul.nav-tabs a.nav-link {
+ul#tabs.nav.nav-tabs li.nav-item a, ul.nav-tabs a, ul.nav-tabs a.nav-link {
     border-bottom: 1px solid #d0d0d0;
     color: #666666;
     font-size: 13px;
 }
 
-ul.nav-tabs a.nav-link.ng-binding, ul.nav-tabs a.nav-link.ng-binding:hover {
+ul.nav-tabs a, ul.nav-tabs a.nav-link.ng-binding, ul.nav-tabs a.nav-link.ng-binding:hover {
     border-bottom: 1px solid #d0d0d0;
     color: #d0d0d0;
     font-size: 13px;
     padding-bottom: 10px;
 }
 
-li.uib-tab.nav-item.ng-scope.ng-isolate-scope.active, li.uib-tab.nav-item.ng-scope.ng-isolate-scope {
+li.nav-item, li.nav-item.ng-scope.ng-isolate-scope.active, li.nav-item.ng-scope.ng-isolate-scope {
     margin-right: 20px;
     width: 170px;
     text-align: center;
 }
 
-li.uib-tab.nav-item.ng-scope.ng-isolate-scope.active a.nav-link.ng-binding {
+li.nav-item.ng-scope.ng-isolate-scope.active a.nav-link.ng-binding {
     color: #666666;
 }
 
-.btn.btn-default.btn-add {
+#add_note_form .btn-default, #form .btn-default, button.btn.btn-default.btn-add, .btn.btn-default.btn-add, .btn.btn-default.btn-submit, .btn.btn-default.btn-side {
     padding-left: 15px;
     padding-right: 15px;
     height: 40px;
@@ -3140,6 +3144,24 @@ li.uib-tab.nav-item.ng-scope.ng-isolate-scope.active a.nav-link.ng-binding {
     -webkit-border-radius: 40px;
     -moz-border-radius: 40px;
     border-radius: 40px;
+    max-width: 90%;
+}
+
+.btn.btn-default.btn-side {
+    background-color: #61b1dc;
+}
+
+.btn.btn-default.btn-add.btn-list {
+    background-color: #c583dc;
+}
+
+#add_note_form .btn-default, .btn.btn-default.btn-submit {
+    padding-left: 35px;
+    padding-right: 35px;
+}
+
+button#section_delete.btn.btn-default.delete_button.btn-add {
+    padding-left: 10px;
 }
 
 .btn.btn-default.btn-add span {
@@ -3160,6 +3182,33 @@ table.table-striped.table-bordered, table.table-striped.table-bordered thead th 
 
 .table-striped>tbody>tr:nth-of-type(odd) {
     background-color: #f0f0f0;
+}
+
+input[type="text"].form-control, input[type="email"].form-control, textarea.form-control {
+    border-color: #d0d0d0;
+    font-size: 13px;
+}
+
+hr {
+    border-top: 1px solid #d0d0d0
+}
+
+label.control-label {
+    font-family: "Courier New";
+}
+
+button#section_delete.btn.btn-default.delete_button.btn-add {
+    padding-left: 15px;
+}
+
+p.pending {
+    color: #ffa861;
+    font-weight: 600;
+}
+
+p.done {
+    color: #b2ffaf;
+    font-weight: 600;
 }
 
 /* End Color Scheme */

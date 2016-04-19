@@ -44,32 +44,32 @@
     var project_work_data_{{ project.id }} = [
         {
             value: {% get_project_services_count request project 0 %},
-            color: "#999999",
-            highlight: "#5AFF70",
+            color: "#d9ff03",
+            highlight: "#f3ffb1",
             label: "On Hold"
         },
         {
             value: {% get_project_services_count request project 1 %},
-            color: "#666666",
-            highlight: "#FFC870",
-            label: "Unassigned"
+            color: '#ffa861',
+            highlight: '#ff7300',
+            label: "Pending"
         },
         {
             value: {% get_project_services_count request project 2 %},
-            color: "#333333",
-            highlight: "#5AD3D1",
+            color: "#93f1ff",
+            highlight: "#00a6ff",
             label: "Active"
         },
         {
             value: {% get_project_services_count request project 3 %},
-            color: "#999999",
-            highlight: "#FFC870",
+            color: "#ff0054",
+            highlight: "#FF5A5E",
             label: "Overdue"
         },
         {
             value: {% get_project_services_count request project 4 %},
-            color: "#999999",
-            highlight: "#FFC870",
+            color: '#b2ffaf',
+            highlight: '#00ff5f',
             label: "Completed"
         }
     ]
@@ -77,7 +77,9 @@
     var project_work_{{ project.id }} = $("#project_chart_{{ project.id }}").get(0).getContext("2d");
     var project_work_chart_{{ project.id }} = new Chart(project_work_{{ project.id }}).Doughnut(project_work_data_{{ project.id }}, {
         animateRotate: true,
-        animateScale: false
+        animateScale: false,
+        percentageInnerCutout: 70,
+        segmentStrokeWidth: 5
     });
 
 </script>

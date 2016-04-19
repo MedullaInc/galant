@@ -42,19 +42,19 @@ app.directive('glClientWorkChart', ['$window', 'Service', function ($window, Ser
                     $scope.work_data = [
                         {
                             value: $scope.pending,
-                            color: "#d9ff03",
-                            highlight: "#f3ffb1",
+                            color: '#ffa861',
+                            highlight: '#ff7300',
                             label: "Pending"
                         },
                         {
                             value: $scope.active,
-                            color: "#02deff",
-                            highlight: "#93f1ff",
+                            color: "#93f1ff",
+                            highlight: "#00a6ff",
                             label: "Active"
                         },
                         {
                             value: $scope.overdue,
-                            color: "#ff022c",
+                            color: "#ff0054",
                             highlight: "#FF5A5E",
                             label: "Overdue"
                         },
@@ -66,8 +66,8 @@ app.directive('glClientWorkChart', ['$window', 'Service', function ($window, Ser
                         },
                         {
                             value: $scope.completed,
-                            color: "#02ff02",
-                            highlight: "#afff93",
+                            color: '#b2ffaf',
+                            highlight: '#00ff5f',
                             label: "Completed"
                         }
                     ];
@@ -85,10 +85,10 @@ app.directive('glClientWorkChart', ['$window', 'Service', function ($window, Ser
                         segmentStrokeColor: '#ffffff',
 
                         //Number - The width of each segment stroke
-                        segmentStrokeWidth: 0,
+                        segmentStrokeWidth: 5,
 
                         //Number - The percentage of the chart that we cut out of the middle
-                        percentageInnerCutout: 50, // This is 0 for Pie charts
+                        percentageInnerCutout: 70, // This is 0 for Pie charts
 
                         //Number - Amount of animation steps
                         animationSteps: 100,

@@ -17,7 +17,7 @@ app.directive('glClientMoneyChart', ['$window', 'Payment', function ($window, Pa
         link: function ($scope) {
 
             $scope.payments = [];
-            $scope.paid    = 0.0;
+            $scope.paid = 0.0;
             $scope.overdue = 0.0;
             $scope.pending = 0.0;
             $scope.on_hold = 0.0;
@@ -42,20 +42,20 @@ app.directive('glClientMoneyChart', ['$window', 'Payment', function ($window, Pa
                     $scope.money_data = [
                         {
                             value: $scope.paid,
-                            color: "#02ff02",
-                            highlight: "#afff93",
+                            color: '#b2ffaf',
+                            highlight: '#00ff5f',
                             label: "Paid"
                         },
                         {
                             value: $scope.overdue,
-                            color: "#ff022c",
+                            color: "#ff0054",
                             highlight: "#FF5A5E",
                             label: "Overdue"
                         },
                         {
                             value: $scope.pending,
-                            color: "#02deff",
-                            highlight: "#93f1ff",
+                            color: '#ffa861',
+                            highlight: '#ff7300',
                             label: "Pending"
                         },
                         //{
@@ -79,10 +79,10 @@ app.directive('glClientMoneyChart', ['$window', 'Payment', function ($window, Pa
                         segmentStrokeColor: '#ffffff',
 
                         //Number - The width of each segment stroke
-                        segmentStrokeWidth: 0,
+                        segmentStrokeWidth: 5,
 
                         //Number - The percentage of the chart that we cut out of the middle
-                        percentageInnerCutout: 50, // This is 0 for Pie charts
+                        percentageInnerCutout: 70, // This is 0 for Pie charts
 
                         //Number - Amount of animation steps
                         animationSteps: 100,
