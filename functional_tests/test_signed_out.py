@@ -30,14 +30,14 @@ class SignedOutTest(StaticLiveServerTestCase):
                              ('es', u'Iniciar Sesión')]:
             activate(lang)
             self.browser.get(self.live_server_url + reverse('home'))
-            e = self.browser.find_element_by_css_selector(".login-title")
+            e = self.browser.find_element_by_css_selector(".section_title")
             self.assertEqual(e.text, e_text)
 
         activate(language)
 
     def test_can_signup_int(self):
         language = get_language()
-        for lang, e_text in [('en', u'Get organized.'),
+        for lang, e_text in [('en', u'Request an Account'),
                              # ('es', u'Regístrate!')
                              ]:
             activate(lang)
