@@ -260,7 +260,7 @@ describe('glProjectList', function () {
         it('selects projects', function () {
             element.isolateScope().selectedAll = true;
             element.isolateScope().checkAll();
-            expect(element.isolateScope().projectsSafe[0].checked).toEqual(true);
+            expect(element.isolateScope().projectsSafe[0].isSelected).toEqual(true);
         });
     });
 });
