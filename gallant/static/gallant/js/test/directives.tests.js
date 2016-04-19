@@ -314,7 +314,7 @@ describe('glProjectAdd', function () {
         });
 
         it('compiles', function () {
-            expect(element.html().substring(0, 6)).toEqual('<form ');
+            expect(element.html().substring(0, 6)).toEqual('<div c');
         });
     });
 });

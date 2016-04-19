@@ -3315,9 +3315,10 @@ a.forgot {
 }
 
 p.main.home {
-    font-size: 50px;
+    font-size: 44px;
     font-weight: 100;
     line-height: 1.0;
+    color: #555555;
 }
 
 p.sub-main.home {
