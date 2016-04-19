@@ -5,10 +5,16 @@ upstream gallant_app_server {
  
   server unix:/webapps/gallant/gunicorn.sock fail_timeout=0;
 }
- 
-server { 
+
+server {
+   listen 80 default_server;
+   return 301 http://galant.com/$request_uri;
+}
+
+server {
     listen   80;
- 
+    server_name galant.com;
+
     client_max_body_size 4G;
  
     access_log /webapps/gallant/logs/nginx-access.log;
