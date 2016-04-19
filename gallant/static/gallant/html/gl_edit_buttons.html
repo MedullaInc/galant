@@ -1,19 +1,19 @@
 <span class="buttons" ng-hide="hide || form.$visible">
-    <button id="{{ prefix }}_edit" type="button" class="btn btn-default edit_button" aria-label="Edit"
+    <button id="{{ prefix }}_edit" type="button" class="btn btn-default edit_button btn-add" aria-label="Edit"
             ng-click="form.$show()" ng-hide="hideEdit">
         <span class="glyphicon glyphicon-edit"/>
     </button>
-    <button id="{{ prefix }}_delete" type="button" class="btn btn-default delete_button" aria-label="Delete"
+    <button id="{{ prefix }}_delete" type="button" class="btn btn-default delete_button btn-add" aria-label="Delete"
             ng-click="delete()">
         <span class="glyphicon glyphicon-trash"/>
     </button>
 </span>
 <span ng-show="form.$visible">
-    <button id="{{ prefix }}_save" type="button" class="btn btn-default edit_button" ng-disabled="form.$waiting"
+    <button id="{{ prefix }}_save" type="button" class="btn btn-default edit_button btn-add" ng-disabled="form.$waiting"
             ng-click="form.$submit()">
         <span class="glyphicon glyphicon-floppy-disk"></span>
     </button>
-    <button id="{{ prefix }}_cancel" type="button" class="btn btn-default edit_button" ng-disabled="form.$waiting"
+    <button id="{{ prefix }}_cancel" type="button" class="btn btn-default edit_button btn-add" ng-disabled="form.$waiting"
             ng-click="form.$cancel()" ng-hide="hideCancel">
         <span class="glyphicon glyphicon-remove"></span>
     </button>

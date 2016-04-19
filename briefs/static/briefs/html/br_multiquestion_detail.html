@@ -11,8 +11,9 @@
                 <p class="data" ng-show="form.$visible">
                     <input type="checkbox" ng-model="question.can_select_multiple"
                            id="question{{ question.index }}_mult">
-                    <span class="small">Can select multiple choices</span>
+                    <span>Can select multiple choices</span>
                 </p>
+                <br/>
             </div>
         </div>
         <div>
@@ -30,12 +31,12 @@
                     </div>
                     <div class="col-lg-3 col-md-3 col-sm-3 col-xs-4 padding-top-25"  ng-show="form.$visible">
                         <button id="question{{ question.index }}_choice{{ $index }}_move" type="button"
-                                class="btn btn-default move_button"
+                                class="btn btn-default move_button btn-add"
                                 as-sortable-item-handle>
                             <span class="glyphicon glyphicon-move"/>
                         </button>
                         <button id="question{{ question.index }}_choice{{ $index }}_delete" type="button"
-                                class="btn btn-default delete_button" aria-label="Delete"
+                                class="btn btn-default delete_button btn-add" aria-label="Delete"
                                 ng-click="removeChoice($index)">
                             <span class="glyphicon glyphicon-trash"/>
                         </button>
@@ -46,7 +47,7 @@
         <div class="row margin-bottom-10 padding-top-10">
             <div class="col-lg-12">
                 <button id="question{{ question.index }}_add_choice" type="button" ng-hide="answered"
-                        class="btn btn-default add_choice" ng-click="addChoice()">
+                        class="btn btn-default add_choice btn-submit" ng-click="addChoice()">
                     Add Choice
                 </button>
             </div>
