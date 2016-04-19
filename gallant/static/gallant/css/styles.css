@@ -1854,7 +1854,7 @@ a.login-btn.index.register:hover {
     -webkit-border-radius: 0px;
     -moz-border-radius: 0px;
     border-radius: 0px;
-    border: 1px solid #666666;
+    border: 1px solid #999999;
 }
 
 #language_add.btn {
@@ -2390,7 +2390,7 @@ ul.nav-tabs li a#add_translation_button {
 
 #form label, .form-group label {
     font-weight: 200;
-    font-size: 12px;
+    font-size: 13px;
 }
 
 #form label, .form-group label.in-place {
@@ -3140,7 +3140,7 @@ ul.nav-tabs li, ul.nav-tabs li, li.nav-item.ng-scope.ng-isolate-scope.active a.n
     color: #666666;
 }
 
-#add_note_form .btn-default, #form .btn-default, button.btn.btn-default.btn-add, .btn.btn-default.btn-add, .btn.btn-default.btn-submit, .btn.btn-default.btn-side {
+#add_note_form .btn-default, button.btn.btn-default.btn-add, .btn.btn-default.btn-add, .btn.btn-default.btn-submit, .btn.btn-default.btn-side {
     padding-left: 15px;
     padding-right: 15px;
     height: 36px;
@@ -3152,20 +3152,35 @@ ul.nav-tabs li, ul.nav-tabs li, li.nav-item.ng-scope.ng-isolate-scope.active a.n
     border-radius: 40px;
     max-width: 95%;
     font-weight: 100;
+    padding-top: 3px;
+    margin-right: 3px;
+}
+
+button.btn.btn-default.btn-add, .btn.btn-default.btn-add {
     padding-top: 7px;
+}
+
+button#section_edit.btn.btn-default.edit_button.btn-add, button#section_delete.btn.btn-default.delete_button.btn-add {
+    padding-top: 6px;
 }
 
 .btn.btn-default.btn-side {
     background-color: #61b1dc;
+    padding-top: 7px;
 }
 
 .btn.btn-default.btn-add.btn-list {
     background-color: #c583dc;
 }
 
+button#section_delete.btn.btn-default.delete_button.btn-add.btn-list {
+    padding-left: 20px;
+}
+
 #add_note_form .btn-default, .btn.btn-default.btn-submit {
     padding-left: 35px;
     padding-right: 35px;
+    padding-top: 7px;
 }
 
 button#section_delete.btn.btn-default.delete_button.btn-add {
@@ -3192,7 +3207,7 @@ table.table-striped.table-bordered, table.table-striped.table-bordered thead th 
     background-color: #f0f0f0;
 }
 
-input[type="text"].form-control, input[type="email"].form-control {
+input[type="password"].form-control, input[type="number"].form-control, input[type="text"].form-control, input[type="email"].form-control {
     border-color: #d0d0d0;
     font-size: 13px;
     outline: none;
@@ -3208,8 +3223,9 @@ hr {
     border-top: 1px solid #d0d0d0
 }
 
-label.control-label {
+label, label.control-label {
     font-family: "Courier New";
+    line-height: 1.2;
 }
 
 button#section_delete.btn.btn-default.delete_button.btn-add {
@@ -3233,7 +3249,7 @@ pre {
     padding-top: 10px;
 }
 
-.editable-wrap .editable-controls > input, .editable-wrap .editable-controls > select, .editable-wrap .editable-controls > textarea {
+select, .editable-wrap .editable-controls > input, .editable-wrap .editable-controls > select, .editable-wrap .editable-controls > textarea {
     border-color: #d0d0d0;
     font-size: 13px;
     outline: none;
@@ -3242,6 +3258,20 @@ pre {
     -webkit-border-radius: 0px;
     -moz-border-radius: 0px;
     border-radius: 0px;
+}
+
+button.btn.btn-default.mini-calendar {
+    border: 1px solid #d0d0d0;
+    border-left: none;
+}
+
+#modal_form .form-group .btn.btn-default {
+    boorder-left: none;
+    border-color: #d0d0d0;
+}
+
+.modal-header h2.section_title {
+    padding-left: 10px;
 }
 
 /* End Color Scheme */
