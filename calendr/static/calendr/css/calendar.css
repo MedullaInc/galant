@@ -4,7 +4,9 @@
     margin-top: 30px;
 }
 
-* { outline: none; }
+* {
+    outline: none;
+}
 
 .alert h4 {
     font-weight: 100;
@@ -108,7 +110,7 @@ button.btn.btn-default {
 }
 
 .popup-calendr ul.dropdown-menu.ng-pristine.ng-untouched.ng-valid.ng-scope.ng-valid-date-disabled {
-    display:none;
+    display: none;
     border-radius: 0px;
 }
 
@@ -127,7 +129,7 @@ button.btn.btn-default {
 }
 
 #popup-calendr .dropdown-menu ul.dropdown-menu li.ng-scope {
-    padding:10px 0px 0px;
+    padding: 10px 0px 0px;
 }
 
 /* END CALENDAR */
@@ -264,11 +266,11 @@ div.row.calendar_container {
 }
 
 button.fc-button {
-    background:none!important;
-     border:none;
-     padding:0!important;
-     font: inherit;
-     cursor: pointer;
+    background: none !important;
+    border: none;
+    padding: 0 !important;
+    font: inherit;
+    cursor: pointer;
     color: #666666;
 }
 
@@ -298,6 +300,11 @@ td.fc-divider.fc-col-resizer.fc-widget-header {
 
 td.fc-widget-header:first-child:first-child th.fc-widget-header:first-child div.fc-cell-content {
     padding-left: 20px;
+}
+
+div.fc-cell-content {
+    text-overflow: ellipsis;
+    white-space: pre-line;
 }
 
 .fc-title {
