@@ -9,11 +9,14 @@ app.directive('glProjectList', ['$window', '$uibModal', 'Project', function ($wi
     return {
         restrict: 'A',
         scope: {
+            projects: '=?',
         },
         controller: ['$scope', function ($scope) {
-            Project.query().$promise.then(function (response) {
-                $scope.projectsSafe = response;
-            });
+            if (!$scope.projects) {
+                Project.query().$promise.then(function (response) {
+                    $scope.projects = response;
+                });
+            }
         }],
         templateUrl: '/static/gallant/html/gl_project_list.html',
         link: function ($scope) {
@@ -27,7 +30,7 @@ app.directive('glProjectList', ['$window', '$uibModal', 'Project', function ($wi
             };
 
             $scope.projectSaved = function (project) {
-                $scope.projectsSafe.push(project);
+                $scope.projects.push(project);
                 $scope.modalInstance.dismiss('cancel');
             };
 
@@ -40,7 +43,7 @@ app.directive('glProjectList', ['$window', '$uibModal', 'Project', function ($wi
             };
 
             $scope.checkAll = function () {
-                angular.forEach($scope.projectsSafe, function (p) {
+                angular.forEach($scope.projects, function (p) {
                     p.isSelected = $scope.selectedAll;
                 });
             };

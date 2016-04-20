@@ -126,6 +126,18 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
         });
     };
 
+    // currently only adding a new project is reflected in FC
+    $scope.$watchCollection('projects', function (newValue, oldValue) {
+        if (oldValue && oldValue.length < newValue.length) {
+            p = newValue[newValue.length-1];
+            $scope.eventResources.push({
+                id: p.id,
+                title: p.name,
+                link: p.link,
+            });
+        }
+    });
+
     // $scope.getResources();
     $scope.getProjects();
 

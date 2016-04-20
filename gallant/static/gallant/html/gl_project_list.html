@@ -28,7 +28,7 @@
     </div>
     <br>
     <div class="row">
-        <table st-table="projects" st-safe-src="projectsSafe"
+        <table st-table="projectsTable" st-safe-src="projects"
                class="table table-striped table-bordered col-lg-12">
             <thead>
             <tr>
@@ -39,7 +39,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="project in projects" ng-click="redirect(project)" st-select-row="project"
+            <tr ng-repeat="project in projectsTable" ng-click="redirect(project)" st-select-row="project"
                st-select-mode="multiple" style="cursor: pointer">
                 <td style="width: 1%" ng-click="$event.stopPropagation()">
                     <input type="checkbox" ng-model="project.isSelected">
