@@ -29,12 +29,12 @@
                     <td>{{ task.project_name }}</td>
                     <td>{{ task.end }}</td>
                 </tr>
-                <tr ng-show="!tasks">
+                <tr ng-show="!tasksTable">
                     <td colspan="5">
                         <img class="table-loading" src="/static/img/loading.gif">
                     </td>
                 </tr>
-                <tr ng-show="tasks && tasks.length == 0">
+                <tr ng-show="tasksTable && tasksTable.length == 0">
                     <td colspan="5">
                         No tasks yet.
                     </td>
