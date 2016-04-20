@@ -332,20 +332,22 @@ describe('glClientPaymentController', function () {
 describe('glProjectEditController', function () {
     var $rootScope;
     var $controller;
-    var $window;
-    var url = 'about:blank';
+    var $injector;
 
     beforeEach(function () {
         module('gallant.controllers.glProjectEditController', function ($provide) {
             $provide.value('$window', {location: {href: null}});
             $provide.value('$uibModal', {args: {}, open: function (a) { this.args = a; }});
+            $provide.factory('$uibModalInstance', function ($q) {
+               return { dismiss: function(a) {} };
+            });
         });
 
-        inject(function (_$rootScope_, _$controller_, _$window_) {
+        inject(function (_$rootScope_, _$controller_, _$injector_) {
             // The injector unwraps the underscores (_) from around the parameter names when matching
             $rootScope = _$rootScope_;
             $controller = _$controller_;
-            $window = _$window_;
+            $injector = _$injector_;
         });
 
     });
@@ -355,17 +357,30 @@ describe('glProjectEditController', function () {
     beforeEach(function () {
         $scope = $rootScope.$new();
         $controller('glProjectEditController', {$scope: $scope});
-        $scope.init(url);
         $rootScope.$apply();
     });
 
     it('adds project', function () {
         var $uibModal = $injector.get('$uibModal');
-        var $subScope = $scope.$new();
         spyOn($uibModal, 'open').and.callThrough();
         $scope.addProject();
         $scope.$digest();
         expect($uibModal.open).toHaveBeenCalled();
     });
 
+    it('closes on object save', function () {
+        $scope.modalInstance = {dismiss: function () {}};
+        spyOn($scope.modalInstance, 'dismiss');
+        $scope.projectSaved();
+        $scope.$digest();
+        expect($scope.modalInstance.dismiss).toHaveBeenCalled();
+    })
+
+    it('closes on object save', function () {
+        $scope.modalInstance = {dismiss: function () {}};
+        spyOn($scope.modalInstance, 'dismiss');
+        $scope.cancel();
+        $scope.$digest();
+        expect($scope.modalInstance.dismiss).toHaveBeenCalled();
+    })
 });

@@ -19,16 +19,5 @@ app.controller('glProjectEditController', ['$scope', '$uibModal',
         $scope.cancel = function () {
             $scope.modalInstance.dismiss('cancel');
         };
-
-        $scope.redirect = function (project) {
-            $window.location.href = project.link;
-        };
-
-        $scope.checkAll = function () {
-            angular.forEach($scope.projectsSafe, function (p) {
-                p.isSelected = $scope.selectedAll;
-            });
-        };
-
     }
 ]);
