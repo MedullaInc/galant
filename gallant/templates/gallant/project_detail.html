@@ -30,7 +30,7 @@
                     <span class="glyphicon glyphicon-edit"/>
                 </button>
             </a>
-            <a href="{% url 'delete_project' object.id %}" class="delete_button" title="{% trans "Delete" %}" onclick="return confirm('{% trans "Are you sure?" %}')"> 
+            <a href="{% url 'delete_project' object.id %}" class="delete_button" title="{% trans "Delete" %}" onclick="return confirm('{% trans "Are you sure? This will also delete all links between the project and its linked quotes." %}')"> 
                 <button id="section_delete" type="button" class="btn btn-default delete_button btn-add" aria-label="Delete"> 
                     <span class="glyphicon glyphicon-trash"/> 
                 </button>
