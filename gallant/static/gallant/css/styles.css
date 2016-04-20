@@ -3349,6 +3349,17 @@ p.sub-main.home {
     color: #666666;
 }
 
+.animate-hide {
+  transition: all linear 0.5s;
+  opacity: 1;
+}
+
+.animate-hide.ng-hide {
+  line-height: 0;
+  opacity: 0;
+  padding: 0 10px;
+}
+
 .alert-dismissable .close, .alert-dismissible .close {
     right: auto;
 }
