@@ -41,10 +41,10 @@ class CalendrTest(browser.SignedInTest):
 
         b.get(self.live_server_url + reverse('calendr'))
         browser.wait().until(lambda driver: driver.find_element_by_id('id_date'))
-        b.find_element_by_id('id_date').send_keys('2015-11-09')
+        b.find_element_by_id('id_date').send_keys('11.09.2015')
 
         date = b.find_element_by_css_selector('.fc-toolbar h2')
-        self.assertTrue(u'November 2015' in date.text)
+        self.assertIn(u'November 2015', date.text)
 
     def test_can_edit_task(self):
         b = self.browser
