@@ -2435,6 +2435,10 @@ label.search.control-label {
     color: #7f8c8d;
 }
 
+.alert .close {
+    position: inherit;
+}
+
 .close {
     position: absolute;
     right: 15px;
