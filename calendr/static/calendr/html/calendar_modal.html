@@ -33,7 +33,7 @@
                     <label>Assignee</label>
                 </div>
                 <div class="col-lg-9">
-                    <select ng-model="task.assignee" class="form-control" ng-options="resource.id as resource.title for resource in resources">
+                    <select ng-model="task.assignee" class="form-control" ng-options="user.id as user.email for user in users">
                     </select>
                 </div>
             </div>

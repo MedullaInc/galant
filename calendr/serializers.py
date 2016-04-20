@@ -35,3 +35,14 @@ class TaskSerializer(serializers.ModelSerializer):
         model = Task
         fields = ('id', 'user', 'name', 'start', 'end', 'daily_estimate',
                   'project', 'services', 'assignee', 'notes', 'project_name')
+
+    def validate(self, data):
+        start = data.get('start', None)
+        end = data.get('end', None)
+        if end:
+            if start and start > end:
+                raise serializers.ValidationError("End date can't be before start date.")
+            elif start is None:
+                raise serializers.ValidationError("Task can't have end date without start date.")
+
+        return data
