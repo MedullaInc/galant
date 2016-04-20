@@ -328,3 +328,44 @@ describe('glClientPaymentController', function () {
     });
 
 });
+
+describe('glProjectEditController', function () {
+    var $rootScope;
+    var $controller;
+    var $window;
+    var url = 'about:blank';
+
+    beforeEach(function () {
+        module('gallant.controllers.glProjectEditController', function ($provide) {
+            $provide.value('$window', {location: {href: null}});
+            $provide.value('$uibModal', {args: {}, open: function (a) { this.args = a; }});
+        });
+
+        inject(function (_$rootScope_, _$controller_, _$window_) {
+            // The injector unwraps the underscores (_) from around the parameter names when matching
+            $rootScope = _$rootScope_;
+            $controller = _$controller_;
+            $window = _$window_;
+        });
+
+    });
+
+    var $scope;
+
+    beforeEach(function () {
+        $scope = $rootScope.$new();
+        $controller('glProjectEditController', {$scope: $scope});
+        $scope.init(url);
+        $rootScope.$apply();
+    });
+
+    it('adds project', function () {
+        var $uibModal = $injector.get('$uibModal');
+        var $subScope = $scope.$new();
+        spyOn($uibModal, 'open').and.callThrough();
+        $scope.addProject();
+        $scope.$digest();
+        expect($uibModal.open).toHaveBeenCalled();
+    });
+
+});
