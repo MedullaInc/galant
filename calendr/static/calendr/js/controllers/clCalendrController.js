@@ -149,8 +149,11 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
             templateUrl: '/static/calendr/html/calendar_modal.html',
             backdrop: true,
             windowClass: 'modal',
-            controller: function ($scope, $uibModalInstance, $log, task, tasks, users, projects, updateTask, gotoDate) {
-                $scope.task = task || {};
+            controller: function ($scope, $uibModalInstance, $log, task, tasks, users, projects, updateTask, gotoDate, currentUserId) {
+                $scope.task = task || {
+                        assignee: currentUserId,
+                        daily_estimate: 0,
+                    };
 
                 // Date pickers
                 $scope.openStartDatePicker = function () {
@@ -258,6 +261,9 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
                 },
                 users: function () {
                     return $scope.users;
+                },
+                currentUserId: function () {
+                    return $scope.currentUserId;
                 },
             }
         });
