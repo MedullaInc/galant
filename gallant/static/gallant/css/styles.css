@@ -3289,7 +3289,6 @@ pre {
     padding: 0px;
     font-family: "Courier New";
     padding-top: 10px;
-    word-wrap: normal;
 }
 
 select, .editable-wrap .editable-controls > input, .editable-wrap .editable-controls > select, .editable-wrap .editable-controls > textarea {
