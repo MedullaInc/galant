@@ -239,7 +239,7 @@ describe('glProjectList', function () {
             spyOn(element.isolateScope().modalInstance, 'dismiss');
             element.isolateScope().projectSaved({});
             $scope.$apply();
-            expect(element.isolateScope().projectsSafe.length).toEqual(2);
+            expect(element.isolateScope().projects.length).toEqual(2);
             expect(element.isolateScope().modalInstance.dismiss).toHaveBeenCalled();
         });
 
@@ -260,7 +260,7 @@ describe('glProjectList', function () {
         it('selects projects', function () {
             element.isolateScope().selectedAll = true;
             element.isolateScope().checkAll();
-            expect(element.isolateScope().projectsSafe[0].isSelected).toEqual(true);
+            expect(element.isolateScope().projects[0].isSelected).toEqual(true);
         });
     });
 });

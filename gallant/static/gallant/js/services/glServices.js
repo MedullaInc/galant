@@ -75,13 +75,19 @@ app.factory('glAlertService', function () {
     return service;
 
     function add(type, msg) {
-        return alerts.push({
+        alerts.push({
             type: type,
             msg: msg,
             close: function () {
                 return closeAlert(this);
             }
         });
+
+        if (alerts.length > 3) {
+            closeAlertIdx(0);
+        }
+
+        return alerts;
     }
 
     function closeAlert(alert) {
