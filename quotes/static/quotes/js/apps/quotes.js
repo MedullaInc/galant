@@ -5,12 +5,14 @@ var app = angular.module('quote', [
     'ui.bootstrap',
     'xeditable',
     'gallant.controllers.glFormController',
+    'gallant.controllers.glProjectEditController',
     'quotes.controllers.qtQuoteListController',
     'quotes.controllers.qtQuoteTemplateListController',
     'quotes.controllers.qtPopoverController',
     'quotes.directives.qtForm',
     'quotes.directives.qtClientForm',
     'gallant.directives.glAlerts',
+    'gallant.directives.glProjectAdd',
 ]);
 
 /* istanbul ignore next */

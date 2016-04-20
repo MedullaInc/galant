@@ -132,6 +132,8 @@ class ProjectCreate(ProjectUpdate):
 class ProjectDelete(View):
     def get(self, request, **kwargs):
         project = get_one_or_404(request.user, 'change_project', g.Project, id=kwargs['pk'])
+        project.quote_set.clear()
+
         project.soft_delete()
 
         return HttpResponseRedirect(reverse('calendr'))

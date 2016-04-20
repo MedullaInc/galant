@@ -13,7 +13,7 @@
 <div class="row form-group multidropdown_elements" ng-repeat="element in elements"
      ng-show="availableElementsSafe[0].length && elements.length">
     <div class="col-lg-3" ng-show="$first">
-        <label>Services</label>
+        <label>Select One</label>
     </div>
     <div class="col-lg-7" ng-class="{'col-lg-offset-3': !$first}">
         <select ng-model="elements[$index]" class="form-control" ng-change="updateAvailableElements()"
