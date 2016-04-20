@@ -35,3 +35,9 @@ class TaskSerializer(serializers.ModelSerializer):
         model = Task
         fields = ('id', 'user', 'name', 'start', 'end', 'daily_estimate',
                   'project', 'services', 'assignee', 'notes', 'project_name')
+
+    def validate(self, data):
+        if data['start'] > data['end']:
+            raise serializers.ValidationError("End date can't be before start date.")
+
+        return data
