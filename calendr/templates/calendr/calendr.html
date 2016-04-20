@@ -79,7 +79,7 @@
                         <br/>
 
                         <p class="input-group popup-calendr" id="popup-calendr">
-                            <input id="id_date" class="form-control" type="text" uib-datepicker-popup ng-model="dt" is-open="status.opened" min-date="minDate" max-date="maxDate" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" ng-change="gotoDate(dt)"/>
+                            <input id="id_date" class="form-control" type="text" uib-datepicker-popup="MM.dd.yyyy" ng-model="dt" is-open="status.opened" min-date="minDate" max-date="maxDate" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" ng-change="gotoDate(dt)"/>
                             <span class="input-group-btn">
                                 <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
                             </span>
