@@ -498,7 +498,7 @@ input[type="color"],
 }
 
 .form-group {
-    margin-bottom: 15px;
+    margin-bottom: 5px;
 }
 
 label {
@@ -3199,7 +3199,7 @@ ul.nav-tabs li, ul.nav-tabs li, li.nav-item.ng-scope.ng-isolate-scope.active a.n
 }
 
 button.btn.btn-default.btn-add, .btn.btn-default.btn-add {
-    padding-top: 7px;
+    padding-top: 5px;
 }
 
 button#section_edit.btn.btn-default.edit_button.btn-add, button#section_delete.btn.btn-default.delete_button.btn-add {
@@ -3212,7 +3212,7 @@ button#section_edit.btn.btn-default.edit_button.btn-add, button#section_delete.b
 }
 
 .btn.btn-default.btn-add.btn-list {
-    background-color: #c583dc;
+    background-color: #ffbc77;
 }
 
 button#section_delete.btn.btn-default.delete_button.btn-add.btn-list {
@@ -3255,7 +3255,7 @@ input[type="password"].form-control, input[type="number"].form-control, input[ty
     outline: none;
 }
 
-textarea.form-control, #form textarea {
+textarea#brief_greeting, textarea.form-control, #form textarea {
     border-color: #d0d0d0;
     font-size: 13px;
     outline: none;
@@ -3295,11 +3295,16 @@ select, .editable-wrap .editable-controls > input, .editable-wrap .editable-cont
     border-color: #d0d0d0;
     font-size: 13px;
     outline: none;
-    color: #999999;
-    font-weight: 100;
+    color: #666666;
+    font-weight: 200;
     -webkit-border-radius: 0px;
     -moz-border-radius: 0px;
     border-radius: 0px;
+    letter-spacing: 1px;
+}
+
+.editable-wrap .editable-controls > textarea {
+    font-size: 13px;
 }
 
 button.btn.btn-default.mini-calendar {
@@ -3398,12 +3403,16 @@ span.help-block, li.invalid, div.editable-error {
     font-size: 13px;
 }
 
-div.profile_alert.row p {
+div.profile_alert p {
     margin-bottom: 12px;
 }
 
 a h2.section_subtitle {
     color: #5439ff;
+}
+
+.welcome_box {
+    min-height: 300px;
 }
 
 /* End Color Scheme */

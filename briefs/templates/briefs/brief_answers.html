@@ -26,13 +26,17 @@
     <form id="form" class="form" method="post">
         {% csrf_token %}
         {% for answer_form in answer_forms %}
-            <div class="question_text">{{ answer_form.question.question.get_text }}</div>
-            <div class="answer_form">{{ answer_form }}</div>
+            <div class="question_text">
+                <label>{{ answer_form.question.question.get_text }}</label>
+            </div>
+            <div class="answer_form">
+                {{ answer_form }}
+            </div>
             <hr>
         {% endfor %}
 
         <div class="form-actions">
-            <button id="answers_submit" class="btn btn-default pull-left" type="submit">{% trans "Submit" %}</button>
+            <button id="answers_submit" class="btn btn-default pull-left btn-submit" type="submit">{% trans "Submit" %}</button>
         </div>
     </form>
 

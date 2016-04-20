@@ -2,7 +2,7 @@
     <div class="col-lg-3">
         <label>{{ elementDisplayName }}</label>
     </div>
-    <div class="col-lg-8">
+    <div class="col-lg-9">
         <select ng-model="elements[0]" class="form-control" ng-change="updateAvailableElements()"
                 ng-options="e.id as e.name for e in availableElementsSafe[0]">
             <option value="" style="display: none;">Select {{ elementDisplayName }}...</option>
@@ -15,19 +15,19 @@
     <div class="col-lg-3" ng-show="$first">
         <label>Services</label>
     </div>
-    <div class="col-lg-8" ng-class="{'col-lg-offset-3': !$first}">
+    <div class="col-lg-7" ng-class="{'col-lg-offset-3': !$first}">
         <select ng-model="elements[$index]" class="form-control" ng-change="updateAvailableElements()"
                 ng-options="e.id as e.name for e in availableElementsSafe[$index]">
             <option value="" style="display: none;">Select {{ elementDisplayName }}...</option>
         </select>
     </div>
-    <div class="col-lg-1" ng-show="$last && availableElementsSafe.length">
+    <div class="col-lg-2" ng-show="$last && availableElementsSafe.length">
         <button id="multidropdown_add" type="button" class="multidropdown_button btn btn-default btn-add"
                 ng-click="addElement()">
             <span class="glyphicon glyphicon-plus-sign"/>
         </button>
     </div>
-    <div class="col-lg-1" ng-show="!$last || !availableElementsSafe.length">
+    <div class="col-lg-2" ng-show="!$last || !availableElementsSafe.length">
         <button type="button" class="multidropdown_button btn btn-default btn-add" ng-click="removeElement($index)">
             <span class="glyphicon glyphicon-trash"/>
         </button>

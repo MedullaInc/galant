@@ -6,13 +6,9 @@
             Briefs help understand client needs. You can customize briefs with questions and save them as templates. Once a brief is sent, we'll notify your client & let you know when they respond.
         </p>
         <br/>
-        <p>
+        <p ng-controller="brPopoverController" ng-init="init(addBriefUrl, language, clientId)">
             <a>
-                <p ng-controller="brPopoverController" ng-init="init(addBriefUrl, language, clientId)">
-                    <a>
-                        <button popover-placement="bottom" uib-popover-template="dynamicPopover.templateUrl" type="button" class="btn btn-default sidebar" popover-trigger="focus">New Brief</button>
-                    </a>
-                </p>
+                <button popover-placement="bottom" uib-popover-template="dynamicPopover.templateUrl" type="button" class="btn btn-default sidebar" popover-trigger="focus">New Brief</button>
             </a>
         </p>
     </div>
