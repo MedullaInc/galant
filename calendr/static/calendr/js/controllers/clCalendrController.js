@@ -67,16 +67,9 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
     };
 
     /* Retrieve users from API service */
-    //$scope.getResources = function (options) {
-    //    User.query(options).$promise.then(function (response) {
-    //        angular.forEach(response, function (value, key) {
-    //            $scope.eventResources.push({
-    //                id: value.id,
-    //                title: value.email
-    //            });
-    //        });
-    //    });
-    //};
+    User.query().$promise.then(function (response) {
+        $scope.users = response;
+    });
 
     var convertToFCFormat = function (task) {
         task.title = task.name;
@@ -156,7 +149,7 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
             templateUrl: '/static/calendr/html/calendar_modal.html',
             backdrop: true,
             windowClass: 'modal',
-            controller: function ($scope, $uibModalInstance, $log, task, tasks, resources, projects, updateTask, gotoDate) {
+            controller: function ($scope, $uibModalInstance, $log, task, tasks, users, projects, updateTask, gotoDate) {
                 $scope.task = task || {};
 
                 // Date pickers
@@ -183,7 +176,7 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
                 if (!$scope.task.services)
                     $scope.task.services = [];
                 $scope.tasks = tasks;
-                $scope.resources = resources;
+                $scope.users = users;
                 $scope.projects = projects;
                 $scope.updateTask = updateTask;
                 $scope.gotoDate = gotoDate;
@@ -263,8 +256,8 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
                 projects: function () {
                     return $scope.projects;
                 },
-                resources: function () {
-                    return $scope.eventResources;
+                users: function () {
+                    return $scope.users;
                 },
             }
         });
@@ -325,6 +318,7 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
             name: '',
             daily_estimate: 0,
             resourceId: +resource.id,
+            assignee: $scope.currentUserId,
             start: start,
             end: end
         };
