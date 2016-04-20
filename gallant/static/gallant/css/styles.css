@@ -3340,11 +3340,17 @@ p.sub-main.home {
     letter-spacing: 0px;
 }
 
-.alert.alert-success {
+.alert {
     font-family: "Courier New";
+}
+
+.alert-success {
     background-color: rgba(178, 255, 175, 0.46);
-    border: none;
     color: #666666;
+}
+
+.alert-dismissable .close, .alert-dismissible .close {
+    right: auto;
 }
 
 p i {
