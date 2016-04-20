@@ -3199,7 +3199,7 @@ ul.nav-tabs li, ul.nav-tabs li, li.nav-item.ng-scope.ng-isolate-scope.active a.n
 }
 
 button.btn.btn-default.btn-add, .btn.btn-default.btn-add {
-    padding-top: 7px;
+    padding-top: 5px;
 }
 
 button#section_edit.btn.btn-default.edit_button.btn-add, button#section_delete.btn.btn-default.delete_button.btn-add {
