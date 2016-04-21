@@ -33,9 +33,7 @@
                 </h2>
             </div>
             <div id="greeting" class="data">
-                <p>
                 <pre editable-textarea="brief.greeting[language]" e-id="brief_greeting" e-placeholder="Enter greeting" onbeforesave="validate.nonEmpty($data)">{{ brief.greeting[language] || brief.errors.greeting || 'Not set' }}</pre>
-                </p>
             </div>
         </form>
     </div>
@@ -83,9 +81,9 @@
     No questions have been added yet.<br/>
 </div>
 
-<button type="button" id="add_question" class="btn btn-default pull-left margin-right-10 btn-submit" ng-click="addQuestion()" ng-show="showButtons()" ng-hide="brief.answered || brief.status == 2 || brief.status == 3">
+<button type="button" id="add_question" class="btn btn-default pull-left margin-right-10 btn-submit" ng-click="addQuestion()" ng-show="showButtons()">
     Add Question
 </button>
-<button type="button" id="add_multiquestion" class="btn btn-default pull-left btn-submit" ng-click="addQuestion('multi')" ng-show="showButtons()" ng-hide="brief.answered || brief.status == 2 || brief.status == 3">
+<button type="button" id="add_multiquestion" class="btn btn-default pull-left btn-submit" ng-click="addQuestion('multi')" ng-show="showButtons()">
     Add Multiple Choice Question
 </button>

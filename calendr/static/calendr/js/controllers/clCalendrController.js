@@ -181,6 +181,11 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
                 $scope.tasks = tasks;
                 $scope.users = users;
                 $scope.projects = projects;
+
+                if ($scope.projects[0].services.length) {
+                    $scope.availableServices = $scope.projects[0].services;
+                }
+
                 $scope.updateTask = updateTask;
                 $scope.gotoDate = gotoDate;
 

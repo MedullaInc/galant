@@ -2118,6 +2118,8 @@ pre {
     -webkit-border-radius: 0px;
     -moz-border-radius: 0px;
     border-radius: 0px;
+    text-overflow: ellipsis;
+    white-space: pre-line;
 }
 
 .label.label-default {
@@ -2458,7 +2460,7 @@ label.search.control-label {
 .close {
     position: absolute;
     right: 15px;
-    top: 20px;
+    top: 0px;
 }
 
 .close.close_b {
@@ -3373,6 +3375,10 @@ p.sub-main.home {
 .alert-success {
     background-color: rgba(178, 255, 175, 0.46);
     color: #666666;
+}
+
+.alert-success button.close {
+    margin-top: -5px;
 }
 
 .animate-hide {
