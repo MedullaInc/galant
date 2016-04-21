@@ -6,32 +6,32 @@
 {% else %}
     {% block navbar %}
         <nav class="navbar">
-    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-        <div class="navbar-header">
-            <a class="brand" href="/">{{ site.name }} <span>Beta</span></a>
-        </div>
-    </div>
-    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-        <ul class="nav pull-right" id="dropdown-menu">
-            <li class="dropdown-menu-element">
-                <button id="login_open" type="button" class="btn btn-default"
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                        id="settings-toggle">
-                    Log in
-                </button>
-            </li>
-        </ul>
-    </div>
+            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                <div class="navbar-header">
+                    <a class="brand" href="/">{{ site.name }} <span>Beta</span></a>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                <ul class="nav pull-right" id="dropdown-menu">
+                    <li class="dropdown-menu-element">
+                        <button id="login_open" type="button" class="btn btn-default"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                id="settings-toggle">
+                            Log in
+                        </button>
+                    </li>
+                </ul>
+            </div>
 
         </nav>
     {% endblock %}
 {% endif %}
 
 {% block head_title %}
-    Manage clients, send quotes, track projects.
+    Manage clients, projects, and money.
 {% endblock %}
 
-{% block content %}
+{% block body %}
     <div id="login_popover" class="popover container" style="display: none">
         <form class="form" method="POST" action="{% url 'account_login' %}">
             {% csrf_token %}
@@ -67,38 +67,60 @@
             </div>
         </form>
     </div>
-    <div>
+    {{ block.super }}
+{% endblock %}
+
+{% block content_div %}
+    <div class="container landing_container">
         <div class="row">
-            {% if user.is_authenticated == True %}
-                <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
-            {% else %}
-                <div class="col-xs-12 col-sm-6 col-md-8">
-            {% endif %}
-            <p class="main home">
-                Manage clients, projects, and expenses &mdash; all in one place.
-            </p>
-
-            <p class="sub-main home">
-                {{ site.name }} is a management app for creative agencies and freelancers.
-                It was brewed in the heart of Silicon Valley, in close collaboration
-                with internationally acclaimed agencies.<br><br>Its sole purpose is to
-                help you operate your business, so that you can focus on what
-                you do best: create.
-                <br><br>
-            </p>
-
-            {% if user.is_authenticated == False %}
-                <a href="{% url 'signup' %}" type="button" class="btn btn-default giant btn-add" name="signup">
-                    {% trans 'Request an Account' %}
-                </a>
-            {% endif %}
-
-            </div>
-
-            {% if user.is_authenticated == False %}
-            {% endif %}
+            <div class="col-lg-12">
+                <div id="landing_main">
+                    <p id="main_overlay">
+                        Manage clients, projects, and money &mdash; all in one place.
+                    </p>
+                </div>
             </div>
         </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div id="landing_blurb" class="landing_section">
+                    <p>
+                        Galant is a management app for creative agencies and freelancers.
+                        It was brewed in the heart of Silicon Valley, in close collaboration
+                        with internationally acclaimed agencies.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div id="landing_purpose_image" class="col-lg-6"></div>
+            <div class="col-lg-6">
+                <div id="landing_purpose" class="landing_section">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <p>
+                                Its sole purpose is to
+                                help you operate your business, so that you can focus on what you do best: create.
+                            </p>
+                        </div>
+                    </div>
+                    {% if user.is_authenticated == False %}
+                        <br><br><br>
+                        <div class="row">
+                            <div class="col-lg-12 centered">
+                                <a href="{% url 'signup' %}" type="button" class="btn btn-default giant btn-add"
+                                   name="signup">
+                                    {% trans 'Request an Account' %}
+                                </a>
+                            </div>
+
+                        </div>
+                    {% endif %}
+
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
 
 
@@ -119,8 +141,8 @@
             }
         });
 
-        $(window).resize(function(){
-           $('#login_popover').popover('hide');
+        $(window).resize(function () {
+            $('#login_popover').popover('hide');
         });
     </script>
 {% endblock %}

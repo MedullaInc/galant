@@ -3221,6 +3221,10 @@ ul.nav-tabs li, ul.nav-tabs li, li.nav-item.ng-scope.ng-isolate-scope.active a.n
     background-color: #61b1dc;
 }
 
+.landing_section .btn.btn-default.giant.btn-add {
+    margin: auto;
+}
+
 button.btn.btn-default.btn-add, .btn.btn-default.btn-add {
     padding-top: 5px;
 }
@@ -3441,6 +3445,67 @@ a h2.section_subtitle {
 
 .welcome_box {
     min-height: 300px;
+}
+
+#landing_main {
+    background-color: #C5C5C5;
+    background-position: top center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 500px;
+    padding-top: 200px;
+}
+
+.landing_container {
+    margin-right: 0px;
+    margin-left: 0px;
+    margin-top: -10px;
+    padding-right: 0px;
+    padding-left: 0px;
+    width: 100%;
+}
+
+#landing_main #main_overlay {
+    font-size: 44px;
+    font-weight: 100;
+    line-height: 1.0;
+    color: #555555;
+    width: 80%;
+    margin: auto;
+    text-align: center;
+}
+
+.landing_section {
+    height: 500px;
+    padding-top: 200px;
+}
+
+.landing_section p {
+    font-size: 30px;
+    font-weight: 100;
+    line-height: 1.0;
+    color: #555555;
+    width: 80%;
+    margin: auto;
+    text-align: center;
+}
+
+#landing_purpose {
+    background-color: #C5C5C5;
+    padding-top: 100px;
+}
+
+#landing_purpose_image {
+    background-color: #7eb6ff;
+    background-position: top center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 500px;
+}
+
+.landing_container .col-lg-6 {
+    padding-left: 0px;
+    padding-right: 0px;
 }
 
 /* End Color Scheme */
