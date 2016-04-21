@@ -2119,7 +2119,7 @@ pre {
     -moz-border-radius: 0px;
     border-radius: 0px;
     text-overflow: ellipsis;
-    white-space: pre-line;
+    white-space: pre-wrap;
 }
 
 .label.label-default {
