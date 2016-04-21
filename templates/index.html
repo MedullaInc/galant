@@ -2,11 +2,63 @@
 
 {% load bootstrap i18n %}
 
+{% if user.is_authenticated %}
+{% else %}
+    {% block menu %}
+    <div id="menu" class="collapse navbar-collapse">
+        <ul class="nav pull-right" id="dropdown-menu">
+            <li class="dropdown-menu-element">
+                <button id="login_open" type="button" class="btn btn-default"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                        id="settings-toggle">
+                    Log in
+                </button>
+            </li>
+        </ul>
+    </div>
+    {% endblock %}
+{% endif %}
+
 {% block head_title %}
     Manage clients, send quotes, track projects.
 {% endblock %}
 
 {% block content %}
+    <div id="login_popover" class="popover container" style="display: none">
+        <form class="form" method="POST" action="{% url 'account_login' %}">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-lg-12">
+                    <h2 class="section_title">{% trans 'Login' %}</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <input autofocus="autofocus" class="form-control" placeholder="Email"
+                           type="email" value="" id="id_login" name="login"/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <input autocomplete="off" class="form-control" placeholder="{% trans 'Password' %}"
+                           type="password" id="id_password" name="password"/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <button type="submit" class="btn btn-default btn-submit pull-right" name="submit_login">
+                        {% trans 'Log in' %}
+                    </button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <a class="forgot pull-right" href="{% url 'account_reset_password' %}">
+                        {% trans 'Forgot your password?' %}</a>
+                </div>
+            </div>
+        </form>
+    </div>
     <div>
         <div class="row">
             {% if user.is_authenticated == True %}
@@ -19,9 +71,10 @@
             </p>
 
             <p class="sub-main home">
-                {{ site.name }} was brewed in the heart of Silicon Valley, in close collaboration
-                with internationally acclaimed creative agencies.<br><br>Our sole purpose is to
-                help agencies and freelancers operate their business. That way you can focus on what
+                {{ site.name }} is a management app for creative agencies and freelancers.
+                It was brewed in the heart of Silicon Valley, in close collaboration
+                with internationally acclaimed agencies.<br><br>Its sole purpose is to
+                help you operate your business, so that you can focus on what
                 you do best: create.
                 <br><br>
             </p>
@@ -35,38 +88,31 @@
             </div>
 
             {% if user.is_authenticated == False %}
-                <div class="col-xs-12 col-sm-6 col-md-4">
-                    <form class="form" method="POST" action="{% url 'account_login' %}">
-                        {% csrf_token %}
-                        <div class="login">
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <h2 class="section_title">{% trans 'Account Login' %}</h2>
-                                    <input autofocus="autofocus" class="form-control" placeholder="Email"
-                                           type="email" value="" id="id_login" name="login"/>
-                                    <input autocomplete="off" class="form-control" placeholder="{% trans 'Password' %}"
-                                           type="password" id="id_password" name="password"/>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-5">
-                                    <button type="submit" class="btn btn-default btn-submit" name="submit_login">
-                                        {% trans 'Login' %}
-                                    </button>
-                                </div>
-                                <div class="col-sm-7">
-                                    <div class="row">
-                                        <div class="col-sm-12">
-                                            <a class="forgot" href="{% url 'account_reset_password' %}">
-                                                {% trans 'Forgot your password?' %}</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
             {% endif %}
             </div>
         </div>
+{% endblock %}
+
+
+{% block extra_body %}
+    <script>
+        $('#login_open').popover({
+            html: true,
+            container: 'body',
+            content: $('#login_popover').html(),
+            title: false,
+            placement: "bottom"
+        });
+
+        $('body').on('click', function (e) {
+            var p = $('#login_open');
+            if (!p.is(e.target) && p.has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
+                p.popover('hide');
+            }
+        });
+
+        $(window).resize(function(){
+           $('#login_popover').popover('hide');
+        });
+    </script>
 {% endblock %}

@@ -3197,7 +3197,7 @@ ul.nav-tabs li, ul.nav-tabs li, li.nav-item.ng-scope.ng-isolate-scope.active a.n
     color: #666666;
 }
 
-#form .btn.btn-default.btn-submit, #add_note_form .btn-default, button.btn.btn-default.btn-add, .btn.btn-default.btn-add, .btn.btn-default.btn-submit, .btn.btn-default.btn-side {
+#form .btn.btn-default.btn-submit, #add_note_form .btn-default, button.btn.btn-default.btn-add, .btn.btn-default.btn-add, .btn.btn-default.btn-submit, .btn.btn-default.btn-side, #login_open {
     padding-left: 15px;
     padding-right: 15px;
     height: 36px;
@@ -3347,8 +3347,9 @@ div.login {
 
 a.forgot {
     font-family: "Courier New";
-    font-size: 13px;
+    font-size: 12px;
     top: 0px;
+    text-align: right;
 }
 
 p.main.home {
