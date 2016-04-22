@@ -148,7 +148,7 @@ class QuoteTemplatesTest(browser.SignedInTest):
         q = get_blank_quote_autofixture(self.user)
         b.get(self.live_server_url + reverse('add_quote_template', kwargs={'quote_id': q.id}))
 
-        browser.wait().until(lambda driver: driver.find_element_by_id('quote_edit')).click()
+        browser.wait().until(lambda driver: driver.find_element_by_id('quote_save').is_displayed)
         self.assertEqual(q.intro().title, {u'en': u'intro'})
 
     def test_add_quote_from_template(self):
