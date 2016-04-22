@@ -28,7 +28,7 @@ def _send_signup_request_email(form):
         form.cleaned_data['description'],
     )
     send_mail('Signup request', message, settings.EMAIL_HOST_USER,
-              ['contact@galant.co'], fail_silently=False)
+              ['signup@galant.com'], fail_silently=False)
 
 
 def _send_feedback_email(form, path):
