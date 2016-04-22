@@ -17,7 +17,7 @@
                         <button id="login_open" type="button" class="btn btn-default"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                                 id="settings-toggle">
-                            Log in
+                            {% trans 'Log in' %}
                         </button>
                     </li>
                 </ul>
@@ -35,11 +35,6 @@
     <div id="login_popover" class="popover container" style="display: none">
         <form class="form login_popover" method="POST" action="{% url 'account_login' %}">
             {% csrf_token %}
-            <div class="row">
-                <div class="col-lg-12">
-                    <h2 class="section_title">{% trans 'Login' %}</h2>
-                </div>
-            </div>
             <div class="row">
                 <div class="col-lg-12">
                     <input autofocus="autofocus" class="form-control" placeholder="Email"
