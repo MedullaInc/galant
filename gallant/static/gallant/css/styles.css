@@ -3520,4 +3520,24 @@ form.form.login_popover {
     padding: 10px;
 }
 
+@media (max-width: 767px) {
+
+    #landing_blurb p, #landing_main #main_overlay, div#landing_purpose.landing_section p {
+        font-size: 20px;
+    }
+
+    div#landing_blurb.landing_section {
+        padding-top: 120px;
+    }
+
+    .landing_section {
+        height: 400px;
+    }
+
+    div#landing_purpose.landing_section {
+        height: 520px;
+    }
+
+}
+
 /* End Color Scheme */
