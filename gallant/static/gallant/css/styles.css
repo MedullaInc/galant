@@ -1136,9 +1136,10 @@ header .brand img:first-child {
     background: #ffffff;
     border: 1px solid #666666;
     position: absolute;
-    bottom: 10px;
+    bottom: 0px;
     width: 100%;
     margin-top: 10px;
+    z-index: 1000;
 }
 
 .footer-3 a {
@@ -2028,21 +2029,21 @@ h3.area_title {
     -webkit-border-radius: 0px;
     -moz-border-radius: 0px;
     border-radius: 0px;
-    border: 1px solid #666666;
+    border: 1px solid #999999;
     padding: 10px;
     padding-top: 10px;
     padding-bottom: 0px;
 }
 
 #settings-toggle-group .dropdown-menu li a {
-    color: #000000;
+    color: #999999;
     font-size: 14px;
     font-weight: 100;
     text-align: center;
     padding-bottom: 10px;
     padding-top: 10px;
     width: 100%;
-    border: 1px solid #666666;
+    border: 1px solid #999999;
     -webkit-border-radius: 0px;
     -moz-border-radius: 0px;
     border-radius: 0px;
@@ -3112,7 +3113,7 @@ div#center_content_enclosed {
 
 h2.section_subtitle, h2.section_subtitle.ng-scope.ng-binding.editable, h2.inline_title.ng-scope.ng-binding.editable, h2.section_title, h2.center_title, h2.chart_title {
     font-family: "Courier New";
-    font-size: 14px;
+    font-size: 18px;
     letter-spacing: 0px;
     font-weight: 400;
     text-decoration: underline;
@@ -3448,7 +3449,7 @@ a h2.section_subtitle {
 }
 
 #landing_main {
-    background-color: #C5C5C5;
+    background: #e7e7e7 url("/static/img/welcome.jpg") 50% no-repeat;
     background-position: top center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -3466,37 +3467,43 @@ a h2.section_subtitle {
 }
 
 #landing_main #main_overlay {
-    font-size: 44px;
+    font-size: 30px;
     font-weight: 100;
-    line-height: 1.0;
+    line-height: 1.2;
     color: #555555;
     width: 80%;
     margin: auto;
     text-align: center;
+    padding-top: 10px;
 }
 
 .landing_section {
     height: 500px;
-    padding-top: 200px;
+    padding-top: 180px;
+    background-color: #d40371;
 }
 
 .landing_section p {
     font-size: 30px;
     font-weight: 100;
-    line-height: 1.0;
-    color: #555555;
+    line-height: 1.2;
+    color: #666666;
     width: 80%;
     margin: auto;
     text-align: center;
 }
 
+#landing_blurb p {
+    color: #ffffff;
+}
+
 #landing_purpose {
-    background-color: #C5C5C5;
+    background-color: #e7e7e7;
     padding-top: 100px;
 }
 
 #landing_purpose_image {
-    background-color: #7eb6ff;
+    background: #e7e7e7 url("/static/img/register.jpg") 50% no-repeat;
     background-position: top center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -3506,6 +3513,11 @@ a h2.section_subtitle {
 .landing_container .col-lg-6 {
     padding-left: 0px;
     padding-right: 0px;
+}
+
+form.form.login_popover {
+    border: 1px solid #999999;
+    padding: 10px;
 }
 
 /* End Color Scheme */
