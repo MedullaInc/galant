@@ -802,10 +802,14 @@ button:active {
     }
 }
 
-@media (min-width: 768px) and (max-width: 1200px) {
+@media (max-width: 1200px) {
 
     .navbar-collapse.collapse {
         display: none !important;
+    }
+
+    .navbar-collapse.collapse.in {
+        display: block !important;
     }
 
     .navbar-toggle {
@@ -3495,6 +3499,8 @@ a h2.section_subtitle {
 
 #landing_blurb p {
     color: #ffffff;
+    width: 80%;
+    max-width: 1050px;
 }
 
 #landing_purpose {
@@ -3538,6 +3544,25 @@ form.form.login_popover {
         height: 520px;
     }
 
+    .btn.btn-default, #login_open.btn, .btn.btn-default.giant, button#create_submit.btn {
+        font-weight: 200;
+    }
+
+}
+
+@media (min-width: 1000px) {
+    #landing_main {
+        background: #e7e7e7 url("/static/img/welcome.jpg") no-repeat;
+        background-position: top center;
+        background-size: cover;
+        height: 950px;
+        padding-top: 400px;
+    }
+
+}
+
+.modal-header .close {
+    margin-top: 10px;
 }
 
 /* End Color Scheme */
