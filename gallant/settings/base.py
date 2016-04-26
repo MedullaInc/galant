@@ -61,6 +61,7 @@ INSTALLED_APPS = (
     'briefs',
     'quotes',
     'calendr',
+    'kanban',
 
     'market_analysis',
     'experiments',
