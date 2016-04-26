@@ -32,6 +32,11 @@ router.register(r'api/service', views.ServiceAPI, 'api-service')
 router.register(r'api/project', views.ProjectsAPI, 'api-project')
 
 urlpatterns = i18n_patterns(
+
+    # ==============
+    # KANBAN TEMP URL
+    url(r'^kanban', TemplateView.as_view(template_name='gallant/kanban.html'), name='kanban'),
+
     # ==============
     # FRONTEND EXPERIMENTS
 
