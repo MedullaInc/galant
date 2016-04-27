@@ -8,6 +8,7 @@
     <script src="{% static "js/smart-table.js" %}"></script>
     <script src="{% static "djng/js/django-angular.min.js" %}"></script>
     <script src="{% static "js/gallant.js" %}"></script>
+    <script src="{% static "js/ng-sortable.js" %}"></script>
     <script src="{% static "js/kanban.js" %}"></script>
     <script src="{% static "djng/js/django-angular.min.js" %}"></script>
 
@@ -87,7 +88,7 @@
                 <div ng-show="showBoard">
                     <div class="container kanban">
                         <div class="row row-eq-height">
-                            <div kb-board-column title="Not Quoted Yet"></div>
+                            <div kb-board-column title="Not Quoted Yet" items="clientsSafe"></div>
                             <div kb-board-column title="Quoted"></div>
                             <div kb-board-column title="Project Underway"></div>
                             <div kb-board-column title="Pending Payment"></div>

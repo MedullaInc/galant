@@ -3581,7 +3581,7 @@ form.form.login_popover {
     white-space: nowrap;
 }
 
-.container.kanban > .row [class*="col-lg"], .container.kanban > .row [class*="col-md"], .container.kanban > .row [class*="col-sm"] {
+.container.kanban > .row > [class*="col-lg"], .container.kanban > .row > [class*="col-md"], .container.kanban > .row > [class*="col-sm"] {
     float: none;
     display: inline-block;
     white-space: normal;
@@ -3606,8 +3606,9 @@ form.form.login_popover {
 
 .kanban-card {
     padding: 10px;
-    border: 1px solid #d0d0d0;
+    border: 1px solid #d0d0d0 !important;
     margin-top: 10px;
+    cursor: pointer;
 }
 
 .container.kanban .kanban-card > .row [class*="col-lg"], .container.kanban > .row [class*="col-md"], .container.kanban > .row [class*="col-sm"] {

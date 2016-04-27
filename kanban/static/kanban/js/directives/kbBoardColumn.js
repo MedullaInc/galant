@@ -1,4 +1,5 @@
 app = angular.module('kanban.directives.kbBoardColumn', [
+    'as.sortable',
 ]);
 
 app.directive('kbBoardColumn', function () {
@@ -6,6 +7,7 @@ app.directive('kbBoardColumn', function () {
         restrict: 'A',
         replace: true,
         scope: {
+            items: '=',
             title: '@',
         },
         controller: ['$scope', function ($scope) {}],
