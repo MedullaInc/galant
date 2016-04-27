@@ -2983,7 +2983,7 @@ li.row {
 }
 
 .chart_box {
-    min-height: 450px;
+    min-height: 500px;
 }
 
 .chart_box.dashboard {
@@ -3235,7 +3235,7 @@ button.btn.btn-default.btn-add, .btn.btn-default.btn-add {
 }
 
 button#section_edit.btn.btn-default.edit_button.btn-add, button#section_delete.btn.btn-default.delete_button.btn-add {
-    padding-top: 6px;
+    padding-top: 7px;
 }
 
 .btn.btn-default.btn-side {
@@ -3562,6 +3562,37 @@ form.form.login_popover {
 }
 
 .modal-header .close {
+    margin-top: 10px;
+}
+
+button.btn.btn-default.dropdown-toggle {
+    padding-left: 20px;
+    padding-right: 20px;
+    height: 35px;
+    background-color: #d40371;
+    color: #ffffff;
+    border: none;
+    -webkit-border-radius: 40px;
+    -moz-border-radius: 40px;
+    border-radius: 40px;
+    max-width: 95%;
+    font-weight: 100;
+    padding-top: 4px;
+    margin-right: 3px;
+    margin-top: -3px;
+}
+
+button.btn.btn-default.dropdown-toggle span.caret {
+    margin-left: 10px;
+}
+
+ul.dropdown-menu.action-button {
+    font-family: "Courier New";
+    font-size: 13px;
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 0px;
+    padding: 10px;
     margin-top: 10px;
 }
 
