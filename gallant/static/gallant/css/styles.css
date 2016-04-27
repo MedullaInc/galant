@@ -2575,6 +2575,7 @@ span.error {
 /* Alerts */
 
 div.alert.alert-info {
+    margin: 0px;
     margin-bottom: 25px;
     background: #efefef;
     border: none;
