@@ -1,4 +1,4 @@
-{% extends "base_sidebar_enclosed.html" %}
+{% extends "base_body.html" %}
 {% load staticfiles i18n question_javascript gallant_tags %}
 
 {% block scripts %}
@@ -12,7 +12,7 @@
     <script src="{% static "js/briefs.js" %}"></script>
 {% endblock %}
 
-{% block center_content %}
+{% block content %}
     <div ng-app="brief" ng-controller="glFormController"
          ng-init="init('{% firstof language LANGUAGE_CODE %}', '{{ csrf_token }}')">
         {% if project %}

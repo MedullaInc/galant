@@ -1,4 +1,4 @@
-{% extends "base_sidebar_enclosed.html" %}
+{% extends "base_body.html" %}
 {% load bootstrap i18n %}
 {% load static %}
 
@@ -11,14 +11,6 @@
 
 {% block section_title %}
     {% trans "Quote Template" %}
-{% endblock %}
-
-{% block sidebar %}
-        <a href="{% url 'add_quote' %}?template_id={{ template_id }}">
-            <button type="button" class="btn btn-default sidebar btn-side" id="add_brief">
-                Use For New Quote
-            </button>
-        </a>
 {% endblock %}
 
 {% block scripts %}
@@ -42,28 +34,43 @@
 
 
     <style>
-        [name="name"]{
-           width: 110px;
+        [name="name"] {
+            width: 110px;
         }
-        [name="quantity"]{
-           width: 70px;
+
+        [name="quantity"] {
+            width: 70px;
         }
-        [name="amount"]{
-           width: 70px;
+
+        [name="amount"] {
+            width: 70px;
         }
     </style>
 
 
 {% endblock %}
 
-{% block center_content %}
+{% block content %}
+
+    <div class="row">
+        <div class="col-lg-6">
+        </div>
+        <div class="col-lg-6">
+            <a href="{% url 'add_quote' %}?template_id={{ template_id }}">
+                <button type="button" class="btn btn-default btn-add action-button pull-right" id="add_brief">
+                    Use For New Quote
+                </button>
+            </a>
+        </div>
+    </div>
+
     <div ng-controller="glFormController"
-       ng-init="init('{% firstof language LANGUAGE_CODE %}', '{{ csrf_token }}')">
-      <div qt-quote-form quote-template="object" endpoint="objectEndpoint" submit="submitForm"
-           language="currentLanguage" forms="forms" delete-object="deleteObject"
-           client-id="{{ client.id }}" project-id="{{ project.id }}"
-           bool-template="True" delete-object="deleteObject" template-id="{{ template_id }}" user-id="{{user.id}}">
-      </div>
-  </div>
+         ng-init="init('{% firstof language LANGUAGE_CODE %}', '{{ csrf_token }}')">
+        <div qt-quote-form quote-template="object" endpoint="objectEndpoint" submit="submitForm"
+             language="currentLanguage" forms="forms" delete-object="deleteObject"
+             client-id="{{ client.id }}" project-id="{{ project.id }}"
+             bool-template="True" delete-object="deleteObject" template-id="{{ template_id }}" user-id="{{ user.id }}">
+        </div>
+    </div>
 
 {% endblock %}

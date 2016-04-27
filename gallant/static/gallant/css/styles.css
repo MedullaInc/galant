@@ -3380,6 +3380,8 @@ p.sub-main.home {
 
 .alert {
     font-family: "Courier New";
+    margin-left: 10px;
+    margin-right: 10px;
 }
 
 .alert-success {
