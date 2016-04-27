@@ -35,6 +35,7 @@ class Client(UserModel):
     contact_info = m.ForeignKey(ContactInfo, null=True, blank=True)
 
     status = m.CharField(max_length=2, choices=ClientStatus.choices())
+    alert = m.CharField(max_length=63, blank=True, default='')
 
     language = m.CharField(max_length=7, choices=settings.LANGUAGES)
     currency = m.CharField(max_length=3, choices=CURRENCY_CHOICES, default='USD',)

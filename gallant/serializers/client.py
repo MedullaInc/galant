@@ -48,6 +48,9 @@ class ClientSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = g.Client
-        fields = ('id', 'user', 'name', 'email', 'company', 'contact_info',
+        fields = ('id', 'user', 'name', 'email', 'company', 'contact_info', 'alert',
                   'link', 'status', 'language', 'currency', 'notes', 'money_owed',
                   'last_contacted', 'referred_by')
+        extra_kwargs = {
+            'alert': {'read_only': True, 'required': False},
+        }
