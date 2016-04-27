@@ -1,4 +1,4 @@
-app = angular.module('gallant.controllers.glClientListController', ['gallant.services.glServices', 'kanban.directives.kbBoard']);
+app = angular.module('gallant.controllers.glClientListController', ['gallant.services.glServices', 'kanban.directives.kbBoardColumn']);
 
 app.controller('glClientListController', ['$scope', '$http', '$window', 'Client',
     function ($scope, $http, $window, Client) {
