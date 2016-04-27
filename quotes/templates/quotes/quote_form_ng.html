@@ -1,4 +1,4 @@
-{% extends "base_sidebar_enclosed.html" %}
+{% extends "base_body.html" %}
 {% load bootstrap i18n gallant_tags static %}
 {% load static %}
 
@@ -54,7 +54,7 @@
     {{ block.super }}
 {% endblock %}
 
-{% block center_content %}
+{% block content %}
     {% if object.status >= "2" %}
         <div class="alert alert-info" role="alert">
             <p id="public_link" class="data">
@@ -92,11 +92,7 @@
 
 
 {% block form_actions %}
-
-
-
 {% endblock %}
 
 {% block extra_body %}
-
 {% endblock %}
