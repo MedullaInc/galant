@@ -7,28 +7,15 @@ from gallant_user import UserModel, UserModelManager, ContactInfo
 from misc import Note
 
 
-class ClientType(gf.ChoiceEnum):
-    Individual = 0
-    Organization = 1
-
-
-class ClientSize(gf.ChoiceEnum):
-    Micro = 0
-    Small = 1
-    Medium = 2
-    Large = 3
-
-
 class ClientStatus(gf.ChoiceEnum):
-    Approached = 0
+    """ Determines Client's place in workflow / pipeline, set to >= User_Status for manual management.
+    """
+    Pre_Quote = 0
     Quoted = 1
-    Brief_Sent = 2
+    Project_Underway = 2
     Pending_Payment = 3
-    Pending_Deliverables = 4
-    Settled = 5
-    Past_Due = 6
-    Check_Notes = 7
-    Blacklisted = 8
+    Closed = 4
+    User_Status = 10
 
 
 class ClientReferral(gf.ChoiceEnum):
@@ -47,8 +34,6 @@ class Client(UserModel):
     company = m.CharField(max_length=255, blank=True)
     contact_info = m.ForeignKey(ContactInfo, null=True, blank=True)
 
-    type = m.CharField(max_length=2, choices=ClientType.choices(), blank=True)
-    size = m.CharField(max_length=2, choices=ClientSize.choices(), blank=True)
     status = m.CharField(max_length=2, choices=ClientStatus.choices())
 
     language = m.CharField(max_length=7, choices=settings.LANGUAGES)
