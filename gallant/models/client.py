@@ -15,7 +15,11 @@ class ClientStatus(gf.ChoiceEnum):
     Project_Underway = 2
     Pending_Payment = 3
     Closed = 4
-    User_Status = 10
+    User_Potential = 10
+    User_Quoted = 11
+    User_Project_Underway = 12
+    User_Pending_Payment = 13
+    User_Closed = 14
 
 
 class ClientReferral(gf.ChoiceEnum):
