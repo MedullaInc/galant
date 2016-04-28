@@ -1,11 +1,11 @@
-{% extends "base_sidebar_enclosed.html" %}
+{% extends "base_body.html" %}
 {% load staticfiles bootstrap i18n %}
 
 {% block section_title %}
     {{ title }}
 {% endblock %}
 
-{% block center_content %}
+{% block content %}
 
     <form id="main_form" name="{{ form.form_name }}" class="form" method="post">
 

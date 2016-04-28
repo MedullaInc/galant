@@ -2575,6 +2575,7 @@ span.error {
 /* Alerts */
 
 div.alert.alert-info {
+    margin: 0px;
     margin-bottom: 25px;
     background: #efefef;
     border: none;
@@ -2983,7 +2984,7 @@ li.row {
 }
 
 .chart_box {
-    min-height: 450px;
+    min-height: 500px;
 }
 
 .chart_box.dashboard {
@@ -3206,8 +3207,8 @@ ul.nav-tabs li, ul.nav-tabs li, li.nav-item.ng-scope.ng-isolate-scope.active a.n
 
 #form .btn.btn-default.btn-submit, #add_note_form .btn-default, button.btn.btn-default.btn-add, .btn.btn-default.btn-add, .btn.btn-default.btn-submit, .btn.btn-default.btn-side, #login_open {
     padding-left: 15px;
-    padding-right: 15px;
-    height: 36px;
+    padding-right: 12px;
+    height: 34px;
     background-color: #d40371;
     color: #ffffff;
     border: none;
@@ -3235,7 +3236,7 @@ button.btn.btn-default.btn-add, .btn.btn-default.btn-add {
 }
 
 button#section_edit.btn.btn-default.edit_button.btn-add, button#section_delete.btn.btn-default.delete_button.btn-add {
-    padding-top: 6px;
+    padding-top: 7px;
 }
 
 .btn.btn-default.btn-side {
@@ -3254,7 +3255,8 @@ button#section_delete.btn.btn-default.delete_button.btn-add.btn-list {
 #form .btn.btn-default.btn-submit, #add_note_form .btn-default, .btn.btn-default.btn-submit {
     padding-left: 33px;
     padding-right: 35px;
-    padding-top: 7px;
+    padding-top: 6px;
+    margin-right: 10px;
 }
 
 button#section_delete.btn.btn-default.delete_button.btn-add {
@@ -3379,6 +3381,8 @@ p.sub-main.home {
 
 .alert {
     font-family: "Courier New";
+    margin-left: 10px;
+    margin-right: 10px;
 }
 
 .alert-success {
@@ -3563,6 +3567,42 @@ form.form.login_popover {
 
 .modal-header .close {
     margin-top: 10px;
+}
+
+button.btn.btn-default.dropdown-toggle {
+    padding-left: 20px;
+    padding-right: 20px;
+    height: 35px;
+    background-color: #d40371;
+    color: #ffffff;
+    border: none;
+    -webkit-border-radius: 40px;
+    -moz-border-radius: 40px;
+    border-radius: 40px;
+    max-width: 95%;
+    font-weight: 100;
+    padding-top: 4px;
+    margin-right: 3px;
+    margin-top: -3px;
+}
+
+button.btn.btn-default.dropdown-toggle span.caret {
+    margin-left: 10px;
+}
+
+ul.dropdown-menu.action-button {
+    font-family: "Courier New";
+    font-size: 13px;
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 0px;
+    padding: 10px;
+    margin-top: 10px;
+}
+
+button.btn.btn-default.action-button {
+    padding-right: 20px;
+    padding-left: 20px;
 }
 
 /* End Color Scheme */

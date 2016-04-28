@@ -1,4 +1,4 @@
-{% extends "base_sidebar_enclosed.html" %}
+{% extends "base_body.html" %}
 {% load bootstrap i18n gallant_tags static %}
 {% load static %}
 
@@ -43,7 +43,7 @@
     {{ block.super }}
 {% endblock %}
 
-{% block center_content %}
+{% block content %}
 
     <div ng-controller="glFormController"
          ng-init="init('{% firstof language LANGUAGE_CODE %}', '{{ csrf_token }}')">

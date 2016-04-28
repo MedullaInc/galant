@@ -1,4 +1,4 @@
-{% extends "base_sidebar.html" %}
+{% extends "base_body.html" %}
 {% load bootstrap i18n %}
 {% load static %}
 
@@ -22,28 +22,32 @@
     {% trans "Quotes" %}
 {% endblock %}
 
-{% block sidebar %}
-    <div ng-controller="qtPopoverController"
-         ng-init="init('{% url 'add_quote' %}', '{% firstof language LANGUAGE_CODE %}')">
-        <a>
-            <button popover-placement="bottom" uib-popover-template="dynamicPopover.templateUrl" type="button" class="btn btn-default sidebar btn-side" popover-trigger="focus">{% trans "Add New Quote" %}</button>
-        </a>
-
-        <a href="{% url 'quotetemplates' %}">
-            <button type="button" class="btn btn-default sidebar btn-side">
-                {% trans "Templates" %}
-            </button>
-        </a>
-    </div>
-
-{% endblock %}
-
-{% block center_content %}
+{% block content %}
     {% if client %}
-        <h2 class="center_title">
-            {{ client }}
-            <span class="pull-right glyphicon glyphicon-question-sign help-tooltip" uib-tooltip="Shows client's quotes. You can create one from scratch or from a template. You can also create one and save it as a template for later use." tooltip-placement="top-right"></span>
-        </h2>
+
+        <div class="row">
+            <div class="col-lg-6">
+                <h2 class="center_title">
+                    {{ client }}
+                </h2>
+                <br/>
+            </div>
+            <div class="col-lg-6">
+                <div ng-controller="qtPopoverController"
+                     ng-init="init('{% url 'add_quote' %}', '{% firstof language LANGUAGE_CODE %}')">
+                    <a>
+                        <button popover-placement="bottom" uib-popover-template="dynamicPopover.templateUrl" type="button" class="btn btn-default btn-add action-button pull-right" popover-trigger="focus">{% trans "Add New Quote" %}</button>
+                    </a>
+
+                    <a href="{% url 'quotetemplates' %}">
+                        <button type="button" class="btn btn-default btn-add action-button pull-right">
+                            {% trans "Templates" %}
+                        </button>
+                    </a>
+                </div>
+            </div>
+        </div>
+
     {% endif %}
     <div ng-controller="qtQuoteListController">
     <div ng-init="init('{% url 'quote_detail' %}', '{% firstof language LANGUAGE_CODE %}', {% firstof client.id 'null' %})">

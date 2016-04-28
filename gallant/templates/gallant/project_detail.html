@@ -1,4 +1,4 @@
-{% extends "base_sidebar_enclosed.html" %}
+{% extends "base_body.html" %}
 {% load bootstrap i18n gallant_tags static %}
 
 {% block section_title %}
@@ -16,10 +16,7 @@
 
 {% block extra_wrapper_attrs %} ng-app="glProjectDetail" {% endblock %}
 
-{% block sidebar %}
-{% endblock %}
-
-{% block center_content %}
+{% block content %}
     <div class="row">
         <div class="col-lg-10 col-md-10 col-sm-9 col-xs-9">
             <h2 class="section_title">{{ object.name }}</h2>

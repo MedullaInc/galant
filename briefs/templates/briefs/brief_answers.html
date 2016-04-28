@@ -1,4 +1,4 @@
-{% extends "base_sidebar.html" %}
+{% extends "base_body.html" %}
 {% load bootstrap i18n %}
 
 {% block head_title %}
@@ -9,13 +9,10 @@
     {% trans 'Answer Brief' %}
 {% endblock %}
 
-{% block sidebar %}
-{% endblock %}
-
 {% block breadcrumbs %}
 {% endblock %}
 
-{% block center_content %}
+{% block content %}
     <p id="title">
         {{ object.title.get_text }}
     </p>

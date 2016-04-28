@@ -1,4 +1,4 @@
-{% extends "base_sidebar_enclosed.html" %}
+{% extends "base_body.html" %}
 {% load bootstrap i18n static %}
 
 {% block scripts %}
@@ -31,32 +31,8 @@
     {% trans title %}
 {% endblock %}
 
+{% block content %}
 
-{% block sidebar %}
-    {% if is_template %}
-        <a href="{% url 'add_brief' %}?template_id={{ template_id }}">
-            <button type="button" class="btn btn-default sidebar btn-side" id="add_brief">
-                Use For New Brief
-            </button>
-        </a>
-    {% else %}
-        {% if object.client and not answer_set %}
-            <form method="post" action="">
-                {% csrf_token %}
-                <button type="submit" class="btn btn-default sidebar btn-side" id="send_brief">
-                    {% trans "Send Brief" %}
-                </button>
-            </form>
-        {% endif %}
-        <a href="{% url 'add_brief_template' %}?brief_id={{ object.id }}">
-            <button type="button" class="btn btn-default sidebar btn-side" title="Create template from this brief.">
-                {% trans "Use as Template" %}
-            </button>
-        </a>
-    {% endif %}
-{% endblock %}
-
-{% block center_content %}
     <div ng-controller="glFormController"
          ng-init="init('{% firstof language LANGUAGE_CODE %}', '{{ csrf_token }}')">
 
@@ -77,10 +53,39 @@
             </div>
         {% endif %}
 
-        <h2 class="center_title">
-            Brief
-            <span class="pull-right glyphicon glyphicon-question-sign help-tooltip" uib-tooltip="Use them to obtain more information about your client & their needs. Be clear and concise with your requests and remember a brief must be brief." tooltip-placement="top-right"></span>
-        </h2>
+        <div class="row">
+            <div class="col-lg-6">
+                <h2 class="center_title">
+                    Brief
+                </h2>
+                <br/>
+            </div>
+            <div class="col-lg-6">
+
+                {% if is_template %}
+                    <a href="{% url 'add_brief' %}?template_id={{ template_id }}">
+                        <button type="button" class="btn btn-default btn-add action-button pull-right" id="add_brief">
+                            Use For New Brief
+                        </button>
+                    </a>
+                {% else %}
+                    {% if object.client and not answer_set %}
+                        <form method="post" action="">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-default btn-add action-button pull-right" id="send_brief">
+                                {% trans "Send Brief" %}
+                            </button>
+                        </form>
+                    {% endif %}
+                    <a href="{% url 'add_brief_template' %}?brief_id={{ object.id }}">
+                        <button type="button" class="btn btn-default btn-add action-button pull-right" title="Create template from this brief.">
+                            {% trans "Use as Template" %}
+                        </button>
+                    </a>
+                {% endif %}
+
+            </div>
+        </div>
 
         <div br-brief-detail brief-id="{{ object.pk }}" object="object" endpoint="objectEndpoint"
              language="currentLanguage" forms="forms" template-id="{{ template_id }}"

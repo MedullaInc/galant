@@ -1,4 +1,4 @@
-{% extends "base_sidebar_enclosed.html" %}
+{% extends "base_body.html" %}
 {% load bootstrap i18n %}
 {% load static %}
 
@@ -24,17 +24,20 @@
     <link rel="stylesheet" href="{% static "css/ng-sortable.style.min.css" %}">
     <link rel="stylesheet" href="{% static "css/ng-sortable.min.css" %}">
     <style>
-        [name="name"]{
-           width: 110px;
+        [name="name"] {
+            width: 110px;
         }
-        [name="quantity"]{
-           width: 70px;
+
+        [name="quantity"] {
+            width: 70px;
         }
-        [name="amount"]{
-           width: 70px;
+
+        [name="amount"] {
+            width: 70px;
         }
+
         .as-sortable-item {
-           border: 0px;
+            border: 0px;
         }
     </style>
 {% endblock %}
@@ -42,38 +45,42 @@
 {% block breadcrumbs %}
 {% endblock %}
 
-{% block sidebar %}
+{% block content %}
 
-    <a href="{% url 'quote_pdf' object.token.hex %}">
-        <button type="button" class="btn btn-default sidebar btn-side">
-            {% trans "Download Quote" %}
-        </button>
-    </a>
+    <div class="row">
+        <div class="col-lg-6">
+        </div>
+        <div class="col-lg-6">
 
-    {% if object.status != "5" and object.status != "6" %}
-        <form action="" method="POST">
-            {% csrf_token %}
-            <input type="hidden" name="action" value="accept">
-            <button id="quote_accept" type="submit" class="btn btn-default sidebar btn-side">
-                {% trans "Accept Quote" %}
-            </button>
-        </form>
+            <a href="{% url 'quote_pdf' object.token.hex %}">
+                <button type="button" class="btn btn-default btn-add action-button pull-right">
+                    {% trans "Download Quote" %}
+                </button>
+            </a>
 
-        <form action="" method="POST">
-            {% csrf_token %}
-            <input type="hidden" name="action" value="reject">
-            <button id="quote_reject" type="submit" class="btn btn-default sidebar btn-side">
-                {% trans "Reject Quote" %}
-            </button>
-        </form>
-    {% endif %}
+            {% if object.status != "5" and object.status != "6" %}
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" value="accept">
+                    <button id="quote_accept" type="submit" class="btn btn-default btn-add action-button pull-right">
+                        {% trans "Accept Quote" %}
+                    </button>
+                </form>
 
-{% endblock %}
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" value="reject">
+                    <button id="quote_reject" type="submit" class="btn btn-default btn-add action-button pull-right">
+                        {% trans "Reject Quote" %}
+                    </button>
+                </form>
+            {% endif %}
 
-{% block center_content %}
+        </div>
+    </div>
 
     <div ng-controller="glFormController" ng-init="init('{% firstof language LANGUAGE_CODE %}', '{{ csrf_token }}')">
-        <div qt-client quote-id="{{ object.pk }}" quote="object" endpoint="objectEndpoint" language="currentLanguage" forms="forms" client-id="{{ client.id }}" project-id="{{ project.id }}" quote-id="{{ quote.id }}" template-id="{{ template_id }}" bool-template="False" id-type="{{id_type}}">
+        <div qt-client quote-id="{{ object.pk }}" quote="object" endpoint="objectEndpoint" language="currentLanguage" forms="forms" client-id="{{ client.id }}" project-id="{{ project.id }}" quote-id="{{ quote.id }}" template-id="{{ template_id }}" bool-template="False" id-type="{{ id_type }}">
         </div>
     </div>
 
