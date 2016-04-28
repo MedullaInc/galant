@@ -16,13 +16,14 @@ app.directive('kbBoardColumn', function () {
                 $scope.items = [];
 
             $scope.filterItems = function () {
-                return $scope.items.filter(function (item) { return +item.status % 10 == +$scope.statusIndex; });
+                return $scope.items.filter(function (item) { return +item.status == +$scope.statusIndex; });
             };
 
             $scope.dragControlListeners = {
                 itemMoved: function (event) {
                     var item = event.source.itemScope.item;
-                    item.status = +event.dest.sortableScope.$parent.statusIndex + 10;
+                    item.status = +event.dest.sortableScope.$parent.statusIndex;
+                    item.auto_pipeline = false;
                     item.$update({id: item.id});
                 }
             };

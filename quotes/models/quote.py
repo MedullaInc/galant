@@ -122,7 +122,7 @@ def client_quoted(sender, instance, **kwargs):
         cstat = int(client.status)
         qstat = int(instance.status)
 
-        if cstat < g.ClientStatus.Quoted.value and qstat >= QuoteStatus.Sent.value:
+        if client.auto_pipeline and cstat < g.ClientStatus.Quoted.value and qstat >= QuoteStatus.Sent.value:
             client.status = g.ClientStatus.Quoted.value
             cstat = client.status
             client.alert = ''

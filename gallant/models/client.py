@@ -8,18 +8,13 @@ from misc import Note
 
 
 class ClientStatus(gf.ChoiceEnum):
-    """ Determines Client's place in workflow / pipeline, set to >= User_Status for manual management.
+    """ Determines Client's place in workflow / pipeline.
     """
     Potential = 0
     Quoted = 1
     Project_Underway = 2
     Pending_Payment = 3
     Closed = 4
-    User_Potential = 10
-    User_Quoted = 11
-    User_Project_Underway = 12
-    User_Pending_Payment = 13
-    User_Closed = 14
 
 
 class ClientReferral(gf.ChoiceEnum):
@@ -39,6 +34,7 @@ class Client(UserModel):
     contact_info = m.ForeignKey(ContactInfo, null=True, blank=True)
 
     status = m.CharField(max_length=2, choices=ClientStatus.choices())
+    auto_pipeline = m.BooleanField(default=True)
     alert = m.CharField(max_length=63, blank=True, default='')
 
     language = m.CharField(max_length=7, choices=settings.LANGUAGES)

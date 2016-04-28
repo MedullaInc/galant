@@ -46,7 +46,7 @@ def client_project(sender, instance, **kwargs):
         client = quote.client
         cstat = int(client.status)
 
-        if cstat < ClientStatus.Project_Underway.value:
+        if client.auto_pipeline and cstat < ClientStatus.Project_Underway.value:
             client.status = ClientStatus.Project_Underway.value
             cstat = client.status
             client.alert = ''
@@ -55,7 +55,8 @@ def client_project(sender, instance, **kwargs):
         if cstat == ClientStatus.Project_Underway.value:
             set_client_project_alert(client, instance.user)
 
-            check_and_close(client, instance.user)
+            if client.auto_pipeline:
+                check_and_close(client, instance.user)
 
             client.save()
 
@@ -82,5 +83,5 @@ def set_client_project_alert(client, user):
 
 def check_and_close(client, user):
     if Project.objects.all_for(user).filter(quote__client=client)\
-            .exclude(status=ProjectStatus.Completed.value).count() == 0:
+                                       .exclude(status=ProjectStatus.Completed.value).count() == 0:
         client.status = ClientStatus.Closed.value
