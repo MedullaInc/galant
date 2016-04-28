@@ -62,6 +62,23 @@ app.factory('glValidate', function () {
     };
 });
 
+app.factory('glConstants', function () {
+    return {
+        ClientStatus: {
+            Potential: 0,
+            Quoted: 1,
+            ProjectUnderway: 2,
+            PendingPayment: 3,
+            Closed: 4,
+            UserPotential: 10,
+            UserQuoted: 11,
+            UserProjectUnderway: 12,
+            UserPendingPayment: 13,
+            UserClosed: 14,
+        },
+    };
+});
+
 app.factory('glAlertService', function () {
     var service = {
             add: add,

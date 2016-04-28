@@ -77,7 +77,7 @@
                                 <th st-sort="name">{% trans "Name" %}</th>
                                 <th st-sort="company">{% trans "Company" %}</th>
                                 <th st-sort="money_owed.amount">{% trans "$ Owed" %}</th>
-                                <th st-sort="status">{% trans "Status" %}</th>
+                                <th st-sort="flags">{% trans "Status" %}</th>
                             </tr>
                             </thead>
                             <tbody ng-include src="'{% static "gallant/html/gl_client_rows.html" %}'">
@@ -88,11 +88,16 @@
                 <div ng-show="showBoard">
                     <div class="container kanban">
                         <div class="row row-eq-height">
-                            <div kb-board-column title="Not Quoted Yet" items="notQuoted"></div>
-                            <div kb-board-column title="Quoted" items="quoted"></div>
-                            <div kb-board-column title="Project Underway" items="projectUnderway"></div>
-                            <div kb-board-column title="Pending Payment" items="pendingPayment"></div>
-                            <div kb-board-column title="Closed" items="closed"></div>
+                            <div kb-board-column title="Potential"
+                                 items="clientsSafe" status-index="0"></div>
+                            <div kb-board-column title="Quoted"
+                                 items="clientsSafe" status-index="1"></div>
+                            <div kb-board-column title="Project Underway"
+                                 items="clientsSafe" status-index="2"></div>
+                            <div kb-board-column title="Pending Payment"
+                                 items="clientsSafe" status-index="3"></div>
+                            <div kb-board-column title="Closed"
+                                 items="clientsSafe" status-index="4"></div>
                         </div>
                     </div>
                 </div>

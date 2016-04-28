@@ -10,7 +10,7 @@ class ClientSerializer(serializers.ModelSerializer):
     user = serializers.PrimaryKeyRelatedField(read_only=True)
     contact_info = serializers.PrimaryKeyRelatedField(read_only=True)
     money_owed = serializers.SerializerMethodField()
-    status = serializers.SerializerMethodField()
+    flags = serializers.SerializerMethodField()
     link = serializers.SerializerMethodField()
 
     def get_money_owed(self, client):
@@ -23,18 +23,18 @@ class ClientSerializer(serializers.ModelSerializer):
                     amt += p.amount
         return {'amount': amt.amount, 'currency': str(amt.currency)}
 
-    def get_status(self, client):
-        status = [client.get_status_display()]
+    def get_flags(self, client):
+        flags = [client.get_status_display()]
         current_time = timezone.now()
         for q in client.quote_set.all_for(self.context['request'].user)\
                 .prefetch_related(Prefetch('payments', to_attr='payments_arr')):
             for p in q.payments_arr:
                 if p.due < current_time and p.paid_on is None:
-                    if 'Overdue' not in status:
-                        status.append('Overdue')
+                    if 'Overdue' not in flags:
+                        flags.append('Overdue')
                     break
 
-        return status
+        return flags
 
     def get_link(self, client):
         return reverse('client_detail', args=[client.id])
@@ -48,7 +48,7 @@ class ClientSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = g.Client
-        fields = ('id', 'user', 'name', 'email', 'company', 'contact_info', 'alert',
+        fields = ('id', 'user', 'name', 'email', 'company', 'contact_info', 'alert', 'flags',
                   'link', 'status', 'language', 'currency', 'notes', 'money_owed',
                   'last_contacted', 'referred_by')
         extra_kwargs = {
