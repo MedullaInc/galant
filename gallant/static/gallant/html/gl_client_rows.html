@@ -2,7 +2,7 @@
     <td>{{ client.name }}</td>
     <td>{{ client.company }}</td>
     <td>${{ client.money_owed.amount }} {{ client.money_owed.currency }}</td>
-    <td>{{ client.status.join(', ') }}</td>
+    <td>{{ client.flags.join(', ') }}</td>
 </tr>
 <tr ng-show="!clients">
     <td colspan="5">

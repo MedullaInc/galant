@@ -4,7 +4,7 @@
     </div>
 
     <div data-as-sortable="dragControlListeners" data-ng-model="items" style="min-height: 100px;">
-        <div class="kanban-card" data-ng-repeat="item in items"
+        <div class="kanban-card" data-ng-repeat="item in filterItems()"
              data-as-sortable-item>
             <div data-as-sortable-item-handle>
                 <div class="row">

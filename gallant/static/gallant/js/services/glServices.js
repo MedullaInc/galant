@@ -7,6 +7,9 @@ app.factory('Client', function ($resource) {
             method: 'GET',
             url: '/api/client/fields'
         },
+        update: {
+          method: 'PATCH',
+        },
     });
 });
 
@@ -58,6 +61,23 @@ app.factory('glValidate', function () {
             if (condition && (!$data || $data == "")) {
                 return "You must choose a value.";
             }
+        },
+    };
+});
+
+app.factory('glConstants', function () {
+    return {
+        ClientStatus: {
+            Potential: 0,
+            Quoted: 1,
+            ProjectUnderway: 2,
+            PendingPayment: 3,
+            Closed: 4,
+            UserPotential: 10,
+            UserQuoted: 11,
+            UserProjectUnderway: 12,
+            UserPendingPayment: 13,
+            UserClosed: 14,
         },
     };
 });

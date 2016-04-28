@@ -1,0 +1,14 @@
+<div class="container kanban">
+    <div class="row row-eq-height">
+        <div kb-board-column title="Potential"
+             items="$parent.clientsSafe" status-index="{{ glConstants.ClientStatus.Potential }}"></div>
+        <div kb-board-column title="Quoted"
+             items="clientsSafe" status-index="{{ glConstants.ClientStatus.Quoted }}"></div>
+        <div kb-board-column title="Project Underway"
+             items="clientsSafe" status-index="{{ glConstants.ClientStatus.ProjectUnderway }}"></div>
+        <div kb-board-column title="Pending Payment"
+             items="clientsSafe" status-index="{{ glConstants.ClientStatus.PendingPayment }}"></div>
+        <div kb-board-column title="Closed"
+             items="clientsSafe" status-index="{{ glConstants.ClientStatus.Closed }}"></div>
+    </div>
+</div>

@@ -76,7 +76,7 @@
                                 <th st-sort="name">{% trans "Name" %}</th>
                                 <th st-sort="company">{% trans "Company" %}</th>
                                 <th st-sort="money_owed.amount">{% trans "$ Owed" %}</th>
-                                <th st-sort="status">{% trans "Status" %}</th>
+                                <th st-sort="flags">{% trans "Status" %}</th>
                             </tr>
                             </thead>
                             <tbody ng-include src="'{% static "gallant/html/gl_client_rows.html" %}'">
@@ -85,15 +85,7 @@
                     </div>
                 </div>
                 <div ng-show="showBoard">
-                    <div class="container kanban">
-                        <div class="row row-eq-height">
-                            <div kb-board-column title="Not Quoted Yet" items="clientsSafe"></div>
-                            <div kb-board-column title="Quoted"></div>
-                            <div kb-board-column title="Project Underway"></div>
-                            <div kb-board-column title="Pending Payment"></div>
-                            <div kb-board-column title="Closed"></div>
-                        </div>
-                    </div>
+                    <div ng-include src="'{% static "gallant/html/gl_client_board.html" %}'">
                 </div>
 
             </div>
