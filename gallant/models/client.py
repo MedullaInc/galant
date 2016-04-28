@@ -10,7 +10,7 @@ from misc import Note
 class ClientStatus(gf.ChoiceEnum):
     """ Determines Client's place in workflow / pipeline, set to >= User_Status for manual management.
     """
-    Pre_Quote = 0
+    Potential = 0
     Quoted = 1
     Project_Underway = 2
     Pending_Payment = 3
