@@ -5,6 +5,7 @@
     {{ block.super }}
     <script src="{% static "js/angular.js" %}"></script>
     <script src="{% static "js/angular-resource.js" %}"></script>
+    <script src="{% static "js/angular-animate.js" %}"></script>
     <script src="{% static "js/smart-table.js" %}"></script>
     <script src="{% static "djng/js/django-angular.min.js" %}"></script>
     <script src="{% static "js/ui-bootstrap-tpls.js" %}"></script>
@@ -15,6 +16,11 @@
 {% endblock %}
 
 {% block extra_wrapper_attrs %} ng-app="glClientList" {% endblock %}
+
+{% block messages %}
+    <div gl-alerts></div>
+    {{ block.super }}
+{% endblock %}
 
 {% block section_title %}
     {% trans "Clients" %}
