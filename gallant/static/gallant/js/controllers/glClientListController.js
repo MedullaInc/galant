@@ -30,7 +30,7 @@ app.controller('glClientListController', ['$scope', '$http', '$window', 'Client'
 
         $scope.clientSaved = function (client) {
             $scope.clientsSafe.push(client);
-            $scope.modal.dismiss('cancel');
+            $scope.modalInstance.dismiss('cancel');
         };
     }
 ]);

@@ -17,12 +17,12 @@ app.directive('glAddModal', ['$uibModal', function ($uibModal) {
         transclude: true,
         scope: {
             openFn: '=',
-            instance: '=',
+            modalInstance: '=',
             title: '@',
         },
         controller: ['$scope', '$transclude', function ($scope, $transclude) {
             $scope.openFn = function() {
-                $scope.instance = $uibModal.open({
+                $scope.modalInstance = $uibModal.open({
                     scope: $scope,
                     animation: true,
                     templateUrl: 'addModal.html',
@@ -46,7 +46,7 @@ app.directive('glAddModal', ['$uibModal', function ($uibModal) {
         templateUrl: '/static/gallant/html/gl_add_modal.html',
         link: function ($scope) {
             $scope.cancel = function() {
-                $scope.instance.dismiss('cancel');
+                $scope.modalInstance.dismiss('cancel');
             }
         }
     };
