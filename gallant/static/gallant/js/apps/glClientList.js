@@ -2,7 +2,7 @@ var app = angular.module('glClientList', [
     'ngResource',
     'smart-table',
     'gallant.controllers.glClientListController',
-    'gallant.controllers.glFormController',
+    'gallant.directives.glClientAdd',
 ]);
 
 /* istanbul ignore next */
