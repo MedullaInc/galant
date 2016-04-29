@@ -7,29 +7,30 @@
     <script src="{% static "js/angular-resource.js" %}"></script>
     <script src="{% static "js/smart-table.js" %}"></script>
     <script src="{% static "djng/js/django-angular.min.js" %}"></script>
+    <script src="{% static "js/ui-bootstrap-tpls.js" %}"></script>
+    <script src="{% static "js/quotes.js" %}"></script>
     <script src="{% static "js/gallant.js" %}"></script>
     <script src="{% static "djng/js/django-angular.min.js" %}"></script>
 
 {% endblock %}
+
+{% block extra_wrapper_attrs %} ng-app="glClientList" {% endblock %}
 
 {% block section_title %}
     {% trans "Clients" %}
 {% endblock %}
 
 {% block sidebar %}
-
-    <a href="{% url 'add_client' %}">
-        <button type="button" class="btn btn-default sidebar btn-side">
-            {% trans "Add Client" %}
-        </button>
-    </a>
-
+    <div gl-add-modal open-fn="addClient" title="Add Client">
+        <div gl-client-add></div>
+    </div>
+    <button type="button" class="btn btn-default sidebar btn-side" ng-click="addClient()">
+        {% trans "Add Client" %}
+    </button>
 {% endblock %}
 
 {% block center_content %}
-    <div ng-app="glClientList" ng-controller="glClientListController"
-         ng-init="init('{% url 'client_detail' %}')">
-
+    <div ng-controller="glClientListController" ng-init="init('{% url 'client_detail' %}')">
         <div class="row">
             <div class="col-lg-12">
 

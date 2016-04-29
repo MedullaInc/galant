@@ -1,0 +1,15 @@
+<script type="text/ng-template" id="addModal.html">
+    <div class="modal-header" id="add_modal">
+        <button type="button" class="close" data-dismiss="modal" ng-click="cancel()">&times;</button>
+        <h2 class="section_title">{{ title }}</h2>
+    </div>
+    <div class="modal-body" id="modal_form">
+        <form>
+            <div class="modal-body">
+                <div ng-controller="glFormController" ng-init="init('', null, objectSaved)">
+                    <div modal-transclude="template"></div>
+                </div>
+            </div>
+        </form>
+    </div>
+</script>
