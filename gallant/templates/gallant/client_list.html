@@ -5,8 +5,11 @@
     {{ block.super }}
     <script src="{% static "js/angular.js" %}"></script>
     <script src="{% static "js/angular-resource.js" %}"></script>
+    <script src="{% static "js/angular-animate.js" %}"></script>
     <script src="{% static "js/smart-table.js" %}"></script>
     <script src="{% static "djng/js/django-angular.min.js" %}"></script>
+    <script src="{% static "js/ui-bootstrap-tpls.js" %}"></script>
+    <script src="{% static "js/quotes.js" %}"></script>
     <script src="{% static "js/gallant.js" %}"></script>
     <script src="{% static "js/ng-sortable.js" %}"></script>
     <script src="{% static "js/kanban.js" %}"></script>
@@ -14,25 +17,32 @@
 
 {% endblock %}
 
+{% block extra_wrapper_attrs %} ng-app="glClientList" {% endblock %}
+
+{% block messages %}
+    <div gl-alerts></div>
+    {{ block.super }}
+{% endblock %}
+
 {% block section_title %}
     {% trans "Clients" %}
 {% endblock %}
 
 {% block content %}
-    <div ng-app="glClientList" ng-controller="glClientListController"
-         ng-init="init('{% url 'client_detail' %}')">
-
+    <div ng-controller="glClientListController" ng-init="init('{% url 'client_detail' %}')">
         <div class="row">
             <div class="col-lg-12">
 
                 <div class="row">
                     <div class="col-lg-6">
                         <div class="pull-left">
-                            <a href="{% url 'add_client' %}">
-                                <button class="btn btn-default btn-add action-button pull-right">
-                                    Add Client
-                                </button>
-                            </a>
+                            <div gl-add-modal open-fn="addClient" title="Add Client" modal-instance="modalInstance">
+                                <div gl-client-add on-success="clientSaved"></div>
+                            </div>
+                            <button type="button" class="btn btn-default btn-add action-button pull-right"
+                                    ng-click="addClient()">
+                                {% trans "Add Client" %}
+                            </button>
                         </div>
                     </div>
                     <div class="col-lg-6">

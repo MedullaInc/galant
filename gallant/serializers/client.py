@@ -52,5 +52,15 @@ class ClientSerializer(serializers.ModelSerializer):
                   'link', 'status', 'language', 'currency', 'notes', 'money_owed', 'auto_pipeline',
                   'last_contacted', 'referred_by')
         extra_kwargs = {
+            'user': {'required': False},
             'alert': {'read_only': True, 'required': False},
         }
+
+    def create(self, validated_data):
+        if self.context.has_key('request'):
+            user = self.context['request'].user
+        else:
+            user = self.context.get("user")
+
+        validated_data.update({'user': user})
+        return super(ClientSerializer, self).create(validated_data)

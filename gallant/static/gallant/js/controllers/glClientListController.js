@@ -1,4 +1,5 @@
-app = angular.module('gallant.controllers.glClientListController', ['gallant.services.glServices', 'kanban.directives.kbBoardColumn']);
+app = angular.module('gallant.controllers.glClientListController', ['gallant.services.glServices',
+    'gallant.directives.glAddModal', 'kanban.directives.kbBoardColumn']);
 
 app.controller('glClientListController', ['$scope', '$http', '$window', 'Client', 'glConstants',
     function ($scope, $http, $window, Client, glConstants) {
@@ -37,6 +38,11 @@ app.controller('glClientListController', ['$scope', '$http', '$window', 'Client'
                 .$promise.then(function (response) {
                 client.last_contacted = last_contacted;
             });
+        };
+
+        $scope.clientSaved = function (client) {
+            $scope.clientsSafe.push(client);
+            $scope.modalInstance.dismiss('cancel');
         };
     }
 ]);

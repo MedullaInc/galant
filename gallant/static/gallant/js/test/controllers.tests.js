@@ -58,6 +58,12 @@ describe('glClientListController', function () {
         $rootScope.$apply();
         expect($scope.clients[0].last_contacted).not.toBeNull();
     });
+
+    it('saves client', function () {
+        $scope.modalInstance = { dismiss: function () {} };
+        $scope.clientSaved({});
+        expect($scope.clients.length).toEqual(2);
+    });
 });
 
 describe('glFormController', function () {
