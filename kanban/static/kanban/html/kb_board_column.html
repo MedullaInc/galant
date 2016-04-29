@@ -3,7 +3,7 @@
         {{ title }}
     </div>
 
-    <div data-as-sortable="dragControlListeners" data-ng-model="items" style="min-height: 100px;">
+    <div data-as-sortable="dragControlListeners" data-ng-model="items" class="receiving-element">
         <div class="kanban-card" data-ng-repeat="item in filterItems()"
              data-as-sortable-item>
             <div data-as-sortable-item-handle>
@@ -12,22 +12,14 @@
                         <p>
                             {{ item.name }}
                         </p>
+                        <p>
+                            Last Contact: 01/01/2016
+                        </p>
                     </div>
                     <div class="col-lg-2">
-
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-lg-4">
-                        <p>
-                            Contact:
-                        </p>
-                    </div>
-                    <div class="col-lg-7">
-                        <p>
-                            01/01/2016
-                        </p>
+                        <button class="btn btn-default btn-alert" ng-show="{{ item.alert }}">
+                            <span class="glyphicon glyphicon-warning-sign pull-right" uib-tooltip="{{ item.alert }}" tooltip-placement="top-right"></span>
+                        </button>
                     </div>
                 </div>
             </div>

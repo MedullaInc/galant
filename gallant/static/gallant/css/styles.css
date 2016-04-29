@@ -3632,7 +3632,8 @@ button.btn.btn-default.action-button {
     padding-right: 13px;
 }
 
-.container.kanban > .row:first-child {
+.container.kanban > .row > [class*="col-lg"]:last-child, .container.kanban > .row > [class*="col-md"]:last-child, .container.kanban > .row > [class*="col-sm"]:last-child {
+    border-right: none;
 }
 
 .kanban div.column-title {
@@ -3645,10 +3646,17 @@ button.btn.btn-default.action-button {
 }
 
 .kanban-card {
-    padding: 10px;
     border: 1px solid #d0d0d0 !important;
     margin-top: 10px;
-    cursor: pointer;
+    cursor: move;
+    background: #ffffff;
+    min-height: 110px;
+}
+
+.kanban-card .ng-scope.as-sortable-item-handle {
+    padding: 10px;
+    padding-top: 30px;
+    padding-bottom: 25px;
 }
 
 .container.kanban .kanban-card > .row [class*="col-lg"], .container.kanban > .row [class*="col-md"], .container.kanban > .row [class*="col-sm"] {
@@ -3664,6 +3672,7 @@ button.btn.btn-default.action-button {
 .kanban-card p {
     padding-left: 10px;
     line-height: 1.3;
+    margin-bottom: 10px;
 }
 
 .kanban-card .btn.btn-default.btn-alert {
@@ -3678,6 +3687,7 @@ button.btn.btn-default.action-button {
     padding: 10px;
     padding-top: 4px;
     padding-right: 12px;
+    cursor: help;
 }
 
 .kanban-card .alert {
