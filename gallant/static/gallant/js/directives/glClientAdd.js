@@ -9,7 +9,7 @@ app.directive('glClientAdd', ['$window', 'Client', 'LANGUAGES', function ($windo
     return {
         restrict: 'A',
         scope: {
-            clients: '=',
+            onSuccess: '&',
         },
         controller: ['$scope', function ($scope) {
             $scope.languages = LANGUAGES;
@@ -18,9 +18,7 @@ app.directive('glClientAdd', ['$window', 'Client', 'LANGUAGES', function ($windo
             $scope.object = $scope.client;
             $scope.objectEndpoint = Client;
 
-            $scope.clientSaved = function (client) {
-                console.log('here');
-            }
+            $scope.clientSaved = $scope.onSuccess();
         }],
         templateUrl: '/static/gallant/html/gl_client_add.html',
         link: function ($scope) {

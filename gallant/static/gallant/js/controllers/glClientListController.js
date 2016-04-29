@@ -27,5 +27,9 @@ app.controller('glClientListController', ['$scope', '$http', '$window', 'Client'
                 client.last_contacted = last_contacted;
             });
         };
+
+        $scope.clientSaved = function (client) {
+            $scope.clientsSafe.push(client);
+        };
     }
 ]);

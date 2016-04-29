@@ -17,7 +17,6 @@ app.directive('glAddModal', ['$uibModal', function ($uibModal) {
         transclude: true,
         scope: {
             openFn: '=',
-            objects: '=',
             title: '@',
         },
         controller: ['$scope', '$transclude', function ($scope, $transclude) {
