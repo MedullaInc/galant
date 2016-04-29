@@ -1,4 +1,4 @@
-{% extends "base_sidebar_enclosed.html" %}
+{% extends "base_body.html" %}
 {% load bootstrap i18n %}
 {% load static %}
 {% load gallant_tags %}
@@ -53,58 +53,8 @@
     {% trans "Quote" %}
 {% endblock %}
 
+{% block content %}
 
-{% block sidebar %}
-    {% if object.client.email and object.status == '0' or object.status == '5' %}
-        {% objects_for object.projects as projects %}
-        {% if projects|length == 0 %}
-            <script type="text/ng-template" id="addProjectModal.html">
-
-                <div class="modal-header" id="calendar_modal">
-                    <button type="button" class="close" data-dismiss="modal" ng-click="cancel()">&times;</button>
-                    <h2 class="section_title">Add Project</h2>
-                </div>
-                <div class="modal-body" id="modal_form">
-                    <form>
-                        <div class="modal-body">
-                            <div ng-controller="glFormController" ng-init="init('', null, projectSaved)">
-                                <div gl-project-add project="object" endpoint="objectEndpoint"
-                                     submit="submitForm" projects="projects"></div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-
-            </script>
-            <button ng-controller="glProjectEditController" class="btn btn-default sidebar btn-side" ng-click="addProject()">
-                Add Project
-            </button>
-
-        {% endif %}
-    {% endif %}
-
-    {% if object.client.email and object.status == '0' or object.status == '1' %}
-        <form method="post" action="{% url 'send_quote' pk=object.id %}">
-            {% csrf_token %}
-            <button type="submit" class="btn btn-default sidebar btn-side" id="send_quote">
-                {% trans "Send to Client" %}
-            </button>
-        </form>
-    {% endif %}
-
-    <a href="{% url 'quote_pdf' object.id %}">
-        <button type="button" class="btn btn-default sidebar btn-side">
-            {% trans "Download Quote" %}
-        </button>
-    </a>
-    <a href="{% url 'add_quote_template' quote_id=object.id %}">
-        <button type="button" class="btn btn-default sidebar btn-side" title="Create template from this quote.">
-            {% trans "Use as Template" %}
-        </button>
-    </a>
-{% endblock %}
-
-{% block center_content %}
     {% if object.status >= "2" %}
         <div class="alert alert-info" role="alert">
             <p id="public_link" class="data">
@@ -127,6 +77,63 @@
             </p>
         </div>
     {% endif %}
+
+    <div class="row">
+        <div class="col-lg-6">
+        </div>
+        <div class="col-lg-6">
+
+            {% if object.client.email and object.status == '0' or object.status == '5' %}
+                {% objects_for object.projects as projects %}
+                {% if projects|length == 0 %}
+                    <script type="text/ng-template" id="addProjectModal.html">
+
+                        <div class="modal-header" id="calendar_modal">
+                            <button type="button" class="close" data-dismiss="modal" ng-click="cancel()">&times;</button>
+                            <h2 class="section_title">Add Project</h2>
+                        </div>
+                        <div class="modal-body" id="modal_form">
+                            <form>
+                                <div class="modal-body">
+                                    <div ng-controller="glFormController" ng-init="init('', null, projectSaved)">
+                                        <div gl-project-add project="object" endpoint="objectEndpoint"
+                                             submit="submitForm" projects="projects"></div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                    </script>
+                    <button ng-controller="glProjectEditController" class="btn btn-default btn-add action-button pull-right" ng-click="addProject()">
+                        Add Project
+                    </button>
+
+                {% endif %}
+            {% endif %}
+
+            {% if object.client.email and object.status == '0' or object.status == '1' %}
+                <form method="post" action="{% url 'send_quote' pk=object.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-default btn-add action-button pull-right" id="send_quote">
+                        {% trans "Send to Client" %}
+                    </button>
+                </form>
+            {% endif %}
+
+            <a href="{% url 'quote_pdf' object.id %}">
+                <button type="button" class="btn btn-default btn-add action-button pull-right">
+                    {% trans "Download Quote" %}
+                </button>
+            </a>
+            <a href="{% url 'add_quote_template' quote_id=object.id %}">
+                <button type="button" class="btn btn-default btn-add action-button pull-right" title="Create template from this quote.">
+                    {% trans "Use as Template" %}
+                </button>
+            </a>
+
+        </div>
+    </div>
+
     <div ng-controller="glFormController"
          ng-init="init('{% firstof language LANGUAGE_CODE %}', '{{ csrf_token }}')">
         <div qt-quote-form quote-id="{{ object.pk }}" quote="object" endpoint="objectEndpoint"

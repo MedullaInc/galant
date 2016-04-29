@@ -1,4 +1,4 @@
-{% extends "base_sidebar_enclosed.html" %}
+{% extends "base_body.html" %}
 {% load bootstrap i18n gallant_tags staticfiles %}
 
 {% block section_title %}
@@ -25,40 +25,7 @@
     <link rel="stylesheet" href="{% static "gallant/css/chart.css" %}">
 {% endblock %}
 
-{% block sidebar %}
-
-    <a href="{% url 'briefs' %}?client_id={{ object.id }}">
-        <button type="button" class="btn btn-default sidebar btn-side">
-            {% trans "Client Briefs" %}
-        </button>
-    </a>
-
-    <a href="{% url 'quotes' %}?client_id={{ object.id }}">
-        <button type="button" class="btn btn-default sidebar btn-side">
-            {% trans "Client Quotes" %}
-        </button>
-    </a>
-
-    <a>
-        <button type="button" class="btn btn-default sidebar add_brief  btn-side" id="add_brief">
-            {% trans "New Brief" %}
-        </button>
-    </a>
-    <div ng-controller="qtPopoverController"
-         ng-init="init('{% url 'add_quote' %}', '{% firstof language LANGUAGE_CODE %}', {{ object.id }})">
-        <a>
-            <button popover-placement="bottom" uib-popover-template="dynamicPopover.templateUrl" type="button" class="btn btn-default sidebar btn-side" popover-trigger="focus">{% trans "New Quote" %}</button>
-        </a>
-    </div>
-
-    <script type="text/ng-template" id="addQuotePopoverTemplate.html">
-        <a class="from_template_button" ng-click="open()">
-            <button type="button" class="btn btn-default quote_from_template_button sidebar">From Template</button>
-        </a>
-        <a ng-click="addQuoteRedirect()">
-            <button type="button" class="btn btn-default quote_from_scratch_button sidebar">From Scratch</button>
-        </a>
-    </script>
+{% block content %}
 
     <script type="text/ng-template" id="addBriefPopoverTemplate.html">
         <a class="from_template_button" ng-click="open()">
@@ -66,6 +33,32 @@
         </a>
         <a ng-click="addBriefRedirect()">
             <button type="button" class="btn btn-default brief_from_scratch_button sidebar">From Scratch</button>
+        </a>
+    </script>
+    <script type="text/ng-template" id="briefTemplateModalContent.html">
+        <div class="modal-header">
+            <h2 class="section_title">Select Template</h2>
+        </div>
+        <div class="modal-body">
+            <table st-table="briefTemplate" class="table table-striped table-bordered">
+                <thead>
+                <tr>
+                    <th st-sort="name">{% trans "Name" %}</th>
+                    <th st-sort="date">{% trans "Date" %}</th>
+                    <th st-sort="language">{% trans "Language" %}</th>
+                </tr>
+                </thead>
+                <tbody ng-include src="'{% static "briefs/html/br_brieftemplate_modal_rows.html" %}'"></tbody>
+            </table>
+        </div>
+    </script>
+
+    <script type="text/ng-template" id="addQuotePopoverTemplate.html">
+        <a class="from_template_button" ng-click="open()">
+            <button type="button" class="btn btn-default quote_from_template_button sidebar">From Template</button>
+        </a>
+        <a ng-click="addQuoteRedirect()">
+            <button type="button" class="btn btn-default quote_from_scratch_button sidebar">From Scratch</button>
         </a>
     </script>
     <script type="text/ng-template" id="quoteTemplateModalContent.html">
@@ -85,58 +78,31 @@
             </table>
         </div>
     </script>
-    <script type="text/ng-template" id="briefTemplateModalContent.html">
-        <div class="modal-header">
-            <h2 class="section_title">Select Template</h2>
-        </div>
-        <div class="modal-body">
-            <table st-table="briefTemplate" class="table table-striped table-bordered">
-                <thead>
-                <tr>
-                    <th st-sort="name">{% trans "Name" %}</th>
-                    <th st-sort="date">{% trans "Date" %}</th>
-                    <th st-sort="language">{% trans "Language" %}</th>
-                </tr>
-                </thead>
-                <tbody ng-include src="'{% static "briefs/html/br_brieftemplate_modal_rows.html" %}'"></tbody>
-            </table>
-        </div>
-    </script>
-{% endblock %}
-
-{% block tabs %}
-
-    <ul id="tabs" class="nav nav-tabs">
-        <li class="nav-item">
-            {% url 'client_detail' object.id as client_detail %}
-            <a href="{{ client_detail }}" class="{% active request client_detail %}">
-                Overview
-            </a>
-        </li>
-        <li class="nav-item">
-            {% url 'client_work_detail' object.id as client_work_detail %}
-            <a href="{{ client_work_detail }}" class="{% active request client_work_detail %}">
-                Work
-            </a>
-        </li>
-        <li class="nav-item">
-            {% url 'client_money_detail' object.id as client_money_detail %}
-            <a href="{{ client_money_detail }}" class="{% active request client_money_detail %}">
-                Money
-            </a>
-        </li>
-    </ul>
-
-{% endblock %}
-
-{% block center_content %}
 
     {% block client_detail %}
         <div class="row">
-            <div class="col-lg-10 col-md-10 col-sm-9 col-xs-9">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                 <h2 class="section_title">{{ object.name }}</h2>
             </div>
-            <div class="col-lg-2 col-md-2 col-sm-3 col-xs-3 action_box">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 action_box">
+
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default action-button dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Client Sections<span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu action-button">
+                        {% url 'client_detail' object.id as client_detail %}
+                        <li><a href="{{ client_detail }}">Client Overview</a></li>
+                        {% url 'client_work_detail' object.id as client_work_detail %}
+                        <li><a href="{{ client_work_detail }}">Client Work</a></li>
+                        {% url 'client_money_detail' object.id as client_money_detail %}
+                        <li><a href="{{ client_money_detail }}">Client Money</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="{% url 'briefs' %}?client_id={{ object.id }}">Client Briefs</a></li>
+                        <li><a href="{% url 'quotes' %}?client_id={{ object.id }}">Client Quotes</a></li>
+                    </ul>
+                </div>
+
                 <a href="{% url 'edit_client' object.id %}" class="edit_button" title="{% trans "Edit" %}">
                     <button id="section_edit" type="button" class="btn btn-default edit_button btn-add" aria-label="Edit">
                         <span class="glyphicon glyphicon-edit"/>

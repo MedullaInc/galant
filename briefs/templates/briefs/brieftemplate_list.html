@@ -5,22 +5,27 @@
     {% trans "Brief Templates" %}
 {% endblock %}
 
-{% block sidebar %}
-    <a href="{% url 'add_brief_template' %}">
-        <button type="button" class="btn btn-default btn-side sidebar">
-            {% trans "Add Template" %}
-        </button>
-    </a>
+{% block content %}
 
-    <a href="{% url 'briefs' %}">
-        <button type="button" class="btn btn-default btn-side sidebar">
-            {% trans "Back to Briefs" %}
-        </button>
-    </a>
+    <div class="row">
+        <div class="col-lg-6">
+        </div>
+        <div class="col-lg-6">
+            <a href="{% url 'add_brief_template' %}">
+                <button type="button" class="btn btn-default btn-add action-button pull-right">
+                    {% trans "Add Template" %}
+                </button>
+            </a>
 
-{% endblock %}
+            <a href="{% url 'briefs' %}">
+                <button type="button" class="btn btn-default btn-add action-button pull-right">
+                    {% trans "Back to Briefs" %}
+                </button>
+            </a>
+        </div>
+    </div>
 
-{% block center_content %}
+
     <table class="table table-striped table-bordered">
         <thead>
         <th><b>{% trans "Name" %}</b></th>

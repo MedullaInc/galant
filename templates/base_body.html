@@ -8,6 +8,8 @@
             $("#feedback").animate({
                 bottom: '-' + (($('#feedback').height() / 2) - 20) + 'px'
             }, 2000);
+
+            $(".action-button.dropdown-toggle").dropdown();
         });
     </script>
 
@@ -22,54 +24,55 @@
                 <div class="container">
                     <div class="row">
                         {% block navbar %}
-                        <nav class="navbar col-lg-12 col-md-12 col-sm-12 col-xs-12" role="navigation">
-                            <div class="navbar-header">
-                                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"></button>
-                                <a class="brand" href="/">{{ site.name }} <span>Beta</span></a>
-                            </div>
-                            <div id="menu" class="collapse navbar-collapse">
-                                <ul class="nav pull-right" id="dropdown-menu">
-                                    {% if user.is_authenticated %}
-                                        <li class="dropdown-menu-element">
-                                            <a href="{% url 'clients' %}">{% trans 'Clients' %}</a>
-                                        </li>
-                                        <li class="dropdown-menu-element">
-                                            <a href="{% url 'quotes' %}">{% trans 'Quotes' %}</a>
-                                        </li>
-                                        <li class="dropdown-menu-element">
-                                            <a href="{% url 'calendr' %}">{% trans 'Projects' %}</a>
-                                        </li>
-                                        <li class="dropdown-menu-element" id="account-settings-menu-element">
-                                            <a href="{% url 'account_change_password' %}">{% trans 'Account' %}</a>
-                                        </li>
-                                        <li class="dropdown-menu-element" id="account-settings-menu-element">
-                                            <a href="{% url 'account_logout' %}">{% trans 'Signout' %}</a>
-                                        </li>
-                                        <li class="btn-group dropdown-menu-element" id="settings-toggle-group">
-                                            <button type="button" class="btn btn-default dropdown-toggle"
-                                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                                                    id="settings-toggle">
-                                                <span class="glyphicon glyphicon-cog"></span>
-                                            </button>
+                            <nav class="navbar col-lg-12 col-md-12 col-sm-12 col-xs-12" role="navigation">
+                                <div class="navbar-header">
+                                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"></button>
+                                    <a class="brand" href="/">{{ site.name }} <span>Beta</span></a>
+                                </div>
+                                <div id="menu" class="collapse navbar-collapse">
+                                    <ul class="nav pull-right" id="dropdown-menu">
+                                        {% if user.is_authenticated %}
+                                            <li class="dropdown-menu-element">
+                                                <a href="{% url 'clients' %}">{% trans 'Clients' %}</a>
+                                            </li>
+                                            <li class="dropdown-menu-element">
+                                                <a href="{% url 'quotes' %}">{% trans 'Quotes' %}</a>
+                                            </li>
+                                            <li class="dropdown-menu-element">
+                                                <a href="{% url 'calendr' %}">{% trans 'Projects' %}</a>
+                                            </li>
+                                            <li class="dropdown-menu-element" id="account-settings-menu-element">
+                                                <a href="{% url 'account_change_password' %}">{% trans 'Account' %}</a>
+                                            </li>
+                                            <li class="dropdown-menu-element" id="account-settings-menu-element">
+                                                <a href="{% url 'account_logout' %}">{% trans 'Signout' %}</a>
+                                            </li>
+                                            <li class="btn-group dropdown-menu-element" id="settings-toggle-group">
+                                                <button type="button" class="btn btn-default dropdown-toggle"
+                                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                                        id="settings-toggle">
+                                                    <span class="glyphicon glyphicon-cog"></span>
+                                                </button>
 
-                                            <ul class="dropdown-menu dropdown-menu-right">
-                                                <li>
-                                                    <a href="{% url 'account_change_password' %}">{% trans 'Account' %}</a>
-                                                </li>
-                                                <li><a href="{% url 'account_logout' %}">{% trans 'Sign Out' %}</a></li>
-                                            </ul>
-                                        </li>
+                                                <ul class="dropdown-menu dropdown-menu-right">
+                                                    <li>
+                                                        <a href="{% url 'account_change_password' %}">{% trans 'Account' %}</a>
+                                                    </li>
+                                                    <li><a href="{% url 'account_logout' %}">{% trans 'Sign Out' %}</a>
+                                                    </li>
+                                                </ul>
+                                            </li>
 
-                                    {% else %}
-                                        {% comment %}
-                                            <li><a href="">{% trans 'Features' %}</a></li>
-                                            <li><a href="">{% trans 'Pricing' %}</a></li>
-                                            <li><a href="{% url 'contact' %}">{% trans 'Contact' %}</a></li>
-                                        {% endcomment %}
-                                    {% endif %}
-                                </ul>
-                            </div>
-                        </nav>
+                                        {% else %}
+                                            {% comment %}
+                                                <li><a href="">{% trans 'Features' %}</a></li>
+                                                <li><a href="">{% trans 'Pricing' %}</a></li>
+                                                <li><a href="{% url 'contact' %}">{% trans 'Contact' %}</a></li>
+                                            {% endcomment %}
+                                        {% endif %}
+                                    </ul>
+                                </div>
+                            </nav>
                         {% endblock %}
                     </div>
                 </div>

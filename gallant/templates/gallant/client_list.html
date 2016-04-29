@@ -1,4 +1,4 @@
-{% extends "base_sidebar.html" %}
+{% extends 'base_body.html' %}
 {% load bootstrap i18n static %}
 
 {% block scripts %}
@@ -20,22 +20,24 @@
     {% trans "Clients" %}
 {% endblock %}
 
-{% block sidebar %}
-    <div gl-add-modal open-fn="addClient" title="Add Client">
-        <div gl-client-add></div>
-    </div>
-    <button type="button" class="btn btn-default sidebar btn-side" ng-click="addClient()">
-        {% trans "Add Client" %}
-    </button>
-{% endblock %}
-
-{% block center_content %}
+{% block content %}
     <div ng-controller="glClientListController" ng-init="init('{% url 'client_detail' %}')">
         <div class="row">
             <div class="col-lg-12">
 
                 <div class="row">
-                    <div class="col-lg-12">
+                    <div class="col-lg-6">
+                        <div class="pull-left">
+                            <div gl-add-modal open-fn="addClient" title="Add Client">
+                                <div gl-client-add></div>
+                            </div>
+                            <button type="button" class="btn btn-default btn-add action-button pull-right"
+                                    ng-click="addClient()">
+                                {% trans "Add Client" %}
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
                         <div class="pull-right">
                             <button class="btn btn-default btn-add" id="show_client_list" ng-click="showBoard=false">
                                 <span class="glyphicon glyphicon-align-justify"></span>
