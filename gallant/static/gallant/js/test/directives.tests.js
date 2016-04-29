@@ -319,6 +319,106 @@ describe('glProjectAdd', function () {
     });
 });
 
+describe('glClientAdd', function () {
+    var $rootScope;
+    var $compile;
+    var $scope;
+
+    beforeEach(function () {
+        module('gallant.services.glServices', function ($provide) {
+            $provide.factory('Client', function ($q) {
+                var Client = function () {
+                };
+                Client.fields = function () {
+                    return {$promise: $q.when([])};
+                };
+                return Client;
+            });
+        });
+
+        module('gallant.directives.glClientAdd');
+
+        module('staticNgTemplates');
+
+        inject(function (_$rootScope_, _$compile_, _$injector_) {
+            // The injector unwraps the underscores (_) from around the parameter names when matching
+            $rootScope = _$rootScope_;
+            $compile = _$compile_;
+        });
+
+        $scope = $rootScope.$new();
+    });
+
+    var element;
+
+    beforeEach(function () {
+        element = $compile('<div gl-client-add></div>')($scope);
+        $scope.$digest();
+    });
+
+    it('compiles', function () {
+        expect(element.html().substring(0, 6)).toEqual('<div n');
+    });
+});
+
+describe('glAddModal', function () {
+    var $rootScope;
+    var $compile;
+    var $injector;
+    var $scope;
+
+    beforeEach(function () {
+        module('gallant.directives.glAddModal', function ($provide) {
+            $provide.factory('$uibModal', function () {
+                return {
+                    open: function () {
+                        return { dismiss: function () {} };
+                    }
+                }
+            });
+        });
+
+        module('staticNgTemplates');
+
+        inject(function (_$rootScope_, _$compile_, _$injector_) {
+            // The injector unwraps the underscores (_) from around the parameter names when matching
+            $rootScope = _$rootScope_;
+            $compile = _$compile_;
+            $injector = _$injector_;
+        });
+
+        $scope = $rootScope.$new();
+    });
+
+    var element;
+
+    beforeEach(function () {
+        element = $compile('<div gl-add-modal open-fn="openFn" modal-instance="modalInstance"></div>')($scope);
+        $scope.$digest();
+    });
+
+    it('compiles', function () {
+        expect(element.html().trim().substring(0, 6)).toEqual('<div c');
+    });
+
+    it('opens modal', function () {
+        var $uibModal = $injector.get('$uibModal');
+        spyOn($uibModal, 'open');
+        $scope.openFn();
+        $scope.$apply();
+        expect($uibModal.open).toHaveBeenCalled();
+    });
+
+    it('closes modal', function () {
+        $scope.openFn();
+        $scope.$apply();
+        spyOn(element.isolateScope().modalInstance, 'dismiss');
+        element.isolateScope().cancel();
+        $scope.$apply();
+        expect(element.isolateScope().modalInstance.dismiss).toHaveBeenCalled();
+    });
+});
+
 describe('glClientMoneyChart', function () {
     var $rootScope;
     var $compile;

@@ -2,6 +2,7 @@ app = angular.module('gallant.directives.glAddModal', [
     'ui.bootstrap',
 ]);
 
+/* istanbul ignore next */
 app.directive("modalTransclude", function($parse){
   return {
     link: function($scope, $element, $attrs){
@@ -22,6 +23,7 @@ app.directive('glAddModal', ['$uibModal', function ($uibModal) {
         },
         controller: ['$scope', '$transclude', function ($scope, $transclude) {
             $scope.openFn = function() {
+                /* istanbul ignore next */
                 $scope.modalInstance = $uibModal.open({
                     scope: $scope,
                     animation: true,
