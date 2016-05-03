@@ -5,7 +5,8 @@ app = angular.module('gallant.directives.glClientAdd', [
     'gallant.directives.glForm',
 ]);
 
-app.directive('glClientAdd', ['$window', 'Client', 'LANGUAGES', function ($window, Client, LANGUAGES) {
+app.directive('glClientAdd', ['$window', 'Client', 'LANGUAGES', 'glConstants',
+    function ($window, Client, LANGUAGES, glConstants) {
     return {
         restrict: 'A',
         scope: {
@@ -15,6 +16,7 @@ app.directive('glClientAdd', ['$window', 'Client', 'LANGUAGES', function ($windo
             $scope.languages = LANGUAGES;
             $scope.client = new Client();
             $scope.client.notes = [];
+            $scope.client.status = glConstants.ClientStatus.Potential;
             $scope.object = $scope.client;
             $scope.objectEndpoint = Client;
 
