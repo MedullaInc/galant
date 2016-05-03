@@ -1,6 +1,8 @@
 from django.db import models as m
 from django.db import transaction
 from django.conf import settings
+from django.db.models.signals import m2m_changed
+from django.dispatch.dispatcher import receiver
 from djmoney.forms.widgets import CURRENCY_CHOICES
 from gallant import fields as gf
 from gallant_user import UserModel, UserModelManager, ContactInfo
@@ -68,3 +70,22 @@ class Client(UserModel):
 
             super(Client, self).soft_delete(deleted_by_parent)
 
+
+@receiver(m2m_changed, sender=Client)
+def client_payments_modified(action, instance, reverse, **kwargs):
+    if 'post' in action:
+        cstat = int(instance.status)
+
+        if instance.auto_pipeline and cstat == ClientStatus.Project_Underway.value:
+            instance.status = ClientStatus.Pending_Payment.value
+            cstat = instance.status
+            instance.alert = ''
+            instance.save()
+
+        if cstat == ClientStatus.Pending_Payment.value:
+            set_client_payment_alert(instance, instance.user)
+
+            if instance.auto_pipeline:
+                check_and_close(instance, instance.user)
+
+            instance.save()

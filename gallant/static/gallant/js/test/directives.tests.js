@@ -334,6 +334,7 @@ describe('glClientAdd', function () {
                 };
                 return Client;
             });
+            $provide.factory('glConstants', function () { return { ClientStatus: { Potential: 0} }; });
         });
 
         module('gallant.directives.glClientAdd');
