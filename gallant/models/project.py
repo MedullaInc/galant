@@ -3,17 +3,10 @@ from django.db import transaction
 from django.db.models.signals import post_save
 from django.dispatch.dispatcher import receiver
 from gallant import fields as gf
+from gallant.enums import ProjectStatus
 from . import ClientStatus
 from gallant_user import UserModel, UserModelManager
 from misc import Note
-
-
-class ProjectStatus(gf.ChoiceEnum):
-    On_Hold = 0
-    Pending_Assignment = 1
-    Active = 2
-    Overdue = 3
-    Completed = 4
 
 
 class Project(UserModel):

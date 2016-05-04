@@ -5,6 +5,7 @@ from django.db import transaction
 from django.db.models.signals import post_save
 from django.dispatch.dispatcher import receiver
 from gallant import models as g
+from gallant.enums import ClientStatus
 from gallant.models import UserModelManager
 from quotes import models as q
 from gallant import fields as gf
@@ -112,6 +113,6 @@ def client_brief_answered(sender, instance, **kwargs):
         cstat = int(client.status)
         bstat = int(instance.status)
 
-        if cstat < g.ClientStatus.Quoted.value and bstat >= BriefStatus.Answered.value:
+        if cstat < ClientStatus.Quoted.value and bstat >= BriefStatus.Answered.value:
             client.alert = 'Brief Answered'
             client.save()

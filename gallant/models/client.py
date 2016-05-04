@@ -4,29 +4,9 @@ from django.conf import settings
 from django.db.models.signals import m2m_changed
 from django.dispatch.dispatcher import receiver
 from djmoney.forms.widgets import CURRENCY_CHOICES
-from gallant import fields as gf
+from gallant.enums import ClientStatus, ClientReferral
 from gallant_user import UserModel, UserModelManager, ContactInfo
 from misc import Note
-
-
-class ClientStatus(gf.ChoiceEnum):
-    """ Determines Client's place in workflow / pipeline.
-    """
-    Potential = 0
-    Quoted = 1
-    Project_Underway = 2
-    Pending_Payment = 3
-    Closed = 4
-
-
-class ClientReferral(gf.ChoiceEnum):
-    Search = 0
-    Paid_Advertisement = 1
-    Social_Media = 2
-    Client = 3
-    Networking = 4
-    Word_Of_Mouth = 5
-    Other = 6
 
 
 class Client(UserModel):

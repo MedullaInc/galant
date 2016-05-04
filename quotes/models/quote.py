@@ -8,6 +8,7 @@ from django.db import models as m
 from django.db import transaction
 from django.conf import settings
 from gallant import utils
+from gallant.enums import ClientStatus
 from gallant.models import UserModelManager
 from moneyed import Money
 from section import Section
@@ -122,13 +123,13 @@ def client_quoted(sender, instance, **kwargs):
         cstat = int(client.status)
         qstat = int(instance.status)
 
-        if client.auto_pipeline and cstat < g.ClientStatus.Quoted.value and qstat >= QuoteStatus.Sent.value:
-            client.status = g.ClientStatus.Quoted.value
+        if client.auto_pipeline and cstat < ClientStatus.Quoted.value and qstat >= QuoteStatus.Sent.value:
+            client.status = ClientStatus.Quoted.value
             cstat = client.status
             client.alert = ''
             client.save()
 
-        if cstat == g.ClientStatus.Quoted.value:
+        if cstat == ClientStatus.Quoted.value:
             if qstat == QuoteStatus.Rejected.value:
                 client.alert = 'Quote Rejected'
                 client.save()

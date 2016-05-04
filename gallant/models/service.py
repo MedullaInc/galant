@@ -2,28 +2,9 @@ from django.db import models as m
 from django.db import transaction
 from djmoney.models.fields import MoneyField
 from gallant import fields as gf
+from gallant.enums import ServiceStatus, ServiceType
 from gallant_user import UserModel, UserModelManager
 from misc import Note
-
-
-class ServiceType(gf.ChoiceEnum):
-    Branding = 0
-    Design = 1
-    Architecture = 2
-    Advertising = 3
-    Production = 4
-    Illustration = 5
-    Industrial_Design = 6
-    Fashion_Design = 7
-    Interior_Design = 8
-
-
-class ServiceStatus(gf.ChoiceEnum):
-    On_Hold = 0
-    Pending_Assignment = 1
-    Active = 2
-    Overdue = 3
-    Completed = 4
 
 
 class Service(UserModel):
