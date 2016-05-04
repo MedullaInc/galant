@@ -55,16 +55,20 @@
                 </div>
                 <div class="col-lg-6">
                     <div class="pull-right">
-                        <button class="btn btn-default btn-add" id="show_client_list" ng-click="showBoard=false">
+                        <button class="btn btn-default btn-add" id="show_client_list" ng-click="showList=true">
                             <span class="glyphicon glyphicon-align-justify"></span>
                         </button>
-                        <button class="btn btn-default btn-add" id="show_client_board" ng-click="showBoard=true">
+                        <button class="btn btn-default btn-add" id="show_client_board" ng-click="showList=false">
                             <span class="glyphicon glyphicon-th"></span>
                         </button>
                     </div>
                 </div>
             </div>
-            <div class="row" ng-show="!showBoard">
+            <div ng-show="!showList">
+                <div ng-include src="'{% static "gallant/html/gl_client_board.html" %}'">
+                </div>
+            </div>
+            <div class="row" ng-show="showList">
                 <div class="col-lg-12">
                     <br/>
 
@@ -100,10 +104,6 @@
                         <tbody ng-include src="'{% static "gallant/html/gl_client_rows.html" %}'">
                         </tbody>
                     </table>
-                </div>
-            </div>
-            <div ng-show="showBoard">
-                <div ng-include src="'{% static "gallant/html/gl_client_board.html" %}'">
                 </div>
             </div>
         </div>

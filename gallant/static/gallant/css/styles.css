@@ -3731,4 +3731,9 @@ div.kanban-card.ng-scope.as-sortable-item {
     min-height: 85px;
 }
 
+.col-centered{
+    float: none;
+    margin: 0 auto;
+}
+
 /* End Kanban */
