@@ -1,12 +1,16 @@
+from datetime import datetime
+
 from django.db import models as m
 from django.db import transaction
 from django.conf import settings
-from django.db.models.signals import m2m_changed
+from django.db.models.aggregates import Sum
+from django.db.models.signals import post_save
 from django.dispatch.dispatcher import receiver
+from django.utils.timezone import get_current_timezone
 from djmoney.forms.widgets import CURRENCY_CHOICES
 from gallant.enums import ClientStatus, ClientReferral
 from gallant_user import UserModel, UserModelManager, ContactInfo
-from misc import Note
+from misc import Note, Payment
 
 
 class Client(UserModel):
@@ -51,21 +55,46 @@ class Client(UserModel):
             super(Client, self).soft_delete(deleted_by_parent)
 
 
-@receiver(m2m_changed, sender=Client)
-def client_payments_modified(action, instance, reverse, **kwargs):
-    if 'post' in action:
-        cstat = int(instance.status)
+@receiver(post_save, sender=Payment)
+def payment_saved(sender, instance, **kwargs):
+    for client in Client.objects.all_for(instance.user).filter(quote__payments__in=[instance]):
+        check_client_payments(client)
 
-        if instance.auto_pipeline and cstat == ClientStatus.Project_Underway.value:
-            instance.status = ClientStatus.Pending_Payment.value
-            cstat = instance.status
-            instance.alert = ''
-            instance.save()
 
-        if cstat == ClientStatus.Pending_Payment.value:
-            set_client_payment_alert(instance, instance.user)
+def check_client_payments(client):
+    cstat = int(client.status)
 
-            if instance.auto_pipeline:
-                check_and_close(instance, instance.user)
+    if client.auto_pipeline and cstat == ClientStatus.Project_Underway.value:
+        client.status = ClientStatus.Pending_Payment.value
+        cstat = client.status
+        client.alert = ''
+        client.save()
 
-            instance.save()
+    if cstat == ClientStatus.Pending_Payment.value:
+        set_client_payment_alert(client, client.user)
+
+        if client.auto_pipeline:
+            check_payments_and_close(client, client.user)
+
+        client.save()
+
+
+def set_client_payment_alert(client, user):
+    """ Order projects for client by status importance and set alerts
+    """
+    val = Payment.objects.all_for(user).filter(quote__client=client,
+                                               due__lte=datetime.now(get_current_timezone()),
+                                               paid_on__isnull=True)\
+                                       .aggregate(amount=Sum('amount'))
+    overdue = val['amount']
+
+    if overdue and overdue > 0:
+        client.alert = '$%d %s overdue' % (overdue, client.currency)
+    else:
+        client.alert = ''
+
+
+def check_payments_and_close(client, user):
+    if Payment.objects.all_for(user).filter(paid_on__isnull=True, quote__client=client).count() == 0:
+        client.status = ClientStatus.Closed.value
+        client.alert = ''

@@ -4,6 +4,7 @@ from django.db.models.signals import post_save
 from django.dispatch.dispatcher import receiver
 from gallant import fields as gf
 from gallant.enums import ProjectStatus
+from gallant.models.client import check_client_payments
 from . import ClientStatus
 from gallant_user import UserModel, UserModelManager
 from misc import Note
@@ -49,7 +50,7 @@ def client_project(sender, instance, **kwargs):
             set_client_project_alert(client, instance.user)
 
             if client.auto_pipeline:
-                check_and_close(client, instance.user)
+                check_projects_and_close(client, instance.user)
 
             client.save()
 
@@ -74,7 +75,7 @@ def set_client_project_alert(client, user):
         client.alert = ''
 
 
-def check_and_close(client, user):
+def check_projects_and_close(client, user):
     if Project.objects.all_for(user).filter(quote__client=client)\
-                                       .exclude(status=ProjectStatus.Completed.value).count() == 0:
-        client.status = ClientStatus.Closed.value
+                                    .exclude(status=ProjectStatus.Completed.value).count() == 0:
+        check_client_payments(client)

@@ -1,6 +1,6 @@
 from uuid import uuid4
 
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, m2m_changed
 from django.dispatch.dispatcher import receiver
 from gallant import models as g
 from gallant import fields as gf
@@ -10,6 +10,7 @@ from django.conf import settings
 from gallant import utils
 from gallant.enums import ClientStatus
 from gallant.models import UserModelManager
+from gallant.models.client import check_client_payments
 from moneyed import Money
 from section import Section
 
@@ -136,3 +137,9 @@ def client_quoted(sender, instance, **kwargs):
             elif qstat == QuoteStatus.Accepted.value:
                 client.alert = 'Quote Accepted'
                 client.save()
+
+
+@receiver(m2m_changed, sender=Quote.payments.through)
+def client_payments_modified(action, instance, reverse, **kwargs):
+    if 'post' in action:
+        check_client_payments(instance.client)
