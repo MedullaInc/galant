@@ -1988,6 +1988,10 @@ h3.area_title {
     margin-bottom: 10px;
 }
 
+.margin-bottom-20 {
+    margin-bottom: 20px;
+}
+
 /* Inputs */
 
 .data_row.header {
