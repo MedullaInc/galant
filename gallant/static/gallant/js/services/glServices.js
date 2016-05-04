@@ -73,11 +73,6 @@ app.factory('glConstants', function () {
             ProjectUnderway: 2,
             PendingPayment: 3,
             Closed: 4,
-            UserPotential: 10,
-            UserQuoted: 11,
-            UserProjectUnderway: 12,
-            UserPendingPayment: 13,
-            UserClosed: 14,
         },
     };
 });

@@ -1,0 +1,20 @@
+<div class="container kanban">
+    <div class="row">
+        <div class="kanban-column" kb-board-column title="To Do"
+             items="$parent.tasks" status-index="{{ clConstants.TaskStatus.ToDo }}"></div>
+        <div class="kanban-column" kb-board-column title="In Progress"
+             items="tasks" status-index="{{ clConstants.TaskStatus.InProgress }}"></div>
+        <div class="kanban-column" kb-board-column title="Done"
+             items="tasks" status-index="{{ clConstants.TaskStatus.Done }}"></div>
+    </div>
+    <div class="row" ng-show="!tasksLoaded">
+        <div class="col-lg-12 col-centered">
+            <img src="/static/img/loading.gif">
+        </div>
+    </div>
+    <div class="row" ng-show="tasksLoaded && tasks.length == 0">
+        <div class="col-lg-12 col-centered">
+            No tasks yet.
+        </div>
+    </div>
+</div>
