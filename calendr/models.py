@@ -1,5 +1,15 @@
 import gallant.models as g
 import django.db.models as m
+from gallant import fields as gf
+
+
+class TaskStatus(gf.ChoiceEnum):
+    """ Determines Client's place in workflow / pipeline.
+    """
+    ToDo = 0
+    Ready = 1
+    In_Progress = 2
+    Done = 3
 
 
 class Task(g.UserModel):
@@ -8,6 +18,7 @@ class Task(g.UserModel):
     end = m.DateTimeField(auto_now_add=False)
     daily_estimate = m.DecimalField(blank=True, default=0.0, decimal_places=1, max_digits=3,
                                     help_text='Time estimate in hours per day')
+    status = m.CharField(max_length=2, choices=TaskStatus.choices(), default=TaskStatus.ToDo.value)
 
     project = m.ForeignKey(g.Project, null=True, blank=True)
     services = m.ManyToManyField(g.Service)
