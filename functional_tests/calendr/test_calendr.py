@@ -70,7 +70,7 @@ class CalendrTest(browser.SignedInTest):
         b.get(self.live_server_url + reverse('calendr'))
         browser.wait().until(lambda driver: driver.find_element_by_id('timelineWeek')).click()
 
-        self.assertTrue(browser.wait().until(lambda driver: driver.find_element_by_class_name('.lineWeek-view.fc-timeline')))
+        self.assertTrue(browser.wait().until(lambda driver: driver.find_element_by_css_selector('.fc-timelineWeek-view')))
 
     @skip("TODO")
     def test_can_filter_task(self):
