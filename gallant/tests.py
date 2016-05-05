@@ -13,7 +13,7 @@ from gallant import forms as gallant_forms
 from briefs import models as b
 from gallant import serializers
 from gallant import views
-from gallant.enums import ClientStatus
+from gallant.enums import ClientStatus, ProjectStatus
 from gallant.fields import ULTextDictArray, _ultext_array_to_python, _ultext_to_python
 from gallant.models.client import check_client_payments
 from moneyed.classes import Money
@@ -356,7 +356,7 @@ class ProjectTest(TransactionTestCase):
 
     def test_project_soft_delete(self):
         # Create Project
-        fixture = AutoFixture(g.Project, generate_fk=True)
+        fixture = AutoFixture(g.Project, generate_fk=True, field_values={'status': ProjectStatus.Completed.value})
         project = fixture.create(1)[0]
 
         # Create Project Notes
