@@ -10,8 +10,10 @@ app.directive('kbBoardColumn', function () {
             items: '=?',
             statusIndex: '@',
             title: '@',
+            clickFn: '&',
         },
         controller: ['$scope', function ($scope) {
+            $scope.callback = $scope.clickFn();
             if (!$scope.items)
                 $scope.items = [];
 
