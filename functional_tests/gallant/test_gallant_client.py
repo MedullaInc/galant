@@ -188,7 +188,9 @@ class GallantClientTest(browser.SignedInTest):
         with browser.wait_for_page_load():
             b.find_element_by_xpath('//button[@type="submit"]').click()
 
-        self.assertTrue(test_string in b.find_element_by_id('notes').text)
+        notes = browser.wait().until(lambda driver: driver.find_element_by_id('notes'))
+
+        self.assertTrue(test_string in notes.text)
 
     def test_client_soft_delete(self):
         b = browser.instance()

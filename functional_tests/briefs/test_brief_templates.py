@@ -162,7 +162,7 @@ class BriefTemplatesTest(browser.SignedInTest):
         with browser.wait_for_page_load():
             b.find_element_by_id('brief_delete').click()
 
-        success_message = b.find_element_by_class_name('alert-success')
+        success_message = browser.wait().until(lambda driver: driver.find_element_by_class_name('alert-success'))
         self.assertTrue(u'Brieftemplate deleted.' in success_message.text)
 
         # check that brief access returns 404
