@@ -16,6 +16,9 @@ describe('glClientListController', function () {
 
                 return Client;
             });
+            $provide.factory('glConstants', function() {
+                return {};
+            });
         });
         module('gallant.controllers.glClientListController', function ($provide) {
             $provide.value('$window', {location: {href: null}});

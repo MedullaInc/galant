@@ -1,0 +1,28 @@
+<div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
+    <div class="column-title">
+        {{ title }}
+    </div>
+
+    <div data-as-sortable="dragControlListeners" data-ng-model="items" class="receiving-element">
+        <div class="kanban-card" data-ng-repeat="item in filterItems()"
+             data-as-sortable-item>
+            <div data-as-sortable-item-handle>
+                <div class="row">
+                    <div class="col-lg-8 col-md-10 col-sm-10 col-xs-10">
+                        <p>
+                            {{ item.name }}
+                        </p>
+                        <p>
+                            <b>{{ item.company }}</b>
+                        </p>
+                    </div>
+                    <div class="col-lg-3 col-md-1 col-sm-1 col-xs-1">
+                        <button class="btn btn-default btn-alert" ng-show="item.alert">
+                            <span class="glyphicon glyphicon-warning-sign pull-right" uib-tooltip="{{ item.alert }}" tooltip-placement="top-right"></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

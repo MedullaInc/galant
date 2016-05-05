@@ -11,7 +11,17 @@
     <script src="{% static "js/ui-bootstrap-tpls.js" %}"></script>
     <script src="{% static "js/quotes.js" %}"></script>
     <script src="{% static "js/gallant.js" %}"></script>
+    <script src="{% static "js/ng-sortable.js" %}"></script>
+    <script src="{% static "js/kanban.js" %}"></script>
     <script src="{% static "djng/js/django-angular.min.js" %}"></script>
+
+{% endblock %}
+
+{% block css %}
+    {{ block.super }}
+
+    <link rel="stylesheet" href="{% static "css/ng-sortable.style.min.css" %}">
+    <link rel="stylesheet" href="{% static "css/ng-sortable.min.css" %}">
 
 {% endblock %}
 
@@ -28,74 +38,73 @@
 
 {% block content %}
     <div ng-controller="glClientListController" ng-init="init('{% url 'client_detail' %}')">
-        <div class="row">
-            <div class="col-lg-12">
+    <div class="row">
+        <div class="col-lg-12">
 
-                <div class="row">
-                    <div class="col-lg-6">
-                        <div class="pull-left">
-                            <div gl-add-modal open-fn="addClient" title="Add Client" modal-instance="modalInstance">
-                                <div gl-client-add on-success="clientSaved"></div>
-                            </div>
-                            <button type="button" class="btn btn-default btn-add action-button pull-right"
-                                    ng-click="addClient()">
-                                {% trans "Add Client" %}
-                            </button>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="pull-left">
+                        <div gl-add-modal open-fn="addClient" title="Add Client" modal-instance="modalInstance">
+                            <div gl-client-add on-success="clientSaved"></div>
                         </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="pull-right">
-                            <button class="btn btn-default btn-add" id="show_client_list" ng-click="showBoard=false">
-                                <span class="glyphicon glyphicon-align-justify"></span>
-                            </button>
-                            <button class="btn btn-default btn-add" id="show_client_board" ng-click="showBoard=true">
-                                <span class="glyphicon glyphicon-th"></span>
-                            </button>
-                        </div>
+                        <button type="button" class="btn btn-default btn-add action-button pull-right"
+                                ng-click="addClient()">
+                            {% trans "Add Client" %}
+                        </button>
                     </div>
                 </div>
-                <div class="row" ng-show="!showBoard">
-                    <div class="col-lg-12">
-                        <br/>
+                <div class="col-lg-6">
+                    <div class="pull-right">
+                        <button class="btn btn-default btn-add" id="show_client_list" ng-click="showList=true">
+                            <span class="glyphicon glyphicon-align-justify"></span>
+                        </button>
+                        <button class="btn btn-default btn-add" id="show_client_board" ng-click="showList=false">
+                            <span class="glyphicon glyphicon-th"></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div ng-show="!showList">
+                <div ng-include src="'{% static "gallant/html/gl_client_board.html" %}'">
+                </div>
+            </div>
+            <div class="row" ng-show="showList">
+                <div class="col-lg-12">
+                    <br/>
 
-                        <table st-table="clients" st-safe-src="clientsSafe"
-                               class="table table-striped table-bordered col-lg-12">
-                            <thead>
-                            <tr>
-                                <th colspan="5" class="container">
-                                    <div class="row">
-                                        <label class="control-label search col-lg-12">Search</label>
+                    <table st-table="clients" st-safe-src="clientsSafe"
+                           class="table table-striped table-bordered col-lg-12">
+                        <thead>
+                        <tr>
+                            <th colspan="5" class="container">
+                                <div class="row">
+                                    <label class="control-label search col-lg-12">Search</label>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <input type="text" placeholder="Search Client Name"
+                                               st-search="name" class="form-control medium-text"/>
+
                                     </div>
-                                    <div class="row">
-                                        <div class="col-lg-6">
-                                            <input type="text" placeholder="Search Client Name"
-                                                   st-search="name" class="form-control medium-text"/>
+                                    <div class="col-lg-6">
+                                        <input type="text" placeholder="Search Client Status"
+                                               st-search="status" class="form-control medium-text"/>
 
-                                        </div>
-                                        <div class="col-lg-6">
-                                            <input type="text" placeholder="Search Client Status"
-                                                   st-search="status" class="form-control medium-text"/>
-
-                                        </div>
                                     </div>
-                                </th>
-                            </tr>
-                            <tr>
-                                <th st-sort="name">{% trans "Name" %}</th>
-                                <th st-sort="company">{% trans "Company" %}</th>
-                                <th st-sort="money_owed.amount">{% trans "$ Owed" %}</th>
-                                <th st-sort="status">{% trans "Status" %}</th>
-                            </tr>
-                            </thead>
-                            <tbody ng-include src="'{% static "gallant/html/gl_client_rows.html" %}'">
-                            </tbody>
-                        </table>
-                    </div>
+                                </div>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th st-sort="name">{% trans "Name" %}</th>
+                            <th st-sort="company">{% trans "Company" %}</th>
+                            <th st-sort="money_owed.amount">{% trans "$ Owed" %}</th>
+                            <th st-sort="flags">{% trans "Status" %}</th>
+                        </tr>
+                        </thead>
+                        <tbody ng-include src="'{% static "gallant/html/gl_client_rows.html" %}'">
+                        </tbody>
+                    </table>
                 </div>
-                <div ng-show="showBoard">
-                    <img src="{% static "img/client_kanban_dashboard.png" %}" alt="Kanban mockup"/>
-                </div>
-
             </div>
         </div>
     </div>

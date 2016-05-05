@@ -3,7 +3,7 @@ app = angular.module('calendr.directives.clTaskList', [
     'smart-table',
 ]);
 
-app.directive('clTaskList', ['Task', function (Task) {
+app.directive('clTaskList', ['Task', 'clConstants', function (Task, clConstants) {
     return {
         restrict: 'A',
         scope: {
@@ -12,6 +12,7 @@ app.directive('clTaskList', ['Task', function (Task) {
             editTaskFn: '&',
         },
         controller: ['$scope', function ($scope) {
+            $scope.clConstants = clConstants;
             if (!$scope.tasks) {
                 Task.query().$promise.then(function (response) {
                     $scope.tasks = response;

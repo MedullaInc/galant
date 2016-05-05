@@ -1,5 +1,6 @@
-app = angular.module('calendr.controllers.clCalendrController', [
-    'ui.calendar', 'ui.bootstrap', 'ng.django.forms', 'gallant.directives.glMultiDropdown',
+app = angular.module('calendr.controllers.clCalendrController', ['gallant.services.glServices',
+    'kanban.directives.kbBoardColumn', 'ui.calendar', 'ui.bootstrap',
+    'ng.django.forms', 'gallant.directives.glMultiDropdown',
 ]);
 
 app.controller('clCalendrController', function ($scope, Project, User, Task, $compile, $sce,
@@ -90,6 +91,7 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
         angular.forEach(response, function (task) {
             $scope.tasks.push(convertToFCFormat(task));
         });
+        $scope.tasksLoaded = true;
     });
 
     $scope.updateTask = function (task) {

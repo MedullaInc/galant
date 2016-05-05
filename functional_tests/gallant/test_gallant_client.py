@@ -132,11 +132,9 @@ class GallantClientTest(browser.SignedInTest):
         b.get(self.live_server_url + reverse('add_client'))
 
         browser.wait().until(
-            lambda driver: driver.find_element_by_xpath('//select[@name="client.type"]/option[@value="1"]')
-        ).click()
-        b.find_element_by_name('client.name').send_keys('Kanye West')
+            lambda driver: driver.find_element_by_name('client.name')
+        ).send_keys('Kanye West')
         b.find_element_by_name('client.email').send_keys('kanye@imaletyoufinish.com')
-        b.find_element_by_xpath('//select[@name="client.size"]/option[@value="1"]').click()
         b.find_element_by_xpath('//select[@name="client.status"]/option[@value="1"]').click()
         # b.find_element_by_xpath('//textarea[@name="notes"]').send_keys('asdf')
 
@@ -162,8 +160,6 @@ class GallantClientTest(browser.SignedInTest):
 
         browser.wait().until(lambda driver: driver.find_element_by_name('client.name'))
         b.find_element_by_name('client.name').send_keys('PPPPPPP')
-        b.find_element_by_xpath('//select[@name="client.type"]/option[@value="1"]').click()
-        b.find_element_by_xpath('//select[@name="client.size"]/option[@value="1"]').click()
         b.find_element_by_xpath('//select[@name="client.status"]/option[@value="3"]').click()
         # b.find_element_by_xpath('//textarea[@name="notes"]').send_keys('dddd')
 

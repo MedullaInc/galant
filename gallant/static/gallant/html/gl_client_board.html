@@ -1,0 +1,24 @@
+<div class="container kanban">
+    <div class="row">
+        <div class="kanban-column" kb-board-column title="Potential"
+             items="$parent.clientsSafe" status-index="{{ glConstants.ClientStatus.Potential }}"></div>
+        <div class="kanban-column" kb-board-column title="Quoted"
+             items="clientsSafe" status-index="{{ glConstants.ClientStatus.Quoted }}"></div>
+        <div class="kanban-column" kb-board-column title="Project Underway"
+             items="clientsSafe" status-index="{{ glConstants.ClientStatus.ProjectUnderway }}"></div>
+        <div class="kanban-column" kb-board-column title="Pending Payment"
+             items="clientsSafe" status-index="{{ glConstants.ClientStatus.PendingPayment }}"></div>
+        <div class="kanban-column" kb-board-column title="Closed"
+             items="clientsSafe" status-index="{{ glConstants.ClientStatus.Closed }}"></div>
+    </div>
+    <div class="row" ng-show="!clientsLoaded">
+        <div class="col-lg-12 col-centered">
+            <img src="/static/img/loading.gif">
+        </div>
+    </div>
+    <div class="row" ng-show="clientsLoaded && clientsSafe.length == 0">
+        <div class="col-lg-12 col-centered">
+            No clients yet.
+        </div>
+    </div>
+</div>

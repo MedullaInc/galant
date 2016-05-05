@@ -1,10 +1,13 @@
 app = angular.module('gallant.controllers.glClientListController', ['gallant.services.glServices',
-    'gallant.directives.glAddModal']);
+    'gallant.directives.glAddModal', 'kanban.directives.kbBoardColumn']);
 
-app.controller('glClientListController', ['$scope', '$http', '$window', 'Client',
-    function ($scope, $http, $window, Client) {
+app.controller('glClientListController', ['$scope', '$http', '$window', 'Client', 'glConstants',
+    function ($scope, $http, $window, Client, glConstants) {
+        $scope.glConstants = glConstants;
+
         Client.query().$promise.then(function (clients) {
             $scope.clientsSafe = clients;
+            $scope.clientsLoaded = true;
         });
 
         Client.fields().$promise.then(function (fields) {
