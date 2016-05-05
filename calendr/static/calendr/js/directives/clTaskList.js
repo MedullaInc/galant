@@ -8,6 +8,7 @@ app.directive('clTaskList', ['Task', 'clConstants', function (Task, clConstants)
         restrict: 'A',
         scope: {
             tasks: '=?',
+            tasksLoaded: '=?',
             assignee: '@',
             editTaskFn: '&',
         },
@@ -16,6 +17,7 @@ app.directive('clTaskList', ['Task', 'clConstants', function (Task, clConstants)
             if (!$scope.tasks) {
                 Task.query().$promise.then(function (response) {
                     $scope.tasks = response;
+                    $scope.tasksLoaded = true;
                 });
             }
 

@@ -7,7 +7,7 @@
         <div class="kanban-column" kb-board-column title="Done"
              items="tasks" status-index="{{ clConstants.TaskStatus.Done }}"></div>
     </div>
-    <div class="row" ng-show="!tasksLoaded">
+    <div class="row" ng-show="!$parent.tasksLoaded">
         <div class="col-lg-12 col-centered">
             <img src="/static/img/loading.gif">
         </div>
