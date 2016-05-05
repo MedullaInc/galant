@@ -65,6 +65,7 @@ app.factory('glValidate', function () {
     };
 });
 
+/* istanbul ignore next */
 app.factory('glConstants', function () {
     return {
         ClientStatus: {
