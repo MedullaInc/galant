@@ -359,9 +359,16 @@ class ProjectTest(TransactionTestCase):
         fixture = AutoFixture(g.Project, generate_fk=True, field_values={'status': ProjectStatus.Completed.value})
         project = fixture.create(1)[0]
 
+        client = autofixture.create_one(g.Client, generate_fk=True, field_values={
+            'user': project.user, 'currency': 'USD', 'status': ClientStatus.Quoted.value, 'auto_pipeline': True})
+        quote = autofixture.create_one(q.Quote, generate_fk=True, field_values={
+            'user': project.user, 'client': client, 'services': []})
+        project.quote_set.add(quote)
+
         # Create Project Notes
         fixture = AutoFixture(g.Note, generate_fk=True, field_values={'project', project})
         fixture.create(2)
+        project.save()
 
         # Soft Delete Project
         project.soft_delete()
