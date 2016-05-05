@@ -18,8 +18,8 @@ app.controller('glClientListController', ['$scope', '$http', '$window', 'Client'
             $scope.clientDetailURL = clientDetailURL;
         };
 
-        $scope.redirect = function(clientID) {
-            $window.location.href = $scope.clientDetailURL + clientID;
+        $scope.redirect = function(client) {
+            $window.location.href = $scope.clientDetailURL + client.id;
         };
 
         $scope.updateLastContacted = function(rowIndex) {

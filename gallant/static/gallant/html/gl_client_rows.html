@@ -1,4 +1,4 @@
-<tr ng-repeat="client in clients" ng-click="redirect(client.id)" style="cursor: pointer">
+<tr ng-repeat="client in clients" ng-click="redirect(client)" style="cursor: pointer">
     <td>{{ client.name }}</td>
     <td>{{ client.company }}</td>
     <td>${{ client.money_owed.amount }} {{ client.money_owed.currency }}</td>
