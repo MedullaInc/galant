@@ -28,7 +28,7 @@ class GallantAccountTest(StaticLiveServerTestCase):
 
         b.find_element_by_name('email').send_keys('foo@bar.com')
 
-        b.find_element_by_xpath('//button[@type="submit"]').click()
+        browser.wait().until_click(lambda d: d.find_element_by_xpath('//button[@type="submit"]'))
 
         success_message = b.find_element_by_class_name('alert-success')
         self.assertTrue(u'Registration link sent.' in success_message.text)
