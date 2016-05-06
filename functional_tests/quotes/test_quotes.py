@@ -171,7 +171,7 @@ class QuotesSignedInTest(browser.SignedInTest):
 
         browser.wait().until(lambda driver: driver.find_element_by_id('quote_edit')).click()
         b.find_element_by_id('quote_name').send_keys('Quote test')
-        browser.wait().until(lambda driver: driver.find_element_by_xpath('//select[@name="client"]/option[1]')).click()
+        browser.wait().until_click(lambda driver: driver.find_element_by_xpath('//select[@name="client"]/option[1]'))
 
         b.find_element_by_id('add_service').click()
         b.find_element_by_xpath('//*[@id="service_from_scratch"]').click()
