@@ -182,11 +182,12 @@ class GallantClientTest(browser.SignedInTest):
         c.save()
         b.get(self.live_server_url + reverse('client_detail', args=[c.id]))
         test_string = '2351tlgkjqlwekjalfkj'
+        browser.wait().until(lambda driver: driver.find_element_by_class_name('welcome_box'))
 
         b.find_element_by_xpath('//textarea[@name="note.text"]').send_keys(test_string)
 
         with browser.wait_for_page_load():
-            b.find_element_by_xpath('//button[@type="submit"]').click()
+            b.find_element_by_id('submit_note').click()
 
         notes = browser.wait().until(lambda driver: driver.find_element_by_id('notes'))
 
