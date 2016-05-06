@@ -373,4 +373,3 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
 
     $scope.eventSources = [$scope.tasks];
 });
-g
