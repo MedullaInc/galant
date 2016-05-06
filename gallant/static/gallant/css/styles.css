@@ -2432,6 +2432,11 @@ ul.nav-tabs li a#add_translation_button {
     padding: 0px;
 }
 
+.no-padding-left-right {
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
 .editable-wrap {
     width: 100%;
 }
@@ -2897,6 +2902,14 @@ div.breadcrumbs span {
 /* End Modal Box */
 
 /* CALENDAR */
+
+.fc-cell-text a {
+    color: #999999;
+}
+
+.fc-cell-text a:hover {
+    text-decoration: underline;
+}
 
 .popup-calendr ul.dropdown-menu.ng-pristine.ng-untouched.ng-valid.ng-scope.ng-valid-date-disabled {
     display: none;
@@ -3692,6 +3705,7 @@ button.btn.btn-default.action-button {
     padding: 10px;
     padding-top: 15px;
     padding-bottom: 0px;
+    min-height: 83px;
 }
 
 .container.kanban .kanban-card > .row [class*="col-lg"], .container.kanban > .row [class*="col-md"], .container.kanban > .row [class*="col-sm"] {
@@ -3708,6 +3722,15 @@ button.btn.btn-default.action-button {
     padding-left: 10px;
     line-height: 1.3;
     margin-bottom: 5px;
+}
+
+.kanban-card p a {
+    cursor: pointer;
+    color: #666666;
+}
+
+.kanban-card p a:hover {
+    text-decoration: underline;
 }
 
 .kanban-card .btn.btn-default.btn-alert {
