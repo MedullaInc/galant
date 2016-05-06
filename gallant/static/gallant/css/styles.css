@@ -2250,6 +2250,14 @@ table.table-striped.table-bordered thead th, table.table-striped.table-bordered 
     height: 40px;
 }
 
+.spinner-loading {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50px;
+    height: 50px;
+}
+
 #add_note_form, #form {
     padding-bottom: 20px;
 }
