@@ -134,8 +134,8 @@ class BrowserTest(StaticLiveServerTestCase):
             var w = injector.get('$window');
 
             w.confirm = function() { return true; };
-            w.alert = function() { return true; };
-            w.onbeforeunload = function() { return true; };
+            w.alert = function() {};
+            w.onbeforeunload = function() {};
             elem.scope().$apply();
         ''')
 
