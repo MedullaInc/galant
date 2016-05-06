@@ -1,13 +1,10 @@
 <div class="row">
-    <div class="col-lg-12">
-        <h2 class="section_title">
-            Work Summary <span class="yellow">( Under construction )</span>
-        </h2>
-    </div>
-</div>
-<div class="row">
     <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
         <div class="enclosed chart_box dashboard">
+            <h2 class="chart_title">
+                Clients
+                <span class="pull-right glyphicon glyphicon-question-sign help-tooltip" uib-tooltip="Shows how many people approached you, how many of those were quoted and how many of the quoted became clients." tooltip-placement="top-right"></span>
+            </h2>
             <div class="col-lg-11">
                 <canvas tc-chartjs-polararea chart-options="work_polar_chart_options" chart-data="work_polar_chart_data" auto-legend></canvas>
             </div>
@@ -15,6 +12,10 @@
     </div>
     <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
         <div class="enclosed chart_box dashboard">
+            <h2 class="chart_title">
+                Deliverables
+                <span class="pull-right glyphicon glyphicon-question-sign help-tooltip" uib-tooltip="From all projects you're working on, shows how many deliverables are being worked on, how many are overdue and how many have been completed.." tooltip-placement="top-right"></span>
+            </h2>
             <div class="col-lg-11">
                 <canvas tc-chartjs-doughnut chart-options="work_doughnut_chart_options" chart-data="work_doughnut_chart_data" auto-legend></canvas>
             </div>
@@ -22,6 +23,10 @@
     </div>
     <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
         <div class="enclosed chart_box dashboard">
+            <h2 class="chart_title">
+                Project History
+                <span class="pull-right glyphicon glyphicon-question-sign help-tooltip" uib-tooltip="Shows history of projects per month compared to last period." tooltip-placement="top-right"></span>
+            </h2>
             <div class="col-lg-11">
                 <canvas tc-chartjs-bar chart-options="work_bar_chart_options" chart-data="work_bar_chart_data" auto-legend></canvas>
             </div>

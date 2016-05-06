@@ -3013,7 +3013,12 @@ li.row {
 }
 
 .chart_box.dashboard {
-    min-height: 280px;
+    min-height: 330px;
+}
+
+.chart_box.dashboard h2 {
+    margin-top: 0px;
+    margin-bottom: 25px;
 }
 
 .chart_box.dashboard canvas {
