@@ -47,7 +47,7 @@ describe('glClientListController', function () {
     });
 
     it('generates clientDetail redirect URL', function () {
-        $scope.redirect(4);
+        $scope.redirect({id: 4});
         expect($window.location.href).toEqual(url + '4');
     });
 
