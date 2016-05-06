@@ -16,6 +16,9 @@ describe('glClientListController', function () {
 
                 return Client;
             });
+            $provide.factory('glConstants', function() {
+                return {};
+            });
         });
         module('gallant.controllers.glClientListController', function ($provide) {
             $provide.value('$window', {location: {href: null}});
@@ -44,7 +47,7 @@ describe('glClientListController', function () {
     });
 
     it('generates clientDetail redirect URL', function () {
-        $scope.redirect(4);
+        $scope.redirect({id: 4});
         expect($window.location.href).toEqual(url + '4');
     });
 

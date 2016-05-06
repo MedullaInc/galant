@@ -1,3 +1,4 @@
+from datetime import datetime
 import autofixture
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
@@ -5,13 +6,16 @@ from django.core.urlresolvers import reverse
 from django.test import TransactionTestCase, TestCase
 from django import forms
 from django.utils import timezone
+from django.utils.timezone import get_current_timezone
 from gallant import models as g
 from gallant import fields as gf
 from gallant import forms as gallant_forms
 from briefs import models as b
 from gallant import serializers
 from gallant import views
+from gallant.enums import ClientStatus, ProjectStatus
 from gallant.fields import ULTextDictArray, _ultext_array_to_python, _ultext_to_python
+from gallant.models.client import check_client_payments
 from moneyed.classes import Money
 from quotes import models as q
 from autofixture import AutoFixture
@@ -352,12 +356,19 @@ class ProjectTest(TransactionTestCase):
 
     def test_project_soft_delete(self):
         # Create Project
-        fixture = AutoFixture(g.Project, generate_fk=True)
+        fixture = AutoFixture(g.Project, generate_fk=True, field_values={'status': ProjectStatus.Completed.value})
         project = fixture.create(1)[0]
+
+        client = autofixture.create_one(g.Client, generate_fk=True, field_values={
+            'user': project.user, 'currency': 'USD', 'status': ClientStatus.Quoted.value, 'auto_pipeline': True})
+        quote = autofixture.create_one(q.Quote, generate_fk=True, field_values={
+            'user': project.user, 'client': client, 'services': []})
+        project.quote_set.add(quote)
 
         # Create Project Notes
         fixture = AutoFixture(g.Note, generate_fk=True, field_values={'project', project})
         fixture.create(2)
+        project.save()
 
         # Soft Delete Project
         project.soft_delete()
@@ -469,6 +480,33 @@ class ProjectTest(TransactionTestCase):
 
         project.refresh_from_db()
         self.assertEqual(project.notes.count(), 0)
+
+
+class PaymentTest(TransactionTestCase):
+    def setUp(self):
+        self.user = autofixture.create_one('gallant.GallantUser', generate_fk=True)
+        self.c = autofixture.create_one(g.Client, generate_fk=True, field_values={
+            'user': self.user, 'status': ClientStatus.Pending_Payment.value, 'auto_pipeline': True})
+        self.quote = autofixture.create_one(q.Quote, generate_fk=True, field_values={
+            'user': self.user, 'client': self.c, 'services': []})
+        self.p = autofixture.create_one(g.Payment, generate_fk=True,
+                                        field_values={'user': self.user, 'due': datetime.now(get_current_timezone()),
+                                                      'paid_on': None})
+        self.p.amount = Money(200, self.c.currency)
+        self.p.save()
+        self.quote.payments.add(self.p)
+
+    def test_overdue_alert(self):
+        self.assertEqual(self.c.alert, '$200 USD overdue')
+
+    def test_close(self):
+        self.p.paid_on = datetime.now(get_current_timezone())
+        self.p.save()
+
+        self.c.refresh_from_db()
+
+        self.assertEqual(int(self.c.status), ClientStatus.Closed.value)
+        self.assertEqual(self.c.alert, '')
 
 
 class TestULTextForm(forms.Form):

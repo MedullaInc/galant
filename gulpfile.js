@@ -52,6 +52,7 @@ gulp.task('concat-and-min', function () {
     concatAndMinModule('quotes');
     concatAndMinModule('gallant');
     concatAndMinModule('calendr');
+    concatAndMinModule('kanban');
     return;
 });
 

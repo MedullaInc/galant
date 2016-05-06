@@ -7,6 +7,9 @@ app.factory('Client', function ($resource) {
             method: 'GET',
             url: '/api/client/fields'
         },
+        update: {
+          method: 'PATCH',
+        },
     });
 });
 
@@ -58,6 +61,19 @@ app.factory('glValidate', function () {
             if (condition && (!$data || $data == "")) {
                 return "You must choose a value.";
             }
+        },
+    };
+});
+
+/* istanbul ignore next */
+app.factory('glConstants', function () {
+    return {
+        ClientStatus: {
+            Potential: 0,
+            Quoted: 1,
+            ProjectUnderway: 2,
+            PendingPayment: 3,
+            Closed: 4,
         },
     };
 });

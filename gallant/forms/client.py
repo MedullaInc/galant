@@ -6,7 +6,7 @@ from user import UserModelNgForm
 class ClientForm(UserModelNgForm):
     class Meta:
         model = g.Client
-        fields = ['name', 'email', 'company', 'type', 'size',
+        fields = ['name', 'email', 'company',
                   'status', 'language', 'referred_by']
 
     def __init__(self, *args, **kwargs):

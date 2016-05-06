@@ -2,7 +2,10 @@ from uuid import uuid4
 from django.conf import settings
 from django.db import models as m
 from django.db import transaction
+from django.db.models.signals import post_save
+from django.dispatch.dispatcher import receiver
 from gallant import models as g
+from gallant.enums import ClientStatus
 from gallant.models import UserModelManager
 from quotes import models as q
 from gallant import fields as gf
@@ -101,3 +104,15 @@ class BriefAnswers(g.UserModel):
         )
 
     objects = UserModelManager()
+
+
+@receiver(post_save, sender=Brief)
+def client_brief_answered(sender, instance, **kwargs):
+    if instance.client_id:
+        client = instance.client
+        cstat = int(client.status)
+        bstat = int(instance.status)
+
+        if cstat < ClientStatus.Quoted.value and bstat >= BriefStatus.Answered.value:
+            client.alert = 'Brief Answered'
+            client.save()

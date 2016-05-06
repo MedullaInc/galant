@@ -4,16 +4,20 @@
             <button class="btn btn-default btn-add pull-right" ng-click="editTask()">
                 <span class="glyphicon glyphicon-plus"></span> Add Task
             </button>
-            <button class="btn btn-default btn-add pull-right" id="show_task_board" ng-click="showBoard=true">
+            <button class="btn btn-default btn-add pull-right" id="show_task_board" ng-click="showList=false">
                 <span class="glyphicon glyphicon-th"></span>
             </button>
-            <button class="btn btn-default btn-add pull-right" id="show_task_list" ng-click="showBoard=false">
+            <button class="btn btn-default btn-add pull-right" id="show_task_list" ng-click="showList=true">
                 <span class="glyphicon glyphicon-align-justify"></span>
             </button>
         </div>
     </div>
     <br>
-    <div class="row" ng-hide="showBoard">
+    <div ng-show="!showList">
+        <div ng-include src="'/static/calendr/html/cl_task_board.html'">
+        </div>
+    </div>
+    <div class="row" ng-show="showList">
         <table st-table="tasksTable" st-safe-src="tasks"
                class="table table-striped table-bordered col-lg-12">
             <thead>
@@ -41,9 +45,5 @@
                 </tr>
             </tbody>
         </table>
-    </div>
-
-    <div ng-show="showBoard">
-        <img src="/static/img/task_kanban_dashboard.png" alt="Kanban mockup"/>
     </div>
 </div>
