@@ -3008,6 +3008,10 @@ li.row {
     color: #666666;
 }
 
+.row.dashboard {
+    padding-bottom: 15px;
+}
+
 .chart_box {
     min-height: 500px;
 }
