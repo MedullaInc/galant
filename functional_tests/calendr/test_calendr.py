@@ -68,6 +68,7 @@ class CalendrTest(browser.SignedInTest):
         b = self.browser
 
         b.get(self.live_server_url + reverse('calendr'))
+        browser.wait().until(lambda driver: driver.find_element_by_xpath('//tr[@data-resource-id="1"]'))
         browser.wait().until(lambda driver: driver.find_element_by_id('timelineWeek')).click()
 
         self.assertTrue(browser.wait().until(lambda driver: driver.find_element_by_css_selector('.fc-timelineWeek-view')))

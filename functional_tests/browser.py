@@ -57,6 +57,13 @@ class CustomWait(ui.WebDriverWait):
             save_driver_snapshot(self._driver)
             raise type(ex)(ex.message + 'Wait timed out. Driver snapshot saved to %s.png/txt/html' % SNAP_PREFIX)
 
+    def until_click(self, method, message=''):
+        try:
+            return super(CustomWait, self).until(lambda x: self.until(method).click() is None, message)
+        except TimeoutException, ex:
+            save_driver_snapshot(self._driver)
+            raise type(ex)(ex.message + 'Wait timed out. Driver snapshot saved to %s.png/txt/html' % SNAP_PREFIX)
+
 
 def custom_phantomjs():
     b = CustomPhantomJS(desired_capabilities={'phantomjs.page.settings.resourceTimeout': '5000'})
@@ -134,8 +141,8 @@ class BrowserTest(StaticLiveServerTestCase):
             var w = injector.get('$window');
 
             w.confirm = function() { return true; };
-            w.alert = function() { return true; };
-            w.onbeforeunload = function() { return true; };
+            w.alert = function() {};
+            w.onbeforeunload = function() {};
             elem.scope().$apply();
         ''')
 

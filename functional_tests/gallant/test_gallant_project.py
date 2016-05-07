@@ -16,7 +16,7 @@ class GallantProjectTest(browser.SignedInTest):
 
         b.find_element_by_name('name').send_keys('Branding')
 
-        b.find_element_by_xpath('//button[@type="submit"]').click()
+        browser.wait().until_click(lambda driver: driver.find_element_by_xpath('//button[@type="submit"]'))
 
         success_message = b.find_element_by_class_name('alert-success')
         self.assertTrue(u'Project saved.' in success_message.text)

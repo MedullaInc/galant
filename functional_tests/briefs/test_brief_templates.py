@@ -156,9 +156,12 @@ class BriefTemplatesTest(browser.SignedInTest):
                                     field_values={'brief': brief, 'user': self.user})
 
         b.get(self.live_server_url + reverse('brieftemplate_detail', args=[bt.id]))
-        self.disable_popups()
 
         browser.wait().until(lambda driver: driver.find_element_by_id('question_0'))
+        self.disable_popups()
+        self.disable_angular_popups(b)
+
+        browser.wait().until(lambda driver: driver.find_element_by_id('brief_delete'))
         with browser.wait_for_page_load():
             b.find_element_by_id('brief_delete').click()
 

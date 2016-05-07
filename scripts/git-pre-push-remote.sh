@@ -19,7 +19,7 @@ function run_local() {
 }
 
 trap run_local SIGINT
-if (rsync -avz -e ssh .git/ stg:gallant/.git/); then
+if (rsync -avz -e /usr/bin/ssh .git/ stg:gallant/.git/); then
   echo 'Running remote test / coverage...'
   ssh stg 'cd gallant; ./scripts/test-remote.sh' || exit 1
 else
