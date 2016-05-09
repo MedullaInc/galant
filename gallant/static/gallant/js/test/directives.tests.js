@@ -223,31 +223,16 @@ describe('glProjectList', function () {
         });
 
         it('compiles', function () {
-            expect(element.html().substring(0, 6)).toEqual('<scrip');
-        });
-
-        it('adds project', function () {
-            var $uibModal = $injector.get('$uibModal');
-            spyOn($uibModal, 'open');
-            element.isolateScope().addProject();
-            $scope.$apply();
-            expect($uibModal.open).toHaveBeenCalled();
+            expect(element.html().substring(0, 6)).toEqual('<div c');
         });
 
         it('saves project', function () {
-            element.isolateScope().addProject();
+            element.isolateScope().modalInstance = { dismiss: function() {} };
             spyOn(element.isolateScope().modalInstance, 'dismiss');
+
             element.isolateScope().projectSaved({});
             $scope.$apply();
             expect(element.isolateScope().projects.length).toEqual(2);
-            expect(element.isolateScope().modalInstance.dismiss).toHaveBeenCalled();
-        });
-
-        it('cancels', function () {
-            element.isolateScope().addProject();
-            spyOn(element.isolateScope().modalInstance, 'dismiss');
-            element.isolateScope().cancel();
-            $scope.$apply();
             expect(element.isolateScope().modalInstance.dismiss).toHaveBeenCalled();
         });
 
@@ -291,7 +276,11 @@ describe('glProjectAdd', function () {
             });
         });
 
-        module('gallant.directives.glProjectAdd');
+        module('gallant.directives.glProjectAdd', function ($controllerProvider) {
+            $controllerProvider.register('glFormController', function ($scope) {
+                // Controller Mock
+            });
+        });
 
         module('staticNgTemplates');
 
@@ -304,18 +293,15 @@ describe('glProjectAdd', function () {
         $scope = $rootScope.$new();
     });
 
-    describe('glProjectAdd', function () {
+    var element;
 
-        var element;
+    beforeEach(inject(function () {
+        element = $compile('<div gl-project-add="" project="project" endpoint="endpoint"></div>')($scope);
+        $scope.$digest();
+    }));
 
-        beforeEach(function () {
-            element = $compile('<div gl-project-add="" project="project" endpoint="endpoint"></div>')($scope);
-            $scope.$digest();
-        });
-
-        it('compiles', function () {
-            expect(element.html().substring(0, 6)).toEqual('<div c');
-        });
+    it('compiles', function () {
+        expect(element.html().substring(0, 6)).toEqual('<form ');
     });
 });
 

@@ -31,6 +31,7 @@ describe('CalendrControl', function () {
             $provide.value('$uibModal', {open: function () {}});
             $provide.value('FC', {views: {}});
             $provide.value('moment', {});
+            $provide.value('clConstants', {});
             $provide.value('glAlertService', {
                 add: function (a,b) {
                     return [{type: 'success', msg: 'a'}]
@@ -50,6 +51,7 @@ describe('CalendrControl', function () {
     beforeEach(function () {
         var FC = {views: []};
         $scope = $rootScope.$new();
+        $scope.editTask = function () {};
         $controller('clCalendrController', {$scope: $scope});
         $scope.$apply();
     });
@@ -98,11 +100,10 @@ describe('CalendrControl', function () {
     });
 
     it('alerts on event click', function () {
-        var $uibModal = $injector.get('$uibModal');
-        spyOn($uibModal, 'open');
+        spyOn($scope, 'editTask');
         $scope.alertOnEventClick({id:0, title: 'bar'});
         $scope.$apply();
-        expect($uibModal.open).toHaveBeenCalled();
+        expect($scope.editTask).toHaveBeenCalled();
     });
 
     it('removes event', function () {
@@ -132,5 +133,11 @@ describe('CalendrControl', function () {
         spyOn(uiCalendarConfig.calendars.myCalendar1, 'fullCalendar');
         $scope.renderCalendar('myCalendar1');
         expect(uiCalendarConfig.calendars.myCalendar1.fullCalendar).toHaveBeenCalled();
+    });
+
+    it('saves task', function () {
+        $scope.modalInstance = { dismiss: function () {} };
+        $scope.taskSaved({});
+        expect($scope.tasks.length).toEqual(1);
     });
 });

@@ -21,21 +21,8 @@ app.directive('glProjectList', ['$window', '$uibModal', 'Project', function ($wi
         }],
         templateUrl: '/static/gallant/html/gl_project_list.html',
         link: function ($scope) {
-            $scope.addProject = function () {
-                $scope.modalInstance = $uibModal.open({
-                    scope: $scope,
-                    animation: true,
-                    templateUrl: 'addProjectModal.html',
-                });
-                return 0;
-            };
-
             $scope.projectSaved = function (project) {
                 $scope.projects.push(project);
-                $scope.modalInstance.dismiss('cancel');
-            };
-
-            $scope.cancel = function () {
                 $scope.modalInstance.dismiss('cancel');
             };
 
