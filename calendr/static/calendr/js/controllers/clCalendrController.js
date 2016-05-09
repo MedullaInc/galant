@@ -4,7 +4,8 @@ app = angular.module('calendr.controllers.clCalendrController', ['gallant.servic
 ]);
 
 app.controller('clCalendrController', function ($scope, Project, User, Task, $compile, $sce,
-                                                $timeout, uiCalendarConfig, $uibModal, $filter, FC, moment, glAlertService) {
+                                                $timeout, uiCalendarConfig, $uibModal, $filter, FC, moment, glAlertService, clConstants) {
+    $scope.clConstants = clConstants;
     var date = new Date();
     var d = date.getDate();
     var m = date.getMonth();

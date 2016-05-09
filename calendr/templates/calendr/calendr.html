@@ -71,9 +71,15 @@
                         <br/>
 
                         <div class="btn-group date-buttons">
-                            <button id="timelineWeek" class="btn btn-default" ng-click="changeView('timelineWeek', 'myCalendar1')">Week</button>
-                            <button id="timelineMonth" class="btn btn-default" ng-click="changeView('timelineMonth', 'myCalendar1')">Month</button>
-                            <button id="timelineThreeMonths" class="btn btn-default" ng-click="changeView('timelineThreeMonths', 'myCalendar1')">3 Months</button>
+                            <button id="timelineWeek" class="btn btn-default"
+                                    ng-click="changeView('timelineWeek', 'myCalendar1')">Week
+                            </button>
+                            <button id="timelineMonth" class="btn btn-default"
+                                    ng-click="changeView('timelineMonth', 'myCalendar1')">Month
+                            </button>
+                            <button id="timelineThreeMonths" class="btn btn-default"
+                                    ng-click="changeView('timelineThreeMonths', 'myCalendar1')">3 Months
+                            </button>
                         </div>
                     </div>
 
@@ -82,9 +88,13 @@
                         <br/>
 
                         <p class="input-group popup-calendr" id="popup-calendr">
-                            <input id="id_date" class="form-control" type="text" uib-datepicker-popup="MM.dd.yyyy" ng-model="dt" is-open="status.opened" min-date="minDate" max-date="maxDate" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" ng-change="gotoDate(dt)"/>
+                            <input id="id_date" class="form-control" type="text" uib-datepicker-popup="MM.dd.yyyy"
+                                   ng-model="dt" is-open="status.opened" min-date="minDate" max-date="maxDate"
+                                   datepicker-options="dateOptions" date-disabled="disabled(date, mode)"
+                                   ng-required="true" close-text="Close" ng-change="gotoDate(dt)"/>
                             <span class="input-group-btn">
-                                <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                <button type="button" class="btn btn-default" ng-click="open($event)"><i
+                                        class="glyphicon glyphicon-calendar"></i></button>
                             </span>
                         </p>
 
@@ -92,7 +102,8 @@
                 </div>
 
                 <div class="row calendar_container">
-                    <div class="col-lg-12" class="calendar" ng-model="eventSources" resources="eventResources" calendar="myCalendar1" ui-calendar="uiConfig.calendar">
+                    <div class="col-lg-12" class="calendar" ng-model="eventSources" resources="eventResources"
+                         calendar="myCalendar1" ui-calendar="uiConfig.calendar">
                     </div>
                 </div>
 
@@ -101,8 +112,36 @@
         <br>
         <uib-tabset active="active">
             <uib-tab index="0" heading="My Tasks">
-                <div cl-task-list tasks="tasks" tasks-loaded="tasksLoaded"
-                     assignee="{{ user.id }}" edit-task-fn="openEditModal"></div>
+                <div class="col-lg-12">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div gl-add-modal open-fn="editTask" title="Task" modal-instance="modalInstance">
+                                <div cl-task-add on-success="taskSaved" task="object"
+                                     current-user-id="currentUserId" projects="projects" users="users"></div>
+                            </div>
+                            <button class="btn btn-default btn-add pull-right" ng-click="editTask()">
+                                <span class="glyphicon glyphicon-plus"></span> Add Task
+                            </button>
+                            <button class="btn btn-default btn-add pull-right" id="show_task_board"
+                                    ng-click="showList=false">
+                                <span class="glyphicon glyphicon-th"></span>
+                            </button>
+                            <button class="btn btn-default btn-add pull-right" id="show_task_list"
+                                    ng-click="showList=true">
+                                <span class="glyphicon glyphicon-align-justify"></span>
+                            </button>
+                        </div>
+                    </div>
+                    <br>
+                    <div ng-show="!showList">
+                        <div ng-include src="'/static/calendr/html/cl_task_board.html'">
+                        </div>
+                    </div>
+                    <div class="row" ng-show="showList">
+                        <div cl-task-list tasks="tasks" tasks-loaded="tasksLoaded"
+                             assignee="{{ user.id }}" edit-task-fn="editTask"></div>
+                    </div>
+                </div>
             </uib-tab>
             <uib-tab index="1" heading="Projects">
                 <div gl-project-list projects="projects"></div>

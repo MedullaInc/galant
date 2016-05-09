@@ -22,7 +22,7 @@ app.directive('glAddModal', ['$uibModal', function ($uibModal) {
             title: '@',
         },
         controller: ['$scope', '$transclude', function ($scope, $transclude) {
-            $scope.openFn = function() {
+            $scope.openFn = function(object) {
                 /* istanbul ignore next */
                 $scope.modalInstance = $uibModal.open({
                     scope: $scope,
@@ -35,8 +35,9 @@ app.directive('glAddModal', ['$uibModal', function ($uibModal) {
                         content: function () {
                             var transcludedContent;
 
-                            $transclude(function (clone) {
+                            $transclude(function (clone, $scope) {
                                 transcludedContent = clone;
+                                $scope.object = object;
                             });
 
                             return transcludedContent;
