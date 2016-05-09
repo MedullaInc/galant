@@ -1,0 +1,82 @@
+<form ng-controller="glFormController" ng-init="init('', null, taskSaved)" novalidate>
+    <div class="row form-group">
+        <div class="col-lg-3">
+            <label>Task Title</label>
+        </div>
+        <div class="col-lg-9">
+            <input type="text" placeholder="Task Title" ng-model="task.name" class="form-control"/>
+        </div>
+    </div>
+    <div class="row form-group">
+        <div class="col-lg-3">
+            <label>Project</label>
+        </div>
+        <div class="col-lg-9">
+            <select ng-model="task.project" class="form-control" ng-change="projectChanged(task.project)"
+                    ng-options="project.id as project.name for project in projects">
+                <option value="" style="display: none;">Select Project...</option>
+            </select>
+        </div>
+    </div>
+    <div gl-multi-dropdown elements="task.services" available-elements="availableServices"
+         element-display-name="Service"></div>
+    <div class="row form-group">
+        <div class="col-lg-3">
+            <label>Assignee</label>
+        </div>
+        <div class="col-lg-9">
+            <select ng-model="task.assignee" class="form-control" ng-options="user.id as user.email for user in users">
+            </select>
+        </div>
+    </div>
+    <div class="row form-group">
+        <div class="col-lg-3">
+            <label>Task Start</label>
+        </div>
+        <div class="col-lg-9">
+            <div class="input-group popup-calendr">
+                <input type="text" class="form-control" uib-datepicker-popup="MM.dd.yyyy" ng-model="task.start" is-open="start_date_opened" ng-required="true" close-text="Close"/>
+                <span class="input-group-btn">
+                <button type="button" class="btn btn-default  mini-calendar" ng-click="openStartDatePicker()">
+                    <i class="glyphicon glyphicon-calendar"></i></button>
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="row form-group">
+        <div class="col-lg-3">
+            <label>Task End</label>
+        </div>
+        <div class="col-lg-9">
+            <div class="input-group popup-calendr">
+                <input type="text" class="form-control" uib-datepicker-popup="MM.dd.yyyy" ng-model="task.end" is-open="end_date_opened" ng-required="true" close-text="Close"/>
+                <span class="input-group-btn">
+                <button type="button" class="btn btn-default mini-calendar" ng-click="openEndDatePicker()">
+                    <i class="glyphicon glyphicon-calendar"></i></button>
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="row form-group">
+        <div class="col-lg-3">
+            <label>Daily Hr Estimate</label>
+            <span style="font-size: 16px;" class="glyphicon glyphicon-question-sign help-tooltip" uib-tooltip="How many hours per day will be dedicated to this specific task over the course of its duration." tooltip-placement="top-right"></span>
+        </div>
+        <div class="col-lg-9">
+            <input type="number" ng-model="task.daily_estimate" class="form-control"/>
+        </div>
+    </div>
+    <div class="row form-group">
+        <div class="col-lg-12">
+            <button type="button" class="delete btn btn-default pull-right btn-submit"
+                    ng-click="deleteTask(task)" ng-hide="!task.id">
+                Delete Task
+            </button>
+            <button class="btn btn-default pull-right btn-submit" ng-click="submitForm()">
+                Save
+            </button>
+            <br/>
+            <br/>
+        </div>
+    </div>
+</form>

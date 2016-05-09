@@ -1,4 +1,6 @@
 app = angular.module('calendr.directives.clTaskList', [
+    'gallant.directives.glAddModal',
+    'calendr.directives.clTaskAdd',
     'calendr.services.clServices',
     'smart-table',
 ]);
