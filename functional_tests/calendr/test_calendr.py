@@ -54,7 +54,7 @@ class CalendrTest(browser.SignedInTest):
         browser.wait().until(lambda driver: driver.find_element_by_css_selector('.fc-event'))
         b.find_element_by_css_selector('.fc-event').click()
 
-        submit_task = b.find_element_by_css_selector('#submitTask')
+        submit_task = b.find_element_by_css_selector('#submit_task')
         self.assertTrue(submit_task)
 
     def test_can_edit_project(self):
