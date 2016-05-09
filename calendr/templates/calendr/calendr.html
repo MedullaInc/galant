@@ -31,31 +31,6 @@
 
 {% block extra_wrapper_attrs %} ng-app="gallant" {% endblock %}
 
-{% block extra_head %}
-    {{ block.super }}
-    <div id="add_task" class="modal fade" role="dialog">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h2 class="section_title">Add Task</h2>
-
-                    <p>Add a new task.</p>
-                </div>
-                <div class="modal-body" style="height: 500px; overflow: auto;">
-                    <button id="add_task_button" type="button" class="btn btn-default sidebar">Add
-                    </button>
-                </div>
-                <div class="modal-footer">
-                </div>
-            </div>
-        </div>
-    </div>
-{% endblock %}
-
-{% block sub_header %}
-{% endblock %}
-
 {% block content_div %}
     <div id="calendr" ng-controller="clCalendrController" ng-init="init({{ user.id }})">
         <div id="calendar_container">
@@ -110,15 +85,15 @@
             </section>
         </div>
         <br>
+        <div gl-add-modal open-fn="editTask" title="Task" modal-instance="modalInstance">
+            <div cl-task-add on-success="taskSaved" task="object"
+                 current-user-id="currentUserId" projects="projects" users="users"></div>
+        </div>
         <uib-tabset active="active">
             <uib-tab index="0" heading="My Tasks">
                 <div class="col-lg-12">
                     <div class="row">
                         <div class="col-lg-12">
-                            <div gl-add-modal open-fn="editTask" title="Task" modal-instance="modalInstance">
-                                <div cl-task-add on-success="taskSaved" task="object"
-                                     current-user-id="currentUserId" projects="projects" users="users"></div>
-                            </div>
                             <button class="btn btn-default btn-add pull-right" ng-click="editTask()">
                                 <span class="glyphicon glyphicon-plus"></span> Add Task
                             </button>

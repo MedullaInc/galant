@@ -37,7 +37,7 @@ app.directive('clTaskAdd', ['$window', 'Task', function ($window, Task) {
                 $scope.task.end = new Date();
             }
 
-            if ($scope.projects[0].services.length) {
+            if ($scope.projects.length && $scope.projects[0].services.length) {
                 $scope.availableServices = $scope.projects[0].services;
             }
 
