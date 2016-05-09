@@ -1,34 +1,37 @@
-<div class="row form-group">
-    <div class="col-lg-3">
-        <label>Project Name</label>
+<form ng-controller="glFormController" ng-init="init('', null, projectSaved)" novalidate>
+    <div class="row form-group">
+        <div class="col-lg-3">
+            <label>Project Name</label>
+        </div>
+        <div class="col-lg-9">
+            <input type="text" placeholder="Project Title" ng-model="project.name" class="form-control" id="id_name" name="name" required>
+            <div gl-form-errors error-field="project.errors.name"></div>
+        </div>
     </div>
-    <div class="col-lg-9">
-        <input type="text" placeholder="Project Title" ng-model="project.name" class="form-control" id="id_name" name="name" required>
-    </div>
-</div>
 
-<div gl-multi-dropdown elements="project.quotes" available-elements="quotes"
-     element-display-name="Quote"></div>
+    <div gl-multi-dropdown elements="project.quotes" available-elements="quotes"
+         element-display-name="Quote"></div>
 
-<div class="row form-group">
-    <div class="col-lg-3">
-        <label>Status</label>
+    <div class="row form-group">
+        <div class="col-lg-3">
+            <label>Status</label>
+        </div>
+        <div class="col-lg-9">
+            <select class=" form-control" id="id_status" name="status" ng-model="project.status"
+                    ng-options="key as val for (key, val) in statusChoices">
+                <option value="" style="display: none;">Select Status...</option>
+            </select>
+        </div>
     </div>
-    <div class="col-lg-9">
-        <select class=" form-control" id="id_status" name="status" ng-model="project.status"
-                ng-options="key as val for (key, val) in statusChoices" required>
-            <option value="" style="display: none;">Select Status...</option>
-        </select>
-    </div>
-</div>
 
-<div class="row form-group">
-    <div class="col-lg-12">
-        <button class="btn btn-default pull-right btn-submit" ng-click="submitForm()">
-            Save
-        </button>
-        <br/>
-        <br/>
-        <br/>
+    <div class="row form-group">
+        <div class="col-lg-12">
+            <button class="btn btn-default pull-right btn-submit" ng-click="submitForm()">
+                Save
+            </button>
+            <br/>
+            <br/>
+            <br/>
+        </div>
     </div>
-</div>
+</form>

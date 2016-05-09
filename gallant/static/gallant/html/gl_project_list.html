@@ -1,25 +1,9 @@
-<script type="text/ng-template" id="addProjectModal.html">
-
-    <div class="modal-header" id="calendar_modal">
-        <button type="button" class="close" data-dismiss="modal" ng-click="cancel()">&times;</button>
-        <h2 class="section_title">Add Project</h2>
-    </div>
-    <div class="modal-body" id="modal_form">
-        <form>
-            <div class="modal-body">
-                <div ng-controller="glFormController" ng-init="init('', null, projectSaved)">
-                    <div gl-project-add project="object" endpoint="objectEndpoint"
-                         submit="submitForm" projects="projects"></div>
-                </div>
-            </div>
-        </form>
-    </div>
-
-</script>
-
 <div class="col-lg-12">
 
     <div class="row">
+        <div gl-add-modal open-fn="addProject" title="Add Project" modal-instance="modalInstance">
+            <div gl-project-add on-success="projectSaved"></div>
+        </div>
         <div class="col-lg-12">
             <button class="btn btn-default btn-add pull-right" ng-click="addProject()">
                 <span class="glyphicon glyphicon-plus"></span> Add Project

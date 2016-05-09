@@ -1,10 +1,11 @@
 app = angular.module('calendr.controllers.clCalendrController', ['gallant.services.glServices',
-    'kanban.directives.kbBoardColumn', 'ui.calendar', 'ui.bootstrap',
+    'kanban.directives.kbBoardColumn', 'ui.calendar',
     'ng.django.forms', 'gallant.directives.glMultiDropdown',
 ]);
 
 app.controller('clCalendrController', function ($scope, Project, User, Task, $compile, $sce,
-                                                $timeout, uiCalendarConfig, $uibModal, $filter, FC, moment, glAlertService) {
+                                                $timeout, uiCalendarConfig, $filter, FC, moment, glAlertService, clConstants) {
+    $scope.clConstants = clConstants;
     var date = new Date();
     var d = date.getDate();
     var m = date.getMonth();
@@ -12,7 +13,7 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
 
     $scope.init = function (currentUserId) {
         $scope.currentUserId = currentUserId
-    }
+    };
 
     FC.views.timelineThreeMonths = {
         type: 'timeline',
@@ -105,7 +106,17 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
         }, function (error) {
             glAlertService.add('danger', error.data);
         });
-    }
+    };
+
+    $scope.taskSaved = function (task) {
+        var idx = $scope.tasks.findIndex(function (t) { return t.id == task.id; });
+        if (~idx)
+            $scope.tasks[idx] = convertToFCFormat(task);
+        else
+            $scope.tasks.push(convertToFCFormat(task));
+
+        $scope.modalInstance.dismiss('cancel');
+    };
 
     /* Retrieve all Tasks from API service */
     $scope.getProjects = function () {
@@ -140,140 +151,7 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
     /* istanbul ignore next */
     $scope.openEditModalandgotoDate = function (task) {
         $scope.gotoDate(task.start);
-        $scope.openEditModal(task);
-    };
-
-    /* Open edit Modal */
-    /* istanbul ignore next */
-    $scope.openEditModal = function (task, date) {
-        $scope.task = task;
-        $uibModal.open({
-            templateUrl: '/static/calendr/html/calendar_modal.html',
-            backdrop: true,
-            windowClass: 'modal',
-            controller: function ($scope, $uibModalInstance, $log, task, tasks, users, projects, updateTask, gotoDate, currentUserId) {
-                $scope.task = task || {
-                        assignee: currentUserId,
-                        daily_estimate: 0,
-                    };
-
-                // Date pickers
-                $scope.openStartDatePicker = function () {
-                    $scope.start_date_opened = true;
-                };
-
-                $scope.openEndDatePicker = function () {
-                    $scope.end_date_opened = true;
-                };
-
-                if ($scope.task.start) {
-                    $scope.task.start = new Date($scope.task.start);
-                } else {
-                    $scope.task.start = new Date();
-                }
-
-                if ($scope.task.end) {
-                    $scope.task.end = new Date($scope.task.end);
-                } else {
-                    $scope.task.end = new Date();
-                }
-
-                if (!$scope.task.services)
-                    $scope.task.services = [];
-                $scope.tasks = tasks;
-                $scope.users = users;
-                $scope.projects = projects;
-
-                if ($scope.projects[0].services.length) {
-                    $scope.availableServices = $scope.projects[0].services;
-                }
-
-                $scope.updateTask = updateTask;
-                $scope.gotoDate = gotoDate;
-
-                $scope.project = $scope.projects.find(function (p) {
-                    return p.id == $scope.task.projectId
-                });
-
-                if ($scope.project && $scope.project.services.length) {
-                    $scope.availableServices = $scope.project.services;
-                }
-
-                $scope.submit = function (task) {
-                    $uibModalInstance.dismiss('cancel');
-                    // var found = $filter('filter')($scope.events, {id: $scope.event.id}, true)
-                    if (task.id) {
-                        Task.update({id: task.id}, task).$promise.then(function (response) {
-                            var idx = $scope.tasks.findIndex(function (t) {
-                                return t.id == task.id
-                            });
-                            if (~idx)
-                                $scope.tasks[idx] = convertToFCFormat(response);
-                            glAlertService.add('success', 'Task ' + task.name + ' updated.');
-                        }, function (error) {
-                            glAlertService.add('danger', error.data);
-                        });
-                    } else {
-                        Task.save(task).$promise.then(function (response) {
-                            $scope.tasks.push(convertToFCFormat(response));
-                            glAlertService.add('success', 'Task ' + task.name + ' created.');
-                        }, function (error) {
-                            glAlertService.add('danger', error.data);
-                        });
-                    }
-                    $scope.gotoDate(task.start);
-                };
-
-                $scope.cancel = function () {
-                    $uibModalInstance.dismiss('cancel');
-                };
-
-                $scope.deleteTask = function (task) {
-                    if (confirm('Are you sure you want to permanently delete this task?')) {
-                        Task.delete({id: task.id}).$promise.then(function (response) {
-                            var index = $scope.tasks.indexOf(task);
-                            $scope.tasks.splice(index, 1);
-                            $uibModalInstance.dismiss('cancel');
-                        });
-                    }
-
-                };
-
-                $scope.projectChanged = function (projectId) {
-                    $scope.project = $scope.projects.find(function (p) {
-                        return p.id == projectId
-                    });
-                    if ($scope.project && $scope.project.services)
-                        $scope.availableServices = $scope.project.services;
-                    else
-                        $scope.availableServices = [];
-                    $scope.task.services = [];
-                };
-            },
-            resolve: {
-                gotoDate: function () {
-                    return $scope.gotoDate;
-                },
-                task: function () {
-                    return $scope.task;
-                },
-                tasks: function () {
-                    return $scope.tasks;
-                },
-                updateTask: function () {
-                    return $scope.updateTask;
-                },
-                projects: function () {
-                    return $scope.projects;
-                },
-                users: function () {
-                    return $scope.users;
-                },
-                currentUserId: function () {
-                    return $scope.currentUserId;
-                },
-            }
-        });
+        $scope.editTask(task);
     };
 
     /* event triggered on project change */
@@ -291,7 +169,7 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
 
     /* alert on eventClick */
     $scope.alertOnEventClick = function (task, jsEvent, view) {
-        $scope.openEditModal(convertFromFCFormat(task), $scope.projects);
+        $scope.editTask(convertFromFCFormat(task));
     };
     /* Event fired on day click */
     /* Deprecated use select instead */
@@ -336,7 +214,7 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
             end: end
         };
 
-        $scope.openEditModal(convertFromFCFormat(task));
+        $scope.editTask(convertFromFCFormat(task));
         uiCalendarConfig.calendars.myCalendar1.fullCalendar('unselect');
     };
 
