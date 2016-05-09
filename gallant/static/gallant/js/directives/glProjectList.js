@@ -2,6 +2,7 @@ app = angular.module('gallant.directives.glProjectList', [
     'ui.bootstrap',
     'smart-table',
     'gallant.services.glServices',
+    'gallant.directives.glAddModal',
     'gallant.directives.glProjectAdd',
 ]);
 
