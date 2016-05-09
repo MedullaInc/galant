@@ -1,6 +1,7 @@
 from django.core.urlresolvers import reverse
 from django.db.models.query import Prefetch
 from django.utils import timezone
+from gallant.serializers.gallant_user import ContactInfoSerializer
 from moneyed.classes import Money
 from rest_framework import serializers
 from gallant import models as g
@@ -8,7 +9,7 @@ from gallant import models as g
 
 class ClientSerializer(serializers.ModelSerializer):
     user = serializers.PrimaryKeyRelatedField(read_only=True)
-    contact_info = serializers.PrimaryKeyRelatedField(read_only=True)
+    contact_info = ContactInfoSerializer()
     money_owed = serializers.SerializerMethodField()
     flags = serializers.SerializerMethodField()
     link = serializers.SerializerMethodField()

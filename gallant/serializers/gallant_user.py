@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+from gallant.models.gallant_user import ContactInfo
 from rest_framework import serializers
 
 
@@ -8,3 +9,9 @@ class UserModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = get_user_model()
         fields = ('id', 'email', 'name', 'contact_info')
+
+
+class ContactInfoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ContactInfo
+        fields = ('id', 'phone_number', 'address', 'address_2', 'city', 'state', 'zip', 'country')
