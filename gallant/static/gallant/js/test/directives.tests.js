@@ -358,7 +358,7 @@ describe('glClientAdd', function () {
     });
 
     it('compiles', function () {
-        expect(element.html().substring(0, 6)).toEqual('<div n');
+        expect(element.html().substring(0, 6)).toEqual('<form ');
     });
 });
 

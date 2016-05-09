@@ -10,6 +10,18 @@ app.directive('glRequiredErrors', function () {
     };
 });
 
+app.directive('glFormErrors', function () {
+    return {
+        restrict: 'A',
+        scope: {
+            errorField: '=',
+        },
+        template: '<ul class="djng-field-errors" ng-repeat="error in errorField">' +
+                  '  <li>{{ error }}</li>' +
+                  '</ul>',
+    };
+});
+
 app.directive('glUltextInput', function () {
     return {
         restrict: 'A',

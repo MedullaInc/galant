@@ -2583,6 +2583,10 @@ span.error {
     color: #ff0000;
 }
 
+.ng-submitted .ng-invalid {
+    border-color: red !important;
+}
+
 /* End Form Errors*/
 
 /* Notices */
