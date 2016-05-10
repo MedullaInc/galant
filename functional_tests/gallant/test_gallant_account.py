@@ -26,7 +26,7 @@ class GallantAccountTest(StaticLiveServerTestCase):
 
         b.get(self.live_server_url + reverse('add_account'))
 
-        b.find_element_by_name('email').send_keys('foo@bar.com')
+        browser.wait().until(lambda d: d.find_element_by_name('email')).send_keys('foo@bar.com')
 
         browser.wait().until_click(lambda d: d.find_element_by_xpath('//button[@type="submit"]'))
 
