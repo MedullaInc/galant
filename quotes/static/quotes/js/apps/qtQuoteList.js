@@ -23,7 +23,7 @@ app.config(["$resourceProvider",function ($resourceProvider) {
 
     // put your defaults here
     update : {
-      method : "PUT",
+      method : "PATCH",
       isArray : false,
     }
 

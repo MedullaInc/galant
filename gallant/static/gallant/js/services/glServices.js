@@ -23,6 +23,12 @@ app.factory('Payment', function ($resource) {
     return $resource('/en/quote/api/payment/:id');
 });
 
+
+/* istanbul ignore next */
+app.factory('Service', function ($resource) {
+    return $resource('/api/service/:id');
+});
+
 /* istanbul ignore next  */
 app.factory('Project', function ($resource) {
     return $resource('/api/project/:id', {}, {
@@ -74,6 +80,13 @@ app.factory('glConstants', function () {
             ProjectUnderway: 2,
             PendingPayment: 3,
             Closed: 4,
+        },
+        ServiceStatus: {
+            OnHold: 0,
+            PendingAssignment: 1,
+            Active: 2,
+            Overdue: 3,
+            Completed: 4,
         },
     };
 });

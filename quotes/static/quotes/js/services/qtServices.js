@@ -96,7 +96,7 @@ app.factory('qtConstants', function () {
     return {
         QuoteStatus: {
 			Draft: 0,
-			Not_Sent: 1,
+			NotSent: 1,
 			Sent: 2,
 			Viewed: 3,
 			Superseded: 4,

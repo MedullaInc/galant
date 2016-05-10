@@ -118,7 +118,7 @@ def service_detail(request, *args, **kwargs):
 def service_fields_json(request):
     return JsonResponse(get_field_choices(g.Service), safe=False)
 
-@permission_classes((AllowAny, ))
+
 class ServiceDetailAPI(generics.RetrieveUpdateAPIView):
     model = g.Service
     serializer_class = serializers.ServiceSerializer
@@ -133,7 +133,7 @@ class ServiceDetailAPI(generics.RetrieveUpdateAPIView):
         else:
             return self.model.objects.all_for(self.request.user)
 
-@permission_classes((AllowAny, ))
+
 class ServiceAPI(ModelViewSet):
     model = g.Service
     serializer_class = serializers.ServiceSerializer
@@ -145,8 +145,13 @@ class ServiceAPI(ModelViewSet):
         quoteTemplates_qs = q.QuoteTemplate.objects.all_for(self.request.user).values_list('quote_id', flat=True)
         quotes_qs = q.Quote.objects.filter(pk__in=quoteTemplates_qs)
         client_id = self.request.query_params.get('client_id', None)
+        project_id = self.request.query_params.get('project_id', None)
+
+        qs = self.model.objects.all_for(self.request.user)
 
         if client_id:
-            return self.model.objects.all_for(self.request.user).filter(quote__client_id=client_id)
+            return qs.filter(quote__client_id=client_id)
+        elif project_id:
+            return qs.filter(quote__projects__in=[project_id])
         else:
-            return self.model.objects.all_for(self.request.user).filter(quote__in=quotes_qs)
+            return qs.filter(quote__in=quotes_qs)

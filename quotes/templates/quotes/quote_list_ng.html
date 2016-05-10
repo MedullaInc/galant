@@ -19,6 +19,14 @@
     <script src="{% static "js/kanban.js" %}"></script>
 {% endblock %}
 
+{% block css %}
+    {{ block.super }}
+
+    <link rel="stylesheet" href="{% static "css/ng-sortable.style.min.css" %}">
+    <link rel="stylesheet" href="{% static "css/ng-sortable.min.css" %}">
+
+{% endblock %}
+
 {% block section_title %}
     {% trans "Quotes" %}
 {% endblock %}

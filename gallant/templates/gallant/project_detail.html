@@ -11,12 +11,24 @@
     <script src="{% static "js/angular-resource.js" %}"></script>
     <script src="{% static "js/ui-bootstrap-tpls.js" %}"></script>
     <script src="{% static "djng/js/django-angular.min.js" %}"></script>
+    <script src="{% static "js/ng-sortable.js" %}"></script>
     <script src="{% static "js/gallant.js" %}"></script>
+    <script src="{% static "js/kanban.js" %}"></script>
+{% endblock %}
+
+{% block css %}
+    {{ block.super }}
+
+    <link rel="stylesheet" href="{% static "css/ng-sortable.style.min.css" %}">
+    <link rel="stylesheet" href="{% static "css/ng-sortable.min.css" %}">
+
 {% endblock %}
 
 {% block extra_wrapper_attrs %} ng-app="glProjectDetail" {% endblock %}
 
 {% block content %}
+<div ng-controller="glProjectDetailController"
+     ng-init="init('{% url 'service_detail' object.id %}', {{ object.id }})">
     <div class="row">
         <div class="col-lg-10 col-md-10 col-sm-9 col-xs-9">
             <h2 class="section_title">{{ object.name }}</h2>
@@ -49,7 +61,8 @@
     <hr>
 
     <h2 class="section_title">Deliverables</h2>
-    <img src="{% static "img/deliverables_kanban_dashboard.png" %}" alt="Kanban mockup"/>
+    <div ng-include src="'{% static "gallant/html/gl_service_board.html" %}'">
+    </div>
     <hr>
     {% for service in services %}
         <div id="{{ section.name }}">
@@ -147,4 +160,5 @@
             {% include "gallant/add_note.html" %}
         </div>
     </div>
+</div>
 {% endblock %}
