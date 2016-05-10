@@ -16,6 +16,7 @@
     <script src="{% static "djng/js/django-angular.min.js" %}"></script>
     <script src="{% static "js/gallant.js" %}"></script>
     <script src="{% static "js/quotes.js" %}"></script>
+    <script src="{% static "js/kanban.js" %}"></script>
 {% endblock %}
 
 {% block section_title %}
@@ -24,56 +25,67 @@
 
 {% block content %}
 
-    <div class="row">
-        {% if client %}
-            <div class="col-lg-6">
-                <h2 class="center_title">
-                    {{ client }}
-                </h2>
-                <br/>
-            </div>
-        {% endif %}
-        <div class="{% if client %}col-lg-6{% else %}col-lg-12 margin-bottom-20{% endif %}">
-            <div ng-controller="qtPopoverController"
-                 ng-init="init('{% url 'add_quote' %}', '{% firstof language LANGUAGE_CODE %}')">
-                <a>
-                    <button popover-placement="bottom" uib-popover-template="dynamicPopover.templateUrl" type="button" class="btn btn-default btn-add action-button pull-right" popover-trigger="focus">{% trans "Add New Quote" %}</button>
-                </a>
-
-                <a href="{% url 'quotetemplates' %}">
-                    <button type="button" class="btn btn-default btn-add action-button pull-right">
-                        {% trans "Templates" %}
-                    </button>
-                </a>
-            </div>
-
+    <div ng-controller="qtQuoteListController"
+         ng-init="init('{% url 'quote_detail' %}', '{% firstof language LANGUAGE_CODE %}', {% firstof client.id 'null' %})">
+        <div class="row">
             {% if client %}
-
-                <div class="btn-group pull-right">
-                    <button type="button" class="btn btn-default action-button dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="margin-top: 0px;">
-                        Client Sections<span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu action-button">
-                        {% url 'client_detail' client.id as client_detail %}
-                        <li><a href="{{ client_detail }}">Client Overview</a></li>
-                        {% url 'client_work_detail' client.id as client_work_detail %}
-                        <li><a href="{{ client_work_detail }}">Client Work</a></li>
-                        {% url 'client_money_detail' client.id as client_money_detail %}
-                        <li><a href="{{ client_money_detail }}">Client Money</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="{% url 'briefs' %}?client_id={{ client.id }}">Client Briefs</a></li>
-                        <li><a href="{% url 'quotes' %}?client_id={{ client.id }}">Client Quotes</a></li>
-                    </ul>
+                <div class="col-lg-6">
+                    <h2 class="center_title">
+                        {{ client }}
+                    </h2>
+                    <br/>
+                </div>
+            {% endif %}
+            <div class="{% if client %}col-lg-6{% else %}col-lg-12 margin-bottom-20{% endif %}">
+                <div ng-controller="qtPopoverController"
+                     ng-init="init('{% url 'add_quote' %}', '{% firstof language LANGUAGE_CODE %}')">
+                    <a>
+                        <button popover-placement="bottom" uib-popover-template="dynamicPopover.templateUrl" type="button" class="btn btn-default btn-add action-button pull-right" popover-trigger="focus">{% trans "Add New Quote" %}</button>
+                    </a>
                 </div>
 
-            {% endif %}
+                    <a href="{% url 'quotetemplates' %}">
+                        <button type="button" class="btn btn-default btn-add action-button pull-right">
+                            {% trans "Templates" %}
+                        </button>
+                    </a>
+                    <button class="btn btn-default btn-add pull-right" id="show_quote_board"
+                            ng-click="showList=false">
+                        <span class="glyphicon glyphicon-th"></span>
+                    </button>
+                    <button class="btn btn-default btn-add pull-right" id="show_task_list"
+                            ng-click="showList=true">
+                        <span class="glyphicon glyphicon-align-justify"></span>
+                    </button>
+
+                {% if client %}
+
+                    <div class="btn-group pull-right">
+                        <button type="button" class="btn btn-default action-button dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="margin-top: 0px;">
+                            Client Sections<span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu action-button">
+                            {% url 'client_detail' client.id as client_detail %}
+                            <li><a href="{{ client_detail }}">Client Overview</a></li>
+                            {% url 'client_work_detail' client.id as client_work_detail %}
+                            <li><a href="{{ client_work_detail }}">Client Work</a></li>
+                            {% url 'client_money_detail' client.id as client_money_detail %}
+                            <li><a href="{{ client_money_detail }}">Client Money</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="{% url 'briefs' %}?client_id={{ client.id }}">Client Briefs</a></li>
+                            <li><a href="{% url 'quotes' %}?client_id={{ client.id }}">Client Quotes</a></li>
+                        </ul>
+                    </div>
+
+                {% endif %}
+            </div>
         </div>
-    </div>
 
-    <div ng-controller="qtQuoteListController">
-    <div ng-init="init('{% url 'quote_detail' %}', '{% firstof language LANGUAGE_CODE %}', {% firstof client.id 'null' %})">
-
-        <div class="row">
+        <div ng-show="!showList">
+            <div ng-include src="'/static/quotes/html/qt_quote_board.html'">
+            </div>
+        </div>
+        <div class="row" ng-show="showList">
 
             <div class="col-lg-12">
 
@@ -107,7 +119,7 @@
 
         </div>
 
-    </div>
+    </>
 {% endblock %}
 
 {% block extra_body %}

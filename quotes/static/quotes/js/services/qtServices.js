@@ -91,4 +91,17 @@ app.factory("QuoteTemplate", function ($resource) {
 
 });
 
-
+/* istanbul ignore next */
+app.factory('qtConstants', function () {
+    return {
+        QuoteStatus: {
+			Draft: 0,
+			Not_Sent: 1,
+			Sent: 2,
+			Viewed: 3,
+			Superseded: 4,
+			Accepted: 5,
+			Rejected: 6,
+        },
+    };
+});

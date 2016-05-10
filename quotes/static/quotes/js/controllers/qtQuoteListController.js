@@ -1,7 +1,9 @@
-app = angular.module('quotes.controllers.qtQuoteListController', ['quotes.services.qtServices', 'gallant.services.glServices', 'ngAnimate']);
+app = angular.module('quotes.controllers.qtQuoteListController', ['quotes.services.qtServices', 'gallant.services.glServices', 'ngAnimate', 'kanban.directives.kbBoardColumn']);
 
-app.controller('qtQuoteListController', ['$scope', '$http', '$window', '$rootScope', 'Quote', 'QuoteTemplate', 'Client',
-    function($scope, $http, $window, $rootScope, Quote, QuoteTemplate) {
+app.controller('qtQuoteListController', ['$scope', '$http', '$window', '$rootScope',
+    'Quote', 'QuoteTemplate', 'qtConstants',
+    function($scope, $http, $window, $rootScope, Quote, QuoteTemplate, qtConstants) {
+        $scope.qtConstants = qtConstants;
         $scope.quoteStatus = [];
         $scope.clients = [];
         
@@ -13,6 +15,7 @@ app.controller('qtQuoteListController', ['$scope', '$http', '$window', '$rootSco
 
             Quote.query(options).$promise.then(function(quotes) {
                 $scope.quotesSafe = quotes;
+                $scope.quotesLoaded = true;
             });
         };
 
