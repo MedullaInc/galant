@@ -1,22 +1,13 @@
-var app = angular.module('quote', [
+var app = angular.module('qtQuoteList', [
     'ngResource',
     'ngAnimate',
     'smart-table',
     'ui.bootstrap',
-    'xeditable',
-    'gallant.controllers.glFormController',
-    'gallant.controllers.glProjectEditController',
+    'quotes.controllers.qtQuoteListController',
+    'quotes.controllers.qtQuoteTemplateListController',
     'quotes.controllers.qtPopoverController',
-    'quotes.directives.qtForm',
-    'quotes.directives.qtClientForm',
     'gallant.directives.glAlerts',
-    'gallant.directives.glProjectAdd',
 ]);
-
-/* istanbul ignore next */
-app.run(function(editableOptions) {
-  editableOptions.theme = 'bs3'; // bootstrap3 theme. Can be also 'bs2', 'default'
-});
 
 /* istanbul ignore next */
 app.config(function ($httpProvider) {
