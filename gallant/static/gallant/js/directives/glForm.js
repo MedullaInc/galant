@@ -142,6 +142,8 @@ app.constant('LANGUAGES', [
     {'code': 'zh-hant', 'name': 'Traditional Chinese'},
 ]);
 
+app.constant('COUNTRIES', [
+]);
 
 app.directive('glLanguageForm', ['LANGUAGES', function (LANGUAGES) {
     return {

@@ -21,15 +21,6 @@
 
     <div class="row form-group">
         <div class="col-lg-3">
-            <label>Company</label>
-        </div>
-        <div class="col-lg-9">
-            <input type="text" ng-model="client.company" class="form-control" id="id_name" name="name">
-        </div>
-    </div>
-
-    <div class="row form-group">
-        <div class="col-lg-3">
             <label>Language</label>
         </div>
         <div class="col-lg-9">
@@ -38,6 +29,88 @@
                 <option value="" style="display: none">Select Language...</option>
             </select>
             <div gl-form-errors error-field="client.errors.language"></div>
+        </div>
+    </div>
+
+    <div class="row form-group">
+        <div class="col-lg-4">
+            <p ng-click="showContact = !showContact" style="text-decoration: underline; cursor: pointer">
+                {{ showContact ? '-' : '+' }} Contact Info
+            </p>
+        </div>
+    </div>
+    
+    <div ng-show="showContact">
+        <div class="row form-group">
+            <div class="col-lg-3">
+                <label>Company</label>
+            </div>
+            <div class="col-lg-9">
+                <input type="text" ng-model="client.company" class="form-control" id="id_name" name="name">
+            </div>
+        </div>
+
+        <div class="row form-group">
+            <div class="col-lg-3">
+                <label>Phone</label>
+            </div>
+            <div class="col-lg-9">
+                <input type="text" ng-model="client.contact_info.phone" class="form-control" id="id_phone">
+            </div>
+        </div>
+
+        <div class="row form-group">
+            <div class="col-lg-3">
+                <label>Address</label>
+            </div>
+            <div class="col-lg-9">
+                <input type="text" ng-model="client.contact_info.address" class="form-control" id="id_address">
+            </div>
+        </div>
+        
+        <div class="row form-group">
+            <div class="col-lg-3">
+                <label>Address 2</label>
+            </div>
+            <div class="col-lg-9">
+                <input type="text" ng-model="client.contact_info.address_2" class="form-control" id="id_address_2">
+            </div>
+        </div>
+        
+        <div class="row form-group">
+            <div class="col-lg-3">
+                <label>City</label>
+            </div>
+            <div class="col-lg-9">
+                <input type="text" ng-model="client.contact_info.city" class="form-control" id="id_city">
+            </div>
+        </div>
+        
+        <div class="row form-group">
+            <div class="col-lg-3">
+                <label>State</label>
+            </div>
+            <div class="col-lg-9">
+                <input type="text" ng-model="client.contact_info.state" class="form-control" id="id_state">
+            </div>
+        </div>
+        
+        <div class="row form-group">
+            <div class="col-lg-3">
+                <label>Zip</label>
+            </div>
+            <div class="col-lg-9">
+                <input type="text" ng-model="client.contact_info.zip" class="form-control" id="id_zip">
+            </div>
+        </div>
+
+        <div class="row form-group">
+            <div class="col-lg-3">
+                <label>Country</label>
+            </div>
+            <div class="col-lg-9">
+                <country-select class="form-control" ng-model="client.contact_info.country"></country-select>
+            </div>
         </div>
     </div>
 

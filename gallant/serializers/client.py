@@ -64,4 +64,36 @@ class ClientSerializer(serializers.ModelSerializer):
             user = self.context.get("user")
 
         validated_data.update({'user': user})
-        return super(ClientSerializer, self).create(validated_data)
+        contact_info = validated_data.pop('contact_info', None)
+        instance = super(ClientSerializer, self).create(validated_data)
+
+        contact_info.update({'user': self.context['request'].user})
+        cs = ContactInfoSerializer(data=contact_info)
+        c = cs.create(contact_info)
+        instance.contact_info = c
+        instance.save()
+
+        return instance
+
+    def update(self, validated_data):
+        if self.context.has_key('request'):
+            user = self.context['request'].user
+        else:
+            user = self.context.get("user")
+
+        contact_info = validated_data.pop('contact_info', None)
+        instance = super(ClientSerializer, self).update(validated_data)
+
+        contact_info_id = contact_info.get('id', None)
+        if contact_info_id:
+            c_instance = g.ContactInfo.objects.get_for(user, 'change', pk=contact_info_id)
+            cs = ContactInfoSerializer(data=contact_info, instance=c_instance)
+            cs.update(c_instance, contact_info)
+        else:
+            contact_info.update({'user': self.context['request'].user})
+            cs = ContactInfoSerializer(data=contact_info)
+            c = cs.create(contact_info)
+            instance.contact_info = c
+            instance.save()
+
+        return instance

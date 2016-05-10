@@ -15,16 +15,6 @@ from gallant import fields as gf
 from django_countries.fields import CountryField
 
 
-class ContactInfo(m.Model):
-    phone_number = m.CharField(validators=[gf.PHONE_REGEX], max_length=20, blank=True)
-    address = m.CharField(max_length=255, blank=True)
-    address_2 = m.CharField(max_length=255, blank=True)
-    city = m.CharField(max_length=127, blank=True)
-    state = m.CharField(max_length=127, blank=True)
-    zip = m.CharField(validators=[gf.ZIP_REGEX], max_length=12, blank=True)
-    country = CountryField(default='US')
-
-
 class GalantUserManager(EmailUserManager):
     def create_user(self, email, password=None, **extra_fields):
         user = super(GalantUserManager, self).create_user(email, password, **extra_fields)
@@ -42,7 +32,14 @@ class GallantUser(AbstractEmailUser):
     name = m.CharField(max_length=255)
     company_name = m.CharField(max_length=255, blank=True)
     currency = m.CharField(max_length=3, choices=CURRENCY_CHOICES, default='USD',)
-    contact_info = m.ForeignKey(ContactInfo, null=True)
+
+    phone_number = m.CharField(validators=[gf.PHONE_REGEX], max_length=20, blank=True)
+    address = m.CharField(max_length=255, blank=True)
+    address_2 = m.CharField(max_length=255, blank=True)
+    city = m.CharField(max_length=127, blank=True)
+    state = m.CharField(max_length=127, blank=True)
+    zip = m.CharField(validators=[gf.ZIP_REGEX], max_length=12, blank=True)
+    country = CountryField(default='US')
 
     """
     To allow multiple users from a same agency access to the same objects, use the management
@@ -188,3 +185,22 @@ class PolyUserModelManager(UserManagerMethodsMixin, PolymorphicManager):
 
         return chain(user_obj_query, group_obj_query)
 
+
+class ContactInfo(UserModel):
+    phone_number = m.CharField(validators=[gf.PHONE_REGEX], max_length=20, blank=True)
+    address = m.CharField(max_length=255, blank=True)
+    address_2 = m.CharField(max_length=255, blank=True)
+    city = m.CharField(max_length=127, blank=True)
+    state = m.CharField(max_length=127, blank=True)
+    zip = m.CharField(validators=[gf.ZIP_REGEX], max_length=12, blank=True)
+    country = CountryField(default='US')
+
+    def __unicode__(self):
+        return self.address
+
+    class Meta:
+        permissions = (
+            ('view_contact_info', 'View contact info'),
+        )
+
+    objects = UserModelManager()

@@ -3,6 +3,7 @@ app = angular.module('gallant.directives.glClientAdd', [
     'gallant.services.glServices',
     'gallant.controllers.glFormController',
     'gallant.directives.glForm',
+    'countrySelect',
 ]);
 
 app.directive('glClientAdd', ['$window', 'Client', 'LANGUAGES', 'glConstants',

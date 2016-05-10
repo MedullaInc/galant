@@ -256,6 +256,7 @@ describe('glProjectAdd', function () {
     var $scope;
 
     beforeEach(function () {
+        angular.module('countrySelect', []);
         module('gallant.services.glServices', function ($provide) {
             $provide.factory('Project', function ($q) {
                 var Project = function () {
