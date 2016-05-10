@@ -8,21 +8,30 @@ app.controller('glClientListController', ['$scope', '$http', '$window', 'Client'
         Client.query().$promise.then(function (clients) {
             $scope.clientsSafe = clients;
             $scope.clientsLoaded = true;
+
+            angular.forEach(clients, function (client) {
+                if ( client.company ) {
+                    client.kanban_card_description = client.company;
+                } else {
+                    client.kanban_card_description = "Personal";
+                }
+            });
+
         });
 
         Client.fields().$promise.then(function (fields) {
             $scope.clientFields = fields;
         });
 
-        $scope.init = function(clientDetailURL) {
+        $scope.init = function (clientDetailURL) {
             $scope.clientDetailURL = clientDetailURL;
         };
 
-        $scope.redirect = function(client) {
+        $scope.redirect = function (client) {
             $window.location.href = $scope.clientDetailURL + client.id;
         };
 
-        $scope.updateLastContacted = function(rowIndex) {
+        $scope.updateLastContacted = function (rowIndex) {
             var client = $scope.clients[rowIndex];
             var last_contacted = (new Date()).toISOString();
             Client.update({id: client.id, last_contacted: last_contacted})
