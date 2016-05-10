@@ -3,8 +3,8 @@
         {{ title }}
     </div>
 
-    <div data-as-sortable="dragControlListeners" data-ng-model="items" class="receiving-element">
-        <div class="kanban-card" data-ng-repeat="item in filterItems()"
+    <div data-as-sortable="dragControlListeners" data-ng-model="itemsSafe" class="receiving-element">
+        <div class="kanban-card" data-ng-repeat="item in itemsSafe"
              data-as-sortable-item>
             <div data-as-sortable-item-handle>
                 <div class="row">
