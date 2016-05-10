@@ -81,7 +81,9 @@ describe('glProjectDetailController', function () {
             $provide.factory('Service', function ($q) {
                 var Service = jasmine.createSpyObj('Service', ['query']);
 
-                Service.query.and.returnValue({$promise: $q.when([{id: 0, last_contacted: null}])});
+                Service.query.and.returnValue({$promise: $q.when([
+                    {id: 0, name: {}, description: {}, language: 'en'}
+                ])});
 
                 return Service;
             });

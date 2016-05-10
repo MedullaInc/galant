@@ -64,63 +64,6 @@
     <div ng-include src="'{% static "gallant/html/gl_service_board.html" %}'">
     </div>
     <hr>
-    {% for service in services %}
-        <div id="{{ section.name }}">
-            <div>
-                <div class="row">
-                    <div class="col-lg-12">
-                        <a href="{% url 'service_detail' object.id service.id %}">
-                            <h2 class="section_subtitle service_name pull-left">
-                                {{ service.name.get_text }}
-                            </h2>
-                            <span class="pull-left glyphicon glyphicon-question-sign help-tooltip margin-left-10" uib-tooltip="Click on the service to go to its detail description. You will also be able to add notes for specific follow-ups." tooltip-placement="top-right"></span>
-                        </a>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-2 col-md-2 col-sm-4 col-xs-4">
-                        <p>
-                            Type:
-                        </p>
-                    </div>
-                    <div class="col-lg-10 col-md-10 col-sm-8 col-xs-8">
-                        <p class="service_type">
-                            {{ service.get_type_display }}
-                        </p>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-2 col-md-2 col-sm-4 col-xs-4">
-                        <p>
-                            Description:
-                        </p>
-                    </div>
-                    <div class="col-lg-10 col-md-10 col-sm-8 col-xs-8">
-                        <p class="service_description">
-                            {{ service.description.get_text|linebreaks }}
-                        </p>
-                    </div>
-                </div>
-
-                <div class="row service_notes">
-                    <div class="col-lg-10 col-lg-offset-2">
-                        <hr>
-                        <p>{% trans "Deliverable Notes" %}:</p>
-                        <hr>
-                    </div>
-                </div>
-                <div class="row service_notes">
-                    <div class="col-lg-10 col-lg-offset-2">
-                        {% objects_for service.notes as notes %}
-                        {% for item in notes %}
-                            {% include "gallant/note.html" %}
-                        {% endfor %}
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    {% endfor %}
 
     {% if brief in briefs %}
 
