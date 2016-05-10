@@ -6,6 +6,9 @@ class KanbanCardSerializer(serializers.ModelSerializer):
     class Meta:
         model = k.KanbanCard
         fields = ('id', 'user', 'title', 'text', 'link', 'xindex', 'yindex', 'alert')
+        extra_kwargs = {
+            'id': {'read_only': False, 'required': False}
+        }
 
     def create(self, validated_data):
         if self.context.has_key('request'):

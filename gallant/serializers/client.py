@@ -97,22 +97,22 @@ class ClientSerializer(serializers.ModelSerializer):
 
         if contact_info and 'id' in contact_info:
             c_instance = g.ContactInfo.objects.get_for(user, 'change', pk=contact_info['id'])
-            cs = ContactInfoSerializer(data=contact_info, instance=c_instance)
+            cs = ContactInfoSerializer(data=contact_info, instance=c_instance, context=self.context)
             cs.update(c_instance, contact_info)
         elif contact_info:
             contact_info.update({'user': self.context['request'].user})
-            cs = ContactInfoSerializer(data=contact_info)
+            cs = ContactInfoSerializer(data=contact_info, context=self.context)
             c = cs.create(contact_info)
             instance.contact_info = c
             instance.save()
 
         if card and 'id' in card:
             c_instance = k.KanbanCard.objects.get_for(user, 'change', pk=card['id'])
-            cs = ks.KanbanCardSerializer(data=card, instance=c_instance)
+            cs = ks.KanbanCardSerializer(data=card, instance=c_instance, context=self.context)
             cs.update(c_instance, card)
         elif card:
             card.update({'user': self.context['request'].user})
-            cs = ks.KanbanCardSerializer(data=card)
+            cs = ks.KanbanCardSerializer(data=card, context=self.context)
             c = cs.create(card)
             instance.card = c
             instance.save()

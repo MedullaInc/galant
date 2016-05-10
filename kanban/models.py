@@ -15,6 +15,13 @@ class KanbanCard(g.UserModel):
     yindex = m.IntegerField(blank=True, default=0)
     alert = m.CharField(max_length=63, blank=True, default='')
 
+    class Meta:
+        permissions = (
+            ('view_service', 'View service'),
+        )
+
+    objects = g.UserModelManager()
+
 
 @receiver(pre_save, sender=g.Service)
 def update_service_card(sender, instance, **kwargs):
