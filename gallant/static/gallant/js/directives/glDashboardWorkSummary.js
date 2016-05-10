@@ -73,13 +73,13 @@ app.directive('glDashboardWorkSummary', ['$window', 'Client', 'ClientProjects', 
                     ClientProjects.query({id: client.id}).$promise.then(function (response) {
                         angular.forEach(response, function (project) {
                             // If project is not completed
-                            if (project.status != 4) {
+                            if (project.status != "4") {
                                 angular.forEach(project.services, function (service) {
-                                    $scope.service_on_hold += service.status == 0 ? 1 : 0;
-                                    $scope.service_pending_assignment += service.status == 1 ? 1 : 0;
-                                    $scope.service_active += service.status == 2 ? 1 : 0;
-                                    $scope.service_overdue += service.status == 3 ? 1 : 0;
-                                    $scope.service_completed += service.status == 4 ? 1 : 0;
+                                    $scope.service_on_hold += service.status == "0" ? 1 : 0;
+                                    $scope.service_pending_assignment += service.status == "1" ? 1 : 0;
+                                    $scope.service_active += service.status == "2" ? 1 : 0;
+                                    $scope.service_overdue += service.status == "3" ? 1 : 0;
+                                    $scope.service_completed += service.status == "4" ? 1 : 0;
                                 });
                             }
                         });

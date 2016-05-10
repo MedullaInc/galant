@@ -88,7 +88,7 @@
 
         <div class="container">
             <div gl-add-modal open-fn="editTask" title="Task" modal-instance="modalInstance">
-                <div cl-task-add on-success="taskSaved" task="object"
+                <div cl-task-add on-success="taskSaved" on-deleted="taskDeleted" task="object"
                      current-user-id="currentUserId" projects="projects" users="users"></div>
             </div>
             <uib-tabset active="active">

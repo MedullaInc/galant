@@ -14,6 +14,7 @@ app.directive('clTaskAdd', ['$window', 'Task', function ($window, Task) {
             projects: '=?',
             assignee: '@',
             onSuccess: '&',
+            onDeleted: '&',
         },
         controller: ['$scope', function ($scope) {
             if (!$scope.task) {
@@ -64,6 +65,8 @@ app.directive('clTaskAdd', ['$window', 'Task', function ($window, Task) {
             $scope.object = $scope.task;
 
             $scope.taskSaved = $scope.onSuccess();
+            $scope.deleteTask = $scope.onDeleted();
+
         }],
         templateUrl: '/static/calendr/html/cl_task_add.html',
         link: function ($scope) {

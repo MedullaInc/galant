@@ -118,6 +118,17 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
         $scope.modalInstance.dismiss('cancel');
     };
 
+    $scope.taskDeleted = function (event) {
+        if (confirm('Are you sure you want to permanently delete this task?')) {
+            Task.delete({id: event.id}).$promise.then(function (response) {
+                var index = $scope.tasks.indexOf(event);
+                $scope.tasks.splice(index, 1);
+                $scope.modalInstance.dismiss('cancel');
+            });
+        }
+
+    };
+
     /* Retrieve all Tasks from API service */
     $scope.getProjects = function () {
         Project.query().$promise.then(function (response) {
