@@ -31,9 +31,6 @@ app.factory("Quote", function ($resource) {
           method: 'GET',
           url: '/en/quote/api/quote/fields/ '
         },
-        update: {
-          method: 'PUT',
-        },
         updateUser: {
           method: 'PATCH',
           url: '/en/quote/api/quote_client/:token',
@@ -51,10 +48,6 @@ app.factory("Service", function ($resource) {
             method: 'GET',
 			url: '/api/service/fields'
         },
-        update: {
-          method: 'PATCH',
-          url: '/api/service/:id?user=:user',
-        },
 	});
 
 });
@@ -62,12 +55,7 @@ app.factory("Service", function ($resource) {
 /* istanbul ignore next  */
 app.factory("Section", function ($resource) {
 	//
-	return $resource("/en/quote/api/section ", {}, {
-        update: {
-          method: 'PATCH',
-          url: '/en/quote/api/section/:id?user=:user',
-        },
-	});
+	return $resource("/en/quote/api/section/:id");
 
 });
 
@@ -96,7 +84,7 @@ app.factory('qtConstants', function () {
     return {
         QuoteStatus: {
 			Draft: 0,
-			Not_Sent: 1,
+			NotSent: 1,
 			Sent: 2,
 			Viewed: 3,
 			Superseded: 4,

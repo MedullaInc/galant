@@ -69,6 +69,63 @@ describe('glClientListController', function () {
     });
 });
 
+describe('glProjectDetailController', function () {
+    var $rootScope;
+    var $controller;
+    var $window;
+    var url = 'about:blank';
+
+    beforeEach(function () {
+        angular.module('gallant.services.glServices', []);
+        module('gallant.services.glServices', function ($provide) {
+            $provide.factory('Service', function ($q) {
+                var Service = jasmine.createSpyObj('Service', ['query']);
+
+                Service.query.and.returnValue({$promise: $q.when([
+                    {id: 0, name: {}, description: {}, language: 'en'}
+                ])});
+
+                return Service;
+            });
+            $provide.factory('glConstants', function() {
+                return {};
+            });
+        });
+        module('gallant.controllers.glProjectDetailController', function ($provide) {
+            $provide.value('$window', {location: {href: null}});
+        });
+
+        inject(function (_$rootScope_, _$controller_, _$window_) {
+            // The injector unwraps the underscores (_) from around the parameter names when matching
+            $rootScope = _$rootScope_;
+            $controller = _$controller_;
+            $window = _$window_;
+        });
+    });
+
+    var $scope;
+
+    beforeEach(function () {
+        $scope = $rootScope.$new();
+        $controller('glProjectDetailController', {$scope: $scope});
+        $scope.init(url, 1);
+        $rootScope.$apply();
+    });
+
+    it('sets serviceDetailURL', function () {
+        expect($scope.serviceDetailURL).toEqual(url);
+    });
+
+    it('generates serviceDetail redirect URL', function () {
+        $scope.redirect({id: 4});
+        expect($window.location.href).toEqual(url + '4');
+    });
+
+    it('gets service list', function () {
+        expect($scope.services.length).toEqual(1);
+    });
+});
+
 describe('glFormController', function () {
     var $rootScope;
     var $controller;

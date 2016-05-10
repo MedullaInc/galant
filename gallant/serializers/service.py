@@ -1,3 +1,4 @@
+from django.utils.translation import get_language
 from gallant.serializers.misc import ULTextField
 from rest_framework import serializers
 from gallant.models import Service
@@ -7,16 +8,24 @@ from gallant.serializers.misc import MoneyField
 class ServiceSerializer(serializers.ModelSerializer):
     name = ULTextField()
     description = ULTextField()
+    language = serializers.SerializerMethodField()
     cost = MoneyField()
     notes = serializers.CharField(read_only=True)
     views = serializers.IntegerField(required=False, allow_null=True)
 
     class Meta:
         model = Service
-        fields = ('id', 'user', 'name', 'description', 'cost', 'quantity', 'type', 'parent', 'notes', 'views', 'index', 'status')
+        fields = ('id', 'user', 'name', 'description', 'cost', 'quantity', 'type',
+                  'parent', 'notes', 'views', 'index', 'status', 'language')
         extra_kwargs = {
             'id': {'read_only': False, 'required': False}
         }
+
+    def get_language(self, service):
+        try:
+            return service.quote_set.all_for(service.user)[0].language or get_language()
+        except (IndexError, KeyError), ex:
+            return get_language()
 
     def create(self, validated_data):
         validated_data.pop('id', None)
