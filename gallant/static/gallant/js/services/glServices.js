@@ -7,9 +7,6 @@ app.factory('Client', function ($resource) {
             method: 'GET',
             url: '/api/client/fields'
         },
-        update: {
-          method: 'PATCH',
-        },
     });
 });
 

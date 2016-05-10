@@ -20,7 +20,6 @@ app.config(function ($httpProvider) {
 app.config(["$resourceProvider",function ($resourceProvider) {
   // extend the default actions
   angular.extend($resourceProvider.defaults.actions,{
-
     // put your defaults here
     update : {
       method : "PATCH",

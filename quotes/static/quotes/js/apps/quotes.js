@@ -26,15 +26,14 @@ app.config(function ($httpProvider) {
 });
 
 /* istanbul ignore next */
-app.config(["$resourceProvider",function ($resourceProvider) {
-  // extend the default actions
-  angular.extend($resourceProvider.defaults.actions,{
+app.config(["$resourceProvider", function ($resourceProvider) {
+    // extend the default actions
+    angular.extend($resourceProvider.defaults.actions, {
+        // put your defaults here
+        update: {
+            method: "PATCH",
+            isArray: false,
+        }
 
-    // put your defaults here
-    update : {
-      method : "PUT",
-      isArray : false,
-    }
-
-  });
+    });
 }]);
