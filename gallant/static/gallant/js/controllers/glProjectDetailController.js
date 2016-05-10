@@ -8,7 +8,12 @@ app.controller('glProjectDetailController', ['$scope', '$http', '$window', 'Serv
         $scope.init = function(serviceDetailURL, projectId) {
             $scope.serviceDetailURL = serviceDetailURL;
             Service.query({project_id: projectId}).$promise.then(function (services) {
-                $scope.services = services;
+                $scope.services = [];
+                angular.forEach(services, function (s) {
+                    s.name = s.name[s.language];
+                    s.description = s.description[s.language];
+                    $scope.services.push(s);
+                });
             });
         };
 
