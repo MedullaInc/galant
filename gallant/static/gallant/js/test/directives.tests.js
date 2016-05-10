@@ -227,7 +227,10 @@ describe('glProjectList', function () {
         });
 
         it('saves project', function () {
-            element.isolateScope().modalInstance = { dismiss: function() {} };
+            element.isolateScope().modalInstance = {
+                dismiss: function () {
+                }
+            };
             spyOn(element.isolateScope().modalInstance, 'dismiss');
 
             element.isolateScope().projectSaved({});
@@ -320,7 +323,9 @@ describe('glClientAdd', function () {
                 };
                 return Client;
             });
-            $provide.factory('glConstants', function () { return { ClientStatus: { Potential: 0} }; });
+            $provide.factory('glConstants', function () {
+                return {ClientStatus: {Potential: 0}};
+            });
         });
 
         module('gallant.directives.glClientAdd');
@@ -359,7 +364,10 @@ describe('glAddModal', function () {
             $provide.factory('$uibModal', function () {
                 return {
                     open: function () {
-                        return { dismiss: function () {} };
+                        return {
+                            dismiss: function () {
+                            }
+                        };
                     }
                 }
             });
@@ -560,6 +568,26 @@ describe('glDashboardWorkSummary', function () {
 
         angular.mock.module('gallant.directives.glDashboardWorkSummary');
         angular.mock.module('staticNgTemplates');
+
+        module('gallant.services.glServices', function ($provide) {
+            $provide.factory('Client', function ($q) {
+                var Client = function () {
+                };
+                Client.query = function () {
+                    return {$promise: $q.when([{status:0},{status:1},{status:2}])};
+                };
+                return Client;
+            });
+
+            $provide.factory('ClientProjects', function ($q) {
+                var ClientProjects = [];
+                ClientProjects.query = function () {
+                    return {$promise: $q.when([{services: [{status: 0},{status: 1},{status: 2},{status: 3},{status: 4}]}])};
+                };
+                return ClientProjects;
+            });
+        });
+
         angular.module('tc.chartjs', []);
 
         angular.mock.inject(function (_$rootScope_, _$compile_) {
@@ -595,6 +623,25 @@ describe('glDashboardMoneySummary', function () {
 
         angular.mock.module('gallant.directives.glDashboardMoneySummary');
         angular.mock.module('staticNgTemplates');
+
+        angular.mock.module('gallant.services.glServices', function ($provide) {
+            $provide.factory('Payment', function ($q) {
+                var Payment = jasmine.createSpyObj('Payment', ['query']);
+                Payment.query.and.returnValue({
+                    $promise: $q.when([{
+                        paid_on: new Date(),
+                        amount: {amount: 1.0}
+                    }, {paid_on: null, due: new Date() + 10, amount: {amount: 1.0}}, {
+                        paid_on: null,
+                        due: new Date() - 10,
+                        amount: {amount: 1.0}
+                    }])
+                });
+
+                return Payment;
+            });
+        });
+
         angular.module('tc.chartjs', []);
 
         angular.mock.inject(function (_$rootScope_, _$compile_) {
