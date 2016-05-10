@@ -21,13 +21,14 @@ class Client(UserModel):
 
     status = m.CharField(max_length=2, choices=ClientStatus.choices())
     auto_pipeline = m.BooleanField(default=True)
-    alert = m.CharField(max_length=63, blank=True, default='')
 
     language = m.CharField(max_length=7, choices=settings.LANGUAGES)
     currency = m.CharField(max_length=3, choices=CURRENCY_CHOICES, default='USD',)
     last_contacted = m.DateTimeField(null=True, blank=True)
 
     referred_by = m.CharField(max_length=3, choices=ClientReferral.choices(), blank=True)
+
+    card = m.ForeignKey('kanban.KanbanCard', null=True)
 
     notes = m.ManyToManyField(Note)
 
@@ -67,7 +68,7 @@ def check_client_payments(client):
     if client.auto_pipeline and cstat == ClientStatus.Project_Underway.value:
         client.status = ClientStatus.Pending_Payment.value
         cstat = client.status
-        client.alert = ''
+        client.card.alert = ''
         client.save()
 
     if cstat == ClientStatus.Pending_Payment.value:
@@ -89,12 +90,12 @@ def set_client_payment_alert(client, user):
     overdue = val['amount']
 
     if overdue and overdue > 0:
-        client.alert = '$%d %s overdue' % (overdue, client.currency)
+        client.card.alert = '$%d %s overdue' % (overdue, client.currency)
     else:
-        client.alert = ''
+        client.card.alert = ''
 
 
 def check_payments_and_close(client, user):
     if Payment.objects.all_for(user).filter(paid_on__isnull=True, quote__client=client).count() == 0:
         client.status = ClientStatus.Closed.value
-        client.alert = ''
+        client.card.alert = ''

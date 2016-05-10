@@ -120,16 +120,17 @@ def client_quoted(sender, instance, **kwargs):
         if client.auto_pipeline and cstat < ClientStatus.Quoted.value and qstat >= QuoteStatus.Sent.value:
             client.status = ClientStatus.Quoted.value
             cstat = client.status
-            client.alert = ''
+            client.card.alert = ''
+            client.card.save()
             client.save()
 
         if cstat == ClientStatus.Quoted.value:
             if qstat == QuoteStatus.Rejected.value:
-                client.alert = 'Quote Rejected'
-                client.save()
+                client.card.alert = 'Quote Rejected'
+                client.card.save()
             elif qstat == QuoteStatus.Accepted.value:
-                client.alert = 'Quote Accepted'
-                client.save()
+                client.card.alert = 'Quote Accepted'
+                client.card.save()
 
 
 @receiver(m2m_changed, sender=Quote.payments.through)

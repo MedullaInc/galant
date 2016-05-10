@@ -1,5 +1,7 @@
 from django.db import models as m
 from django.db import transaction
+from django.db.models.signals import post_save
+from django.dispatch.dispatcher import receiver
 from djmoney.models.fields import MoneyField
 from gallant import fields as gf
 from gallant.enums import ServiceStatus, ServiceType
@@ -27,6 +29,8 @@ class Service(UserModel):
     parent = m.ForeignKey('self', null=True, blank=True, related_name='sub_services')
     notes = m.ManyToManyField(Note)
     views = m.IntegerField(default=0)
+
+    card = m.ForeignKey('kanban.KanbanCard', null=True)
 
     def get_total_cost(self):
         total = self.cost * self.quantity
