@@ -10,6 +10,7 @@ app.directive('kbBoardColumn', function () {
             items: '=?',
             statusIndex: '@',
             title: '@',
+            columns: '@',
             clickFn: '&',
         },
         controller: ['$scope', function ($scope) {

@@ -1,11 +1,11 @@
 <div class="container kanban">
     <div class="row">
         <div class="kanban-column" kb-board-column title="To Do" click-fn="editTask"
-             items="$parent.tasks" status-index="{{ clConstants.TaskStatus.ToDo }}" col-width="4"></div>
+             items="$parent.tasks" status-index="{{ clConstants.TaskStatus.ToDo }}" columns="4"></div>
         <div class="kanban-column" kb-board-column title="In Progress" click-fn="editTask"
-             items="tasks" status-index="{{ clConstants.TaskStatus.InProgress }}" col-width="4"></div>
+             items="tasks" status-index="{{ clConstants.TaskStatus.InProgress }}" columns="4"></div>
         <div class="kanban-column" kb-board-column title="Done" click-fn="editTask"
-             items="tasks" status-index="{{ clConstants.TaskStatus.Done }}" col-width="4"></div>
+             items="tasks" status-index="{{ clConstants.TaskStatus.Done }}" columns="4"></div>
     </div>
     <div class="row" ng-show="!$parent.tasksLoaded">
         <div class="col-lg-12 col-centered">
