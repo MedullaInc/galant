@@ -199,7 +199,13 @@ class ClientTest(TransactionTestCase):
 
         parser = serializers.ClientSerializer(client, data=serializer.data, context={'request': request})
         self.assertTrue(parser.is_valid())
+        self.assertEqual(parser.save(), client)
 
+        tmp = dict(serializer.data)
+        tmp['contact_info'] = {'zip': '99999'}
+
+        parser = serializers.ClientSerializer(client, data=tmp, context={'request': request})
+        self.assertTrue(parser.is_valid())
         self.assertEqual(parser.save(), client)
 
     def test_client_serialize_create(self):
@@ -214,11 +220,11 @@ class ClientTest(TransactionTestCase):
 
         serializer = serializers.ClientSerializer(client, context={'request': request})
         self.assertIsNotNone(serializer.data)
-        serializer.data.update({'contact_info': {}})
+        tmp = dict(serializer.data)
+        tmp['contact_info'] = {'zip': '99999'}
 
-        parser = serializers.ClientSerializer(data=serializer.data, context={'request': request})
+        parser = serializers.ClientSerializer(data=tmp, context={'request': request})
         self.assertTrue(parser.is_valid())
-
         self.assertNotEqual(parser.save(user=user).id, client.id)
 
     def test_client_serialize_owed_amount(self):

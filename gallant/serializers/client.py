@@ -66,7 +66,6 @@ class ClientSerializer(serializers.ModelSerializer):
         validated_data.update({'user': user})
         contact_info = validated_data.pop('contact_info', None)
         instance = super(ClientSerializer, self).create(validated_data)
-
         if contact_info:
             contact_info.update({'user': self.context['request'].user})
             cs = ContactInfoSerializer(data=contact_info)
