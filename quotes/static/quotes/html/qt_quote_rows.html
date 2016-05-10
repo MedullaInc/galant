@@ -1,4 +1,4 @@
-<tr ng-repeat="quote in quotes" ng-click="redirect(quote.id)" style="cursor: pointer">
+<tr ng-repeat="quote in quotes" ng-click="redirect(quote)" style="cursor: pointer">
     <td>{{ quote.modified|date:'y-M-d h:m' }}</td>
     <td>{{ quote.client_name }}</td>
     <td>{{ quote.name }}</td>

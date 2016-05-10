@@ -28,8 +28,8 @@ app.controller('qtQuoteListController', ['$scope', '$http', '$window', '$rootSco
             $rootScope.quoteTemplates = quoteTemplates;
         });
 
-        $scope.redirect = function(id) {
-            $window.location.href = $scope.quoteDetailURL + id;
+        $scope.redirect = function(quote) {
+            $window.location.href = $scope.quoteDetailURL + quote.id;
         };
 
     }

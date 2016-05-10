@@ -34,6 +34,9 @@ describe('qtQuoteListController', function () {
  
                 return Service;
             });
+            $provide.factory('qtConstants', function ($q) {
+                return {};
+            });
         });
         module('quotes.controllers.qtQuoteListController', function ($provide) {
         	$provide.value('$uibModal', {open: function () {}});
@@ -72,7 +75,7 @@ describe('qtQuoteListController', function () {
     });
  
     it('generates quoteDetail redirect URL', function () {
-        $scope.redirect(4);
+        $scope.redirect({id: 4});
         expect($window.location.href).toEqual(url + '4');
     });
 

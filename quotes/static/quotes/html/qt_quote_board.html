@@ -1,12 +1,12 @@
 <div class="container kanban">
     <div class="row">
-        <div class="kanban-column" kb-board-column title="Not Sent" click-fn="editQuote"
+        <div class="kanban-column" kb-board-column title="Not Sent" click-fn="redirect"
              items="$parent.quotesSafe" status-index="{{ qtConstants.QuoteStatus.NotSent }}"></div>
-        <div class="kanban-column" kb-board-column title="Awaiting Response" click-fn="editQuote"
+        <div class="kanban-column" kb-board-column title="Awaiting Response" click-fn="redirect"
              items="quotesSafe" status-index="{{ qtConstants.QuoteStatus.Sent }}"></div>
-        <div class="kanban-column" kb-board-column title="Rejected" click-fn="editQuote"
+        <div class="kanban-column" kb-board-column title="Rejected" click-fn="redirect"
              items="quotesSafe" status-index="{{ qtConstants.QuoteStatus.Rejected }}"></div>
-        <div class="kanban-column" kb-board-column title="Accepted" click-fn="editQuote"
+        <div class="kanban-column" kb-board-column title="Accepted" click-fn="redirect"
              items="quotesSafe" status-index="{{ qtConstants.QuoteStatus.Accepted }}"></div>
     </div>
     <div class="row" ng-show="!quotesLoaded">
