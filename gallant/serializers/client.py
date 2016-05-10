@@ -9,7 +9,7 @@ from gallant import models as g
 
 class ClientSerializer(serializers.ModelSerializer):
     user = serializers.PrimaryKeyRelatedField(read_only=True)
-    contact_info = ContactInfoSerializer()
+    contact_info = ContactInfoSerializer(allow_null=True)
     money_owed = serializers.SerializerMethodField()
     flags = serializers.SerializerMethodField()
     link = serializers.SerializerMethodField()
@@ -67,29 +67,29 @@ class ClientSerializer(serializers.ModelSerializer):
         contact_info = validated_data.pop('contact_info', None)
         instance = super(ClientSerializer, self).create(validated_data)
 
-        contact_info.update({'user': self.context['request'].user})
-        cs = ContactInfoSerializer(data=contact_info)
-        c = cs.create(contact_info)
-        instance.contact_info = c
-        instance.save()
+        if contact_info:
+            contact_info.update({'user': self.context['request'].user})
+            cs = ContactInfoSerializer(data=contact_info)
+            c = cs.create(contact_info)
+            instance.contact_info = c
+            instance.save()
 
         return instance
 
-    def update(self, validated_data):
+    def update(self, instance, validated_data):
         if self.context.has_key('request'):
             user = self.context['request'].user
         else:
             user = self.context.get("user")
 
         contact_info = validated_data.pop('contact_info', None)
-        instance = super(ClientSerializer, self).update(validated_data)
+        instance = super(ClientSerializer, self).update(instance, validated_data)
 
-        contact_info_id = contact_info.get('id', None)
-        if contact_info_id:
-            c_instance = g.ContactInfo.objects.get_for(user, 'change', pk=contact_info_id)
+        if contact_info and 'id' in contact_info:
+            c_instance = g.ContactInfo.objects.get_for(user, 'change', pk=contact_info['id'])
             cs = ContactInfoSerializer(data=contact_info, instance=c_instance)
             cs.update(c_instance, contact_info)
-        else:
+        elif contact_info:
             contact_info.update({'user': self.context['request'].user})
             cs = ContactInfoSerializer(data=contact_info)
             c = cs.create(contact_info)

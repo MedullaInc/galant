@@ -182,7 +182,12 @@ class ClientTest(TransactionTestCase):
     def test_client_serialize(self):
         factory = APIRequestFactory()
         user = autofixture.create_one(g.GallantUser, generate_fk=True)
-        client = autofixture.create_one(g.Client, generate_fk=True, field_values={'user': user})
+        ci = autofixture.create_one(g.ContactInfo, field_values={'user': user,
+                                                                 'phone_number': '999-999-9999',
+                                                                 'zip': '99999',
+                                                                 })
+        client = autofixture.create_one(g.Client, generate_fk=True,
+                                        field_values={'user': user, 'contact_info': ci})
         client.notes.add(autofixture.create_one(g.Note, generate_fk=True, field_values={'user': user}))
 
         request = factory.get(reverse('api_client_detail', args=[client.id]))
@@ -200,7 +205,8 @@ class ClientTest(TransactionTestCase):
     def test_client_serialize_create(self):
         factory = APIRequestFactory()
         user = autofixture.create_one(g.GallantUser, generate_fk=True)
-        client = autofixture.create_one(g.Client, generate_fk=True, field_values={'user': user})
+        client = autofixture.create_one(g.Client, generate_fk=False,
+                                        field_values={'user': user})
 
         request = factory.get(reverse('api_client_detail', args=[client.id]))
         request.user = user
@@ -208,6 +214,7 @@ class ClientTest(TransactionTestCase):
 
         serializer = serializers.ClientSerializer(client, context={'request': request})
         self.assertIsNotNone(serializer.data)
+        serializer.data.update({'contact_info': {}})
 
         parser = serializers.ClientSerializer(data=serializer.data, context={'request': request})
         self.assertTrue(parser.is_valid())

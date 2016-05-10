@@ -4,11 +4,9 @@ from rest_framework import serializers
 
 
 class UserModelSerializer(serializers.ModelSerializer):
-    contact_info = serializers.PrimaryKeyRelatedField(read_only=True)
-
     class Meta:
         model = get_user_model()
-        fields = ('id', 'email', 'name', 'contact_info')
+        fields = ('id', 'email', 'name', 'phone_number', 'address', 'address_2', 'city', 'state', 'zip', 'country')
 
 
 class ContactInfoSerializer(serializers.ModelSerializer):
