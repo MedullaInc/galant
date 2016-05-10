@@ -95,13 +95,6 @@ class Quote(g.UserModel):
 class QuoteTemplate(g.UserModel):
     quote = m.ForeignKey(Quote)
 
-    def language_list(self):
-        lang_dict = {}
-        for c in self.quote.get_languages():
-            if c in utils.LANG_DICT:
-                lang_dict[c] = utils.LANG_DICT[c]
-        return lang_dict
-
     class Meta:
         permissions = (
             ('view_quotetemplate', 'View quotetemplate'),
