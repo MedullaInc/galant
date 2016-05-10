@@ -33,26 +33,40 @@ app.directive('glDashboardWorkSummary', ['$window', 'Client', 'ClientProjects', 
 
                 });
 
-                $scope.work_polar_chart_data = [
-                    {
-                        value: $scope.potential_clients,
-                        color: "#93f1ff",
-                        highlight: "#00a6ff",
-                        label: 'Potential Clients'
-                    },
-                    {
-                        value: $scope.quoted_clients,
-                        color: '#ffa861',
-                        highlight: '#ff7300',
-                        label: 'Quoted Clients'
-                    },
-                    {
-                        value: $scope.project_underway.length,
-                        color: '#b2ffaf',
-                        highlight: '#00ff5f',
-                        label: 'Project Underway'
-                    }
-                ];
+                $scope.work_polar_chart_data = [];
+
+                if ($scope.potential_clients > 0) {
+                    $scope.work_polar_chart_data.push(
+                        {
+                            value: $scope.potential_clients,
+                            color: "#93f1ff",
+                            highlight: "#00a6ff",
+                            label: 'Potential Clients'
+                        }
+                    );
+                }
+
+                if ($scope.quoted_clients > 0) {
+                    $scope.work_polar_chart_data.push(
+                        {
+                            value: $scope.quoted_clients,
+                            color: '#ffa861',
+                            highlight: '#ff7300',
+                            label: 'Quoted Clients'
+                        }
+                    );
+                }
+
+                if ($scope.project_underway.length > 0) {
+                    $scope.work_polar_chart_data.push(
+                        {
+                            value: $scope.project_underway.length,
+                            color: '#b2ffaf',
+                            highlight: '#00ff5f',
+                            label: 'Project Underway'
+                        }
+                    );
+                }
 
                 angular.forEach($scope.project_underway, function (client) {
 
@@ -70,32 +84,51 @@ app.directive('glDashboardWorkSummary', ['$window', 'Client', 'ClientProjects', 
                             }
                         });
 
-                        $scope.work_doughnut_chart_data = [
-                            {
-                                value: $scope.service_on_hold + $scope.service_pending_assignment,
-                                color: "#93f1ff",
-                                highlight: "#00a6ff",
-                                label: "On Hold or Pending Assignment"
-                            },
-                            {
-                                value: $scope.service_active,
-                                color: '#b2ffaf',
-                                highlight: '#00ff5f',
-                                label: "Active"
-                            },
-                            {
-                                value: $scope.service_overdue,
-                                color: "#ff0054",
-                                highlight: "#FF5A5E",
-                                label: "Overdue"
-                            },
-                            {
-                                value: $scope.service_completed,
-                                color: '#b2ffaf',
-                                highlight: '#00ff5f',
-                                label: "Completed"
-                            }
-                        ];
+                        $scope.work_doughnut_chart_data = [];
+
+                        if ($scope.service_on_hold + $scope.service_pending_assignment > 0) {
+                            $scope.work_doughnut_chart_data.push(
+                                {
+                                    value: $scope.service_on_hold + $scope.service_pending_assignment,
+                                    color: "#93f1ff",
+                                    highlight: "#00a6ff",
+                                    label: "On Hold or Pending Assignment"
+                                }
+                            );
+                        }
+
+                        if ($scope.service_active > 0) {
+                            $scope.work_doughnut_chart_data.push(
+                                {
+                                    value: $scope.service_active,
+                                    color: '#b2ffaf',
+                                    highlight: '#00ff5f',
+                                    label: "Active"
+                                }
+                            );
+                        }
+
+                        if ($scope.service_overdue > 0) {
+                            $scope.work_doughnut_chart_data.push(
+                                {
+                                    value: $scope.service_overdue,
+                                    color: "#ff0054",
+                                    highlight: "#FF5A5E",
+                                    label: "Overdue"
+                                }
+                            );
+                        }
+
+                        if ($scope.service_completed > 0) {
+                            $scope.work_doughnut_chart_data.push(
+                                {
+                                    value: $scope.service_completed,
+                                    color: '#b2ffaf',
+                                    highlight: '#00ff5f',
+                                    label: "Completed"
+                                }
+                            );
+                        }
 
                     });
 

@@ -30,32 +30,51 @@ app.directive('glDashboardMoneySummary', ['$window', 'Payment', function ($windo
                     }
                 });
 
-                $scope.money_doughnut_chart_data = [
-                    {
-                        value: $scope.on_hold,
-                        color: '#ffa861',
-                        highlight: '#ff7300',
-                        label: "Payments On Hold"
-                    },
-                    {
-                        value: $scope.pending,
-                        color: '#ffa861',
-                        highlight: '#ff7300',
-                        label: "Pending Payments"
-                    },
-                    {
-                        value: $scope.overdue,
-                        color: "#ff0054",
-                        highlight: "#FF5A5E",
-                        label: "Overdue Payments"
-                    },
-                    {
-                        value: $scope.paid,
-                        color: '#b2ffaf',
-                        highlight: '#00ff5f',
-                        label: "Paid"
-                    }
-                ];
+                $scope.money_doughnut_chart_data = [];
+
+                if ($scope.on_hold > 0.0) {
+                    $scope.money_doughnut_chart_data.push(
+                        {
+                            value: $scope.on_hold,
+                            color: '#ffa861',
+                            highlight: '#ff7300',
+                            label: "Payments On Hold"
+                        }
+                    );
+                }
+
+                if ($scope.pending > 0.0) {
+                    $scope.money_doughnut_chart_data.push(
+                        {
+                            value: $scope.pending,
+                            color: '#ffa861',
+                            highlight: '#ff7300',
+                            label: "Pending Payments"
+                        }
+                    );
+                }
+
+                if ($scope.overdue > 0.0) {
+                    $scope.money_doughnut_chart_data.push(
+                        {
+                            value: $scope.overdue,
+                            color: "#ff0054",
+                            highlight: "#FF5A5E",
+                            label: "Overdue Payments"
+                        }
+                    );
+                }
+
+                if ($scope.paid > 0.0) {
+                    $scope.money_doughnut_chart_data.push(
+                        {
+                            value: $scope.paid,
+                            color: '#b2ffaf',
+                            highlight: '#00ff5f',
+                            label: "Paid"
+                        }
+                    );
+                }
 
             });
 
