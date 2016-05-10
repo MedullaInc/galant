@@ -1,8 +1,9 @@
 app = angular.module('gallant.directives.glDashboardWorkSummary', [
+    'gallant.services.glServices',
     'tc.chartjs',
 ]);
 
-app.directive('glDashboardWorkSummary', ['$window', function ($window) {
+app.directive('glDashboardWorkSummary', ['$window', 'Client', 'ClientProjects', function ($window, Client, ClientProjects) {
     return {
         restrict: 'A',
         scope: true,
@@ -11,26 +12,129 @@ app.directive('glDashboardWorkSummary', ['$window', function ($window) {
         templateUrl: '/static/gallant/html/gl_dashboard_work_summary.html',
         link: function ($scope) {
 
-            $scope.work_polar_chart_data = [
-                {
-                    value: 20,
-                    color: "#93f1ff",
-                    highlight: "#00a6ff",
-                    label: 'Approached People'
-                },
-                {
-                    value: 15,
-                    color: '#ffa861',
-                    highlight: '#ff7300',
-                    label: 'Quoted People'
-                },
-                {
-                    value: 7,
-                    color: '#b2ffaf',
-                    highlight: '#00ff5f',
-                    label: 'Became Clients'
+            $scope.potential_clients = 0;
+            $scope.quoted_clients = 0;
+            $scope.project_underway = [];
+
+            $scope.service_on_hold = 0;
+            $scope.service_pending_assignment = 0;
+            $scope.service_active = 0;
+            $scope.service_overdue = 0;
+            $scope.service_completed = 0;
+
+            Client.query().$promise.then(function (response) {
+                angular.forEach(response, function (client) {
+                    $scope.potential_clients += client.status == 0 ? 1 : 0;
+                    $scope.quoted_clients += client.status == 1 ? 1 : 0;
+
+                    if (client.status == 2) {
+                        $scope.project_underway.push(client)
+                    }
+
+                });
+
+                $scope.work_polar_chart_data = [];
+
+                if ($scope.potential_clients > 0) {
+                    $scope.work_polar_chart_data.push(
+                        {
+                            value: $scope.potential_clients,
+                            color: "#93f1ff",
+                            highlight: "#00a6ff",
+                            label: 'Potential Clients'
+                        }
+                    );
                 }
-            ];
+
+                if ($scope.quoted_clients > 0) {
+                    $scope.work_polar_chart_data.push(
+                        {
+                            value: $scope.quoted_clients,
+                            color: '#ffa861',
+                            highlight: '#ff7300',
+                            label: 'Quoted Clients'
+                        }
+                    );
+                }
+
+                if ($scope.project_underway.length > 0) {
+                    $scope.work_polar_chart_data.push(
+                        {
+                            value: $scope.project_underway.length,
+                            color: '#b2ffaf',
+                            highlight: '#00ff5f',
+                            label: 'Project Underway'
+                        }
+                    );
+                }
+
+                angular.forEach($scope.project_underway, function (client) {
+
+                    ClientProjects.query({id: client.id}).$promise.then(function (response) {
+                        angular.forEach(response, function (project) {
+                            // If project is not completed
+                            if (project.status != 4) {
+                                angular.forEach(project.services, function (service) {
+                                    $scope.service_on_hold += service.status == 0 ? 1 : 0;
+                                    $scope.service_pending_assignment += service.status == 1 ? 1 : 0;
+                                    $scope.service_active += service.status == 2 ? 1 : 0;
+                                    $scope.service_overdue += service.status == 3 ? 1 : 0;
+                                    $scope.service_completed += service.status == 4 ? 1 : 0;
+                                });
+                            }
+                        });
+
+                        $scope.work_doughnut_chart_data = [];
+
+                        if ($scope.service_on_hold + $scope.service_pending_assignment > 0) {
+                            $scope.work_doughnut_chart_data.push(
+                                {
+                                    value: $scope.service_on_hold + $scope.service_pending_assignment,
+                                    color: "#93f1ff",
+                                    highlight: "#00a6ff",
+                                    label: "On Hold or Pending Assignment"
+                                }
+                            );
+                        }
+
+                        if ($scope.service_active > 0) {
+                            $scope.work_doughnut_chart_data.push(
+                                {
+                                    value: $scope.service_active,
+                                    color: '#b2ffaf',
+                                    highlight: '#00ff5f',
+                                    label: "Active"
+                                }
+                            );
+                        }
+
+                        if ($scope.service_overdue > 0) {
+                            $scope.work_doughnut_chart_data.push(
+                                {
+                                    value: $scope.service_overdue,
+                                    color: "#ff0054",
+                                    highlight: "#FF5A5E",
+                                    label: "Overdue"
+                                }
+                            );
+                        }
+
+                        if ($scope.service_completed > 0) {
+                            $scope.work_doughnut_chart_data.push(
+                                {
+                                    value: $scope.service_completed,
+                                    color: '#b2ffaf',
+                                    highlight: '#00ff5f',
+                                    label: "Completed"
+                                }
+                            );
+                        }
+
+                    });
+
+                });
+
+            });
 
             // Chart.js Options
             $scope.work_polar_chart_options = {
@@ -81,27 +185,6 @@ app.directive('glDashboardWorkSummary', ['$window', function ($window) {
                 legendTemplate: '<ul class="tc-chart-js-legend"><% for (var i=0; i<segments.length; i++){%><li><span style="background-color:<%=segments[i].fillColor%>"></span><%if(segments[i].label){%><%=segments[i].label%><%}%></li><%}%></ul>'
             };
 
-            $scope.work_doughnut_chart_data = [
-                {
-                    value: 10,
-                    color: "#93f1ff",
-                    highlight: "#00a6ff",
-                    label: "Active Serivces"
-                },
-                {
-                    value: 1,
-                    color: "#ff0054",
-                    highlight: "#FF5A5E",
-                    label: "Overdue Services"
-                },
-                {
-                    value: 20,
-                    color: '#b2ffaf',
-                    highlight: '#00ff5f',
-                    label: "Completed Services"
-                }
-            ];
-
             // Chart.js Options
             $scope.work_doughnut_chart_options = {
 
@@ -135,62 +218,6 @@ app.directive('glDashboardWorkSummary', ['$window', function ($window) {
                 //String - A legend template
                 legendTemplate: '<ul class="tc-chart-js-legend"><% for (var i=0; i<segments.length; i++){%><li><span style="background-color:<%=segments[i].fillColor%>"></span><%if(segments[i].label){%><%=segments[i].label%><%}%></li><%}%></ul>'
 
-            };
-
-            $scope.work_bar_chart_data = {
-                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-                datasets: [
-                    {
-                        label: 'Projects in 2015',
-                        fillColor: '#93f1ff',
-                        strokeColor: '#93f1ff',
-                        highlightFill: '#00a6ff',
-                        highlightStroke: '#00a6ff',
-                        data: [5, 6, 8, 11, 12, 12]
-                    },
-                    {
-                        label: 'Projects in 2016',
-                        fillColor: '#00a6ff',
-                        strokeColor: '#00a6ff',
-                        highlightFill: '#93f1ff',
-                        highlightStroke: '#93f1ff',
-                        data: [14, 16, 18, 19, 18, 18]
-                    }
-                ]
-            };
-
-            // Chart.js Options
-            $scope.work_bar_chart_options = {
-
-                // Sets the chart to be responsive
-                responsive: true,
-
-                //Boolean - Whether the scale should start at zero, or an order of magnitude down from the lowest value
-                scaleBeginAtZero: true,
-
-                //Boolean - Whether grid lines are shown across the chart
-                scaleShowGridLines: true,
-
-                //String - Colour of the grid lines
-                scaleGridLineColor: "rgba(0,0,0,.05)",
-
-                //Number - Width of the grid lines
-                scaleGridLineWidth: 0,
-
-                //Boolean - If there is a stroke on each bar
-                barShowStroke: true,
-
-                //Number - Pixel width of the bar stroke
-                barStrokeWidth: 2,
-
-                //Number - Spacing between each of the X value sets
-                barValueSpacing: 3,
-
-                //Number - Spacing between data sets within X values
-                barDatasetSpacing: 0,
-
-                //String - A legend template
-                legendTemplate: '<ul class="tc-chart-js-legend"><% for (var i=0; i<datasets.length; i++){%><li><span style="background-color:<%=datasets[i].fillColor%>"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>'
             };
 
         }

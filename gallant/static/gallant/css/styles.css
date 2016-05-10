@@ -2875,6 +2875,10 @@ div.breadcrumbs span {
     padding-top: 44px;
 }
 
+.position-relative {
+    position: relative
+}
+
 #modal_form .margin-left-10 {
     margin-left: 10px;
 }
@@ -3021,7 +3025,7 @@ li.row {
 }
 
 .chart_box.dashboard {
-    min-height: 330px;
+    min-height: 345px;
 }
 
 .chart_box.dashboard h2 {
@@ -3031,6 +3035,21 @@ li.row {
 
 .chart_box.dashboard canvas {
     margin-bottom: 25px;
+}
+
+.dashbard-chart-msg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    min-height: 250px;
+    background: #d0d0d0;
+    text-align: center;
+    top: 0%;
+    padding: 25px;
+}
+
+.dashbard-chart-msg h2.section_title {
+    color: #ffffff;
 }
 
 /* End Charts */
