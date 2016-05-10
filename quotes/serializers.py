@@ -25,7 +25,6 @@ class SectionSerializer(serializers.ModelSerializer):
             'user': {'required': False},
         }
 
-
 # Special serializer for client update section view count without logging in
 class SectionClientSerializer(SectionSerializer):
     class Meta:
@@ -43,8 +42,16 @@ class QuoteSerializer(serializers.ModelSerializer):
     session_duration = serializers.FloatField()
     client_name = serializers.SerializerMethodField(read_only=True)
     client_link = serializers.SerializerMethodField(read_only=True)
+    kanban_card_description = serializers.SerializerMethodField()
+
 
     def get_client_name(self, quote):
+        if quote.client:
+            return quote.client.name
+        else:
+            return None
+
+    def get_kanban_card_description(self, quote):
         if quote.client:
             return quote.client.name
         else:
@@ -109,7 +116,7 @@ class QuoteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Quote
         fields = ('id', 'user', 'name', 'client', 'sections', 'services', 'language', 'status',
-                  'modified', 'token', 'parent', 'projects', 'views', 'session_duration', 'client_name', 'client_link')
+                  'modified', 'token', 'parent', 'projects', 'views', 'session_duration', 'client_name', 'client_link', 'kanban_card_description')
         extra_kwargs = {
             'id': {'read_only': False, 'required': False, 'allow_null':True},
             'user': {'required': False},

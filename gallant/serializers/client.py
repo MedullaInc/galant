@@ -13,6 +13,7 @@ class ClientSerializer(serializers.ModelSerializer):
     money_owed = serializers.SerializerMethodField()
     flags = serializers.SerializerMethodField()
     link = serializers.SerializerMethodField()
+    kanban_card_description = serializers.SerializerMethodField()
 
     def get_money_owed(self, client):
         amt = Money(0.00, client.currency)
@@ -40,6 +41,12 @@ class ClientSerializer(serializers.ModelSerializer):
     def get_link(self, client):
         return reverse('client_detail', args=[client.id])
 
+    def get_kanban_card_description(self, client):
+        if client.company:
+            return client.company
+        else:
+            return "Personal"
+
     def get_fields(self, *args, **kwargs):
         fields = super(ClientSerializer, self).get_fields(*args, **kwargs)
         fields['notes'] = serializers.PrimaryKeyRelatedField(
@@ -51,7 +58,7 @@ class ClientSerializer(serializers.ModelSerializer):
         model = g.Client
         fields = ('id', 'user', 'name', 'email', 'company', 'contact_info', 'alert', 'flags',
                   'link', 'status', 'language', 'currency', 'notes', 'money_owed', 'auto_pipeline',
-                  'last_contacted', 'referred_by')
+                  'last_contacted', 'referred_by', 'kanban_card_description')
         extra_kwargs = {
             'user': {'required': False},
             'alert': {'read_only': True, 'required': False},
