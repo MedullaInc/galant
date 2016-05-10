@@ -131,8 +131,7 @@ class Register(View):
             return render(request, 'gallant/register_form.html', {
                 'title': 'Register',
                 'set_password_form': SetPasswordForm(user),
-                'form': forms.GallantUserForm(instance=user),
-                'contact_form': forms.ContactInfoForm(instance=user.contact_info or None)
+                'form': forms.GallantUserForm(instance=user)
             })
         else:
             raise Http404()
@@ -144,13 +143,11 @@ class Register(View):
 
         if valid:
             form = forms.GallantUserForm(request.POST, instance=user)
-            contact_form = forms.ContactInfoForm(request.POST, instance=user.contact_info)
             set_password_form = SetPasswordForm(user, request.POST)
 
-            if form.is_valid() and contact_form.is_valid() and set_password_form.is_valid():
+            if form.is_valid() and set_password_form.is_valid():
                 u = form.save()
                 set_password_form.save()
-                u.contact_info = contact_form.save()
                 u.save()
                 messages.success(request, 'Registration successful.')
 
@@ -163,8 +160,7 @@ class Register(View):
                 return render(request, 'gallant/register_form.html', {
                     'title': 'Register',
                     'set_password_form': set_password_form,
-                    'form': form,
-                    'contact_form': contact_form
+                    'form': form
                 })
         else:
             raise Http404()

@@ -32,7 +32,7 @@ class ClientUpdate(View):
         self.object = get_one_or_404(request.user, 'change_client', g.Client, pk=kwargs['pk'])
         form = forms.ClientForm(request.user, instance=self.object)
         return self.render_to_response({'object': self.object, 'form': form,
-                                        'contact_form': forms.ContactInfoForm(
+                                        'contact_form': forms.ContactInfoForm(request.user,
                                             instance=self.object.contact_info),
                                         'note_form': forms.NoteForm(request.user)})
 
@@ -44,14 +44,14 @@ class ClientUpdate(View):
             self.object = None
 
         form = forms.ClientForm(request.user, request.POST, instance=self.object)
-        contact_form = forms.ContactInfoForm(request.POST,
+        contact_form = forms.ContactInfoForm(request.user, request.POST,
                                              instance=getattr(self.object, 'contact_info', None))
         note_form = forms.NoteForm(request.user, request.POST)
 
         if form.is_valid() and contact_form.is_valid():
             return self.form_valid(form, contact_form, note_form)
         else:
-            response = {'status': 0, 'errors': chain(form.errors.items(), contact_form.errors.items())}
+            response = {'status': 0, 'errors': list(chain(form.errors.items(), contact_form.errors.items()))}
             return HttpResponse(json.dumps(response), content_type='application/json')
 
     def render_to_response(self, context):
@@ -91,7 +91,7 @@ class ClientCreate(ClientUpdate):
                              (_('Add'), request.path_info)])
         form = forms.ClientForm(request.user)
         context = {'form': form,
-                   'contact_form': forms.ContactInfoForm(),
+                   'contact_form': forms.ContactInfoForm(request.user),
                    'title': 'Add Client'}
         return TemplateResponse(request=self.request,
                                 template="gallant/client_form.html",

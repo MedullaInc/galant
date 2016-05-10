@@ -66,18 +66,19 @@ class CreateUserForm(forms.Form):
 class GallantUserForm(forms.ModelForm):
     class Meta:
         model = g.GallantUser
-        fields = ['name', 'company_name', 'currency']
+        fields = ['name', 'company_name', 'currency', 'phone_number', 'country', 'address', 'address_2',
+                  'city', 'state', 'zip']
 
 
-class ContactInfoForm(GallantNgModelForm):
+class ContactInfoForm(UserModelNgForm):
     class Meta:
         model = g.ContactInfo
         fields = ['phone_number', 'country', 'address', 'address_2',
                   'city', 'state', 'zip']
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, user, *args, **kwargs):
         kwargs.update(prefix='contact_info')
-        super(ContactInfoForm, self).__init__(*args, **kwargs)
+        super(ContactInfoForm, self).__init__(user, *args, **kwargs)
 
 
 class EmailForm(forms.Form):
