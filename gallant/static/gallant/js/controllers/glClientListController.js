@@ -8,15 +8,6 @@ app.controller('glClientListController', ['$scope', '$http', '$window', 'Client'
         Client.query().$promise.then(function (clients) {
             $scope.clientsSafe = clients;
             $scope.clientsLoaded = true;
-
-            angular.forEach(clients, function (client) {
-                if ( client.company ) {
-                    client.kanban_card_description = client.company;
-                } else {
-                    client.kanban_card_description = "Personal";
-                }
-            });
-
         });
 
         Client.fields().$promise.then(function (fields) {

@@ -16,11 +16,6 @@ app.controller('qtQuoteListController', ['$scope', '$http', '$window', '$rootSco
             Quote.query(options).$promise.then(function (quotes) {
                 $scope.quotesSafe = quotes;
                 $scope.quotesLoaded = true;
-
-                angular.forEach(quotes, function (quote) {
-                    quote.kanban_card_description = quote.client_name;
-                });
-
             });
         };
 
