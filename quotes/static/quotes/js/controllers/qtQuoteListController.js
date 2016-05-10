@@ -2,20 +2,25 @@ app = angular.module('quotes.controllers.qtQuoteListController', ['quotes.servic
 
 app.controller('qtQuoteListController', ['$scope', '$http', '$window', '$rootScope',
     'Quote', 'QuoteTemplate', 'qtConstants',
-    function($scope, $http, $window, $rootScope, Quote, QuoteTemplate, qtConstants) {
+    function ($scope, $http, $window, $rootScope, Quote, QuoteTemplate, qtConstants) {
         $scope.qtConstants = qtConstants;
         $scope.quoteStatus = [];
         $scope.clients = [];
-        
-        $scope.init = function(quoteDetailURL, currentLanguage, clientId) {
+
+        $scope.init = function (quoteDetailURL, currentLanguage, clientId) {
             $scope.quoteDetailURL = quoteDetailURL;
             $scope.currentLanguage = currentLanguage;
 
             var options = clientId ? {client_id: clientId} : {};
 
-            Quote.query(options).$promise.then(function(quotes) {
+            Quote.query(options).$promise.then(function (quotes) {
                 $scope.quotesSafe = quotes;
                 $scope.quotesLoaded = true;
+
+                angular.forEach(quotes, function (quote) {
+                    quote.kanban_card_description = quote.client_name;
+                });
+
             });
         };
 
@@ -23,12 +28,12 @@ app.controller('qtQuoteListController', ['$scope', '$http', '$window', '$rootSco
             $scope.quoteStatus = fields.status;
         });
 
-        QuoteTemplate.query().$promise.then(function(quoteTemplates) {
+        QuoteTemplate.query().$promise.then(function (quoteTemplates) {
             $scope.quoteTemplates = quoteTemplates;
             $rootScope.quoteTemplates = quoteTemplates;
         });
 
-        $scope.redirect = function(quote) {
+        $scope.redirect = function (quote) {
             $window.location.href = $scope.quoteDetailURL + quote.id;
         };
 
