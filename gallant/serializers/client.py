@@ -43,6 +43,12 @@ class ClientSerializer(serializers.ModelSerializer):
     def get_link(self, client):
         return reverse('client_detail', args=[client.id])
 
+    def get_kanban_card_description(self, client):
+        if client.company:
+            return client.company
+        else:
+            return "Personal"
+
     def get_fields(self, *args, **kwargs):
         fields = super(ClientSerializer, self).get_fields(*args, **kwargs)
         fields['notes'] = serializers.PrimaryKeyRelatedField(

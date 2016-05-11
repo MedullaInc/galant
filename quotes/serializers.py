@@ -26,7 +26,6 @@ class SectionSerializer(serializers.ModelSerializer):
             'user': {'required': False},
         }
 
-
 # Special serializer for client update section view count without logging in
 class SectionClientSerializer(SectionSerializer):
     class Meta:

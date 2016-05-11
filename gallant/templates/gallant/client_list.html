@@ -48,10 +48,6 @@
                         <div gl-add-modal open-fn="addClient" title="Add Client" modal-instance="modalInstance">
                             <div gl-client-add on-success="clientSaved"></div>
                         </div>
-                        <button type="button" class="btn btn-default btn-add action-button pull-right"
-                                ng-click="addClient()">
-                            {% trans "Add Client" %}
-                        </button>
                     </div>
                 </div>
                 <div class="col-lg-6">
@@ -62,9 +58,14 @@
                         <button class="btn btn-default btn-add" id="show_client_board" ng-click="showList=false">
                             <span class="glyphicon glyphicon-th"></span>
                         </button>
+                        <button type="button" class="btn btn-default btn-add action-button pull-right"
+                                ng-click="addClient()">
+                            {% trans "Add Client" %}
+                        </button>
                     </div>
                 </div>
             </div>
+            <br/>
             <div ng-show="!showList">
                 <div ng-include src="'{% static "gallant/html/gl_client_board.html" %}'">
                 </div>

@@ -3681,8 +3681,8 @@ button.btn.btn-default.action-button {
 }
 
 .container.kanban > .row {
-    overflow-x: scroll;
-    overflow-y: hidden;
+    /*overflow-x: scroll;*/
+    /*overflow-y: hidden;*/
     white-space: nowrap;
 }
 
@@ -3711,7 +3711,7 @@ button.btn.btn-default.action-button {
         display: inline-block;
     }
 
-    .container.kanban > .row .col-lg-3 {
+    .container.kanban.fit > .row .col-lg-3 {
         width: 19.7%;
     }
 }

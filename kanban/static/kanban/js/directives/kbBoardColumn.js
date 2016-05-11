@@ -11,6 +11,7 @@ app.directive('kbBoardColumn', ['KanbanCard', function (KanbanCard) {
             items: '=?',
             statusIndex: '@',
             title: '@',
+            columns: '@',
             clickFn: '&',
         },
         controller: ['$scope', function ($scope) {

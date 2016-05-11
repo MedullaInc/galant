@@ -14,15 +14,15 @@ app.controller('glClientListController', ['$scope', '$http', '$window', 'Client'
             $scope.clientFields = fields;
         });
 
-        $scope.init = function(clientDetailURL) {
+        $scope.init = function (clientDetailURL) {
             $scope.clientDetailURL = clientDetailURL;
         };
 
-        $scope.redirect = function(client) {
+        $scope.redirect = function (client) {
             $window.location.href = $scope.clientDetailURL + client.id;
         };
 
-        $scope.updateLastContacted = function(rowIndex) {
+        $scope.updateLastContacted = function (rowIndex) {
             var client = $scope.clients[rowIndex];
             var last_contacted = (new Date()).toISOString();
             Client.update({id: client.id, last_contacted: last_contacted})
