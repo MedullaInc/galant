@@ -105,7 +105,7 @@ def update_task_card_post(sender, instance, **kwargs):
     try:
         project_name = task.project.name
     except AttributeError:
-        project = ''
+        project_name = ''
 
     card.title = task.name
     card.text = project_name
