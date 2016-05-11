@@ -26,7 +26,7 @@ class TaskSerializer(serializers.ModelSerializer):
     def get_fields(self, *args, **kwargs):
         fields = super(TaskSerializer, self).get_fields(*args, **kwargs)
         fields['project'] = serializers.PrimaryKeyRelatedField(
-            required=False,
+            required=False, allow_null=True,
             queryset=g.Project.objects.all_for(self.context['request'].user))
         fields['services'] = serializers.PrimaryKeyRelatedField(
             required=False, many=True,
