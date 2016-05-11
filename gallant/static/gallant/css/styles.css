@@ -3037,6 +3037,10 @@ li.row {
     margin-bottom: 25px;
 }
 
+.chart_box.dashboard canvas.clickable {
+    cursor: pointer
+}
+
 .dashbard-chart-msg {
     position: absolute;
     width: 100%;
