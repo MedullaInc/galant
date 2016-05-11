@@ -12,7 +12,7 @@ from gallant import models as g
 class ClientSerializer(serializers.ModelSerializer):
     user = serializers.PrimaryKeyRelatedField(read_only=True)
     contact_info = ContactInfoSerializer(allow_null=True)
-    card = ks.KanbanCardSerializer(allow_null=True)
+    card = ks.KanbanCardSerializer(read_only=True, allow_null=True)
     money_owed = serializers.SerializerMethodField()
     flags = serializers.SerializerMethodField()
     link = serializers.SerializerMethodField()
@@ -67,7 +67,6 @@ class ClientSerializer(serializers.ModelSerializer):
             user = self.context.get("user")
 
         validated_data.update({'user': user})
-        card = validated_data.pop('card', None)
         contact_info = validated_data.pop('contact_info', None)
         instance = super(ClientSerializer, self).create(validated_data)
         if contact_info:
@@ -75,12 +74,6 @@ class ClientSerializer(serializers.ModelSerializer):
             cs = ContactInfoSerializer(data=contact_info)
             c = cs.create(contact_info)
             instance.contact_info = c
-            instance.save()
-        if card:
-            card.update({'user': self.context['request'].user})
-            cs = ks.KanbanCardSerializer(data=card)
-            c = cs.create(card)
-            instance.card = c
             instance.save()
 
         return instance
@@ -92,7 +85,6 @@ class ClientSerializer(serializers.ModelSerializer):
             user = self.context.get("user")
 
         contact_info = validated_data.pop('contact_info', None)
-        card = validated_data.pop('card', None)
         instance = super(ClientSerializer, self).update(instance, validated_data)
 
         if contact_info and 'id' in contact_info:
@@ -104,17 +96,6 @@ class ClientSerializer(serializers.ModelSerializer):
             cs = ContactInfoSerializer(data=contact_info, context=self.context)
             c = cs.create(contact_info)
             instance.contact_info = c
-            instance.save()
-
-        if card and 'id' in card:
-            c_instance = k.KanbanCard.objects.get_for(user, 'change', pk=card['id'])
-            cs = ks.KanbanCardSerializer(data=card, instance=c_instance, context=self.context)
-            cs.update(c_instance, card)
-        elif card:
-            card.update({'user': self.context['request'].user})
-            cs = ks.KanbanCardSerializer(data=card, context=self.context)
-            c = cs.create(card)
-            instance.card = c
             instance.save()
 
         return instance
