@@ -69,6 +69,7 @@ def check_client_payments(client):
         client.status = ClientStatus.Pending_Payment.value
         cstat = client.status
         client.card.alert = ''
+        client.card.save()
         client.save()
 
     if cstat == ClientStatus.Pending_Payment.value:
@@ -77,6 +78,7 @@ def check_client_payments(client):
         if client.auto_pipeline:
             check_payments_and_close(client, client.user)
 
+        client.card.save()
         client.save()
 
 
