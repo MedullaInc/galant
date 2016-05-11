@@ -48,7 +48,6 @@ class Service(UserModel):
         map(lambda l: language_set.add(l), self.description.keys())
         return language_set
 
-
     def __unicode__(self):
         return self.name.get_text()
 
