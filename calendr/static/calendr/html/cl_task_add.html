@@ -33,44 +33,55 @@
             <div gl-form-errors error-field="task.errors.assignee"></div>
         </div>
     </div>
+
     <div class="row form-group">
-        <div class="col-lg-3">
-            <label>Task Start</label>
-        </div>
-        <div class="col-lg-9">
-            <div class="input-group popup-calendr">
-                <input type="text" class="form-control" uib-datepicker-popup="MM.dd.yyyy" ng-model="task.start" is-open="start_date_opened" ng-required="true" close-text="Close" required/>
-                <span class="input-group-btn">
-                <button type="button" class="btn btn-default  mini-calendar" ng-click="openStartDatePicker()">
-                    <i class="glyphicon glyphicon-calendar"></i></button>
-                </span>
-                <div gl-form-errors error-field="task.errors.start"></div>
-            </div>
+        <div class="col-lg-4">
+            <p ng-click="showTime = !showTime" style="text-decoration: underline; cursor: pointer">
+                {{ showTime ? '-' : '+' }} Time
+            </p>
         </div>
     </div>
-    <div class="row form-group">
-        <div class="col-lg-3">
-            <label>Task End</label>
-        </div>
-        <div class="col-lg-9">
-            <div class="input-group popup-calendr">
-                <input type="text" class="form-control" uib-datepicker-popup="MM.dd.yyyy" ng-model="task.end" is-open="end_date_opened" ng-required="true" close-text="Close" required/>
-                <span class="input-group-btn">
-                <button type="button" class="btn btn-default mini-calendar" ng-click="openEndDatePicker()">
-                    <i class="glyphicon glyphicon-calendar"></i></button>
-                </span>
-                <div gl-form-errors error-field="task.errors.end"></div>
+
+    <div ng-show="showTime">
+        <div class="row form-group">
+            <div class="col-lg-3">
+                <label>Task Start</label>
+            </div>
+            <div class="col-lg-9">
+                <div class="input-group popup-calendr">
+                    <input type="text" class="form-control" uib-datepicker-popup="MM.dd.yyyy" ng-model="task.start" is-open="start_date_opened" ng-required="true" close-text="Close" required/>
+                    <span class="input-group-btn">
+                    <button type="button" class="btn btn-default  mini-calendar" ng-click="openStartDatePicker()">
+                        <i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                    <div gl-form-errors error-field="task.errors.start"></div>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="row form-group">
-        <div class="col-lg-3">
-            <label>Daily Hr Estimate</label>
-            <span style="font-size: 16px;" class="glyphicon glyphicon-question-sign help-tooltip" uib-tooltip="How many hours per day will be dedicated to this specific task over the course of its duration." tooltip-placement="top-right"></span>
+        <div class="row form-group">
+            <div class="col-lg-3">
+                <label>Task End</label>
+            </div>
+            <div class="col-lg-9">
+                <div class="input-group popup-calendr">
+                    <input type="text" class="form-control" uib-datepicker-popup="MM.dd.yyyy" ng-model="task.end" is-open="end_date_opened" ng-required="true" close-text="Close" required/>
+                    <span class="input-group-btn">
+                    <button type="button" class="btn btn-default mini-calendar" ng-click="openEndDatePicker()">
+                        <i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                    <div gl-form-errors error-field="task.errors.end"></div>
+                </div>
+            </div>
         </div>
-        <div class="col-lg-9">
-            <input type="number" ng-model="task.daily_estimate" class="form-control"/>
-            <div gl-form-errors error-field="task.errors.daily_estimate"></div>
+        <div class="row form-group">
+            <div class="col-lg-3">
+                <label>Daily Hr Estimate</label>
+                <span style="font-size: 16px;" class="glyphicon glyphicon-question-sign help-tooltip" uib-tooltip="How many hours per day will be dedicated to this specific task over the course of its duration." tooltip-placement="top-right"></span>
+            </div>
+            <div class="col-lg-9">
+                <input type="number" ng-model="task.daily_estimate" class="form-control"/>
+                <div gl-form-errors error-field="task.errors.daily_estimate"></div>
+            </div>
         </div>
     </div>
     <div class="row form-group">
