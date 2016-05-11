@@ -2,6 +2,7 @@ from django.utils.translation import get_language
 from gallant.serializers.misc import ULTextField
 from rest_framework import serializers
 from gallant.models import Service
+from kanban.serializers import KanbanCardSerializer
 from gallant.serializers.misc import MoneyField
 
 
@@ -13,9 +14,11 @@ class ServiceSerializer(serializers.ModelSerializer):
     notes = serializers.CharField(read_only=True)
     views = serializers.IntegerField(required=False, allow_null=True)
 
+    card = KanbanCardSerializer(read_only=True, allow_null=True)
+
     class Meta:
         model = Service
-        fields = ('id', 'user', 'name', 'description', 'cost', 'quantity', 'type',
+        fields = ('id', 'user', 'name', 'description', 'cost', 'quantity', 'type', 'card',
                   'parent', 'notes', 'views', 'index', 'status', 'language')
         extra_kwargs = {
             'id': {'read_only': False, 'required': False}
