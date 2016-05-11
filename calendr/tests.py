@@ -37,7 +37,7 @@ class TaskTest(TransactionTestCase):
                                               field_values={'user': user})
         task = autofixture.create_one('calendr.Task', generate_fk=True,
                                       field_values={'user': user, 'project': project})
-        serialized_task = {"id":task.id, "start": task.start, "end": task.start + datetime.timedelta(days=10),
+        serialized_task = {"id":task.id,
                            "name": task.name, "daily_estimate": task.daily_estimate,
                            "user": task.user_id, "assignee": task.assignee_id,
                            "project": task.project_id}
