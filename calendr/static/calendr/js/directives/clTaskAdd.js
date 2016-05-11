@@ -17,6 +17,7 @@ app.directive('clTaskAdd', ['$window', 'Task', function ($window, Task) {
             onDeleted: '&',
         },
         controller: ['$scope', function ($scope) {
+
             if (!$scope.task) {
                 $scope.task = new Task();
                 $scope.task.assignee = $scope.assignee;
@@ -47,6 +48,13 @@ app.directive('clTaskAdd', ['$window', 'Task', function ($window, Task) {
             });
 
             if ($scope.project && $scope.project.services.length) {
+                $scope.availableServices = $scope.project.services;
+            }
+
+            if ($scope.task.project) {
+                $scope.project = $scope.projects.find(function (p) {
+                    return p.id == $scope.task.project
+                });
                 $scope.availableServices = $scope.project.services;
             }
 
