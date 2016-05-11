@@ -22,12 +22,17 @@ module.exports = function (config) {
 
         // list of files / patterns to load in the browser
         files: [
+            {pattern: 'static/**/*.gif', watched: false, included: false, served: true},
             'build/js/angular.js',
             'build/js/angular-mocks.js',
             'build/js/jQuery.js',
             '**/static/**/*.js',
-            'static/**/*.html'
+            'static/**/*.html',
         ],
+
+        proxies: {
+          '/static/img/loading.gif': '/base/static/img/loading.gif'
+        },
 
         // list of files to exclude
         exclude: [
