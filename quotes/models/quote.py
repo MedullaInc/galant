@@ -45,6 +45,8 @@ class Quote(g.UserModel):
     views = m.IntegerField(default=0)
     session_duration = m.FloatField(default=0.0)
 
+    card = m.ForeignKey('kanban.KanbanCard', null=True)
+
     def get_languages(self):
         language_set = set()
         for s in list(self.all_sections()):

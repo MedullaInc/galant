@@ -7,6 +7,7 @@ from quotes.models import Quote, QuoteTemplate
 from gallant import models as g
 from quotes import models as q
 from gallant import serializers as s
+from kanban import serializers as ks
 from django.http import HttpResponse
 import json
 
@@ -43,6 +44,8 @@ class QuoteSerializer(serializers.ModelSerializer):
     session_duration = serializers.FloatField()
     client_name = serializers.SerializerMethodField(read_only=True)
     client_link = serializers.SerializerMethodField(read_only=True)
+
+    card = ks.KanbanCardSerializer(read_only=True, allow_null=True)
 
     def get_client_name(self, quote):
         if quote.client:
@@ -109,7 +112,8 @@ class QuoteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Quote
         fields = ('id', 'user', 'name', 'client', 'sections', 'services', 'language', 'status',
-                  'modified', 'token', 'parent', 'projects', 'views', 'session_duration', 'client_name', 'client_link')
+                  'modified', 'token', 'parent', 'projects', 'views', 'session_duration',
+                  'client_name', 'client_link', 'card')
         extra_kwargs = {
             'id': {'read_only': False, 'required': False, 'allow_null':True},
             'user': {'required': False},

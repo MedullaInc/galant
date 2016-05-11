@@ -5,6 +5,7 @@ from django.db import models as m
 from django.db.models.signals import pre_save
 from django.dispatch.dispatcher import receiver
 from gallant import models as g
+from quotes import models as q
 
 
 class KanbanCard(g.UserModel):
@@ -64,4 +65,27 @@ def update_client_card(sender, instance, **kwargs):
         card.text = client.company
         card.xindex = int(client.status or 0)
         card.link = reverse('client_detail', args=[client.id])
+        card.save()
+
+
+@receiver(pre_save, sender=q.Quote)
+def update_quote_card(sender, instance, **kwargs):
+    quote = instance
+    card = quote.card
+    try:
+        client_name = quote.client.name
+    except AttributeError:
+        client_name = ''
+
+    if card is None:
+        quote.card = KanbanCard.objects.create(user=quote.user,
+                                                title=quote.name,
+                                                text=client_name,
+                                                xindex=int(quote.status or 0),
+                                                link=reverse('quote_detail', args=[quote.id]))
+    else:
+        card.title = quote.name
+        card.text = client_name
+        card.xindex = int(quote.status or 0)
+        card.link = reverse('quote_detail', args=[quote.id])
         card.save()
