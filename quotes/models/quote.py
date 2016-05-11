@@ -26,7 +26,7 @@ class QuoteStatus(gf.ChoiceEnum):
 
 
 class Quote(g.UserModel):
-    name = m.CharField(max_length=512, default='New Quote')
+    name = m.CharField(max_length=255, default='New Quote')
     client = m.ForeignKey(g.Client, null=True)
     sections = m.ManyToManyField(Section, blank=True)
     services = m.ManyToManyField(g.Service, blank=True)

@@ -4,6 +4,7 @@ from django.core.urlresolvers import reverse
 from django.db import models as m
 from django.db.models.signals import pre_save, post_save
 from django.dispatch.dispatcher import receiver
+from django.utils.text import Truncator
 from gallant import models as g
 from quotes import models as q
 from calendr import models as c
@@ -39,7 +40,7 @@ def update_service_card_post(sender, instance, **kwargs):
     try:
         quote = service.quote_set.all_for(service.user)[0]
         quote_name = quote.name
-        title = service.name.get_text(quote.language)
+        title = Truncator(service.name.get_text(quote.language)).chars(255);
     except IndexError:
         quote_name = ''
         title = ''
