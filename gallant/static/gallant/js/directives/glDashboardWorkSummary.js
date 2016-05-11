@@ -6,7 +6,10 @@ app = angular.module('gallant.directives.glDashboardWorkSummary', [
 app.directive('glDashboardWorkSummary', ['$window', 'Client', 'ClientProjects', function ($window, Client, ClientProjects) {
     return {
         restrict: 'A',
-        scope: true,
+        scope: {
+            clientListUrl: '@',
+            projectsUrl: '@',
+        },
         controller: ['$scope', function ($scope) {
         }],
         templateUrl: '/static/gallant/html/gl_dashboard_work_summary.html',
@@ -220,6 +223,13 @@ app.directive('glDashboardWorkSummary', ['$window', 'Client', 'ClientProjects', 
 
             };
 
+            $scope.clientChartClicked = function(event) {
+                $window.location.href = $scope.clientListUrl;
+            }
+
+            $scope.workChartClicked = function(event) {
+                $window.location.href = $scope.projectsUrl;
+            }
         }
     };
 }]);

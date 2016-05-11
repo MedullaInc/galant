@@ -63,7 +63,7 @@ class QuotesSignedInTest(browser.SignedInTest):
         c.save()
         b.get(self.live_server_url + reverse('add_quote'))
         browser.wait().until(lambda driver: driver.find_element_by_id('quote_name')).send_keys('Quote test')
-        browser.wait().until(lambda driver: driver.find_element_by_xpath('//select[@name="client"]/option[2]')).click()
+        browser.wait().until_click(lambda driver: driver.find_element_by_xpath('//select[@name="client"]/option[2]'))
         b.find_element_by_id('title_0').send_keys('test important notes title')
         b.find_element_by_id('text_0').send_keys('test important notes text')
         b.find_element_by_id('title_1').send_keys('test important notes title')
@@ -83,16 +83,16 @@ class QuotesSignedInTest(browser.SignedInTest):
         c.save()
         q = get_blank_quote_autofixture(self.user)
         b.get(self.live_server_url + reverse('quote_detail', args=[q.id]))
-        browser.wait().until(lambda driver: driver.find_element_by_id('quote_edit')).click()
+        browser.wait().until_click(lambda driver: driver.find_element_by_id('quote_edit'))
         b.find_element_by_id('quote_name').send_keys('Quote test')
-        browser.wait().until(lambda driver: driver.find_element_by_xpath('//select[@name="client"]/option[2]')).click()
+        browser.wait().until_click(lambda driver: driver.find_element_by_xpath('//select[@name="client"]/option[2]'))
         b.find_element_by_id('title_0').clear()
         b.find_element_by_id('title_0').send_keys('modified intro title')
         b.find_element_by_id('text_0').send_keys('modified intro text')
 
         self._submit_and_check(b)
 
-        browser.wait().until(lambda driver: driver.find_element_by_id('quote_edit')).click()
+        browser.wait().until_click(lambda driver: driver.find_element_by_id('quote_edit'))
         intro = b.find_element_by_id('title_0')
         self.assertEqual(intro.get_attribute('value'), 'modified intro title')
 
@@ -154,7 +154,7 @@ class QuotesSignedInTest(browser.SignedInTest):
 
         self._submit_and_check(b)
 
-        browser.wait().until(lambda driver: driver.find_element_by_id('quote_edit')).click()
+        browser.wait().until_click(lambda driver: driver.find_element_by_id('quote_edit'))
 
         self.assertEqual(b.find_element_by_id('title_2').get_attribute('value'), '1234')
 
@@ -169,7 +169,7 @@ class QuotesSignedInTest(browser.SignedInTest):
         c.save()
         b.get(self.live_server_url + reverse('quote_detail', args=[q.id]))
 
-        browser.wait().until(lambda driver: driver.find_element_by_id('quote_edit')).click()
+        browser.wait().until_click(lambda driver: driver.find_element_by_id('quote_edit'))
         b.find_element_by_id('quote_name').send_keys('Quote test')
         browser.wait().until_click(lambda driver: driver.find_element_by_xpath('//select[@name="client"]/option[1]'))
 
@@ -179,7 +179,7 @@ class QuotesSignedInTest(browser.SignedInTest):
         b.find_element_by_id('quantity_0').send_keys('1')
         b.find_element_by_id('description_0').send_keys('desc')
 
-        browser.wait().until(lambda driver: driver.find_element_by_xpath('//select[@id="type_0"]/option[2]')).click()
+        browser.wait().until_click(lambda driver: driver.find_element_by_xpath('//select[@id="type_0"]/option[2]'))
         self._submit_and_check(b)
 
         name = browser.wait().until(lambda driver: driver.find_element_by_css_selector('p[e-id="service_name_0"]'))
@@ -207,7 +207,7 @@ class QuotesSignedInTest(browser.SignedInTest):
 
         self._submit_and_check(b)
 
-        browser.wait().until(lambda driver: driver.find_element_by_id('quote_edit')).click()
+        browser.wait().until_click(lambda driver: driver.find_element_by_id('quote_edit'))
 
         el = b.find_element_by_id('title_0')
         self.assertEqual(el.get_attribute('value'), 's1title')
