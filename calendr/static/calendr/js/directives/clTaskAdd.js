@@ -27,14 +27,10 @@ app.directive('clTaskAdd', ['$window', 'Task', function ($window, Task) {
 
             if ($scope.task.start) {
                 $scope.task.start = new Date($scope.task.start);
-            } else {
-                $scope.task.start = new Date();
             }
 
             if ($scope.task.end) {
                 $scope.task.end = new Date($scope.task.end);
-            } else {
-                $scope.task.end = new Date();
             }
 
             if ($scope.projects.length && $scope.projects[0].services.length) {
