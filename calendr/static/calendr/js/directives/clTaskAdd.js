@@ -51,12 +51,12 @@ app.directive('clTaskAdd', ['$window', 'Task', function ($window, Task) {
                 $scope.availableServices = $scope.project.services;
             }
 
-            if ($scope.task.project) {
-                $scope.project = $scope.projects.find(function (p) {
-                    return p.id == $scope.task.project
-                });
-                $scope.availableServices = $scope.project.services;
-            }
+            //if ($scope.task.project) {
+            //    $scope.project = $scope.projects.find(function (p) {
+            //        return p.id == $scope.task.project
+            //    });
+            //    $scope.availableServices = $scope.project.services;
+            //}
 
             $scope.projectChanged = function (projectId) {
                 $scope.project = $scope.projects.find(function (p) {
