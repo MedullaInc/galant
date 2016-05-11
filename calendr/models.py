@@ -25,6 +25,8 @@ class Task(g.UserModel):
     assignee = m.ForeignKey(g.GallantUser, related_name='assignee')
     notes = m.ManyToManyField(g.Note)
 
+    card = m.ForeignKey('kanban.KanbanCard', null=True)
+
     class Meta:
         permissions = (
             ('view_task', 'View task'),

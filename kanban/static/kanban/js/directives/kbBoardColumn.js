@@ -47,7 +47,7 @@ app.directive('kbBoardColumn', ['KanbanCard', function (KanbanCard) {
                 }
             };
 
-            $scope.$watch('items', function(newValue, oldValue) {
+            $scope.$watchCollection('items', function(newValue, oldValue) {
                 if (newValue) {
                     $scope.itemsSafe = newValue.filter(function (item) {
                         return +item.status == +$scope.statusIndex;
