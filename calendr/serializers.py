@@ -7,7 +7,7 @@ from kanban import serializers as ks
 class TaskSerializer(serializers.ModelSerializer):
     user = serializers.PrimaryKeyRelatedField(read_only=True)
     project_name = serializers.SerializerMethodField()
-    daily_estimate = serializers.FloatField()
+    daily_estimate = serializers.FloatField(required=False)
     card = ks.KanbanCardSerializer(read_only=True, allow_null=True)
 
     def get_project_name(self, task):
