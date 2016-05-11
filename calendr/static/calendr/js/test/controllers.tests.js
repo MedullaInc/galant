@@ -1,4 +1,4 @@
-beforeEach(function() {
+beforeEach(function () {
     currentUserId = 0;
 });
 
@@ -13,30 +13,51 @@ describe('CalendrControl', function () {
         module('gallant.services.glServices', function ($provide) {
             var getMockResource = function ($q) {
                 var MockResource = {};
-                MockResource.update = function (id, t) { return {$promise: $q.when(t)}; };
-                MockResource.query = function () { return {$promise: $q.when([{id: 0}])}; };
+                MockResource.update = function (id, t) {
+                    return {$promise: $q.when(t)};
+                };
+                MockResource.query = function () {
+                    return {$promise: $q.when([{id: 0}])};
+                };
+                MockResource.delete = function (a) {
+                    return {$promise: $q.when(a)};
+                };
+
                 return MockResource;
-            }
+            };
 
             $provide.factory('User', getMockResource);
             $provide.factory('Task', getMockResource);
             $provide.factory('Project', getMockResource);
+
         });
         angular.module('ui.calendar', []);
         angular.module('ui.bootstrap', []);
         angular.module('ng.django.forms', []);
         angular.module('ngAside', []);
         module('calendr.controllers.clCalendrController', function ($provide) {
-            $provide.value('uiCalendarConfig', {calendars:{myCalendar1: {fullCalendar: {}}}});
-            $provide.value('$uibModal', {open: function () {}});
+            $provide.value('uiCalendarConfig', {calendars: {myCalendar1: {fullCalendar: {}}}});
+            $provide.value('$uibModal', {
+                open: function () {
+                }
+            });
             $provide.value('FC', {views: {}});
             $provide.value('moment', {});
             $provide.value('clConstants', {});
             $provide.value('glAlertService', {
-                add: function (a,b) {
+                add: function (a, b) {
                     return [{type: 'success', msg: 'a'}]
                 }
             });
+
+            $provide.factory('$window', function () {
+                return {
+                    confirm: function (m) {
+                        return true;
+                    }
+                };
+            });
+
         });
 
         inject(function (_$rootScope_, _$controller_, _$injector_) {
@@ -51,7 +72,8 @@ describe('CalendrControl', function () {
     beforeEach(function () {
         var FC = {views: []};
         $scope = $rootScope.$new();
-        $scope.editTask = function () {};
+        $scope.editTask = function () {
+        };
         $controller('clCalendrController', {$scope: $scope});
         $scope.$apply();
     });
@@ -68,8 +90,16 @@ describe('CalendrControl', function () {
     });
 
     it('disables weekend selection', function () {
-        expect($scope.disabled({getDay: function() { return 0; }}, 'day')).toBeTruthy();
-        expect($scope.disabled({getDay: function() { return 3; }}, 'day')).toBeFalsy();
+        expect($scope.disabled({
+            getDay: function () {
+                return 0;
+            }
+        }, 'day')).toBeTruthy();
+        expect($scope.disabled({
+            getDay: function () {
+                return 3;
+            }
+        }, 'day')).toBeFalsy();
     });
 
     it('sets open', function () {
@@ -94,14 +124,14 @@ describe('CalendrControl', function () {
     it('updates event', function () {
         var glAlertService = $injector.get('glAlertService');
         spyOn(glAlertService, 'add').and.callThrough();
-        $scope.updateTask({id:0, title: 'foo'});
+        $scope.updateTask({id: 0, title: 'foo'});
         $scope.$apply();
         expect(glAlertService.add).toHaveBeenCalled();
     });
 
     it('alerts on event click', function () {
         spyOn($scope, 'editTask');
-        $scope.alertOnEventClick({id:0, title: 'bar'});
+        $scope.alertOnEventClick({id: 0, title: 'bar'});
         $scope.$apply();
         expect($scope.editTask).toHaveBeenCalled();
     });
@@ -136,8 +166,19 @@ describe('CalendrControl', function () {
     });
 
     it('saves task', function () {
-        $scope.modalInstance = { dismiss: function () {} };
+        $scope.modalInstance = {
+            dismiss: function () {
+            }
+        };
         $scope.taskSaved({});
         expect($scope.tasks.length).toEqual(1);
     });
+
+    it('deletes task', function () {
+        var Task = $injector.get('Task');
+        spyOn(Task, 'delete').and.callThrough();
+        $scope.taskDeleted({id: 0});
+        expect(Task.delete).toHaveBeenCalled();
+    });
+
 });

@@ -3,7 +3,7 @@ app = angular.module('calendr.controllers.clCalendrController', ['gallant.servic
     'ng.django.forms', 'gallant.directives.glMultiDropdown',
 ]);
 
-app.controller('clCalendrController', function ($scope, Project, User, Task, $compile, $sce,
+app.controller('clCalendrController', function ($window, $scope, Project, User, Task, $compile, $sce,
                                                 $timeout, uiCalendarConfig, $filter, FC, moment, glAlertService, clConstants) {
     $scope.clConstants = clConstants;
     var date = new Date();
@@ -119,9 +119,9 @@ app.controller('clCalendrController', function ($scope, Project, User, Task, $co
     };
 
     $scope.taskDeleted = function (event) {
-        if (confirm('Are you sure you want to permanently delete this task?')) {
+        if ($window.confirm('Are you sure you want to permanently delete this task?')) {
             Task.delete({id: event.id}).$promise.then(function (response) {
-                var index = $scope.tasks.indexOf(event);
+                var index = $scope.tasks.indexOf(response);
                 $scope.tasks.splice(index, 1);
                 $scope.modalInstance.dismiss('cancel');
             });
