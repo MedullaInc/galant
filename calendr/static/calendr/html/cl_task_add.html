@@ -14,7 +14,7 @@
         </div>
         <div class="col-lg-9">
             <select ng-model="task.project" class="form-control" ng-change="projectChanged(task.project)"
-                    ng-options="project.id as project.name for project in projects" required>
+                    ng-options="project.id as project.name for project in projects">
                 <option value="" style="display: none;">Select Project...</option>
             </select>
             <div gl-form-errors error-field="task.errors.project"></div>
