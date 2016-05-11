@@ -563,11 +563,14 @@ describe('glMultiDropdown', function () {
 describe('glDashboardWorkSummary', function () {
     var $rootScope;
     var $compile;
+    var $injector;
     var $scope;
 
     beforeEach(function () {
 
-        angular.mock.module('gallant.directives.glDashboardWorkSummary');
+        angular.mock.module('gallant.directives.glDashboardWorkSummary', function ($provide) {
+            $provide.factory('$window', function () { return {location: {href: null}}; });
+        });
         angular.mock.module('staticNgTemplates');
 
         module('gallant.services.glServices', function ($provide) {
@@ -591,27 +594,33 @@ describe('glDashboardWorkSummary', function () {
 
         angular.module('tc.chartjs', []);
 
-        angular.mock.inject(function (_$rootScope_, _$compile_) {
+        angular.mock.inject(function (_$rootScope_, _$compile_, _$injector_) {
             // The injector unwraps the underscores (_) from around the parameter names when matching
             $rootScope = _$rootScope_;
             $compile = _$compile_;
+            $injector = _$injector_;
         });
 
         $scope = $rootScope.$new();
     });
 
-    describe('glDashboardWorkSummary', function () {
+    var element;
 
-        var element;
+    beforeEach(function () {
+        element = $compile('<div gl-dashboard-work-summary="" client-list-url="c" projects-url="p"></div>')($scope);
+        $scope.$digest();
+    });
 
-        beforeEach(function () {
-            element = $compile('<div gl-dashboard-work-summary=""></div>')($scope);
-            $scope.$digest();
-        });
+    it('compiles', function () {
+        expect(element.html().substring(0, 6)).toEqual('<div c');
+    });
 
-        it('compiles', function () {
-            expect(element.html().substring(0, 6)).toEqual('<div c');
-        });
+    it('redirects', function () {
+        var $window = $injector.get('$window');
+        element.isolateScope().clientChartClicked();
+        expect($window.location.href).toEqual('c');
+        element.isolateScope().workChartClicked();
+        expect($window.location.href).toEqual('p');
     });
 });
 

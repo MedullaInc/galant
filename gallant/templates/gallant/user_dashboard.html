@@ -24,7 +24,8 @@
 
 {% block content %}
     <div class="row">
-        <div id="center_content_enclosed" gl-dashboard-work-summary>
+        <div id="center_content_enclosed" gl-dashboard-work-summary client-list-url="{% url 'clients' %}"
+            projects-url="{% url 'calendr' %}">
         </div>
         <div id="center_content_enclosed" gl-dashboard-money-summary>
         </div>
