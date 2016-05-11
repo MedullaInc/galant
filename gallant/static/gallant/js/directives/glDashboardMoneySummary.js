@@ -109,7 +109,9 @@ app.directive('glDashboardMoneySummary', ['$window', 'Payment', function ($windo
                 animateScale: false,
 
                 //String - A legend template
-                legendTemplate: '<ul class="tc-chart-js-legend"><% for (var i=0; i<segments.length; i++){%><li><span style="background-color:<%=segments[i].fillColor%>"></span><%if(segments[i].label){%><%=segments[i].label%><%}%></li><%}%></ul>'
+                legendTemplate: '<ul class="tc-chart-js-legend"><% for (var i=0; i<segments.length; i++){%><li><span style="background-color:<%=segments[i].fillColor%>"></span><%if(segments[i].label){%><%=segments[i].label%><%}%></li><%}%></ul>',
+
+                tooltipTemplate: '<%= "$" + value + " " + label %>'
 
             };
 
