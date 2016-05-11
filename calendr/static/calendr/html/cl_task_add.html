@@ -21,7 +21,7 @@
         </div>
     </div>
     <div gl-multi-dropdown elements="task.services" available-elements="availableServices"
-         element-display-name="Service"></div>
+         element-display-name="Service" ng-show="task.project"></div>
     <div class="row form-group">
         <div class="col-lg-3">
             <label>Assignee</label>
@@ -30,7 +30,7 @@
             <select ng-model="task.assignee" class="form-control"
                     ng-options="user.id as user.email for user in users" required>
             </select>
-            <div gl-form-errors error-field="task.errors.name"></div>
+            <div gl-form-errors error-field="task.errors.assignee"></div>
         </div>
     </div>
     <div class="row form-group">
