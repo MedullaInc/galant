@@ -7,6 +7,7 @@ var app = angular.module('quote', [
     'gallant.controllers.glFormController',
     'gallant.controllers.glProjectEditController',
     'quotes.controllers.qtPopoverController',
+    'quotes.controllers.qtQuoteTemplateListController',
     'quotes.directives.qtForm',
     'quotes.directives.qtClientForm',
     'gallant.directives.glAlerts',

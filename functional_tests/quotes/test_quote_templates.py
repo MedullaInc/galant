@@ -91,8 +91,7 @@ class QuoteTemplatesTest(browser.SignedInTest):
 
         self._submit_and_check(b)
 
-        browser.wait().until(lambda driver: driver.find_element_by_id('section_0'))
-        b.find_element_by_id('quote_edit').click()
+        browser.wait().until_click(lambda driver: driver.find_element_by_id('quote_edit'))
         intro = b.find_element_by_id('title_0')
         self.assertEqual(intro.get_attribute('value'), 'modified intro title')
 
@@ -138,7 +137,7 @@ class QuoteTemplatesTest(browser.SignedInTest):
         c.save()     
 
         b.get(self.live_server_url + reverse('quotetemplate_detail', args=[qt.id]))
-        browser.wait().until(lambda driver: driver.find_element_by_id('quote_edit')).click()
+        browser.wait().until_click(lambda driver: driver.find_element_by_id('quote_edit'))
         b.find_element_by_id('quote_name').send_keys('new quote')
         self._add_language_and_text(b)
 

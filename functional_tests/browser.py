@@ -4,7 +4,7 @@ from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 import selenium.webdriver.support.ui as ui
 import autofixture
 from django.contrib.auth import hashers
-from selenium.common.exceptions import TimeoutException, StaleElementReferenceException
+from selenium.common.exceptions import TimeoutException, StaleElementReferenceException, ElementNotVisibleException
 from selenium.webdriver.phantomjs.webdriver import WebDriver as PhantomJS
 
 from django.core.servers import basehttp
@@ -54,6 +54,7 @@ class CustomWait(ui.WebDriverWait):
         super(CustomWait, self).__init__(*args, **kwargs)
         iex = list(self._ignored_exceptions)
         iex.append(StaleElementReferenceException)
+        iex.append(ElementNotVisibleException)
         self._ignored_exceptions = tuple(iex)
 
     def until(self, method, message=''):
