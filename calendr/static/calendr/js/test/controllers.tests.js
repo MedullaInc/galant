@@ -147,7 +147,10 @@ describe('CalendrControl', function () {
     it('selectFunction', function () {
         var uiCalendarConfig = $injector.get('uiCalendarConfig');
         spyOn(uiCalendarConfig.calendars.myCalendar1, 'fullCalendar');
-        $scope.selectFunction({getTime: function () {}}, {}, {}, {}, {});
+        $scope.selectFunction({
+            getTime: function () {
+            }
+        }, {}, {}, {}, {});
         expect(uiCalendarConfig.calendars.myCalendar1.fullCalendar).toHaveBeenCalled();
     });
 
@@ -186,4 +189,11 @@ describe('CalendrControl', function () {
         $scope.editFCTask({});
         expect($scope.editTask).toHaveBeenCalled();
     });
+
+    it('loads projectLink', function () {
+        spyOn($scope, 'projectLink').and.callThrough();
+        $scope.projectLink({title: {encodeHtml: function(){}}},{find: function() { return {html: function () {}}; } });
+        expect($scope.projectLink).toHaveBeenCalled();
+    });
+
 });
