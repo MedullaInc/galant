@@ -510,16 +510,17 @@ class PaymentTest(TransactionTestCase):
         self.quote.payments.add(self.p)
 
     def test_overdue_alert(self):
-        self.assertEqual(self.c.alert, '$200 USD overdue')
+        self.assertEqual(self.c.card.alert, '$200 USD overdue')
 
     def test_close(self):
         self.p.paid_on = datetime.now(get_current_timezone())
         self.p.save()
 
         self.c.refresh_from_db()
+        self.c.card.refresh_from_db()
 
         self.assertEqual(int(self.c.status), ClientStatus.Closed.value)
-        self.assertEqual(self.c.alert, '')
+        self.assertEqual(self.c.card.alert, '')
 
 
 class TestULTextForm(forms.Form):

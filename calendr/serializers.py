@@ -1,19 +1,14 @@
 from rest_framework import serializers
 from calendr.models import Task
 from gallant import models as g
+from kanban import serializers as ks
 
 
 class TaskSerializer(serializers.ModelSerializer):
     user = serializers.PrimaryKeyRelatedField(read_only=True)
     project_name = serializers.SerializerMethodField()
     daily_estimate = serializers.FloatField()
-    kanban_card_description = serializers.SerializerMethodField()
-
-    def get_kanban_card_description(self, task):
-        if task.project:
-            return task.project.name
-        else:
-            return None
+    card = ks.KanbanCardSerializer(read_only=True, allow_null=True)
 
     def get_project_name(self, task):
         return task.project.name
@@ -41,7 +36,7 @@ class TaskSerializer(serializers.ModelSerializer):
     class Meta:
         model = Task
         fields = ('id', 'user', 'name', 'start', 'end', 'daily_estimate', 'status',
-                  'project', 'services', 'assignee', 'notes', 'project_name', 'kanban_card_description')
+                  'project', 'services', 'assignee', 'notes', 'project_name', 'card')
 
     def validate(self, data):
         start = data.get('start', None)

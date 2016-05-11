@@ -5,13 +5,11 @@ describe('kbBoardColumn', function() {
 
     beforeEach(function () {
         module('kanban.directives.kbBoardColumn', function ($provide) {
-/*            $provide.factory('Task', function ($q) {
-                var Task = {};
-                Task.query = function () {
-                    return {$promise: $q.when([{}])};
-                };
-                return Task;
-            });*/
+            $provide.factory('KanbanCard', function ($q) {
+                var KanbanCard = {};
+                KanbanCard.update = function () {};
+                return KanbanCard;
+            });
         });
         module('staticNgTemplates');
 
@@ -27,8 +25,8 @@ describe('kbBoardColumn', function() {
     var element;
 
     beforeEach(function() {
-        $scope.items = [{}, {}];
-        element = $compile('<div kb-board-column items="items"></div>')($scope);
+        $scope.items = [{status: 0, card: {yindex: 0}}, {status: 0, card: {yindex: 1}}];
+        element = $compile('<div kb-board-column items="items" status-index="0"></div>')($scope);
         $scope.$digest();
     });
 
@@ -38,6 +36,13 @@ describe('kbBoardColumn', function() {
 
     it('moves item', function () {
         element.isolateScope().dragControlListeners.itemMoved({
+            source: {itemScope: {item: {$update: function () {}}}},
+            dest: {sortableScope: {$parent: {statusIndex: {}}}}
+        });
+    });
+
+    it('updates index', function () {
+        element.isolateScope().dragControlListeners.orderChanged({
             source: {itemScope: {item: {$update: function () {}}}},
             dest: {sortableScope: {$parent: {statusIndex: {}}}}
         });

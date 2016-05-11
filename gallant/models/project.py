@@ -43,7 +43,8 @@ def client_project(sender, instance, **kwargs):
         if client.auto_pipeline and cstat < ClientStatus.Project_Underway.value:
             client.status = ClientStatus.Project_Underway.value
             cstat = client.status
-            client.alert = ''
+            client.card.alert = ''
+            client.card.save()
             client.save()
 
         if cstat == ClientStatus.Project_Underway.value:
@@ -52,6 +53,7 @@ def client_project(sender, instance, **kwargs):
             if client.auto_pipeline:
                 check_projects_and_close(client, instance.user)
 
+            client.card.save()
             client.save()
 
 
@@ -66,13 +68,13 @@ def set_client_project_alert(client, user):
         pstat = int(top_status[0]['status'])
 
         if pstat == ProjectStatus.Overdue.value:
-            client.alert = 'Project Overdue'
+            client.card.alert = 'Project Overdue'
         elif pstat == ProjectStatus.Pending_Assignment.value:
-            client.alert = 'Project Pending Assignment'
+            client.card.alert = 'Project Pending Assignment'
         elif pstat == ProjectStatus.On_Hold.value:
-            client.alert = 'Project On Hold'
+            client.card.alert = 'Project On Hold'
     else:
-        client.alert = ''
+        client.card.alert = ''
 
 
 def check_projects_and_close(client, user):

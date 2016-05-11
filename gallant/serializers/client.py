@@ -4,16 +4,18 @@ from django.utils import timezone
 from gallant.serializers.gallant_user import ContactInfoSerializer
 from moneyed.classes import Money
 from rest_framework import serializers
+from kanban import models as k
+from kanban import serializers as ks
 from gallant import models as g
 
 
 class ClientSerializer(serializers.ModelSerializer):
     user = serializers.PrimaryKeyRelatedField(read_only=True)
     contact_info = ContactInfoSerializer(allow_null=True)
+    card = ks.KanbanCardSerializer(read_only=True, allow_null=True)
     money_owed = serializers.SerializerMethodField()
     flags = serializers.SerializerMethodField()
     link = serializers.SerializerMethodField()
-    kanban_card_description = serializers.SerializerMethodField()
 
     def get_money_owed(self, client):
         amt = Money(0.00, client.currency)
@@ -56,9 +58,9 @@ class ClientSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = g.Client
-        fields = ('id', 'user', 'name', 'email', 'company', 'contact_info', 'alert', 'flags',
+        fields = ('id', 'user', 'name', 'email', 'company', 'contact_info', 'flags',
                   'link', 'status', 'language', 'currency', 'notes', 'money_owed', 'auto_pipeline',
-                  'last_contacted', 'referred_by', 'kanban_card_description')
+                  'last_contacted', 'referred_by', 'card')
         extra_kwargs = {
             'user': {'required': False},
             'alert': {'read_only': True, 'required': False},
@@ -93,11 +95,11 @@ class ClientSerializer(serializers.ModelSerializer):
 
         if contact_info and 'id' in contact_info:
             c_instance = g.ContactInfo.objects.get_for(user, 'change', pk=contact_info['id'])
-            cs = ContactInfoSerializer(data=contact_info, instance=c_instance)
+            cs = ContactInfoSerializer(data=contact_info, instance=c_instance, context=self.context)
             cs.update(c_instance, contact_info)
         elif contact_info:
             contact_info.update({'user': self.context['request'].user})
-            cs = ContactInfoSerializer(data=contact_info)
+            cs = ContactInfoSerializer(data=contact_info, context=self.context)
             c = cs.create(contact_info)
             instance.contact_info = c
             instance.save()

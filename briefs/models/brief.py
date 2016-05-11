@@ -114,5 +114,5 @@ def client_brief_answered(sender, instance, **kwargs):
         bstat = int(instance.status)
 
         if cstat < ClientStatus.Quoted.value and bstat >= BriefStatus.Answered.value:
-            client.alert = 'Brief Answered'
-            client.save()
+            client.card.alert = 'Brief Answered'
+            client.card.save()

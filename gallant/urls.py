@@ -72,6 +72,7 @@ urlpatterns = i18n_patterns(
     url(r'^quote/', include('quotes.urls')),
     url(r'^briefs/', include('briefs.urls')),
     url(r'^projects/', include('calendr.urls')),
+    url(r'^kanban/', include('kanban.urls')),
 
     url(r'^clients/$', login_required(gallant.views.ClientList.as_view()), name='clients'),
     url(r'^client/add/$', login_required(gallant.views.ClientCreate.as_view()), name='add_client'),
