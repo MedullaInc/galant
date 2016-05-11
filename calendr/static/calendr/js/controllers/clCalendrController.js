@@ -77,6 +77,11 @@ app.controller('clCalendrController', function ($window, $scope, Project, User, 
         task.title = task.name;
         task.resourceId = task.project;
         task.allDay = false;
+        if (!task.start) {
+            // fullcalendar requires start, so add epoch sentinel value
+            task.start = new Date(0);
+            task.end = task.start;
+        }
         return task;
     };
 
@@ -84,7 +89,18 @@ app.controller('clCalendrController', function ($window, $scope, Project, User, 
         task.name = task.title;
         task.project = task.resourceId;
         delete task.source;
+        try {
+            if (!task.start.getTime()) {
+                // check for epoch sentinel value (start required by FC), set time to null if present
+                task.start = null;
+                task.end = null;
+            }
+        } catch (ex) {}
         return task;
+    };
+
+    $scope.editFCTask = function (task) {
+        $scope.editTask(convertFromFCFormat(task));
     };
 
     /* Retrieve all Tasks from API service and add wrapper to calendar event */
@@ -157,13 +173,6 @@ app.controller('clCalendrController', function ($window, $scope, Project, User, 
 
     // $scope.getResources();
     $scope.getProjects();
-
-    /* Open edit Modal */
-    /* istanbul ignore next */
-    $scope.openEditModalandgotoDate = function (task) {
-        $scope.gotoDate(task.start);
-        $scope.editTask(task);
-    };
 
     /* event triggered on project change */
     //$scope.projectChanged = function (projectId) {

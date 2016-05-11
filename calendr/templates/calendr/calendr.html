@@ -88,15 +88,16 @@
 
         <div class="container">
             <div gl-add-modal open-fn="editTask" title="Task" modal-instance="modalInstance">
-                <div cl-task-add on-success="taskSaved" on-deleted="taskDeleted" task="object"
-                     current-user-id="currentUserId" projects="projects" users="users"></div>
+                <div cl-task-add on-success="taskSaved" task="object"
+                     assignee="{{ currentUserId }}" projects="projects" users="users"></div>
             </div>
             <uib-tabset active="active">
                 <uib-tab index="0" heading="My Tasks">
                     <div class="col-lg-12">
                         <div class="row">
                             <div class="col-lg-12">
-                                <button class="btn btn-default btn-add pull-right" ng-click="editTask()">
+                                <button class="btn btn-default btn-add pull-right"
+                                        ng-click="editTask()">
                                     <span class="glyphicon glyphicon-plus"></span> Add Task
                                 </button>
                                 <button class="btn btn-default btn-add pull-right" id="show_task_board"
@@ -116,7 +117,7 @@
                         </div>
                         <div class="row" ng-show="showList">
                             <div cl-task-list tasks="tasks" tasks-loaded="tasksLoaded"
-                                 assignee="{{ user.id }}" edit-task-fn="editTask"></div>
+                                 assignee="{{ user.id }}" edit-task-fn="editFCTask"></div>
                         </div>
                     </div>
                 </uib-tab>

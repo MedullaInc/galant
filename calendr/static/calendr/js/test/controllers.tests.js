@@ -147,7 +147,7 @@ describe('CalendrControl', function () {
     it('selectFunction', function () {
         var uiCalendarConfig = $injector.get('uiCalendarConfig');
         spyOn(uiCalendarConfig.calendars.myCalendar1, 'fullCalendar');
-        $scope.selectFunction({}, {}, {}, {}, {});
+        $scope.selectFunction({getTime: function () {}}, {}, {}, {}, {});
         expect(uiCalendarConfig.calendars.myCalendar1.fullCalendar).toHaveBeenCalled();
     });
 
@@ -181,4 +181,9 @@ describe('CalendrControl', function () {
         expect(Task.delete).toHaveBeenCalled();
     });
 
+    it('edit FC task', function () {
+        spyOn($scope, 'editTask');
+        $scope.editFCTask({});
+        expect($scope.editTask).toHaveBeenCalled();
+    });
 });

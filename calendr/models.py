@@ -17,8 +17,8 @@ class TaskStatus(gf.ChoiceEnum):
 
 class Task(g.UserModel):
     name = m.CharField(max_length=255)
-    start = m.DateTimeField(auto_now_add=False)
-    end = m.DateTimeField(auto_now_add=False)
+    start = m.DateTimeField(auto_now_add=False, null=True, blank=True)
+    end = m.DateTimeField(auto_now_add=False, null=True, blank=True)
     daily_estimate = m.DecimalField(blank=True, default=0.0, decimal_places=1, max_digits=3,
                                     help_text='Time estimate in hours per day')
     status = m.CharField(max_length=2, choices=TaskStatus.choices(), default=TaskStatus.ToDo.value)

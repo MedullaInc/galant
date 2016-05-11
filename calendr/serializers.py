@@ -7,11 +7,14 @@ from kanban import serializers as ks
 class TaskSerializer(serializers.ModelSerializer):
     user = serializers.PrimaryKeyRelatedField(read_only=True)
     project_name = serializers.SerializerMethodField()
-    daily_estimate = serializers.FloatField()
+    daily_estimate = serializers.FloatField(required=False)
     card = ks.KanbanCardSerializer(read_only=True, allow_null=True)
 
     def get_project_name(self, task):
-        return task.project.name
+        if task.project:
+            return task.project.name
+        else:
+            return ''
 
     def create(self, validated_data):
         user = self.context['request'].user
@@ -23,6 +26,7 @@ class TaskSerializer(serializers.ModelSerializer):
     def get_fields(self, *args, **kwargs):
         fields = super(TaskSerializer, self).get_fields(*args, **kwargs)
         fields['project'] = serializers.PrimaryKeyRelatedField(
+            required=False, allow_null=True,
             queryset=g.Project.objects.all_for(self.context['request'].user))
         fields['services'] = serializers.PrimaryKeyRelatedField(
             required=False, many=True,
