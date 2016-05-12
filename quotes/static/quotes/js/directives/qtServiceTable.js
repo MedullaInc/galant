@@ -24,14 +24,6 @@ app.directive('qtServiceTable', ['$window', 'Service', function ($window, Servic
             templateUrl: '/static/quotes/html/qt_quote_service_table.html',
             link: function ($scope) {
 
-                $scope.showService = function (service){
-                    if($scope.idType == "token"){
-                        id = service.id;
-                        service.views = service.views+1;
-                        Service.update({id: id, user: $scope.quote.user}, service);
-                    }
-                }
-
                 $scope.removeService = function (index) {
                     if ($window.confirm('Remove service?')) {
                         $scope.quote.services.splice(index, 1);

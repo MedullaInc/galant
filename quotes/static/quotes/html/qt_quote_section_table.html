@@ -32,7 +32,7 @@
                                editable-textarea="section.text[language]" e-name="text" e-form="quoteform" e-required
                                e-placeholder="Text" onbeforesave="validate.nonEmpty($data)">
 
-                                <pre ng-init="limit = 100; moreShown = false" ng-hide="quoteform.$visible">{{ section.text[language] | cut:true:limit:'...'}}<br/><br/><a ng-show="section.text[language].length > limit" href ng-click="showSection(section);limit=section.text[language].length; moreShown = true">More</a><a href ng-show="moreShown" ng-click="limit=100; moreShown = false"> Less </a></pre>
+                                <pre ng-hide="quoteform.$visible">{{ section.text[language] }}<br/><br/></pre>
                             </p>
 
                         </div>
@@ -46,11 +46,6 @@
                                     ng-click="removeSection($index)">
                                 <span class="glyphicon glyphicon-trash"/>
                             </button>
-                        </div>
-                        <div class="col-lg-12">
-                            <span ng-show="showViews()" class="label label-default" uib-tooltip="Times Expanded" tooltip-placement="right">
-                            {{ section.views }} times expanded
-                            </span>
                         </div>
 
                     </div>

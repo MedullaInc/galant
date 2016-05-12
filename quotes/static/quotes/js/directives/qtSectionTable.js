@@ -25,14 +25,6 @@ app.directive('qtSectionTable', ['$window', 'Section', function ($window, Sectio
                     $scope.sectionExclude = $attrs.sectionExclude;
                 }
 
-                $scope.showSection = function (section){
-                    if($scope.idType == 'token'){
-                        id = section.id;
-                        section.views = section.views+1;
-                        Section.update({id: id, user: $scope.quote.user}, section);
-                    }
-                }
-
                 $scope.removeSection = function (index) {
                     if ($window.confirm('Remove section?')) {
                         $scope.quote.sections.splice(index, 1);

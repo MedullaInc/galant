@@ -81,7 +81,7 @@
                             <p e-class="form-control" editable-textarea="service.description[language]"
                                e-id="description_{{$index}}" e-form="quoteform" e-required
                                e-placeholder="Description">
-                            <pre ng-init="moreShown = false; limit = 100" ng-hide="quoteform.$visible">{{ service.description[language] | cut:true:limit:'...'}}<br/><br/><a ng-show="service.description[language].length > limit" href ng-click="showService(service); moreShown = true; limit=service.description[language].length;">More</a><a href ng-show="moreShown" ng-click="moreShown = false; limit=100"> Less </a></pre>
+                            <pre ng-hide="quoteform.$visible">{{ service.description[language] | cut:true:limit:'...'}}<br/><br/></pre>
                             </p>
                         </div>
                     </div>
@@ -94,11 +94,6 @@
                     <button id="service{{ $index }}_delete" type="button" class="btn btn-default delete_button btn-add" aria-label="Delete" ng-click="removeService($index)">
                         <span class="glyphicon glyphicon-trash"/>
                     </button>
-                </div>
-                <div class="col-lg-12">
-                    <span ng-show="showViews()" class="label label-default" uib-tooltip="Nubmer of times client clicked 'more' to expand description" tooltip-placement="right">
-                        {{ service.views || 0 }} times expanded
-                    </span>
                 </div>
             </div>
             <hr/>
