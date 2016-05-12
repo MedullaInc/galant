@@ -73,7 +73,7 @@
     {% elif object.status == "5" %}
         <div class="alert alert-success" role="alert">
             <p id="public_link" class="data">
-                This quote has been accepted.
+                This quote has been accepted. <a href="{% url 'add_project' object.id %}">Create project</a>
             </p>
         </div>
     {% endif %}
