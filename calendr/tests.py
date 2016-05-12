@@ -1,6 +1,7 @@
 import datetime
 
 import autofixture
+from autofixture import AutoFixture
 from calendr.views import TasksAPI
 from django.utils import timezone
 from calendr.models import Task
@@ -54,6 +55,12 @@ class TaskTest(TransactionTestCase):
         user = autofixture.create_one('gallant.GallantUser', generate_fk=True)
         task = autofixture.create_one('calendr.Task', generate_fk=True,
                                       field_values={'user': user})
+
+        fixture = AutoFixture(g.Service, generate_fk=True, field_values={'user': user})
+        services = fixture.create(10)
+
+        for service in services:
+            task.services.add(service)
 
         task.notes.add(autofixture.create_one('gallant.Note', generate_fk=True,
                                               field_values={'user': user}))

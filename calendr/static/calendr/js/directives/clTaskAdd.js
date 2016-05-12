@@ -14,8 +14,10 @@ app.directive('clTaskAdd', ['$window', 'Task', function ($window, Task) {
             projects: '=?',
             assignee: '@',
             onSuccess: '&',
+            onDeleted: '&',
         },
         controller: ['$scope', function ($scope) {
+
             if (!$scope.task) {
                 $scope.task = new Task();
                 $scope.task.assignee = $scope.assignee;
@@ -45,6 +47,13 @@ app.directive('clTaskAdd', ['$window', 'Task', function ($window, Task) {
                 $scope.availableServices = $scope.project.services;
             }
 
+            //if ($scope.task.project) {
+            //    $scope.project = $scope.projects.find(function (p) {
+            //        return p.id == $scope.task.project
+            //    });
+            //    $scope.availableServices = $scope.project.services;
+            //}
+
             $scope.projectChanged = function (projectId) {
                 $scope.project = $scope.projects.find(function (p) {
                     return p.id == projectId
@@ -60,6 +69,8 @@ app.directive('clTaskAdd', ['$window', 'Task', function ($window, Task) {
             $scope.object = $scope.task;
 
             $scope.taskSaved = $scope.onSuccess();
+            $scope.deleteTask = $scope.onDeleted();
+
         }],
         templateUrl: '/static/calendr/html/cl_task_add.html',
         link: function ($scope) {

@@ -1,6 +1,9 @@
 import gallant.models as g
 import django.db.models as m
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from gallant import fields as gf
+from gallant.enums import ServiceStatus
 
 
 class TaskStatus(gf.ChoiceEnum):
@@ -33,3 +36,13 @@ class Task(g.UserModel):
         )
 
     objects = g.UserModelManager()
+
+
+@receiver(post_save, sender=Task)
+def deliverable_in_progress(sender, instance, **kwargs):
+    if instance.services.all_for(instance.user):
+        for service in instance.services.all_for(instance.user):
+            if int(service.status) == ServiceStatus.Pending_Assignment.value and \
+                            int(instance.status) == TaskStatus.In_Progress.value:
+                service.status = ServiceStatus.Active.value
+                service.save()
