@@ -29,7 +29,6 @@ describe('qtForm', function () {
                 Quote.updateUser = function () { return {$promise: $q.when({
                     id: 0, sections: [{}], services: [{cost: [{amount: 0, currency:"USD"}]}]
                 })}; };
-                Quote.update = function () { return {$promise: $q.when({id: 0})}; };
                 Quote.fields = function () { return {$promise: $q.when({
                     status: ['status', 'status'], language: ['language', 'language']
                 })}; };
@@ -37,7 +36,7 @@ describe('qtForm', function () {
             });
 
             $provide.factory('QuoteTemplate', function ($q) {
-                var QuoteTemplate = function () { return {id: 0}; };
+                var QuoteTemplate = { };
                 QuoteTemplate.get = function () { return {$promise: $q.when({id: 0, languages: [], quote: {
                     id: 0,
                     sections: [{}],
@@ -54,17 +53,13 @@ describe('qtForm', function () {
 
             $provide.factory('Section', function ($q) {
                 var Section = function () { return {id: 0}; };
-                Section.get = function () { return {$promise: $q.when({id: 0})}; };
-                Section.update = function () { return {$promise: $q.when({type: ['type', 'type']})};  };
                 return Section;
             });
 
             $provide.factory('Service', function ($q) {
                 var Service = function () { return {id: 0}; };
-                Service.get = function () { return {$promise: $q.when({id: 0})}; };
                 Service.query = function () { return {$promise: $q.when([{id: 0}])}; };
                 Service.fields = function () { return {$promise: $q.when({type: ['type', 'type']})};  };
-                Service.update = function () { return {$promise: $q.when({type: ['type', 'type']})};  };
                 return Service;
             });
 
@@ -146,17 +141,6 @@ describe('qtForm', function () {
             var element = $compile('<div qt-quote-form quote="quote" template-id="0" bool-template="False"></div>')($scope);
             $scope.$digest();
             expect(element.html().substring(0, 8)).toEqual('<div cla');
-        });
-
-        it('check client', function () {
-            /* TODO */
-            pending();
-            
-            $scope.quote = {};
-            var element = $compile('<div qt-quote-form quote="quote" ></div>')($scope);
-            $scope.$digest();
-            var expected = element.isolateScope().checkClient();
-            expect(expected).toEqual("Plase select a client");
         });
 
         it('adds service (scratch)', function () {
@@ -246,18 +230,6 @@ describe('qtForm', function () {
             element.scope().removeService();
             expect($scope.quote.services.length).toEqual(0);
         });
-
-        it('show service', function () {
-            $scope.quote = {};
-            $scope.service = {id:0};
-            $scope.idType = "token";
-            var element = $compile('<div qt-service-table></div>')($scope);
-            $scope.$digest();
- 
-            element.scope().showService($scope.service);
-            expect($scope.service).toBeDefined();
-        });
-
     });
     
 
@@ -267,16 +239,6 @@ describe('qtForm', function () {
             var element = $compile('<div qt-section-table></div>')($scope);
             $scope.$digest();
             expect(element.html().substring(0, 4)).toEqual('<div');
-        });
-
-        it('show section', function () {
-            $scope.quote = {};
-            $scope.section = {id:0};
-            $scope.idType = "token";
-            var element = $compile('<div qt-section-table></div>')($scope);
-            $scope.$digest();
-            element.scope().showSection($scope.section);
-            expect($scope.section).toBeDefined();
         });
 
         it('remove section', function () {
