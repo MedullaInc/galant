@@ -137,6 +137,13 @@ class UserManagerMethodsMixin(object):
         else:
             return None
 
+    def get_first(self, user, perm='view', *args, **kwargs):
+        ret = list(self.all_for(user, perm)[:1])
+        if ret:
+            return ret[0]
+        else:
+            return None
+
     def _caller_blocked(self):  # Allow certain modules to call blocked methods
         mod = inspect.getmodule(inspect.stack()[2][0])  # Who is calling us?
         if not mod:
