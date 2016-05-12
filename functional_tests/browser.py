@@ -176,6 +176,10 @@ class SignedInTest(BrowserTest):
     def tearDown(self):
         instance().delete_all_cookies()
 
+    def create_one(self, cls, field_values={}):
+        field_values.update({'user': self.user})
+        autofixture.create_one(cls, generate_fk=True, field_values=field_values)
+
 
 def add_login_cookie(browser_instance, session_key):
     browser_instance.add_cookie({u'domain': u'.localhost', u'name': u'sessionid',
