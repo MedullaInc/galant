@@ -118,7 +118,7 @@ class QuotesSignedInTest(browser.SignedInTest):
         with browser.wait_for_page_load():
             b.find_element_by_id('quote_delete').click()
 
-        success_message = b.find_element_by_class_name('alert-success')
+        success_message = browser.wait().until(lambda d: d.find_element_by_class_name('alert-success'))
         self.assertTrue(u'Quote deleted.' in success_message.text)
 
         # check that brief access returns 404
