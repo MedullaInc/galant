@@ -10,22 +10,17 @@ def tearDownModule():
     browser.close()
 
 
-def get_blank_quote_autofixture(user):
-    c = autofixture.create_one('gallant.Client', generate_fk=True,
-                               field_values={'user': user})
-    q = autofixture.create_one('quotes.Quote', generate_fk=True,
-                               field_values={'sections': [],'services': [], 'language': 'en',
-                                             'user': user, 'client': c, 'status': '1'})
-    i = qm.Section.objects.create(user=q.user, name='intro', title='intro', text='intro text', index=0)
-    m = qm.Section.objects.create(user=q.user, name='important_notes', title='notes', text='notes text', index=1)
-    q.sections.add(i)
-    q.sections.add(m)
-    return q
-
-
 class QuotesSignedInTest(browser.SignedInTest):
     def setUp(self):
         super(QuotesSignedInTest, self).setUp()
+        c = self.create_one('gallant.Client')
+        q = self.create_one('quotes.Quote', {'sections': [],'services': [], 'language': 'en',
+                                             'client': c, 'status': '1'})
+        i = qm.Section.objects.create(user=q.user, name='intro', title='intro', text='intro text', index=0)
+        m = qm.Section.objects.create(user=q.user, name='important_notes', title='notes', text='notes text', index=1)
+        q.sections.add(i)
+        q.sections.add(m)
+        self.q = q
         self.disable_popups()
 
     def test_can_access_quotes(self):
@@ -36,30 +31,26 @@ class QuotesSignedInTest(browser.SignedInTest):
         self.assertEqual('Quotes', app_title.text)
 
     def test_access_quote_preview(self):
-        q = get_blank_quote_autofixture(self.user)
-        browser.instance().get(self.live_server_url + reverse('quote_preview', args=[q.id]))
+        browser.instance().get(self.live_server_url + reverse('quote_preview', args=[self.q.id]))
 
         page_wrapper = browser.instance().find_element_by_class_name('page-wrapper')
         self.assertTrue(page_wrapper)
 
     def test_access_quote_header(self):
-        q = get_blank_quote_autofixture(self.user)
-        browser.instance().get(self.live_server_url + reverse('quote_header', args=[q.id]))
+        browser.instance().get(self.live_server_url + reverse('quote_header', args=[self.q.id]))
 
         header = browser.instance().find_element_by_class_name('header')
         self.assertTrue(header)
 
     def test_access_quote_footer(self):
-        q = get_blank_quote_autofixture(self.user)
-        browser.instance().get(self.live_server_url + reverse('quote_footer', args=[q.id]))
+        browser.instance().get(self.live_server_url + reverse('quote_footer', args=[self.q.id]))
 
         footer = browser.instance().find_element_by_class_name('footer')
         self.assertTrue(footer)
 
     def test_add_quote(self):
         b = browser.instance()
-        c = autofixture.create_one('gallant.Client', generate_fk=True,
-                                   field_values={'user': self.user, 'status': '1'})
+        c = self.create_one('gallant.Client', {'status': '1'})
         c.save()
         b.get(self.live_server_url + reverse('add_quote'))
         browser.wait().until(lambda driver: driver.find_element_by_id('quote_name')).send_keys('Quote test')
@@ -78,11 +69,9 @@ class QuotesSignedInTest(browser.SignedInTest):
 
     def test_edit_quote(self):
         b = browser.instance()
-        c = autofixture.create_one('gallant.Client', generate_fk=True,
-                                   field_values={'user': self.user, 'status': '0'})
+        c = self.create_one('gallant.Client', {'status': '0'})
         c.save()
-        q = get_blank_quote_autofixture(self.user)
-        b.get(self.live_server_url + reverse('quote_detail', args=[q.id]))
+        b.get(self.live_server_url + reverse('quote_detail', args=[self.q.id]))
         browser.wait().until_click(lambda driver: driver.find_element_by_id('quote_edit'))
         b.find_element_by_id('quote_name').send_keys('Quote test')
         browser.wait().until_click(lambda driver: driver.find_element_by_xpath('//select[@name="client"]/option[2]'))
@@ -98,20 +87,17 @@ class QuotesSignedInTest(browser.SignedInTest):
 
     def test_delete_quote(self):
         b = browser.instance()
-        q = get_blank_quote_autofixture(self.user)
-        b.get(self.live_server_url + reverse('delete_quote', args=[q.id]))
+        b.get(self.live_server_url + reverse('delete_quote', args=[self.q.id]))
 
-        response = self.client.get(self.live_server_url + reverse('quote_detail', args=[q.id]))
+        response = self.client.get(self.live_server_url + reverse('quote_detail', args=[self.q.id]))
         self.assertEqual(response.status_code, 404)
 
     def test_soft_delete_quote(self):
         b = browser.instance()
-        c = autofixture.create_one('gallant.Client', generate_fk=True,
-                                   field_values={'user': self.user, 'status': '0'})
+        c = self.create_one('gallant.Client', {'status': '0'})
         c.save()
-        q = get_blank_quote_autofixture(self.user)
 
-        b.get(self.live_server_url + reverse('quote_detail', args=[q.id]))
+        b.get(self.live_server_url + reverse('quote_detail', args=[self.q.id]))
         self.disable_popups()
 
         browser.wait().until(lambda driver: driver.find_element_by_id('section_0'))
@@ -122,26 +108,24 @@ class QuotesSignedInTest(browser.SignedInTest):
         self.assertTrue(u'Quote deleted.' in success_message.text)
 
         # check that brief access returns 404
-        response = self.client.get(self.live_server_url + reverse('quote_detail', args=[q.id]))
+        response = self.client.get(self.live_server_url + reverse('quote_detail', args=[self.q.id]))
         self.assertEqual(response.status_code, 404)
 
     @skip("TODO")
     def test_email_quote(self):
         b = browser.instance()
-        q = get_blank_quote_autofixture(self.user)
-        b.get(self.live_server_url + reverse('quote_detail', args=[q.id]))
+        b.get(self.live_server_url + reverse('quote_detail', args=[self.q.id]))
         b.find_element_by_id('send_quote').click()
         success_message = b.find_element_by_class_name('alert-success')
-        self.assertTrue(u'Quote link sent to %s.' % q.client.email in success_message.text)
-        q.refresh_from_db()
-        self.assertEqual(q.status, '2')
-        b.get(self.live_server_url + reverse('client_detail', args=[q.client_id]))
-        self.assertTrue(b.find_element_by_id('note_%s' % q.client.notes.all_for(self.user).reverse()[0].id))
+        self.assertTrue(u'Quote link sent to %s.' % self.q.client.email in success_message.text)
+        self.q.refresh_from_db()
+        self.assertEqual(self.q.status, '2')
+        b.get(self.live_server_url + reverse('client_detail', args=[self.q.client_id]))
+        self.assertTrue(b.find_element_by_id('note_%s' % self.q.client.notes.all_for(self.user).reverse()[0].id))
 
     def test_add_sections(self):
         b = browser.instance()
-        q = get_blank_quote_autofixture(self.user)
-        b.get(self.live_server_url + reverse('quote_detail', args=[q.id]))
+        b.get(self.live_server_url + reverse('quote_detail', args=[self.q.id]))
 
         browser.wait().until(lambda driver: driver.find_element_by_id('section_0'))
         b.find_element_by_id('quote_edit').click()
@@ -162,12 +146,10 @@ class QuotesSignedInTest(browser.SignedInTest):
 
     def test_add_service(self):
         b = browser.instance()
-        q = get_blank_quote_autofixture(self.user)
 
-        c = autofixture.create_one('gallant.Client', generate_fk=True,
-                                   field_values={'user': self.user, 'status': '1'})
+        c = self.create_one('gallant.Client', {'status': '1'})
         c.save()
-        b.get(self.live_server_url + reverse('quote_detail', args=[q.id]))
+        b.get(self.live_server_url + reverse('quote_detail', args=[self.q.id]))
 
         browser.wait().until_click(lambda driver: driver.find_element_by_id('quote_edit'))
         b.find_element_by_id('quote_name').send_keys('Quote test')
@@ -187,8 +169,7 @@ class QuotesSignedInTest(browser.SignedInTest):
 
     def test_remove_section(self):
         b = browser.instance()
-        q = get_blank_quote_autofixture(self.user)
-        b.get(self.live_server_url + reverse('quote_detail', args=[q.id]))
+        b.get(self.live_server_url + reverse('quote_detail', args=[self.q.id]))
 
         self.disable_angular_popups(b)
 
@@ -217,9 +198,8 @@ class QuotesSignedInTest(browser.SignedInTest):
 
     def test_add_to_existing_sections(self):
         b = browser.instance()
-        q = get_blank_quote_autofixture(self.user)
 
-        b.get(self.live_server_url + reverse('quote_detail', args=[q.id]))
+        b.get(self.live_server_url + reverse('quote_detail', args=[self.q.id]))
 
         browser.wait().until(lambda driver: driver.find_element_by_id('section_0'))
         add_section = b.find_element_by_id('add_section')
@@ -232,9 +212,8 @@ class QuotesSignedInTest(browser.SignedInTest):
         self._submit_and_check(b)
 
     def test_can_access_quote_endpoint(self):
-        q = get_blank_quote_autofixture(self.user)
 
-        response = self.client.get(self.live_server_url + reverse('api-quote-detail', args=[q.id]))
+        response = self.client.get(self.live_server_url + reverse('api-quote-detail', args=[self.q.id]))
         self.assertEqual(response.status_code, 200)
 
     def _submit_and_check(self, b, redirect=False):

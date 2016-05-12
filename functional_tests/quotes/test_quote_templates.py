@@ -6,19 +6,6 @@ from quotes import models as qm
 from selenium.common.exceptions import NoSuchElementException
 
 
-def get_blank_quote_autofixture(user):
-    c = autofixture.create_one('gallant.Client', generate_fk=True,
-                               field_values={'user': user})
-    q = autofixture.create_one('quotes.Quote', generate_fk=True,
-                               field_values={'sections': [],'services': [], 'language': 'en',
-                                             'user': user, 'client': c, 'status': '1'})
-    i = qm.Section.objects.create(user=q.user, name='intro', title='intro', text='intro text', index=0)
-    m = qm.Section.objects.create(user=q.user, name='important_notes', title='notes', text='notes text', index=1)
-    q.sections.add(i)
-    q.sections.add(m)
-    return q
-
-
 def tearDownModule():
     browser.close()
 
@@ -26,13 +13,18 @@ def tearDownModule():
 class QuoteTemplatesTest(browser.SignedInTest):
     def setUp(self):
         super(QuoteTemplatesTest, self).setUp()
+        c = self.create_one('gallant.Client')
+        q = self.create_one('quotes.Quote', {'sections': [],'services': [], 'language': 'en',
+                                             'client': c, 'status': '1'})
+        i = qm.Section.objects.create(user=q.user, name='intro', title='intro', text='intro text', index=0)
+        m = qm.Section.objects.create(user=q.user, name='important_notes', title='notes', text='notes text', index=1)
+        q.sections.add(i)
+        q.sections.add(m)
+        self.q = q
         self.disable_popups()
 
     def test_add_quote_template(self):
         b = browser.instance()
-
-        q = get_blank_quote_autofixture(self.user)
-        q.save()
 
         b.get(self.live_server_url + reverse('add_quote_template'))
 
@@ -54,8 +46,7 @@ class QuoteTemplatesTest(browser.SignedInTest):
     def test_add_quote_lang_dropdown(self):
         b = browser.instance()
 
-        c = autofixture.create_one('gallant.Client', generate_fk=True,
-                                   field_values={'user': self.user})
+        c = self.create_one('gallant.Client')
         c.save()
 
         b.get(self.live_server_url + reverse('add_quote_template'))
@@ -69,12 +60,9 @@ class QuoteTemplatesTest(browser.SignedInTest):
 
     def test_quote_template_detail(self):
         b = browser.instance()
-        q = get_blank_quote_autofixture(self.user)
-        qt = autofixture.create_one('quotes.QuoteTemplate', generate_fk=False,
-                                    field_values={'quote': q, 'user': self.user})
+        qt = self.create_one('quotes.QuoteTemplate', {'quote': self.q})
 
-        c = autofixture.create_one('gallant.Client', generate_fk=True,
-                                   field_values={'user': self.user})
+        c = self.create_one('gallant.Client')
         c.save()
 
         b.get(self.live_server_url + reverse('quotetemplate_detail', args=[qt.id]))
@@ -97,9 +85,7 @@ class QuoteTemplatesTest(browser.SignedInTest):
 
     def test_delete_quote_template(self):
         b = browser.instance()
-        q = get_blank_quote_autofixture(self.user)
-        qt = autofixture.create_one('quotes.QuoteTemplate', generate_fk=False,
-                                    field_values={'quote': q, 'user': self.user})
+        qt = self.create_one('quotes.QuoteTemplate', {'quote': self.q})
 
         b.get(self.live_server_url + reverse('delete_quote_template', args=[qt.id]))
 
@@ -108,9 +94,7 @@ class QuoteTemplatesTest(browser.SignedInTest):
 
     def test_soft_delete_quote_template(self):
         b = browser.instance()
-        q = get_blank_quote_autofixture(self.user)
-        qt = autofixture.create_one('quotes.QuoteTemplate', generate_fk=False,
-                                    field_values={'quote': q, 'user': self.user})
+        qt = self.create_one('quotes.QuoteTemplate', {'quote': self.q})
 
         b.get(self.live_server_url + reverse('quotetemplate_detail', args=[qt.id]))
         self.disable_popups()
@@ -128,12 +112,9 @@ class QuoteTemplatesTest(browser.SignedInTest):
 
     def test_edit_quote_lang_dropdown(self):
         b = browser.instance()
-        q = get_blank_quote_autofixture(self.user)
-        qt = autofixture.create_one('quotes.QuoteTemplate', generate_fk=False,
-                                    field_values={'quote': q, 'user': self.user})
+        qt = self.create_one('quotes.QuoteTemplate', {'quote': self.q})
 
-        c = autofixture.create_one('gallant.Client', generate_fk=True,
-                                   field_values={'user': self.user})
+        c = self.create_one('gallant.Client')
         c.save()     
 
         b.get(self.live_server_url + reverse('quotetemplate_detail', args=[qt.id]))
@@ -144,19 +125,16 @@ class QuoteTemplatesTest(browser.SignedInTest):
     def test_add_from_quote(self):
         b = browser.instance()
 
-        q = get_blank_quote_autofixture(self.user)
-        b.get(self.live_server_url + reverse('add_quote_template', kwargs={'quote_id': q.id}))
+        b.get(self.live_server_url + reverse('add_quote_template', kwargs={'quote_id': self.q.id}))
 
         browser.wait().until(lambda driver: driver.find_element_by_id('quote_save').is_displayed)
-        self.assertEqual(q.intro().title, {u'en': u'intro'})
+        self.assertEqual(self.q.intro().title, {u'en': u'intro'})
 
     def test_add_quote_from_template(self):
         b = browser.instance()
-        q = get_blank_quote_autofixture(self.user)
-        qt = autofixture.create_one('quotes.QuoteTemplate', generate_fk=False,
-                                    field_values={'quote': q, 'user': self.user})
+        qt = self.create_one('quotes.QuoteTemplate', {'quote': self.q})
         b.get(self.live_server_url + reverse('add_quote') +
-              '?template_id=%d&lang=en&client_id=%d' % (qt.id, q.client.id))
+              '?template_id=%d&lang=en&client_id=%d' % (qt.id, self.q.client.id))
         browser.wait().until(lambda driver: driver.find_element_by_id('section_0'))
         b.find_element_by_id('quote_name').send_keys('new quote')
         with browser.wait_for_page_load():
@@ -196,9 +174,7 @@ class QuoteTemplatesTest(browser.SignedInTest):
         self.assertEqual(intro.get_attribute('value'), 'titulo de intro prueba')
 
     def test_can_access_quote_template_endpoint(self):
-        q = get_blank_quote_autofixture(self.user)
-        qt = autofixture.create_one('quotes.QuoteTemplate', generate_fk=False,
-                                    field_values={'quote': q, 'user': self.user})
+        qt = self.create_one('quotes.QuoteTemplate', {'quote': self.q})
 
         response = self.client.get(self.live_server_url + reverse('api-quote-template-detail', args=[qt.id]))
         self.assertEqual(response.status_code, 200)
