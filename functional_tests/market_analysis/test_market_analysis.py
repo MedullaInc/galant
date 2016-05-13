@@ -13,54 +13,49 @@ def tearDownModule():
 class LandingPageTest(browser.BrowserTest):
     def setUp(self):
         super(LandingPageTest, self).setUp()
-        self.browser = browser.instance()
         self.experiment = Experiment(name='waiting_list', state=ENABLED_STATE)
         self.experiment.save()
 
     def test_can_access_landing_pages(self):
-        browser.instance().get(self.live_server_url + reverse('landing'))
-        title = browser.instance().find_element_by_css_selector('h2 span.red_a')
+        self.get(self.live_server_url + reverse('landing'))
+        title = self.e_css('h2 span.red_a')
         self.assertIn('Sign up for our waiting list', title.text)
 
     def test_can_access_workflow_experiment(self):
-        browser.instance().delete_all_cookies()
-        browser.instance().get(self.live_server_url + reverse('workflow_test'))
-        title = browser.instance().find_element_by_css_selector('h1 span.red_a')
+        self.b.delete_all_cookies()
+        self.get(self.live_server_url + reverse('workflow_test'))
+        title = self.e_css('h1 span.red_a')
         self.assertIn(u'Use the proven workflow\nfrom creative agencies worldwide', title.text)
 
     def test_can_access_tool_experiment(self):
-        browser.instance().delete_all_cookies()
-        browser.instance().get(self.live_server_url + reverse('tool_test'))
-        title = browser.instance().find_element_by_css_selector('h1 span.red_a')
+        self.b.delete_all_cookies()
+        self.get(self.live_server_url + reverse('tool_test'))
+        title = self.e_css('h1 span.red_a')
         self.assertIn(u'Manage clients, send quotes,\ntrack projects \u2014 all in one place', title.text)
 
     def test_waiting_list_registration_error(self):
-        b = self.browser
-
-        browser.instance().get(self.live_server_url + reverse('landing'))
+        self.get(self.live_server_url + reverse('landing'))
 
         # fill out form & save
-        b.find_element_by_id('id_email').send_keys('bobafett@republicarmy.com')
-        b.find_element_by_id('id_web').send_keys('www.republicarmy.com')
+        self.e_id('id_email').send_keys('bobafett@republicarmy.com')
+        self.e_id('id_web').send_keys('www.republicarmy.com')
 
-        b.find_element_by_id('submit_signup').click()
+        self.click_id('submit_signup')
 
-        name_error = b.find_element_by_css_selector('ul.errorlist li')
+        name_error = self.e_css('ul.errorlist li')
 
         self.assertTrue('Name is required.' in name_error.text)
 
     def test_waiting_list_registration(self):
-        b = self.browser
-
-        browser.instance().get(self.live_server_url + reverse('landing'))
+        self.get(self.live_server_url + reverse('landing'))
 
         # fill out form & save
-        b.find_element_by_id('id_name').send_keys('Boba Fett')
-        b.find_element_by_id('id_email').send_keys('bobafett@republicarmy.com')
-        b.find_element_by_id('id_web').send_keys('www.republicarmy.com')
+        self.e_id('id_name').send_keys('Boba Fett')
+        self.e_id('id_email').send_keys('bobafett@republicarmy.com')
+        self.e_id('id_web').send_keys('www.republicarmy.com')
 
-        b.find_element_by_id('submit_signup').click()
+        self.click_id('submit_signup')
 
-        success_message = b.find_element_by_class_name('red_a')
+        success_message = self.e_class('red_a')
 
         self.assertTrue('Thank you' in success_message.text)
