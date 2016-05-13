@@ -17,6 +17,16 @@ def objects_for(context, queryset, permission='view'):
         return None
 
 
+@register.assignment_tag(takes_context=True)
+def get_first(context, queryset, permission='view'):
+    """ Returns objects user has permission to access
+    """
+    if queryset:
+        return queryset.get_first(context.request.user, permission)
+    else:
+        return None
+
+
 @register.simple_tag(takes_context=True)
 def analytics(context):
     """ Returns analytics code

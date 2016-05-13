@@ -64,6 +64,7 @@
             </p>
         </div>
     {% endif %}
+    {% get_first object.projects as project %}
     {% if object.status == "4" %}
         <div class="alert alert-danger" role="alert">
             <p id="public_link" class="data">
@@ -73,7 +74,17 @@
     {% elif object.status == "5" %}
         <div class="alert alert-success" role="alert">
             <p id="public_link" class="data">
-                This quote has been accepted. <a href="{% url 'add_project' object.id %}">Create project</a>
+                This quote has been accepted.
+                {% if project %}
+                    Linked project: <a href="{% url 'project_detail' project.id %}">{{ project.name }}</a>
+                {% endif %}
+            </p>
+        </div>
+    {% endif %}
+    {% if project and object.status != "5" %}
+        <div class="alert alert-success" role="alert">
+            <p id="public_link" class="data">
+                Linked project: <a href="{% url 'project_detail' project.id %}">{{ project.name }}</a>
             </p>
         </div>
     {% endif %}
@@ -82,8 +93,7 @@
         <div class="col-lg-12">
 
             {% if object.client.email and object.status == '0' or object.status == '5' %}
-                {% objects_for object.projects as projects %}
-                {% if projects|length == 0 %}
+                {% if not project %}
                     <script type="text/ng-template" id="addProjectModal.html">
 
                         <div class="modal-header" id="calendar_modal">
