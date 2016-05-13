@@ -27,7 +27,7 @@ class GallantAccountTest(browser.BrowserTest):
 
         self.e_name('email').send_keys('foo@bar.com')
 
-        self.click_xpath('//button[@type="submit"]')
+        self.submit_xpath('//button[@type="submit"]')
 
         success_message = self.e_class('alert-success')
         self.assertTrue(u'Registration link sent.' in success_message.text)
