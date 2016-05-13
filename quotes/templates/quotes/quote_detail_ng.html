@@ -128,6 +128,12 @@
                 </form>
             {% endif %}
 
+            <a href="{% url 'quote_txt' object.id %}">
+                <button type="button" class="btn btn-default btn-add action-button pull-right">
+                    {% trans "Copy & Paste Text Version" %}
+                </button>
+            </a>
+
             <a href="{% url 'quote_pdf' object.id %}">
                 <button type="button" class="btn btn-default btn-add action-button pull-right">
                     {% trans "Download Quote" %}

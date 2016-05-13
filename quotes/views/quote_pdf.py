@@ -18,6 +18,7 @@ def get_quote(request, **kwargs):
 
     return quote
 
+
 class QuotePDF(View):  # pragma: no cover
     def get(self, request, *args, **kwargs):
         quote = get_quote(request, **kwargs)

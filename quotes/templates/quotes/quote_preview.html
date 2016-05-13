@@ -43,7 +43,7 @@
                     {% if object.intro %}
                         <div class="pdf_element intro">
                             <div class="row">
-                                <div class="col-xs-offset-2 col-xs-8 section_title">
+                                <div class="col-xs-4 section_title">
                                     <h2>
                                         {{ object.intro.title.get_text }}
                                     </h2>
@@ -64,7 +64,7 @@
                                 <div class="pdf_element service">
 
                                     <div class="row">
-                                        <div class="col-xs-offset-2 col-xs-8 section_title">
+                                        <div class="col-xs-4 section_title">
                                             <h2>
                                                 {{ section.name.get_text }}
                                             </h2>
@@ -94,7 +94,7 @@
 
                             <div class="pdf_element {{ section.name }}">
                                 <div class="row">
-                                    <div class="col-xs-offset-2 col-xs-8 section_title">
+                                    <div class="col-xs-4 section_title">
                                         <h2>
                                             {{ section.title.get_text }}
                                         </h2>
@@ -113,7 +113,7 @@
 
                     <div class="pdf_element prices">
                         <div class="row">
-                            <div class="col-xs-offset-2 col-xs-10 section_title">
+                            <div class="col-xs-12 section_title">
                                 <h2>
                                     {% trans "Prices" %}
                                 </h2>
@@ -185,7 +185,7 @@
                     {% if object.title %}
                         <div class="pdf_element margin">
                             <div class="row">
-                                <div class="col-xs-offset-2 col-xs-8 section_title">
+                                <div class="col-xs-4 section_title">
                                     <h2>
                                         {{ object.title.get_text }}
                                     </h2>
@@ -202,7 +202,7 @@
                     {% if object.important_notes %}
                     <div class="pdf_element intro">
                         <div class="row">
-                            <div class="col-xs-offset-2 col-xs-8 section_title">
+                            <div class="col-xs-4 section_title">
                                 <h2>
                                     {{ object.important_notes.title.get_text }}
                                 </h2>
