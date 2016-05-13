@@ -157,6 +157,9 @@ class BrowserTest(StaticLiveServerTestCase):
     def save_snapshot(self, prefix=SNAP_PREFIX):  # pragma: no cover
         save_driver_snapshot(instance(), prefix)
 
+    def create_one(self, cls, field_values={}):
+        return autofixture.create_one(cls, generate_fk=True, field_values=field_values)
+
 
 class SignedInTest(BrowserTest):
     def setUp(self):
@@ -178,7 +181,7 @@ class SignedInTest(BrowserTest):
 
     def create_one(self, cls, field_values={}):
         field_values.update({'user': self.user})
-        return autofixture.create_one(cls, generate_fk=True, field_values=field_values)
+        return super(SignedInTest, self).create_one(cls, field_values)
 
 
 def add_login_cookie(browser_instance, session_key):

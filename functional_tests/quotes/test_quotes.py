@@ -1,8 +1,6 @@
-import time
 from django.core.urlresolvers import reverse
 from functional_tests import browser
 from quotes import models as qm
-import autofixture
 from unittest import skip
 
 

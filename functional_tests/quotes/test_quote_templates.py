@@ -1,7 +1,5 @@
 from django.core.urlresolvers import reverse
 from functional_tests import browser
-import autofixture
-from unittest import skip
 from quotes import models as qm
 from selenium.common.exceptions import NoSuchElementException
 

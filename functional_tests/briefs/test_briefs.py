@@ -2,7 +2,6 @@
 from django.core.urlresolvers import reverse
 from functional_tests import browser
 from briefs import models as bm
-import autofixture
 
 
 def tearDownModule():
@@ -16,11 +15,9 @@ class BriefsSignedInTest(browser.SignedInTest):
         self.browser = browser.instance()
         self.disable_popups()
         
-        c = autofixture.create_one('gallant.Client', generate_fk=True,
-                                   field_values={'user': self.user})
-        brief = autofixture.create_one('briefs.Brief', generate_fk=True,
-                                       field_values={'user': self.user, 'client': c, 'quote': None,
-                                                     'status': bm.BriefStatus.Draft.value})
+        c = self.create_one('gallant.Client')
+        brief = self.create_one('briefs.Brief', {'client': c, 'quote': None,
+                                                 'status': bm.BriefStatus.Draft.value})
         q = bm.TextQuestion.objects.create(user=brief.user, question='What?')
         mq = bm.MultipleChoiceQuestion.objects.create(user=brief.user, question='Huh?',
                                                       choices=['a', 'b', 'c'], index=1)
@@ -96,10 +93,8 @@ class BriefsSignedInTest(browser.SignedInTest):
 
     def test_add_quote_brief(self):
         b = self.browser
-        c = autofixture.create_one('gallant.Client', generate_fk=True,
-                                   field_values={'user': self.user})
-        q = autofixture.create_one('quotes.Quote', generate_fk=True,
-                                   field_values={'user': self.user, 'client': c})
+        c = self.create_one('gallant.Client')
+        q = self.create_one('quotes.Quote', {'client': c})
 
         b.get(self.live_server_url + reverse('brief_detail', args=[self.brief.id]) +
               '?quote_id=%d' % q.id)
@@ -112,10 +107,8 @@ class BriefsSignedInTest(browser.SignedInTest):
     def test_add_project_brief(self):
         b = self.browser
         c = self.brief.client
-        p = autofixture.create_one('gallant.Project', generate_fk=True,
-                                   field_values={'user': self.user})
-        autofixture.create_one('quotes.Quote', generate_fk=True,
-                               field_values={'user': self.user, 'client': c, 'project': p})
+        p = self.create_one('gallant.Project')
+        self.create_one('quotes.Quote', {'client': c, 'project': p})
 
         b.get(self.live_server_url + reverse('add_brief') + '?project_id=%d' % p.id)
         
@@ -174,8 +167,7 @@ class BriefsSignedInTest(browser.SignedInTest):
         self.assertEqual(response.status_code, 200)
 
     def test_can_access_brief_answers_endpoint(self):
-        brief_answers = autofixture.create_one('briefs.BriefAnswers', generate_fk=True,
-                                               field_values={'user': self.user})
+        brief_answers = self.create_one('briefs.BriefAnswers')
         response = self.client.get(self.live_server_url + reverse('api-briefanswers-detail', args=[brief_answers.id]))
         self.assertEqual(response.status_code, 200)
 

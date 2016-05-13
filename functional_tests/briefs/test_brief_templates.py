@@ -1,7 +1,6 @@
 from django.core.urlresolvers import reverse
 from functional_tests import browser
 from briefs import models as bm
-import autofixture
 
 
 def tearDownModule():
@@ -11,6 +10,8 @@ def tearDownModule():
 class BriefTemplatesTest(browser.SignedInTest):
     def setUp(self):
         super(BriefTemplatesTest, self).setUp()
+        self.brief = self.create_one('briefs.Brief')
+        self.bt = self.create_one('briefs.BriefTemplate', {'brief': self.brief})
         self.disable_popups()
 
     def test_add_brief_template(self):
@@ -25,11 +26,7 @@ class BriefTemplatesTest(browser.SignedInTest):
 
     def test_brieftemplate_detail(self):
         b = browser.instance()
-        brief = autofixture.create_one('briefs.Brief', generate_fk=True,
-                                       field_values={'user': self.user})
-        bt = autofixture.create_one('briefs.BriefTemplate', generate_fk=False,
-                                    field_values={'brief': brief, 'user': self.user})
-        b.get(self.live_server_url + reverse('brieftemplate_detail', args=[bt.id]))
+        b.get(self.live_server_url + reverse('brieftemplate_detail', args=[self.bt.id]))
 
         app_title = browser.instance().find_element_by_class_name('app_title')
         self.assertEqual('Brief Template Detail', app_title.text)
@@ -46,13 +43,9 @@ class BriefTemplatesTest(browser.SignedInTest):
 
     def test_brief_edit_template(self):
         b = browser.instance()
-        brief = autofixture.create_one('briefs.Brief', generate_fk=True,
-                                       field_values={'questions': [], 'user': self.user})
-        quest = bm.TextQuestion.objects.create(user=brief.user)
-        brief.questions.add(quest)
-        bt = autofixture.create_one('briefs.BriefTemplate', generate_fk=False,
-                                    field_values={'brief': brief, 'user': self.user})
-        b.get(self.live_server_url + reverse('brieftemplate_detail', args=[bt.id]))
+        q = bm.TextQuestion.objects.create(user=self.brief.user, question='What?')
+        self.brief.questions.add(q)
+        b.get(self.live_server_url + reverse('brieftemplate_detail', args=[self.bt.id]))
 
         browser.wait().until(lambda driver: driver.find_element_by_id('brief_edit')).click()
         b.find_element_by_id('question0_question').clear()
@@ -66,23 +59,16 @@ class BriefTemplatesTest(browser.SignedInTest):
 
     def test_brief_edit_lang_dropdown(self):
         b = browser.instance()
-        brief = autofixture.create_one('briefs.Brief', generate_fk=True,
-                                       field_values={'user': self.user})
-        bt = autofixture.create_one('briefs.BriefTemplate', generate_fk=False,
-                                    field_values={'brief': brief, 'user': self.user})
-        b.get(self.live_server_url + reverse('brieftemplate_detail', args=[bt.id]))
+        b.get(self.live_server_url + reverse('brieftemplate_detail', args=[self.bt.id]))
 
         browser.wait().until(lambda driver: driver.find_element_by_xpath('//h2[@e-id="brief_title"]').text != 'Not set')
         self._add_language_and_text(b)
 
     def test_add_from_brief(self):
         b = browser.instance()
-
-        brief = autofixture.create_one('briefs.Brief', generate_fk=True,
-                                       field_values={'questions': [], 'user': self.user})
-        quest = bm.TextQuestion.objects.create(user=brief.user)
-        brief.questions.add(quest)
-        b.get(self.live_server_url + reverse('add_brief_template') + '?brief_id=%d' % brief.id)
+        quest = bm.TextQuestion.objects.create(user=self.brief.user)
+        self.brief.questions.add(quest)
+        b.get(self.live_server_url + reverse('add_brief_template') + '?brief_id=%d' % self.brief.id)
 
         question = browser.wait().until(lambda driver:
                                         driver.find_element_by_xpath('//p[@e-id="question0_question"]'))
@@ -90,16 +76,12 @@ class BriefTemplatesTest(browser.SignedInTest):
 
     def test_add_brief_from_template(self):
         b = browser.instance()
-        client = autofixture.create_one('gallant.Client', generate_fk=True,
-                                   field_values={'user': self.user})
-        brief = autofixture.create_one('briefs.Brief', generate_fk=True,
-                                       field_values={'questions': [], 'user': self.user})
-        quest = bm.TextQuestion.objects.create(user=brief.user, question='Who\'s on first?')
-        brief.questions.add(quest)
-        bt = autofixture.create_one('briefs.BriefTemplate', generate_fk=False,
-                                    field_values={'brief': brief, 'user': self.user})
+        quest = bm.TextQuestion.objects.create(user=self.brief.user, question='Who\'s on first?')
+        self.brief.questions.add(quest)
+        self.brief.client = self.create_one('gallant.Client')
+        self.brief.save()
         b.get(self.live_server_url +
-              reverse('add_brief') + '?template_id=%d&lang=en&client_id=%d' % (bt.id, client.id))
+              reverse('add_brief') + '?template_id=%d&lang=en&client_id=%d' % (self.bt.id, self.brief.client.id))
 
         browser.wait().until(lambda driver: driver.find_element_by_id('question0'))
         question = b.find_element_by_xpath('//p[@e-id="question0_question"]')
@@ -134,28 +116,17 @@ class BriefTemplatesTest(browser.SignedInTest):
         self.assertEqual(question.text, 'Quien esta en primera?')
 
     def test_can_access_brief_template_endpoint(self):
-        client = autofixture.create_one('gallant.Client', generate_fk=True,
-                                   field_values={'user': self.user})
-        brief = autofixture.create_one('briefs.Brief', generate_fk=True,
-                                   field_values={'user': self.user, 'client': client})
-        bt = autofixture.create_one('briefs.BriefTemplate', generate_fk=False,
-                                    field_values={'brief': brief, 'user': self.user})
-
-        response = self.client.get(self.live_server_url + reverse('api-brief-template-detail', args=[bt.id]))
+        response = self.client.get(self.live_server_url + reverse('api-brief-template-detail', args=[self.bt.id]))
         self.assertEqual(response.status_code, 200)
 
     def test_soft_delete_brief_template(self):
         b = browser.instance()
-        client = autofixture.create_one('gallant.Client', generate_fk=True,
-                                   field_values={'user': self.user})
-        brief = autofixture.create_one('briefs.Brief', generate_fk=True,
-                                   field_values={'user': self.user, 'client': client, 'status': 0})
-        q = bm.TextQuestion.objects.create(user=brief.user, question='What?')
-        brief.questions.add(q)
-        bt = autofixture.create_one('briefs.BriefTemplate', generate_fk=False,
-                                    field_values={'brief': brief, 'user': self.user})
+        self.brief.status = '0'
+        self.brief.save()
+        q = bm.TextQuestion.objects.create(user=self.brief.user, question='What?')
+        self.brief.questions.add(q)
 
-        b.get(self.live_server_url + reverse('brieftemplate_detail', args=[bt.id]))
+        b.get(self.live_server_url + reverse('brieftemplate_detail', args=[self.bt.id]))
 
         browser.wait().until(lambda driver: driver.find_element_by_id('question_0'))
         self.disable_popups()
@@ -169,7 +140,7 @@ class BriefTemplatesTest(browser.SignedInTest):
         self.assertTrue(u'Brieftemplate deleted.' in success_message.text)
 
         # check that brief access returns 404
-        response = self.client.get(self.live_server_url + reverse('brieftemplate_detail', args=[bt.id]))
+        response = self.client.get(self.live_server_url + reverse('brieftemplate_detail', args=[self.bt.id]))
         self.assertEqual(response.status_code, 404)
 
     def _submit_and_check(self, b, redirect=False):
