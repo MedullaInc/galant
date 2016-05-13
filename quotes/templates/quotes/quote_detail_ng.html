@@ -94,25 +94,11 @@
 
             {% if object.client.email and object.status == '0' or object.status == '5' %}
                 {% if not project %}
-                    <script type="text/ng-template" id="addProjectModal.html">
-
-                        <div class="modal-header" id="calendar_modal">
-                            <button type="button" class="close" data-dismiss="modal" ng-click="cancel()">&times;</button>
-                            <h2 class="section_title">Add Project</h2>
-                        </div>
-                        <div class="modal-body" id="modal_form">
-                            <form>
-                                <div class="modal-body">
-                                    <div ng-controller="glFormController" ng-init="init('', null, projectSaved)">
-                                        <div gl-project-add project="object" endpoint="objectEndpoint"
-                                             submit="submitForm" projects="projects"></div>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-
-                    </script>
-                    <button ng-controller="glProjectEditController" class="btn btn-default btn-add action-button pull-right" ng-click="addProject()">
+                    <div gl-add-modal open-fn="addProject" title="Add Project" modal-instance="modalInstance">
+                        <div gl-project-add project="object" projects="projects"
+                             on-success="modalInstance.dismiss" quote-id="{{ object.pk }}"></div>
+                    </div>
+                    <button class="btn btn-default btn-add action-button pull-right" ng-click="addProject()">
                         Add Project
                     </button>
 

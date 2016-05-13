@@ -10,6 +10,7 @@ app.directive('glProjectAdd', ['$window', 'Project', 'Quote', function ($window,
     return {
         restrict: 'A',
         scope: {
+            quoteId: '@',
             onSuccess: '&',
         },
         controller: ['$scope', function ($scope) {
@@ -19,6 +20,10 @@ app.directive('glProjectAdd', ['$window', 'Project', 'Quote', function ($window,
             $scope.objectEndpoint = Project;
             $scope.object = $scope.project;
             $scope.quotes = [];
+
+            if ($scope.quoteId) {
+                $scope.project.quotes.push(+$scope.quoteId);
+            }
 
             Project.fields({}).$promise.then(function (fields) {
                 $scope.statusChoices = fields.status;
