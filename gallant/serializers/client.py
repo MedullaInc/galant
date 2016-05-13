@@ -11,7 +11,7 @@ from gallant import models as g
 
 class ClientSerializer(serializers.ModelSerializer):
     user = serializers.PrimaryKeyRelatedField(read_only=True)
-    contact_info = ContactInfoSerializer(allow_null=True)
+    contact_info = ContactInfoSerializer(allow_null=True, required=False)
     card = ks.KanbanCardSerializer(read_only=True, allow_null=True)
     money_owed = serializers.SerializerMethodField()
     flags = serializers.SerializerMethodField()
