@@ -18,9 +18,9 @@ class GallantClientTest(browser.SignedInTest):
 
     def test_can_access_clients(self):
         # check 'Clients' h1
-        browser.instance().get(self.live_server_url + reverse('clients'))
+        self.get(self.live_server_url + reverse('clients'))
 
-        app_title = browser.instance().find_element_by_class_name('app_title')
+        app_title = self.e_class('app_title')
         self.assertEqual('Clients', app_title.text)
 
     def test_can_access_client_work(self):
@@ -44,13 +44,13 @@ class GallantClientTest(browser.SignedInTest):
         quote.projects.add(project)
 
         # Check 'Client Work' h1
-        browser.instance().get(self.live_server_url + reverse('client_work_detail', args=[client.id]))
+        self.get(self.live_server_url + reverse('client_work_detail', args=[client.id]))
 
-        app_title = browser.instance().find_element_by_class_name('app_title')
+        app_title = self.e_class('app_title')
         self.assertEqual('Client Work', app_title.text)
 
         # Validate templatetags javascript
-        project_work_data = browser.instance().execute_script("return project_work_data_%s;" % project.id)
+        project_work_data = self.b.execute_script("return project_work_data_%s;" % project.id)
         self.assertTrue(len(project_work_data) > 0)
 
         for work_data in project_work_data:
@@ -114,108 +114,97 @@ class GallantClientTest(browser.SignedInTest):
         # check 'Client Money' h1
         c = self.create_one('gallant.Client')
 
-        browser.instance().get(self.live_server_url + reverse('client_money_detail', args=[c.id]))
+        self.get(self.live_server_url + reverse('client_money_detail', args=[c.id]))
 
-        app_title = browser.instance().find_element_by_class_name('app_title')
+        app_title = self.e_class('app_title')
         self.assertEqual('Client Money', app_title.text)
 
     def test_add_client(self):
-        b = browser.instance()
-        b.get(self.live_server_url + reverse('add_client'))
+        self.get(self.live_server_url + reverse('add_client'))
 
-        browser.wait().until(
-            lambda driver: driver.find_element_by_name('client.name')
-        ).send_keys('Kanye West')
-        b.find_element_by_name('client.email').send_keys('kanye@imaletyoufinish.com')
-        b.find_element_by_xpath('//select[@name="client.status"]/option[@value="1"]').click()
-        # b.find_element_by_xpath('//textarea[@name="notes"]').send_keys('asdf')
+        self.e_name('client.name').send_keys('Kanye West')
+        self.e_name('client.email').send_keys('kanye@imaletyoufinish.com')
+        self.e_xpath('//select[@name="client.status"]/option[@value="1"]').click()
+        # self.e_xpath('//textarea[@name="notes"]').send_keys('asdf')
 
         # phone # field JS broken
-        # b.find_element_by_name('contact_info.phone_number').send_keys('5281833666666')  # error here, digits are entered wrong
-        b.find_element_by_name('contact_info.address').send_keys('asdf')
-        b.find_element_by_name('contact_info.city').send_keys('asdf')
-        b.find_element_by_name('contact_info.state').send_keys('asdf')
-        b.find_element_by_name('contact_info.zip').send_keys('12345')
+        # self.e_name('contact_info.phone_number').send_keys('5281833666666')  # error here, digits are entered wrong
+        self.e_name('contact_info.address').send_keys('asdf')
+        self.e_name('contact_info.city').send_keys('asdf')
+        self.e_name('contact_info.state').send_keys('asdf')
+        self.e_name('contact_info.zip').send_keys('12345')
 
-        with browser.wait_for_page_load():
-            b.find_element_by_xpath('//button[@type="submit"]').click()
+        self.submit_xpath('//button[@type="submit"]')
 
-        success_message = browser.wait().until(lambda driver: driver.find_element_by_class_name('alert-success'))
+        success_message = self.e_class('alert-success')
         self.assertTrue(u'Client saved.' in success_message.text)
 
     def test_edit_client(self):
-        b = browser.instance()
         c = self.create_one('gallant.Client')
-        b.get(self.live_server_url + reverse('edit_client', args=[c.id]))
+        self.get(self.live_server_url + reverse('edit_client', args=[c.id]))
 
-        browser.wait().until(lambda driver: driver.find_element_by_name('client.name'))
-        b.find_element_by_name('client.name').send_keys('PPPPPPP')
-        b.find_element_by_xpath('//select[@name="client.status"]/option[@value="3"]').click()
-        # b.find_element_by_xpath('//textarea[@name="notes"]').send_keys('dddd')
+        self.e_name('client.name')
+        self.e_name('client.name').send_keys('PPPPPPP')
+        self.e_xpath('//select[@name="client.status"]/option[@value="3"]').click()
+        # self.e_xpath('//textarea[@name="notes"]').send_keys('dddd')
 
-        b.find_element_by_name('contact_info.phone_number').clear()
+        self.e_name('contact_info.phone_number').clear()
         # phone number JS broken for tests
-        # b.find_element_by_name('contact_info.phone_number').send_keys('+52(81)8336-6666')
-        b.find_element_by_name('contact_info.zip').clear()
-        b.find_element_by_name('contact_info.zip').send_keys('12345')
+        # self.e_name('contact_info.phone_number').send_keys('+52(81)8336-6666')
+        self.e_name('contact_info.zip').clear()
+        self.e_name('contact_info.zip').send_keys('12345')
 
-        with browser.wait_for_page_load():
-            b.find_element_by_xpath('//button[@type="submit"]').click()
+        self.submit_xpath('//button[@type="submit"]')
 
-        success_message = b.find_element_by_class_name('alert-success')
+        success_message = self.e_class('alert-success')
         self.assertTrue(u'Client saved.' in success_message.text)
 
     def test_add_client_note(self):
-        b = browser.instance()
         c = self.create_one('gallant.Client')
-        b.get(self.live_server_url + reverse('client_detail', args=[c.id]))
+        self.get(self.live_server_url + reverse('client_detail', args=[c.id]))
         test_string = '2351tlgkjqlwekjalfkj'
-        browser.wait().until(lambda driver: driver.find_element_by_class_name('welcome_box'))
+        self.e_class('welcome_box')
 
-        b.find_element_by_xpath('//textarea[@name="note.text"]').send_keys(test_string)
+        self.e_xpath('//textarea[@name="note.text"]').send_keys(test_string)
 
-        with browser.wait_for_page_load():
-            b.find_element_by_id('submit_note').click()
+        self.submit('submit_note')
 
-        notes = browser.wait().until(lambda driver: driver.find_element_by_id('notes'))
+        notes = self.e_id('notes')
 
         self.assertTrue(test_string in notes.text)
 
     def test_client_soft_delete(self):
-        b = browser.instance()
 
         # Create Client
         c = self.create_one('gallant.Client')
 
         # Access delete url
-        b.get(self.live_server_url + reverse('delete_client', args=[c.id]))
+        self.get(self.live_server_url + reverse('delete_client', args=[c.id]))
 
         # Validate client detail returns 404
         response = self.client.get(self.live_server_url + reverse('client_detail', args=[c.id]))
         self.assertEqual(response.status_code, 404)
 
     def test_blank_note_fail(self):
-        b = browser.instance()
         c = self.create_one('gallant.Client')
-        b.get(self.live_server_url + reverse('client_detail', args=[c.id]))
-        b.find_element_by_xpath('//button[@type="submit"]').click()
+        self.get(self.live_server_url + reverse('client_detail', args=[c.id]))
+        self.e_xpath('//button[@type="submit"]').click()
 
-        self.assertTrue('This field is required.' in b.find_element_by_id('notes').text)
+        self.assertTrue('This field is required.' in self.e_id('notes').text)
 
     def test_client_perms(self):
-        b = browser.instance()
         c = self.create_one('gallant.Client')
 
         c2 = autofixture.create_one('gallant.Client', generate_fk=True)
 
-        b.get(self.live_server_url + reverse('client_detail', args=[c.id]))
+        self.get(self.live_server_url + reverse('client_detail', args=[c.id]))
 
-        app_title = b.find_element_by_class_name('app_title')
+        app_title = self.e_class('app_title')
         self.assertEqual('Client Overview', app_title.text)
 
-        b.get(self.live_server_url + reverse('client_detail', args=[c2.id]))
+        self.get(self.live_server_url + reverse('client_detail', args=[c2.id]))
 
-        self.assertRaises(NoSuchElementException, b.find_element_by_class_name, 'app_title')
+        self.assertRaises(NoSuchElementException, self.b.find_element_by_class_name, 'app_title')
 
     def test_can_access_client_endpoint(self):
         s = self.create_one('gallant.Client')

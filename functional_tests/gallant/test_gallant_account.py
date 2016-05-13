@@ -11,9 +11,8 @@ def tearDownModule():
     browser.close()
 
 
-class GallantAccountTest(StaticLiveServerTestCase):
+class GallantAccountTest(browser.BrowserTest):
     def test_add_account(self):
-        b = browser.instance()
         Group.objects.get_or_create(name='users')  # not in the DB sometimes for some unknown reason
 
         user = autofixture.create_one('gallant.GallantUser', generate_fk=True,
@@ -22,74 +21,71 @@ class GallantAccountTest(StaticLiveServerTestCase):
         user.save()
         self.client.login(email=user.email, password='password')
 
-        browser.add_login_cookie(b, self.client.session.session_key)
+        browser.add_login_cookie(self.b, self.client.session.session_key)
 
-        b.get(self.live_server_url + reverse('add_account'))
+        self.get(self.live_server_url + reverse('add_account'))
 
-        browser.wait().until(lambda d: d.find_element_by_name('email')).send_keys('foo@bar.com')
+        self.e_name('email').send_keys('foo@bar.com')
 
-        browser.wait().until_click(lambda d: d.find_element_by_xpath('//button[@type="submit"]'))
+        self.click_xpath('//button[@type="submit"]')
 
-        success_message = b.find_element_by_class_name('alert-success')
+        success_message = self.e_class('alert-success')
         self.assertTrue(u'Registration link sent.' in success_message.text)
 
     def test_reset_password(self):
-        b = browser.instance()
         autofixture.create_one('gallant.GallantUser', generate_fk=True,
-                                      field_values={'email': 'foo@bar.com'})
+                               field_values={'email': 'foo@bar.com'})
 
         user = autofixture.create_one('gallant.GallantUser', generate_fk=True,
                                       field_values={'password': hashers.make_password('password'),
                                                     'is_superuser': True})
         user.save()
         self.client.login(email=user.email, password='password')
-        browser.add_login_cookie(b, self.client.session.session_key)
+        browser.add_login_cookie(self.b, self.client.session.session_key)
 
-        b.get(self.live_server_url + reverse('reset_password'))
+        self.get(self.live_server_url + reverse('reset_password'))
 
-        b.find_element_by_name('email').send_keys('foo@bar.com')
+        self.e_name('email').send_keys('foo@bar.com')
 
-        b.find_element_by_xpath('//button[@type="submit"]').click()
+        self.e_xpath('//button[@type="submit"]').click()
 
-        success_message = b.find_element_by_class_name('alert-success')
+        success_message = self.e_class('alert-success')
         self.assertTrue(u'Password reset link sent.' in success_message.text)
 
     def test_register(self):
-        b = browser.instance()
 
         UserModel = get_user_model()
         user = UserModel.objects.create(email='foo@bar.com')
         token = default_token_generator.make_token(user)
 
-        b.get(self.live_server_url + reverse('register', args=[user.id]) + '?token=%s' % token)
+        self.get(self.live_server_url + reverse('register', args=[user.id]) + '?token=%s' % token)
 
-        b.find_element_by_name('new_password1').send_keys('12344321')
-        b.find_element_by_name('new_password2').send_keys('12344321')
+        self.e_name('new_password1').send_keys('12344321')
+        self.e_name('new_password2').send_keys('12344321')
 
-        b.find_element_by_name('name').send_keys('foo bar')
-        b.find_element_by_name('company_name').send_keys('foo inc.')
+        self.e_name('name').send_keys('foo bar')
+        self.e_name('company_name').send_keys('foo inc.')
 
-        b.find_element_by_name('phone_number').send_keys('5281833666666')  # error here, digits are entered wrong
-        b.find_element_by_name('address').send_keys('asdf')
-        b.find_element_by_name('city').send_keys('asdf')
-        b.find_element_by_name('state').send_keys('asdf')
-        b.find_element_by_name('zip').send_keys('12345')
+        self.e_name('phone_number').send_keys('5281833666666')  # error here, digits are entered wrong
+        self.e_name('address').send_keys('asdf')
+        self.e_name('city').send_keys('asdf')
+        self.e_name('state').send_keys('asdf')
+        self.e_name('zip').send_keys('12345')
 
-        b.find_element_by_xpath('//button[@type="submit"]').click()
+        self.e_xpath('//button[@type="submit"]').click()
 
-        success_message = b.find_element_by_class_name('alert-success')
+        success_message = self.e_class('alert-success')
         self.assertTrue(u'Registration successful.' in success_message.text)
 
     def test_register_invalid(self):
-        b = browser.instance()
 
         UserModel = get_user_model()
         user = UserModel.objects.create(email='foo@bar.com')
         token = default_token_generator.make_token(user)
 
-        b.get(self.live_server_url + reverse('register', args=[user.id]) + '?token=%s' % token)
+        self.get(self.live_server_url + reverse('register', args=[user.id]) + '?token=%s' % token)
 
-        b.find_element_by_xpath('//button[@type="submit"]').click()
+        self.click_xpath('//button[@type="submit"]')
 
-        app_title = browser.instance().find_element_by_class_name('app_title')
+        app_title = self.e_class('app_title')
         self.assertEqual('Register', app_title.text)
