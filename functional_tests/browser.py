@@ -129,6 +129,9 @@ def wait_for_page_load(timeout=5):
 
 
 class BrowserTest(StaticLiveServerTestCase):
+    def setUp(self):
+        self.b = instance()
+
     def disable_popups(self):
         '''
         Call this method to disable alerts and popups.
@@ -141,8 +144,8 @@ class BrowserTest(StaticLiveServerTestCase):
         b.execute_script("window.alert = function(){}")
         b.execute_script("window.onbeforeunload = function(){}")
 
-    def disable_angular_popups(self, b):
-        b.execute_script('''
+    def disable_angular_popups(self, b=None):
+        self.b.execute_script('''
             var elem = angular.element(document.querySelector('[ng-controller]'));
             var injector = elem.injector();
             var w = injector.get('$window');
@@ -153,16 +156,41 @@ class BrowserTest(StaticLiveServerTestCase):
             elem.scope().$apply();
         ''')
 
-
     def save_snapshot(self, prefix=SNAP_PREFIX):  # pragma: no cover
         save_driver_snapshot(instance(), prefix)
 
     def create_one(self, cls, field_values={}):
         return autofixture.create_one(cls, generate_fk=True, field_values=field_values)
 
+    def get(self, url):
+        return self.b.get(url)
+
+    def e_name(self, name):
+        return wait().until(lambda d: d.find_element_by_name(name))
+
+    def e_id(self, element_id):
+        return wait().until(lambda d: d.find_element_by_id(element_id))
+
+    def e_css(self, selector):
+        return wait().until(lambda d: d.find_element_by_css_selector(selector))
+
+    def e_class(self, class_name):
+        return wait().until(lambda d: d.find_element_by_class_name(class_name))
+
+    def e_xpath(self, xpath):
+        return wait().until(lambda d: d.find_element_by_xpath(xpath))
+
+    def submit(self, button_name):
+        with wait_for_page_load():
+            wait().until_click(lambda d: d.find_element_by_id(button_name))
+
+    def click_id(self, element_id):
+        wait().until_click(lambda d: d.find_element_by_id(element_id))
+
 
 class SignedInTest(BrowserTest):
     def setUp(self):
+        super(SignedInTest, self).setUp()
         self.user = autofixture.create_one('gallant.GallantUser', generate_fk=True,
                                            field_values={'password': hashers.make_password('password')})
         self.user.save()
@@ -173,7 +201,7 @@ class SignedInTest(BrowserTest):
         # add session cookie for logged-in user
         self.client.login(email=self.user.email, password='password')
 
-        instance().get(self.live_server_url)
+        self.get(self.live_server_url)
         add_login_cookie(instance(), self.client.session.session_key)
 
     def tearDown(self):
