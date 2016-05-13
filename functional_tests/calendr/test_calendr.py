@@ -3,9 +3,7 @@ from unittest.case import skip
 
 from django.core.urlresolvers import reverse
 from django.utils import timezone
-from django.utils.timezone import activate
 from functional_tests import browser
-import autofixture
 
 
 def tearDownModule():
@@ -17,10 +15,9 @@ class CalendrTest(browser.SignedInTest):
         super(CalendrTest, self).setUp()
         start = timezone.now() - timedelta(hours=+8)  # hack to account for browser timezone
 
-        p = autofixture.create_one('gallant.Project', generate_fk=True,
-                                   field_values={'user': self.user})
-        t = autofixture.create_one('calendr.Task',
-                                   field_values={'user':self.user,'project':p,'daily_estimate':0.0, 'assignee':self.user, 'start':start, 'end':start})
+        p = self.create_one('gallant.Project')
+        t = self.create_one('calendr.Task', {'project': p, 'daily_estimate': 0.0,
+                                             'assignee': self.user, 'start': start, 'end': start})
 
         self.browser = browser.instance()
         self.disable_popups()
@@ -30,8 +27,7 @@ class CalendrTest(browser.SignedInTest):
         self.assertEqual(response.status_code, 200)
 
     def test_can_access_task_endpoint(self):
-        s = autofixture.create_one('calendr.Task', generate_fk=True,
-                                   field_values={'user': self.user})
+        s = self.create_one('calendr.Task')
 
         response = self.client.get(self.live_server_url + reverse('api-task-detail', args=[s.id]))
         self.assertEqual(response.status_code, 200)
@@ -58,8 +54,7 @@ class CalendrTest(browser.SignedInTest):
         self.assertTrue(submit_task)
 
     def test_can_edit_project(self):
-        s = autofixture.create_one('calendr.Task', generate_fk=True,
-                                   field_values={'user': self.user})
+        s = self.create_one('calendr.Task')
 
         response = self.client.get(self.live_server_url + reverse('api-task-detail', args=[s.id]))
         self.assertEqual(response.status_code, 200)

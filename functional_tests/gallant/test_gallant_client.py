@@ -1,11 +1,9 @@
-import time
 from django.core.urlresolvers import reverse
 import autofixture
 from django.template import Context, Template
 from functional_tests import browser
 from rest_framework.test import APIRequestFactory
 from selenium.common.exceptions import NoSuchElementException
-from quotes import models as qm
 
 
 def tearDownModule():

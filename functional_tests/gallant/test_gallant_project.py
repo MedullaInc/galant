@@ -1,5 +1,4 @@
 from django.core.urlresolvers import reverse
-import autofixture
 from functional_tests import browser
 
 
