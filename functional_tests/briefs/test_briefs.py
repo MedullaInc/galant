@@ -33,50 +33,44 @@ class BriefsSignedInTest(browser.SignedInTest):
         self.assertIn('Briefs', h2.text)
 
     def test_add_brief(self):
-        b = self.browser
-
         # add brief
-        b.get(self.live_server_url + reverse('add_brief') + '?client_id=%s' % self.brief.client.id)
+        self.get(self.live_server_url + reverse('add_brief') + '?client_id=%s' % self.brief.client.id)
 
         # fill out brief & save
-        browser.wait().until(lambda driver: driver.find_element_by_id('brief_save'))
-        b.find_element_by_id('brief_title').send_keys('Brief test')
-        b.find_element_by_id('brief_greeting').send_keys('Brief test')
-        self._submit_and_check(b, True)
+        self.e_id('brief_title').send_keys('Brief test')
+        self.e_id('brief_greeting').send_keys('Brief test')
+        self._submit_and_check(True)
 
     def test_edit_client_brief(self):
-        b = self.browser
-        b.get(self.live_server_url + reverse('brief_detail', args=[self.brief.id]) +
+        self.get(self.live_server_url + reverse('brief_detail', args=[self.brief.id]) +
               '?client_id=%d' % self.brief.client.id)
 
-        browser.wait().until(lambda driver: driver.find_element_by_id('brief_edit')).click()
-        b.find_element_by_id('brief_title').send_keys('Brief test')
-        b.find_element_by_id('brief_greeting').send_keys('Brief test')
-        self._submit_and_check(b)
+        self.click_id('brief_edit')
+        self.e_id('brief_title').send_keys('Brief test')
+        self.e_id('brief_greeting').send_keys('Brief test')
+        self._submit_and_check()
 
     def test_edit_client_brief_question(self):
-        b = self.browser
-        b.get(self.live_server_url + reverse('brief_detail', args=[self.brief.id]) +
+        self.get(self.live_server_url + reverse('brief_detail', args=[self.brief.id]) +
               '?client_id=%d' % self.brief.client.id)
 
-        browser.wait().until(lambda driver: driver.find_element_by_id('brief_edit')).click()
-        b.find_element_by_id('question0_question').send_keys('Who is your daddy, and what does he do?')
+        self.click_id('brief_edit')
+        self.e_id('question0_question').send_keys('Who is your daddy, and what does he do?')
 
-        b.find_element_by_id('question1_add_choice').click()
-        b.find_element_by_id('question1_choice3').send_keys('foo')
-        self._submit_and_check(b)
+        self.e_id('question1_add_choice').click()
+        self.e_id('question1_choice3').send_keys('foo')
+        self._submit_and_check()
 
     def test_add_client_brief_multiquestion(self):
-        b = self.browser
-        b.get(self.live_server_url + reverse('brief_detail', args=[self.brief.id]) +
+        self.get(self.live_server_url + reverse('brief_detail', args=[self.brief.id]) +
               '?client_id=%d' % self.brief.client.id)
 
         browser.wait().until(lambda driver: driver.find_element_by_id('question0'))
-        b.find_element_by_id('add_multiquestion').click()
-        b.find_element_by_id('question2_question').send_keys('Who is your daddy, and what does he do?')
-        b.find_element_by_id('question2_choice0').send_keys('foo')
-        b.find_element_by_id('question2_choice1').send_keys('bar')
-        self._submit_and_check(b)
+        self.e_id('add_multiquestion').click()
+        self.e_id('question2_question').send_keys('Who is your daddy, and what does he do?')
+        self.e_id('question2_choice0').send_keys('foo')
+        self.e_id('question2_choice1').send_keys('bar')
+        self._submit_and_check()
 
         el = browser.wait().until(lambda driver:
                                   driver.find_element_by_xpath('//p[@e-id="question2_choice0"]'))
@@ -84,66 +78,60 @@ class BriefsSignedInTest(browser.SignedInTest):
         self.assertEqual(answer, u'- foo')
 
     def test_client_brief_detail(self):
-        b = self.browser
-        b.get(self.live_server_url + reverse('brief_detail', args=[self.brief.id]) +
+        self.get(self.live_server_url + reverse('brief_detail', args=[self.brief.id]) +
               '?client_id=%d' % self.brief.client.id)
 
         app_title = browser.instance().find_element_by_class_name('app_title')
         self.assertEqual(u'Brief Detail', app_title.text)
 
     def test_add_quote_brief(self):
-        b = self.browser
         c = self.create_one('gallant.Client')
         q = self.create_one('quotes.Quote', {'client': c})
 
-        b.get(self.live_server_url + reverse('brief_detail', args=[self.brief.id]) +
+        self.get(self.live_server_url + reverse('brief_detail', args=[self.brief.id]) +
               '?quote_id=%d' % q.id)
 
         browser.wait().until(lambda driver: driver.find_element_by_id('brief_edit')).click()
-        b.find_element_by_id('brief_title').send_keys('Brief test')
-        b.find_element_by_id('brief_greeting').send_keys('Brief test')
-        self._submit_and_check(b)
+        self.e_id('brief_title').send_keys('Brief test')
+        self.e_id('brief_greeting').send_keys('Brief test')
+        self._submit_and_check()
 
     def test_add_project_brief(self):
-        b = self.browser
         c = self.brief.client
         p = self.create_one('gallant.Project')
         self.create_one('quotes.Quote', {'client': c, 'project': p})
 
-        b.get(self.live_server_url + reverse('add_brief') + '?project_id=%d' % p.id)
+        self.get(self.live_server_url + reverse('add_brief') + '?project_id=%d' % p.id)
         
         browser.wait().until(lambda driver: driver.find_element_by_id('brief_save'))
-        b.find_element_by_id('brief_title').send_keys('Brief test')
-        b.find_element_by_id('brief_greeting').send_keys('Brief test')
-        self._submit_and_check(b, True)
+        self.e_id('brief_title').send_keys('Brief test')
+        self.e_id('brief_greeting').send_keys('Brief test')
+        self._submit_and_check(True)
 
     def test_send_answers_link(self):
-        b = self.browser
         brief = self.brief
-        b.get(self.live_server_url + reverse('brief_detail', args=[brief.id]))
+        self.get(self.live_server_url + reverse('brief_detail', args=[brief.id]))
         browser.wait().until(lambda driver: driver.find_element_by_id('send_brief'))
 
         with browser.wait_for_page_load():
-            b.find_element_by_id('send_brief').click()
+            self.e_id('send_brief').click()
 
-        success_message = b.find_element_by_class_name('alert-success')
+        success_message = self.e_class('alert-success')
         self.assertTrue(u'Brief link sent to %s.' % brief.client.email in success_message.text)
         brief.refresh_from_db()
         self.assertEqual(brief.status, '2')
 
     def test_soft_delete_brief(self):
-        b = self.browser
         client = self.brief.client
         brief = self.brief
 
-        b.get(self.live_server_url + reverse('brief_detail', args=[brief.id]))
+        self.get(self.live_server_url + reverse('brief_detail', args=[brief.id]))
         self.disable_popups()
 
-        browser.wait().until(lambda driver: driver.find_element_by_id('question0'))
-        with browser.wait_for_page_load():
-            b.find_element_by_id('brief_delete').click()
+        self.e_id('question0')
+        self.submit('brief_delete')
 
-        success_message = b.find_element_by_class_name('alert-success')
+        success_message = self.e_class('alert-success')
         self.assertTrue(u'Brief deleted.' in success_message.text)
 
         # check that brief access returns 404
@@ -171,13 +159,12 @@ class BriefsSignedInTest(browser.SignedInTest):
         response = self.client.get(self.live_server_url + reverse('api-briefanswers-detail', args=[brief_answers.id]))
         self.assertEqual(response.status_code, 200)
 
-    def _submit_and_check(self, b, redirect=False):
+    def _submit_and_check(self, redirect=False):
         if redirect:
-            with browser.wait_for_page_load():
-                b.find_element_by_id('brief_save').click()
-            success_message = b.find_element_by_class_name('alert-success')
+            self.submit('brief_save')
+            success_message = self.e_class('alert-success')
             self.assertTrue(u'Brief saved.' in success_message.text)
         else:
-            b.find_element_by_id('brief_save').click()
-            success_message = browser.wait().until(lambda driver: driver.find_element_by_class_name('alert-success'))
+            self.e_id('brief_save').click()
+            success_message = self.e_class('alert-success')
             self.assertTrue(u'Saved.' in success_message.text)
