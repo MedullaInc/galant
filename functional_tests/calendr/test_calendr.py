@@ -33,24 +33,20 @@ class CalendrTest(browser.SignedInTest):
         self.assertEqual(response.status_code, 200)
 
     def test_can_change_date(self):
-        b = self.browser
+        self.get(self.live_server_url + reverse('calendr'))
+        self.e_id('id_date')
+        self.e_id('id_date').send_keys('11.09.2015')
 
-        b.get(self.live_server_url + reverse('calendr'))
-        browser.wait().until(lambda driver: driver.find_element_by_id('id_date'))
-        b.find_element_by_id('id_date').send_keys('11.09.2015')
-
-        date = b.find_element_by_css_selector('.fc-toolbar h2')
+        date = self.e_css('.fc-toolbar h2')
         self.assertIn(u'November 2015', date.text)
 
     def test_can_edit_task(self):
-        b = self.browser
+        self.get(self.live_server_url + reverse('calendr'))
 
-        b.get(self.live_server_url + reverse('calendr'))
+        self.e_css('.fc-event')
+        self.e_css('.fc-event').click()
 
-        browser.wait().until(lambda driver: driver.find_element_by_css_selector('.fc-event'))
-        b.find_element_by_css_selector('.fc-event').click()
-
-        submit_task = b.find_element_by_css_selector('#submit_task')
+        submit_task = self.e_id('submit_task')
         self.assertTrue(submit_task)
 
     def test_can_edit_project(self):
@@ -60,21 +56,14 @@ class CalendrTest(browser.SignedInTest):
         self.assertEqual(response.status_code, 200)
 
     def test_can_change_view(self):
-        b = self.browser
+        self.get(self.live_server_url + reverse('calendr'))
+        self.e_xpath('//tr[@data-resource-id="1"]')
+        self.e_id('timelineWeek').click()
 
-        b.get(self.live_server_url + reverse('calendr'))
-        browser.wait().until(lambda driver: driver.find_element_by_xpath('//tr[@data-resource-id="1"]'))
-        browser.wait().until(lambda driver: driver.find_element_by_id('timelineWeek')).click()
-
-        self.assertTrue(browser.wait().until(lambda driver: driver.find_element_by_css_selector('.fc-timelineWeek-view')))
+        self.assertTrue(self.e_css('.fc-timelineWeek-view'))
 
     @skip("TODO")
     def test_can_filter_task(self):
-        b = self.browser
-
-        b.get(self.live_server_url + reverse('calendr'))
-        browser.wait().until(lambda driver: driver.find_element_by_id('filterTask'))
-        b.find_element_by_id('filterTask').click()
-        browser.wait().until(lambda driver: driver.find_element_by_id('searchText'))
-        search_task = b.find_element_by_id('searchText')
-        self.assertTrue(search_task)
+        self.get(self.live_server_url + reverse('calendr'))
+        self.e_id('filterTask').click()
+        self.assertTrue(self.e_id('searchText'))
