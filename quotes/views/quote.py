@@ -29,6 +29,17 @@ from rest_framework import mixins
 from rest_framework.decorators import permission_classes
 
 
+def get_quote(request, **kwargs):
+    if 'pk' in kwargs:
+        # Quote for a logged-in user
+        quote = q.Quote.objects.get_for(request.user, pk=kwargs['pk'])
+    elif 'token' in kwargs:
+        # Quote for visitor directly from url with token
+        quote = get_object_or_404(q.Quote, token=kwargs['token'])
+
+    return quote
+
+
 class QuoteUpdate(View):
     def get(self, request, **kwargs):  # pragma: no cover
         self.object = get_one_or_404(request.user, 'change_quote', q.Quote, pk=kwargs['pk'])
@@ -140,6 +151,16 @@ class QuoteTemplateDelete(View):
         quote.soft_delete()
 
         return HttpResponseRedirect(reverse('quotetemplates'))
+
+
+class QuoteText(View):
+    def get(self, request, **kwargs):
+        # Get quote
+        quote = get_quote(request, **kwargs)
+
+        # Render HTML
+        context = {'object': quote}
+        return TemplateResponse(request, template="quotes/quote_text.html", context=context, )
 
 
 class QuoteDetail(View):
