@@ -184,8 +184,15 @@ class BrowserTest(StaticLiveServerTestCase):
         with wait_for_page_load():
             wait().until_click(lambda d: d.find_element_by_id(button_name))
 
+    def submit_xpath(self, xpath):
+        with wait_for_page_load():
+            wait().until_click(lambda d: d.find_element_by_xpath(xpath))
+
     def click_id(self, element_id):
         wait().until_click(lambda d: d.find_element_by_id(element_id))
+
+    def click_xpath(self, xpath):
+        wait().until_click(lambda d: d.find_element_by_xpath(xpath))
 
 
 class SignedInTest(BrowserTest):
