@@ -27,13 +27,11 @@ class GallantClientTest(browser.SignedInTest):
 
     def test_can_access_client_work(self):
         # Create client
-        client = autofixture.create_one('gallant.Client', generate_fk=True,
-                                        field_values={'user': self.user})
+        client = self.create_one('gallant.Client')
 
         # Create quote & services
-        quote = autofixture.create_one('quotes.Quote', generate_fk=True,
-                                       field_values={'client': client, 'user': self.user, 'status': '5'})
-        services = autofixture.create('gallant.Service', 10, generate_fk=True, field_values={'user': self.user})
+        quote = self.create_one('quotes.Quote', {'client': client, 'status': '5'})
+        services = autofixture.create('gallant.Service', 10, field_values={'user': self.user})
 
         # Assign services to quote
         for s in services[0:9]:
@@ -42,12 +40,10 @@ class GallantClientTest(browser.SignedInTest):
         quote.save()
 
         # Create project
-        project = autofixture.create_one('gallant.Project', generate_fk=True,
-                                         field_values={'user': self.user, 'status': '2', 'quote': quote})
+        project = self.create_one('gallant.Project', {'status': '2', 'quote': quote})
 
         # Add quote to project
         quote.projects.add(project)
-        quote.save()
 
         # Check 'Client Work' h1
         browser.instance().get(self.live_server_url + reverse('client_work_detail', args=[client.id]))
@@ -118,10 +114,8 @@ class GallantClientTest(browser.SignedInTest):
 
     def test_can_access_client_money(self):
         # check 'Client Money' h1
-        c = autofixture.create_one('gallant.Client', generate_fk=True,
-                                   field_values={'user': self.user})
+        c = self.create_one('gallant.Client')
 
-        c.save()
         browser.instance().get(self.live_server_url + reverse('client_money_detail', args=[c.id]))
 
         app_title = browser.instance().find_element_by_class_name('app_title')
@@ -153,9 +147,7 @@ class GallantClientTest(browser.SignedInTest):
 
     def test_edit_client(self):
         b = browser.instance()
-        c = autofixture.create_one('gallant.Client', generate_fk=True,
-                                   field_values={'user': self.user})
-        c.save()
+        c = self.create_one('gallant.Client')
         b.get(self.live_server_url + reverse('edit_client', args=[c.id]))
 
         browser.wait().until(lambda driver: driver.find_element_by_name('client.name'))
@@ -177,9 +169,7 @@ class GallantClientTest(browser.SignedInTest):
 
     def test_add_client_note(self):
         b = browser.instance()
-        c = autofixture.create_one('gallant.Client', generate_fk=True,
-                                   field_values={'user': self.user})
-        c.save()
+        c = self.create_one('gallant.Client')
         b.get(self.live_server_url + reverse('client_detail', args=[c.id]))
         test_string = '2351tlgkjqlwekjalfkj'
         browser.wait().until(lambda driver: driver.find_element_by_class_name('welcome_box'))
@@ -197,9 +187,7 @@ class GallantClientTest(browser.SignedInTest):
         b = browser.instance()
 
         # Create Client
-        c = autofixture.create_one('gallant.Client', generate_fk=True,
-                                   field_values={'user': self.user})
-        c.save()
+        c = self.create_one('gallant.Client')
 
         # Access delete url
         b.get(self.live_server_url + reverse('delete_client', args=[c.id]))
@@ -210,9 +198,7 @@ class GallantClientTest(browser.SignedInTest):
 
     def test_blank_note_fail(self):
         b = browser.instance()
-        c = autofixture.create_one('gallant.Client', generate_fk=True,
-                                   field_values={'user': self.user})
-        c.save()
+        c = self.create_one('gallant.Client')
         b.get(self.live_server_url + reverse('client_detail', args=[c.id]))
         b.find_element_by_xpath('//button[@type="submit"]').click()
 
@@ -220,11 +206,10 @@ class GallantClientTest(browser.SignedInTest):
 
     def test_client_perms(self):
         b = browser.instance()
-        c = autofixture.create_one('gallant.Client', generate_fk=True,
-                                   field_values={'user': self.user})
+        c = self.create_one('gallant.Client')
 
         c2 = autofixture.create_one('gallant.Client', generate_fk=True)
-        c.save()
+
         b.get(self.live_server_url + reverse('client_detail', args=[c.id]))
 
         app_title = b.find_element_by_class_name('app_title')
@@ -235,8 +220,7 @@ class GallantClientTest(browser.SignedInTest):
         self.assertRaises(NoSuchElementException, b.find_element_by_class_name, 'app_title')
 
     def test_can_access_client_endpoint(self):
-        s = autofixture.create_one('gallant.Client', generate_fk=True,
-                                   field_values={'user': self.user})
+        s = self.create_one('gallant.Client')
 
         response = self.client.get(self.live_server_url + reverse('api_client_detail', args=[s.id]))
         self.assertEqual(response.status_code, 200)

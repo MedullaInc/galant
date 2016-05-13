@@ -10,8 +10,7 @@ def tearDownModule():
 class GallantProjectTest(browser.SignedInTest):
     def test_add_project(self):
         b = browser.instance()
-        q = autofixture.create_one('quotes.Quote', generate_fk=True,
-                                   field_values={'user': self.user})
+        q = self.create_one('quotes.Quote')
         b.get(self.live_server_url + reverse('add_project', args=[q.id]))
 
         b.find_element_by_name('name').send_keys('Branding')
@@ -25,10 +24,8 @@ class GallantProjectTest(browser.SignedInTest):
         b = browser.instance()
 
         # Add Project
-        c = autofixture.create_one('gallant.Client', generate_fk=True,
-                                   field_values={'user': self.user})
-        q = autofixture.create_one('quotes.Quote', generate_fk=True,
-                                   field_values={'user': self.user, 'client': c, 'status': 5})
+        c = self.create_one('gallant.Client')
+        q = self.create_one('quotes.Quote', {'client': c, 'status': 5})
 
         b.get(self.live_server_url + reverse('add_project', args=[q.id]))
 
@@ -39,8 +36,7 @@ class GallantProjectTest(browser.SignedInTest):
         success_message = b.find_element_by_class_name('alert-success')
         self.assertTrue(u'Project saved.' in success_message.text)
 
-        autofixture.create_one('quotes.Quote', generate_fk=False,
-                               field_values={'name': "XXX", 'user': self.user, 'client': c, 'status': 5})
+        self.create_one('quotes.Quote', {'name': "XXX", 'client': c, 'status': 5})
 
         # Edit Project removing one quote
         b.find_element_by_id('edit_project').click()
@@ -66,10 +62,8 @@ class GallantProjectTest(browser.SignedInTest):
 
     def test_add_project_note(self):
         b = browser.instance()
-        p = autofixture.create_one('gallant.Project', generate_fk=True,
-                                   field_values={'user': self.user})
-        autofixture.create_one('quotes.Quote', generate_fk=True,
-                               field_values={'user': self.user, 'project': p})
+        p = self.create_one('gallant.Project')
+        self.create_one('quotes.Quote', {'project': p})
 
         b.get(self.live_server_url + reverse('project_detail', args=[p.id]))
         test_string = '2351tlgkjqlwekjalfkj'
@@ -83,8 +77,7 @@ class GallantProjectTest(browser.SignedInTest):
         b = browser.instance()
 
         # Create Project
-        p = autofixture.create_one('gallant.Project', generate_fk=True,
-                                   field_values={'user': self.user})
+        p = self.create_one('gallant.Project')
 
         # Access delete url
         b.get(self.live_server_url + reverse('delete_project', args=[p.id]))
@@ -94,8 +87,7 @@ class GallantProjectTest(browser.SignedInTest):
         self.assertEqual(response.status_code, 404)
 
     def test_can_access_project_endpoint(self):
-        s = autofixture.create_one('gallant.Project', generate_fk=True,
-                                   field_values={'user': self.user})
+        s = self.create_one('gallant.Project')
 
         response = self.client.get(self.live_server_url + reverse('api_project_detail', args=[s.id]))
         self.assertEqual(response.status_code, 200)

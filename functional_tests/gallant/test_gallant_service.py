@@ -11,11 +11,8 @@ class GallantServiceTest(browser.SignedInTest):
     def test_add_service(self):
         b = browser.instance()
 
-        p = autofixture.create_one('gallant.Project', generate_fk=True,
-                                   field_values={'user': self.user})
-
-        autofixture.create_one('quotes.Quote', generate_fk=True,
-                               field_values={'user': self.user, 'project': p})
+        p = self.create_one('gallant.Project')
+        self.create_one('quotes.Quote', {'project': p})
 
         b.get(self.live_server_url + reverse('add_service', args=[p.id]))
 
@@ -34,15 +31,10 @@ class GallantServiceTest(browser.SignedInTest):
 
     def test_edit_service(self):
         b = browser.instance()
-        s = autofixture.create_one('gallant.Service', generate_fk=True,
-                                   field_values={'user': self.user})
-        s.save()
+        s = self.create_one('gallant.Service')
+        p = self.create_one('gallant.Project')
 
-        p = autofixture.create_one('gallant.Project', generate_fk=True,
-                                   field_values={'user': self.user})
-
-        autofixture.create_one('quotes.Quote', generate_fk=True,
-                               field_values={'user': self.user, 'project': p})
+        self.create_one('quotes.Quote', {'project': p})
 
         b.get(self.live_server_url + reverse('edit_service', args=[p.id, s.id]))
 
@@ -61,15 +53,11 @@ class GallantServiceTest(browser.SignedInTest):
 
     def test_add_service_note(self):
         b = browser.instance()
-        s = autofixture.create_one('gallant.Service', generate_fk=True,
-                                   field_values={'user': self.user})
-        s.save()
+        s = self.create_one('gallant.Service')
 
-        p = autofixture.create_one('gallant.Project', generate_fk=True,
-                                   field_values={'user': self.user})
+        p = self.create_one('gallant.Project')
 
-        autofixture.create_one('quotes.Quote', generate_fk=True,
-                               field_values={'user': self.user, 'project': p})
+        self.create_one('quotes.Quote', {'project': p})
 
         b.get(self.live_server_url + reverse('service_detail', args=[p.id, s.id]))
         test_string = '2351tlgkjqlwekjalfkj'
@@ -85,8 +73,7 @@ class GallantServiceTest(browser.SignedInTest):
         self.assertTrue(test_string in b.find_element_by_id('notes').text)
 
     def test_can_access_service_endpoint(self):
-        s = autofixture.create_one('gallant.Service', generate_fk=True,
-                                   field_values={'user': self.user})
+        s = self.create_one('gallant.Service')
 
         response = self.client.get(self.live_server_url + reverse('api_service_detail', args=[s.id]))
         self.assertEqual(response.status_code, 200)
