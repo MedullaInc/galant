@@ -171,6 +171,9 @@ class BrowserTest(StaticLiveServerTestCase):
     def e_id(self, element_id):
         return wait().until(lambda d: d.find_element_by_id(element_id))
 
+    def e_tag(self, tag):
+        return wait().until(lambda d: d.find_element_by_tag_name(tag))
+
     def e_css(self, selector):
         return wait().until(lambda d: d.find_element_by_css_selector(selector))
 
