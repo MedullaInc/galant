@@ -66,7 +66,7 @@ class QuotesSignedInTest(browser.SignedInTest):
         self.get(self.live_server_url + reverse('quote_detail', args=[self.q.id]))
         self.click_id('quote_edit')
         self.e_id('quote_name').send_keys('Quote test')
-        self.click_xpath('//select[@name="client"]/option[2]')
+        self.click_xpath('//select[@name="client"]/option[1]')
         self.e_id('title_0').clear()
         self.e_id('title_0').send_keys('modified intro title')
         self.e_id('text_0').send_keys('modified intro text')
