@@ -7,6 +7,7 @@ fi
 
 echo 'Running JS tests / coverage...'
 gulp test || exit 1
+sleep 1 # prevents rsync hang on my env, no idea why -david g
 
 echo 'Attempting rsync to remote git repo...'
 
