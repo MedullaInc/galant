@@ -42,7 +42,7 @@ describe('CalendrControl', function () {
                 }
             });
             $provide.value('FC', {views: {}});
-            $provide.value('moment', {});
+            $provide.value('moment', function (m) { return m; });
             $provide.value('clConstants', {});
             $provide.value('glAlertService', {
                 add: function (a, b) {
@@ -80,6 +80,18 @@ describe('CalendrControl', function () {
 
     it('loads', function () {
         expect($scope).not.toBeNull();
+    });
+
+    it('initializes', function () {
+        $scope.init(1, true);
+        $scope.$apply();
+        expect($scope.currentUserId).not.toBeNull();
+    });
+
+    it('initializes with project resources', function () {
+        $scope.init(1, false);
+        $scope.$apply();
+        expect($scope.currentUserId).not.toBeNull();
     });
 
     it('calls fullcalendar via today()', function () {
@@ -178,9 +190,14 @@ describe('CalendrControl', function () {
     });
 
     it('deletes task', function () {
+        $scope.modalInstance = {
+            dismiss: function () {
+            }
+        };
         var Task = $injector.get('Task');
         spyOn(Task, 'delete').and.callThrough();
         $scope.taskDeleted({id: 0});
+        $scope.$apply();
         expect(Task.delete).toHaveBeenCalled();
     });
 

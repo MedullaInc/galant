@@ -32,7 +32,8 @@
 {% block extra_wrapper_attrs %} ng-app="gallant" {% endblock %}
 
 {% block content_div %}
-    <div id="calendr" ng-controller="clCalendrController" ng-init="init({{ user.id }})">
+    <div id="calendr" ng-controller="clCalendrController"
+         ng-init="init({{ user.id }}, {{ user.settings.calendr_users|yesno:"true,false" }})">
         <div id="calendar_container">
 
             <section id="directives-calendar">

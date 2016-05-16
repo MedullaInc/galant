@@ -11,8 +11,76 @@ app.controller('clCalendrController', function ($window, $scope, Project, User, 
     var m = date.getMonth();
     var y = date.getFullYear();
 
-    $scope.init = function (currentUserId) {
+    $scope.init = function (currentUserId, userResources) {
         $scope.currentUserId = currentUserId
+        $scope.userResources = userResources;
+
+        Project.query().$promise.then(function (response) {
+            $scope.projects = response;
+            if (!userResources) {
+                angular.forEach(response, function (p) {
+                    $scope.eventResources.push({
+                        id: p.id,
+                        title: p.name,
+                        link: p.link,
+                    });
+                });
+
+                $scope.$watchCollection('projects', function (newValue, oldValue) {
+                    if (oldValue && oldValue.length < newValue.length) {
+                        p = newValue[newValue.length - 1];
+                        $scope.eventResources.push({
+                            id: p.id,
+                            title: p.name,
+                            link: p.link,
+                        });
+                    }
+                });
+            }
+        });
+
+        User.query().$promise.then(function (response) {
+            $scope.users = response;
+            if (userResources) {
+                angular.forEach(response, function (u) {
+                    $scope.eventResources.push({
+                        id: u.id,
+                        title: u.email,
+                        link: '',
+                    });
+                });
+            }
+        });
+
+
+        /* config object */
+        $scope.uiConfig = {
+            calendar: {
+                schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
+                ignoreTimezone: false,
+                defaultView: 'timelineMonth',
+                header: {
+                    left: 'title',
+                    center: '',
+                    right: 'prev, next'
+                },
+                height: 'auto',
+                editable: true,
+                selectable: true,
+                select: $scope.selectFunction,
+                eventClick: $scope.alertOnEventClick,
+                updateEvent: $scope.updateTask,
+                dayClick: $scope.dayClick,
+                eventDrop: $scope.updateTask,
+                eventResize: $scope.updateTask,
+                gotoDate: $scope.gotoDate,
+                slotWidth: 70,
+                resourceLabelText: $scope.userResources ? 'Resources' : 'Projects',
+                resourceRender: $scope.projectLink,
+            }
+        };
+
+        $scope.eventSources = [$scope.tasks];
     };
 
     FC.views.timelineThreeMonths = {
@@ -68,14 +136,9 @@ app.controller('clCalendrController', function ($window, $scope, Project, User, 
         opened: false
     };
 
-    /* Retrieve users from API service */
-    User.query().$promise.then(function (response) {
-        $scope.users = response;
-    });
-
     var convertToFCFormat = function (task) {
         task.title = task.name;
-        task.resourceId = task.project;
+        task.resourceId = $scope.userResources ? task.assignee : task.project;
         task.allDay = false;
         if (!task.start) {
             // fullcalendar requires start, so add epoch sentinel value
@@ -87,7 +150,10 @@ app.controller('clCalendrController', function ($window, $scope, Project, User, 
 
     var convertFromFCFormat = function (task) {
         task.name = task.title;
-        task.project = task.resourceId;
+        if ($scope.userResources)
+            task.assignee = task.resourceId;
+        else
+            task.project = task.resourceId;
         delete task.source;
         try {
             if (!task.start.getTime()) {
@@ -145,66 +211,10 @@ app.controller('clCalendrController', function ($window, $scope, Project, User, 
 
     };
 
-    /* Retrieve all Tasks from API service */
-    $scope.getProjects = function () {
-        Project.query().$promise.then(function (response) {
-            $scope.projects = response;
-            angular.forEach(response, function (p) {
-                $scope.eventResources.push({
-                    id: p.id,
-                    title: p.name,
-                    link: p.link,
-                });
-            });
-        });
-    };
-
-    // currently only adding a new project is reflected in FC
-    $scope.$watchCollection('projects', function (newValue, oldValue) {
-        if (oldValue && oldValue.length < newValue.length) {
-            p = newValue[newValue.length-1];
-            $scope.eventResources.push({
-                id: p.id,
-                title: p.name,
-                link: p.link,
-            });
-        }
-    });
-
-    // $scope.getResources();
-    $scope.getProjects();
-
-    /* event triggered on project change */
-    //$scope.projectChanged = function (projectId) {
-    //    var options = {};
-    //    if (projectId)
-    //        options.project_id = projectId;
-    //
-    //    // Remove existing resources in calendar.
-    //    $scope.eventResources.splice(0, $scope.eventResources.length);
-    //
-    //    // Fetch selected project resources
-    //    $scope.getResources(options);
-    //};
-
     /* alert on eventClick */
     $scope.alertOnEventClick = function (task, jsEvent, view) {
         $scope.editTask(convertFromFCFormat(task));
     };
-    /* Event fired on day click */
-    /* Deprecated use select instead */
-    // $scope.dayClick = function(date, jsEvent, view, resource) {
-    //   var task = {
-    //     "start": date,
-    //     "end": moment(date).add(2, 'hours'),
-    //     "assignee": String(resource.id),
-    //     "project": 1,
-    //   }
-
-    //   // Create new task in calendar
-    //   $scope.createTask(task);
-
-    // };
 
     /* remove event from calendar */
     $scope.remove = function (index) {
@@ -239,35 +249,7 @@ app.controller('clCalendrController', function ($window, $scope, Project, User, 
     };
 
     $scope.projectLink = function (resource, labelTd) {
-        labelTd.find('.fc-cell-text').html('<a href="' + resource.link + '">' + resource.title.encodeHtml() + '</a>');
+        if (!$scope.userResources)
+            labelTd.find('.fc-cell-text').html('<a href="' + resource.link + '">' + resource.title.encodeHtml() + '</a>');
     };
-
-    /* config object */
-    $scope.uiConfig = {
-        calendar: {
-            schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
-            ignoreTimezone: false,
-            defaultView: 'timelineMonth',
-            header: {
-                left: 'title',
-                center: '',
-                right: 'prev, next'
-            },
-            height: 'auto',
-            editable: true,
-            selectable: true,
-            select: $scope.selectFunction,
-            eventClick: $scope.alertOnEventClick,
-            updateEvent: $scope.updateTask,
-            dayClick: $scope.dayClick,
-            eventDrop: $scope.updateTask,
-            eventResize: $scope.updateTask,
-            gotoDate: $scope.gotoDate,
-            slotWidth: 70,
-            resourceLabelText: 'Projects',
-            resourceRender: $scope.projectLink,
-        }
-    };
-
-    $scope.eventSources = [$scope.tasks];
 });
