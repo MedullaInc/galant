@@ -6,6 +6,7 @@ from django.contrib.auth.models import Group
 from django.db import models as m
 from djmoney.settings import CURRENCY_CHOICES
 from guardian.utils import get_user_obj_perms_model, get_group_obj_perms_model
+from jsonfield.fields import JSONField
 from polymorphic import PolymorphicModel
 from guardian.shortcuts import assign_perm, get_objects_for_user, get_perms_for_model
 from polymorphic.manager import PolymorphicManager
@@ -46,6 +47,12 @@ class GallantUser(AbstractEmailUser):
     command manage_agency to create an agency group and add users to it.
     """
     agency_group = m.ForeignKey(Group, null=True)
+
+    """
+    Settings:
+    calendr_users: show agency users in calendr as resources (deafult False, show projects)
+    """
+    settings = JSONField(max_length=511, default={})
 
     objects = GalantUserManager()
 
