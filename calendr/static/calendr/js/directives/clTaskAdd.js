@@ -20,7 +20,7 @@ app.directive('clTaskAdd', ['$window', 'Task', function ($window, Task) {
 
             if (!$scope.task) {
                 $scope.task = new Task();
-                $scope.task.assignee = $scope.assignee;
+                $scope.task.assignee = +$scope.assignee;
                 $scope.task.daily_estimate = 0;
             }
 

@@ -90,7 +90,7 @@
         <div class="container">
             <div gl-add-modal open-fn="editTask" title="Task" modal-instance="modalInstance">
                 <div cl-task-add on-success="taskSaved" task="object"
-                     assignee="{{ currentUserId }}" projects="projects" users="users"></div>
+                     assignee="{{ user.id }}" projects="projects" users="users"></div>
             </div>
             <uib-tabset active="active">
                 <uib-tab index="0" heading="My Tasks">
