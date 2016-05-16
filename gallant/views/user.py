@@ -259,11 +259,20 @@ class UsersAPI(generics.ListAPIView):
 
     def get_queryset(self):
         project = self.request.GET.get('project_id', None)
+        user = self.request.user
+
+        if user.is_superuser:
+            qs = self.model.objects.filter(is_active=True, pk__gte=0)
+        elif user.agency_group:
+            qs = self.model.objects.filter(is_active=True, pk__gte=0, agency_group=user.agency_group)
+        else:
+            qs = self.model.objects.filter(is_active=True, pk=user.pk)
+
         if project:
             assignee_ids = Task.objects.filter(project_id=project).values('assignee').distinct()
-            return self.model.objects.filter(is_active=True, pk__gte=0, pk__in=assignee_ids)
+            return qs.filter(pk__in=assignee_ids)
         else:
-            return self.model.objects.filter(is_active=True, pk__gte=0)
+            return qs
 
 
 class UserModelViewSet(viewsets.ModelViewSet):
