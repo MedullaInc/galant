@@ -3580,6 +3580,30 @@ a h2.section_subtitle {
     height: 500px;
 }
 
+#client_overview_preview_image {
+    background: #e7e7e7 url("/static/img/client_overview_preview.png") 50% no-repeat;
+    background-position: top center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 300px;
+}
+
+#calendar_preview_image {
+    background: #e7e7e7 url("/static/img/calendar_preview.png") 50% no-repeat;
+    background-position: top center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 300px;
+}
+
+#tasks_preview_image {
+    background: #e7e7e7 url("/static/img/tasks_preview.png") 50% no-repeat;
+    background-position: top center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 300px;
+}
+
 .landing_container .col-lg-6 {
     padding-left: 0px;
     padding-right: 0px;
