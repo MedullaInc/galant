@@ -1,5 +1,5 @@
 <div class="container kanban">
-    <div class="row">
+    <div class="row" ng-hide="quotesLoaded && quotesSafe.length == 0">
         <div class="kanban-column" kb-board-column title="Not Sent" click-fn="redirect"
              items="$parent.quotesSafe" status-index="{{ qtConstants.QuoteStatus.NotSent }}"></div>
         <div class="kanban-column" kb-board-column title="Awaiting Response" click-fn="redirect"
@@ -15,8 +15,10 @@
         </div>
     </div>
     <div class="row" ng-show="quotesLoaded && quotesSafe.length == 0">
-        <div class="col-lg-12 col-centered">
-            No quotes yet.
+        <div class="col-lg-12">
+            <p>
+                No quotes yet.
+            </p>
         </div>
     </div>
 </div>

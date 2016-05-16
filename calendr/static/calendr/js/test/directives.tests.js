@@ -85,19 +85,24 @@ describe('clTaskAdd', function () {
     var element;
 
     beforeEach(inject(function () {
-        $scope.projects = [{services: [{},{}]}, {id: 1, services: [{},{}]}, {id: 0}];
-        $scope.task = {start: true, end: true};
-        element = $compile('<div cl-task-add="" projects="projects" task="task"></div>')($scope);
-        $scope.$digest();
     }));
 
     it('compiles', function () {
+        $scope.projects = [{services: [{},{}]}, {id: 1, services: [{},{}]}, {id: 0}];
+        $scope.task = {start: true, end: true, project: 1};
+        element = $compile('<div cl-task-add="" projects="projects" task="task"></div>')($scope);
+        $scope.$digest();
         expect(element.html().substring(0, 6)).toEqual('<form ');
     });
 
     it('changes project', function () {
+        $scope.projects = [{services: [{},{}]}, {id: 1, services: [{},{}]}, {id: 0}];
+        $scope.task = {start: true, end: true};
+        element = $compile('<div cl-task-add="" projects="projects" task="task"></div>')($scope);
+        $scope.$digest();
         element.isolateScope().projectChanged(0);
         element.isolateScope().projectChanged(1);
         expect(element.html().substring(0, 6)).toEqual('<form ');
     });
+
 });

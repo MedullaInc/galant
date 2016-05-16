@@ -2,7 +2,7 @@
     <td>{{ quote.modified|date:'y-M-d h:m' }}</td>
     <td>{{ quote.client_name }}</td>
     <td>{{ quote.name }}</td>
-    <td>{{ quoteStatus[quote.status]  }}</td>
+    <td>{{ quoteStatus[quote.status] }}</td>
 </tr>
 <tr ng-show="!quotes">
     <td colspan="4">
@@ -11,6 +11,8 @@
 </tr>
 <tr ng-show="quotes && quotes.length == 0">
     <td colspan="4">
-        No quotes yet.
+        <p>
+            No quotes yet.
+        </p>
     </td>
 </tr>
