@@ -137,32 +137,37 @@ app.controller('clCalendrController', function ($window, $scope, Project, User, 
     };
 
     var convertToFCFormat = function (task) {
-        task.title = task.name;
-        task.resourceId = $scope.userResources ? task.assignee : task.project;
-        task.allDay = false;
-        if (!task.start) {
+        var ret = angular.copy(task);
+        ret.title = ret.name;
+        ret.resourceId = $scope.userResources ? ret.assignee : ret.project;
+        ret.allDay = false;
+        if (!ret.start) {
             // fullcalendar requires start, so add epoch sentinel value
-            task.start = new Date(0);
-            task.end = task.start;
+            ret.start = moment(new Date(0));
+            ret.end = ret.start;
+        } else {
+            ret.start = moment(ret.start);
+            ret.end = moment(ret.end);
         }
-        return task;
+        return ret;
     };
 
     var convertFromFCFormat = function (task) {
-        task.name = task.title;
+        var ret = angular.copy(task);
+        ret.name = ret.title;
         if ($scope.userResources)
-            task.assignee = task.resourceId;
+            ret.assignee = ret.resourceId;
         else
-            task.project = task.resourceId;
-        delete task.source;
+            ret.project = ret.resourceId;
+        delete ret.source;
         try {
-            if (!task.start.getTime()) {
+            if (!ret.start._d.getTime()) {
                 // check for epoch sentinel value (start required by FC), set time to null if present
-                task.start = null;
-                task.end = null;
+                ret.start = null;
+                ret.end = null;
             }
         } catch (ex) {}
-        return task;
+        return ret;
     };
 
     $scope.editFCTask = function (task) {
