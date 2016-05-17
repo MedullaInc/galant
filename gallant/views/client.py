@@ -181,8 +181,4 @@ class ClientsAPI(ModelViewSet):
     ]
 
     def get_queryset(self):
-        user = self.request.GET.get('user', None)
-        if user:
-            return self.model.objects.all_for(self.request.user).filter(user_id=user)
-        else:
-            return self.model.objects.all_for(self.request.user)
+        return self.model.objects.all_for(self.request.user).select_related('contact_info', 'card')
