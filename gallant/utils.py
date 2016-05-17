@@ -115,7 +115,7 @@ def site_processor(request):
 
 # context processor, adds DEBUG to templates
 def debug_processor(request):
-    return {'DEBUG': settings.DEBUG}
+    return {'DEBUG': settings.DEBUG, 'TESTING': settings.TESTING}
 
 
 def url_to_pdf(url, session_key, header_url=None, footer_url=None): # pragma: no cover

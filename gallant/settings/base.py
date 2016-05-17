@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+import sys
 from django.contrib import messages
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -25,6 +26,7 @@ SECRET_KEY = '200e^rny&-)38ixcu-k^ivy)o05f=+90utc3!drrny@^0o)n92'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+TESTING = 'test' in sys.argv
 
 ALLOWED_HOSTS = []
 
