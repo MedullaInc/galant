@@ -307,10 +307,15 @@ class QuoteClientDetail(mixins.RetrieveModelMixin,
 
 class QuoteViewSet(UserModelViewSet):
     model = q.Quote
-    serializer_class = serializers.QuoteSerializer
     permission_classes = [
         GallantViewSetPermissions
     ]
+
+    def get_serializer_class(self):
+        if self.action == 'list':
+            return serializers.QuoteListSerializer
+        else:
+            return serializers.QuoteSerializer
 
     def get_queryset(self):
         client_id = self.request.query_params.get('client_id', None)
@@ -318,6 +323,9 @@ class QuoteViewSet(UserModelViewSet):
         unlinked = self.request.query_params.get('unlinked', None)
 
         qs = self.model.objects.all_for(self.request.user)
+
+        if self.action != 'list':
+            qs = qs.prefetch_related('sections', 'services')
 
         if client_id is not None:
             qs = qs.filter(client_id=client_id)
