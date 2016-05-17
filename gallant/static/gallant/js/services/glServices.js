@@ -37,11 +37,6 @@ app.factory('Project', function ($resource) {
 });
 
 /* istanbul ignore next  */
-app.factory('ClientProjects', function ($resource) {
-    return $resource('/api/project?client_id=:id', {id: '@id'});
-});
-
-/* istanbul ignore next  */
 app.factory('User', function ($resource) {
     return $resource('/en/api/users');
 });

@@ -583,12 +583,12 @@ describe('glDashboardWorkSummary', function () {
                 return Client;
             });
 
-            $provide.factory('ClientProjects', function ($q) {
-                var ClientProjects = [];
-                ClientProjects.query = function () {
+            $provide.factory('Service', function ($q) {
+                var Service = [];
+                Service.query = function () {
                     return {$promise: $q.when([{services: [{status: 0},{status: 1},{status: 2},{status: 3},{status: 4}]}])};
                 };
-                return ClientProjects;
+                return Service;
             });
         });
 

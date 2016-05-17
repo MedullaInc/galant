@@ -142,10 +142,10 @@ class ServiceAPI(ModelViewSet):
      ]
 
     def get_queryset(self):
-        quoteTemplates_qs = q.QuoteTemplate.objects.all_for(self.request.user).values_list('quote_id', flat=True)
-        quotes_qs = q.Quote.objects.filter(pk__in=quoteTemplates_qs)
         client_id = self.request.query_params.get('client_id', None)
         project_id = self.request.query_params.get('project_id', None)
+        template_only = self.request.query_params.get('template_only', None)
+        project_open = self.request.query_params.get('project_open', None)
 
         qs = self.model.objects.all_for(self.request.user)
 
@@ -153,5 +153,9 @@ class ServiceAPI(ModelViewSet):
             return qs.filter(quote__client_id=client_id)
         elif project_id:
             return qs.filter(quote__projects__in=[project_id])
+        elif template_only:
+            return qs.filter(quote__client__isnull=True)
+        elif project_open:
+            return qs.exclude(quote__projects=None, quote__projects__status=g.ProjectStatus.Completed)
         else:
-            return qs.filter(quote__in=quotes_qs)
+            return qs
