@@ -35,9 +35,9 @@ class LanguageForm(forms.Form):
 
 
 class SignUpRequestForm(forms.Form):
-    name = forms.CharField(max_length=255)
+    name = forms.CharField(max_length=255, required=False)
     email = forms.EmailField()
-    company = forms.CharField(max_length=255, help_text='Enter company name or "self-employed"')
+    company = forms.CharField(max_length=255, required=False, help_text='Enter company name or "self-employed"')
     description = forms.CharField(required=False, widget=forms.Textarea(attrs={'rows': 5}),
                                   max_length=2000, help_text='Tell us about yourself (optional)')
 
