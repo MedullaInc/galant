@@ -3,7 +3,7 @@ app = angular.module('gallant.directives.glDashboardWorkSummary', [
     'tc.chartjs',
 ]);
 
-app.directive('glDashboardWorkSummary', ['$window', 'Client', 'ClientProjects', function ($window, Client, ClientProjects) {
+app.directive('glDashboardWorkSummary', ['$window', 'Client', 'Service', 'glConstants', function ($window, Client, Service, glConstants) {
     return {
         restrict: 'A',
         scope: {
@@ -70,72 +70,62 @@ app.directive('glDashboardWorkSummary', ['$window', 'Client', 'ClientProjects', 
                         }
                     );
                 }
+            });
 
-                angular.forEach($scope.project_underway, function (client) {
-
-                    ClientProjects.query({id: client.id}).$promise.then(function (response) {
-                        angular.forEach(response, function (project) {
-                            // If project is not completed
-                            if (project.status != "4") {
-                                angular.forEach(project.services, function (service) {
-                                    $scope.service_on_hold += service.status == "0" ? 1 : 0;
-                                    $scope.service_pending_assignment += service.status == "1" ? 1 : 0;
-                                    $scope.service_active += service.status == "2" ? 1 : 0;
-                                    $scope.service_overdue += service.status == "3" ? 1 : 0;
-                                    $scope.service_completed += service.status == "4" ? 1 : 0;
-                                });
-                            }
-                        });
-
-                        $scope.work_doughnut_chart_data = [];
-
-                        if ($scope.service_on_hold + $scope.service_pending_assignment > 0) {
-                            $scope.work_doughnut_chart_data.push(
-                                {
-                                    value: $scope.service_on_hold + $scope.service_pending_assignment,
-                                    color: "#93f1ff",
-                                    highlight: "#00a6ff",
-                                    label: "On Hold or Pending Assignment"
-                                }
-                            );
-                        }
-
-                        if ($scope.service_active > 0) {
-                            $scope.work_doughnut_chart_data.push(
-                                {
-                                    value: $scope.service_active,
-                                    color: '#b2ffaf',
-                                    highlight: '#00ff5f',
-                                    label: "Active"
-                                }
-                            );
-                        }
-
-                        if ($scope.service_overdue > 0) {
-                            $scope.work_doughnut_chart_data.push(
-                                {
-                                    value: $scope.service_overdue,
-                                    color: "#ff0054",
-                                    highlight: "#FF5A5E",
-                                    label: "Overdue"
-                                }
-                            );
-                        }
-
-                        if ($scope.service_completed > 0) {
-                            $scope.work_doughnut_chart_data.push(
-                                {
-                                    value: $scope.service_completed,
-                                    color: '#b2ffaf',
-                                    highlight: '#00ff5f',
-                                    label: "Completed"
-                                }
-                            );
-                        }
-
-                    });
-
+            Service.query({project_open: true}).$promise.then(function (response) {
+                angular.forEach(response, function (service) {
+                    $scope.service_on_hold += +service.status == glConstants.ServiceStatus.OnHold ? 1 : 0;
+                    $scope.service_pending_assignment += +service.status == glConstants.ServiceStatus.PendingAssignment ? 1 : 0;
+                    $scope.service_active += +service.status == glConstants.ServiceStatus.Active ? 1 : 0;
+                    $scope.service_overdue += +service.status == glConstants.ServiceStatus.Overdue ? 1 : 0;
+                    $scope.service_completed += +service.status == glConstants.ServiceStatus.Completed ? 1 : 0;
                 });
+
+                $scope.work_doughnut_chart_data = [];
+
+                if ($scope.service_on_hold + $scope.service_pending_assignment > 0) {
+                    $scope.work_doughnut_chart_data.push(
+                        {
+                            value: $scope.service_on_hold + $scope.service_pending_assignment,
+                            color: "#93f1ff",
+                            highlight: "#00a6ff",
+                            label: "On Hold or Pending Assignment"
+                        }
+                    );
+                }
+
+                if ($scope.service_active > 0) {
+                    $scope.work_doughnut_chart_data.push(
+                        {
+                            value: $scope.service_active,
+                            color: '#b2ffaf',
+                            highlight: '#00ff5f',
+                            label: "Active"
+                        }
+                    );
+                }
+
+                if ($scope.service_overdue > 0) {
+                    $scope.work_doughnut_chart_data.push(
+                        {
+                            value: $scope.service_overdue,
+                            color: "#ff0054",
+                            highlight: "#FF5A5E",
+                            label: "Overdue"
+                        }
+                    );
+                }
+
+                if ($scope.service_completed > 0) {
+                    $scope.work_doughnut_chart_data.push(
+                        {
+                            value: $scope.service_completed,
+                            color: '#b2ffaf',
+                            highlight: '#00ff5f',
+                            label: "Completed"
+                        }
+                    );
+                }
 
             });
 

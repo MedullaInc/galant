@@ -26,11 +26,20 @@ def manage_agency(options):
     group, created = Group.objects.get_or_create(name=options['agency_group'])
     if options['user_add']:
         user = get_user_model().objects.get(email=options['user_add'].pop())
+        if user.agency_group:
+            user.agency_group.user_set.remove(user)
         group.user_set.add(user)
+        user.agency_group = group
+        user.save()
     elif options['user_del']:
         user = get_user_model().objects.get(email=options['user_del'].pop())
         group.user_set.remove(user)
+        user.agency_group = None
+        user.save()
     elif options['d']:
+        for user in group.user_set.all():
+            user.agency_group = None
+            user.save()
         group.delete()
 
 

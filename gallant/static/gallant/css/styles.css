@@ -3292,6 +3292,11 @@ ul.nav-tabs li, ul.nav-tabs li, li.nav-item.ng-scope.ng-isolate-scope.active a.n
     margin: auto;
 }
 
+#landing_signup input {
+    margin: auto;
+    width: 50%;
+}
+
 button.btn.btn-default.btn-add, .btn.btn-default.btn-add {
     padding-top: 5px;
 }

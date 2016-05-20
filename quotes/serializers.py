@@ -36,7 +36,39 @@ class SectionClientSerializer(SectionSerializer):
         }
 
 
-class QuoteSerializer(serializers.ModelSerializer):
+class QuoteListSerializer(serializers.ModelSerializer):
+    user = serializers.PrimaryKeyRelatedField(read_only=True)
+    parent = serializers.PrimaryKeyRelatedField(read_only=True)
+    client_name = serializers.SerializerMethodField(read_only=True)
+    client_link = serializers.SerializerMethodField(read_only=True)
+
+    card = ks.KanbanCardSerializer(read_only=True, allow_null=True)
+
+    def get_client_name(self, quote):
+        if quote.client:
+            return quote.client.name
+        else:
+            return None
+
+    def get_client_link(self, quote):
+        if quote.client:
+            return reverse('client_detail', args=[quote.client.id])
+        else:
+            return None
+
+    class Meta:
+        model = Quote
+        fields = ('id', 'user', 'name', 'client', 'language', 'status',
+                  'modified', 'token', 'parent', 'projects', 'views', 'session_duration',
+                  'client_name', 'client_link', 'card')
+        extra_kwargs = {
+            'id': {'read_only': False, 'required': False, 'allow_null':True},
+            'user': {'required': False},
+            'name': {'required': True},
+        }
+
+
+class QuoteSerializer(QuoteListSerializer):
     user = serializers.PrimaryKeyRelatedField(read_only=True)
     parent = serializers.PrimaryKeyRelatedField(read_only=True)
     views = serializers.IntegerField()

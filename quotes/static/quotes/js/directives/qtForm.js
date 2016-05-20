@@ -39,7 +39,7 @@ app.directive('qtQuoteForm', ['Quote', '$uibModal', function (Quote, $uibModal) 
                     $scope.clients = clients;
                 });
 
-                Service.query().$promise.then(function (services) {
+                Service.query({template_only: true}).$promise.then(function (services) {
                     $scope.services = services;
                 });
 

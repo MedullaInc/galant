@@ -192,10 +192,10 @@ class ProjectsAPI(viewsets.ModelViewSet):
 
     def get_queryset(self):
         client = self.request.GET.get('client_id', None)
+
+        qs = self.model.objects.all_for(self.request.user)
+
         if client:
-            quotes = q.Quote.objects.all_for(self.request.user).filter(status=5, client_id=client)
-            return self.model.objects.all_for(self.request.user).filter(user_id=self.request.user, quote__in=quotes)
-        elif self.request.user.is_superuser:
-            return self.model.objects.all_for(self.request.user)
+            return qs.filter(user_id=self.request.user, quote__client_id=client)
         else:
-            return self.model.objects.all_for(self.request.user).filter(user_id=self.request.user)
+            return qs

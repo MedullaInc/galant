@@ -1,6 +1,7 @@
 from django.core.urlresolvers import reverse
 from functional_tests import browser
 from quotes import models as qm
+from gallant import models as g
 from unittest import skip
 
 
@@ -20,6 +21,15 @@ class QuotesSignedInTest(browser.SignedInTest):
         q.sections.add(m)
         self.q = q
         self.disable_popups()
+
+    def test_quote_pipeline(self):
+        c = self.q.client
+        c.auto_pipeine = True
+        c.status = g.ClientStatus.Potential.value
+        c.save()
+        self.q.status = qm.QuoteStatus.Accepted.value
+        self.q.save()
+        self.assertEqual('Quote Accepted', c.card.alert)
 
     def test_can_access_quotes(self):
         # check 'Quotes' h1

@@ -22,10 +22,10 @@ from rest_framework.response import Response
 
 def _send_signup_request_email(form):
     message = 'Name: %s\nEmail: %s\nCompany: %s\nAbout:\n%s\n' % (
-        form.cleaned_data['name'],
-        form.cleaned_data['email'],
-        form.cleaned_data['company'],
-        form.cleaned_data['description'],
+        form.cleaned_data.get('name', '-'),
+        form.cleaned_data.get('email'),
+        form.cleaned_data.get('company', '-'),
+        form.cleaned_data.get('description', '-'),
     )
     send_mail('Signup request', message, settings.EMAIL_HOST_USER,
               ['signup@galant.com'], fail_silently=False)
@@ -83,7 +83,7 @@ class SignUpRequest(View):
             return HttpResponseRedirect(reverse('home'))
         else:
             return render(request, 'gallant/base_form.html', {
-                'form': forms.SignUpRequestForm(),
+                'form': form,
                 'title': 'Request Account',
                 'submit_text': 'Submit'
             })

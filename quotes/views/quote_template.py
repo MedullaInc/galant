@@ -104,7 +104,8 @@ class QuoteTemplateViewSet(UserModelViewSet):
 
     def get_queryset(self):
         clients_only = self.request.query_params.get('clients_only', None)
+        qs = self.model.objects.all_for(self.request.user).prefetch_related('quote')
         if clients_only is not None:
-            return self.model.objects.all_for(self.request.user).filter(quote__client__isnull=clients_only)
+            return qs.filter(quote__client__isnull=clients_only)
         else:
-            return self.model.objects.all_for(self.request.user)
+            return qs
