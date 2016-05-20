@@ -3535,9 +3535,9 @@ a h2.section_subtitle {
 }
 
 #landing_main #main_overlay {
-    font-size: 30px;
+    font-size: 26px;
     font-weight: 100;
-    line-height: 1.2;
+    line-height: 1.3;
     color: #555555;
     width: 80%;
     margin: auto;
@@ -3552,9 +3552,9 @@ a h2.section_subtitle {
 }
 
 .landing_section p {
-    font-size: 30px;
+    font-size: 26px;
     font-weight: 100;
-    line-height: 1.2;
+    line-height: 1.3;
     color: #666666;
     width: 80%;
     margin: auto;
@@ -3563,7 +3563,7 @@ a h2.section_subtitle {
 
 #landing_blurb p {
     color: #ffffff;
-    width: 80%;
+    width: 50%;
     max-width: 1050px;
 }
 
@@ -3638,7 +3638,7 @@ form.form.login_popover {
 
 }
 
-@media (min-width: 1281px) {
+@media (min-width: 1441px) {
     #landing_main {
         background: #e7e7e7 url("/static/img/welcome.jpg") no-repeat;
         background-position: top center;
