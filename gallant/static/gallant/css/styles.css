@@ -3551,9 +3551,19 @@ a h2.section_subtitle {
 }
 
 .landing_section {
-    height: 500px;
-    padding-top: 180px;
+    height: 570px;
+    padding-top: 220px;
     background-color: #d40371;
+}
+
+.landing_section_with_img img.img_a {
+    width: 60%;
+    margin-top: 60px;
+}
+
+.landing_section_with_img img.img_b {
+    width: 50%;
+    margin-top: 60px;
 }
 
 .landing_section p {
@@ -3574,7 +3584,8 @@ a h2.section_subtitle {
 
 #landing_purpose {
     background-color: #e7e7e7;
-    padding-top: 100px;
+    padding-top: 140px;
+    height: 620px;
 }
 
 #landing_purpose_image {
@@ -3622,11 +3633,13 @@ form.form.login_popover {
 @media (max-width: 767px) {
 
     #landing_blurb p, #landing_main #main_overlay, div#landing_purpose.landing_section p {
-        font-size: 20px;
+        font-size: 16px;
+        width: 60%;
     }
 
     div#landing_blurb.landing_section {
-        padding-top: 120px;
+        padding-top: 60px;
+        height: 160px;
     }
 
     .landing_section {
@@ -3634,11 +3647,48 @@ form.form.login_popover {
     }
 
     div#landing_purpose.landing_section {
+        padding-top: 60px;
         height: 520px;
     }
 
     .btn.btn-default, #login_open.btn, .btn.btn-default.giant, button#create_submit.btn {
         font-weight: 200;
+    }
+
+    .landing_section_with_img img.img_a {
+        width: 80%;
+        margin-top: 60px;
+    }
+
+    .landing_section_with_img img.img_b {
+        width: 65%;
+        margin-top: 60px;
+        margin-bottom: 50px;
+    }
+
+}
+
+@media (max-width: 1440px) {
+    .landing_section {
+        height: 460px;
+        padding-top: 150px;
+        background-color: #d40371;
+    }
+
+    #landing_purpose {
+        background-color: #e7e7e7;
+        padding-top: 140px;
+        height: 500px;
+    }
+
+    .landing_section_with_img img.img_a {
+        width: 80%;
+        margin-top: 60px;
+    }
+
+    .landing_section_with_img img.img_b {
+        width: 65%;
+        margin-top: 60px;
     }
 
 }
@@ -3651,7 +3701,6 @@ form.form.login_popover {
         height: 950px;
         padding-top: 400px;
     }
-
 }
 
 .modal-header .close {
@@ -3831,7 +3880,7 @@ div.kanban-card.ng-scope.as-sortable-item {
     min-height: 85px;
 }
 
-.col-centered{
+.col-centered {
     float: none;
     margin: 0 auto;
 }

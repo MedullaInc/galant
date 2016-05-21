@@ -104,7 +104,7 @@ app.factory('glAlertService', function () {
             }
         });
 
-        if (alerts.length > 3) {
+        if (alerts.length > 1) {
             closeAlertIdx(0);
         }
 

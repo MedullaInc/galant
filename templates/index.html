@@ -78,60 +78,82 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-12">
+            <div class="col-lg-6">
                 <div id="landing_blurb" class="landing_section">
                     <p>
                         Galant is a management app for creative agencies and freelancers.
-                        It was brewed in the heart of Silicon Valley, in close collaboration
-                        with internationally acclaimed agencies.
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-6 centered">
+                <div class="landing_section_with_img">
+                    <p>
+                        <img src="/static/img/macbook_air_dashboard.gif" class="img_a">
                     </p>
                 </div>
             </div>
         </div>
         <div class="row">
-            <div id="client_overview_preview_image" class="col-lg-4"></div>
-            <div id="calendar_preview_image" class="col-lg-4"></div>
-            <div id="tasks_preview_image" class="col-lg-4"></div>
-        </div>
-        <div class="row">
-            <div class="col-lg-4">
-                <p class="landing_preview_text">Keep track of client work, payments, and communication</p>
+            <div class="col-lg-6 centered">
+                <div class="landing_section_with_img">
+                    <p>
+                        <img src="/static/img/imac_clients.gif" class="img_b">
+                    </p>
+                </div>
             </div>
-            <div class="col-lg-4">
-                <p class="landing_preview_text">Schedule teams and project milestones</p>
-            </div>
-            <div class="col-lg-4">
-                <p class="landing_preview_text">Intuitively organize tasks, deliverables, and quotes</p>
-            </div>
-        </div>
-        <div class="row">
-            <div id="landing_purpose_image" class="col-lg-6"></div>
             <div class="col-lg-6">
-                <div id="landing_purpose" class="landing_section">
-                    <div class="row">
-                        <div class="col-lg-12">
+                <div id="landing_blurb" class="landing_section">
+                    <p>
+                        Keep track of client work, payments, and communication.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <div id="landing_blurb" class="landing_section">
+                    <p>
+                        Intuitively organize tasks, deliverables & quotes.
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-6 centered">
+                <div class="landing_section_with_img">
+                    <p>
+                        <img src="/static/img/macbook_air_tasks.gif" class="img_a">
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6 centered">
+                <div class="landing_section_with_img">
+                    <p>
+                        <img src="/static/img/imac_calendar.gif" class="img_b">
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div id="landing_purpose" class="landing_section">
                             <p>
                                 Spend less time organizing.<br/>Focus on doing what you love.
                             </p>
-                        </div>
-                    </div>
-                    {% if user.is_authenticated == False %}
-                        <br><br><br>
-                        <div class="row">
-                            <div class="col-lg-12 centered">
-                                <form id="landing_signup" method="post" action="{% url 'signup' %}">
+
+                            {% if user.is_authenticated == False %}
+                                <br><br><br>
+                                <form id="landing_signup" method="post" action="{% url 'signup' %}" class="centered">
                                     {% csrf_token %}
                                     <input name="email" class="form-control" placeholder="Email Address"><br>
                                     <button type="submit" class="btn btn-default giant btn-add"
-                                       name="signup">
+                                            name="signup">
                                         {% trans 'Request Early Access' %}
                                     </button>
                                 </form>
-                            </div>
-
+                            {% endif %}
                         </div>
-                    {% endif %}
-
+                    </div>
                 </div>
             </div>
         </div>
