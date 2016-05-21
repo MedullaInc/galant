@@ -3548,6 +3548,7 @@ a h2.section_subtitle {
     margin: auto;
     text-align: center;
     padding-top: 10px;
+    word-spacing: -3px;
 }
 
 .landing_section {
@@ -3574,18 +3575,21 @@ a h2.section_subtitle {
     width: 80%;
     margin: auto;
     text-align: center;
+    word-spacing: -3px;
 }
 
 #landing_blurb p {
     color: #ffffff;
     width: 50%;
     max-width: 1050px;
+    word-spacing: -3px;
 }
 
 #landing_purpose {
     background-color: #e7e7e7;
     padding-top: 140px;
     height: 620px;
+    word-spacing: -3px;
 }
 
 #landing_purpose_image {
