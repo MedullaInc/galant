@@ -45,7 +45,7 @@ describe('glServices', function () {
             var a = {type:'success', msg:'msg'};
             alert.add(a);
             alert.closeAlert(a);
-            expect(alert.get().length).toEqual(1);
+            expect(alert.get().length).toEqual(0);
         });
 
         it('clears alerts', function () {
