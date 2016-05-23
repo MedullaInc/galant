@@ -76,22 +76,26 @@
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-lg-12">
-                <div id="landing_callout" class="landing_callout">
-                    {% if user.is_authenticated == False %}
-                        <br><br>
-                        <form id="landing_signup" method="post" action="{% url 'signup' %}" class="centered">
-                            {% csrf_token %}
-                            <input name="email" class="signup_email form-control" placeholder="Email Address">
-                            <button type="submit" class="signup_request btn btn-default btn-add"
-                                    name="signup">
-                                {% trans 'Request Early Access' %}
-                            </button>
-                        </form>
-                    {% endif %}
+        <div class="row landing_callout" id="landing_callout">
+            <div class="col-lg-4"></div>
+            <div class="col-lg-4">
+                <div class="row">
+                    <div class="col-lg-1 col-md-2 col-sm-1 col-xs-1"></div>
+                    <div class="col-lg-10 col-md-8 col-sm-10 col-xs-10">
+                        {% if user.is_authenticated == False %}
+                            <form id="landing_signup" method="post" action="{% url 'signup' %}">
+                                {% csrf_token %}
+                                <div class="input-group">
+                                    <input type="email" name="email" class="form-control" placeholder="Email Address">
+                                    <span class="input-group-btn"><button class="btn btn-default" type="submit" name="signup">Request Early Access</button></span>
+                                </div>
+                            </form>
+                        {% endif %}
+                    </div>
+                    <div class="col-lg-1 col-md-2 col-sm-1 col-xs-1"></div>
                 </div>
             </div>
+            <div class="col-lg-4"></div>
         </div>
         <div class="row">
             <div class="col-lg-12">
@@ -101,14 +105,14 @@
                     </p>
                     <p class="sub">
                         There are lots of ways to manage clients, time, and money &mdash;
-                        you'll miss the big picture unless you connect all three. With Galant, it's effortless.
+                        you'll miss the big picture unless you connect all three.<br/> With Galant, it's effortless.
                     </p>
                 </div>
             </div>
         </div>
         <div class="row">
             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                <div class="landing_section">
+                <div class="landing_section right-card">
                     <p>
                         <b>Smart Boards</b>
                     </p>
@@ -119,7 +123,7 @@
                 </div>
             </div>
             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 centered">
-                <div class="landing_section_with_img bg-white">
+                <div class="landing_section_with_img bg-white align-left">
                     <p>
                         <img src="/static/img/imac_clients.gif" class="img_b">
                     </p>
@@ -128,14 +132,14 @@
         </div>
         <div class="row">
             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 centered">
-                <div class="landing_section_with_img bg-white">
+                <div class="landing_section_with_img bg-white align-right">
                     <p>
                         <img src="/static/img/imac_calendar.gif" class="img_a">
                     </p>
                 </div>
             </div>
             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                <div class="landing_section">
+                <div class="landing_section left-card">
                     <p>
                         <b>Team View</b>
                     </p>
@@ -147,7 +151,7 @@
         </div>
         <div class="row">
             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                <div class="landing_section">
+                <div class="landing_section right-card">
                     <p>
                         <b>Analytics</b>
                     </p>
@@ -157,35 +161,45 @@
                 </div>
             </div>
             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 centered">
-                <div class="landing_section_with_img bg-white">
+                <div class="landing_section_with_img bg-white align-left">
                     <p>
-                        <img src="/static/img/macbook_air_dashboard.gif" class="img_a">
+                        <img src="/static/img/macbook_air_dashboard.gif" class="img_b">
                     </p>
                 </div>
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-12">
+            <div class="col-lg-12 landing_section" id="landing_purpose">
                 <div class="row">
-                    <div class="col-lg-12">
-                        <div id="landing_purpose" class="landing_section">
-                            <p>
-                                Follow the money.
-                            </p>
-
-                            {% if user.is_authenticated == False %}
-                                <br><br>
-                                <form id="landing_signup" method="post" action="{% url 'signup' %}" class="centered">
-                                    {% csrf_token %}
-                                    <input name="email" class="signup_email form-control" placeholder="Email Address">
-                                    <button type="submit" class="signup_request btn btn-default btn-add"
-                                            name="signup">
-                                        {% trans 'Request Early Access' %}
-                                    </button>
-                                </form>
-                            {% endif %}
+                    <div class="col-lg-4"></div>
+                    <div class="col-lg-4">
+                        <div class="row">
+                            <div class="col-lg-2"></div>
+                            <div class="col-lg-8">
+                                <p>
+                                    Follow the money.
+                                </p>
+                                <br/>
+                            </div>
+                            <div class="col-lg-2"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-1 col-md-2 col-sm-1 col-xs-1"></div>
+                            <div class="col-lg-10 col-md-8 col-sm-10 col-xs-10">
+                                {% if user.is_authenticated == False %}
+                                    <form id="landing_signup" method="post" action="{% url 'signup' %}">
+                                        {% csrf_token %}
+                                        <div class="input-group">
+                                            <input type="email" name="email" class="form-control" placeholder="Email Address">
+                                            <span class="input-group-btn"><button class="btn btn-default" type="submit" name="signup">Request Early Access</button></span>
+                                        </div>
+                                    </form>
+                                {% endif %}
+                            </div>
+                            <div class="col-lg-1 col-md-2 col-sm-1 col-xs-1"></div>
                         </div>
                     </div>
+                    <div class="col-lg-4"></div>
                 </div>
             </div>
         </div>
