@@ -3294,7 +3294,12 @@ ul.nav-tabs li, ul.nav-tabs li, li.nav-item.ng-scope.ng-isolate-scope.active a.n
 
 #landing_signup input {
     margin: auto;
-    width: 50%;
+    width: auto;
+    display: inline;
+}
+
+#landing_signup button {
+    background-color: #61b1dc;
 }
 
 button.btn.btn-default.btn-add, .btn.btn-default.btn-add {
@@ -3557,6 +3562,20 @@ a h2.section_subtitle {
     background-color: #ffffff;
 }
 
+.landing_callout {
+    height: 200px;
+    padding-top: 35px;
+    background-color: #d40371;
+}
+
+.landing_blurb {
+    height: 275px;
+    padding-top: 25px;
+    background-color: #ffffff;
+    width: auto;
+    text-align: center;
+}
+
 .landing_section_with_img {
     background: #e7e7e7;
     height: 548px;
@@ -3587,9 +3606,32 @@ a h2.section_subtitle {
     word-spacing: -3px;
 }
 
-#landing_blurb p {
+.landing_section p.sub {
+    font-size: 20px;
+    font-weight: 100;
     color: #333333;
-    width: 50%;
+    width: 80%;
+    margin: auto;
+    padding-top: 20px;
+    max-width: 1050px;
+    word-spacing: -3px;
+}
+
+#landing_blurb p {
+    margin-top: 40px;
+    margin-bottom: 20px;
+    font-size: 26px;
+    font-weight: 100;
+    color: #333333;
+    word-spacing: -3px;
+}
+
+#landing_blurb p.sub {
+    font-size: 20px;
+    font-weight: 100;
+    color: #333333;
+    width: 80%;
+    margin: auto;
     max-width: 1050px;
     word-spacing: -3px;
 }
