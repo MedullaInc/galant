@@ -48,14 +48,14 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-lg-12 centered">
+                <div class="col-lg-12">
                     <button type="submit" class="btn btn-default btn-submit" name="submit_login">
                         {% trans 'Log in' %}
                     </button>
                 </div>
             </div>
             <div class="row">
-                <div class="col-lg-12 centered">
+                <div class="col-lg-12">
                     <a class="forgot pull-right" href="{% url 'account_reset_password' %}">
                         {% trans 'Forgot your password?' %}</a>
                 </div>
@@ -78,15 +78,15 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-6">
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                 <div id="landing_blurb" class="landing_section">
                     <p>
                         Galant is a management app for creative agencies and freelancers.
                     </p>
                 </div>
             </div>
-            <div class="col-lg-6 centered">
-                <div class="landing_section_with_img">
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 centered">
+                <div class="landing_section_with_img bg-white">
                     <p>
                         <img src="/static/img/macbook_air_dashboard.gif" class="img_a">
                     </p>
@@ -94,14 +94,14 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-6 centered">
-                <div class="landing_section_with_img">
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 centered">
+                <div class="landing_section_with_img bg-white">
                     <p>
                         <img src="/static/img/imac_clients.gif" class="img_b">
                     </p>
                 </div>
             </div>
-            <div class="col-lg-6">
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                 <div id="landing_blurb" class="landing_section">
                     <p>
                         Keep track of client work, payments, and communication.
@@ -110,15 +110,15 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-6">
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                 <div id="landing_blurb" class="landing_section">
                     <p>
                         Intuitively organize tasks, deliverables & quotes.
                     </p>
                 </div>
             </div>
-            <div class="col-lg-6 centered">
-                <div class="landing_section_with_img">
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 centered">
+                <div class="landing_section_with_img bg-white">
                     <p>
                         <img src="/static/img/macbook_air_tasks.gif" class="img_a">
                     </p>
@@ -126,14 +126,14 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-6 centered">
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 centered">
                 <div class="landing_section_with_img">
                     <p>
                         <img src="/static/img/imac_calendar.gif" class="img_b">
                     </p>
                 </div>
             </div>
-            <div class="col-lg-6">
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                 <div class="row">
                     <div class="col-lg-12">
                         <div id="landing_purpose" class="landing_section">
@@ -142,7 +142,7 @@
                             </p>
 
                             {% if user.is_authenticated == False %}
-                                <br><br><br>
+                                <br><br>
                                 <form id="landing_signup" method="post" action="{% url 'signup' %}" class="centered">
                                     {% csrf_token %}
                                     <input name="email" class="form-control" placeholder="Email Address"><br>
