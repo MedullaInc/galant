@@ -3581,26 +3581,10 @@ a h2.section_subtitle {
     padding-right: 80px;
 }
 
-.landing_section.right-card p {
-    padding-left: 25%;
-}
-
-.landing_section.right-card p.sub {
-    padding-left: 50%;
-}
-
 .landing_section.left-card {
     border-left: 1px solid #d7d7d7;
     margin-bottom: 70px;
     padding-left: 80px;
-}
-
-.landing_section.left-card p {
-    padding-right: 25%;
-}
-
-.landing_section.left-card p.sub {
-    padding-right: 50%;
 }
 
 .landing_callout {
@@ -3633,7 +3617,7 @@ a h2.section_subtitle {
     max-width: 80%;
     margin: auto;
     margin-top: 10%;
-    background-size: contain;
+    background-size: 100%;
 }
 
 .landing_image_calendar {
@@ -3641,7 +3625,7 @@ a h2.section_subtitle {
     max-width: 80%;
     margin: auto;
     margin-top: 10%;
-    background-size: contain;
+    background-size: 100%;
 }
 
 .landing_image_analytics {
@@ -3649,7 +3633,7 @@ a h2.section_subtitle {
     max-width: 80%;
     margin: auto;
     margin-top: 10%;
-    background-size: contain;
+    background-size: 100%;
 }
 
 .align-left {
@@ -3814,13 +3798,14 @@ form.form.login_popover {
     }
 
     .landing_section {
-        height: 200px;
+        height: auto;
         padding-top: 6%;
         background-color: #ffffff;
     }
 
     .landing_section_with_img {
-        height: 200px;
+        height: auto;
+        min-height: 225px;
         padding-top: 6%;
     }
 
@@ -3871,59 +3856,39 @@ form.form.login_popover {
     }
 }
 
-@media (min-width: 768px) and (max-width: 992px) {
-
-    .landing_callout {
-        height: 150px;
+@media (min-width: 500px) and (max-width: 766px) {
+    .landing_section_with_img {
+        height: auto;
+        min-height: 350px;
         padding-top: 6%;
-        background-color: #d40371;
-        padding-bottom: 11%;
     }
+}
 
+@media (min-width: 768px) and (max-width: 992px) {
     .landing_section {
-        height: 200px;
-        padding-top: 0%;
-        background-color: #ffffff;
-    }
-
-    #landing_purpose {
-        background-color: #e7e7e7;
-        padding-top: 140px;
-        height: 530px;
-    }
-
-    div#landing_purpose.landing_section {
-        padding-top: 40px;
-        height: 360px;
+        height: 300px;
+        padding-top: 7%;
     }
 
     .landing_section_with_img {
-        display: none;
+        height: 300px;
     }
 
-    .landing_section.right-card {
-        border-right: none;
-        margin-bottom: 0px;
+    .landing_section.right-card, .landing_section.left-card {
         padding-right: 0px;
-    }
-
-    .landing_section.left-card {
-        border-left: none;
-        margin-bottom: 0px;
         padding-left: 0px;
     }
 
-    .landing_section.right-card p.sub, .landing_section.left-card p.sub {
-        padding: 0%;
-        width: 45%;
-        margin-top: 20px;
+    .landing_image_calendar {
+        margin-top: 5%;
     }
 
-    .landing_section.right-card p, .landing_section.left-card p {
-        text-align: center;
+    .landing_section p.sub {
+        padding-left: 25px;
+        padding-right: 25px;
     }
-
 }
+
 
 @media (min-width: 993px) and (max-width: 1440px) {
     .landing_section {
