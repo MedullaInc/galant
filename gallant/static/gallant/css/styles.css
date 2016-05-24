@@ -3559,7 +3559,7 @@ a h2.section_subtitle {
 }
 
 .landing_section.right-card p {
-    text-align: right;
+    padding-left: 25%;
 }
 
 .landing_section.right-card p.sub {
@@ -3573,7 +3573,7 @@ a h2.section_subtitle {
 }
 
 .landing_section.left-card p {
-    text-align: left;
+    padding-right: 25%;
 }
 
 .landing_section.left-card p.sub {
@@ -3588,7 +3588,7 @@ a h2.section_subtitle {
 }
 
 .landing_blurb {
-    height: 275px;
+    height: 350px;
     padding-top: 1%;
     background-color: #ffffff;
     width: auto;
@@ -3776,6 +3776,8 @@ form.form.login_popover {
 
     .landing_section.right-card p, .landing_section.left-card p {
         text-align: center;
+        padding: 0%;
+        padding: 0%;
     }
 
 }
@@ -3837,7 +3839,7 @@ form.form.login_popover {
 @media (min-width: 993px) and (max-width: 1440px) {
     .landing_section {
         height: 460px;
-        padding-top: 17%;
+        padding-top: 23%;
         background-color: #ffffff;
     }
 
@@ -3861,12 +3863,12 @@ form.form.login_popover {
 
     .landing_section_with_img img.img_a {
         width: 90%;
-        margin-top: 40px;
+        margin-top: 23%;
     }
 
     .landing_section_with_img img.img_b {
         width: 90%;
-        margin-top: 40px;
+        margin-top: 23%;
     }
 
     .landing_section.right-card p.sub {
@@ -3934,9 +3936,9 @@ form#landing_signup {
 }
 
 form#landing_signup .input-group {
-    width: 100%;
+    width: 70%;
     text-align: center;
-    margin: 0px;
+    margin: auto;
 }
 
 form#landing_signup input[type="email"] {
@@ -3947,8 +3949,8 @@ form#landing_signup input[type="email"] {
     -moz-border-bottom-left-radius: 20px;
     border-bottom-left-radius: 20px;
     padding: 20px;
-    border: none;
     font-size: 16px;
+    min-width: 250px;
 }
 
 form#landing_signup button {
@@ -3958,7 +3960,7 @@ form#landing_signup button {
     -webkit-border-bottom-right-radius: 20px;
     -moz-border-bottom-right-radius: 20px;
     border-bottom-right-radius: 20px;
-    height: 40px;
+    height: 42px;
     border: none;
     background-color: #61b1dc;
     color: #ffffff;
