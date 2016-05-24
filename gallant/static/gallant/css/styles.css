@@ -3621,22 +3621,35 @@ a h2.section_subtitle {
 .landing_section_with_img {
     background: #e7e7e7;
     height: 548px;
+    padding-top: 20%;
 }
 
 .landing_section_with_img.bg-white {
     background-color: #ffffff;
 }
 
-.landing_section_with_img img.img_a {
-    width: 70%;
-    margin-top: 3%;
-    padding-right: 60px;
+.landing_image_kanban {
+    background: #ffffff url("/static/img/imac_clients.gif") no-repeat;
+    max-width: 80%;
+    margin: auto;
+    margin-top: 10%;
+    background-size: contain;
 }
 
-.landing_section_with_img img.img_b {
-    width: 70%;
-    margin-top: 3%;
-    padding-left: 60px
+.landing_image_calendar {
+    background: #ffffff url("/static/img/imac_calendar.gif") no-repeat;
+    max-width: 80%;
+    margin: auto;
+    margin-top: 10%;
+    background-size: contain;
+}
+
+.landing_image_analytics {
+    background: #ffffff url("/static/img/macbook_air_dashboard.gif") no-repeat;
+    max-width: 80%;
+    margin: auto;
+    margin-top: 10%;
+    background-size: contain;
 }
 
 .align-left {
