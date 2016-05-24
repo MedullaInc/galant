@@ -3779,6 +3779,7 @@ form.form.login_popover {
 
     .landing_blurb {
         padding-top: 0px;
+        margin-bottom: 20px;
     }
 
     #landing_blurb p.sub {
@@ -3794,6 +3795,7 @@ form.form.login_popover {
     div#landing_purpose.landing_section {
         padding-top: 40px;
         height: 480px;
+        margin-top: 20px;
     }
 
     .landing_section {
@@ -3802,10 +3804,6 @@ form.form.login_popover {
 
     .btn.btn-default, #login_open.btn, .btn.btn-default.giant, button#create_submit.btn {
         font-weight: 200;
-    }
-
-    .landing_section_with_img {
-        display: none;
     }
 
     .landing_callout {
@@ -3819,6 +3817,11 @@ form.form.login_popover {
         height: 200px;
         padding-top: 6%;
         background-color: #ffffff;
+    }
+
+    .landing_section_with_img {
+        height: 200px;
+        padding-top: 6%;
     }
 
     .landing_section.right-card {
@@ -3863,6 +3866,9 @@ form.form.login_popover {
         margin-top: 10px;
     }
 
+    .landing_container .mobile_img {
+        padding-left: 6%;
+    }
 }
 
 @media (min-width: 768px) and (max-width: 992px) {
