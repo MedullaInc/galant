@@ -1131,23 +1131,25 @@ header .brand img:first-child {
 /**
  * Footer 3 stylesheet
  * */
+
 .footer-3 {
-    padding-top: 22px;
+    background-color: #6998B3;
+    border: none;
+    color: #F3F3F3;
+    font-family: "Courier New";
+    font-size: 12px;
+    padding-top: 30px;
     padding-bottom: 28px;
     line-height: 16px;
-    font-size: 11px;
-    color: #000000;
-    background: #ffffff;
-    border: 1px solid #666666;
     position: absolute;
     bottom: 0px;
     width: 100%;
-    margin-top: 10px;
+    margin-top: 20px;
     z-index: 1000;
 }
 
 .footer-3 a {
-    color: #666666;
+    color: #F3F3F3;
     font-weight: normal;
 }
 
@@ -3099,16 +3101,9 @@ a.brand span {
     font-family: "Courier New";
 }
 
-.header-5, .footer-3 {
+.header-5 {
     background-color: #f9f9f9;
     border: none;
-}
-
-.footer-3 {
-    color: #999999;
-    font-family: "Courier New";
-    padding-top: 40px;
-    font-size: 12px;
 }
 
 .header-5 .navbar-header .brand {
@@ -3535,7 +3530,7 @@ a h2.section_subtitle {
 }
 
 #landing_main #main_overlay {
-    font-size: 26px;
+    font-size: 24px;
     font-weight: 100;
     line-height: 1.3;
     color: #555555;
@@ -3588,9 +3583,9 @@ a h2.section_subtitle {
 }
 
 .landing_blurb {
-    height: 350px;
-    padding-top: 1%;
-    background-color: #ffffff;
+    height: 525px;
+    padding-top: 50px;
+    background-color: #588BA9;
     width: auto;
     text-align: center;
 }
@@ -3624,25 +3619,34 @@ a h2.section_subtitle {
     text-align: right;
 }
 
+.landing_section p b {
+    font-family: "Open Sans";
+    font-weight: lighter;
+    font-spacing: 1px;
+    font-size: 36px;
+}
+
 .landing_section p {
-    font-size: 26px;
+    font-size: 24px;
     font-weight: 100;
     line-height: 1.3;
     color: #666666;
     margin: auto;
     text-align: center;
-    word-spacing: -3px;
+    word-spacing: 1px;
+    letter-spacing: 0px;
     padding-top: 20px;
 }
 
 .landing_section p.sub {
-    font-size: 20px;
+    font-size: 24px;
     font-weight: 100;
     color: #333333;
     margin: auto;
     padding-top: 20px;
     padding-bottom: 20px;
     word-spacing: -3px;
+    letter-spacing: 0px;
 }
 
 #landing_blurb p {
@@ -3650,25 +3654,38 @@ a h2.section_subtitle {
     margin-bottom: 20px;
     font-size: 26px;
     font-weight: 100;
-    color: #333333;
-    word-spacing: -3px;
+    color: #ffffff;
+    word-spacing: 1px;
+    letter-spacing: 1px;
 }
 
 #landing_blurb p.sub {
-    font-size: 20px;
+    font-size: 24px;
     font-weight: 100;
-    color: #333333;
-    width: 50%;
+    color: #ffffff;
+    width: 60%;
     margin: auto;
     max-width: 1050px;
     word-spacing: -3px;
 }
 
+#landing_blurb p b {
+    font-family: "Open Sans";
+    font-weight: lighter;
+    letter-spacing: 1px;
+    word-spacing: 1px;
+    font-size: 36px;
+}
+
 #landing_purpose {
-    background-color: #e7e7e7;
+    background-color: #588BA9;
     height: 290px;
     padding-top: 2%;
     word-spacing: -3px;
+}
+
+#landing_purpose p {
+    color: #ffffff;
 }
 
 #landing_purpose_image {
@@ -3844,7 +3861,6 @@ form.form.login_popover {
     }
 
     #landing_purpose {
-        background-color: #e7e7e7;
         padding-top: 95px;
         height: 408px;
     }
@@ -3935,7 +3951,7 @@ form#landing_signup {
     margin: auto;
 }
 
-form#landing_signup .input-group {
+form#landing_blurb .input-group {
     width: 70%;
     text-align: center;
     margin: auto;
@@ -3962,7 +3978,7 @@ form#landing_signup button {
     border-bottom-right-radius: 20px;
     height: 42px;
     border: none;
-    background-color: #61b1dc;
+    background-color: #d40371;
     color: #ffffff;
 }
 
