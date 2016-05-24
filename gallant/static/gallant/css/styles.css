@@ -3282,6 +3282,23 @@ ul.nav-tabs li, ul.nav-tabs li, li.nav-item.ng-scope.ng-isolate-scope.active a.n
     margin-right: 3px;
 }
 
+.button_round {
+    padding-left: 15px;
+    padding-right: 12px;
+    height: 34px;
+    background-color: #d40371;
+    color: #ffffff;
+    border: none;
+    -webkit-border-radius: 40px;
+    -moz-border-radius: 40px;
+    border-radius: 40px;
+    max-width: 95%;
+    font-weight: 100;
+    font-size: 16px;
+    padding-top: 3px;
+    margin-right: 3px;
+}
+
 .btn.btn-default.giant.btn-add {
     padding: 35px;
     padding-top: 13px;
@@ -3514,6 +3531,11 @@ a h2.section_subtitle {
 
 .welcome_box {
     min-height: 300px;
+}
+
+#landing_blurb_anchor {
+    padding-top: 100px;
+    margin-top: -100px;
 }
 
 #landing_main {
