@@ -3760,6 +3760,14 @@ form.form.login_popover {
 
 @media (max-width: 766px) {
 
+    #landing_main #main_overlay {
+        margin-top: -25px;
+    }
+
+    .landing_blurb {
+        padding-top: 0px;
+    }
+
     #landing_blurb p.sub {
         width: 85%;
         font-size: 18px;
@@ -3823,6 +3831,23 @@ form.form.login_popover {
         text-align: center;
         padding: 0%;
         padding: 0%;
+    }
+
+    .input-group {
+        display: inherit;
+    }
+
+    form#landing_signup input[type="email"] {
+        -webkit-border-radius: 20px;
+        -moz-border-radius: 20px;
+    }
+
+
+    form#landing_signup button {
+        -webkit-border-radius: 20px;
+        -moz-border-radius: 20px;
+        width: 100%;
+        margin-top: 10px;
     }
 
 }
