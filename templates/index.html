@@ -2,8 +2,9 @@
 
 {% load bootstrap i18n %}
 
-{% if user.is_authenticated %}
-{% else %}
+{% block header_class %} class="header-5 header-fixed" {% endblock %}
+
+{% if not user.is_authenticated %}
     {% block navbar %}
         <nav class="navbar">
             <div class="col-lg-8 col-md-10 col-sm-10 col-xs-8">

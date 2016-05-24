@@ -20,7 +20,7 @@
     <div class="page-wrapper" {% block extra_wrapper_attrs %}{% endblock %}>
 
         {% block header_div %}
-            <header class="header-5">
+            <header {% block header_class %} class="header-5" {% endblock %}>
                 <div class="container">
                     <div class="row">
                         {% block navbar %}

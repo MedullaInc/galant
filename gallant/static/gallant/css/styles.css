@@ -1053,6 +1053,11 @@ header .brand img:first-child {
     margin-bottom: 10px;
 }
 
+.header-fixed {
+    position: fixed;
+    width: 100%;
+}
+
 .header-5 > .container {
     position: relative;
 }
@@ -3518,6 +3523,7 @@ a h2.section_subtitle {
     background-size: cover;
     height: 500px;
     padding-top: 200px;
+    margin-top: 110px;
 }
 
 .landing_container {
