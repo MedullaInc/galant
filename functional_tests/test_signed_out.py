@@ -26,7 +26,7 @@ class SignedOutTest(StaticLiveServerTestCase):
 
     def test_can_signup_int(self):
         language = get_language()
-        for lang, e_text in [('en', u'Request Early Access'),
+        for lang, e_text in [('en', u'Request FREE Early Access'),
                              # ('es', u'Regístrate!')
                              ]:
             activate(lang)
