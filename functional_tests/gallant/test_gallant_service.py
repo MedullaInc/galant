@@ -18,7 +18,7 @@ class GallantServiceTest(browser.SignedInTest):
         self.e_name('cost_0').clear()
         self.e_name('cost_0').send_keys('10')
         self.e_name('quantity').send_keys('10')
-        self.e_xpath('//select[@name="type"]/option[@value="0"]').click()
+        self.click_xpath('//select[@name="type"]/option[@value="0"]')
 
         self.submit_xpath('//button[@type="submit"]')
 
@@ -38,7 +38,7 @@ class GallantServiceTest(browser.SignedInTest):
         self.e_name('cost_0').clear()
         self.e_name('cost_0').send_keys('99')
         self.e_name('quantity').send_keys('88')
-        self.e_xpath('//select[@name="type"]/option[@value="3"]').click()
+        self.click_xpath('//select[@name="type"]/option[@value="3"]')
 
         self.submit_xpath('//button[@type="submit"]')
 

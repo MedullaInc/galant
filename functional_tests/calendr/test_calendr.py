@@ -65,5 +65,5 @@ class CalendrTest(browser.SignedInTest):
     @skip("TODO")
     def test_can_filter_task(self):
         self.get(self.live_server_url + reverse('calendr'))
-        self.e_id('filterTask').click()
+        self.click_id('filterTask')
         self.assertTrue(self.e_id('searchText'))

@@ -79,19 +79,19 @@ class BriefTemplatesTest(browser.SignedInTest):
         self.assertEqual(quest.question.get_text(), question.text)
 
         with browser.wait_for_page_load():
-            self.e_id('brief_save').click()
+            self.click_id('brief_save')
 
         success_message = self.e_class('alert-success')
         self.assertTrue(u'Brief saved.' in success_message.text)
 
     def _add_language_and_text(self, redirect=False):
-        self.e_id('add_question').click()
+        self.click_id('add_question')
         self.e_id('question0_question').clear()
         self.e_id('question0_question').send_keys('Who\'s on first?')
-        self.e_id('add_translation_button').click()
-        self.e_xpath('//select[@id="id_language"]/option[text()[1]="Spanish"]').click()
-        self.e_id('language_add').click()
-        self.e_xpath('//*[@id="es_tab"]/a').click()
+        self.click_id('add_translation_button')
+        self.click_xpath('//select[@id="id_language"]/option[text()[1]="Spanish"]')
+        self.click_id('language_add')
+        self.click_xpath('//*[@id="es_tab"]/a')
         self.e_id('brief_title').send_keys('Brief prueba')
         self.e_id('brief_greeting').send_keys('Brief prueba')
         self.e_id('question0_question').clear()
@@ -103,7 +103,7 @@ class BriefTemplatesTest(browser.SignedInTest):
         self.assertEqual(u'Spanish', new_tab.text)
 
         question = self.e_xpath('//p[@e-id="question0_question"]')
-        self.e_xpath('//*[@id="es_tab"]/a').click()
+        self.click_xpath('//*[@id="es_tab"]/a')
         self.assertEqual(question.text, 'Quien esta en primera?')
 
     def test_can_access_brief_template_endpoint(self):
@@ -137,6 +137,6 @@ class BriefTemplatesTest(browser.SignedInTest):
             success_message = self.e_class('alert-success')
             self.assertTrue(u'Brieftemplate saved.' in success_message.text)
         else:
-            self.e_id('brief_save').click()
+            self.click_id('brief_save')
             success_message = self.e_class('alert-success')
             self.assertTrue(u'Saved.' in success_message.text)

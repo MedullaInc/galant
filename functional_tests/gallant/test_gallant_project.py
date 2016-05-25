@@ -36,9 +36,9 @@ class GallantProjectTest(browser.SignedInTest):
         self.create_one('quotes.Quote', {'name': "XXX", 'client': c, 'status': 5})
 
         # Edit Project removing one quote
-        self.e_id('edit_project').click()
+        self.click_id('edit_project')
 
-        self.e_id('id_linked_quotes_0').click()
+        self.click_id('id_linked_quotes_0')
 
         self.submit_xpath('//button[@type="submit"]')
 
@@ -46,11 +46,11 @@ class GallantProjectTest(browser.SignedInTest):
         self.assertTrue(u'Project saved.' in success_message.text)
 
         # Edit Project with extra quote
-        self.e_id('edit_project').click()
+        self.click_id('edit_project')
 
         self.e_name('name').send_keys('PPPPPPP')
 
-        self.e_id('id_available_quotes_0').click()
+        self.click_id('id_available_quotes_0')
 
         self.submit_xpath('//button[@type="submit"]')
 

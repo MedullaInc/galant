@@ -57,7 +57,7 @@ class BriefsSignedInTest(browser.SignedInTest):
         self.click_id('brief_edit')
         self.e_id('question0_question').send_keys('Who is your daddy, and what does he do?')
 
-        self.e_id('question1_add_choice').click()
+        self.click_id('question1_add_choice')
         self.e_id('question1_choice3').send_keys('foo')
         self._submit_and_check()
 
@@ -66,7 +66,7 @@ class BriefsSignedInTest(browser.SignedInTest):
               '?client_id=%d' % self.brief.client.id)
 
         browser.wait().until(lambda driver: driver.find_element_by_id('question0'))
-        self.e_id('add_multiquestion').click()
+        self.click_id('add_multiquestion')
         self.e_id('question2_question').send_keys('Who is your daddy, and what does he do?')
         self.e_id('question2_choice0').send_keys('foo')
         self.e_id('question2_choice1').send_keys('bar')
@@ -113,8 +113,7 @@ class BriefsSignedInTest(browser.SignedInTest):
         self.get(self.live_server_url + reverse('brief_detail', args=[brief.id]))
         browser.wait().until(lambda driver: driver.find_element_by_id('send_brief'))
 
-        with browser.wait_for_page_load():
-            self.e_id('send_brief').click()
+        self.submit('send_brief')
 
         success_message = self.e_class('alert-success')
         self.assertTrue(u'Brief link sent to %s.' % brief.client.email in success_message.text)
@@ -165,6 +164,6 @@ class BriefsSignedInTest(browser.SignedInTest):
             success_message = self.e_class('alert-success')
             self.assertTrue(u'Brief saved.' in success_message.text)
         else:
-            self.e_id('brief_save').click()
+            self.click_id('brief_save')
             success_message = self.e_class('alert-success')
             self.assertTrue(u'Saved.' in success_message.text)

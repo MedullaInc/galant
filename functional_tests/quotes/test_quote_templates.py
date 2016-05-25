@@ -30,7 +30,7 @@ class QuoteTemplatesTest(browser.SignedInTest):
         self.e_id('service_name_0').send_keys('1234')
         self.e_id('quantity_0').send_keys('1')
         self.e_id('description_0').send_keys('desc')
-        self.e_xpath('//select[@id="type_0"]/option[2]').click()
+        self.click_xpath('//select[@id="type_0"]/option[2]')
 
         self.e_id('text_0').send_keys('test intro text')
         self.e_id('title_0').send_keys('test margin title')
@@ -44,7 +44,7 @@ class QuoteTemplatesTest(browser.SignedInTest):
         self.e_id('quote_name').send_keys('New quote')
         self.e_id('service_name_0').send_keys('1234')
         self.e_id('quantity_0').send_keys('1')
-        self.e_xpath('//select[@id="type_0"]/option[2]').click()
+        self.click_xpath('//select[@id="type_0"]/option[2]')
 
         self._add_language_and_text(True)
 

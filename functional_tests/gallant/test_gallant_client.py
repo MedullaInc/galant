@@ -124,7 +124,7 @@ class GallantClientTest(browser.SignedInTest):
 
         self.e_name('client.name').send_keys('Kanye West')
         self.e_name('client.email').send_keys('kanye@imaletyoufinish.com')
-        self.e_xpath('//select[@name="client.status"]/option[@value="1"]').click()
+        self.click_xpath('//select[@name="client.status"]/option[@value="1"]')
         # self.e_xpath('//textarea[@name="notes"]').send_keys('asdf')
 
         # phone # field JS broken
@@ -145,7 +145,7 @@ class GallantClientTest(browser.SignedInTest):
 
         self.e_name('client.name')
         self.e_name('client.name').send_keys('PPPPPPP')
-        self.e_xpath('//select[@name="client.status"]/option[@value="3"]').click()
+        self.click_xpath('//select[@name="client.status"]/option[@value="3"]')
         # self.e_xpath('//textarea[@name="notes"]').send_keys('dddd')
 
         self.e_name('contact_info.phone_number').clear()
@@ -188,7 +188,7 @@ class GallantClientTest(browser.SignedInTest):
     def test_blank_note_fail(self):
         c = self.create_one('gallant.Client')
         self.get(self.live_server_url + reverse('client_detail', args=[c.id]))
-        self.e_xpath('//button[@type="submit"]').click()
+        self.click_xpath('//button[@type="submit"]')
 
         self.assertTrue('This field is required.' in self.e_id('notes').text)
 

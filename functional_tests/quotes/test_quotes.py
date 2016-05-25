@@ -144,7 +144,7 @@ class QuotesSignedInTest(browser.SignedInTest):
         self.e_id('quote_name').send_keys('Quote test')
         self.click_xpath('//select[@name="client"]/option[1]')
 
-        self.e_id('add_service').click()
+        self.click_id('add_service')
         self.click_xpath('//*[@id="service_from_scratch"]')
         self.e_id('service_name_0').send_keys('1234')
         self.e_id('quantity_0').send_keys('1')

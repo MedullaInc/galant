@@ -28,7 +28,7 @@ class BriefAnswersTest(browser.BrowserTest):
 
         self.e_css('input[type="text"]').send_keys('foobar')
         self.e_css('input[type="radio"][value="1"]').click()
-        self.e_xpath('//button[@type="submit"]').click()
+        self.click_xpath('//button[@type="submit"]')
 
         success_message = self.e_class('alert-success')
         self.assertTrue(u'Brief answered.' in success_message.text)
@@ -41,7 +41,7 @@ class BriefAnswersTest(browser.BrowserTest):
 
         self.e_css('input[type="text"]').send_keys('foobar')
         self.e_css('input[type="checkbox"][value="1"]').click()
-        self.e_xpath('//button[@type="submit"]').click()
+        self.click_xpath('//button[@type="submit"]')
 
         success_message = self.e_class('alert-success')
         self.assertTrue(u'Brief answered.' in success_message.text)
