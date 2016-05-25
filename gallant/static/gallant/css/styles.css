@@ -1031,14 +1031,6 @@ header .brand img:first-child {
     z-index: 2;
 }
 
-@media (max-width: 767px) {
-    header {
-        -webkit-box-sizing: border-box;
-        -moz-box-sizing: border-box;
-        box-sizing: border-box;
-    }
-}
-
 /**
  * Header 1 stylesheet
  * */
@@ -3764,10 +3756,24 @@ form.form.login_popover {
 }
 
 @media (max-width: 766px) {
+    header {
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+
+    .header-fixed {
+        position: absolute;
+    }
 
     #landing_main #main_overlay {
         margin-top: -30px;
         font-size: 20px;
+    }
+
+    #landing_blurb_anchor {
+        padding-top: 0px;
+        margin-top: 0px;
     }
 
     .landing_blurb {
