@@ -3771,6 +3771,7 @@ form.form.login_popover {
     }
 
     .landing_blurb {
+        height: 475px;
         padding-top: 0px;
         margin-bottom: 20px;
     }
@@ -3787,7 +3788,7 @@ form.form.login_popover {
 
     div#landing_purpose.landing_section {
         padding-top: 40px;
-        height: 480px;
+        height: 450px;
         margin-top: 20px;
     }
 
@@ -3850,11 +3851,13 @@ form.form.login_popover {
     form#landing_signup input[type="email"] {
         -webkit-border-radius: 20px;
         -moz-border-radius: 20px;
+        border-radius: 20px;
     }
 
     form#landing_signup button {
         -webkit-border-radius: 20px;
         -moz-border-radius: 20px;
+        border-radius: 20px;
         width: 100%;
         margin-top: 10px;
     }
