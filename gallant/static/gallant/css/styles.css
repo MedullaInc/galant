@@ -3796,7 +3796,8 @@ form.form.login_popover {
         background-color: #ffffff;
     }
 
-    .btn.btn-default, #login_open.btn, .btn.btn-default.giant, button#create_submit.btn {
+    .btn.btn-default, #login_open.btn, .btn.btn-default.giant,
+    button#create_submit.btn, #signup.button_round {
         font-weight: 200;
     }
 
