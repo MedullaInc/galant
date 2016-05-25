@@ -3578,13 +3578,11 @@ a h2.section_subtitle {
 .landing_section.right-card {
     border-right: 1px solid #d7d7d7;
     margin-bottom: 70px;
-    padding-right: 80px;
 }
 
 .landing_section.left-card {
     border-left: 1px solid #d7d7d7;
     margin-bottom: 70px;
-    padding-left: 80px;
 }
 
 .landing_callout {
@@ -3668,8 +3666,7 @@ a h2.section_subtitle {
     font-weight: 100;
     color: #333333;
     margin: auto;
-    padding-top: 20px;
-    padding-bottom: 20px;
+    padding: 20px 10% 20px 10%;
     word-spacing: -3px;
     letter-spacing: 0px;
 }
@@ -3923,15 +3920,6 @@ form.form.login_popover {
         width: 90%;
         margin-top: 23%;
     }
-
-    .landing_section.right-card p.sub {
-        padding-left: 25%;
-    }
-
-    .landing_section.left-card p.sub {
-        padding-right: 25%;
-    }
-
 }
 
 @media (min-width: 1441px) {
