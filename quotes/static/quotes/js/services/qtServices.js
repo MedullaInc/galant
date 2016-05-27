@@ -1,7 +1,7 @@
 app = angular.module('quotes.services.qtServices', []);
 
 /* istanbul ignore next  */
-app.factory("Quote", function ($resource) {
+app.factory("Quote", ['$resource', function ($resource) {
     // TODO: this shouldn't start with /en/
 
 	return $resource("/en/quote/api/quote/:id", {client_id: '@client_id'}, {
@@ -37,11 +37,11 @@ app.factory("Quote", function ($resource) {
         }
 	});
 
-});
+}]);
 
 
 /* istanbul ignore next  */
-app.factory("Service", function ($resource) {
+app.factory("Service", ['$resource', function ($resource) {
 	//
 	return $resource("/api/service/:id", {}, {
         fields: {
@@ -50,17 +50,17 @@ app.factory("Service", function ($resource) {
         },
 	});
 
-});
+}]);
 
 /* istanbul ignore next  */
-app.factory("Section", function ($resource) {
+app.factory("Section", ['$resource', function ($resource) {
 	//
 	return $resource("/en/quote/api/section/:id");
 
-});
+}]);
 
 /* istanbul ignore next  */
-app.factory("QuoteTemplate", function ($resource) {
+app.factory("QuoteTemplate", ['$resource', function ($resource) {
     // TODO: this shouldn't start with /en/
 
 	return $resource("/en/quote/api/quote_template/:id", {}, {
@@ -77,7 +77,7 @@ app.factory("QuoteTemplate", function ($resource) {
 		}
 	});
 
-});
+}]);
 
 /* istanbul ignore next */
 app.factory('qtConstants', function () {
