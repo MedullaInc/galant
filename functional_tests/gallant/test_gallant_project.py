@@ -1,5 +1,6 @@
 from django.core.urlresolvers import reverse
 from functional_tests import browser
+from gallant.enums import ProjectStatus
 
 
 def tearDownModule():
@@ -58,7 +59,7 @@ class GallantProjectTest(browser.SignedInTest):
         self.assertTrue(u'Project saved.' in success_message.text)
 
     def test_add_project_note(self):
-        p = self.create_one('gallant.Project')
+        p = self.create_one('gallant.Project', {'status': ProjectStatus.Overdue.value})
         self.create_one('quotes.Quote', {'project': p})
 
         self.get(self.live_server_url + reverse('project_detail', args=[p.id]))
