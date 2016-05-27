@@ -22,7 +22,11 @@
         <script src="{% static "js/jquery.min.js" %}"></script>
         <script src="{% static "js/bootstrap.min.js" %}"></script>
         <script src="{% static "js/flat-ui.min.js" %}"></script>
-        <script src="{% static "js/gallant.js" %}"></script>
+        {% if DEBUG %}
+            <script src="{% static "js/gallant.js" %}"></script>
+        {% else %}
+            <script src="{% static "js/all.min.js" %}"></script>
+        {% endif %}
 
         {% block pdf_style %}
             <link rel="stylesheet" href="{% static "quotes/css/quote.css" %}">

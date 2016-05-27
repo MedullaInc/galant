@@ -21,12 +21,16 @@
     <script src="{% static "js/fullcalendar.min.js" %}"></script>
     <script src="{% static "js/scheduler.js" %}"></script>
     <script src="{% static "js/calendar.js" %}"></script>
-    <script src="{% static "js/gallant.js" %}"></script>
     <script src="{% static "js/smart-table.js" %}"></script>
-    <script src="{% static "quotes/js/services/qtServices.js" %}"></script>
     <script src="{% static "js/ng-sortable.js" %}"></script>
-    <script src="{% static "js/kanban.js" %}"></script>
-    <script src="{% static "js/calendr.js" %}"></script>
+    {% if DEBUG %}
+        <script src="{% static "js/gallant.js" %}"></script>
+        <script src="{% static "quotes/js/services/qtServices.js" %}"></script>
+        <script src="{% static "js/kanban.js" %}"></script>
+        <script src="{% static "js/calendr.js" %}"></script>
+    {% else %}
+        <script src="{% static "js/all.min.js" %}"></script>
+    {% endif %}
 {% endblock %}
 
 {% block extra_wrapper_attrs %} ng-app="gallant" {% endblock %}

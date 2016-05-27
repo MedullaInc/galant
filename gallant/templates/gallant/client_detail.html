@@ -13,10 +13,14 @@
     <script src="{% static "js/angular-animate.js" %}"></script>
     <script src="{% static "js/ui-bootstrap-tpls.js" %}"></script>
     <script src="{% static "djng/js/django-angular.js" %}"></script>
-    <script src="{% static "js/gallant.js" %}"></script>
-    <script src="{% static "js/quotes.js" %}"></script>
-    <script src="{% static "js/briefs.js" %}"></script>
     <script src="{% static "js/tc-angular-chartjs.js" %}"></script>
+    {% if DEBUG %}
+        <script src="{% static "js/gallant.js" %}"></script>
+        <script src="{% static "js/quotes.js" %}"></script>
+        <script src="{% static "js/briefs.js" %}"></script>
+    {% else %}
+        <script src="{% static "js/all.min.js" %}"></script>
+    {% endif %}
 {% endblock %}
 
 {% block extra_wrapper_attrs %} ng-app="glClientPayments" {% endblock %}

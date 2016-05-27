@@ -10,8 +10,12 @@
     <script src="{% static "js/xeditable.js" %}"></script>
     <script src="{% static "djng/js/django-angular.min.js" %}"></script>
     <script src="{% static "js/ng-sortable.js" %}"></script>
-    <script src="{% static "js/gallant.js" %}"></script>
-    <script src="{% static "js/briefs.js" %}"></script>
+    {% if DEBUG %}
+        <script src="{% static "js/gallant.js" %}"></script>
+        <script src="{% static "js/briefs.js" %}"></script>
+    {% else %}
+        <script src="{% static "js/all.min.js" %}"></script>
+    {% endif %}
 {% endblock %}
 
 {% block css %}

@@ -15,8 +15,12 @@
     <script src="{% static "js/ng-sortable.min.js" %}"></script>
     <script src="{% static "js/smart-table.js" %}"></script>
     <script src="{% static "js/angular-animate.js" %}"></script>
-    <script src="{% static "js/gallant.js" %}"></script>
-    <script src="{% static "js/quotes.js" %}"></script>
+    {% if DEBUG %}
+        <script src="{% static "js/gallant.js" %}"></script>
+        <script src="{% static "js/quotes.js" %}"></script>
+    {% else %}
+        <script src="{% static "js/all.min.js" %}"></script>
+    {% endif %}
 {% endblock %}
 
 {% block section_title %}
