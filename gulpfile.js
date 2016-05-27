@@ -88,7 +88,7 @@ gulp.task('clean-coverage', function () {
 
 gulp.task('static', ['copy-js-assets', 'copy-css-assets', 'concat-and-min'])
 
-gulp.task('production', ['concat-and-min-all', 'copy-css-assets'])
+gulp.task('production', ['copy-css-assets', 'copy-js-assets', 'concat-and-min-all'])
 
 gulp.task('default', ['lint', 'copy-assets', 'test']);
 
