@@ -56,6 +56,14 @@ gulp.task('concat-and-min', function () {
     return;
 });
 
+
+gulp.task('concat-and-min-all', function () {
+    return gulp.src(scripts)
+        .pipe(concat('all.min.js'))
+        .pipe(uglify())
+        .pipe(gulp.dest(jsout));
+});
+
 gulp.task('test', function (done) {
     new Server({
         configFile: __dirname + '/karma.conf.js',
@@ -79,6 +87,8 @@ gulp.task('clean-coverage', function () {
 });
 
 gulp.task('static', ['copy-js-assets', 'copy-css-assets', 'concat-and-min'])
+
+gulp.task('production', ['copy-css-assets', 'copy-js-assets', 'concat-and-min-all'])
 
 gulp.task('default', ['lint', 'copy-assets', 'test']);
 

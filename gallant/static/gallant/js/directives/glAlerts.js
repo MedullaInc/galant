@@ -5,9 +5,9 @@ app.directive('glAlerts', ['glAlertService', function (glAlertService) {
         restrict: 'A',
         template: '<uib-alert ng-repeat="alert in alerts.get()" type="{{alert.type}}"' +
                   'close="alerts.closeAlertIdx($index)" ng-hide="hideAlert($index)">{{alert.msg}}</uib-alert>',
-        controller: function ($scope) {
+        controller: ['$scope', function ($scope) {
             $scope.alerts = glAlertService;
-        },
+        }],
         link: function ($scope) {
         }
     };

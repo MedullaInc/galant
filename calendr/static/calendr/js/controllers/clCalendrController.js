@@ -3,8 +3,10 @@ app = angular.module('calendr.controllers.clCalendrController', ['gallant.servic
     'ng.django.forms', 'gallant.directives.glMultiDropdown',
 ]);
 
-app.controller('clCalendrController', function ($window, $scope, Project, User, Task, $compile, $sce,
-                                                $timeout, uiCalendarConfig, $filter, FC, moment, glAlertService, clConstants) {
+app.controller('clCalendrController', ['$window', '$scope', 'Project', 'User', 'Task', '$compile', '$sce',
+        '$timeout', 'uiCalendarConfig', '$filter', 'FC', 'moment', 'glAlertService',
+    function ($window, $scope, Project, User, Task, $compile, $sce,
+              $timeout, uiCalendarConfig, $filter, FC, moment, glAlertService, clConstants) {
     $scope.clConstants = clConstants;
     var date = new Date();
     var d = date.getDate();
@@ -257,4 +259,4 @@ app.controller('clCalendrController', function ($window, $scope, Project, User, 
         if (!$scope.userResources)
             labelTd.find('.fc-cell-text').html('<a href="' + resource.link + '">' + resource.title.encodeHtml() + '</a>');
     };
-});
+}]);

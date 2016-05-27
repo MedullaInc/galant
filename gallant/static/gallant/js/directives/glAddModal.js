@@ -3,13 +3,13 @@ app = angular.module('gallant.directives.glAddModal', [
 ]);
 
 /* istanbul ignore next */
-app.directive("modalTransclude", function($parse){
+app.directive("modalTransclude", ['$parse', function($parse){
   return {
     link: function($scope, $element, $attrs){
       $element.append($parse($attrs.modalTransclude)($scope));
     }
   };
-});
+}]);
 
 app.directive('glAddModal', ['$uibModal', function ($uibModal) {
     return {

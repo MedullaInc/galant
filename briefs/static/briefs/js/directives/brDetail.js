@@ -216,7 +216,7 @@ app.directive('brQuestionDetail', ['$window', 'glValidate', function ($window, g
             answered: '=',
             form: '=',
         },
-        controller: function ($scope) {
+        controller: ['$scope', function ($scope) {
             $scope.validate = glValidate;
 
             $scope.dragControlListeners = {
@@ -224,7 +224,7 @@ app.directive('brQuestionDetail', ['$window', 'glValidate', function ($window, g
                     return sourceItemHandleScope.itemScope.sortableScope.$id === destSortableScope.$id;
                 }
             };
-        },
+        }],
         link: function ($scope) {
             var template = '/static/briefs/html/br_question_detail.html';
             if ($scope.question.type == 'MultipleChoiceQuestion') {

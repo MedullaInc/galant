@@ -1,45 +1,45 @@
 app = angular.module('gallant.services.glServices', ['ngResource']);
 
 /* istanbul ignore next */
-app.factory('Client', function ($resource) {
+app.factory('Client', ['$resource', function ($resource) {
     return $resource('/api/client/:id', {}, {
         fields: {
             method: 'GET',
             url: '/api/client/fields'
         },
     });
-});
+}]);
 
 /* istanbul ignore next */
-app.factory('ClientQuote', function ($resource) {
+app.factory('ClientQuote', ['$resource', function ($resource) {
     return $resource('/en/quote/api/quote/:id');
-});
+}]);
 
 /* istanbul ignore next */
-app.factory('Payment', function ($resource) {
+app.factory('Payment', ['$resource', function ($resource) {
     return $resource('/en/quote/api/payment/:id');
-});
+}]);
 
 
 /* istanbul ignore next */
-app.factory('Service', function ($resource) {
+app.factory('Service', ['$resource', function ($resource) {
     return $resource('/api/service/:id');
-});
+}]);
 
 /* istanbul ignore next  */
-app.factory('Project', function ($resource) {
+app.factory('Project', ['$resource', function ($resource) {
     return $resource('/api/project/:id', {}, {
         fields: {
             method: 'GET',
             url: '/api/project/fields'
         },
     });
-});
+}]);
 
 /* istanbul ignore next  */
-app.factory('User', function ($resource) {
+app.factory('User', ['$resource', function ($resource) {
     return $resource('/en/api/users');
-});
+}]);
 
 app.factory('glValidate', function () {
     return {
