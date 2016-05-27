@@ -105,15 +105,6 @@
                 {% endif %}
             {% endif %}
 
-            {% if object.client.email and object.status == '0' or object.status == '1' %}
-                <form method="post" action="{% url 'send_quote' pk=object.id %}">
-                    {% csrf_token %}
-                    <button type="submit" class="btn btn-default btn-add action-button pull-right" id="send_quote">
-                        {% trans "Send to Client" %}
-                    </button>
-                </form>
-            {% endif %}
-
             <a href="{% url 'quote_txt' object.id %}">
                 <button type="button" class="btn btn-default btn-add action-button pull-right">
                     {% trans "Copy & Paste Text Version" %}
@@ -122,7 +113,7 @@
 
             <a href="{% url 'quote_pdf' object.id %}">
                 <button type="button" class="btn btn-default btn-add action-button pull-right">
-                    {% trans "Download Quote" %}
+                    {% trans "PDF Version" %}
                 </button>
             </a>
             <a href="{% url 'add_quote_template' quote_id=object.id %}">
@@ -131,7 +122,7 @@
                 </button>
             </a>
 
-            {% if object.status != "0" and object.status != "1" and object.status != "5" and object.status != "6" %}
+            {% if object.status != "0" and object.status != "5" and object.status != "6" %}
                 <form action="" method="POST">
                     {% csrf_token %}
                     <input type="hidden" name="action" value="reject">

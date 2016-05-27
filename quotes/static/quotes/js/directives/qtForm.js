@@ -270,13 +270,6 @@ app.directive('qtQuoteForm', ['Quote', '$uibModal', function (Quote, $uibModal) 
                 }
             };
 
-            /* show functions depending on status */
-            $scope.showViews = function () {
-                if ($scope.idType != 'token' && $scope.boolTemplate != 'True') {
-                    return true;
-                }
-            };
-
             $scope.showEdit = function () {
                 if (( $scope.tempStatus == '0' || $scope.tempStatus == '1' )
                     && $scope.idType != 'token') {
