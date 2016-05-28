@@ -86,9 +86,9 @@ gulp.task('clean-coverage', function () {
     return del(['coverage']);
 });
 
-gulp.task('static', ['copy-js-assets', 'copy-css-assets', 'concat-and-min'])
+gulp.task('static', ['copy-js-assets', 'copy-css-assets', 'concat-and-min', 'concat-and-min-all']);
 
-gulp.task('production', ['copy-css-assets', 'copy-js-assets', 'concat-and-min-all'])
+gulp.task('production', ['copy-css-assets', 'copy-js-assets', 'concat-and-min-all']);
 
 gulp.task('default', ['lint', 'copy-assets', 'test']);
 
