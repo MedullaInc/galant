@@ -67,5 +67,9 @@ Server Setup
     }
 
     ALLOWED_HOSTS = ['galant.co',]
+- Run 'manage.py migrate', 'gulp production' (avoids copying unminified static JS files), and manage.py collectstatic -l
 - scripts/gunicorn_start will be run from supervisord with DJANGO_SETTINGS_MODULE=gallant.settings.prod_ec2
+- Run nginx / Supervisor with 'sudo service nginx start' and 'sudo service supervisord start'
+- To refresh the app (eg after 'git pull' / 'gulp production' / collectstatic) and restart, run
+  'sudo supervisorctl restart all'
 
