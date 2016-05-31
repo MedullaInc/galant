@@ -75,6 +75,16 @@ class Quote(g.UserModel):
 
         return total
 
+    def create_project(self, quote):
+        if quote.status == QuoteStatus.Accepted.value:
+            # Create Project from Quote
+            if len(quote.projects.all_for(quote.user)) == 0:
+                project = gp.objects.create(user=quote.user, name=quote.name,
+                                            status=ProjectStatus.Pending_Assignment.value)
+                quote.projects.add(project)
+                for service in quote.services.all_for(quote.user, 'change'):
+                    service.save()
+
     def __unicode__(self):
         return self.name
 
@@ -135,17 +145,6 @@ def client_quoted(sender, instance, **kwargs):
             elif qstat == QuoteStatus.Accepted.value:
                 client.card.alert = 'Quote Accepted'
                 client.card.save()
-
-
-@receiver(post_save, sender=Quote)
-def quote_accepted(sender, instance, **kwargs):
-    if instance.status == QuoteStatus.Accepted.value:
-        # Create Project from Quote
-        if len(instance.projects.all_for(instance.user)) == 0:
-            project = gp.objects.create(user=instance.user, name=instance.name, status=ProjectStatus.Pending_Assignment.value)
-            instance.projects.add(project)
-            for service in instance.services.all_for(instance.user, 'change'):
-                service.save()
 
 
 @receiver(m2m_changed, sender=Quote.payments.through)
