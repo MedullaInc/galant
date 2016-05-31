@@ -89,7 +89,7 @@ class QuotesSignedInTest(browser.SignedInTest):
 
     def test_accept_quote(self):
         self.q.status = 1
-        self.qs
+        self.q.save()
         self.get(self.live_server_url + reverse('quote_detail', args=[self.q.id]))
         self.disable_popups
         self.submit('quote_accept')
