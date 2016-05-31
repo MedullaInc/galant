@@ -56,10 +56,6 @@ class QuotesSignedInTest(browser.SignedInTest):
         footer = browser.instance().find_element_by_class_name('footer')
         self.assertTrue(footer)
 
-    def test_access_quote_text_version(self):
-        response = self.get(self.live_server_url + reverse('quote_text', args=[self.q.id]))
-        self.assertEqual(response.status_code, 200)
-
     def test_add_quote(self):
         self.get(self.live_server_url + reverse('add_quote'))
         self.e_id('quote_name').send_keys('Quote test')
@@ -93,9 +89,9 @@ class QuotesSignedInTest(browser.SignedInTest):
 
     def test_accept_quote(self):
         self.q.status = 1
-        self.q.save()
+        self.qs
         self.get(self.live_server_url + reverse('quote_detail', args=[self.q.id]))
-        self.disable_popups()
+        self.disable_popups
         self.submit('quote_accept')
 
         response = self.client.get(
