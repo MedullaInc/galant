@@ -9,8 +9,10 @@ from django.db import transaction
 from django.conf import settings
 from gallant import utils
 from gallant.enums import ClientStatus
+from gallant.enums import ProjectStatus
 from gallant.models import UserModelManager
 from gallant.models.client import check_client_payments
+from gallant.models import Project as gp
 from moneyed import Money
 from section import Section
 
@@ -133,6 +135,17 @@ def client_quoted(sender, instance, **kwargs):
             elif qstat == QuoteStatus.Accepted.value:
                 client.card.alert = 'Quote Accepted'
                 client.card.save()
+
+
+@receiver(post_save, sender=Quote)
+def quote_accepted(sender, instance, **kwargs):
+    if instance.status == QuoteStatus.Accepted.value:
+        # Create Project from Quote
+        if len(instance.projects.all_for(instance.user)) == 0:
+            project = gp.objects.create(user=instance.user, name=instance.name, status=ProjectStatus.Pending_Assignment.value)
+            instance.projects.add(project)
+            for service in instance.services.all_for(instance.user, 'change'):
+                service.save()
 
 
 @receiver(m2m_changed, sender=Quote.payments.through)
