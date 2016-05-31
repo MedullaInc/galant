@@ -13,7 +13,7 @@ class QuotesSignedInTest(browser.SignedInTest):
     def setUp(self):
         super(QuotesSignedInTest, self).setUp()
         c = self.create_one('gallant.Client')
-        q = self.create_one('quotes.Quote', {'sections': [],'services': [], 'language': 'en',
+        q = self.create_one('quotes.Quote', {'sections': [], 'services': [], 'language': 'en',
                                              'client': c, 'status': '1'})
         i = qm.Section.objects.create(user=q.user, name='intro', title='intro', text='intro text', index=0)
         m = qm.Section.objects.create(user=q.user, name='important_notes', title='notes', text='notes text', index=1)
@@ -86,6 +86,17 @@ class QuotesSignedInTest(browser.SignedInTest):
         self.click_id('quote_edit')
         intro = self.e_id('title_0')
         self.assertEqual(intro.get_attribute('value'), 'modified intro title')
+
+    def test_accept_quote(self):
+        self.q.status = 1
+        self.q.save()
+        self.get(self.live_server_url + reverse('quote_detail', args=[self.q.id]))
+        self.disable_popups()
+        self.submit('quote_accept')
+
+        response = self.client.get(
+            self.live_server_url + reverse('project_detail', args=[self.q.projects.all_for(self.user)[0].id]))
+        self.assertEqual(response.status_code, 200)
 
     def test_delete_quote(self):
         self.get(self.live_server_url + reverse('delete_quote', args=[self.q.id]))
