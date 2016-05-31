@@ -4031,9 +4031,10 @@ form#landing_signup input[type="email"] {
     -webkit-border-bottom-left-radius: 20px;
     -moz-border-bottom-left-radius: 20px;
     border-bottom-left-radius: 20px;
-    padding: 20px;
+    padding-left: 20px;
     font-size: 14px;
     min-width: 250px;
+    min-height: 42px;
 }
 
 form#landing_signup button {
