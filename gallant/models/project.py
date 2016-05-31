@@ -40,6 +40,9 @@ def client_project(sender, instance, **kwargs):
         client = quote.client
         cstat = int(client.status)
 
+        for service in quote.services.all_for(quote.user, 'change'):
+            service.save()
+
         if client.auto_pipeline and cstat < ClientStatus.Project_Underway.value:
             client.status = ClientStatus.Project_Underway.value
             cstat = client.status
