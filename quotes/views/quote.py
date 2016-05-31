@@ -195,6 +195,8 @@ class QuoteDetail(View):
         if action == 'accept':
             quote.status = QuoteStatus.Accepted.value
             quote.save()
+            # Auto-generate project from accepted quote
+            quote.create_project(quote)
         elif action == 'reject':
             quote.status = QuoteStatus.Rejected.value
             quote.save()
