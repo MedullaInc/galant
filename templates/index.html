@@ -2,6 +2,16 @@
 
 {% load bootstrap i18n %}
 
+{% block custom_css %}
+    {{ block.super }}
+    <style>
+        .alert {
+            margin-top: 110px;
+            margin-bottom: -105px;
+        }
+    </style>
+{% endblock %}
+
 {% block header_class %} class="header-5 header-fixed" {% endblock %}
 
 {% if not user.is_authenticated %}
