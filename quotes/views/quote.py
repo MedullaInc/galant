@@ -158,8 +158,14 @@ class QuoteText(View):
         # Get quote
         quote = get_quote(request, **kwargs)
 
+        # Build breadcrums
+        if quote.client:
+            request.breadcrumbs([(_('Clients'), reverse('clients')),
+                                 (quote.client.name, reverse('client_detail', args=[quote.client.id]))])
+        request.breadcrumbs(_('Quote: %s' % quote.name), request.path_info)
+
         # Render HTML
-        context = {'object': quote}
+        context = {'title': 'Quote', 'object': quote}
         return TemplateResponse(request, template="quotes/quote_text.html", context=context, )
 
 
