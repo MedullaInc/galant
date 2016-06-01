@@ -57,7 +57,7 @@ class QuotesSignedInTest(browser.SignedInTest):
         self.assertTrue(footer)
 
     def test_access_quote_text_version(self):
-        response = self.get(self.live_server_url + reverse('quote_txt', args=[self.q.id]))
+        response = self.client.get(self.live_server_url + reverse('quote_txt', args=[self.q.id]))
         self.assertEqual(response.status_code, 200)
 
     def test_add_quote(self):
