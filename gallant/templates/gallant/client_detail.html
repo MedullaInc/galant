@@ -156,61 +156,6 @@
     {% endblock %}
 
     {% block client_alerts %}
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="enclosed">
-                    <h2 class="section_title">
-                        {% trans 'Alerts' %} <span class="yellow">( Coming soon... )</span>
-                        <span class="pull-right glyphicon glyphicon-question-sign help-tooltip" uib-tooltip="Displays important past and/or upcoming alerts related to your client." tooltip-placement="top-right"></span>
-                    </h2>
-
-                    <div class="profile_alert row">
-                        <div class="col-lg-4">
-                            <span class="label label-default">Deliverable past due</span>
-                        </div>
-                        <div class="col-lg-8">
-                            <p>
-                                The deliverable 'Logo' was due on October 3rd, 2015.
-                            </p>
-                        </div>
-                    </div>
-
-                    <div class="profile_alert row">
-                        <div class="col-lg-4">
-                            <span class="label label-default">Upcoming deliverable</span>
-                        </div>
-                        <div class="col-lg-8">
-                            <p>
-                                Deliverable 'Name' is due tomorrow.
-                            </p>
-                        </div>
-                    </div>
-
-                    <div class="profile_alert row">
-                        <div class="col-lg-4">
-                            <span class="label label-default">Payment due</span>
-                        </div>
-                        <div class="col-lg-8">
-                            <p>
-                                The payment for $1,000 was due last month.
-                            </p>
-                        </div>
-                    </div>
-
-                    <div class="profile_alert row">
-                        <div class="col-lg-4">
-                            <span class="label label-default">Last contact date</span>
-                        </div>
-                        <div class="col-lg-8">
-                            <p>
-                                {{ object }} was last contacted on September 16th, 2015.
-                            </p>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </div>
     {% endblock %}
 
     {% block client_notes %}
