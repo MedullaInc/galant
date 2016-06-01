@@ -183,8 +183,6 @@ app.directive('qtQuoteForm', ['Quote', '$uibModal', function (Quote, $uibModal) 
                         $scope.quoteTemplate.languages = [lang];
                     }
 
-                    $scope.addSection('intro');
-                    $scope.addSection('important_notes');
                     $scope.addService();
                     $scope.newQuote = true;
                     $scope.tempStatus = $scope.quote.status;

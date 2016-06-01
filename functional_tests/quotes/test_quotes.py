@@ -15,10 +15,8 @@ class QuotesSignedInTest(browser.SignedInTest):
         c = self.create_one('gallant.Client')
         q = self.create_one('quotes.Quote', {'sections': [], 'services': [], 'language': 'en',
                                              'client': c, 'status': '1'})
-        i = qm.Section.objects.create(user=q.user, name='intro', title='intro', text='intro text', index=0)
-        m = qm.Section.objects.create(user=q.user, name='important_notes', title='notes', text='notes text', index=1)
-        q.sections.add(i)
-        q.sections.add(m)
+        serv = g.Service.objects.create(user=q.user, name='service1', quantity=1, description='desc', type=1, index=0)
+        q.services.add(serv)
         self.q = q
         self.disable_popups()
 
@@ -64,15 +62,9 @@ class QuotesSignedInTest(browser.SignedInTest):
         self.get(self.live_server_url + reverse('add_quote'))
         self.e_id('quote_name').send_keys('Quote test')
         self.click_xpath('//select[@name="client"]/option[2]')
-        self.e_id('title_0').send_keys('test important notes title')
-        self.e_id('text_0').send_keys('test important notes text')
-        self.e_id('title_1').send_keys('test important notes title')
-        self.e_id('text_1').send_keys('test important notes text')
         self.e_id('service_name_0').send_keys('test service')
         self.e_id('quantity_0').send_keys('2')
         self.click_xpath('//*[@id="type_0"]/option[2]')
-
-        self.click_id('service0_delete')
 
         self._submit_and_check(True)
 
@@ -81,15 +73,14 @@ class QuotesSignedInTest(browser.SignedInTest):
         self.click_id('quote_edit')
         self.e_id('quote_name').send_keys('Quote test')
         self.click_xpath('//select[@name="client"]/option[1]')
-        self.e_id('title_0').clear()
-        self.e_id('title_0').send_keys('modified intro title')
-        self.e_id('text_0').send_keys('modified intro text')
+        self.e_id('service_name_0').clear()
+        self.e_id('service_name_0').send_keys('modified service title')
 
         self._submit_and_check()
 
         self.click_id('quote_edit')
-        intro = self.e_id('title_0')
-        self.assertEqual(intro.get_attribute('value'), 'modified intro title')
+        intro = self.e_id('service_name_0')
+        self.assertEqual(intro.get_attribute('value'), 'modified service title')
 
     def test_accept_quote(self):
         self.q.status = 1
@@ -112,7 +103,7 @@ class QuotesSignedInTest(browser.SignedInTest):
         self.get(self.live_server_url + reverse('quote_detail', args=[self.q.id]))
         self.disable_popups()
 
-        self.e_id('section_0')
+        self.e_id('service_0')
         self.submit('quote_delete')
 
         success_message = self.e_class('alert-success')
@@ -133,25 +124,6 @@ class QuotesSignedInTest(browser.SignedInTest):
         self.get(self.live_server_url + reverse('client_detail', args=[self.q.client_id]))
         self.assertTrue(self.e_id('note_%s' % self.q.client.notes.all_for(self.user).reverse()[0].id))
 
-    def test_add_sections(self):
-        self.get(self.live_server_url + reverse('quote_detail', args=[self.q.id]))
-
-        self.e_id('section_0')
-        self.click_id('quote_edit')
-        self.click_id('add_section')
-        self.e_id('title_2').clear()
-        self.e_id('text_2').clear()
-        self.e_id('title_2').send_keys('1234')
-        self.e_id('text_2').send_keys('4321')
-
-        self._submit_and_check()
-
-        self.click_id('quote_edit')
-
-        self.assertEqual(self.e_id('title_2').get_attribute('value'), '1234')
-
-        self.assertEqual(self.e_id('text_2').get_attribute('value'), '4321')
-
     def test_add_service(self):
         self.get(self.live_server_url + reverse('quote_detail', args=[self.q.id]))
 
@@ -161,54 +133,38 @@ class QuotesSignedInTest(browser.SignedInTest):
 
         self.click_id('add_service')
         self.click_xpath('//*[@id="service_from_scratch"]')
-        self.e_id('service_name_0').send_keys('1234')
-        self.e_id('quantity_0').send_keys('1')
-        self.e_id('description_0').send_keys('desc')
+        self.e_id('service_name_1').send_keys('1234')
+        self.e_id('quantity_1').send_keys('1')
+        self.e_id('description_1').send_keys('desc')
 
-        self.click_xpath('//select[@id="type_0"]/option[2]')
+        self.click_xpath('//select[@id="type_1"]/option[2]')
         self._submit_and_check()
 
-        name = self.e_css('p[e-id="service_name_0"]')
+        name = self.e_css('p[e-id="service_name_1"]')
         self.assertEqual(name.text, '1234')
 
-    def test_remove_section(self):
+    def test_remove_service(self):
         self.get(self.live_server_url + reverse('quote_detail', args=[self.q.id]))
 
         self.disable_angular_popups()
 
-        self.e_id('section_0')
-        self.click_id('add_section')
-        self.e_id('title_1').clear()
-        self.e_id('text_1').clear()
-        self.e_id('title_1').send_keys('s1title')
-        self.e_id('text_1').send_keys('s1text')
-        self.e_id('title_2').send_keys('s2title')
-        self.e_id('text_2').send_keys('s2text')
+        self.e_id('service_0')
+        self.click_id('add_service')
+        self.click_xpath('//*[@id="service_from_scratch"]')
+        self.e_id('service_name_1').send_keys('new service')
+        self.e_id('quantity_1').send_keys('1')
+        self.click_xpath('//*[@id="type_1"]/option[2]')
+        self.e_id('description_1').send_keys('desc')
 
         # click remove thingie
-        self.click_id('section0_delete')
+        self.click_id('service0_delete')
 
         self._submit_and_check()
 
         self.click_id('quote_edit')
 
-        el = self.e_id('title_0')
-        self.assertEqual(el.get_attribute('value'), 's1title')
-
-        el2 = self.e_id('text_0')
-        self.assertEqual(el2.get_attribute('value'), 's1text')
-
-    def test_add_to_existing_sections(self):
-        self.get(self.live_server_url + reverse('quote_detail', args=[self.q.id]))
-
-        self.e_id('section_0')
-        self.click_id('add_section')
-
-        self.assertIsNotNone(self.b.find_elements_by_id('title_2'))
-        self.e_id('title_2').send_keys('s2title')
-        self.e_id('text_2').send_keys('s2text')
-
-        self._submit_and_check()
+        el = self.e_id('service_name_0')
+        self.assertEqual(el.get_attribute('value'), 'new service')
 
     def test_can_access_quote_endpoint(self):
         response = self.client.get(self.live_server_url + reverse('api-quote-detail', args=[self.q.id]))

@@ -158,7 +158,7 @@ describe('qtForm', function () {
             $scope.$digest();
             element.isolateScope().quoteform = {$show: function() {}};
             element.isolateScope().addSection();
-            expect($scope.quote.sections.length).toEqual(3);
+            expect($scope.quote.sections.length).toEqual(1);
         });
 
         it('adds language', function () {

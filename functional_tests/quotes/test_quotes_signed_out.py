@@ -1,9 +1,8 @@
 from django.contrib.auth import hashers
 from django.core.urlresolvers import reverse
 from functional_tests import browser
-from quotes import models as qm
-import autofixture
 from quotes.models.quote import QuoteStatus
+from gallant import models as g
 
 
 def tearDownModule():
@@ -17,14 +16,12 @@ class QuotesSignedOutTest(browser.BrowserTest):
         c = self.create_one('gallant.Client', {'user': self.user})
         q = self.create_one('quotes.Quote', {'sections': [], 'services': [], 'language': 'en',
                                              'client': c, 'status': '1'})
-        i = qm.Section.objects.create(user=q.user, name='intro', title='intro', text='intro text', index=0)
-        m = qm.Section.objects.create(user=q.user, name='important_notes', title='notes', text='notes text', index=1)
-        q.sections.add(i)
-        q.sections.add(m)
+        serv = g.Service.objects.create(user=q.user, name='service1', quantity=1, description='desc', type=1, index=0)
+        q.services.add(serv)
 
         self.get(self.live_server_url + reverse('quote_detail', args=[q.token.hex]))
 
-        self.e_id('section_0')
+        self.e_id('service_0')
         self.q = q
         self.disable_popups()
 
