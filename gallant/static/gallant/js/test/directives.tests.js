@@ -560,6 +560,49 @@ describe('glMultiDropdown', function () {
 
 });
 
+describe('glFormElements', function () {
+    var $rootScope;
+    var $compile;
+    var $scope;
+
+    beforeEach(function () {
+        module('gallant.directives.glFormElements');
+        module('staticNgTemplates');
+
+        inject(function (_$rootScope_, _$compile_) {
+            // The injector unwraps the underscores (_) from around the parameter names when matching
+            $rootScope = _$rootScope_;
+            $compile = _$compile_;
+        });
+
+        $scope = $rootScope.$new();
+    });
+
+    var element;
+
+    beforeEach(function () {
+        $scope.el = [];
+        element = $compile('<div gl-form-elements elements="el" template-url="/static/gallant/html/gl_deliverable_form.html"></div>')($scope);
+        $scope.$digest();
+    });
+
+    it('compiles', function () {
+        expect(element.html().substring(0, 6)).toEqual('<!-- n');
+    });
+
+    it('adds element', function () {
+        element.isolateScope().addElement();
+        expect(element.isolateScope().elements.length).toEqual(1);
+    });
+
+    it('removes element', function () {
+        element.isolateScope().addFn();
+        element.isolateScope().removeFn(0);
+        expect(element.isolateScope().elements.length).toEqual(0);
+    });
+
+});
+
 describe('glDashboardWorkSummary', function () {
     var $rootScope;
     var $compile;

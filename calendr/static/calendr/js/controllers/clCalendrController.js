@@ -1,6 +1,6 @@
 app = angular.module('calendr.controllers.clCalendrController', ['gallant.services.glServices',
     'kanban.directives.kbBoardColumn', 'ui.calendar',
-    'ng.django.forms', 'gallant.directives.glMultiDropdown',
+    'ng.django.forms', 'gallant.directives.glMultiDropdown', 'gallant.directives.glFormElements'
 ]);
 
 app.controller('clCalendrController', ['$window', '$scope', 'Project', 'User', 'Task', '$compile', '$sce',

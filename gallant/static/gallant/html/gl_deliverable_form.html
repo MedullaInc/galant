@@ -1,0 +1,41 @@
+<div class="row form-group" ng-repeat="service in elements">
+    <div class="col-lg-3"></div>
+    <div class="col-lg-9">
+        <hr>
+    </div>
+    <div class="col-lg-3">
+        <label>Deliverable</label>
+    </div>
+    <div class="col-lg-9">
+        <div class="row">
+            <div class="col-lg-4">
+                <input type="text" placeholder="Name" class="form-control" ng-model="service.name"
+                       id="id_name" name="name" required>
+            </div>
+            <div class="col-lg-8">
+                <input type="text" placeholder="Description" class="form-control" ng-model="service.description"
+                       id="id_description" name="description">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4">
+                <input type="text" placeholder="$" class="form-control" ng-model="service.cost"
+                       id="id_cost" name="cost">
+            </div>
+            <div class="col-lg-3">
+                <input type="text" placeholder="Time" class="form-control" ng-model="service.time"
+                       id="id_time" name="time">
+            </div>
+            <div class="col-lg-3">
+                <input type="text" placeholder="Quantity" class="form-control" ng-model="service.quantity"
+                       id="id_quantity" name="quantity">
+            </div>
+            <div class="col-lg-2">
+                <button type="button" class="multidropdown_button btn btn-default btn-add"
+                        ng-click="removeElement($index)">
+                    <span class="glyphicon glyphicon-trash"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

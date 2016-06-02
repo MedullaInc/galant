@@ -24,10 +24,17 @@
         </div>
     </div>
 
+    <div gl-form-elements template-url="/static/gallant/html/gl_deliverable_form.html"
+         elements="project.services" add-fn="addDeliverable"></div>
+
     <div class="row form-group">
         <div class="col-lg-12">
             <button class="btn btn-default pull-right btn-submit" ng-click="submitForm()">
                 Save
+            </button>
+            <button type="button" class="btn btn-default pull-right btn-submit" ng-click="addDeliverable()">
+                <span class="glyphicon glyphicon-plus"></span>
+                Add Deliverable
             </button>
             <br/>
             <br/>

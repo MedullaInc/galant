@@ -17,6 +17,7 @@ app.directive('glProjectAdd', ['$window', 'Project', 'Quote', function ($window,
             $scope.project = new Project();
             $scope.project.notes = [];
             $scope.project.quotes = [];
+            $scope.project.services = [];
             $scope.objectEndpoint = Project;
             $scope.object = $scope.project;
             $scope.quotes = [];
