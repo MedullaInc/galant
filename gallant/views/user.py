@@ -18,6 +18,7 @@ from rest_framework import generics, viewsets, status
 from rest_framework.permissions import IsAuthenticated
 from calendr.models import Task
 from rest_framework.response import Response
+from django.template.loader import render_to_string
 
 
 def _send_signup_request_email(form):
@@ -167,49 +168,7 @@ class Register(View):
 
 
 def _send_register_email(email, link):
-    message = (
-                'Thank you for your interest in Galant! You\'ve '
-                'been selected to be a part of our closed beta. '
-                'Your feedback will help us guide the direction and features of our platform.'
-                '\n\n'
-                'Once you log in as a beta tester and you start using the site, you\'ll see a white tab on the '
-                'bottom of the screen labeled "Feedback." Use it any time you\'d like to leave us a comment, bug '
-                'report, or feature request--we\'ll be sure to address it. We appreciate your patience as we improve '
-                'our product.'
-                '\n\n'
-                'Click this link to register: %s'
-                '\n\n'
-                'We want Galant to be usable without tutorials or instruction manuals, so feel free to dive in. '
-                'Otherwise, here\'s a quick overview of our features, let us know what you think!'
-                '\n\n'
-                'Soon to come:\n'
-                '  - Boards with card colors, #tags, and in-place editing\n'
-                '  - Google calendar integration\n'
-                '  - Invoices\n'
-                '  - Link clients to external marketing campaigns \n'
-                '  - _____________ (Your suggestion here!)\n'
-                '\n\n'
-                'Current:\n'
-                'Clients \n'
-                '  - Client board / list: view clients by status, auto-updated when events occur\n'
-                '  - Alerts on client cards: payment overdue, project on hold, and more\n'
-                '  - Detail view for client payments, work status, and notes\n'
-                '\n\n'
-                'Projects / Tasks / Calendar\n'
-                '  - Create projects to organize tasks and deliverables\n'
-                '  - View tasks on Calendar by project or team\n'
-                '  - \'My Tasks\' board / list\n'
-                '  - Project detail with deliverables board and notes\n'
-                '\n\n'
-                'Dashboard\n'
-                '  - Get birds-eye view of clients, work, and money\n'
-                '\n\n'
-                'Quotes\n'
-                '  - List services and prices, track status of quotes as client responds\n'
-                '  - Turn quote into project, services become project deliverables\n'
-                '\n\n'
-                'Thanks from the Galant team!\n'
-              ) % link
+    message = render_to_string('gallant/beta_tester_email.txt', {'link': link})
     send_mail('Signup request', message, settings.EMAIL_HOST_USER,
               [email], fail_silently=False)
 

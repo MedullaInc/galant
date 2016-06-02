@@ -1,0 +1,37 @@
+Thank you for your interest in Galant! You've been selected to be a part of our closed beta. Your feedback will help us guide the direction and features of our platform.
+
+Click this link to register: {{ link }}
+
+Once you log in as a beta tester and you start using the site, you'll see a white tab on the bottom of the screen labeled “Feedback.” Use it any time you'd like to leave us a comment, bug report, or feature request--we'll be sure to address it. We appreciate your patience as we improve our product.
+
+We want Galant to be usable without tutorials or instruction manuals, so feel free to dive in.
+
+Here's a quick overview of our features, let us know what you think!
+
+CLIENTS
+  - Client board: View clients by status, auto-updated when events occur
+  - Alerts on client cards: payment overdue, project on hold, and more
+  - Client dashboard: payments, work status, and notes
+
+QUOTES
+  - Quote creation: List services and prices
+  - Quote follow-up: Track status of quotes as they progress
+
+PROJECTS / TASKS / CALENDAR
+  - Create projects: organize tasks and deliverables
+  - Calendar tasks: view by project or team
+  - 'My Tasks' board / list
+  - Project dashboard: deliverables board and notes
+
+DASHBOARD
+  - Birds-eye view of your clients, work, and money
+
+COMING SOON:
+  - Boards with card colors, #tags, and in-place editing
+  - Google calendar integration
+  - Invoices
+  - Link clients to external marketing campaigns
+  - _____________ (Your suggestion here!)
+
+
+Thanks from the Galant team!
