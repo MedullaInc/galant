@@ -4,7 +4,7 @@ app = angular.module('calendr.controllers.clCalendrController', ['gallant.servic
 ]);
 
 app.controller('clCalendrController', ['$window', '$scope', 'Project', 'User', 'Task', '$compile', '$sce',
-        '$timeout', 'uiCalendarConfig', '$filter', 'FC', 'moment', 'glAlertService',
+        '$timeout', 'uiCalendarConfig', '$filter', 'FC', 'moment', 'glAlertService', 'clConstants',
     function ($window, $scope, Project, User, Task, $compile, $sce,
               $timeout, uiCalendarConfig, $filter, FC, moment, glAlertService, clConstants) {
     $scope.clConstants = clConstants;
