@@ -78,14 +78,16 @@ describe('glProjectDetailController', function () {
     beforeEach(function () {
         angular.module('gallant.services.glServices', []);
         module('gallant.services.glServices', function ($provide) {
-            $provide.factory('Service', function ($q) {
-                var Service = jasmine.createSpyObj('Service', ['query']);
+            $provide.factory('Project', function ($q) {
+                var Project = jasmine.createSpyObj('Project', ['get']);
 
-                Service.query.and.returnValue({$promise: $q.when([
-                    {id: 0, name: {}, description: {}, language: 'en'}
-                ])});
+                Project.get.and.returnValue({$promise: $q.when(
+                    {
+                        id: 0, services: [{id: 0, name: {}, description: {}, language: 'en'}]
+                    }
+                )});
 
-                return Service;
+                return Project;
             });
             $provide.factory('glConstants', function() {
                 return {};
@@ -123,6 +125,21 @@ describe('glProjectDetailController', function () {
 
     it('gets service list', function () {
         expect($scope.services.length).toEqual(1);
+    });
+
+    it('creates a copy on edit', function () {
+        $scope.editProject = jasmine.createSpy('editProject');
+        $scope.editProjectSafe();
+        $scope.$apply();
+
+        expect($scope.projectSafe).toBeDefined();
+        expect($scope.editProject).toHaveBeenCalled();
+    });
+
+    it('saves project', function () {
+        $scope.modalInstance = { dismiss: function () {} };
+        $scope.projectSaved({});
+        expect($scope.project).toEqual({});
     });
 });
 
