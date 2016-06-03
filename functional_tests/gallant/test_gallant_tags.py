@@ -32,6 +32,14 @@ class TestGallantTags(StaticLiveServerTestCase):
 
         self.assertEqual(rendered, u'')
 
+        context = {'request': request, 'pattern': request.path}
+        rendered = self.render_template(
+            '{% load gallant_tags %}'
+            '{% active request pattern %}', context
+        )
+
+        self.assertEqual(rendered, u'active')
+
     def render_template(self, string, context=None):
             context = context or {}
             context = Context(context)

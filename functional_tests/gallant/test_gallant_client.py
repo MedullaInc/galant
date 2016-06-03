@@ -81,7 +81,7 @@ class GallantClientTest(browser.SignedInTest):
         context = {'request': request, 'client': client, 'status': 1}
         rendered = self.render_template(
             '{% load gallant_tags %}'
-            '{% get_client_services_count request client status=None %}', context
+            '{% get_client_services_count request client status=1 %}', context
         )
 
         self.assertEqual(rendered, u'9')
