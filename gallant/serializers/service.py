@@ -10,7 +10,7 @@ class ServiceSerializer(serializers.ModelSerializer):
     name = ULTextField()
     description = ULTextField()
     language = serializers.SerializerMethodField()
-    cost = MoneyField()
+    cost = MoneyField(required=False)
     notes = serializers.CharField(read_only=True)
     views = serializers.IntegerField(required=False, allow_null=True)
 
@@ -21,7 +21,8 @@ class ServiceSerializer(serializers.ModelSerializer):
         fields = ('id', 'user', 'name', 'description', 'cost', 'quantity', 'type', 'card',
                   'parent', 'notes', 'views', 'index', 'status', 'language')
         extra_kwargs = {
-            'id': {'read_only': False, 'required': False}
+            'id': {'read_only': False, 'required': False},
+            'user': {'required': False}
         }
 
     def get_language(self, service):

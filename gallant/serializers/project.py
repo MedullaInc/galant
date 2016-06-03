@@ -26,16 +26,60 @@ class ProjectSerializer(serializers.ModelSerializer):
             many=True, queryset=g.Note.objects.all_for(self.context['request'].user))
         fields['quotes'] = serializers.PrimaryKeyRelatedField(
             many=True, source='quote_set', queryset=q.Quote.objects.all_for(self.context['request'].user))
-        fields['services'] = serializers.PrimaryKeyRelatedField(
-            many=True, queryset=g.Service.objects.all_for(self.context['request'].user))
+        fields['services'] = ServiceSerializer(many=True, partial=self.partial)
 
         return fields
 
     class Meta:
         model = Project
         fields = ('id', 'user', 'name', 'status', 'notes', 'services', 'client', 'field_choices', 'link')
+        extra_kwargs = {
+            'id': {'read_only': False, 'required': False, 'allow_null':True},
+            'user': {'required': False},
+        }
 
     def create(self, validated_data):
         validated_data.update({'user': self.context['request'].user})
 
+        services_data = validated_data.pop('services')
+        validated_data.pop('id', None)
+
+        instance = super(ProjectSerializer, self).create(validated_data)
+
+        self._write_services(instance, services_data)
+
         return super(ProjectSerializer, self).create(validated_data)
+
+    def update(self, instance, validated_data):
+        validated_data.update({'user': self.context['request'].user})
+
+        services_data = validated_data.pop('services')
+
+        self._write_services(instance, services_data)
+
+        return super(ProjectSerializer, self).create(validated_data)
+
+    def _write_services(self, instance, services_data):
+        user = instance.user
+        init_services = set(instance.services.all_for(user))
+        new_services = set()
+
+        for id, service_data in enumerate(services_data):
+            service_id = service_data.get('id', None)
+            service_data['index'] = id
+            if service_id:
+                service_instance = g.Service.objects.get_for(user, 'change', pk=service_id)
+                ss = ServiceSerializer(data=service_data, instance=service_instance)
+                service = ss.update(service_instance, service_data)
+            else:
+                service_data.update({'user': user})
+                ss = ServiceSerializer(data=service_data)
+
+                service = ss.create(service_data)
+
+            new_services.add(service)
+
+        instance.services = new_services
+
+        for service in (init_services - new_services):
+            service.delete()
