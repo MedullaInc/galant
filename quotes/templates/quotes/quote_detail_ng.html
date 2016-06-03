@@ -139,15 +139,15 @@
                     Client Sections<span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu action-button">
-                    {% url 'client_detail' client.id as client_detail %}
+                    {% url 'client_detail' object.client.id as client_detail %}
                     <li><a href="{{ client_detail }}">Client Overview</a></li>
-                    {% url 'client_work_detail' client.id as client_work_detail %}
+                    {% url 'client_work_detail' object.client.id as client_work_detail %}
                     <li><a href="{{ client_work_detail }}">Client Work</a></li>
-                    {% url 'client_money_detail' client.id as client_money_detail %}
+                    {% url 'client_money_detail' object.client.id as client_money_detail %}
                     <li><a href="{{ client_money_detail }}">Client Money</a></li>
                     <li role="separator" class="divider"></li>
-                    <li><a href="{% url 'briefs' %}?client_id={{ client.id }}">Client Briefs</a></li>
-                    <li><a href="{% url 'quotes' %}?client_id={{ client.id }}">Client Quotes</a></li>
+                    <li><a href="{% url 'briefs' %}?client_id={{ object.client.id }}">Client Briefs</a></li>
+                    <li><a href="{% url 'quotes' %}?client_id={{ object.client.id }}">Client Quotes</a></li>
                 </ul>
             </div>
 
