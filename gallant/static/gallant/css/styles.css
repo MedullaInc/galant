@@ -3174,7 +3174,6 @@ h2.section_subtitle, h2.section_subtitle.ng-scope.ng-binding.editable, h2.inline
     font-size: 18px;
     letter-spacing: 0px;
     font-weight: 400;
-    text-decoration: underline;
     color: #666666;
 }
 
@@ -4151,7 +4150,7 @@ form#landing_signup button {
     color: #666666;
 }
 
-.kanban-card p a:hover {
+.kanban-card p a {
     text-decoration: underline;
 }
 

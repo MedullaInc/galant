@@ -80,13 +80,73 @@
     {% endfor %}
 
     <div class="row">
-        <pre style="margin-bottom: 0px; margin-top: 20px;">  <strong>{% trans "Service" %}                                                              {% trans "Quantity" %}               {% trans "Unit Price" %}             {% trans "Subtotal" %}</strong></pre>
-        {% for section in object.all_sections %}
-            {% if section.cost %}
-                <pre style="margin-top: 0px; margin-bottom: 0px;">  {{ section.name.get_text }}                                                           {{ section.quantity }}                      {{ section.cost }}            {{ section.get_total_cost }}</pre>
-            {% endif %}
-        {% endfor %}
-        <pre><strong>                                                                                              {% trans "Total" %}                  {{ object.get_total_cost }}</strong></pre>
+        <div class="col-xs-12">
+            <br/>
+            <table class="table table-bordered">
+                <tbody>
+                <tr>
+                    <td>
+                        <p>
+                            <b>Service</b>
+                        </p>
+                    </td>
+                    <td>
+                        <p>
+                            <b>Quantity</b>
+                        </p>
+                    </td>
+                    <td>
+                        <p>
+                            <b>Unit Price</b>
+                        </p>
+                    </td>
+                    <td>
+                        <p>
+                            <b>Subtotal</b>
+                        </p>
+                    </td>
+                </tr>
+                {% for section in object.all_sections %}
+                    <tr>
+                        <td>
+                            <p>
+                                {{ section.name.get_text }}
+                            </p>
+                        </td>
+                        <td>
+                            <p>
+                                {{ section.quantity }}
+                            </p>
+                        </td>
+                        <td>
+                            <p>
+                                {{ section.cost }}
+                            </p>
+                        </td>
+                        <td>
+                            <p>
+                                {{ section.get_total_cost }}
+                            </p>
+                        </td>
+                    </tr>
+                {% endfor %}
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <p>
+                            <b>{% trans "Total" %}</b>
+                        </p>
+                    </td>
+                    <td>
+                        <p>
+                            <b>{{ object.get_total_cost }}</b>
+                        </p>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 
     {% if object.title %}
