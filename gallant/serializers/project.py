@@ -48,7 +48,7 @@ class ProjectSerializer(serializers.ModelSerializer):
 
         self._write_services(instance, services_data)
 
-        return super(ProjectSerializer, self).create(validated_data)
+        return instance
 
     def update(self, instance, validated_data):
         validated_data.update({'user': self.context['request'].user})
@@ -57,7 +57,7 @@ class ProjectSerializer(serializers.ModelSerializer):
 
         self._write_services(instance, services_data)
 
-        return super(ProjectSerializer, self).create(validated_data)
+        return super(ProjectSerializer, self).update(instance, validated_data)
 
     def _write_services(self, instance, services_data):
         user = instance.user
