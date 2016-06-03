@@ -83,15 +83,6 @@ class Quote(g.UserModel):
                                             status=ProjectStatus.Pending_Assignment.value)
                 quote.projects.add(project)
 
-                for service in quote.services.all_for(quote.user, 'change'):
-                    service.pk = None
-                    card = service.card
-                    card.pk = None
-                    service.card = card.save()
-                    service.save()
-                    project.services.add(service)
-                    service.save()
-
     def __unicode__(self):
         return self.name
 
@@ -158,3 +149,25 @@ def client_quoted(sender, instance, **kwargs):
 def client_payments_modified(action, instance, reverse, **kwargs):
     if 'post' in action:
         check_client_payments(instance.client)
+
+
+
+@receiver(m2m_changed, sender=Quote.projects.through)
+def quote_project_added(action, instance, reverse, **kwargs):
+    quote = instance
+    pk_set = kwargs.pop('pk_set')
+
+    if 'post_add' in action:
+        for pk in pk_set:
+            project = g.Project.objects.get_for(quote.user, pk=pk)
+            project.client = quote.client
+
+            for service in quote.services.all_for(quote.user, 'change'):
+                service.pk = None
+                card = service.card
+                card.pk = None
+                service.card = card.save()
+                service.save()
+                project.services.add(service)
+
+            project.save()

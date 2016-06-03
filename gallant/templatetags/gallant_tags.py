@@ -66,16 +66,9 @@ def get_project_services_count(request, project, status=None):
 
 @register.simple_tag()
 def get_client_services_count(request, client, status=None):
-    projects = g.Project.objects.all_for(request.user).filter(quote__client=client)
-    services = []
+    qs = g.Service.objects.all_for(request.user).filter(project__client=client)
 
-    for project in projects:
-        for quote in project.quote_set.all_for(request.user):
-            if status is None:
-                for service in quote.services.all_for(request.user):
-                    services.append(service)
-            else:
-                for service in quote.services.all_for(request.user).filter(status=status):
-                    services.append(service)
+    if status is not None:
+        qs = qs.filter(status=status)
 
-    return len(services)
+    return qs.count()
