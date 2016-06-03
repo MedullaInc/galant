@@ -445,19 +445,10 @@ class ProjectTest(TransactionTestCase):
 
         quote.services.add(service)
 
-        payment = autofixture.create_one(g.Payment, generate_fk=True, field_values=
-        {'user': user, 'due': timezone.now(), 'paid_on': timezone.now()})
-        payment.amount = Money(100, 'USD')
-        payment.save()
-
-        quote.payments.add(payment)
-        quote.save
-
         project = autofixture.create_one('gallant.Project', generate_fk=True,
                                          field_values={'user': user})
 
         project.quote_set.add(quote)
-        project.save
 
         request = factory.get(reverse('api_project_detail', args=[project.id]))
         request.user = user
@@ -465,12 +456,6 @@ class ProjectTest(TransactionTestCase):
 
         response = views.ProjectDetailAPI.as_view()(request, pk=project.id)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-
-        serializer = serializers.ProjectSerializer(project, context={'request': request})
-        project_payments = serializer.get_payments(project)
-
-        self.assertEqual(project_payments['currency'], u'USD')
-        self.assertEqual(project_payments['amount'], 100.0)
 
     def test_update_api_project(self):
         factory = APIRequestFactory()
