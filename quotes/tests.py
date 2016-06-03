@@ -126,7 +126,6 @@ class QuoteTest(test.TransactionTestCase):
                                          field_values={'user': user})
 
         project.quote_set.add(quote)
-        project.save
 
         p = autofixture.create_one(g.Payment, generate_fk=True,
                                          field_values={'user': user, 'due': timezone.now() + timedelta(days=1),

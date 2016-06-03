@@ -154,20 +154,25 @@ def client_payments_modified(action, instance, reverse, **kwargs):
 
 @receiver(m2m_changed, sender=Quote.projects.through)
 def quote_project_added(action, instance, reverse, **kwargs):
-    quote = instance
-    pk_set = kwargs.pop('pk_set')
-
     if 'post_add' in action:
-        for pk in pk_set:
-            project = g.Project.objects.get_for(quote.user, pk=pk)
-            project.client = quote.client
+        pk_set = kwargs.pop('pk_set')
+        if not reverse:
+            quotes = [instance]
+            projects = g.Project.objects.all_for(instance.user).filter(pk__in=pk_set)
+        else:
+            projects = [instance]
+            quotes = Quote.objects.all_for(instance.user).filter(pk__in=pk_set)
 
-            for service in quote.services.all_for(quote.user, 'change'):
-                service.pk = None
-                card = service.card
-                card.pk = None
-                service.card = card.save()
-                service.save()
-                project.services.add(service)
+        for quote in quotes:
+            for project in projects:
+                project.client = quote.client
 
-            project.save()
+                for service in quote.services.all_for(quote.user, 'change'):
+                    service.pk = None
+                    card = service.card
+                    card.pk = None
+                    service.card = card.save()
+                    service.save()
+                    project.services.add(service)
+
+                project.save()
