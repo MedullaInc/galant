@@ -2,6 +2,7 @@ app = angular.module('gallant.directives.glProjectAdd', [
     'ui.bootstrap',
     'gallant.services.glServices',
     'gallant.directives.glForm',
+    'gallant.directives.glFormElements',
     'gallant.directives.glMultiDropdown',
     'quotes.services.qtServices',
 ]);
@@ -10,14 +11,18 @@ app.directive('glProjectAdd', ['$window', 'Project', 'Quote', function ($window,
     return {
         restrict: 'A',
         scope: {
+            project: '=?',
             quoteId: '@',
             onSuccess: '&',
         },
         controller: ['$scope', function ($scope) {
-            $scope.project = new Project();
-            $scope.project.notes = [];
-            $scope.project.quotes = [];
-            $scope.project.services = [];
+            if (!$scope.project) {
+                $scope.project = new Project();
+                $scope.project.notes = [];
+                $scope.project.quotes = [];
+                $scope.project.services = [];
+            }
+
             $scope.objectEndpoint = Project;
             $scope.object = $scope.project;
             $scope.quotes = [];

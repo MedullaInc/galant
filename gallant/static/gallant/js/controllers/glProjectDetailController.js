@@ -9,12 +9,19 @@ app.controller('glProjectDetailController', ['$scope', '$http', '$window', 'Proj
             $scope.serviceDetailURL = serviceDetailURL;
             Project.get({id: projectId}).$promise.then(function (project) {
                 $scope.project = project;
-                $scope.services = project.services;
+                $scope.services = $scope.project.services;
             });
         };
 
         $scope.redirect = function(service) {
             $window.location.href = $scope.serviceDetailURL + service.id;
+        };
+
+        $scope.projectSaved = function (project) {
+            $scope.project = project;
+            $scope.services = $scope.project.services;
+
+            $scope.modalInstance.dismiss('cancel');
         };
     }
 ]);

@@ -10,7 +10,7 @@ class ServiceSerializer(serializers.ModelSerializer):
     name = ULTextField()
     description = ULTextField()
     language = serializers.SerializerMethodField()
-    cost = MoneyField(required=False)
+    cost = MoneyField(required=False, allow_null=True)
     notes = serializers.CharField(read_only=True)
     views = serializers.IntegerField(required=False, allow_null=True)
 

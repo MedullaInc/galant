@@ -18,6 +18,8 @@ class ULTextDict(dict):
 
         if language in self:
             return self[language]
+        elif len(self):
+            return self.itervalues().next()
         else:
             return ''
 

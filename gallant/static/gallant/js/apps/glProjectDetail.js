@@ -2,6 +2,10 @@ var app = angular.module('glProjectDetail', [
     'ngResource',
     'ui.bootstrap',
     'gallant.controllers.glProjectDetailController',
+    'gallant.controllers.glFormController',
+    'gallant.directives.glAlerts',
+    'gallant.directives.glAddModal',
+    'gallant.directives.glProjectAdd',
 ]);
 
 /* istanbul ignore next */
