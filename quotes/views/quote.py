@@ -205,7 +205,7 @@ class QuoteDetail(View):
 
         return self.get(request, **kwargs)
 
-
+'''
 def _send_quote_response_email(instance, request):
     email = instance.user.email
     from_name = instance.client.name
@@ -223,6 +223,8 @@ def _send_quote_response_email(instance, request):
               '%s via %s <%s>' % (from_name, get_site_from_host(request),
                                   settings.EMAIL_HOST_USER),
               [email], fail_silently=False)
+'''
+
 
 class QuoteSend(View):  # pragma: no cover
     def post(self, request, **kwargs):
