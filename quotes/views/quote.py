@@ -201,7 +201,7 @@ class QuoteDetail(View):
             quote.status = QuoteStatus.Rejected.value
             quote.save()
 
-        _send_quote_response_email(quote, request)
+        # _send_quote_response_email(quote, request)
 
         return self.get(request, **kwargs)
 
