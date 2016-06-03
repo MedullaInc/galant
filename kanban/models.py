@@ -2,7 +2,7 @@ from __future__ import unicode_literals
 
 from django.core.urlresolvers import reverse
 from django.db import models as m
-from django.db.models.signals import pre_save, post_save
+from django.db.models.signals import pre_save, post_save, m2m_changed
 from django.dispatch.dispatcher import receiver
 from django.utils.text import Truncator
 from gallant import models as g
@@ -38,15 +38,15 @@ def update_service_card_post(sender, instance, **kwargs):
     card = service.card
 
     try:
-        quote = service.quote_set.all_for(service.user)[0]
-        quote_name = quote.name
-        title = Truncator(service.name.get_text(quote.language)).chars(255);
+        project = service.project_set.all_for(service.user)[0]
+        project_name = project.name
+        title = Truncator(service.name.get_text()).chars(255);
     except IndexError:
-        quote_name = ''
+        project_name = ''
         title = ''
 
     card.title = title
-    card.text = quote_name
+    card.text = project_name
     card.xindex = int(service.status or 0)
     card.save()
 
@@ -92,6 +92,20 @@ def update_quote_card_post(sender, instance, **kwargs):
     card.save()
 
 
+@receiver(post_save, sender=q.Quote)
+def update_service_cards(sender, instance, **kwargs):
+    for s in instance.services.all_for(instance.user):
+        update_service_card_post(sender, s, **kwargs)
+
+
+@receiver(m2m_changed, sender=q.Quote.services.through)
+def quote_services_modified(action, instance, reverse, **kwargs):
+    if action == 'post_add':
+        sender = kwargs.pop('sender')
+        for s in instance.services.all_for(instance.user):
+            update_service_card_post(sender, s, **kwargs)
+
+
 @receiver(pre_save, sender=c.Task)
 def update_task_card_pre(sender, instance, **kwargs):
     if instance.card is None:
@@ -112,3 +126,17 @@ def update_task_card_post(sender, instance, **kwargs):
     card.text = project_name
     card.xindex = int(task.status or 0)
     card.save()
+
+
+@receiver(post_save, sender=g.Project)
+def update_service_cards(sender, instance, **kwargs):
+    for s in instance.services.all_for(instance.user):
+        update_service_card_post(sender, s, **kwargs)
+
+
+@receiver(m2m_changed, sender=g.Project.services.through)
+def quote_services_modified(action, instance, reverse, **kwargs):
+    if action == 'post_add':
+        sender = kwargs.pop('sender')
+        for s in instance.services.all_for(instance.user):
+            update_service_card_post(sender, s, **kwargs)

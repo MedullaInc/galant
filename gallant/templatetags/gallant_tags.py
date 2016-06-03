@@ -51,31 +51,18 @@ def active(request, pattern):
 
 @register.simple_tag()
 def get_project_services(request, project, status=None):
-    services = []
+    qs = project.services.all_for(request.user)
 
-    for quote in project.quote_set.all_for(request.user):
-        if status is None:
-            for service in quote.services.all_for(request.user):
-                services.append(service)
-        else:
-            for service in quote.services.all_for(request.user).filter(status=status):
-                services.append(service)
+    if status is not None:
+        qs = qs.filter(status=status)
 
-    return services
+    return qs
+
 
 @register.simple_tag()
 def get_project_services_count(request, project, status=None):
-    services = []
+    return get_project_services(request, project, status).count()
 
-    for quote in project.quote_set.all_for(request.user):
-        if status is None:
-            for service in quote.services.all_for(request.user):
-                services.append(service)
-        else:
-            for service in quote.services.all_for(request.user).filter(status=status):
-                services.append(service)
-
-    return len(services)
 
 @register.simple_tag()
 def get_client_services_count(request, client, status=None):

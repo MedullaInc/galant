@@ -79,10 +79,17 @@ class Quote(g.UserModel):
         if quote.status == QuoteStatus.Accepted.value:
             # Create Project from Quote
             if len(quote.projects.all_for(quote.user)) == 0:
-                project = gp.objects.create(user=quote.user, name=quote.name,
+                project = gp.objects.create(user=quote.user, name=quote.name, client=quote.client,
                                             status=ProjectStatus.Pending_Assignment.value)
                 quote.projects.add(project)
+
                 for service in quote.services.all_for(quote.user, 'change'):
+                    service.pk = None
+                    card = service.card
+                    card.pk = None
+                    service.card = card.save()
+                    service.save()
+                    project.services.add(service)
                     service.save()
 
     def __unicode__(self):

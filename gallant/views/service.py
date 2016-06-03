@@ -150,9 +150,9 @@ class ServiceAPI(ModelViewSet):
         qs = self.model.objects.all_for(self.request.user)
 
         if client_id:
-            return qs.filter(quote__client_id=client_id)
+            return qs.filter(project__client_id=client_id)
         elif project_id:
-            return qs.filter(quote__projects__in=[project_id])
+            return qs.filter(project__in=[project_id])
         elif template_only:
             return qs.filter(quote__client__isnull=True)
         elif project_open:
