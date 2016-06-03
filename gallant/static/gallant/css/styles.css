@@ -3223,6 +3223,7 @@ ul.nav-tabs li a, ul.nav-tabs li a#add_translation_button.btn, ul#tabs, ul#tabs.
 ul.nav-tabs {
     font-family: "Courier New";
     margin-bottom: 20px;
+    margin-top: 40px;
 }
 
 ul.nav-tabs a {
@@ -3232,6 +3233,33 @@ ul.nav-tabs a {
 ul.nav-tabs li a, ul.nav-tabs li a#add_translation_button.btn {
     padding-left: 0px;
     padding-right: 0px;
+}
+
+#projects_container ul li.uib-tab.nav-item {
+    float: right;
+    padding-left: 15px;
+    padding-right: 12px;
+    height: 34px;
+    background-color: #d40371;
+    color: #ffffff;
+    border: none;
+    -webkit-border-radius: 40px;
+    -moz-border-radius: 40px;
+    border-radius: 40px;
+    max-width: 95%;
+    font-weight: 100;
+    padding-top: 3px;
+    margin-right: 3px;
+}
+
+#projects_container ul li.uib-tab.nav-item a {
+    border: none;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    color: #ffffff;
+    font-weight: 100;
+    font-size: 14px;
+    letter-spacing: 1px;
+    padding-top: 4px;
 }
 
 ul.nav-tabs li a.ng-binding:hover, ul.nav-tabs li a, ul.nav-tabs li a#add_translation_button.btn, ul#tabs.nav.nav-tabs li.nav-item a, ul.nav-tabs a, ul.nav-tabs a.nav-link {
