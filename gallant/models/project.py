@@ -2,19 +2,20 @@ from django.db import models as m
 from django.db import transaction
 from django.db.models.signals import post_save
 from django.dispatch.dispatcher import receiver
-from gallant import fields as gf
 from gallant.enums import ProjectStatus
 from gallant.models.client import check_client_payments
 from . import ClientStatus
 from gallant_user import UserModel, UserModelManager
-from misc import Note
 
 
 class Project(UserModel):
     name = m.CharField(max_length=255)
     status = m.CharField(max_length=2, choices=ProjectStatus.choices(), default=ProjectStatus.Pending_Assignment.value)
 
-    notes = m.ManyToManyField(Note)
+    client = m.ForeignKey('gallant.Client', null=True, blank=True)
+    services = m.ManyToManyField('gallant.Service')
+
+    notes = m.ManyToManyField('gallant.Note')
 
     def __unicode__(self):
         return self.name
