@@ -39,7 +39,7 @@
      ng-init="init('{% url 'service_detail' object.id %}', {{ object.id }})">
 
     <div gl-add-modal open-fn="editProject" title="Edit Project" modal-instance="modalInstance">
-        <div gl-project-add on-success="projectSaved" project="project"></div>
+        <div gl-project-add on-success="projectSaved" project="projectSafe"></div>
     </div>
 
     <div class="row">
@@ -48,7 +48,7 @@
         </div>
         <div class="col-lg-2 col-md-2 col-sm-3 col-xs-3 action_box">
             <button id="section_edit" type="button" class="btn btn-default edit_button btn-add" aria-label="Edit"
-                    ng-click="editProject()">
+                    ng-click="editProjectSafe()">
                 <span class="glyphicon glyphicon-edit"/>
             </button>
             <a href="{% url 'delete_project' object.id %}" class="delete_button" title="{% trans "Delete" %}" onclick="return confirm('{% trans "Are you sure? This will also delete all links between the project and its linked quotes." %}')"> 

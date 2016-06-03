@@ -5,7 +5,7 @@ app.controller('glProjectDetailController', ['$scope', '$http', '$window', 'Proj
     function ($scope, $http, $window, Project, glConstants) {
         $scope.glConstants = glConstants;
 
-        $scope.init = function(serviceDetailURL, projectId) {
+        $scope.init = function (serviceDetailURL, projectId) {
             $scope.serviceDetailURL = serviceDetailURL;
             Project.get({id: projectId}).$promise.then(function (project) {
                 $scope.project = project;
@@ -13,8 +13,13 @@ app.controller('glProjectDetailController', ['$scope', '$http', '$window', 'Proj
             });
         };
 
-        $scope.redirect = function(service) {
+        $scope.redirect = function (service) {
             $window.location.href = $scope.serviceDetailURL + service.id;
+        };
+        
+        $scope.editProjectSafe = function () {
+            $scope.projectSafe = angular.copy($scope.project);
+            $scope.editProject();
         };
 
         $scope.projectSaved = function (project) {
