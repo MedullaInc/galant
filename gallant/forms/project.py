@@ -35,6 +35,10 @@ class ProjectOnlyForm(UserModelForm):
                 quote_set_b = q.Quote.objects.all_for(
                     self.user).annotate(projects_count=Count('projects')).filter(
                     projects_count=0, status=5, client_id=client.id)
+            else:
+                quote_set_b = q.Quote.objects.all_for(
+                    self.user).annotate(projects_count=Count('projects')).filter(
+                    projects_count=0, status=5)
 
             linked_quotes = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple({'checked': True}),
                                                            queryset=quote_set_a)

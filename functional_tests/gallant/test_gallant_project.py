@@ -34,10 +34,14 @@ class GallantProjectTest(browser.SignedInTest):
         success_message = self.e_class('alert-success')
         self.assertTrue(u'Project saved.' in success_message.text)
 
-        self.create_one('quotes.Quote', {'name': "XXX", 'client': c, 'status': 5})
+    def test_project_quote(self):
+        # Add Project
+        c = self.create_one('gallant.Client')
+        p = self.create_one('gallant.Project')
+        self.create_one('quotes.Quote', {'client': c, 'status': 5, 'projects': [p]})
+        self.create_one('quotes.Quote', {'client': c, 'status': 5, 'projects': [p]})
 
-        # Edit Project removing one quote
-        self.click_id('edit_project')
+        self.get(self.live_server_url + reverse('edit_project', args=[p.id]))
 
         self.click_id('id_linked_quotes_0')
 
@@ -46,9 +50,13 @@ class GallantProjectTest(browser.SignedInTest):
         success_message = self.e_class('alert-success')
         self.assertTrue(u'Project saved.' in success_message.text)
 
-        # Edit Project with extra quote
-        self.click_id('edit_project')
+    def test_project_quote_edit(self):
+        # Add Project
+        c = self.create_one('gallant.Client')
+        p = self.create_one('gallant.Project')
+        self.create_one('quotes.Quote', {'client': c, 'status': 5, 'projects': []})
 
+        self.get(self.live_server_url + reverse('edit_project', args=[p.id]))
         self.e_name('name').send_keys('PPPPPPP')
 
         self.click_id('id_available_quotes_0')
