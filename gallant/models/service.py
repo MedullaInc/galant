@@ -22,6 +22,7 @@ class Service(UserModel):
     # currency is chosen based on client preference
     cost = MoneyField(max_digits=10, decimal_places=2, default_currency='USD', null=True, blank=True)
     quantity = m.IntegerField(null=True, blank=True)
+    time = m.IntegerField(null=True, blank=True)
     type = m.CharField(max_length=2, choices=ServiceType.choices(), null=True, blank=True)
     index = m.IntegerField(default=0) 
     parent = m.ForeignKey('self', null=True, blank=True, related_name='sub_services')

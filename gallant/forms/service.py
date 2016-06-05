@@ -6,7 +6,7 @@ from user import UserModelForm
 class ServiceForm(UserModelForm):
     class Meta:
         model = g.Service
-        fields = ['name', 'description', 'cost', 'quantity', 'type']
+        fields = ['name', 'description', 'cost', 'time']
 
     def __init__(self, *args, **kwargs):
         super(ServiceForm, self).__init__(*args, **kwargs)
@@ -17,4 +17,4 @@ class ServiceForm(UserModelForm):
 class ServiceOnlyForm(UserModelForm):
     class Meta:
         model = g.Service
-        fields = ['name', 'description', 'cost', 'quantity', 'type']
+        fields = ['name', 'description', 'cost', 'time']

@@ -45,7 +45,7 @@ class ServiceUpdate(View):
         self.request.breadcrumbs([(_('Projects'), reverse('calendr')),
                                   (_('Project: %s' % project),
                                    reverse('project_detail', args=[self.kwargs['project_id']])),
-                                  (_('Service: %s' % self.object.name.get_text()),
+                                  (_('Deliverable: %s' % self.object.name.get_text()),
                                    reverse('service_detail', args=[self.kwargs['project_id'], self.kwargs['pk']])),
                                   (_('Edit'),
                                    reverse('edit_service', args=[self.kwargs['project_id'], self.kwargs['pk']]))
@@ -62,7 +62,7 @@ class ServiceUpdate(View):
         obj.notes.add(note)
         obj.save()
 
-        messages.success(self.request, 'Service saved.')
+        messages.success(self.request, 'Deliverable saved.')
         return HttpResponseRedirect(reverse('service_detail', args=[self.kwargs['project_id'], obj.id]))
 
 
@@ -72,14 +72,14 @@ class ServiceCreate(ServiceUpdate):
         return self.render_to_response({'form': form})
 
     def render_to_response(self, context):
-        context.update({'title': 'Edit Service'})
+        context.update({'title': 'Edit Deliverable'})
 
         project = get_one_or_404(self.request.user, 'view_project', g.Project, pk=self.kwargs['project_id'])
 
         self.request.breadcrumbs([(_('Projects'), reverse('calendr')),
                                   (_('Project: %s' % project),
                                    reverse('project_detail', args=[self.kwargs['project_id']])),
-                                  (_('Add Service'), reverse('add_service', args=[self.kwargs['project_id']]))
+                                  (_('Add Deliverable'), reverse('add_service', args=[self.kwargs['project_id']]))
                                   ])
 
         return TemplateResponse(request=self.request,
@@ -93,7 +93,7 @@ def service_detail(request, *args, **kwargs):
 
     request.breadcrumbs([(_('Projects'), reverse('calendr')),
                          (_('Project: %s' % project), reverse('project_detail', args=[kwargs['project_id']])),
-                         (_('Service: %s' % service.name.get_text()),
+                         (_('Deliverable: %s' % service.name.get_text()),
                           reverse('service_detail', args=[kwargs['project_id'], kwargs['pk']]))
                          ])
 
@@ -108,7 +108,7 @@ def service_detail(request, *args, **kwargs):
         form = forms.NoteForm(request.user)
 
     return render(request, 'gallant/service_detail.html', {
-        'title': 'Project Service',
+        'title': 'Deliverable',
         'object': service,
         'project': project,
         'form': form,

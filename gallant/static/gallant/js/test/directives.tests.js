@@ -278,6 +278,12 @@ describe('glProjectAdd', function () {
                 };
                 return Quote;
             });
+
+            $provide.factory('Client', function($q) {
+                return {
+                    query: function () { return {$promise: $q.when([0])}; }
+                };
+            });
         });
 
         module('gallant.directives.glProjectAdd', function ($controllerProvider) {

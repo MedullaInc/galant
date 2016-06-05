@@ -17,13 +17,12 @@ class GallantServiceTest(browser.SignedInTest):
         self.e_name('description').send_keys('asadasdfsd asd fasdf')
         self.e_name('cost_0').clear()
         self.e_name('cost_0').send_keys('10')
-        self.e_name('quantity').send_keys('10')
-        self.click_xpath('//select[@name="type"]/option[@value="0"]')
+        self.e_name('time').send_keys('10')
 
         self.submit_xpath('//button[@type="submit"]')
 
         success_message = self.e_class('alert-success')
-        self.assertTrue(u'Service saved.' in success_message.text)
+        self.assertTrue(u'Deliverable saved.' in success_message.text)
 
     def test_edit_service(self):
         s = self.create_one('gallant.Service')
@@ -37,13 +36,12 @@ class GallantServiceTest(browser.SignedInTest):
         self.e_name('description').send_keys('phpjpjpjpjpjpf')
         self.e_name('cost_0').clear()
         self.e_name('cost_0').send_keys('99')
-        self.e_name('quantity').send_keys('88')
-        self.click_xpath('//select[@name="type"]/option[@value="3"]')
+        self.e_name('time').send_keys('88')
 
         self.submit_xpath('//button[@type="submit"]')
 
         success_message = self.e_class('alert-success')
-        self.assertTrue(u'Service saved.' in success_message.text)
+        self.assertTrue(u'Deliverable saved.' in success_message.text)
 
     def test_add_service_note(self):
         s = self.create_one('gallant.Service')

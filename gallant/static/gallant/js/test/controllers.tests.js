@@ -94,7 +94,7 @@ describe('glProjectDetailController', function () {
             });
         });
         module('gallant.controllers.glProjectDetailController', function ($provide) {
-            $provide.value('$window', {location: {href: null}});
+            $provide.value('$window', {location: {href: null, reload: function () {} }});
         });
 
         inject(function (_$rootScope_, _$controller_, _$window_) {

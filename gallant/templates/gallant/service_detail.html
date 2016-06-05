@@ -2,7 +2,7 @@
 {% load bootstrap i18n gallant_tags %}
 
 {% block section_title %}
-    {% trans "Project Service" %}
+    {% trans "Deliverable" %}
 {% endblock %}
 
 {% block content %}
@@ -13,7 +13,7 @@
         </div>
         <div class="col-lg-1 col-md-1 col-sm-2 col-xs-2 action_box">
             <a href="{% url 'edit_service' project.id object.id %}" class="edit_button" title="{% trans "Edit" %}">
-                <button id="section_edit" type="button" class="btn btn-default edit_button" aria-label="Edit">
+                <button id="section_edit" type="button" class="btn btn-default btn-add" aria-label="Edit">
                     <span class="glyphicon glyphicon-edit"/>
                 </button>
             </a>
@@ -25,7 +25,7 @@
             <p><span class="detail_title">{% trans "Type" %}:</span> {{ object.get_type_display }}</p>
             <p class="service_description"><span class="detail_title">{% trans "Description" %}:</span> {{ object.description.get_text|linebreaks }}</p>
             <p><span class="detail_title">{% trans "Cost" %}:</span> {{ object.cost }}</p>
-            <p><span class="detail_title">{% trans "Quantity" %}:</span> {{ object.quantity }}</p>
+            <p><span class="detail_title">{% trans "Time Estimate" %}:</span> {{ object.time }}</p>
             <br/>
         </div>
     </div>
@@ -33,7 +33,7 @@
     <hr>
     <div id="notes">
         <h2 class="section_title">
-            {% trans "Project Service Notes" %}
+            {% trans "Project Deliverable Notes" %}
         </h2>
         {% objects_for object.notes as notes %}
         {% for item in notes %}
