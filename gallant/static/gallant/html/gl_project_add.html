@@ -9,6 +9,18 @@
         </div>
     </div>
 
+    <div class="row form-group">
+        <div class="col-lg-3">
+            <label>Client</label>
+        </div>
+        <div class="col-lg-9">
+            <select class=" form-control" id="id_status" name="client" ng-model="project.client"
+                    ng-disabled="!clients" ng-options="client.id as client.name for client in clients">
+                <option value="" style="display: none;">Select Client...</option>
+            </select>
+        </div>
+    </div>
+
     <div gl-multi-dropdown elements="project.quotes" available-elements="quotes"
          element-display-name="Quote"></div>
 

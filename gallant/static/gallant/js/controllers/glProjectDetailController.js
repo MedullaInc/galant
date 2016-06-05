@@ -27,6 +27,7 @@ app.controller('glProjectDetailController', ['$scope', '$http', '$window', 'Proj
             $scope.services = $scope.project.services;
 
             $scope.modalInstance.dismiss('cancel');
+            $window.location.reload();
         };
     }
 ]);

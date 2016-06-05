@@ -7,7 +7,8 @@ app = angular.module('gallant.directives.glProjectAdd', [
     'quotes.services.qtServices',
 ]);
 
-app.directive('glProjectAdd', ['$window', 'Project', 'Quote', function ($window, Project, Quote) {
+app.directive('glProjectAdd', ['$window', 'Project', 'Quote', 'Client',
+        function ($window, Project, Quote, Client) {
     return {
         restrict: 'A',
         scope: {
@@ -37,6 +38,10 @@ app.directive('glProjectAdd', ['$window', 'Project', 'Quote', function ($window,
 
             Quote.query({unlinked: true}).$promise.then(function (response) {
                 $scope.quotes = response;
+            });
+
+            Client.query().$promise.then(function (response) {
+                $scope.clients = response;
             });
 
             $scope.projectSaved = $scope.onSuccess();
