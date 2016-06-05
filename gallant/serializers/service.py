@@ -27,7 +27,9 @@ class ServiceSerializer(serializers.ModelSerializer):
 
     def get_language(self, service):
         try:
-            return service.quote_set.all_for(service.user)[0].language or get_language()
+            return service.quote_set.all_for(service.user)[0].language \
+                   or service.user.language \
+                   or get_language()
         except (IndexError, KeyError), ex:
             return get_language()
 
