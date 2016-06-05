@@ -14,7 +14,7 @@ from briefs import models as b
 from gallant import serializers
 from gallant import views
 from gallant.enums import ClientStatus, ProjectStatus
-from gallant.fields import ULTextDictArray, _ultext_array_to_python, _ultext_to_python
+from gallant.fields import ULTextDictArray, _ultext_array_to_python, _ultext_to_python, ULTextDict
 from gallant.models.client import check_client_payments
 from moneyed.classes import Money
 from quotes import models as q
@@ -399,6 +399,9 @@ class ProjectTest(TransactionTestCase):
         factory = APIRequestFactory()
         user = autofixture.create_one(g.GallantUser, generate_fk=True)
         project = autofixture.create_one(g.Project, generate_fk=True, field_values={'user': user})
+        project.services.add(autofixture.create_one(g.Service, generate_fk=True, field_values={
+            'user': user, 'name': {'en': 'project service'}
+        }))
         project.notes.add(autofixture.create_one(g.Note, generate_fk=True, field_values={'user': user}))
 
         request = factory.get(reverse('api_project_detail', args=[project.id]))
@@ -425,7 +428,10 @@ class ProjectTest(TransactionTestCase):
         serializer = serializers.ProjectSerializer(project, context={'request': request})
         self.assertIsNotNone(serializer.data)
 
-        parser = serializers.ProjectSerializer(data=serializer.data, context={'request': request})
+        data = dict(serializer.data)
+        data['services'] = [{'name': {'en': 'project service'}}]
+
+        parser = serializers.ProjectSerializer(data=data, context={'request': request})
         self.assertTrue(parser.is_valid())
 
         self.assertNotEqual(parser.save(user=user).id, project.id)
@@ -542,6 +548,13 @@ class ULTextTest(TestCase):
         ulta2 = _ultext_array_to_python('[{"en": "choice 1", "es": "opcion 1"},'
                                         '{"en": "choice 2", "es": "opcion 2"}]')
         self.assertEqual(ulta, ulta2)
+
+    def test_ultext_get_text(self):
+        ulta = ULTextDict({"en": "choice 1"})
+        ulta2 = ULTextDict({})
+
+        self.assertEqual(ulta.get_text('fl'), 'choice 1')
+        self.assertEqual(ulta2.get_text('fl'), '')
 
     def test_ultext_string(self):
         ulta = _ultext_array_to_python('')

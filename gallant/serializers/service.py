@@ -8,7 +8,7 @@ from gallant.serializers.misc import MoneyField
 
 class ServiceSerializer(serializers.ModelSerializer):
     name = ULTextField()
-    description = ULTextField()
+    description = ULTextField(required=False)
     language = serializers.SerializerMethodField()
     cost = MoneyField(required=False, allow_null=True)
     notes = serializers.CharField(read_only=True)
