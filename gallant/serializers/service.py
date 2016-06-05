@@ -33,9 +33,11 @@ class ServiceSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         validated_data.pop('id', None)
-        instance = super(ServiceSerializer, self).create(validated_data)
 
-        return instance
+        return super(ServiceSerializer, self).create(validated_data)
+
+    def update(self, instance, validated_data):
+        return super(ServiceSerializer, self).update(instance, validated_data)
 
     def to_representation_lang(self, instance, language):
         ret = super(ServiceSerializer, self).to_representation(instance)

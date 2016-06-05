@@ -1,6 +1,7 @@
 from django.core.urlresolvers import reverse
 from functional_tests import browser
 from gallant.models import Service
+from moneyed.classes import Money
 
 
 def tearDownModule():
@@ -14,7 +15,8 @@ class QuoteTemplatesTest(browser.SignedInTest):
         q = self.create_one('quotes.Quote', {'sections': [],'services': [], 'language': 'en',
                                              'client': c, 'status': '1'})
         qt = self.create_one('quotes.QuoteTemplate', {'quote': q})
-        serv = Service.objects.create(user=q.user, name='service1', quantity=1, description='desc', type=1, index=0)
+        serv = Service.objects.create(user=q.user, name='service1', quantity=1,
+                                      cost=Money(1, 'USD'), description='desc', type=1, index=0)
         q.services.add(serv)
         self.q = q
         self.qt = qt
@@ -84,6 +86,8 @@ class QuoteTemplatesTest(browser.SignedInTest):
         browser.wait().until(lambda driver: driver.find_element_by_id('quote_save').is_displayed)
         self.assertEqual(self.q.services.all_for(self.user)[0].name, {u'en': u'service1'})
 
+    from django.test.utils import override_settings
+    @override_settings(DEBUG=True)
     def test_add_quote_from_template(self):
         self.get(self.live_server_url + reverse('add_quote') +
               '?template_id=%d&lang=en&client_id=%d' % (self.qt.id, self.q.client.id))

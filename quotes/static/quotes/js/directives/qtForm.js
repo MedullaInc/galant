@@ -141,13 +141,13 @@ app.directive('qtQuoteForm', ['Quote', '$uibModal', function (Quote, $uibModal) 
                         if ($scope.boolTemplate != "True") {
                             delete $scope.quote.id;
 
-                            angular.forEach($scope.quote.sections, function (q) {
-                                delete q.id;
+                            angular.forEach($scope.quote.sections, function (s) {
+                                delete s.id;
                             });
-                            angular.forEach($scope.quote.services, function (q) {
-                                delete q.id;
-                                if ($attrs.serviceCurrency) {
-                                    q.cost.currency = $attrs.serviceCurrency;
+                            angular.forEach($scope.quote.services, function (s) {
+                                delete s.id;
+                                if (s.cost && $attrs.serviceCurrency) {
+                                    s.cost.currency = $attrs.serviceCurrency;
                                 }
                             });
 

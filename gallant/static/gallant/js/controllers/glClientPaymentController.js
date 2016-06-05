@@ -47,13 +47,13 @@ app.controller('glClientPaymentController', ['$scope', '$attrs', '$uibModal', '$
 
                 // When selecting a quote, currency will update as well as quote
                 $scope.updateCurrency = function (quote_id) {
-                    $scope.payment.amount.currency = $.grep($scope.quotes, function (e) {
-                        return e.id == quote_id
-                    })[0].services[0].cost.currency;
-                    $scope.currency = '( in ' + $.grep($scope.quotes, function (e) {
-                            return e.id == quote_id
-                        })[0].services[0].cost.currency + ' )';
-                    if ($scope.currency == '( in  )') {
+                    var quote = $scope.quotes.find(function (q) { return q.id == quote_id; });
+                    var service = quote.services.find(function (s) { return s.cost != null; });
+
+                    if (service) {
+                        $scope.payment.amount.currency = service.cost.currency;
+                        $scope.currency = '( in ' + service.cost.currency + ' )';
+                    } else {
                         $scope.currency = '( N/A )'
                     }
                 };

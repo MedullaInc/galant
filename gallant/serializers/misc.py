@@ -12,7 +12,12 @@ class MoneyField(serializers.Field):
     def to_internal_value(self, data):
         json_val = json.dumps(data)
         val = json.loads(json_val)
-        return Money(val['amount'], val['currency'])
+
+        if not 'amount' in val:
+            return None
+
+        currency = val.get('currency', None) or self.context['request'].user.currency
+        return Money(val['amount'], currency)
 
 
 class NoteSerializer(serializers.ModelSerializer):

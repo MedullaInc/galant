@@ -45,7 +45,7 @@ class ServiceTest(TransactionTestCase):
         fixture = AutoFixture(g.Service, generate_fk=True, field_values={'user': user})
         services = fixture.create(10)
         parent = services[9]
-        total_cost = parent.cost
+        total_cost = parent.cost or 0
         for s in services[0:9]:
             s.parent = parent
             total_cost += s.get_total_cost()

@@ -41,21 +41,23 @@ class ProjectSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         validated_data.update({'user': self.context['request'].user})
 
-        services_data = validated_data.pop('services')
+        services_data = validated_data.pop('services', None)
         validated_data.pop('id', None)
 
         instance = super(ProjectSerializer, self).create(validated_data)
 
-        self._write_services(instance, services_data)
+        if services_data:
+            self._write_services(instance, services_data)
 
         return instance
 
     def update(self, instance, validated_data):
         validated_data.update({'user': self.context['request'].user})
 
-        services_data = validated_data.pop('services')
+        services_data = validated_data.pop('services', None)
 
-        self._write_services(instance, services_data)
+        if services_data:
+            self._write_services(instance, services_data)
 
         return super(ProjectSerializer, self).update(instance, validated_data)
 

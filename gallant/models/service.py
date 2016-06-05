@@ -31,7 +31,10 @@ class Service(UserModel):
     card = m.ForeignKey('kanban.KanbanCard', null=True)
 
     def get_total_cost(self):
-        total = self.cost * self.quantity
+        if self.cost:
+            total = self.cost * self.quantity
+        else:
+            total = 0
         for sub in self.sub_services.all_for(self.user):
             total += sub.get_total_cost()
 

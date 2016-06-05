@@ -36,7 +36,7 @@ app.directive('qtServiceTable', ['$window', 'Service', function ($window, Servic
                             $scope.total = 0;
                             for (var i = 0; i < $scope.quote.services.length; i++) {
                                 var service = $scope.quote.services[i];
-                                if (service) {
+                                if (service && service.cost) {
                                     if(service.cost.amount > 0 && service.quantity > 0){
                                         $scope.total += (service.cost.amount * service.quantity);
                                     }else{

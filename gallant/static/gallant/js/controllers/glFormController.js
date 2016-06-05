@@ -52,7 +52,8 @@ app.controller('glFormController', ['$scope', '$http', '$window', 'glAlertServic
                     }
                 }, /* istanbul ignore next */ function (errorResponse) {
                     $scope.object.errors = errorResponse.data;
-                    // glAlertService.add('danger', 'Error: ' + JSON.stringify(errorResponse.data));
+                    console.log('Error: ' + JSON.stringify(errorResponse));
+                    console.log('Object: ' + JSON.stringify($scope.object));
                 });
             }
         };
