@@ -279,9 +279,11 @@ describe('glProjectAdd', function () {
                 return Quote;
             });
 
-            $provide.factory('Client', function($q) {
+            $provide.factory('Client', function ($q) {
                 return {
-                    query: function () { return {$promise: $q.when([0])}; }
+                    query: function () {
+                        return {$promise: $q.when([0])};
+                    }
                 };
             });
         });
@@ -618,7 +620,9 @@ describe('glDashboardWorkSummary', function () {
     beforeEach(function () {
 
         angular.mock.module('gallant.directives.glDashboardWorkSummary', function ($provide) {
-            $provide.factory('$window', function () { return {location: {href: null}}; });
+            $provide.factory('$window', function () {
+                return {location: {href: null}};
+            });
         });
         angular.mock.module('staticNgTemplates');
 
@@ -627,7 +631,7 @@ describe('glDashboardWorkSummary', function () {
                 var Client = function () {
                 };
                 Client.query = function () {
-                    return {$promise: $q.when([{status:0},{status:1},{status:2}])};
+                    return {$promise: $q.when([{status: 0}, {status: 1}, {status: 2}])};
                 };
                 return Client;
             });
@@ -635,7 +639,7 @@ describe('glDashboardWorkSummary', function () {
             $provide.factory('Service', function ($q) {
                 var Service = [];
                 Service.query = function () {
-                    return {$promise: $q.when([{services: [{status: 0},{status: 1},{status: 2},{status: 3},{status: 4}]}])};
+                    return {$promise: $q.when([{services: [{status: 0}, {status: 1}, {status: 2}, {status: 3}, {status: 4}]}])};
                 };
                 return Service;
             });
@@ -725,4 +729,48 @@ describe('glDashboardMoneySummary', function () {
             expect(element.html().substring(0, 6)).toEqual('<div c');
         });
     });
+});
+
+describe('glDeliverablesBoard', function () {
+    var $rootScope;
+    var $compile;
+    var $injector;
+    var $scope;
+
+    beforeEach(function () {
+        angular.mock.module('gallant.services.glServices', function ($provide) {
+            $provide.factory('Service', function ($q) {
+                var Service = jasmine.createSpyObj('Service', ['query']);
+                Service.query.and.returnValue({$promise: $q.when([{status: 0}, {status: 1}, {status: 2}, {status: 3}, {status: 4}])});
+                return Service;
+            });
+            $provide.factory('glConstants', function($q) {
+                return {ServiceStatus: {OnHold: 0, PendingAssignment: 1, Active: 2, Overdue: 3, Completed: 4}};
+            });
+        });
+
+        module('kanban.directives.kbBoardColumn');
+        angular.mock.module('gallant.directives.glDeliverablesBoard');
+        module('staticNgTemplates');
+
+        inject(function (_$rootScope_, _$compile_, _$injector_) {
+            // The injector unwraps the underscores (_) from around the parameter names when matching
+            $rootScope = _$rootScope_;
+            $compile = _$compile_;
+            $injector = _$injector_;
+        });
+
+        $scope = $rootScope.$new();
+    });
+
+    describe('glDeliverablesBoard', function () {
+
+        it('compiles', function () {
+            var element = $compile('<div gl-deliverables-board></div>')($scope);
+            $scope.$digest();
+            expect(element.html().substring(0, 4)).toEqual('');
+        });
+
+    });
+
 });

@@ -3,7 +3,7 @@ app = angular.module('gallant.directives.glDeliverablesBoard', [
     'kanban.directives.kbBoardColumn',
 ]);
 
-app.directive('glDeliverablesBoard', ['Project', 'Service', 'glConstants', function (Project, Service, glConstants) {
+app.directive('glDeliverablesBoard', ['Service', 'glConstants', function (Service, glConstants) {
     return {
         restrict: 'A',
         scope: {
@@ -11,7 +11,7 @@ app.directive('glDeliverablesBoard', ['Project', 'Service', 'glConstants', funct
         controller: ['$scope', function ($scope) {
             $scope.glConstants = glConstants;
         }],
-        templateUrl: '/static/gallant/html/gl_service_board.html',
+        templateUrl: 'static/gallant/html/gl_service_board.html',
         link: function ($scope) {
             $scope.services = [];
             Service.query({project_open: true}).$promise.then(function (services) {
