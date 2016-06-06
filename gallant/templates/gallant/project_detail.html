@@ -62,12 +62,14 @@
     <div class="row object_data">
         <div class="col-lg-6">
             <span>
-                <label>Client: </label>
+            <p>
+                Client:
                 {% if object.client %}
                     <a href="{% url 'client_detail' object.client.id %}">{{ object.client.name }}</a>
                 {% else %}
                     -
                 {% endif %}
+            </p>
             </span>
             <br>
         </div>

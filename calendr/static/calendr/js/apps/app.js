@@ -14,6 +14,7 @@ var app = angular.module('gallant', [
         'gallant.directives.glAlerts',
         'gallant.controllers.glFormController',
         'calendr.directives.clTaskList',
+        'gallant.directives.glDeliverablesBoard',
         'ui.bootstrap.tabs',
     ])
     .config(['$httpProvider', /* istanbul ignore next  */ function ($httpProvider) {
