@@ -14,6 +14,7 @@ app.directive('glProjectAdd', ['$window', 'Project', 'Quote', 'Client',
         scope: {
             project: '=?',
             quoteId: '@',
+            language: '@',
             onSuccess: '&',
         },
         controller: ['$scope', function ($scope) {

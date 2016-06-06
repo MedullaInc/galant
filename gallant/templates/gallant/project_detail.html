@@ -39,7 +39,7 @@
      ng-init="init('{% url 'service_detail' object.id %}', {{ object.id }})">
 
     <div gl-add-modal open-fn="editProject" title="Edit Project" modal-instance="modalInstance">
-        <div gl-project-add on-success="projectSaved" project="projectSafe"></div>
+        <div gl-project-add on-success="projectSaved" project="projectSafe" language="{% firstof language LANGUAGE_CODE %}"></div>
     </div>
 
     <div class="row">

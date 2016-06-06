@@ -8,6 +8,7 @@ app.directive('glFormElements', [ function () {
             elements: '=',
             addFn: '=?',
             removeFn: '=?',
+            language: '@',
         },
         controller: ['$scope', function ($scope) {
             $scope.addFn = function (e) { $scope.addElement(e); };
@@ -18,7 +19,11 @@ app.directive('glFormElements', [ function () {
         },
         link: function ($scope) {
             $scope.addElement = function () {
-                $scope.elements.push({});
+                if ($scope.language) {
+                    $scope.elements.push({language: $scope.language});
+                } else {
+                    $scope.elements.push({});
+                }
             };
 
             $scope.removeElement = function (index) {

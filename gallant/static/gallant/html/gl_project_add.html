@@ -1,4 +1,4 @@
-<form ng-controller="glFormController" ng-init="init('', null, projectSaved)" novalidate>
+<form ng-controller="glFormController" ng-init="init(language, null, projectSaved)" novalidate>
     <div class="row form-group">
         <div class="col-lg-3">
             <label>Project Name</label>
@@ -37,7 +37,7 @@
     </div>
 
     <div gl-form-elements template-url="/static/gallant/html/gl_deliverable_form.html"
-         elements="project.services" add-fn="addDeliverable"></div>
+         elements="project.services" add-fn="addDeliverable" language="{{ language }}"></div>
 
     <div class="row form-group">
         <div class="col-lg-12">

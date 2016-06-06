@@ -11,6 +11,7 @@ app.directive('glProjectList', ['$window', '$uibModal', 'Project', function ($wi
         restrict: 'A',
         scope: {
             projects: '=?',
+            language: '@',
         },
         controller: ['$scope', function ($scope) {
             if (!$scope.projects) {
