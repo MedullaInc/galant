@@ -1,21 +1,11 @@
-/**
- * calendarApp
- */
-
-var app = angular.module('calendr', [
-        'ui.calendar',
+var app = angular.module('glProjects', [
         'ui.bootstrap',
-        'ng.django.forms',
         'ngResource',
-        'calendr.controllers.clCalendrController',
-        'calendr.services.clServices',
         'gallant.services.glServices',
         'gallant.directives.glProjectList',
         'gallant.directives.glAlerts',
         'gallant.controllers.glFormController',
-        'calendr.directives.clTaskList',
         'gallant.directives.glDeliverablesBoard',
-        'ui.bootstrap.tabs',
     ])
     .config(['$httpProvider', /* istanbul ignore next  */ function ($httpProvider) {
         $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';

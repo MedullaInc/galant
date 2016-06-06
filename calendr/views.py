@@ -10,7 +10,7 @@ from rest_framework.viewsets import ModelViewSet
 
 
 def calendar(request):
-    return render(request, 'calendr/calendr.html', {'title': 'Projects'})
+    return render(request, 'calendr/calendr.html', {'title': 'Calendar'})
 
 
 class TasksAPI(ModelViewSet):
