@@ -741,15 +741,23 @@ describe('glDeliverablesBoard', function () {
         angular.mock.module('gallant.services.glServices', function ($provide) {
             $provide.factory('Service', function ($q) {
                 var Service = jasmine.createSpyObj('Service', ['query']);
-                Service.query.and.returnValue({$promise: $q.when([{status: 0}, {status: 1}, {status: 2}, {status: 3}, {status: 4}])});
+                card = {yindex:0};
+                Service.query.and.returnValue({$promise: $q.when([{status: 0, card: card}, {status: 1, card: card},
+                    {status: 2, card: card}, {status: 3, card: card}, {status: 4, card: card}])});
                 return Service;
             });
-            $provide.factory('glConstants', function($q) {
+            $provide.factory('glConstants', function ($q) {
                 return {ServiceStatus: {OnHold: 0, PendingAssignment: 1, Active: 2, Overdue: 3, Completed: 4}};
             });
         });
 
-        module('kanban.directives.kbBoardColumn');
+        angular.mock.module('kanban.directives.kbBoardColumn', function ($provide) {
+            $provide.factory('KanbanCard', function ($q) {
+                var KanbanCard = {yindex: 0};
+                return KanbanCard;
+            });
+        });
+
         angular.mock.module('gallant.directives.glDeliverablesBoard');
         module('staticNgTemplates');
 
@@ -768,7 +776,7 @@ describe('glDeliverablesBoard', function () {
         it('compiles', function () {
             var element = $compile('<div gl-deliverables-board></div>')($scope);
             $scope.$digest();
-            expect(element.html().substring(0, 4)).toEqual('');
+            expect(element.html().substring(0, 4)).toEqual('<div');
         });
 
     });
