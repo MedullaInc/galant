@@ -50,9 +50,9 @@
             <div class="col-lg-9">
                 <div class="input-group popup-calendr">
                     <input type="text" class="form-control" uib-datepicker-popup="MM.dd.yyyy" ng-model="task.start"
-                           is-open="start_date_opened" close-text="Close"/>
+                           is-open="startDateOpened" close-text="Close"/>
                     <span class="input-group-btn">
-                    <button type="button" class="btn btn-default  mini-calendar" ng-click="openStartDatePicker()">
+                    <button type="button" class="btn btn-default  mini-calendar" ng-click="startDateOpened = !startDateOpened">
                         <i class="glyphicon glyphicon-calendar"></i></button>
                     </span>
                     <div gl-form-errors error-field="task.errors.start"></div>
@@ -66,9 +66,9 @@
             <div class="col-lg-9">
                 <div class="input-group popup-calendr">
                     <input type="text" class="form-control" uib-datepicker-popup="MM.dd.yyyy" ng-model="task.end"
-                           is-open="end_date_opened" close-text="Close"/>
+                           is-open="endDateOpened" close-text="Close"/>
                     <span class="input-group-btn">
-                    <button type="button" class="btn btn-default mini-calendar" ng-click="openEndDatePicker()">
+                    <button type="button" class="btn btn-default mini-calendar" ng-click="endDateOpened = !endDateOpened">
                         <i class="glyphicon glyphicon-calendar"></i></button>
                     </span>
                     <div gl-form-errors error-field="task.errors.end"></div>
