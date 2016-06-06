@@ -12,7 +12,6 @@ app.directive('glDeliverablesBoard', ['Service', 'glConstants', function (Servic
         }],
         templateUrl: '/static/gallant/html/gl_service_board.html',
         link: function ($scope) {
-            $scope.services = [];
             Service.query({project_open: true}).$promise.then(function (services) {
                 $scope.services = services;
             });
