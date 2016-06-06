@@ -22,7 +22,7 @@
                     <label>Quote</label>
                 </div>
                 <div class="col-lg-9">
-                    <select ng-model="payment.quote" name="quote" class="form-control" ng-options="quote.id as quote.name for quote in quotes | filter: hasServices" ng-change="updateCurrency(payment.quote)" required ng-class="{'has-success has-feedback': paymentform.quote.$valid && paymentform.quote.$dirty,'has-error has-feedback': paymentform.quote.$invalid && paymentform.quote.$dirty}">
+                    <select ng-model="payment.quote" name="quote" class="form-control" ng-options="quote.id as quote.name for quote in quotes | filter: isApproved" ng-change="updateCurrency(payment.quote)" required ng-class="{'has-success has-feedback': paymentform.quote.$valid && paymentform.quote.$dirty,'has-error has-feedback': paymentform.quote.$invalid && paymentform.quote.$dirty}">
                     </select>
                 </div>
             </div>

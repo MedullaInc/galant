@@ -22,8 +22,8 @@ app.controller('glClientPaymentController', ['$scope', '$attrs', '$uibModal', '$
                     });
                 };
 
-                $scope.hasServices = function (quote) {
-                    return quote.status == 5 && quote.projects.length > 0;
+                $scope.isApproved = function (quote) {
+                    return quote.status == 5;
                 };
                 // Load default payment formant & due date
                 if (typeof payment_id !== 'undefined') {

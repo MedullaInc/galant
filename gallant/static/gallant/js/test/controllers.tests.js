@@ -283,8 +283,13 @@ describe('glClientPaymentController', function () {
             });
             $provide.factory('ClientQuote', function ($q) {
                 var ClientQuote = {};
-                ClientQuote.query = function (a) { return {$promise: $q.when([{id: 0, services: [{ cost: {amount: 0, currency: 'MXN'} }] }])}; };
+                ClientQuote.query = function (a) { return {$promise: $q.when([{id: 0, client: 0, services: [{ cost: {amount: 0, currency: 'MXN'} }] }])}; };
                 return ClientQuote;
+            });
+            $provide.factory('Client', function ($q) {
+                var Client = {};
+                Client.get = function (a) { return {$promise: $q.when({id: 0, currency: 'MXN'})}; };
+                return Client;
             });
             $provide.factory('Payment', function ($q) {
                 var Payment = {};
@@ -351,8 +356,8 @@ describe('glClientPaymentController', function () {
         });
 
         it('can validate quote has services', function () {
-            var service_length = $subScope.hasServices({services: [{},{}], status: 5});
-            expect(service_length).toBe(true);
+            var is_approved = $subScope.isApproved({status: 5});
+            expect(is_approved).toBe(true);
         });
 
         it('can run updateCurrency', function() {
