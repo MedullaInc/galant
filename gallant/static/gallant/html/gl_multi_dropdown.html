@@ -4,7 +4,7 @@
     </div>
     <div class="col-lg-9">
         <select ng-model="elements[0]" class="form-control" ng-change="updateAvailableElements()"
-                ng-options="e.id as e.name for e in availableElementsSafe[0]">
+                ng-options="e.id as elementName(e) for e in availableElementsSafe[0]">
             <option value="" style="display: none;">Select {{ elementDisplayName }}...</option>
         </select>
     </div>
@@ -17,7 +17,7 @@
     </div>
     <div class="col-lg-7" ng-class="{'col-lg-offset-3': !$first}">
         <select ng-model="elements[$index]" class="form-control" ng-change="updateAvailableElements()"
-                ng-options="e.id as e.name for e in availableElementsSafe[$index]">
+                ng-options="e.id as elementName(e) for e in availableElementsSafe[$index]">
             <option value="" style="display: none;">Select {{ elementDisplayName }}...</option>
         </select>
     </div>

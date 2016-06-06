@@ -126,7 +126,7 @@ class QuoteTemplate(g.UserModel):
 def client_quoted(sender, instance, **kwargs):
     if instance.client_id:
         client = instance.client
-        cstat = int(client.status)
+        cstat = int(client.status or 0)
         qstat = int(instance.status)
 
         if client.auto_pipeline and cstat < ClientStatus.Quoted.value and qstat >= QuoteStatus.Sent.value:
@@ -165,11 +165,12 @@ def quote_project_added(action, instance, reverse, **kwargs):
 
         for quote in quotes:
             for project in projects:
-                project.client = quote.client
+                if not project.client:
+                    project.client = quote.client
 
                 for service in quote.services.all_for(quote.user, 'change'):
-                    service.pk = None
                     card = service.card
+                    service.pk = None
                     card.pk = None
                     service.card = card.save()
                     service.save()

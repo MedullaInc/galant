@@ -39,7 +39,7 @@ class Project(UserModel):
 def client_project(sender, instance, **kwargs):
     for quote in instance.quote_set.all_for(instance.user).filter(client__isnull=False).select_related('client'):
         client = quote.client
-        cstat = int(client.status)
+        cstat = int(client.status or 0)
 
         for service in quote.services.all_for(quote.user, 'change'):
             service.save()

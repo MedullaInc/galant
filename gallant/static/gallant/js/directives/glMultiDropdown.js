@@ -40,6 +40,13 @@ app.directive('glMultiDropdown', [ function () {
                 }
             };
 
+            $scope.elementName = function (e) {
+                if (e.hasOwnProperty('language') && !(typeof e.name === 'string'))
+                    return e.name[e.language];
+                else
+                    return e.name;
+            };
+
             $scope.$watch('availableElements', function () {
                 $scope.updateAvailableElements();
             });

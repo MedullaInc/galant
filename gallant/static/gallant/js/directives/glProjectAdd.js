@@ -37,7 +37,7 @@ app.directive('glProjectAdd', ['$window', 'Project', 'Quote', 'Client',
                 $scope.statusChoices = fields.status;
             });
 
-            Quote.query({unlinked: true}).$promise.then(function (response) {
+            Quote.query({linkable_for_project: $scope.project.id}).$promise.then(function (response) {
                 $scope.quotes = response;
             });
 

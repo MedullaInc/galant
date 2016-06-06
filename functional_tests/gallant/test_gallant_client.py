@@ -38,7 +38,8 @@ class GallantClientTest(browser.SignedInTest):
         quote.save()
 
         # Create project
-        project = self.create_one('gallant.Project', {'status': '2', 'quote': quote, 'services': []})
+        project = self.create_one('gallant.Project', {'status': '2', 'quote': quote,
+                                                      'services': [], 'client': None})
 
         # Add quote to project
         quote.projects.add(project)
