@@ -128,7 +128,7 @@
                 </div>
             </uib-tab>
             <uib-tab index="0" heading="Projects">
-                <div gl-project-list projects="projects"></div>
+                <div gl-project-list projects="projects" language="{% firstof language LANGUAGE_CODE %}"></div>
             </uib-tab>
         </uib-tabset>
 

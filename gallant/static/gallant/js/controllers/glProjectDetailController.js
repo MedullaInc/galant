@@ -1,15 +1,17 @@
 app = angular.module('gallant.controllers.glProjectDetailController', ['gallant.services.glServices',
     'kanban.directives.kbBoardColumn']);
 
-app.controller('glProjectDetailController', ['$scope', '$http', '$window', 'Project', 'glConstants',
-    function ($scope, $http, $window, Project, glConstants) {
+app.controller('glProjectDetailController', ['$scope', '$http', '$window', 'Project', 'Service', 'glConstants',
+    function ($scope, $http, $window, Project, Service, glConstants) {
         $scope.glConstants = glConstants;
 
         $scope.init = function (serviceDetailURL, projectId) {
             $scope.serviceDetailURL = serviceDetailURL;
             Project.get({id: projectId}).$promise.then(function (project) {
                 $scope.project = project;
-                $scope.services = $scope.project.services;
+            });
+            Service.query({project_id: projectId}).$promise.then(function (services) {
+                $scope.services = services;
             });
         };
 
@@ -23,9 +25,6 @@ app.controller('glProjectDetailController', ['$scope', '$http', '$window', 'Proj
         };
 
         $scope.projectSaved = function (project) {
-            $scope.project = project;
-            $scope.services = $scope.project.services;
-
             $scope.modalInstance.dismiss('cancel');
             $window.location.reload();
         };

@@ -79,15 +79,24 @@ describe('glProjectDetailController', function () {
         angular.module('gallant.services.glServices', []);
         module('gallant.services.glServices', function ($provide) {
             $provide.factory('Project', function ($q) {
-                var Project = jasmine.createSpyObj('Project', ['get']);
-
-                Project.get.and.returnValue({$promise: $q.when(
-                    {
-                        id: 0, services: [{id: 0, name: {}, description: {}, language: 'en'}]
+                return {
+                    get: function () {
+                        return {
+                            $promise: $q.when({
+                                id: 0, services: [{id: 0, name: {}, description: {}, language: 'en'}]
+                            })
+                        };
                     }
-                )});
-
-                return Project;
+                };
+            });
+            $provide.factory('Service', function ($q) {
+                return {
+                    query: function () {
+                        return {
+                            $promise: $q.when([{id: 0, name: {}, description: {}, language: 'en'}])
+                        };
+                    }
+                };
             });
             $provide.factory('glConstants', function() {
                 return {};
@@ -137,9 +146,10 @@ describe('glProjectDetailController', function () {
     });
 
     it('saves project', function () {
+        spyOn($window.location, 'reload');
         $scope.modalInstance = { dismiss: function () {} };
         $scope.projectSaved({});
-        expect($scope.project).toEqual({});
+        expect($window.location.reload).toHaveBeenCalled();
     });
 });
 

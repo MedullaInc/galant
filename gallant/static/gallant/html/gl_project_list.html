@@ -2,7 +2,7 @@
 
     <div class="row">
         <div gl-add-modal open-fn="addProject" title="Add Project" modal-instance="modalInstance">
-            <div gl-project-add on-success="projectSaved"></div>
+            <div gl-project-add on-success="projectSaved" language="{{ language }}"></div>
         </div>
         <div class="col-lg-12">
             <button class="btn btn-default btn-add pull-right" ng-click="addProject()">
