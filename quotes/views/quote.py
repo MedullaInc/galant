@@ -1,6 +1,7 @@
 import datetime
 
 from django.db.models.query import Prefetch
+from django.db.models.query_utils import Q
 from django.http.response import HttpResponse, JsonResponse
 from django.views.generic import View
 from django.template.response import TemplateResponse
@@ -330,7 +331,7 @@ class QuoteViewSet(UserModelViewSet):
     def get_queryset(self):
         client_id = self.request.query_params.get('client_id', None)
         clients_only = self.request.query_params.get('clients_only', None)
-        unlinked = self.request.query_params.get('unlinked', None)
+        linkable_for_project = self.request.query_params.get('linkable_for_project', None)
 
         qs = self.model.objects.all_for(self.request.user)
 
@@ -342,8 +343,8 @@ class QuoteViewSet(UserModelViewSet):
         elif clients_only is not None:
             qs = qs.exclude(client__isnull=clients_only)
 
-        if unlinked is not None:
-            qs = qs.filter(projects=None)
+        if linkable_for_project is not None:
+            qs = qs.filter(Q(projects=None) | Q(projects__id=linkable_for_project))
 
         return qs.select_related('client')
 
