@@ -10,12 +10,19 @@ from quotes import models as q
 
 class ProjectSerializer(serializers.ModelSerializer):
     user = serializers.PrimaryKeyRelatedField(read_only=True)
+    client_name = serializers.SerializerMethodField()
 
     link = serializers.SerializerMethodField()
     field_choices = serializers.SerializerMethodField()
 
     def get_link(self, project):
         return reverse('project_detail', args=[project.id])
+
+    def get_client_name(self, project):
+        if project.client:
+            return project.client.name
+        else:
+            return ''
 
     def get_field_choices(self, project):
         return get_field_choices(type(project))
@@ -32,7 +39,7 @@ class ProjectSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Project
-        fields = ('id', 'user', 'name', 'status', 'notes', 'services', 'client', 'field_choices', 'link')
+        fields = ('id', 'user', 'name', 'status', 'notes', 'services', 'client', 'client_name', 'field_choices', 'link')
         extra_kwargs = {
             'id': {'read_only': False, 'required': False, 'allow_null':True},
             'user': {'required': False},
