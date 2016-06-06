@@ -11,7 +11,7 @@ app.controller('glClientPaymentController', ['$scope', '$attrs', '$uibModal', '$
             templateUrl: '/static/gallant/html/gl_client_payment_modal.html',
             backdrop: true,
             windowClass: 'modal',
-            controller: function ($scope, $uibModalInstance, ClientQuote, createPayment, updatePayment, Payment) {
+            controller: function ($scope, $uibModalInstance, ClientQuote, createPayment, updatePayment, Payment, Client) {
 
                 // When form loads, it will load quotes
                 $scope.quotes = [];
@@ -23,12 +23,13 @@ app.controller('glClientPaymentController', ['$scope', '$attrs', '$uibModal', '$
                 };
 
                 $scope.hasServices = function (quote) {
-                    return quote.services.length > 0 && quote.status == 5;
+                    return quote.status == 5 && quote.projects.length > 0;
                 };
                 // Load default payment formant & due date
                 if (typeof payment_id !== 'undefined') {
                     Payment.get({id: payment_id}).$promise.then(function (response) {
                         $scope.payment = response;
+                        $scope.currency = '( in ' + response.amount.currency + ' )';
                         if ($scope.payment.due) {
                             $scope.payment.due = new Date($scope.payment.due);
                         } else {
@@ -48,14 +49,15 @@ app.controller('glClientPaymentController', ['$scope', '$attrs', '$uibModal', '$
                 // When selecting a quote, currency will update as well as quote
                 $scope.updateCurrency = function (quote_id) {
                     var quote = $scope.quotes.find(function (q) { return q.id == quote_id; });
-                    var service = quote.services.find(function (s) { return s.cost != null; });
 
-                    if (service) {
-                        $scope.payment.amount.currency = service.cost.currency;
-                        $scope.currency = '( in ' + service.cost.currency + ' )';
-                    } else {
+                    Client.get({id: quote.client}).$promise.then(function (response) {
+                       if (response.currency) {
+                        $scope.currency = '( in ' + response.currency + ' )';
+                       } else {
                         $scope.currency = '( N/A )'
-                    }
+                       }
+                    });
+
                 };
 
                 // Date pickers
