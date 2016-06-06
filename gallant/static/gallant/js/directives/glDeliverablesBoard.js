@@ -3,24 +3,19 @@ app = angular.module('gallant.directives.glDeliverablesBoard', [
     'kanban.directives.kbBoardColumn',
 ]);
 
-app.directive('glDeliverablesBoard', ['Project', 'Service', function (Project, Service) {
+app.directive('glDeliverablesBoard', ['Project', 'Service', 'glConstants', function (Project, Service, glConstants) {
     return {
         restrict: 'A',
         scope: {
         },
         controller: ['$scope', function ($scope) {
+            $scope.glConstants = glConstants;
         }],
         templateUrl: '/static/gallant/html/gl_service_board.html',
         link: function ($scope) {
             $scope.services = [];
-            Project.query().$promise.then(function (response) {
-                angular.forEach(response, function (p) {
-                    Service.query({project_id: p.id}).$promise.then(function (services) {
-                        angular.forEach(services, function (s) {
-                            $scope.services.push(s);
-                        });
-                    });
-                });
+            Service.query({project_open: true}).$promise.then(function (services) {
+                $scope.services = services;
             });
         }
     };
