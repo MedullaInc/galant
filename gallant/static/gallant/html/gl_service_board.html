@@ -1,5 +1,5 @@
 <div class="container kanban fit">
-    <div class="row">
+    <div class="row" ng-show="!services">
         <div class="kanban-column" kb-board-column title="Unassigned" click-fn="redirect"
              items="$parent.services" status-index="{{ glConstants.ServiceStatus.PendingAssignment }}"></div>
         <div class="kanban-column" kb-board-column title="In Progress" click-fn="redirect"
@@ -18,7 +18,9 @@
     </div>
     <div class="row" ng-show="services && services.length == 0">
         <div class="col-lg-12 col-centered">
+            <p>
             No deliverables yet.
+            </p>
         </div>
     </div>
 </div>

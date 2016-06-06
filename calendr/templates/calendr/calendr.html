@@ -101,7 +101,12 @@
                              assignee="{{ user.id }}" projects="projects" users="users"></div>
                     </div>
                     <div class="row">
-                        <div class="col-lg-12">
+                        <div class="col-lg-4">
+                            <h2 class="section_title">
+                                Tasks
+                            </h2>
+                        </div>
+                        <div class="col-lg-8">
                             <button class="btn btn-default btn-add pull-right"
                                     ng-click="editTask()">
                                 <span class="glyphicon glyphicon-plus"></span> Add Task
@@ -129,6 +134,8 @@
             </uib-tab>
             <uib-tab index="0" heading="Projects">
                 <div gl-project-list projects="projects"></div>
+                <div ng-include src="'/static/calendr/html/cl_deliverables_board.html'">
+                </div>
             </uib-tab>
         </uib-tabset>
 
