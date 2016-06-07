@@ -11,7 +11,8 @@ app.controller('glClientPaymentController', ['$scope', '$attrs', '$uibModal', '$
             templateUrl: '/static/gallant/html/gl_client_payment_modal.html',
             backdrop: true,
             windowClass: 'modal',
-            controller: function ($scope, $uibModalInstance, ClientQuote, createPayment, updatePayment, Payment, Client) {
+            controller: ['$scope', '$uibModalInstance', 'ClientQuote', 'createPayment', 'updatePayment', 'Payment', 'Client',
+                function ($scope, $uibModalInstance, ClientQuote, createPayment, updatePayment, Payment, Client) {
 
                 // When form loads, it will load quotes
                 $scope.quotes = [];
@@ -93,7 +94,7 @@ app.controller('glClientPaymentController', ['$scope', '$attrs', '$uibModal', '$
                 $scope.cancel = function () {
                     $uibModalInstance.dismiss('cancel');
                 };
-            },
+            }],
             resolve: {
 
                 createPayment: /* istanbul ignore next */ function () {
