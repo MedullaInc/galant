@@ -11,7 +11,7 @@
             </canvas>
             <div ng-hide="potential_clients > 0 || quoted_clients > 0 || project_underway.length > 0" class="dashbard-chart-msg">
                 <h2 class="section_title">
-                    This chart will show how many people approached you, how many of those were quoted and how many of the quoted became clients.
+                    No clients yet.
                 </h2>
             </div>
         </div>
@@ -30,7 +30,7 @@
                     ng-click="workChartClicked($event)" class="clickable"></canvas>
             <div ng-hide="service_on_hold > 0 || service_pending_assignment > 0 || service_active > 0 || service_overdue > 0 || service_completed > 0" class="dashbard-chart-msg">
                 <h2 class="section_title">
-                    This chart will show deliverables from projects you're working on to let you know how many are being worked on, how many are overdue and how many have been completed.
+                    No work yet.
                 </h2>
             </div>
         </div>
