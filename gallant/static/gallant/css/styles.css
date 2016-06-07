@@ -3663,6 +3663,11 @@ a h2.section_subtitle {
     background-size: 100%;
 }
 
+#main_form label.required:after {
+    content: '*';
+    color: red;
+}
+
 .align-left {
     text-align: left;
 }

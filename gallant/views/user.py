@@ -131,7 +131,7 @@ class Register(View):
         if valid:
             return render(request, 'gallant/register_form.html', {
                 'title': 'Register',
-                'set_password_form': SetPasswordForm(user),
+                'set_password_form': forms.GallantSetPasswordForm(user),
                 'form': forms.GallantUserForm(instance=user)
             })
         else:
@@ -144,7 +144,7 @@ class Register(View):
 
         if valid:
             form = forms.GallantUserForm(request.POST, instance=user)
-            set_password_form = SetPasswordForm(user, request.POST)
+            set_password_form = forms.GallantSetPasswordForm(user, request.POST)
 
             if form.is_valid() and set_password_form.is_valid():
                 u = form.save()
