@@ -1406,6 +1406,10 @@ header .brand img:first-child {
 
 }
 
+.main-container {
+    padding-bottom: 200px;
+}
+
 .content-1 .holder.v-center > div,
 .content-1 .holder .v-center > div {
     vertical-align: middle;
