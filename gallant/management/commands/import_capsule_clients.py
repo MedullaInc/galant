@@ -49,7 +49,7 @@ def load_capsule_csv(options):
                 user=user,
                 name=row['Name'],
                 email=row['Email'],
-                company=row['Organization'],
+                company=row['Organization'] or row['Name'],
                 status=g.ClientStatus.Potential.value,
                 contact_info=ci,
             )
