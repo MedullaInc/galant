@@ -24,12 +24,17 @@ def load_capsule_csv(options):
     with open(options['file_name'], 'rb') as file:
         reader = csv.DictReader(file, delimiter=',', quotechar='"')
         for row in reader:
+            if row["Type"] == 'Organization':
+                continue
+
             country = ''
             for code, name in django_countries.Countries():
                 if row["Country"] == 'United States':
                     country = 'US'
                 elif len(row["Country"]) and row["Country"] in unicode(name):
                     country = code
+                else:
+                    country = 'US'
 
             ci = g.ContactInfo.objects.create(
                 user=user,
@@ -46,5 +51,6 @@ def load_capsule_csv(options):
                 name=row['Name'],
                 email=row['Email'],
                 company=row['Organization'],
+                status=g.ClientStatus.Potential.value,
                 contact_info=ci,
             )
