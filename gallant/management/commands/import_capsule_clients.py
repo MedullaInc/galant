@@ -24,25 +24,24 @@ def load_capsule_csv(options):
     with open(options['file_name'], 'rb') as file:
         reader = csv.DictReader(file, delimiter=',', quotechar='"')
         for row in reader:
-            if row["Type"] == 'Organization':
+            if row['Type'] == 'Organization':
                 continue
 
-            country = ''
-            for code, name in django_countries.Countries():
-                if row["Country"] == 'United States':
-                    country = 'US'
-                elif len(row["Country"]) and row["Country"] in unicode(name):
-                    country = code
-                else:
-                    country = 'US'
+            country = 'US'
+
+            if row['Country'] != 'United States':
+                for code, name in django_countries.Countries():
+                    if len(row['Country']) and row['Country'] in unicode(name):
+                        country = code
+                        break
 
             ci = g.ContactInfo.objects.create(
                 user=user,
-                phone_number=row["Phone Number"],
-                address=row["Address Street"],
-                city=row["City"],
-                state=row["State"],
-                zip=row["Postcode"],
+                phone_number=row['Phone Number'],
+                address=row['Address Street'],
+                city=row['City'],
+                state=row['State'],
+                zip=row['Postcode'],
                 country=country,
             )
 
