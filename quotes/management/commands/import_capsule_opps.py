@@ -36,18 +36,18 @@ def load_capsule_csv(options):
                     client = cs[0]
 
             if row['Duration Basis'] == 'month':
-                name = 'Monthly Service'
+                basis = 'Monthly Service'
             elif row['Duration Basis'] == 'hour':
-                name = 'Hourly Service'
+                basis = 'Hourly Service'
             elif row['Duration Basis'] == 'fixed':
-                name = 'Fixed Rate Service'
+                basis = 'Fixed Rate Service'
 
             service = g.Service.objects.create(
                 user=user,
-                name=name,
+                name='%s (%s)' % (row['Opportunity Name'], basis),
                 description=row['Opportunity Description'],
                 cost=Money(row['Value per Duration'] or 0, row['Currency'] or 'USD'),
-                quantity=row['Duration'] or 0,
+                quantity=row['Duration'] or 1,
             )
 
             status = q.QuoteStatus.Not_Sent.value
@@ -83,6 +83,8 @@ def load_capsule_csv(options):
                 )
 
                 service.pk = None
+                service.cost *= service.quantity
+                service.quantity = 1
                 service.save()
 
                 project.services.add(service)
