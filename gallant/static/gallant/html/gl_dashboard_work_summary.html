@@ -1,38 +1,42 @@
-<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 position-relative">
-    <div class="enclosed chart_box dashboard">
-        <h2 class="chart_title">
-            Clients
-            <span class="pull-right glyphicon glyphicon-question-sign help-tooltip" uib-tooltip="Shows how many people approached you, how many of those were quoted and how many of the quoted became clients." tooltip-placement="top-right"></span>
-        </h2>
-        <div class="col-lg-11">
+<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+    <section class="widget">
+        <header>
+            <h4>
+                Clients
+            </h4>
+            <div class="widget-controls">
+            </div>
+        </header>
+        <div class="widget-body">
             <canvas tc-chartjs-polararea chart-options="work_polar_chart_options" chart-data="work_polar_chart_data"
                     auto-legend ng-show="potential_clients > 0 || quoted_clients > 0 || project_underway.length > 0"
                     ng-click="clientChartClicked($event)" class="clickable">
             </canvas>
-            <div ng-hide="potential_clients > 0 || quoted_clients > 0 || project_underway.length > 0" class="dashbard-chart-msg">
-                <h2 class="section_title">
-                    No clients yet.
-                </h2>
-            </div>
+            <p class="fs-mini text-muted">
+                Shows potential clients, quoted clients and how many of the quoted became active clients.
+            </p>
         </div>
-    </div>
+    </section>
 </div>
-<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 position-relative">
-    <div class="enclosed chart_box dashboard">
-        <h2 class="chart_title">
-            Deliverables
-            <span class="pull-right glyphicon glyphicon-question-sign help-tooltip" uib-tooltip="From all projects you're working on, shows how many deliverables are being worked on, how many are overdue and how many have been completed.." tooltip-placement="top-right"></span>
-        </h2>
-        <div class="col-lg-11">
+
+<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+    <section class="widget">
+        <header>
+            <h4>
+                Deliverables
+            </h4>
+            <div class="widget-controls">
+            </div>
+        </header>
+        <div class="widget-body">
             <canvas tc-chartjs-doughnut chart-options="work_doughnut_chart_options"
                     chart-data="work_doughnut_chart_data" auto-legend
                     ng-show="service_on_hold > 0 || service_pending_assignment > 0 || service_active > 0 || service_overdue > 0 || service_completed > 0"
-                    ng-click="workChartClicked($event)" class="clickable"></canvas>
-            <div ng-hide="service_on_hold > 0 || service_pending_assignment > 0 || service_active > 0 || service_overdue > 0 || service_completed > 0" class="dashbard-chart-msg">
-                <h2 class="section_title">
-                    No work yet.
-                </h2>
-            </div>
+                    ng-click="workChartClicked($event)" class="clickable">
+            </canvas>
+            <p class="fs-mini text-muted">
+                From all projects, shows how many deliverables are being worked on, overdue and completed.
+            </p>
         </div>
-    </div>
+    </section>
 </div>

@@ -28,6 +28,9 @@
 {% block extra_wrapper_attrs %} ng-app="glUserDashboard" {% endblock %}
 
 {% block content %}
+
+    <h1 class="page-title">Dashboard</h1>
+
     <div class="row">
         <div id="center_content_enclosed" gl-dashboard-work-summary client-list-url="{% url 'clients' %}"
             projects-url="{% url 'calendr' %}">

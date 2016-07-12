@@ -3,16 +3,42 @@ div.page-wrapper {
     height: 100%;
 }
 
-.body.chat-sidebar-container.nav-collapsed header.logo {
+.body.chat-sidebar-container header.logo {
+    color: transparent;
+    background: url(/static/img/galant/galant_sidebar_logo.png) no-repeat center -8px;
 }
 
-.body.chat-sidebar-container.nav-collapsed header.logo a {
+.body.chat-sidebar-container.nav-collapsed header.logo {
     color: transparent;
     padding-top: 23px;
     padding-bottom: 3px;
-    background: url(/static/img/galant/galant_monogram.png) no-repeat -35px center;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
+    background: url(/static/img/galant/galant_monogram.png) no-repeat 0px -8px;
 }
+
+/* Charts */
+
+.widget-body canvas {
+    margin: auto;
+}
+
+.tc-chart-js-legend {
+    margin-bottom: 20px;
+    margin-top: 20px;
+    min-height: 60px;
+}
+
+.tc-chart-js-legend li {
+    list-style-type: none;
+    height: 20px;
+    font-size: 13px;
+}
+
+.tc-chart-js-legend li span {
+    height: 20px;
+}
+
+.fs-mini.text-muted {
+    clear: left;
+}
+
+/* End Charts */
