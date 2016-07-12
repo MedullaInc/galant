@@ -17,9 +17,9 @@ window.DEBUG = true;
  * Setting Widgster's body selector to theme specific
  * @type {string}
  */
-$.fn.widgster.Constructor.DEFAULTS.bodySelector = '.widget-body';
+jQuery.fn.widgster.Constructor.DEFAULTS.bodySelector = '.widget-body';
 
-$(function(){
+jQuery(function($){
 
     /**
      * Main app class that handles page switching, async script loading, resize & pageLoad callbacks.
@@ -73,12 +73,6 @@ $(function(){
             /**
              * Initialize pjax & attaching all related events
              */
-            this.$sidebar.find('.sidebar-nav a:not([data-toggle=collapse], [data-no-pjax], [href=#])').on('click', $.proxy(this._checkLoading, this));
-            $(document).pjax('#sidebar .sidebar-nav a:not([data-toggle=collapse], [data-no-pjax], [href=#])', '#content', {
-                fragment: '#content',
-                type: 'GET', //this.debug ? 'POST' : 'GET' //GET - for production, POST - for debug.
-                timeout: 4000
-            });
             $(document).on('pjax:start', $.proxy(this._changeActiveNavigationItem, this));
             $(document).on('pjax:start', $.proxy(this._resetResizeCallbacks, this));
             $(document).on('pjax:send', $.proxy(this.showLoader, this));
