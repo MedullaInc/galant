@@ -1,4 +1,4 @@
-<div class="col-lg-{{ columns ? columns : '3' }} col-md-12 col-sm-12 col-xs-12">
+<div class="col-lg-{{ columns ? columns : '2' }} col-md-12 col-sm-12 col-xs-12">
     <div class="column-title">
         {{ title }}
     </div>
@@ -8,7 +8,7 @@
              data-as-sortable-item>
             <div data-as-sortable-item-handle>
                 <div class="row">
-                    <div class="col-lg-8 col-md-10 col-sm-9 col-xs-9">
+                    <div class="kanban-card-data pull-left">
                         <p>
                             <a ng-click="callback(item)">
                                 {{ item.card.title }}
@@ -18,7 +18,7 @@
                             {{ item.card.text }}
                         </p>
                     </div>
-                    <div class="col-lg-3 col-md-1 col-sm-1 col-xs-1">
+                    <div class="kanban-card-alert pull-left">
                         <button class="btn btn-default btn-alert" ng-show="item.card.alert" uib-tooltip="{{ item.card.alert }}" tooltip-placement="top-right">
                             <span class="glyphicon glyphicon-warning-sign pull-right"></span>
                         </button>

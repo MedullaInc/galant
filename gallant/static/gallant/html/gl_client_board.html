@@ -1,24 +1,26 @@
-<div class="container kanban fit">
-    <div class="row">
-        <div class="kanban-column" kb-board-column title="Potential" click-fn="redirect"
-             items="$parent.clientsSafe" status-index="{{ glConstants.ClientStatus.Potential }}"></div>
-        <div class="kanban-column" kb-board-column title="Quoted" click-fn="redirect"
-             items="clientsSafe" status-index="{{ glConstants.ClientStatus.Quoted }}"></div>
-        <div class="kanban-column" kb-board-column title="Project Underway" click-fn="redirect"
-             items="clientsSafe" status-index="{{ glConstants.ClientStatus.ProjectUnderway }}"></div>
-        <div class="kanban-column" kb-board-column title="Pending Payment" click-fn="redirect"
-             items="clientsSafe" status-index="{{ glConstants.ClientStatus.PendingPayment }}"></div>
-        <div class="kanban-column" kb-board-column title="Closed" click-fn="redirect"
-             items="clientsSafe" status-index="{{ glConstants.ClientStatus.Closed }}"></div>
-    </div>
-    <div class="row" ng-show="!clientsLoaded">
-        <div class="col-lg-12 col-centered">
-            <img src="/static/img/loading.gif" class="spinner-loading">
+<section class="widget">
+        <div class="kanban fit">
+            <div class="row">
+                <div class="kanban-column" kb-board-column title="Potential" click-fn="redirect"
+                     items="$parent.clientsSafe" status-index="{{ glConstants.ClientStatus.Potential }}"></div>
+                <div class="kanban-column" kb-board-column title="Quoted" click-fn="redirect"
+                     items="clientsSafe" status-index="{{ glConstants.ClientStatus.Quoted }}"></div>
+                <div class="kanban-column" kb-board-column title="Project Underway" click-fn="redirect"
+                     items="clientsSafe" status-index="{{ glConstants.ClientStatus.ProjectUnderway }}"></div>
+                <div class="kanban-column" kb-board-column title="Pending Payment" click-fn="redirect"
+                     items="clientsSafe" status-index="{{ glConstants.ClientStatus.PendingPayment }}"></div>
+                <div class="kanban-column" kb-board-column title="Closed" click-fn="redirect"
+                     items="clientsSafe" status-index="{{ glConstants.ClientStatus.Closed }}"></div>
+            </div>
+            <div class="row" ng-show="!clientsLoaded">
+                <div class="col-lg-12 col-centered">
+                    <img src="/static/img/loading.gif" class="spinner-loading">
+                </div>
+            </div>
+            <div class="row" ng-show="clientsLoaded && clientsSafe.length == 0">
+                <div class="col-lg-12 col-centered">
+                    No clients yet.
+                </div>
+            </div>
         </div>
-    </div>
-    <div class="row" ng-show="clientsLoaded && clientsSafe.length == 0">
-        <div class="col-lg-12 col-centered">
-            No clients yet.
-        </div>
-    </div>
-</div>
+</section>
