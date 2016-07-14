@@ -12,7 +12,7 @@ app.factory('Task', ['$resource', function ($resource) {
 
 /* istanbul ignore next  */
 app.factory('FC', function () {
-    return $.fullCalendar;
+    return jQuery.fullCalendar;
 });
 /* istanbul ignore next  */
 app.factory('moment', function () {

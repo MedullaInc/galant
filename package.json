@@ -26,7 +26,7 @@
     "angular-route": "^1.4.8",
     "angular-smart-table": "^2.1.5",
     "angular-ui-bootstrap": "^1.0.0",
-    "angular-ui-calendar": "git+https://github.com/gusreyes01/ui-calendar.git",
+    "angular-ui-calendar": "git+https://github.com/david12341235/ui-calendar.git",
     "angular-xeditable": "git+https://github.com/david12341235/angular-xeditable.git",
     "bootstrap": "^3.3.6",
     "chart.js": "^1.0.2",

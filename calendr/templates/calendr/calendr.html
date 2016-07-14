@@ -35,9 +35,12 @@
 
 {% block extra_wrapper_attrs %} ng-app="calendr" {% endblock %}
 
-{% block content_div %}
+{% block content %}
 
     <div class="container" id="projects_container">
+        <h2 class="section_title">
+            Calendar
+        </h2>
         <div id="calendr" ng-controller="clCalendrController"
              ng-init="init({{ user.id }}, {{ user.settings.calendr_users|yesno:"true,false" }})">
             <div id="calendar_container">
