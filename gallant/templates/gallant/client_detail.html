@@ -233,42 +233,44 @@
         </div>
     </div>
     <script>
-        $('.add_brief').popover({
-            html: true,
-            container: 'body',
-            content: $('#add_button_popover').html(),
-            title: false,
-            placement: "bottom"
-        }).click(function () {
-            $('body').on('click', '.popover-content > button.brief_from_template_button', function () {
-                $('#add_brief').popover('hide');
-                $('#template_select').modal('show');
+        jQuery(document).ready(function ($) {
+            $('.add_brief').popover({
+                html: true,
+                container: 'body',
+                content: $('#add_button_popover').html(),
+                title: false,
+                placement: "bottom"
+            }).click(function () {
+                $('body').on('click', '.popover-content > button.brief_from_template_button', function () {
+                    $('#add_brief').popover('hide');
+                    $('#template_select').modal('show');
+                });
+                $('body').on('click', '.popover-content > a.brief_from_template_button', function () {
+                    $('#add_brief').popover('hide');
+                    $('#template_select').modal('show');
+                });
             });
-            $('body').on('click', '.popover-content > a.brief_from_template_button', function () {
-                $('#add_brief').popover('hide');
-                $('#template_select').modal('show');
+
+            $('.table .template_row').click(function (e) {
+                var lang = '{{ LANGUAGE_CODE }}';
+                if ($(this).find('select').length) {
+                    lang = $(this).find('select').val();
+                }
+                window.location.href = "{% url 'add_brief' %}" + "?template_id=" +
+                        $(this).attr('data-rel') + "&lang=" + lang +
+                        "&client_id={{ object.id }}";
             });
-        });
 
-        $('.table .template_row').click(function (e) {
-            var lang = '{{ LANGUAGE_CODE }}';
-            if ($(this).find('select').length) {
-                lang = $(this).find('select').val();
-            }
-            window.location.href = "{% url 'add_brief' %}" + "?template_id=" +
-                    $(this).attr('data-rel') + "&lang=" + lang +
-                    "&client_id={{ object.id }}";
-        });
+            $('.table .template_row select').click(function (e) {
+                e.stopPropagation();
+            });
 
-        $('.table .template_row select').click(function (e) {
-            e.stopPropagation();
-        });
-
-        $('body').on('click', function (e) {
-            var p = $('#add_brief');
-            if (!p.is(e.target) && p.has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
-                p.popover('hide');
-            }
+            $('body').on('click', function (e) {
+                var p = $('#add_brief');
+                if (!p.is(e.target) && p.has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
+                    p.popover('hide');
+                }
+            });
         });
     </script>
 {% endblock %}
