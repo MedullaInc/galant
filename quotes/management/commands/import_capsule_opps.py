@@ -80,11 +80,13 @@ def load_capsule_csv(options):
                     user=user,
                     name=quote.name,
                     client=client,
+                    status=pstatus,
                 )
 
                 service.pk = None
                 service.cost *= service.quantity
                 service.quantity = 1
+                service.status = pstatus
                 service.save()
 
                 project.services.add(service)
