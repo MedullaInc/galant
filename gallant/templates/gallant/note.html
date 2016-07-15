@@ -1,10 +1,13 @@
 {% load i18n %}
 
-<div id="note_{{ item.id }}" class="note_text">{{ item.text|linebreaks }}</div>
-<p>
-    <i class="note">
-        by {{ item.user.email }}<br/>
-        on {{ item.created }}
-    </i>
-</p>
-<hr>
+<section class="event" id="note_{{ item.id }}">
+    <h4 class="event-heading">
+        <a href="mailto:{{ item.user.email }}">{{ item.user.email }}</a>
+    </h4>
+    <p class="fs-sm text-muted">{{ item.created }}</p>
+    <p class="fs-mini">
+        {{ item.text|linebreaks }}
+    </p>
+    <footer>
+    </footer>
+</section>

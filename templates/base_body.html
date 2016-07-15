@@ -86,7 +86,7 @@
                     <header class="logo hidden-xs">
                     </header>
                     <ul class="sidebar-nav">
-                        <li class="active">
+                        <li>
                             <a href="/">
                                 <span class="icon">
                                     <i class="fa fa-desktop"></i>
@@ -94,13 +94,15 @@
                                 Dashboard
                             </a>
                         </li>
-                        <li>
+                        <li class="active">
                             <a href="{% url 'clients' %}">
                                 <span class="icon">
                                     <i class="fa fa-globe"></i>
                                 </span>
                                 {% trans 'Clients' %}
                             </a>
+                            {% block client_sidebar %}
+                            {% endblock %}
                         </li>
                         <li>
                             <a href="{% url 'quotes' %}">

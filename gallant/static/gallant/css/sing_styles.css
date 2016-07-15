@@ -96,3 +96,16 @@ div.kanban-card.ng-scope.as-sortable-item {
 }
 
 /* End Modals*/
+
+/* Profile */
+
+img.img-responsive {
+    width: 100%;
+    opacity: 0.5;
+}
+
+.post-user.post-user-profile  {
+    padding-top: 93px;
+}
+
+/* En Profile */
