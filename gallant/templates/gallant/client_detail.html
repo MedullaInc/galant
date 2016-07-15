@@ -180,11 +180,20 @@
                 <section class="activities">
                     <h2>Notes</h2>
 
-                    {% objects_for object.notes as notes %}
-                    {% for item in notes %}
-                        {% include "gallant/note.html" %}
-                    {% endfor %}
-
+                    {% if object.notes|length > 0 %}
+                        {% objects_for object.notes as notes %}
+                        {% for item in notes %}
+                            {% include "gallant/note.html" %}
+                        {% endfor %}
+                    {% else %}
+                        <section class="event">
+                            <p class="fs-mini">
+                                No notes have been added for this client yet.
+                            </p>
+                            <footer>
+                            </footer>
+                        </section>
+                    {% endif %}
                     {% include "gallant/add_note.html" %}
                 </section>
                 {% endblock %}
