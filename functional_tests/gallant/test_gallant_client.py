@@ -164,11 +164,11 @@ class GallantClientTest(browser.SignedInTest):
         c = self.create_one('gallant.Client')
         self.get(self.live_server_url + reverse('client_detail', args=[c.id]))
         test_string = '2351tlgkjqlwekjalfkj'
-        self.e_class('welcome_box')
+        self.e_class('fs-mini')
 
         self.e_xpath('//textarea[@name="note.text"]').send_keys(test_string)
 
-        self.submit('submit_note')
+        self.submit('note_add')
 
         notes = self.e_id('notes')
 
@@ -191,7 +191,7 @@ class GallantClientTest(browser.SignedInTest):
         self.get(self.live_server_url + reverse('client_detail', args=[c.id]))
         self.click_xpath('//button[@type="submit"]')
 
-        self.assertTrue('This field is required.' in self.e_id('notes').text)
+        self.assertTrue('This field is required.' in self.e_class('help-block').text)
 
     def test_client_perms(self):
         c = self.create_one('gallant.Client')

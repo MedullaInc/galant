@@ -179,11 +179,11 @@
             </div>
             <div class="col-md-6">
                 {% block client_notes %}
-                <section class="activities">
+                <section id="notes" class="activities">
                     <h2>Notes</h2>
 
-                    {% if object.notes|length > 0 %}
-                        {% objects_for object.notes as notes %}
+                    {% objects_for object.notes as notes %}
+                    {% if notes|length > 0 %}
                         {% for item in notes %}
                             {% include "gallant/note.html" %}
                         {% endfor %}
