@@ -153,6 +153,10 @@
                                             <p class="value">{{ object.currency }}</p>
                                             <h5 class="name">Currency</h5>
                                         </div>
+                                        <div class="stat-item">
+                                            <p class="value">{{ object.contact_info.country }}</p>
+                                            <h5 class="name">Country</h5>
+                                        </div>
                                     </div>
                                     <p class="text-right mt-lg">
                                         <a href="{% url 'edit_client' object.id %}" class="btn btn-warning btn-sm mt" title="{% trans "Edit" %}">
