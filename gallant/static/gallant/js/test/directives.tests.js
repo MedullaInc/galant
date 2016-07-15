@@ -470,7 +470,7 @@ describe('glClientMoneyChart', function () {
         });
 
         it('compiles', function () {
-            expect(element.html().substring(0, 6)).toEqual('<div c');
+            expect(element.html().substring(0, 6)).toEqual('<secti');
         });
     });
 });
@@ -513,7 +513,7 @@ describe('glClientWorkChart', function () {
         });
 
         it('compiles', function () {
-            expect(element.html().substring(0, 6)).toEqual('<div c');
+            expect(element.html().substring(0, 6)).toEqual('<secti');
         });
     });
 });
