@@ -48,50 +48,52 @@
 {% block extra_body %}
     {{ block.super }}
     <script>
-        // Save form contents
-        $('.form').each(function () {
-            $(this).data('serialize', $(this).serialize());
-        });
-
-        var confirmOnPageExit = function (e) {
-            var modified = false;
+        jQuery(document).ready(function ($) {
+            // Save form contents
             $('.form').each(function () {
-                if ($(this).serialize() != $(this).data('serialize')) {
-                    modified = true;
-                    return false;
-                }
+                $(this).data('serialize', $(this).serialize());
             });
 
-            $('.ultext_target, .ultext_array_target').each(function () {
-                if ($(this).val() != $(this).data('val')) {
-                    modified = true;
-                    return false;
+            var confirmOnPageExit = function (e) {
+                var modified = false;
+                $('.form').each(function () {
+                    if ($(this).serialize() != $(this).data('serialize')) {
+                        modified = true;
+                        return false;
+                    }
+                });
+
+                $('.ultext_target, .ultext_array_target').each(function () {
+                    if ($(this).val() != $(this).data('val')) {
+                        modified = true;
+                        return false;
+                    }
+                });
+
+                if (!modified) {
+                    return null;
                 }
+
+                // If we haven't been passed the event get the window.event
+                e = e || window.event;
+
+                var message = 'You have unsaved changes. If you leave this page they will be lost.';
+
+                // For IE6-8 and Firefox prior to version 4
+                if (e) {
+                    e.returnValue = message;
+                }
+
+                // For Chrome, Safari, IE8+ and Opera 12+
+                return message;
+            };
+
+            // Turn it on - assign the function that returns the string
+            window.onbeforeunload = confirmOnPageExit;
+
+            $('.form').submit(function () {
+                window.onbeforeunload = null;
             });
-
-            if (!modified) {
-                return null;
-            }
-
-            // If we haven't been passed the event get the window.event
-            e = e || window.event;
-
-            var message = 'You have unsaved changes. If you leave this page they will be lost.';
-
-            // For IE6-8 and Firefox prior to version 4
-            if (e) {
-                e.returnValue = message;
-            }
-
-            // For Chrome, Safari, IE8+ and Opera 12+
-            return message;
-        };
-
-        // Turn it on - assign the function that returns the string
-        window.onbeforeunload = confirmOnPageExit;
-
-        $('.form').submit(function () {
-            window.onbeforeunload = null;
         });
     </script>
 {% endblock %}

@@ -14,15 +14,15 @@
 
         app.controller('FormCtrl', function ($scope) {
             $scope.submitForm = function () {
-                $('.form').each(function () {
-                    $(this).data('serialize', $(this).serialize());
+                jQuery('.form').each(function () {
+                    jQuery(this).data('serialize', jQuery(this).serialize());
                 });
 
                 var form = $scope.{{ form.form_name }};
                 var contact_form = $scope.{{ contact_form.form_name }};
                 var data = { csrfmiddlewaretoken:'{{csrf_token}}' };
 
-                $.each([form, contact_form], function(i, form) {
+                jQuery.each([form, contact_form], function(i, form) {
                     angular.forEach(form, function (val, key) {
                         if (!key.match(/\$/)) {
                             val.$setDirty();
@@ -34,7 +34,7 @@
                 });
 
                 if (!form.$invalid && !contact_form.$invalid) {
-                    $.post('', data, function (response) {
+                    jQuery.post('', data, function (response) {
                         if (response.redirect) {
                             window.location.href = response.redirect;
                         } else {

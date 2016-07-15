@@ -1,8 +1,8 @@
 {% extends "base_body.html" %}
 {% load bootstrap i18n gallant_tags staticfiles %}
 
-{% block section_title %}
-    {% trans "Client Overview" %}
+{% block page_title %}
+    Client - <span class="fw-semi-bold">Dashboard</span>
 {% endblock %}
 
 {% block scripts %}
@@ -106,8 +106,6 @@
     </script>
 
     {% block client_detail %}
-
-        <h1 class="page-title">Client - <span class="fw-semi-bold">Dashboard</span></h1>
 
         <div class="row">
             <div class="col-md-6">

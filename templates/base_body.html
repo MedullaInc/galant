@@ -49,6 +49,7 @@
         {% url 'home' as home_url %}
         {% if request.get_full_path != home_url %}
 
+            {% comment %}
             {% block sub_header %}
                 {% if user.is_authenticated %}
                 {% else %}
@@ -56,9 +57,9 @@
                     <div class="row">
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
                             <h2 class="app_title">
-                                {% block section_title %}
+                                {% block old_title %}
                                     {% firstof title 'Menu' %}
-                                {% endblock section_title %}
+                                {% endblock %}
                             </h2>
                         </div>
                         {% block breadcrumbs %}
@@ -75,6 +76,7 @@
                 </div>
                 {% endif %}
             {% endblock %}
+            {% endcomment %}
 
         {% endif %}
 
@@ -185,6 +187,7 @@
             <div class="content-wrap">
                 <!-- main page content. the place to put widgets in. usually consists of .row > .col-md-* > .widget.  -->
                 <main id="content" class="content" role="main">
+                    <h1 class="page-title app_title"">{% block page_title %}{{ title }}{% endblock %}</h1>
                     {% block content %}
                     {% endblock content %}
                 </main>

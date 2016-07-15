@@ -2,7 +2,7 @@
 
 {% load bootstrap i18n staticfiles %}
 
-{% block section_title %}
+{% block page_title %}
     {% trans "Dashboard" %}
 {% endblock %}
 
@@ -28,8 +28,6 @@
 {% block extra_wrapper_attrs %} ng-app="glUserDashboard" {% endblock %}
 
 {% block content %}
-
-    <h1 class="page-title">Dashboard</h1>
 
     <div class="row">
         <div id="center_content_enclosed" gl-dashboard-work-summary client-list-url="{% url 'clients' %}"
