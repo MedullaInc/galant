@@ -91,10 +91,10 @@
 
     <div id="add_button_popover" class="popover" style="display: none">
         <a class="from_template_button">
-            <button type="button" class="btn btn-default from_template_button sidebar">From Template</button>
+            <button type="button" class="btn btn-default from_template_button">From Template</button>
         </a>
         <a href="{% url 'add_brief' %}{% if client %}?client_id={{ client.id }}{% endif %}">
-            <button type="button" class="btn btn-default from_scratch_button sidebar">From Scratch</button>
+            <button type="button" class="btn btn-default from_scratch_button">From Scratch</button>
         </a>
     </div>
 {% endblock %}
