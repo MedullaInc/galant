@@ -2,7 +2,7 @@
 {% load bootstrap i18n gallant_tags staticfiles static djng_tags %}
 
 {% block page_title %}
-    {% trans "Client Money" %} - <span class="fw-semi-bold">{% trans 'Payments' %}</span>
+    {{ object.name }} - <span class="fw-semi-bold">{% trans 'Payments' %}</span>
 {% endblock %}
 
 {% block content %}

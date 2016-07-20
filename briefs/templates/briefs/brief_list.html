@@ -2,7 +2,7 @@
 {% load bootstrap i18n staticfiles %}
 
 {% block page_title %}
-    {{ brief_type_title }}{% trans " Briefs" %}
+    {% if client %}{{ client.name }} - {% endif %}<span class="fw-semi-bold">{{ brief_type_title }}{% trans " Briefs" %}</span>
 {% endblock %}
 
 {% block scripts %}
@@ -24,15 +24,31 @@
 
 {% block extra_wrapper_attrs %} ng-app="brBriefList" {% endblock %}
 
+{% block client_sidebar %}
+    {% if client %}
+    <a class="collapsed" href="#sidebar-ui" data-toggle="collapse" data-parent="#sidebar">
+        <span class="icon">
+            <i class="fa fa-building"></i>
+        </span>
+        {{ client.name }}
+        <i class="toggle fa fa-angle-down"></i>
+    </a>
+    <ul id="sidebar-ui" class="collapse">
+        {% url 'client_detail' client.id as client_detail %}
+        <li><a href="{{ client_detail }}">Dashboard</a></li>
+        {% url 'client_work_detail' client.id as client_work_detail %}
+        <li><a href="{{ client_work_detail }}">Projects</a></li>
+        {% url 'client_money_detail' client.id as client_money_detail %}
+        <li><a href="{{ client_money_detail }}">Payments</a></li>
+        <li role="separator" class="divider"></li>
+        <li><a href="{% url 'briefs' %}?client_id={{ client.id }}">Briefs</a></li>
+        <li><a href="{% url 'quotes' %}?client_id={{ client.id }}">Quotes</a></li>
+    </ul>
+    {% endif %}
+{% endblock %}
+
 {% block content %}
     <div class="row">
-        {% if client %}
-            <div class="col-lg-6">
-                <h2 class="center_title">
-                    {{ client }}
-                </h2>
-            </div>
-        {% endif %}
         <div class="{% if client %}col-lg-6{% else %}col-lg-12 margin-bottom-20{% endif %}">
             <button id="add_brief" type="button" class="btn btn-default btn-add action-button pull-right">
                 Add Brief
