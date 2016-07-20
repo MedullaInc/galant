@@ -109,3 +109,12 @@ img.img-responsive {
 }
 
 /* En Profile */
+
+/* List Elements */
+
+.action_box .btn {
+    margin-bottom: 10px;
+    margin-right: 5px;
+}
+
+/* End List Elements */
