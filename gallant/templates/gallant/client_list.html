@@ -120,7 +120,7 @@
 
 {% block extra_body %}
     <script>
-        $('.table > tbody > tr').click(function () {
+        jQuery('.table > tbody > tr').click(function ($) {
             window.location.href = "{% url 'client_detail' %}" + $(this).attr('data-rel')
         });
     </script>
