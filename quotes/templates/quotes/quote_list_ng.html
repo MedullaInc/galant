@@ -37,24 +37,24 @@
 
 {% block client_sidebar %}
     {% if client %}
-    <a class="collapsed" href="#sidebar-ui" data-toggle="collapse" data-parent="#sidebar">
+        <a class="collapsed" href="#sidebar-ui" data-toggle="collapse" data-parent="#sidebar">
         <span class="icon">
             <i class="fa fa-building"></i>
         </span>
-        {{ client.name }}
-        <i class="toggle fa fa-angle-down"></i>
-    </a>
-    <ul id="sidebar-ui" class="collapse">
-        {% url 'client_detail' client.id as client_detail %}
-        <li><a href="{{ client_detail }}">Dashboard</a></li>
-        {% url 'client_work_detail' client.id as client_work_detail %}
-        <li><a href="{{ client_work_detail }}">Projects</a></li>
-        {% url 'client_money_detail' client.id as client_money_detail %}
-        <li><a href="{{ client_money_detail }}">Payments</a></li>
-        <li role="separator" class="divider"></li>
-        <li><a href="{% url 'briefs' %}?client_id={{ client.id }}">Briefs</a></li>
-        <li><a href="{% url 'quotes' %}?client_id={{ client.id }}">Quotes</a></li>
-    </ul>
+            {{ client.name }}
+            <i class="toggle fa fa-angle-down"></i>
+        </a>
+        <ul id="sidebar-ui" class="collapse">
+            {% url 'client_detail' client.id as client_detail %}
+            <li><a href="{{ client_detail }}">Dashboard</a></li>
+            {% url 'client_work_detail' client.id as client_work_detail %}
+            <li><a href="{{ client_work_detail }}">Projects</a></li>
+            {% url 'client_money_detail' client.id as client_money_detail %}
+            <li><a href="{{ client_money_detail }}">Payments</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="{% url 'briefs' %}?client_id={{ client.id }}">Briefs</a></li>
+            <li><a href="{% url 'quotes' %}?client_id={{ client.id }}">Quotes</a></li>
+        </ul>
     {% endif %}
 {% endblock %}
 
@@ -67,24 +67,24 @@
                 <div ng-controller="qtPopoverController"
                      ng-init="init('{% url 'add_quote' %}', '{% firstof language LANGUAGE_CODE %}')">
                     <a>
-                        <button id="quote_add" popover-placement="bottom" uib-popover-template="dynamicPopover.templateUrl" type="button" class="btn btn-default btn-add action-button pull-right" popover-trigger="focus click"><span class="glyphicon glyphicon-plus"></span> {% trans "Add New Quote" %}</button>
+                        <button id="quote_add" popover-placement="bottom" uib-popover-template="dynamicPopover.templateUrl" type="button" class="btn btn-default btn-add action-button pull-right" popover-trigger="focus click">
+                            <span class="glyphicon glyphicon-plus"></span> {% trans "Add New Quote" %}</button>
                     </a>
                 </div>
 
-                    <a href="{% url 'quotetemplates' %}">
-                        <button type="button" class="btn btn-default btn-add action-button pull-right">
-                            {% trans "Templates" %}
-                        </button>
-                    </a>
-                    <button class="btn btn-default btn-add pull-right" id="show_quote_board"
-                            ng-click="showList=false">
-                        <span class="glyphicon glyphicon-th"></span>
+                <a href="{% url 'quotetemplates' %}">
+                    <button type="button" class="btn btn-default btn-add action-button pull-right">
+                        {% trans "Templates" %}
                     </button>
-                    <button class="btn btn-default btn-add pull-right" id="show_task_list"
-                            ng-click="showList=true">
-                        <span class="glyphicon glyphicon-align-justify"></span>
-                    </button>
-
+                </a>
+                <button class="btn btn-default btn-add pull-right" id="show_quote_board"
+                        ng-click="showList=false">
+                    <span class="glyphicon glyphicon-th"></span>
+                </button>
+                <button class="btn btn-default btn-add pull-right" id="show_task_list"
+                        ng-click="showList=true">
+                    <span class="glyphicon glyphicon-align-justify"></span>
+                </button>
             </div>
         </div>
 
@@ -126,7 +126,7 @@
 
         </div>
 
-    </>
+    </div>
 {% endblock %}
 
 {% block extra_body %}
