@@ -28,8 +28,11 @@
 {% block extra_wrapper_attrs %} ng-app="glUserDashboard" {% endblock %}
 
 {% block content %}
+    <div class="row" ng-controller="glUserDashboardController">
+        <div gl-add-modal open-fn="openOnboarding" title="Getting Started" modal-instance="modalInstance">
+            {% include "gallant/onboarding.html" %}
+        </div>
 
-    <div class="row">
         <div id="center_content_enclosed" gl-dashboard-work-summary client-list-url="{% url 'clients' %}"
             projects-url="{% url 'calendr' %}">
         </div>
