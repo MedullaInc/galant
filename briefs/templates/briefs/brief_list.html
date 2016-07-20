@@ -2,21 +2,32 @@
 {% load bootstrap i18n staticfiles %}
 
 {% block page_title %}
-    {{ brief_type_title }}{% trans " Briefs" %}
+    {% if client %}{{ client.name }} - {% endif %}
+    <span class="fw-semi-bold">{{ brief_type_title }}{% trans " Briefs" %}</span>
 {% endblock %}
 
 {% block scripts %}
     {{ block.super }}
     <script src="{% static "js/angular.js" %}"></script>
     <script src="{% static "js/angular-resource.js" %}"></script>
+    <script src="{% static "js/angular-animate.js" %}"></script>
     <script src="{% static "js/ui-bootstrap-tpls.js" %}"></script>
     <script src="{% static "djng/js/django-angular.js" %}"></script>
+
+    {% if DEBUG %}
+        <script src="{% static "js/gallant.js" %}"></script>
+        <script src="{% static "js/quotes.js" %}"></script>
+        <script src="{% static "js/briefs.js" %}"></script>
+    {% else %}
+        <script src="{% static "js/all.min.js" %}"></script>
+    {% endif %}
 
     <script>
         var app = angular.module('brBriefList', [
             'ngResource',
             'ui.bootstrap',
-            'ng.django.forms'
+            'ng.django.forms',
+            'briefs.controllers.brPopoverController'
         ]);
     </script>
 
@@ -24,49 +35,83 @@
 
 {% block extra_wrapper_attrs %} ng-app="brBriefList" {% endblock %}
 
-{% block content %}
-    <div class="row">
-        {% if client %}
-            <div class="col-lg-6">
-                <h2 class="center_title">
-                    {{ client }}
-                </h2>
-            </div>
-        {% endif %}
-        <div class="{% if client %}col-lg-6{% else %}col-lg-12 margin-bottom-20{% endif %}">
-            <button id="add_brief" type="button" class="btn btn-default btn-add action-button pull-right">
-                Add Brief
-            </button>
-            <a href="{% url 'brieftemplates' %}" class="pull-right">
-                <button type="button" class="btn btn-default btn-add action-button">
-                    Brief Templates
-                </button>
-            </a>
+{% block client_sidebar %}
+    {% if client %}
+        <a class="collapsed" href="#sidebar-ui" data-toggle="collapse" data-parent="#sidebar">
+        <span class="icon">
+            <i class="fa fa-building"></i>
+        </span>
+            {{ client.name }}
+            <i class="toggle fa fa-angle-down"></i>
+        </a>
+        <ul id="sidebar-ui" class="collapse">
+            {% url 'client_detail' client.id as client_detail %}
+            <li><a href="{{ client_detail }}">Dashboard</a></li>
+            {% url 'client_work_detail' client.id as client_work_detail %}
+            <li><a href="{{ client_work_detail }}">Projects</a></li>
+            {% url 'client_money_detail' client.id as client_money_detail %}
+            <li><a href="{{ client_money_detail }}">Payments</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="{% url 'briefs' %}?client_id={{ client.id }}">Briefs</a></li>
+            <li><a href="{% url 'quotes' %}?client_id={{ client.id }}">Quotes</a></li>
+        </ul>
+    {% endif %}
+{% endblock %}
 
-            {% if client %}
-                <div class="btn-group pull-right">
-                    <button type="button" class="btn btn-default action-button dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="margin-top: 0px;">
-                        Client Sections<span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu action-button">
-                        {% url 'client_detail' client.id as client_detail %}
-                        <li><a href="{{ client_detail }}">Client Overview</a></li>
-                        {% url 'client_work_detail' client.id as client_work_detail %}
-                        <li><a href="{{ client_work_detail }}">Client Work</a></li>
-                        {% url 'client_money_detail' client.id as client_money_detail %}
-                        <li><a href="{{ client_money_detail }}">Client Money</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="{% url 'briefs' %}?client_id={{ client.id }}">Client Briefs</a></li>
-                        <li><a href="{% url 'quotes' %}?client_id={{ client.id }}">Client Quotes</a></li>
-                    </ul>
-                </div>
-            {% endif %}
+{% block content %}
+
+    <script type="text/ng-template" id="addBriefPopoverTemplate.html">
+        <a class="from_template_button" ng-click="open()">
+            <button type="button" class="btn btn-success btn-sm mt brief_from_template_button">From Template</button>
+        </a>
+        <a ng-click="addBriefRedirect()">
+            <button type="button" class="btn btn-success btn-sm mt brief_from_scratch_button">From Scratch</button>
+        </a>
+    </script>
+    <script type="text/ng-template" id="briefTemplateModalContent.html">
+        <div class="modal-header">
+            <h2 class="section_title">Select Template</h2>
         </div>
+        <div class="modal-body">
+            <table st-table="briefTemplate" class="table table-striped table-bordered">
+                <thead>
+                <tr>
+                    <th st-sort="name">{% trans "Name" %}</th>
+                    <th st-sort="date">{% trans "Date" %}</th>
+                    <th st-sort="language">{% trans "Language" %}</th>
+                </tr>
+                </thead>
+                <tbody ng-include src="'{% static "briefs/html/br_brieftemplate_modal_rows.html" %}'"></tbody>
+            </table>
+        </div>
+    </script>
+
+    <div class="row">
+
+        <div class="row">
+            <div class="col-lg-10 col-md-10 col-sm-9 col-xs-9">
+            </div>
+            <div class="col-lg-2 col-md-2 col-sm-3 col-xs-3">
+                <a href="{% url 'brieftemplates' %}" class="pull-right">
+                    <button type="button" class="btn btn-warning">
+                        Brief Templates
+                    </button>
+                </a>
+                <button popover-placement="bottom" uib-popover-template="dynamicPopover.templateUrl" id="add_brief" type="button" class="btn btn-success pull-right button-inline" ng-controller="brPopoverController" ng-init="init('{% url "add_brief" %}', language, clientId)" popover-trigger="focus click">
+                    <span class="glyphicon glyphicon-plus"></span>
+                    Add Brief
+                </button>
+            </div>
+            <br/>
+            <br/>
+            <br/>
+        </div>
+
     </div>
     <div class="row">
-        <div class="col-lg-12">
+        <div class="col-lg-12 widget">
             <br/>
-            <table class="table table-striped table-bordered">
+            <table class="table table-striped">
                 <thead>
                 <th>{% trans "Last Modified" %}</th>
                 <th>{% trans "Title" %}</th>
@@ -146,57 +191,33 @@
         </div>
     </div>
     <script>
-        $('#add_brief').popover({
-            html: true,
-            container: 'body',
-            content: $('#add_button_popover').html(),
-            title: false,
-            placement: "bottom"
-        }).click(function () {
-            $('body').on('click', '.popover-content > button.from_template_button', function () {
-                $('#add_brief').popover('hide');
-                $('#template_select').modal('show');
+        jQuery(document).ready(function ($) {
+
+            $('.table .brief_row').click(function () {
+                window.location.href = "{% url 'brief_detail' %}" + $(this).attr('data-rel') +
+                        "{% if request.GET.urlencode %}?{% endif %}{{ request.GET.urlencode }}";
             });
-            $('body').on('click', '.popover-content > a.from_template_button', function () {
-                $('#add_brief').popover('hide');
-                $('#template_select').modal('show');
+
+            $('.table .template_row').click(function (e) {
+                var lang = '{{ LANGUAGE_CODE }}';
+                if ($(this).find('select').length) {
+                    lang = $(this).find('select').val();
+                }
+                window.location.href = "{% url 'add_brief' %}" + "?template_id=" +
+                        $(this).attr('data-rel') + "&lang=" + lang +
+                        "&{{ request.GET.urlencode }}";
             });
-        });
 
-        $('body').on('click', function (e) {
-            var p = $('#add_brief');
-            if (!p.is(e.target) && p.has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
-                p.popover('hide');
-            }
-        });
+            $('.table .template_row select').click(function (e) {
+                e.stopPropagation();
+            });
 
-        $(window).resize(function () {
-            $('#add_brief').popover('hide');
-        });
+            $('.table .template_row select').change(function (e) {
+                window.location.href = "{% url 'add_brief' %}" + "?template_id=" +
+                        $(this).parents('tr').attr('data-rel') + "&lang=" + $(this).val() +
+                        "&{{ request.GET.urlencode }}";
+            });
 
-        $('.table .brief_row').click(function () {
-            window.location.href = "{% url 'brief_detail' %}" + $(this).attr('data-rel') +
-                    "{% if request.GET.urlencode %}?{% endif %}{{ request.GET.urlencode }}";
-        });
-
-        $('.table .template_row').click(function (e) {
-            var lang = '{{ LANGUAGE_CODE }}';
-            if ($(this).find('select').length) {
-                lang = $(this).find('select').val();
-            }
-            window.location.href = "{% url 'add_brief' %}" + "?template_id=" +
-                    $(this).attr('data-rel') + "&lang=" + lang +
-                    "&{{ request.GET.urlencode }}";
-        });
-
-        $('.table .template_row select').click(function (e) {
-            e.stopPropagation();
-        });
-
-        $('.table .template_row select').change(function (e) {
-            window.location.href = "{% url 'add_brief' %}" + "?template_id=" +
-                    $(this).parents('tr').attr('data-rel') + "&lang=" + $(this).val() +
-                    "&{{ request.GET.urlencode }}";
         });
     </script>
 {% endblock %}

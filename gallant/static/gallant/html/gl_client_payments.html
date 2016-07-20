@@ -1,4 +1,4 @@
-<section class="widget" ng-repeat="p in payments | orderBy:['-paid_on','due']"">
+<section class="widget" ng-repeat="p in payments | orderBy:['-paid_on','due']" ng-show="payments.length">
     <div class="row">
         <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
             <p class="small">
@@ -40,5 +40,13 @@
                 <span class="glyphicon glyphicon-trash"/>
             </button>
         </div>
+    </div>
+</section>
+
+<section class="widget" ng-hide="payments.length">
+    <div class="widget-body">
+        <p class="mb-lg">
+            This client has no payments.
+        </p>
     </div>
 </section>
