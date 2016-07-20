@@ -4,5 +4,6 @@ var app = angular.module('glUserDashboard', [
     'gallant.services.glServices',
     'gallant.directives.glDashboardWorkSummary',
     'gallant.directives.glDashboardMoneySummary',
+    'gallant.controllers.glUserDashboardController',
     'tc.chartjs',
 ]);
