@@ -45,14 +45,25 @@ div.page-wrapper {
 
 /* Kanban */
 
+.col-centered {
+    text-align: center
+}
+
+.spinner-loading {
+    width: 30px;
+}
+
 div.column-title.ng-binding {
     margin-bottom: 15px;
     font-size: 18px;
 }
 
 div.kanban-card.ng-scope.as-sortable-item {
-    padding: 20px;
     border-radius: 0px;
+}
+
+.ng-scope.as-sortable-item-handle {
+    padding: 20px;
 }
 
 div.receiving-element.ng-pristine.ng-untouched.ng-valid.ng-scope.ng-not-empty {
