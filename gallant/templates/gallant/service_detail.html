@@ -2,19 +2,16 @@
 {% load bootstrap i18n gallant_tags %}
 
 {% block page_title %}
-    {% trans "Deliverable" %}
+    {{ project }} - <span class="fw-semi-bold">{{ object.name.get_text }}</span>
 {% endblock %}
 
 {% block content %}
 
     <div class="row">
-        <div class="col-lg-11 col-md-11 col-sm-10 col-xs-10">
-            <h2 class="section_title">{{ object.name.get_text }}</h2>
-        </div>
-        <div class="col-lg-1 col-md-1 col-sm-2 col-xs-2 action_box">
+        <div class="col-lg-12">
             <a href="{% url 'edit_service' project.id object.id %}" class="edit_button" title="{% trans "Edit" %}">
-                <button id="section_edit" type="button" class="btn btn-default btn-add" aria-label="Edit">
-                    <span class="glyphicon glyphicon-edit"/>
+                <button id="section_edit" type="button" class="btn btn-warning pull-right" aria-label="Edit">
+                    <span class="glyphicon glyphicon-edit"/> Edit
                 </button>
             </a>
         </div>
