@@ -1,14 +1,31 @@
 {% extends "base.html" %}
 {% load staticfiles bootstrap i18n gallant_tags %}
 
+{% block scripts %}
+    {{ block.super }}
+    {% if user.is_authenticated %}
+        <script src="{% static "js/angular.js" %}"></script>
+        <script src="{% static "js/angular-resource.js" %}"></script>
+        <script src="{% static "js/ui-bootstrap-tpls.js" %}"></script>
+
+        {% if DEBUG %}
+            <script src="{% static "js/gallant.js" %}"></script>
+            <script src="{% static "js/quotes.js" %}"></script>
+        {% else %}
+            <script src="{% static "js/all.min.js" %}"></script>
+        {% endif %}
+    {% endif %}
+
+{% endblock %}
+
 {% block extra_head %}
 
 {% endblock extra_head %}
 
 {% block body %}
 
-    <div class="page-wrapper" {% block extra_wrapper_attrs %} ng-app="glBaseApp" {% endblock %}>
-        <div gl-add-modal open-fn="openOnboarding" title="Getting Started" modal-instance="modalInstance">
+    <div class="page-wrapper" {% block extra_wrapper_attrs %} ng-app="glBase" {% endblock %}>
+        <div gl-add-modal open-fn="openOnboarding" title="Getting Started" modal-instance="modalInstance" style="display: none;">
             {% include "gallant/onboarding.html" %}
         </div>
 

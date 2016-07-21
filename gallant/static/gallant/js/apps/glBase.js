@@ -1,4 +1,5 @@
 var app = angular.module('glBase', [
+    'ngResource',
     'gallant.directives.glAddModal',
 ]);
 
