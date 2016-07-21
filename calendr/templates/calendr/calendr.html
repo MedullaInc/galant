@@ -12,10 +12,7 @@
 
 {% block scripts %}
     {{ block.super }}
-    <script src="{% static "js/angular.js" %}"></script>
     <script src="{% static "js/angular-animate.js" %}"></script>
-    <script src="{% static "js/angular-resource.min.js" %}"></script>
-    <script src="{% static "js/ui-bootstrap-tpls.js" %}"></script>
     <script src="{% static "djng/js/django-angular.min.js" %}"></script>
     <script src="{% static "js/moment.min.js" %}"></script>
     <script src="{% static "js/fullcalendar.min.js" %}"></script>
@@ -23,13 +20,14 @@
     <script src="{% static "js/calendar.js" %}"></script>
     <script src="{% static "js/smart-table.js" %}"></script>
     <script src="{% static "js/ng-sortable.js" %}"></script>
+{% endblock %}
+
+{% block project_scripts %}
+    {{ block.super }}
     {% if DEBUG %}
-        <script src="{% static "js/gallant.js" %}"></script>
         <script src="{% static "quotes/js/services/qtServices.js" %}"></script>
         <script src="{% static "js/kanban.js" %}"></script>
         <script src="{% static "js/calendr.js" %}"></script>
-    {% else %}
-        <script src="{% static "js/all.min.js" %}"></script>
     {% endif %}
 {% endblock %}
 
