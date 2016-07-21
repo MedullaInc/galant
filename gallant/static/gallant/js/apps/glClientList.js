@@ -4,6 +4,7 @@ var app = angular.module('glClientList', [
     'gallant.controllers.glClientListController',
     'gallant.directives.glAlerts',
     'gallant.directives.glClientAdd',
+    'gallant.directives.glAddModal',
 ]);
 
 /* istanbul ignore next */
