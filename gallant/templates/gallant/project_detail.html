@@ -7,19 +7,16 @@
 
 {% block scripts %}
     {{ block.super }}
-    <script src="{% static "js/angular.js" %}"></script>
-    <script src="{% static "js/angular-resource.js" %}"></script>
-    <script src="{% static "js/ui-bootstrap-tpls.js" %}"></script>
     <script src="{% static "djng/js/django-angular.min.js" %}"></script>
     <script src="{% static "js/ng-sortable.js" %}"></script>
     <script src="{% static "js/angular-animate.js" %}"></script>
+{% endblock %}
 
+{% block project_scripts %}
+    {{ block.super }}
     {% if DEBUG %}
-        <script src="{% static "js/gallant.js" %}"></script>
         <script src="{% static "js/quotes.js" %}"></script>
         <script src="{% static "js/kanban.js" %}"></script>
-    {% else %}
-        <script src="{% static "js/all.min.js" %}"></script>
     {% endif %}
 {% endblock %}
 

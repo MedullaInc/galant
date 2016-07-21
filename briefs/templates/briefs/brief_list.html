@@ -8,18 +8,14 @@
 
 {% block scripts %}
     {{ block.super }}
-    <script src="{% static "js/angular.js" %}"></script>
-    <script src="{% static "js/angular-resource.js" %}"></script>
     <script src="{% static "js/angular-animate.js" %}"></script>
-    <script src="{% static "js/ui-bootstrap-tpls.js" %}"></script>
     <script src="{% static "djng/js/django-angular.js" %}"></script>
+{% endblock %}
 
+{% block project_scripts %}
+    {{ block.super }}
     {% if DEBUG %}
-        <script src="{% static "js/gallant.js" %}"></script>
-        <script src="{% static "js/quotes.js" %}"></script>
         <script src="{% static "js/briefs.js" %}"></script>
-    {% else %}
-        <script src="{% static "js/all.min.js" %}"></script>
     {% endif %}
 
     <script>
@@ -30,7 +26,6 @@
             'briefs.controllers.brPopoverController'
         ]);
     </script>
-
 {% endblock %}
 
 {% block extra_wrapper_attrs %} ng-app="brBriefList" {% endblock %}

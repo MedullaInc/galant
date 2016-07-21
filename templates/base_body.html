@@ -7,15 +7,19 @@
         <script src="{% static "js/angular.js" %}"></script>
         <script src="{% static "js/angular-resource.js" %}"></script>
         <script src="{% static "js/ui-bootstrap-tpls.js" %}"></script>
+    {% endif %}
 
+{% endblock %}
+
+{% block project_scripts %}
+    {{ block.super }}
+    {% if user.is_authenticated %}
         {% if DEBUG %}
             <script src="{% static "js/gallant.js" %}"></script>
-            <script src="{% static "js/quotes.js" %}"></script>
         {% else %}
             <script src="{% static "js/all.min.js" %}"></script>
         {% endif %}
     {% endif %}
-
 {% endblock %}
 
 {% block extra_head %}

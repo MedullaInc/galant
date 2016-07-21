@@ -1,9 +1,10 @@
 {% extends "gallant/base_form.html" %}
 {% load staticfiles bootstrap %}
 
+{% block ng_app %} ng-app="gallant" {% endblock %}
+
 {% block scripts %}
     {{ block.super }}
-    <script src="{% static "js/angular.min.js" %}"></script>
     <script src="{% static "djng/js/django-angular.min.js" %}"></script>
 {% endblock %}
 
