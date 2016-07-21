@@ -37,99 +37,95 @@
 
 {% block content %}
 
-    <div class="container" id="projects_container">
-        <h2 class="section_title">
-            Calendar
-        </h2>
-        <div id="calendr" ng-controller="clCalendrController"
-             ng-init="init({{ user.id }}, {{ user.settings.calendr_users|yesno:"true,false" }})">
-            <div id="calendar_container">
+    <div id="calendr" ng-controller="clCalendrController"
+         ng-init="init({{ user.id }}, {{ user.settings.calendr_users|yesno:"true,false" }})">
+        <div id="calendar_container" class="widget">
+            <section id="directives-calendar">
 
-                <section id="directives-calendar">
+                <div gl-alerts></div>
 
-                    <div gl-alerts></div>
+                <div class="row">
 
-                    <div class="row">
+                    <div class="form-group col-lg-4">
+                        <label class="control-label">View</label>
+                        <br/>
 
-                        <div class="form-group col-lg-4">
-                            <label class="control-label">View</label>
-                            <br/>
-
-                            <div class="btn-group date-buttons">
-                                <button id="timelineWeek" class="btn btn-default"
-                                        ng-click="changeView('timelineWeek', 'myCalendar1')">Week
-                                </button>
-                                <button id="timelineMonth" class="btn btn-default"
-                                        ng-click="changeView('timelineMonth', 'myCalendar1')">Month
-                                </button>
-                                <button id="timelineThreeMonths" class="btn btn-default"
-                                        ng-click="changeView('timelineThreeMonths', 'myCalendar1')">3 Months
-                                </button>
-                            </div>
+                        <div class="btn-group date-buttons">
+                            <button id="timelineWeek" class="btn btn-default"
+                                    ng-click="changeView('timelineWeek', 'myCalendar1')">Week
+                            </button>
+                            <button id="timelineMonth" class="btn btn-default"
+                                    ng-click="changeView('timelineMonth', 'myCalendar1')">Month
+                            </button>
+                            <button id="timelineThreeMonths" class="btn btn-default"
+                                    ng-click="changeView('timelineThreeMonths', 'myCalendar1')">3 Months
+                            </button>
                         </div>
+                    </div>
 
-                        <div class="form-group col-lg-offset-4 col-lg-4 col-lg-pull-right">
-                            <label class="control-label">&nbsp;</label>
-                            <br/>
+                    <div class="form-group col-lg-offset-4 col-lg-4 col-lg-pull-right">
+                        <label class="control-label">&nbsp;</label>
+                        <br/>
 
-                            <p class="input-group popup-calendr" id="popup-calendr">
-                                <input id="id_date" class="form-control" type="text" uib-datepicker-popup="MM.dd.yyyy"
-                                       ng-model="dt" is-open="status.opened" min-date="minDate" max-date="maxDate"
-                                       datepicker-options="dateOptions" date-disabled="disabled(date, mode)"
-                                       ng-required="true" close-text="Close" ng-change="gotoDate(dt)"/>
+                        <p class="input-group popup-calendr" id="popup-calendr">
+                            <input id="id_date" class="form-control" type="text" uib-datepicker-popup="MM.dd.yyyy"
+                                   ng-model="dt" is-open="status.opened" min-date="minDate" max-date="maxDate"
+                                   datepicker-options="dateOptions" date-disabled="disabled(date, mode)"
+                                   ng-required="true" close-text="Close" ng-change="gotoDate(dt)"/>
                     <span class="input-group-btn">
                         <button type="button" class="btn btn-default" ng-click="open($event)"><i
                                 class="glyphicon glyphicon-calendar"></i></button>
                     </span>
-                            </p>
+                        </p>
 
-                        </div>
                     </div>
+                </div>
 
-                    <div class="row calendar_container">
-                        <div class="col-lg-12" class="calendar" ng-model="eventSources" resources="eventResources"
-                             calendar="myCalendar1" ui-calendar="uiConfig.calendar">
-                        </div>
+                <div class="row calendar_container">
+                    <div class="col-lg-12" class="calendar" ng-model="eventSources" resources="eventResources"
+                         calendar="myCalendar1" ui-calendar="uiConfig.calendar">
                     </div>
+                </div>
 
-                </section>
-            </div>
+            </section>
             <br/>
+        </div>
+        <br/>
+        <br/>
+        <div gl-add-modal open-fn="editTask" title="Task" modal-instance="modalInstance">
+            <div cl-task-add on-success="taskSaved" task="object"
+                 assignee="{{ user.id }}" projects="projects" users="users"></div>
+        </div>
+        <h2 class="section_title">
+            Tasks
+        </h2>
+        <div class="row">
+            <div class="col-lg-4">
+            </div>
+            <div class="col-lg-8">
+                <button class="btn btn-success pull-right"
+                        ng-click="editTask()">
+                    <span class="glyphicon glyphicon-plus"></span> Add Task
+                </button>
+                <button class="btn btn-default button-inline pull-right" id="show_task_board"
+                        ng-click="showList=false">
+                    <span class="glyphicon glyphicon-th"></span>
+                </button>
+                <button class="btn btn-default button-inline pull-right" id="show_task_list"
+                        ng-click="showList=true">
+                    <span class="glyphicon glyphicon-align-justify"></span>
+                </button>
+            </div>
+        </div>
+        <br/>
+        <div ng-show="!showList" class="widget">
+            <div ng-include src="'/static/calendr/html/cl_task_board.html'">
+            </div>
+        </div>
+        <div class="row widget" ng-show="showList">
             <br/>
-            <div gl-add-modal open-fn="editTask" title="Task" modal-instance="modalInstance">
-                <div cl-task-add on-success="taskSaved" task="object"
-                     assignee="{{ user.id }}" projects="projects" users="users"></div>
-            </div>
-            <div class="row">
-                <div class="col-lg-4">
-                    <h2 class="section_title">
-                        Tasks
-                    </h2>
-                </div>
-                <div class="col-lg-8">
-                    <button class="btn btn-default btn-add pull-right"
-                            ng-click="editTask()">
-                        <span class="glyphicon glyphicon-plus"></span> Add Task
-                    </button>
-                    <button class="btn btn-default btn-add pull-right" id="show_task_board"
-                            ng-click="showList=false">
-                        <span class="glyphicon glyphicon-th"></span>
-                    </button>
-                    <button class="btn btn-default btn-add pull-right" id="show_task_list"
-                            ng-click="showList=true">
-                        <span class="glyphicon glyphicon-align-justify"></span>
-                    </button>
-                </div>
-            </div>
-            <br>
-            <div ng-show="!showList">
-                <div ng-include src="'/static/calendr/html/cl_task_board.html'">
-                </div>
-            </div>
-            <div class="row" ng-show="showList">
-                <div cl-task-list tasks="tasks" tasks-loaded="tasksLoaded"
-                     assignee="{{ user.id }}" edit-task-fn="editFCTask"></div>
-            </div>
+            <div cl-task-list tasks="tasks" tasks-loaded="tasksLoaded"
+                 assignee="{{ user.id }}" edit-task-fn="editFCTask"></div>
         </div>
     </div>
 

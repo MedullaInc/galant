@@ -776,7 +776,7 @@ describe('glDeliverablesBoard', function () {
         it('compiles', function () {
             var element = $compile('<div gl-deliverables-board></div>')($scope);
             $scope.$digest();
-            expect(element.html().substring(0, 4)).toEqual('<div');
+            expect(element.html().substring(0, 4)).toEqual('<sec');
         });
 
     });
