@@ -426,3 +426,33 @@ describe('glClientPaymentController', function () {
     });
 
 });
+
+describe('glUserDashboardController', function () {
+    var $rootScope;
+    var $controller;
+    var $window;
+    var url = 'about:blank';
+
+    beforeEach(function () {
+        module('gallant.controllers.glUserDashboardController');
+
+        inject(function (_$rootScope_, _$controller_) {
+            // The injector unwraps the underscores (_) from around the parameter names when matching
+            $rootScope = _$rootScope_;
+            $controller = _$controller_;
+        });
+    });
+
+    var $scope;
+
+    beforeEach(function () {
+        $scope = $rootScope.$new();
+        $scope.openOnboarding = jasmine.createSpy('openOnboarding');
+        $controller('glUserDashboardController', {$scope: $scope});
+        $rootScope.$apply();
+    });
+
+    it('opens onboarding', function () {
+        expect($scope.openOnboarding).toHaveBeenCalled();
+    });
+});

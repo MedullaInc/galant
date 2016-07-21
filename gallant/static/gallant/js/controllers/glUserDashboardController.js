@@ -1,4 +1,4 @@
-app = angular.module('gallant.controllers.glUserDashboardController', ['gallant.services.glServices',
+app = angular.module('gallant.controllers.glUserDashboardController', [
     'gallant.directives.glAddModal']);
 
 app.controller('glUserDashboardController', ['$scope',

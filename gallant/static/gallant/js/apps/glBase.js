@@ -1,14 +1,9 @@
-var app = angular.module('brief', [
-    'ngResource',
-    'xeditable',
-    'briefs.directives.brDetail',
-    'gallant.controllers.glFormController',
-    'gallant.directives.glAlerts',
+var app = angular.module('glBase', [
     'gallant.directives.glAddModal',
 ]);
 
 /* istanbul ignore next */
-app.config(["$httpProvider", function ($httpProvider) {
+app.config(['$httpProvider', function ($httpProvider) {
     $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
     $httpProvider.defaults.xsrfCookieName = 'csrftoken';
     $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
@@ -25,9 +20,4 @@ app.config(["$resourceProvider", function ($resourceProvider) {
         }
 
     });
-}]);
-
-/* istanbul ignore next */
-app.run(['editableOptions', function(editableOptions) {
-  editableOptions.theme = 'bs3'; // bootstrap3 theme. Can be also 'bs2', 'default'
 }]);

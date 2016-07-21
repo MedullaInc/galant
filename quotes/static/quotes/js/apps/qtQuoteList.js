@@ -7,6 +7,7 @@ var app = angular.module('qtQuoteList', [
     'quotes.controllers.qtQuoteTemplateListController',
     'quotes.controllers.qtPopoverController',
     'gallant.directives.glAlerts',
+    'gallant.directives.glAddModal',
 ]);
 
 /* istanbul ignore next */

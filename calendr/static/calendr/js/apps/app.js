@@ -15,6 +15,7 @@ var app = angular.module('calendr', [
         'gallant.controllers.glFormController',
         'calendr.directives.clTaskList',
         'gallant.directives.glDeliverablesBoard',
+        'gallant.directives.glAddModal',
         'ui.bootstrap.tabs',
     ])
     .config(['$httpProvider', /* istanbul ignore next  */ function ($httpProvider) {

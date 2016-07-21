@@ -15,6 +15,10 @@ div.page-wrapper {
     background: url(/static/img/galant/galant_monogram.png) no-repeat 0px -8px;
 }
 
+.pointer {
+    cursor: pointer;
+}
+
 /* Charts */
 
 .widget-body canvas {

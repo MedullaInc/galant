@@ -6,6 +6,7 @@ var app = angular.module('glProjects', [
         'gallant.directives.glAlerts',
         'gallant.controllers.glFormController',
         'gallant.directives.glDeliverablesBoard',
+        'gallant.directives.glAddModal',
     ])
     .config(['$httpProvider', /* istanbul ignore next  */ function ($httpProvider) {
         $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
