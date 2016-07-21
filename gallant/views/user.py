@@ -276,6 +276,21 @@ class UsersAPI(generics.ListAPIView):
             return qs
 
 
+class UserSettingsAPI(generics.RetrieveUpdateAPIView):
+    model = get_user_model()
+    serializer_class = serializers.GallantUserSettingsSerializer
+    permission_classes = [
+        IsAuthenticated,
+    ]
+
+    def get_queryset(self):
+        user = self.request.user
+        if user.is_superuser:
+            return self.model.objects.all()
+        else:
+            return self.model.objects.filter(pk=user.pk)
+
+
 class UserModelViewSet(viewsets.ModelViewSet):
     permission_classes = [
         GallantViewSetPermissions

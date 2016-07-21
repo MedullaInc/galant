@@ -1,3 +1,6 @@
+import datetime
+
+import pytz
 from analytical.templatetags.clicky import ClickyNode
 from analytical.templatetags.crazy_egg import CrazyEggNode
 from django import template
@@ -72,3 +75,13 @@ def get_client_services_count(request, client, status=None):
         qs = qs.filter(status=status)
 
     return qs.count()
+
+
+@register.simple_tag(takes_context=True)
+def just_logged_in_js(context):
+    user = context.request.user
+    delta = datetime.datetime.now(pytz.utc) - datetime.timedelta(seconds=15)
+    if user.last_login > delta:
+        return 'true'
+    else:
+        return 'false'

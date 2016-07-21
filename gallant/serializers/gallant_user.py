@@ -9,6 +9,12 @@ class UserModelSerializer(serializers.ModelSerializer):
         fields = ('id', 'email', 'name', 'phone_number', 'address', 'address_2', 'city', 'state', 'zip', 'country')
 
 
+class GallantUserSettingsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = get_user_model()
+        fields = ('settings',)
+
+
 class ContactInfoSerializer(serializers.ModelSerializer):
     class Meta:
         model = ContactInfo

@@ -1,6 +1,6 @@
 {% extends 'base_body.html' %}
 
-{% load bootstrap i18n staticfiles %}
+{% load bootstrap i18n staticfiles gallant_tags %}
 
 {% block page_title %}
     {% trans "Dashboard" %}
@@ -28,9 +28,17 @@
 {% block extra_wrapper_attrs %} ng-app="glUserDashboard" {% endblock %}
 
 {% block content %}
-    <div class="row" ng-controller="glUserDashboardController">
-        <div gl-add-modal open-fn="openOnboarding" title="Getting Started" modal-instance="modalInstance">
+    <div class="row" ng-controller="glUserDashboardController"
+            ng-init="init('{{ user.id }}',
+            {% just_logged_in_js %})">
+        <div gl-add-modal open-fn="openDashOnboarding" title="Getting Started" modal-instance="modalInstance">
             {% include "gallant/onboarding.html" %}
+            <br>
+            <div class="row">
+                <div class="col-xs-12">
+                    <input type="checkbox" ng-model="user.settings.hide_onboarding"> Don't show next time I log in
+                </div>
+            </div>
         </div>
 
         <div id="center_content_enclosed" gl-dashboard-work-summary client-list-url="{% url 'clients' %}"
