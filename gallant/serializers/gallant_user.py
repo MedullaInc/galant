@@ -14,7 +14,7 @@ class GallantUserSettingsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = get_user_model()
-        fields = ('settings',)
+        fields = ('id', 'settings',)
 
 
 class ContactInfoSerializer(serializers.ModelSerializer):

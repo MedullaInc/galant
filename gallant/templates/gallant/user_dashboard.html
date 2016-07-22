@@ -32,7 +32,9 @@
             <br>
             <div class="row">
                 <div class="col-xs-12">
-                    <input type="checkbox" ng-model="user.settings.hide_onboarding"> Don't show next time I log in
+                    <input type="checkbox" ng-model="user.settings.hide_onboarding"
+                           ng-click="saveSettings()"
+                    > Don't show next time I log in
                 </div>
             </div>
         </div>
