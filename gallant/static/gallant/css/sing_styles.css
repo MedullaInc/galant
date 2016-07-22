@@ -142,3 +142,11 @@ img.img-responsive {
 }
 
 /* End List Elements */
+
+/* Form Inputs */
+
+select.form-control {
+    margin-top: 15px;
+}
+
+/* End Form Inputs */
