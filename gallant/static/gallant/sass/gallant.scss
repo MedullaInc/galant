@@ -1,0 +1,28 @@
+div.page-wrapper {
+    min-height: 100%;
+    height: 100%;
+}
+
+.body.chat-sidebar-container header.logo {
+    color: transparent;
+    background: url(/static/img/galant/galant_sidebar_logo.png) no-repeat center -8px;
+}
+
+.body.chat-sidebar-container.nav-collapsed header.logo {
+    color: transparent;
+    padding-top: 23px;
+    padding-bottom: 3px;
+    background: url(/static/img/galant/galant_monogram.png) no-repeat 0px -8px;
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+@import 'kanban';
+@import 'charts';
+@import 'modal';
+@import 'form';
+@import 'profile';
+@import 'table';
+@import 'landing';
