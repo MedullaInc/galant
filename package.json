@@ -57,6 +57,7 @@
   },
   "private": true,
   "dependencies": {
-    "angular-ui-sortable": "^0.13.4"
+    "angular-ui-sortable": "^0.13.4",
+    "gulp-sass": "^2.3.2"
   }
 }

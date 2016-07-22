@@ -15,11 +15,17 @@ app.controller('glUserDashboardController', ['$scope', 'UserSettings',
             });
         };
 
+        $scope.saveSettings = function() {
+            $scope.user.$update({id: $scope.user.id});
+        };
+
         $scope.$watchGroup(['openDashOnboarding', 'user.settings'], function (newVals, oldVals) {
             if ($scope.justLoggedIn && !$scope.opened &&
                     typeof(newVals[0]) == 'function' && typeof(newVals[1]) !== 'undefined') {
-                $scope.openDashOnboarding();
-                $scope.opened = true;
+                if (!('hide_onboarding' in $scope.user.settings) || !$scope.user.settings.hide_onboarding) {
+                    $scope.openDashOnboarding();
+                    $scope.opened = true;
+                }
             }
         });
     }

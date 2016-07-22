@@ -10,9 +10,11 @@ class UserModelSerializer(serializers.ModelSerializer):
 
 
 class GallantUserSettingsSerializer(serializers.ModelSerializer):
+    settings = serializers.JSONField()
+
     class Meta:
         model = get_user_model()
-        fields = ('settings',)
+        fields = ('id', 'settings',)
 
 
 class ContactInfoSerializer(serializers.ModelSerializer):
