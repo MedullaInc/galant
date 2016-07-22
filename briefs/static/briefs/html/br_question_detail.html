@@ -1,25 +1,23 @@
 <div id="question{{ question.index }}">
-    <div class="data row">
-        <div class="col-lg-12">
-            <label class="control-label in-place">Question</label>
-            <label class="control-label in-place">{{ question.is_long_answer ? ' (Long-answer)' : '' }}</label>
+    <div class="form-group">
+        <label class="control-label col-sm-3">Question {{ question.is_long_answer ? ' (Long-answer)' : '' }}</label>
+        <div class="col-sm-9">
             <p editable-textarea="question.question[language]" e-id="question{{ question.index }}_question"
-               e-placeholder="Enter question" onbeforesave="validate.nonEmpty($data)" e-form="form">
+               e-placeholder="Enter question" onbeforesave="validate.nonEmpty($data)" e-form="form" e-class="form-control autogrow transition-height">
                 {{ question.question[language] || errors.questions[question.index].question || 'Not set' }}
             </p>
         </div>
     </div>
-    <div class="data row" ng-show="form.$visible">
-        <div class="col-lg-12">
+    <div class="form-group" ng-show="form.$visible">
+        <div class="col-sm-3"></div>
+        <div class="col-sm-9">
             <input type="checkbox" ng-model="question.is_long_answer" id="question{{ question.index }}_long">
             <span class="small">Long-answer</span>
         </div>
     </div>
-    <div class="row">
+    <div class="form-group">
         <div class="col-lg-12">
             <pre id="question{{ question.index }}_answer" class="text-success" ng-show="question.answer">{{ question.answer.answer }}</pre>
         </div>
     </div>
 </div>
-
-<hr>

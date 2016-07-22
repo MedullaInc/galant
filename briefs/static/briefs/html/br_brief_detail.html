@@ -17,58 +17,59 @@
         </li>
     </ul>
     <br/>
-
 </div>
 
-<div class="row">
-    <div ng-class="briefTemplate ? 'col-lg-10 col-md-10 col-sm-9 col-xs-9' : 'col-lg-10 col-md-10 col-sm-9 col-xs-9'">
-        <form editable-form name="briefForm" id="form" shown="brief && !brief.title"
-              onshow="storeBrief()" oncancel="loadStoredBrief()" onaftersave="submitForm()">
-            <div id="title" class="data">
-                <h2 class="inline_title" data-inputclass="form-control"
-                    editable-text="brief.title[language]" e-id="brief_title"
-                    e-placeholder="Enter brief title"
-                    onbeforesave="validate.nonEmpty($data)">
-                    {{ brief.title[language] || brief.errors.title || 'Not set' }}
-                </h2>
+<section class="widget">
+    <div class="row">
+        <div ng-class="briefTemplate ? 'col-lg-10 col-md-10 col-sm-9 col-xs-9' : 'col-lg-10 col-md-10 col-sm-9 col-xs-9'">
+            <div class="widget-body">
+
+                <form editable-form name="briefForm" id="form" shown="brief && !brief.title"
+                      onshow="storeBrief()" oncancel="loadStoredBrief()" onaftersave="submitForm()">
+                    <div id="title" class="input-group">
+                        <h2 class="inline_title" data-inputclass="form-control"
+                            editable-text="brief.title[language]" e-id="brief_title"
+                            e-placeholder="Enter brief title"
+                            onbeforesave="validate.nonEmpty($data)">
+                            {{ brief.title[language] || brief.errors.title || 'Not set' }}
+                        </h2>
+                    </div>
+                    <div id="greeting" class="input-group">
+                        <div editable-textarea="brief.greeting[language]" e-id="brief_greeting" e-placeholder="Enter greeting" onbeforesave="validate.nonEmpty($data)">
+                            {{ brief.greeting[language] || brief.errors.greeting || 'Not set' }}</div>
+                    </div>
+                </form>
+
             </div>
-            <div id="greeting" class="data">
-                <pre editable-textarea="brief.greeting[language]" e-id="brief_greeting" e-placeholder="Enter greeting" onbeforesave="validate.nonEmpty($data)">{{ brief.greeting[language] || brief.errors.greeting || 'Not set' }}</pre>
+        </div>
+        <div ng-class="briefTemplate ? 'col-lg-2 col-md-2 col-sm-3 col-xs-3' : 'col-lg-2 col-md-2 col-sm-3 col-xs-3'">
+            <div gl-edit-buttons form="briefForm" hide-edit="brief.answered || brief.status == 2 || brief.status == 3"
+                 delete="deleteObject()('brief')" prefix="brief"
+                 hide-cancel="!brief.title[language]" class="affix affix-top">
             </div>
-        </form>
-    </div>
-    <div ng-class="briefTemplate ? 'col-lg-2 col-md-2 col-sm-3 col-xs-3' : 'col-lg-2 col-md-2 col-sm-3 col-xs-3'">
-        <div gl-edit-buttons form="briefForm" hide-edit="brief.answered || brief.status == 2 || brief.status == 3"
-             delete="deleteObject()('brief')" prefix="brief"
-             hide-cancel="!brief.title[language]" class="affix affix-top">
         </div>
     </div>
-</div>
+</section>
 
-<div class="row">
-    <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
-        <hr>
-        <h2 class="section_title">
-            Questions
-            <span class="pull-right glyphicon glyphicon-question-sign help-tooltip" uib-tooltip="You can add short & long answer quesetions as well as multiple option questions to help you be prepared for the client's needs." tooltip-placement="top-right"></span>
-        </h2>
-        <hr>
-    </div>
-</div>
+<h2 class="section_title">
+    Questions
+</h2>
 
-<div data-as-sortable="dragControlListeners" data-ng-model="brief.questions" class="row">
-    <div ng-repeat="question in brief.questions" data-as-sortable-item class="row">
-        <div id="question_{{ question.index }}" class="question col-lg-8 col-md-8 col-sm-7 col-xs-7"
+<div data-as-sortable="dragControlListeners" data-ng-model="brief.questions">
+    <div ng-repeat="question in brief.questions" data-as-sortable-item class="row col-lg-10">
+        <div id="question_{{ question.index }}" class="question col-lg-10 col-md-10 col-sm-9 col-xs-9"
              br-question-detail question="question"
              language="language" errors="brief.errors" answered="brief.answered" form="briefForm">
         </div>
 
         <div class="col-lg-2 col-md-2 col-sm-3 col-xs-3 padding-top-25" ng-show="briefForm.$visible">
-            <button id="question{{ $index }}_move" type="button" class="btn btn-default move_button btn-add"
+            <br/>
+            <br/>
+            <button id="question{{ $index }}_move" type="button" class="btn btn-warning button-inline"
                     as-sortable-item-handle>
                 <span class="glyphicon glyphicon-move"/>
             </button>
-            <button id="question{{ $index }}_delete" type="button" class="btn btn-default delete_button btn-add"
+            <button id="question{{ $index }}_delete" type="button" class="btn btn-danger"
                     aria-label="Delete"
                     ng-click="removeQuestion(question)">
                 <span class="glyphicon glyphicon-trash"/>
@@ -77,13 +78,27 @@
     </div>
 </div>
 
+<div class="row">
+    <div class="col-lg-4">
+    </div>
+    <div class="col-lg-6">
+
+        <br/>
+
+        <button type="button" id="add_multiquestion" class="btn btn-success pull-right" ng-click="addQuestion('multi')" ng-show="showButtons()">
+            <span class="glyphicon glyphicon-plus"></span> Add Multiple Choice Question
+        </button>
+
+        <button type="button" id="add_question" class="btn btn-success button-inline pull-right" ng-click="addQuestion()" ng-show="showButtons()">
+            <span class="glyphicon glyphicon-plus"></span> Add Question
+        </button>
+
+        <br/>
+        <br/>
+
+    </div>
+</div>
+
 <div ng-show="questions.length == 0">
     No questions have been added yet.<br/>
 </div>
-
-<button type="button" id="add_question" class="btn btn-default pull-left margin-right-10 btn-submit" ng-click="addQuestion()" ng-show="showButtons()">
-    Add Question
-</button>
-<button type="button" id="add_multiquestion" class="btn btn-default pull-left btn-submit" ng-click="addQuestion('multi')" ng-show="showButtons()">
-    Add Multiple Choice Question
-</button>
