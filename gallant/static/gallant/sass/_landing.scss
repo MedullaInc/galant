@@ -1,0 +1,288 @@
+$color-light: #bdc3c7;
+$color-strong: #588ba9;
+$color-highlight: #d40371;
+
+.welcome_box {
+  min-height: 300px;
+}
+
+#landing_blurb_anchor {
+  padding-top: 100px;
+  margin-top: -100px;
+}
+
+#landing_main {
+  background: #e7e7e7 url("/static/img/welcome.jpg") 50% no-repeat;
+  background-position: top center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 500px;
+  padding-top: 200px;
+  margin-top: 110px;
+}
+
+.landing_container {
+  margin-right: 0px;
+  margin-left: 0px;
+  margin-top: -10px;
+  padding-right: 0px;
+  padding-left: 0px;
+  width: 100%;
+  z-index: -1;
+}
+
+#landing_main #main_overlay {
+  font-size: 24px;
+  font-weight: 100;
+  line-height: 1.3;
+  color: #555555;
+  width: 80%;
+  margin: auto;
+  text-align: center;
+  padding-top: 0%;
+  padding-bottom: 25px;
+  word-spacing: -3px;
+}
+
+.landing_section {
+  height: 570px;
+  padding-top: 15%;
+  background-color: #ffffff;
+}
+
+.landing_section.right-card {
+  border-right: 1px solid #d7d7d7;
+  margin-bottom: 70px;
+}
+
+.landing_section.left-card {
+  border-left: 1px solid #d7d7d7;
+  margin-bottom: 70px;
+}
+
+.landing_callout {
+  height: 150px;
+  padding-top: 4%;
+  background-color: $color-highlight;
+  padding-bottom: 6%;
+}
+
+.landing_blurb {
+  height: 525px;
+  padding-top: 50px;
+  background-color: $color-strong;
+  width: auto;
+  text-align: center;
+}
+
+.landing_section_with_img {
+  background: #e7e7e7;
+  height: 548px;
+  padding-top: 20%;
+}
+
+.landing_section_with_img.bg-white {
+  background-color: #ffffff;
+}
+
+.landing_image_kanban {
+  background: #ffffff url("/static/img/imac_clients.gif") no-repeat;
+  max-width: 80%;
+  margin: auto;
+  margin-top: 10%;
+  background-size: 100%;
+}
+
+.landing_image_calendar {
+  background: #ffffff url("/static/img/imac_calendar.gif") no-repeat;
+  max-width: 80%;
+  margin: auto;
+  margin-top: 10%;
+  background-size: 100%;
+}
+
+.landing_image_analytics {
+  background: #ffffff url("/static/img/macbook_air_dashboard.gif") no-repeat;
+  max-width: 80%;
+  margin: auto;
+  margin-top: 10%;
+  background-size: 100%;
+}
+
+.navbar {
+  left: 0;
+  right: 0;
+
+  .subnav {
+    display: none;
+  }
+
+  a {
+    -webkit-transition: color 0.25s, background 0.25s;
+    -moz-transition: color 0.25s, background 0.25s;
+    -o-transition: color 0.25s, background 0.25s;
+    transition: color 0.25s, background 0.25s;
+  }
+
+  .navbar-collapse {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .nav > li {
+    float: left;
+  }
+
+  .nav > li > a:hover,
+  .nav > li > a:focus {
+    background: none;
+  }
+
+  .nav > li > a > [class*="fui-"] {
+    font-size: 24px;
+    margin: -10px 0 0;
+    position: relative;
+    top: 4px;
+  }
+
+  .navbar-toggle {
+    margin: 26px 0 10px;
+    color: white;
+    background: none;
+    padding: 0;
+    width: 35px;
+    height: 35px;
+    background: $color-highlight url("/static/img/menu-icon@2x.png") 50% no-repeat;
+    -webkit-background-size: 17px 12px;
+    -moz-background-size: 17px 12px;
+    -o-background-size: 17px 12px;
+    background-size: 17px 12px;
+    -webkit-border-radius: 45px;
+    -moz-border-radius: 45px;
+    border-radius: 45px;
+    font-size: 12px;
+  }
+
+  .navbar-toggle:before {
+    display: none;
+  }
+
+  .navbar-form .btn {
+    height: auto;
+    line-height: 22px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+}
+
+.brand, .brand#hover {
+  color: transparent;
+  background: transparent url("/static/img/galant/galant_logo.png") 0px 8px no-repeat;
+  background-size: contain;
+  width: 160px;
+  position: relative;
+  float: left;
+  font-size: 38px;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 800;
+  letter-spacing: -1px;
+}
+
+.brand span {
+  color: red;
+  font-size: 12px;
+  font-weight: 100;
+  position: absolute;
+  right: -33px;
+  bottom: 12px;
+  font-family: "Courier New";
+}
+
+.header-fixed {
+  position: fixed;
+  width: 100%;
+}
+
+.header-5 {
+  left: 0;
+  top: 0;
+  z-index: 100;
+  padding-top: 0;
+  padding-bottom: 0;
+  background: #ffffff;
+  margin-bottom: 10px;
+  background-color: #f9f9f9;
+  border: none;
+
+  .container {
+    position: relative;
+  }
+
+  .navbar.navbar-fixed-top {
+    position: fixed;
+  }
+
+  .brand {
+    margin-top: 35px;
+  }
+
+  .brand:hover,
+  .brand:focus,
+  .brand.active {
+    color: transparent;
+    text-decoration: none;
+  }
+
+  .brand img:first-child {
+    float: left;
+    /*margin: -10px 15px 0 0;*/
+  }
+
+  .navbar .nav > li {
+    margin-left: 10px;
+  }
+
+  .navbar .nav > li:first-child {
+    margin-left: 0;
+  }
+
+  .navbar .nav > li > a {
+    /*padding: 35px 0 27px;*/
+    font-size: 14px;
+    font-weight: normal;
+    font-weight: 100;
+    letter-spacing: 1px;
+    color: #000000;
+    border: 1px solid #666666;
+    width: 150px;
+    text-align: center;
+  }
+
+  .navbar .nav > li > a:hover,
+  .navbar .nav > li > a:focus,
+  .navbar .nav > li > a.active {
+    color: $color-light;
+  }
+
+  .navbar .nav > li.active > a {
+    color: $color-light;
+  }
+
+  .navbar .nav > li.active > a:hover,
+  .navbar .nav > li.active > a:focus,
+  .navbar .nav > li.active > a.active {
+    color: rgba(255, 255, 255, 1);
+  }
+
+  .navbar-header .brand {
+    margin-top: 25px;
+  }
+
+  .nav {
+    margin-top: 37px;
+  }
+
+  .navbar .navbar-toggle {
+    margin-top: 37px;
+  }
+}

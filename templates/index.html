@@ -1,15 +1,25 @@
 {% extends "base_body.html" %}
 
-{% load bootstrap i18n %}
+{% load bootstrap i18n static %}
 
-{% block custom_css %}
+{% block project_css %}
     {{ block.super }}
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="{% static "css/flat-ui.css" %}">
+    <link rel="stylesheet" href="{% static "css/bootstrap.min.css" %}">
+
     <style>
         .alert {
             margin-top: 110px;
             margin-bottom: -105px;
         }
     </style>
+{% endblock %}
+
+{% block project_scripts %}
+    <script src="{% static "js/bootstrap.min.js" %}"></script>
+    <script src="{% static "js/flat-ui.min.js" %}"></script>
 {% endblock %}
 
 {% block header_class %} class="header-5 header-fixed" {% endblock %}
