@@ -54,3 +54,15 @@ pre {
     font-family: inherit;
     line-height: 1.4;
 }
+
+.sortable-board select {
+    margin-top: 0px;
+}
+
+.sortable-board textarea {
+    margin-top: 10px;
+}
+
+.editable-wrap, .editable-wrap * {
+    width: 100%;
+}

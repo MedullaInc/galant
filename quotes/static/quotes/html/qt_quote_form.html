@@ -66,21 +66,23 @@
 
     <div class="row" ng-show="showEdit()">
         <div class="col-lg-10">
-            <button type="button" id="add_service" class="btn btn-default pull-right margin-left-10 btn-submit"
+            <button type="button" id="add_service" class="btn btn-success pull-right"
                     popover-placement="bottom" uib-popover-template="dynamicPopover.serviceTemplateUrl"
-                    popover-trigger="focus click">Add Service
+                    popover-trigger="focus click">
+                &nbsp;Add Service
+                &nbsp;&nbsp;<i class="glyphicon glyphicon-plus"/></i>&nbsp;
             </button>
         </div>
     </div>
 
     <script type="text/ng-template" id="serviceTemplate.html">
         <a ng-click="open()">
-            <button id="service_from_template" type="button" class="btn btn-default from_scratch_button">From
+            <button id="service_from_template" type="button" class="btn btn-success pull-right">From
                 Template
             </button>
         </a>
         <a ng-click="addService()">
-            <button id="service_from_scratch" type="button" class="btn btn-default from_scratch_button">From
+            <button id="service_from_scratch" type="button" class="btn btn-success pull-right">From
                 Scratch
             </button>
         </a>

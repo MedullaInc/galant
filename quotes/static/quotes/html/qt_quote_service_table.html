@@ -3,7 +3,7 @@
 </h2>
 
 <div data-as-sortable="dragControlListeners" data-ng-model="quote.services">
-    <span ng-repeat="service in quote.services" data-as-sortable-item>
+    <span ng-repeat="service in quote.services" data-as-sortable-item class="sortable-board">
         <section class="widget">
             <div class="widget-body">
                 <div class="row">
@@ -87,12 +87,12 @@
                         </div>
                     </div>
                     <div class="col-lg-2" ng-show="quoteform.$visible">
-                        <button id="service{{ $index }}_move" type="button" class="btn btn-default move_button btn-add"
+                        <button id="service{{ $index }}_delete" type="button" class="btn btn-danger pull-right" aria-label="Delete" ng-click="removeService($index)">
+                            <span class="glyphicon glyphicon-trash"/>
+                        </button>
+                        <button id="service{{ $index }}_move" type="button" class="btn btn-warning button-inline pull-right"
                                 as-sortable-item-handle>
                             <span class="glyphicon glyphicon-move"/>
-                        </button>
-                        <button id="service{{ $index }}_delete" type="button" class="btn btn-default delete_button btn-add" aria-label="Delete" ng-click="removeService($index)">
-                            <span class="glyphicon glyphicon-trash"/>
                         </button>
                     </div>
                 </div>
