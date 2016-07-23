@@ -1,4 +1,4 @@
-.col-centered {
+div.as-sortable-item.col-centered {
     text-align: center
 }
 
@@ -15,7 +15,7 @@ div.kanban-card.ng-scope.as-sortable-item {
     border-radius: 0px;
 }
 
-.ng-scope.as-sortable-item-handle {
+div.ng-scope.as-sortable-item-handle {
     padding: 20px;
 }
 
@@ -32,6 +32,9 @@ button.btn.btn-default.btn-alert {
 
 div.kanban-card.ng-scope.as-sortable-item {
     margin-bottom: 20px;
+    border-radius: 3px;
+    box-shadow: 0px 1px 2px 2px rgba(0, 0, 0, 0.2);
+    padding-bottom: 0px;
 }
 
 .kanban-card-data, .kanban-card-alert {
