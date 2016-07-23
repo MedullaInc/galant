@@ -17,6 +17,7 @@
 {% endblock %}
 
 {% block project_css %}
+    {{ block.super }}
     <link rel="stylesheet" href="{% static "css/xeditable.css" %}">
     <link rel="stylesheet" href="{% static "briefs/css/briefs.css" %}">
     <link rel="stylesheet" href="{% static "css/ng-sortable.style.min.css" %}">
