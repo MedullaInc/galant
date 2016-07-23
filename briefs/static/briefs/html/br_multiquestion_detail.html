@@ -1,5 +1,5 @@
 <div id="question{{ question.index }}">
-    <div class="form-group">
+    <div class="row">
         <label class="control-label col-sm-3">Question{{ question.can_select_multiple ? ' (Can select multiple)' : '' }}</label>
         <div class="col-sm-9">
             <p editable-textarea="question.question[language]" e-id="question{{ question.index }}_question"
@@ -8,7 +8,7 @@
             </p>
         </div>
     </div>
-    <div class="form-group" ng-show="form.$visible">
+    <div class="row" ng-show="form.$visible">
         <div class="col-sm-3"></div>
         <div class="col-sm-9">
             <input type="checkbox" ng-model="question.can_select_multiple" id="question{{ question.index }}_mult">
@@ -18,28 +18,30 @@
         </div>
     </div>
     <div class="choices" data-as-sortable="dragControlListeners" data-ng-model="question.choices">
-        <div ng-repeat="choice in question.choices" data-as-sortable-item class="form-group">
-            <label class="control-label col-sm-3">Choice</label>
-            <div class="col-sm-7">
-                <p editable-textarea="choice[language]" e-form="form"
-                   e-id="question{{ question.index }}_choice{{ $index }}"
-                   e-placeholder="Enter choice" onbeforesave="validate.nonEmpty($data)"
-                   ng-class="{'text-success': question.answer.choices.indexOf($index) >= 0}">
-                    - {{ choice[language]
+        <div ng-repeat="choice in question.choices" data-as-sortable-item class="sortable-board">
+            <div class="row">
+                <label class="control-label col-sm-3">Choice</label>
+                <div class="col-sm-7">
+                    <p editable-textarea="choice[language]" e-form="form"
+                       e-id="question{{ question.index }}_choice{{ $index }}"
+                       e-placeholder="Enter choice" onbeforesave="validate.nonEmpty($data)"
+                       ng-class="{'text-success': question.answer.choices.indexOf($index) >= 0}">
+                        - {{ choice[language]
                                      || errors.questions[question.index].choices || 'Not set' }}
-                </p>
-            </div>
-            <div class="col-sm-2" ng-show="form.$visible">
-                <button id="question{{ question.index }}_choice{{ $index }}_delete" type="button"
-                        class="btn btn-danger pull-right" aria-label="Delete"
-                        ng-click="removeChoice($index)">
-                    <span class="glyphicon glyphicon-trash"/>
-                </button>
-                <button id="question{{ question.index }}_choice{{ $index }}_move" type="button"
-                        class="btn btn-warning pull-right button-inline"
-                        as-sortable-item-handle>
-                    <span class="glyphicon glyphicon-move"/>
-                </button>
+                    </p>
+                </div>
+                <div class="col-sm-2" ng-show="form.$visible">
+                    <button id="question{{ question.index }}_choice{{ $index }}_delete" type="button"
+                            class="btn btn-danger pull-right" aria-label="Delete"
+                            ng-click="removeChoice($index)">
+                        <span class="glyphicon glyphicon-trash"/>
+                    </button>
+                    <button id="question{{ question.index }}_choice{{ $index }}_move" type="button"
+                            class="btn btn-warning pull-right button-inline"
+                            as-sortable-item-handle>
+                        <span class="glyphicon glyphicon-move"/>
+                    </button>
+                </div>
             </div>
         </div>
     </div>
