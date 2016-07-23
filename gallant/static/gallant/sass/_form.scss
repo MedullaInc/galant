@@ -1,3 +1,56 @@
 select.form-control {
     margin-top: 15px;
 }
+
+form div.input-group, form div.input-group * {
+    width: 100%;
+}
+
+form div.input-group {
+    margin-bottom: 10px;
+}
+
+div.editable-error.help-block.ng-binding {
+    clear: left;
+    padding-top: 5px;
+}
+
+pre.ng-scope.ng-binding.editable {
+    border: none;
+}
+
+div.as-sortable-item {
+    border: none;
+    border-radius: 0px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding-bottom: 20px;
+}
+
+span.editable-wrap.editable-textarea.ng-scope {
+    width: 100%;
+
+}
+
+textarea.form-control.autogrow.transition-height.editable-input.ng-valid.ng-touched.ng-not-empty.ng-dirty.ng-valid-parse {
+    overflow: hidden;
+    word-wrap: break-word;
+    resize: horizontal;
+    height: 71px;
+    width: 100%;
+}
+
+.ng-scope.as-sortable-item-handle {
+    padding: 10px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+}
+
+.margin-bottom-25 {
+    margin-bottom: 25px;
+}
+
+pre {
+    font-family: inherit;
+    line-height: 1.4;
+}
