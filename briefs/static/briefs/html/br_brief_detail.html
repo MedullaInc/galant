@@ -34,10 +34,7 @@
                             {{ brief.title[language] || brief.errors.title || 'Not set' }}
                         </h2>
                     </div>
-                    <div id="greeting" class="input-group">
-                        <div editable-textarea="brief.greeting[language]" e-id="brief_greeting" e-placeholder="Enter greeting" onbeforesave="validate.nonEmpty($data)">
-                            {{ brief.greeting[language] || brief.errors.greeting || 'Not set' }}</div>
-                    </div>
+                    <pre editable-textarea="brief.greeting[language]" e-id="brief_greeting" e-placeholder="Enter greeting" onbeforesave="validate.nonEmpty($data)">{{ brief.greeting[language] || brief.errors.greeting || 'Not set' }}</pre>
                 </form>
 
             </div>
