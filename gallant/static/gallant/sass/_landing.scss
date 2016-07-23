@@ -48,6 +48,19 @@ $color-highlight: #d40371;
   z-index: -1;
 }
 
+.landing_content {
+  margin-top: 100px;
+  color: black;
+
+  .login {
+    color: black;
+  }
+
+  .form-actions {
+    background-color: white;
+  }
+}
+
 #landing_main #main_overlay {
   font-size: 24px;
   font-weight: 100;

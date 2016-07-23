@@ -51,7 +51,7 @@ class Home(View):
             return HttpResponseRedirect(reverse('user_dashboard'))
         else:
             return TemplateResponse(request=request,
-                                    template="index.html",
+                                    template="landing.html",
                                     context={'title': 'Home'})
 
 
