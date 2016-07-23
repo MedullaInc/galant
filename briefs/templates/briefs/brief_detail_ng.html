@@ -30,7 +30,7 @@
 {% endblock %}
 
 {% block page_title %}
-    {% trans title %} <span class="fw-semi-bold">{% if object %} - {{ object.title.get_text }}{% else %}{% endif %}</span>
+    {% trans title %}<span class="fw-semi-bold">{% if object %} - {{ object.title.get_text }}{% endif %}</span>
 {% endblock %}
 
 {% block content %}

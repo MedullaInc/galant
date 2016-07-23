@@ -51,8 +51,30 @@
 {% endblock %}
 
 {% block page_title %}
-    {% trans "Quote" %}
+    {% trans "Quote" %}<span class="fw-semi-bold">{% if object.name %} - {{ object.name }}{% endif %}</span>
 {% endblock %}
+
+{% block client_sidebar %}
+    <a class="collapsed" href="#sidebar-ui" data-toggle="collapse" data-parent="#sidebar">
+        <span class="icon">
+            <i class="fa fa-building"></i>
+        </span>
+        {{ object.client.name }}
+        <i class="toggle fa fa-angle-down"></i>
+    </a>
+    <ul id="sidebar-ui" class="collapse">
+        {% url 'client_detail' object.client.id as client_detail %}
+        <li><a href="{{ client_detail }}">Dashboard</a></li>
+        {% url 'client_work_detail' object.client.id as client_work_detail %}
+        <li><a href="{{ client_work_detail }}">Projects</a></li>
+        {% url 'client_money_detail' object.client.id as client_money_detail %}
+        <li><a href="{{ client_money_detail }}">Payments</a></li>
+        <li role="separator" class="divider"></li>
+        <li><a href="{% url 'briefs' %}?client_id={{ object.client.id }}">Briefs</a></li>
+        <li><a href="{% url 'quotes' %}?client_id={{ object.client.id }}">Quotes</a></li>
+    </ul>
+{% endblock %}
+
 
 {% block content %}
 
@@ -80,79 +102,105 @@
             </p>
         </div>
     {% endif %}
-
-    <div class="row">
-        <div class="col-lg-12">
-
-            {% if object.client.email and object.status == '0' or object.status == '5' %}
-                {% if not project %}
-                    <div gl-add-modal open-fn="addProject" title="Add Project" modal-instance="modalInstance">
-                        <div gl-project-add project="object" projects="projects"
-                             on-success="modalInstance.dismiss" quote-id="{{ object.pk }}"></div>
-                    </div>
-                    <button class="btn btn-default btn-add action-button pull-right" ng-click="addProject()">
-                        Add Project
-                    </button>
-
-                {% endif %}
-            {% endif %}
-
-            <a href="{% url 'quote_txt' object.id %}">
-                <button type="button" class="btn btn-default btn-add action-button pull-right">
-                    {% trans "Copy & Paste Text Version" %}
-                </button>
-            </a>
-
-            <a href="{% url 'quote_pdf' object.id %}">
-                <button type="button" class="btn btn-default btn-add action-button pull-right">
-                    {% trans "PDF Version" %}
-                </button>
-            </a>
-            <a href="{% url 'add_quote_template' quote_id=object.id %}">
-                <button type="button" class="btn btn-default btn-add action-button pull-right" title="Create template from this quote.">
-                    {% trans "Use as Template" %}
-                </button>
-            </a>
-
-            {% if object.status != "0" and object.status != "5" and object.status != "6" %}
-                <form action="" method="POST">
-                    {% csrf_token %}
-                    <input type="hidden" name="action" value="reject">
-                    <button id="quote_reject" type="submit" class="btn btn-default btn-add action-button pull-right">
-                        {% trans "Reject Quote" %}
-                    </button>
-                </form>
-                <form action="" method="POST" onsubmit="return confirm('{% trans "After accepting the quote, a project will be automatically created and linked to the quote. The link will be shown at the top of the page." %}');">
-                    {% csrf_token %}
-                    <input type="hidden" name="action" value="accept">
-                    <button id="quote_accept" type="submit" class="btn btn-default btn-add action-button pull-right">
-                        {% trans "Accept Quote" %}
-                    </button>
-                </form>
-            {% endif %}
-
-            <div class="btn-group pull-right">
-                <button type="button" class="btn btn-default action-button dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="margin-top: 0px;">
-                    Client Sections<span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu action-button">
-                    {% url 'client_detail' object.client.id as client_detail %}
-                    <li><a href="{{ client_detail }}">Client Overview</a></li>
-                    {% url 'client_work_detail' object.client.id as client_work_detail %}
-                    <li><a href="{{ client_work_detail }}">Client Work</a></li>
-                    {% url 'client_money_detail' object.client.id as client_money_detail %}
-                    <li><a href="{{ client_money_detail }}">Client Money</a></li>
-                    <li role="separator" class="divider"></li>
-                    <li><a href="{% url 'briefs' %}?client_id={{ object.client.id }}">Client Briefs</a></li>
-                    <li><a href="{% url 'quotes' %}?client_id={{ object.client.id }}">Client Quotes</a></li>
-                </ul>
-            </div>
-
-        </div>
-    </div>
-
     <div ng-controller="glFormController"
          ng-init="init('{% firstof language LANGUAGE_CODE %}', '{{ csrf_token }}')">
+
+        <section class="widget">
+            <div class="widget-body">
+                <div class="widget-top-overflow text-white">
+                    <div class="height-100 overflow-hidden">
+                        <img class="img-responsive" src="{% static "img/galant/background.jpg" %}">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-5 text-center">
+                        <div class="post-user post-user-profile">
+                            <h4 class="fw-normal">{{ object.name }}</h4>
+                            <span class="label label-danger"> {{ object.get_status_display }} </span>
+
+                            {% if object.client %}
+                                <ul class="contacts">
+                                    <li>
+                                        <i class="fa fa-building fa-fw mr-xs"></i><a href="{% url 'client_detail' object.client.id %}"> {{ object.client.name }}</a>
+                                    </li>
+                                </ul>
+                            {% endif %}
+
+                        </div>
+                    </div>
+                    <div class="col-sm-7">
+
+                        <div gl-add-modal open-fn="editProject" title="Edit Project" modal-instance="modalInstance">
+                            <div gl-project-add on-success="projectSaved" project="projectSafe" language="{% firstof language LANGUAGE_CODE %}"></div>
+                        </div>
+
+                        <div class="stats-row stats-row-profile mt text-right">
+                            <div class="stat-item">
+                                <p class="value">{% get_project_services_count request object %}</p>
+                                <h5 class="name">Services</h5>
+                            </div>
+                            <div class="stat-item">
+                                <p class="value">{{ object.get_total_cost }}</p>
+                                <h5 class="name">Total Cost</h5>
+                            </div>
+                        </div>
+                        <div gl-add-modal open-fn="addProject" title="Add Project" modal-instance="modalInstance">
+                            <div gl-project-add project="object" projects="projects"
+                                 on-success="modalInstance.dismiss" quote-id="{{ object.pk }}"></div>
+                        </div>
+                        <p class="text-right mt-lg">
+                            {% if object.client.email and object.status == '0' or object.status == '5' %}
+                                {% if not project %}
+                                    <button type="buton" class="btn btn-success btn-sm mt" ng-click="addProject()">
+                                        &nbsp;Add Project
+                                        &nbsp;&nbsp;<i class="glyphicon glyphicon-plus"/></i>&nbsp;
+                                    </button>
+                                {% endif %}
+                            {% endif %}
+                            <br/>
+                            <a href="{% url 'quote_txt' object.id %}">
+                                <button type="button" class="btn btn-success btn-sm mt">
+                                    &nbsp;{% trans "Copy & Paste Text Version" %}
+                                    &nbsp;&nbsp;<i class="fa fa-copy"/></i>&nbsp;
+                                </button>
+                            </a>
+                            <a href="{% url 'add_quote_template' quote_id=object.id %}">
+                                <button type="button" class="btn btn-success btn-sm mt" title="Create template from this quote.">
+                                    &nbsp;{% trans "Use as Template" %}
+                                    &nbsp;&nbsp;<i class="fa fa-file-text"/></i>&nbsp;
+                                </button>
+                            </a>
+                            <a href="{% url 'quote_pdf' object.id %}">
+                                <button type="button" class="btn btn-success btn-sm mt">
+                                    &nbsp;{% trans "PDF Version" %}
+                                    &nbsp;&nbsp;<i class="fa fa-file-pdf-o"/></i>&nbsp;
+                                </button>
+                            </a>
+                            {% if object.status != "0" and object.status != "5" and object.status != "6" %}
+                                <br/>
+                                <form action="" method="POST" class="pull-right">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="action" value="reject">
+                                    <button id="quote_reject" type="submit" class="btn btn-danger btn-sm">
+                                        &nbsp;{% trans "Reject Quote" %}
+                                        &nbsp;&nbsp;<i class="glyphicon glyphicon-remove"/></i>&nbsp;
+                                    </button>
+                                </form>
+                                <form action="" method="POST" onsubmit="return confirm('{% trans "After accepting the quote, a project will be automatically created and linked to the quote. The link will be shown at the top of the page." %}');" class="pull-right mr">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="action" value="accept">
+                                    <button id="quote_accept" type="submit" class="btn btn-success btn-sm">
+                                        &nbsp;{% trans "Accept Quote" %}
+                                        &nbsp;&nbsp;<i class="glyphicon glyphicon-ok"/></i>&nbsp;
+                                    </button>
+                                </form>
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <div qt-quote-form quote-id="{{ object.pk }}" quote="object" endpoint="objectEndpoint"
              language="currentLanguage" forms="forms" delete-object="deleteObject"
              client-id="{{ client.id }}" project-id="{{ project.id }}" quote-id="{{ quote.id }}"
@@ -195,15 +243,15 @@
         </div>
     </div>
     <script>
-        $('#add_project_button').click(function () {
+        jQuery('#add_project_button').click(function ($) {
             $('#quote_select').modal('show');
         });
 
-        $('.table .project_row').click(function () {
+        jQuery('.table .project_row').click(function ($) {
             window.location.href = "{% url 'project_detail' %}" + $(this).attr('data-rel')
         });
 
-        $('.table .quote_row').click(function (e) {
+        jQuery('.table .quote_row').click(function ($, e) {
             window.location.href = "{% url 'add_project' %}" + $(this).attr('data-rel');
         });
     </script>
