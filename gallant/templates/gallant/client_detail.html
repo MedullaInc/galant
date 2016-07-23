@@ -24,6 +24,7 @@
 {% block extra_wrapper_attrs %} ng-app="glClientPayments" {% endblock %}
 
 {% block project_css %}
+    {{ block.super }}
     <link rel="stylesheet" href="{% static "gallant/css/chart.css" %}">
 {% endblock %}
 

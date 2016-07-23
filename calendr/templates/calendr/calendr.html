@@ -3,6 +3,7 @@
 {% load djng_tags %}
 
 {% block project_css %}
+    {{ block.super }}
     <link href='{% static "/static/calendr/css/calendar.css" %}' rel='stylesheet'/>
     <link href='{% static "css/fullcalendar.min.css" %}' rel='stylesheet'/>
     <link href='{% static "css/scheduler.min.css" %}' rel='stylesheet'/>

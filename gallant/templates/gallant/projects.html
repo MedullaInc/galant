@@ -3,6 +3,7 @@
 {% load djng_tags %}
 
 {% block project_css %}
+    {{ block.super }}
     <link rel="stylesheet" href="{% static "css/ng-sortable.style.min.css" %}">
     <link rel="stylesheet" href="{% static "css/ng-sortable.min.css" %}">
 {% endblock %}
