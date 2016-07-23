@@ -48,6 +48,19 @@ $color-highlight: #d40371;
   z-index: -1;
 }
 
+.landing_content {
+  margin-top: 100px;
+  color: black;
+
+  .login {
+    color: black;
+  }
+
+  .form-actions {
+    background-color: white;
+  }
+}
+
 #landing_main #main_overlay {
   font-size: 24px;
   font-weight: 100;
@@ -347,7 +360,7 @@ $color-highlight: #d40371;
   padding-right: 0px;
 }
 
-.brand, .brand#hover, .brand#focus, .brand#active {
+.brand, .brand:hover, .brand:focus, .brand:active {
   color: transparent;
   background: transparent url("/static/img/galant/galant_logo.png") 0px 8px no-repeat;
   background-size: contain;
