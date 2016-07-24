@@ -1,20 +1,22 @@
-<div class="kanban">
-    <div class="row">
-        <div class="kanban-column" kb-board-column title="To Do" click-fn="editFCTask"
-             items="$parent.tasks" status-index="{{ clConstants.TaskStatus.ToDo }}" columns="4"></div>
-        <div class="kanban-column" kb-board-column title="In Progress" click-fn="editFCTask"
-             items="tasks" status-index="{{ clConstants.TaskStatus.InProgress }}" columns="4"></div>
-        <div class="kanban-column" kb-board-column title="Done" click-fn="editFCTask"
-             items="tasks" status-index="{{ clConstants.TaskStatus.Done }}" columns="4"></div>
-    </div>
-    <div class="row" ng-show="!$parent.tasksLoaded">
-        <div class="col-lg-12 col-centered">
-            <img src="/static/img/loading.gif" class="spinner-loading">
+<section class="widget">
+    <div class="kanban fit">
+        <div class="row">
+            <div class="kanban-column" kb-board-column title="To Do" click-fn="editFCTask"
+                 items="$parent.tasks" status-index="{{ clConstants.TaskStatus.ToDo }}" columns="4"></div>
+            <div class="kanban-column" kb-board-column title="In Progress" click-fn="editFCTask"
+                 items="tasks" status-index="{{ clConstants.TaskStatus.InProgress }}" columns="4"></div>
+            <div class="kanban-column" kb-board-column title="Done" click-fn="editFCTask"
+                 items="tasks" status-index="{{ clConstants.TaskStatus.Done }}" columns="4"></div>
+        </div>
+        <div class="row" ng-show="!$parent.tasksLoaded">
+            <div class="col-lg-12 col-centered">
+                <img src="/static/img/loading.gif" class="spinner-loading">
+            </div>
+        </div>
+        <div class="row" ng-show="tasksLoaded && tasks.length == 0">
+            <div class="col-lg-12 col-centered">
+                No tasks yet.
+            </div>
         </div>
     </div>
-    <div class="row" ng-show="tasksLoaded && tasks.length == 0">
-        <div class="col-lg-12 col-centered">
-            No tasks yet.
-        </div>
-    </div>
-</div>
+</section>

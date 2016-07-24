@@ -132,7 +132,9 @@ app.directive('brBriefDetail', ['Question', '$window', function (Question, $wind
                 $scope.dragControlListeners = {
                     accept: function (sourceItemHandleScope, destSortableScope) {
                         return sourceItemHandleScope.itemScope.sortableScope.$id === destSortableScope.$id;
-                    }
+                    },
+                    containerPositioning: 'relative',
+                    containment: '#questions',
                 };
 
                 $scope.storeBrief = function() {

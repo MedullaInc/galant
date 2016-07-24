@@ -45,7 +45,9 @@ app.directive('kbBoardColumn', ['KanbanCard', function (KanbanCard) {
                 },
                 orderChanged: function (event) {
                     $scope.updateCardIndex($scope.itemsSafe);
-                }
+                },
+                containment: '.widget',
+                containerPositioning: 'relative',
             };
 
             $scope.$watchCollection('items', function(newValue, oldValue) {

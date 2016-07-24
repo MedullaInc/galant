@@ -54,32 +54,36 @@
 
 <div class="row">
     <div class="col-lg-10">
-        <div data-as-sortable="dragControlListeners" data-ng-model="brief.questions">
+        <div id="questions" data-as-sortable="dragControlListeners" data-ng-model="brief.questions">
             <div ng-repeat="question in brief.questions" data-as-sortable-item class="sortable-board">
-            <section class="widget">
-                <div class="widget-body">
-                <div class="row">
-                    <div id="question_{{ question.index }}" class="question col-lg-10 col-md-10 col-sm-9 col-xs-9"
-                         br-question-detail question="question"
-                         language="language" errors="brief.errors" answered="brief.answered" form="briefForm">
-                    </div>
+                <section class="widget">
+                    <div class="widget-body">
+                        <div class="row">
+                            <div id="question_{{ question.index }}"
+                                 class="question col-lg-10 col-md-10 col-sm-9 col-xs-9"
+                                 br-question-detail question="question"
+                                 language="language" errors="brief.errors" answered="brief.answered"
+                                 form="briefForm">
+                            </div>
 
-                    <div class="col-lg-2 col-md-2 col-sm-3 col-xs-3 padding-top-25" ng-show="briefForm.$visible">
-                        <br/>
-                        <br/>
-                        <button id="question{{ $index }}_move" type="button" class="btn btn-warning button-inline"
-                                as-sortable-item-handle>
-                            <span class="glyphicon glyphicon-move"/>
-                        </button>
-                        <button id="question{{ $index }}_delete" type="button" class="btn btn-danger"
-                                aria-label="Delete"
-                                ng-click="removeQuestion(question)">
-                            <span class="glyphicon glyphicon-trash"/>
-                        </button>
+                            <div class="col-lg-2 col-md-2 col-sm-3 col-xs-3 padding-top-25"
+                                 ng-show="briefForm.$visible">
+                                <br/>
+                                <br/>
+                                <button id="question{{ $index }}_move" type="button"
+                                        class="btn btn-warning button-inline"
+                                        as-sortable-item-handle>
+                                    <span class="glyphicon glyphicon-move"/>
+                                </button>
+                                <button id="question{{ $index }}_delete" type="button" class="btn btn-danger"
+                                        aria-label="Delete"
+                                        ng-click="removeQuestion(question)">
+                                    <span class="glyphicon glyphicon-trash"/>
+                                </button>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                </div>
-            </section>
+                </section>
             </div>
         </div>
     </div>
