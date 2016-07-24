@@ -1,0 +1,99 @@
+{% extends "index.html" %}
+{% load staticfiles bootstrap i18n %}
+
+{% block section_title %}
+    {{ title }}
+{% endblock %}
+
+{% block content %}
+    <section class="widget">
+
+        <form id="main_form" name="{{ form.form_name }}" class="form" method="post" action="">
+            <div class="widget-body">
+
+                {% block form_quick_actions %}
+                {% endblock %}
+
+                {% block form_help_text %}
+                    {% if help_text %}
+                        <p class="title">
+                            <i>
+                                {{ help_text }}
+                            </i>
+                        </p>
+                    {% endif %}
+                {% endblock %}
+
+                {% csrf_token %}
+                {% block pre_form %}{% endblock %}
+                {% block form_body %}
+                    {{ form|bootstrap }}
+                {% endblock %}
+                {% block post_form %}{% endblock %}
+
+            </div>
+
+            <div class="form-actions">
+                {% block form_actions %}
+                    <button id="create_submit" class="btn btn-inverse" type="submit">
+                        {{ submit_text|default:_("Save") }}
+                    </button>
+                {% endblock %}
+            </div>
+        </form>
+
+    </section>
+{% endblock %}
+
+{% block extra_body %}
+    {{ block.super }}
+    <script>
+        jQuery(document).ready(function ($) {
+            // Save form contents
+            $('.form').each(function () {
+                $(this).data('serialize', $(this).serialize());
+            });
+
+            var confirmOnPageExit = function (e) {
+                var modified = false;
+                $('.form').each(function () {
+                    if ($(this).serialize() != $(this).data('serialize')) {
+                        modified = true;
+                        return false;
+                    }
+                });
+
+                $('.ultext_target, .ultext_array_target').each(function () {
+                    if ($(this).val() != $(this).data('val')) {
+                        modified = true;
+                        return false;
+                    }
+                });
+
+                if (!modified) {
+                    return null;
+                }
+
+                // If we haven't been passed the event get the window.event
+                e = e || window.event;
+
+                var message = 'You have unsaved changes. If you leave this page they will be lost.';
+
+                // For IE6-8 and Firefox prior to version 4
+                if (e) {
+                    e.returnValue = message;
+                }
+
+                // For Chrome, Safari, IE8+ and Opera 12+
+                return message;
+            };
+
+            // Turn it on - assign the function that returns the string
+            window.onbeforeunload = confirmOnPageExit;
+
+            $('.form').submit(function () {
+                window.onbeforeunload = null;
+            });
+        });
+    </script>
+{% endblock %}

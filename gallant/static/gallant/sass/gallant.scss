@@ -19,6 +19,14 @@ div.page-wrapper {
     cursor: pointer;
 }
 
+.sidebar-nav > .active > a .icon {
+    background-color: #ff0060;
+}
+
+.sidebar-nav > .active > a {
+    color: #ff0060;
+}
+
 @import 'kanban';
 @import 'charts';
 @import 'modal';

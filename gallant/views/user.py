@@ -67,7 +67,7 @@ class SignUpRequest(View):
     @staticmethod
     def get(request):
         request.breadcrumbs([(_('Request Account'), request.path_info)])
-        return render(request, 'gallant/base_form.html', {
+        return render(request, 'gallant/base_index.html', {
             'form': forms.SignUpRequestForm(),
             'title': 'Request Account',
             'submit_text': 'Submit'
@@ -83,7 +83,7 @@ class SignUpRequest(View):
             messages.success(request, 'Request sent. We\'ll contact you soon!')
             return HttpResponseRedirect(reverse('home'))
         else:
-            return render(request, 'gallant/base_form.html', {
+            return render(request, 'gallant/base_index.html', {
                 'form': form,
                 'title': 'Request Account',
                 'submit_text': 'Submit'
