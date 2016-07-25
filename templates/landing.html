@@ -43,16 +43,11 @@
                                 {% if user.is_authenticated == False %}
                                     <form id="landing_signup" method="post" action="{% url 'signup' %}">
                                         {% csrf_token %}
-                                        <div class="row">
-                                            <div class="col-sm-6">
-                                                <input type="email" name="email" class="form-control"
-                                                       placeholder="Email Address">
-                                            </div>
-                                            <div class="col-sm-6">
-                                                <button class="btn btn-default" type="submit" name="signup">
-                                                    Request FREE Early Access
-                                                </button>
-                                            </div>
+                                        <div class="input-group">
+                                            <input type="email" id="signup-form" name="email" class="form-control" placeholder="Email Address">
+                                            <button id="signup-form" class="btn btn-default input-group-btn" type="submit" name="signup">
+                                                Request FREE Early Access
+                                            </button>
                                         </div>
                                     </form>
                                 {% endif %}
@@ -133,17 +128,11 @@
                                 {% if user.is_authenticated == False %}
                                     <form id="landing_signup" method="post" action="{% url 'signup' %}">
                                         {% csrf_token %}
-                                        <div class="row">
-                                            <div class="col-sm-6">
-                                                <input type="email" name="email" class="form-control"
-                                                       placeholder="Email Address">
-                                            </div>
-                                            <div class="col-sm-6">
-                                                <button class="btn btn-default"
-                                                                                      type="submit" name="signup">
-                                                    Request FREE Early Access
-                                                </button>
-                                            </div>
+                                        <div class="input-group signup-form">
+                                            <input type="email" id="signup-form" name="email" class="form-control" placeholder="Email Address">
+                                            <button id="signup-form" class="btn btn-default input-group-btn" type="submit" name="signup">
+                                                Request FREE Early Access
+                                            </button>
                                         </div>
                                     </form>
                                 {% endif %}
