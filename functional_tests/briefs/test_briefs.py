@@ -82,7 +82,7 @@ class BriefsSignedInTest(browser.SignedInTest):
               '?client_id=%d' % self.brief.client.id)
 
         app_title = browser.instance().find_element_by_class_name('app_title')
-        self.assertEqual(u'Brief Detail', app_title.text)
+        self.assertTrue(u'Brief Detail' in app_title.text)
 
     def test_add_quote_brief(self):
         c = self.create_one('gallant.Client')

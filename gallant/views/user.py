@@ -65,15 +65,6 @@ class UserDashboard(View):
 
 class SignUpRequest(View):
     @staticmethod
-    def get(request):
-        request.breadcrumbs([(_('Request Account'), request.path_info)])
-        return render(request, 'gallant/base_index.html', {
-            'form': forms.SignUpRequestForm(),
-            'title': 'Request Account',
-            'submit_text': 'Submit'
-        })
-
-    @staticmethod
     def post(request):
         request.breadcrumbs([(_('Request Account'), request.path_info)])
         form = forms.SignUpRequestForm(request.POST)

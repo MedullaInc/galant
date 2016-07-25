@@ -69,7 +69,11 @@ def get_project_services_count(request, project, status=None):
 
 @register.simple_tag()
 def get_project_advance(request, project):
-    return str(float(get_project_services(request, project, 4).count()) / float(get_project_services(request, project).count())*100)+"%"
+    total = get_project_services(request, project).count()
+    if total > 0:
+        return str(float(get_project_services(request, project, 4).count()) / float(total)*100)+"%"
+    else:
+        return "0%"
 
 
 @register.simple_tag()

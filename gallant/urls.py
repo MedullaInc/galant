@@ -40,13 +40,13 @@ urlpatterns = i18n_patterns(
     url(r'^home', market_analysis.views.LandingPage.as_view(),
         name='landing'),
 
-    url(r'^features', TemplateView.as_view(template_name='features.html'),
+    url(r'^features', TemplateView.as_view(template_name='market_analysis/features.html'),
         name='features'),
 
-    url(r'^about', TemplateView.as_view(template_name='about.html'),
+    url(r'^about', TemplateView.as_view(template_name='market_analysis/about.html'),
         name='about'),
 
-    url(r'^contact', TemplateView.as_view(template_name='contact.html'),
+    url(r'^contact', TemplateView.as_view(template_name='market_analysis/contact.html'),
         name='contact'),
 
     url(r'^waiting_list', market_analysis.views.LandingPageSubmit.as_view(),

@@ -4,6 +4,16 @@
 
 {% block content_div %}
     <div class="landing_container">
+
+        {% block messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                    <button type='button' class='close' data-dismiss='alert'>&times;</button>
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endblock %}
+
         <div id="landing_main">
             <div class="row">
                 <div class="col-lg-12">
@@ -45,7 +55,7 @@
                                         {% csrf_token %}
                                         <div class="input-group">
                                             <input type="email" id="signup-form" name="email" class="form-control" placeholder="Email Address">
-                                            <button id="signup-form" class="btn btn-default input-group-btn" type="submit" name="signup">
+                                            <button id="signup-button" class="btn btn-default input-group-btn" type="submit" name="signup">
                                                 Request FREE Early Access
                                             </button>
                                         </div>
@@ -130,7 +140,7 @@
                                         {% csrf_token %}
                                         <div class="input-group signup-form">
                                             <input type="email" id="signup-form" name="email" class="form-control" placeholder="Email Address">
-                                            <button id="signup-form" class="btn btn-default input-group-btn" type="submit" name="signup">
+                                            <button id="signup-button" class="btn btn-default input-group-btn" type="submit" name="signup">
                                                 Request FREE Early Access
                                             </button>
                                         </div>
