@@ -52,6 +52,7 @@ INSTALLED_APPS = (
     'django_nose',
     'guardian',
     'django_countries',
+    'django_extensions',
     'localflavor',
     'analytical',
     'breadcrumbs',
