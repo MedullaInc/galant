@@ -15,15 +15,17 @@
             {% endblock head_title %}
         </title>
 
-        <!-- Sing -->
-        <link rel="stylesheet" href="{% static "sing_app/css/application.css" %}">
-        <!--[if IE 9]>
-        <link href="sing_app/css/application-ie9-part2.css" rel="stylesheet">
-        <![endif]-->
+        {% block css %}
+            <!-- Sing -->
+            <link rel="stylesheet" href="{% static "sing_app/css/application.css" %}">
+            <!--[if IE 9]>
+            <link href="sing_app/css/application-ie9-part2.css" rel="stylesheet">
+            <![endif]-->
 
-        <!-- Bootstrap -->
-        <link rel="stylesheet" href="{% static "djng/css/styles.css" %}">
-        <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+            <!-- Bootstrap -->
+            <link rel="stylesheet" href="{% static "djng/css/styles.css" %}">
+            <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+        {% endblock %}
 
         {% block project_css %}
             <link rel="stylesheet" href="{% static "css/gallant.css" %}">
