@@ -41,23 +41,20 @@
         {% block scripts %}
             <script src="{% static "js/jquery.min.js" %}"></script>
 
-            {% if user.is_authenticated %}
-                <script src="{% static "sing_app/vendor/jquery-pjax/jquery.pjax.js" %}"></script>
-                <script src="{% static "sing_app/vendor/bootstrap/js/transition.js" %}"></script>
-                <script src="{% static "sing_app/vendor/bootstrap/js/collapse.js" %}"></script>
-                <script src="{% static "sing_app/vendor/bootstrap/js/dropdown.js" %}"></script>
-                <script src="{% static "sing_app/vendor/bootstrap/js/button.js" %}"></script>
-                <script src="{% static "sing_app/vendor/bootstrap/js/tooltip.js" %}"></script>
-                <script src="{% static "sing_app/vendor/bootstrap/js/alert.js" %}"></script>
-                <script src="{% static "sing_app/vendor/slimScroll/jquery.slimscroll.min.js" %}"></script>
-                <script src="{% static "sing_app/vendor/widgster/widgster.js" %}"></script>
-                <script src="{% static "sing_app/vendor/jquery-touchswipe/jquery.touchSwipe.js" %}"></script>
-                <script src="{% static "sing_app/js/settings.js" %}"></script>
-                <script src="{% static "sing_app/js/app.js" %}"></script>
-            {% else %}
-                <script src="{% static "js/bootstrap.min.js" %}"></script>
-                <script src="{% static "js/flat-ui.min.js" %}"></script>
-            {% endif %}
+            <script src="{% static "js/bootstrap.min.js" %}"></script>
+            <script src="{% static "js/flat-ui.min.js" %}"></script>
+            <script src="{% static "sing_app/vendor/jquery-pjax/jquery.pjax.js" %}"></script>
+            <script src="{% static "sing_app/vendor/bootstrap/js/transition.js" %}"></script>
+            <script src="{% static "sing_app/vendor/bootstrap/js/collapse.js" %}"></script>
+            <script src="{% static "sing_app/vendor/bootstrap/js/dropdown.js" %}"></script>
+            <script src="{% static "sing_app/vendor/bootstrap/js/button.js" %}"></script>
+            <script src="{% static "sing_app/vendor/bootstrap/js/tooltip.js" %}"></script>
+            <script src="{% static "sing_app/vendor/bootstrap/js/alert.js" %}"></script>
+            <script src="{% static "sing_app/vendor/slimScroll/jquery.slimscroll.min.js" %}"></script>
+            <script src="{% static "sing_app/vendor/widgster/widgster.js" %}"></script>
+            <script src="{% static "sing_app/vendor/jquery-touchswipe/jquery.touchSwipe.js" %}"></script>
+            <script src="{% static "sing_app/js/settings.js" %}"></script>
+            <script src="{% static "sing_app/js/app.js" %}"></script>
 
         {% endblock %}
     {% block project_scripts %}{% endblock %}
