@@ -48,7 +48,7 @@ class GallantClientTest(browser.SignedInTest):
         self.get(self.live_server_url + reverse('client_work_detail', args=[client.id]))
 
         app_title = self.e_class('app_title')
-        self.assertEqual('Client Work', app_title.text)
+        self.assertIn('Projects', app_title.text)
 
         # Validate templatetags javascript
         project_work_data = self.b.execute_script("return project_work_data_%s;" % project.id)
@@ -118,7 +118,7 @@ class GallantClientTest(browser.SignedInTest):
         self.get(self.live_server_url + reverse('client_money_detail', args=[c.id]))
 
         app_title = self.e_class('app_title')
-        self.assertEqual('Client Money', app_title.text)
+        self.assertIn('Payments', app_title.text)
 
     def test_add_client(self):
         self.get(self.live_server_url + reverse('add_client'))
@@ -201,7 +201,7 @@ class GallantClientTest(browser.SignedInTest):
         self.get(self.live_server_url + reverse('client_detail', args=[c.id]))
 
         app_title = self.e_class('app_title')
-        self.assertEqual('Client - Dashboard', app_title.text)
+        self.assertIn('Dashboard', app_title.text)
 
         self.get(self.live_server_url + reverse('client_detail', args=[c2.id]))
 
