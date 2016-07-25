@@ -1,4 +1,4 @@
-{% extends "base_body.html" %}
+{% extends "base.html" %}
 {% load bootstrap i18n %}
 {% load static %}
 
@@ -7,6 +7,9 @@
 
 {% block scripts %}
     {{ block.super }}
+    <script src="{% static "js/angular.js" %}"></script>
+    <script src="{% static "js/angular-resource.js" %}"></script>
+    <script src="{% static "js/ui-bootstrap-tpls.js" %}"></script>
     <script src="{% static "js/angular-animate.js" %}"></script>
     <script src="{% static "js/xeditable.min.js" %}"></script>
     <script src="{% static "djng/js/django-angular.min.js" %}"></script>
@@ -16,7 +19,10 @@
     {% block project_scripts %}
         {{ block.super }}
         {% if DEBUG %}
+            <script src="{% static "js/gallant.js" %}"></script>
             <script src="{% static "js/quotes.js" %}"></script>
+        {% else %}
+            <script src="{% static "js/all.min.js" %}"></script>
         {% endif %}
     {% endblock %}
 {% endblock %}
@@ -48,7 +54,7 @@
 {% block breadcrumbs %}
 {% endblock %}
 
-{% block content %}
+{% block body %}
 
     <div class="row">
         <div class="col-lg-6">
