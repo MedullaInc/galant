@@ -59,6 +59,15 @@ div.page-wrapper {
   }
 }
 
+.btn.btn-default.btn-submit {
+  background-color: $color-highlight;
+  color: #ffffff;
+  border-radius: 20px;
+  border: none;
+  letter-spacing: 0.1em;
+  font-size: 12px;
+}
+
 @import 'kanban';
 @import 'charts';
 @import 'modal';
