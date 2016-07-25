@@ -1,14 +1,16 @@
 {% load i18n %}
 
-<form action="" id="add_note_form" class="form" method="post">
+<form class="mt" action="" method="post">
     {% csrf_token %}
-    {{ form.as_div }}
-    {% if form.is_bound and not form.is_valid %}
-        <div class="form-group has-error">
-            <span class="help-block">{{ form.text.errors.as_text }}</span>
-        </div>
-    {% endif %}
-    <div class="form-actions">
-        <button id="submit_note" class="btn btn-default btn-submit" type="submit">{% trans "Add Note" %}</button>
+    <div class="form-group mb-0">
+        {{ form.as_div }}
+        {% if form.is_bound and not form.is_valid %}
+            <div class="form-group has-error">
+                <span class="help-block">{{ form.text.errors.as_text }}</span>
+            </div>
+        {% endif %}
+    </div>
+    <div class="btn-toolbar">
+        <button id="note_add" type="submit" class="btn btn-success pull-right">{% trans "Add Note" %}</button>
     </div>
 </form>

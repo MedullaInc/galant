@@ -1,0 +1,196 @@
+div.page-wrapper {
+    min-height: 100%;
+    height: 100%;
+}
+
+.body.chat-sidebar-container header.logo {
+    color: transparent;
+    background: url(/static/img/galant/galant_sidebar_logo.png) no-repeat center -8px;
+}
+
+.body.chat-sidebar-container.nav-collapsed header.logo {
+    color: transparent;
+    padding-top: 23px;
+    padding-bottom: 3px;
+    background: url(/static/img/galant/galant_monogram.png) no-repeat 0px -8px;
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+/* Charts */
+
+.widget-body canvas {
+    margin: auto;
+}
+
+.tc-chart-js-legend {
+    margin-bottom: 20px;
+    margin-top: 20px;
+    min-height: 60px;
+}
+
+.tc-chart-js-legend li {
+    list-style-type: none;
+    height: 20px;
+    font-size: 13px;
+}
+
+.tc-chart-js-legend li span {
+    height: 20px;
+}
+
+.fs-mini.text-muted {
+    clear: left;
+}
+
+/* End Charts */
+
+/* Kanban */
+
+.col-centered {
+    text-align: center
+}
+
+.spinner-loading {
+    width: 30px;
+}
+
+div.column-title.ng-binding {
+    margin-bottom: 15px;
+    font-size: 18px;
+}
+
+div.kanban-card.ng-scope.as-sortable-item {
+    border-radius: 0px;
+}
+
+.ng-scope.as-sortable-item-handle {
+    padding: 20px;
+}
+
+div.receiving-element.ng-pristine.ng-untouched.ng-valid.ng-scope.ng-not-empty {
+    min-height: 110px;
+}
+
+button.btn.btn-default.btn-alert {
+    border: none;
+    background: transparent;
+    color: #ff0060;
+    font-size: 18px;
+}
+
+div.kanban-card.ng-scope.as-sortable-item {
+    margin-bottom: 20px;
+}
+
+.kanban-card-data, .kanban-card-alert {
+    padding: 10px;
+    padding-top: 0px;
+    line-height: 1.2;
+}
+
+.kanban-card-data {
+    width: 65%;
+}
+
+.kanban-card-alert {
+    width: 35%;
+    padding-right: 20px;
+    text-align: right;
+}
+
+/* End Kanban */
+
+/* Modals */
+
+.modal-header {
+    padding: 20px;
+    border-bottom: none;
+}
+
+.onboarding_icon {
+    font-size: 32px;
+    margin-top: 15px;
+}
+
+/* End Modals*/
+
+/* Profile */
+
+img.img-responsive {
+    width: 100%;
+    opacity: 0.5;
+}
+
+.post-user.post-user-profile {
+    padding-top: 93px;
+}
+
+/* En Profile */
+
+/* List Elements */
+
+.action_box .btn {
+    margin-bottom: 10px;
+    margin-right: 5px;
+}
+
+.button-inline {
+    margin-right: 8px;
+}
+
+/* End List Elements */
+
+/* Form Inputs */
+
+select.form-control {
+    margin-top: 15px;
+}
+
+form div.input-group, form div.input-group * {
+    width: 100%;
+}
+
+form div.input-group {
+    margin-bottom: 10px;
+}
+
+div.editable-error.help-block.ng-binding {
+    clear: left;
+    padding-top: 5px;
+}
+
+pre.ng-scope.ng-binding.editable {
+    border: none;
+}
+
+div.as-sortable-item {
+    border: none;
+    border-radius: 0px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding-bottom: 20px;
+}
+
+span.editable-wrap.editable-textarea.ng-scope {
+    width: 100%;
+
+}
+
+textarea.form-control.autogrow.transition-height.editable-input.ng-valid.ng-touched.ng-not-empty.ng-dirty.ng-valid-parse {
+    overflow: hidden;
+    word-wrap: break-word;
+    resize: horizontal;
+    height: 71px;
+    width: 100%;
+}
+
+.ng-scope.as-sortable-item-handle {
+    padding: 10px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+}
+
+/* End Form Inputs */

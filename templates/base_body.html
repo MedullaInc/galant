@@ -1,25 +1,41 @@
 {% extends "base.html" %}
 {% load staticfiles bootstrap i18n gallant_tags %}
 
+{% block scripts %}
+    {{ block.super }}
+    {% if user.is_authenticated %}
+        <script src="{% static "js/angular.js" %}"></script>
+        <script src="{% static "js/angular-resource.js" %}"></script>
+        <script src="{% static "js/ui-bootstrap-tpls.js" %}"></script>
+    {% endif %}
+
+{% endblock %}
+
+{% block project_scripts %}
+    {{ block.super }}
+    {% if user.is_authenticated %}
+        {% if DEBUG %}
+            <script src="{% static "js/gallant.js" %}"></script>
+        {% else %}
+            <script src="{% static "js/all.min.js" %}"></script>
+        {% endif %}
+    {% endif %}
+{% endblock %}
+
 {% block extra_head %}
-
-    <script>
-        $(document).ready(function () {
-            $("#feedback").animate({
-                bottom: '-' + (($('#feedback').height() / 2) - 20) + 'px'
-            }, 2000);
-
-            $(".action-button.dropdown-toggle").dropdown();
-        });
-    </script>
 
 {% endblock extra_head %}
 
 {% block body %}
 
-    <div class="page-wrapper" {% block extra_wrapper_attrs %}{% endblock %}>
+    <div class="page-wrapper" {% block extra_wrapper_attrs %} ng-app="glBase" {% endblock %}>
+        <div gl-add-modal open-fn="openOnboarding" title="Getting Started" modal-instance="modalInstance" style="display: none;">
+            {% include "gallant/onboarding.html" %}
+        </div>
 
         {% block header_div %}
+            {% if user.is_authenticated %}
+            {% else %}
             <header {% block header_class %} class="header-5" {% endblock %}>
                 <div class="container">
                     <div class="row">
@@ -31,48 +47,11 @@
                                 </div>
                                 <div id="menu" class="collapse navbar-collapse">
                                     <ul class="nav pull-right" id="dropdown-menu">
-                                        {% if user.is_authenticated %}
-                                            <li class="dropdown-menu-element">
-                                                <a href="{% url 'clients' %}">{% trans 'Clients' %}</a>
-                                            </li>
-                                            <li class="dropdown-menu-element">
-                                                <a href="{% url 'quotes' %}">{% trans 'Quotes' %}</a>
-                                            </li>
-                                            <li class="dropdown-menu-element">
-                                                <a href="{% url 'projects' %}">{% trans 'Projects' %}</a>
-                                            </li>
-                                            <li class="dropdown-menu-element">
-                                                <a href="{% url 'calendr' %}">{% trans 'Calendar' %}</a>
-                                            </li>
-                                            <li class="dropdown-menu-element" id="account-settings-menu-element">
-                                                <a href="{% url 'account_change_password' %}">{% trans 'Account' %}</a>
-                                            </li>
-                                            <li class="dropdown-menu-element" id="account-settings-menu-element">
-                                                <a href="{% url 'account_logout' %}">{% trans 'Signout' %}</a>
-                                            </li>
-                                            <li class="btn-group dropdown-menu-element" id="settings-toggle-group">
-                                                <button type="button" class="btn btn-default dropdown-toggle"
-                                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                                                        id="settings-toggle">
-                                                    <span class="glyphicon glyphicon-cog"></span>
-                                                </button>
-
-                                                <ul class="dropdown-menu dropdown-menu-right">
-                                                    <li>
-                                                        <a href="{% url 'account_change_password' %}">{% trans 'Account' %}</a>
-                                                    </li>
-                                                    <li><a href="{% url 'account_logout' %}">{% trans 'Sign Out' %}</a>
-                                                    </li>
-                                                </ul>
-                                            </li>
-
-                                        {% else %}
                                             {% comment %}
                                                 <li><a href="">{% trans 'Features' %}</a></li>
                                                 <li><a href="">{% trans 'Pricing' %}</a></li>
                                                 <li><a href="{% url 'contact' %}">{% trans 'Contact' %}</a></li>
                                             {% endcomment %}
-                                        {% endif %}
                                     </ul>
                                 </div>
                             </nav>
@@ -80,34 +59,23 @@
                     </div>
                 </div>
             </header>
-        {% endblock %}
-
-        {% block messages %}
-            {% for message in messages %}
-                <div class="alert alert-{{ message.tags }}">
-                    <button type='button' class='close' data-dismiss='alert'>&times;</button>
-                    {{ message }}</div>
-            {% endfor %}
+            {% endif %}
         {% endblock %}
 
         {% url 'home' as home_url %}
         {% if request.get_full_path != home_url %}
 
+            {% comment %}
             {% block sub_header %}
+                {% if user.is_authenticated %}
+                {% else %}
                 <div class="container">
                     <div class="row">
-                        {% if user.is_authenticated %}
-                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-5 pull-right">
-                                <div class="logged_in_as" id="logged_in_as">
-                                    <a href="{% url 'account_change_password' %}">{{ user }}</a>
-                                </div>
-                            </div>
-                        {% endif %}
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
                             <h2 class="app_title">
-                                {% block section_title %}
+                                {% block old_title %}
                                     {% firstof title 'Menu' %}
-                                {% endblock section_title %}
+                                {% endblock %}
                             </h2>
                         </div>
                         {% block breadcrumbs %}
@@ -122,20 +90,167 @@
                         {% endblock %}
                     </div>
                 </div>
+                {% endif %}
             {% endblock %}
+            {% endcomment %}
 
         {% endif %}
 
         {% block content_div %}
-            <div class="holder v-center">
-                <div class="container main-container">
+
+            <nav id="sidebar" class="sidebar" role="navigation">
+                <!-- need this .js class to initiate slimscroll -->
+                <div class="js-sidebar-content">
+                    <header class="logo hidden-xs">
+                    </header>
+                    <ul class="sidebar-nav">
+                        <li {% if "dashboard" in request.path %}class="active"{% endif %}>
+                            <a href="/">
+                                <span class="icon">
+                                    <i class="fa fa-desktop"></i>
+                                </span>
+                                Dashboard
+                            </a>
+                        </li>
+                        <li {% if "client" in request.path %}class="active"{% endif %}>
+                            <a href="{% url 'clients' %}">
+                                <span class="icon">
+                                    <i class="fa fa-globe"></i>
+                                </span>
+                                {% trans 'Clients' %}
+                            </a>
+                            {% block client_sidebar %}
+                            {% endblock %}
+                        </li>
+                        <li {% if "quote" in request.path %}class="active"{% endif %}>
+                            <a href="{% url 'quotes' %}">
+                                <span class="icon">
+                                    <i class="fa fa-money"></i>
+                                </span>
+                                {% trans 'Quotes' %}
+                            </a>
+                        </li>
+                        <li {% if "projects" in request.path %}class="active"{% endif %}>
+                            <a href="{% url 'projects' %}">
+                                <span class="icon">
+                                    <i class="fa fa-briefcase"></i>
+                                </span>
+                                {% trans 'Projects' %}
+                            </a>
+                        </li>
+                        <li {% if "calendar" in request.path %}class="active"{% endif %}>
+                            <a href="{% url 'calendr' %}">
+                                <span class="icon">
+                                    <i class="fa fa-calendar"></i>
+                                </span>
+                                {% trans 'Calendar' %}
+                            </a>
+                        </li>
+                        <li class="pointer">
+                            <a ng-click="openOnboarding()">
+                                <span class="icon">
+                                    <i class="fa fa-question-circle"></i>
+                                </span>
+                                {% trans 'Help' %}
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+            <!-- This is the white navigation bar seen on the top. A bit enhanced BS navbar. See .page-controls in _base.scss. -->
+            <nav class="page-controls navbar navbar-default">
+                <div class="container-fluid">
+                    <!-- .navbar-header contains links seen on xs & sm screens -->
+                    <div class="navbar-header">
+                        <ul class="nav navbar-nav">
+                            <li>
+                                <!-- whether to automatically collapse sidebar on mouseleave. If activated acts more like usual admin templates -->
+                                <a class="hidden-sm hidden-xs" id="nav-state-toggle" href="#" title="Turn on/off sidebar collapsing" data-placement="bottom">
+                                    <i class="fa fa-bars fa-lg"></i>
+                                </a>
+                                <!-- shown on xs & sm screen. collapses and expands navigation -->
+                                <a class="visible-sm visible-xs" id="nav-collapse-toggle" href="#" title="Show/hide sidebar" data-placement="bottom">
+                                    <span class="rounded rounded-lg bg-gray text-white visible-xs"><i class="fa fa-bars fa-lg"></i></span>
+                                    <i class="fa fa-bars fa-lg hidden-xs"></i>
+                                </a>
+                            </li>
+                        </ul>
+                        <!-- xs & sm screen logo -->
+                        <a class="navbar-brand visible-xs" href="index.html">
+                            &nbsp;
+                            {{ site.name }}
+                            &nbsp;
+                        </a>
+                    </div>
+
+                    <!-- this part is hidden for xs screens -->
+                    <div class="collapse navbar-collapse">
+                        <ul class="nav navbar-nav navbar-right">
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle dropdown-toggle-notifications" data-toggle="dropdown">
+                                    <i class="fa fa-user fa-lg"></i>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a>{{ user }}</a>
+                                    </li>
+                                    <li class="divider"></li>
+                                    <li>
+                                        <a href="{% url 'account_change_password' %}"><i class="glyphicon glyphicon-user"></i> &nbsp; Change Password</a>
+                                    </li>
+                                    <li class="divider"></li>
+                                    <li><a href="{% url 'account_logout' %}"><i class="fa fa-sign-out"></i> &nbsp; Log Out</a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown pointer">
+                                <a class="dropdown-toggle" data-toggle="dropdown">
+                                    <i class="fa fa-bell fa-lg"></i>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a>No new notifications.</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="dropdown pointer">
+                                <a ng-click="openOnboarding()">
+                                    <i class="fa fa-question-circle fa-lg"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+
+            <div class="content-wrap">
+
+                <!-- main page content. the place to put widgets in. usually consists of .row > .col-md-* > .widget.  -->
+                <main id="content" class="content" role="main">
+
+                    {% block messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }}">
+                                <button type='button' class='close' data-dismiss='alert'>&times;</button>
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endblock %}
+
+                    <h1 class="page-title app_title"">{% block page_title %}{{ title }}{% endblock %}</h1>
                     {% block content %}
                     {% endblock content %}
-                </div>
+                </main>
             </div>
+            <!-- The Loader. Is shown when pjax happens -->
+            <div class="loader-wrap hiding hide">
+                <i class="fa fa-circle-o-notch fa-spin-fast"></i>
+            </div>
+
         {% endblock %}
 
         {% block footer_div %}
+            {% if user.is_authenticated %}
+            {% else %}
             <footer class="footer-3">
                 <div class="container">
                     <div class="row">
@@ -159,6 +274,7 @@
                     </div>
                 </div>
             </footer>
+            {% endif %}
         {% endblock %}
 
     </div>
@@ -182,7 +298,8 @@
     </div>
 
     <script>
-        $(document).ready(function () {
+        $.noConflict();
+        jQuery(document).ready(function ($) {
 
             $('#logged_in_as').height($('.breadcrumbs').height());
             $('#logged_in_as a').css("margin-left", -$('#logged_in_as a').width() / 2 + 'px');
@@ -194,26 +311,31 @@
                 $(this).parent().siblings().removeClass('open');
                 $(this).parent().toggleClass('open');
             });
-        });
 
-        $('#feedback').click(function () {
-            var app_title = $('.app_title').text().trim();
-            if (app_title.length == 0) {
-                app_title = "Main";
-            }
-            $.get("{% url 'feedback' %}?app_title=" + app_title, function (data) {
-                $('#base_modal .section_title').html("Leave Feedback");
-                $('#base_modal .modal-body').html(data);
-                $('#base_modal #form').submit(function () {
-                    $.post("{% url 'feedback' %}?path={{ request.path }}",
-                            $(this).serialize(), function () {
-                                $('#base_modal').modal('hide');
-                                location.reload(true);
-                            });
-                    return false;
+            $("#feedback").animate({bottom: '-' + (($('#feedback').height() / 2) - 20) + 'px'}, 2000);
+            $(".action-button.dropdown-toggle").dropdown();
+
+
+            $('#feedback').click(function () {
+                var app_title = $('.app_title').text().trim();
+                if (app_title.length == 0) {
+                    app_title = "Main";
+                }
+                $.get("{% url 'feedback' %}?app_title=" + app_title, function (data) {
+                    $('#base_modal .section_title').html("Leave Feedback");
+                    $('#base_modal .modal-body').html(data);
+                    $('#base_modal #form').submit(function () {
+                        $.post("{% url 'feedback' %}?path={{ request.path }}",
+                                $(this).serialize(), function () {
+                                    $('#base_modal').modal('hide');
+                                    location.reload(true);
+                                });
+                        return false;
+                    });
+                    $('#base_modal').modal('show');
                 });
-                $('#base_modal').modal('show');
             });
         });
+
     </script>
 {% endblock body %}

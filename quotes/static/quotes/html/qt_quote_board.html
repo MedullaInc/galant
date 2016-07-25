@@ -1,24 +1,27 @@
-<div class="container kanban">
-    <div class="row" ng-hide="quotesLoaded && quotesSafe.length == 0">
-        <div class="kanban-column" kb-board-column title="Not Sent" click-fn="redirect"
-             items="$parent.quotesSafe" status-index="{{ qtConstants.QuoteStatus.NotSent }}"></div>
-        <div class="kanban-column" kb-board-column title="Awaiting Response" click-fn="redirect"
-             items="quotesSafe" status-index="{{ qtConstants.QuoteStatus.Sent }}"></div>
-        <div class="kanban-column" kb-board-column title="Rejected" click-fn="redirect"
-             items="quotesSafe" status-index="{{ qtConstants.QuoteStatus.Rejected }}"></div>
-        <div class="kanban-column" kb-board-column title="Accepted" click-fn="redirect"
-             items="quotesSafe" status-index="{{ qtConstants.QuoteStatus.Accepted }}"></div>
-    </div>
-    <div class="row" ng-show="!quotesLoaded">
-        <div class="col-lg-12 col-centered">
-            <img src="/static/img/loading.gif" class="spinner-loading">
+<section class="widget">
+    <div class="kanban fit">
+        <div class="row" ng-hide="quotesLoaded && quotesSafe.length == 0">
+            <div class="kanban-column" kb-board-column title="Not Sent" click-fn="redirect"
+                 items="$parent.quotesSafe" status-index="{{ qtConstants.QuoteStatus.NotSent }}"></div>
+            <div class="kanban-column" kb-board-column title="Awaiting Response" click-fn="redirect"
+                 items="quotesSafe" status-index="{{ qtConstants.QuoteStatus.Sent }}"></div>
+            <div class="kanban-column" kb-board-column title="Rejected" click-fn="redirect"
+                 items="quotesSafe" status-index="{{ qtConstants.QuoteStatus.Rejected }}"></div>
+            <div class="kanban-column" kb-board-column title="Accepted" click-fn="redirect"
+                 items="quotesSafe" status-index="{{ qtConstants.QuoteStatus.Accepted }}"></div>
+        </div>
+        <div class="row" ng-show="!quotesLoaded">
+            <div class="col-lg-12 col-centered">
+                <img src="/static/img/loading.gif" class="spinner-loading">
+            </div>
         </div>
     </div>
-    <div class="row" ng-show="quotesLoaded && quotesSafe.length == 0">
-        <div class="col-lg-12">
-            <p>
-                No quotes yet.
-            </p>
-        </div>
+</section>
+
+<section class="widget" ng-show="quotesLoaded && quotesSafe.length == 0">
+    <div class="widget-body">
+        <p class="mb-lg">
+            No quotes yet.
+        </p>
     </div>
-</div>
+</section>

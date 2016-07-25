@@ -426,3 +426,47 @@ describe('glClientPaymentController', function () {
     });
 
 });
+
+describe('glUserDashboardController', function () {
+    var $rootScope;
+    var $controller;
+    var $window;
+    var url = 'about:blank';
+
+    beforeEach(function () {
+        module('gallant.controllers.glUserDashboardController', function ($provide) {
+            $provide.factory('UserSettings', function ($q) {
+                return {
+                    get: function() { return {$promise: $q.when({settings: {}})}; },
+                };
+            });
+        });
+
+        inject(function (_$rootScope_, _$controller_) {
+            // The injector unwraps the underscores (_) from around the parameter names when matching
+            $rootScope = _$rootScope_;
+            $controller = _$controller_;
+        });
+    });
+
+    var $scope;
+
+    beforeEach(function () {
+        $scope = $rootScope.$new();
+        $scope.openDashOnboarding = jasmine.createSpy('openDashOnboarding');
+        $controller('glUserDashboardController', {$scope: $scope});
+        $scope.init(1, true);
+        $rootScope.$apply();
+    });
+
+    it('opens onboarding', function () {
+        expect($scope.openDashOnboarding).toHaveBeenCalled();
+    });
+
+    it('updates user', function () {
+        $scope.user.$update = jasmine.createSpy('$update');
+        $scope.saveSettings();
+        $scope.$apply();
+        expect($scope.user.$update).toHaveBeenCalled();
+    });
+});

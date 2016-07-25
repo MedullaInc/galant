@@ -20,5 +20,5 @@ class LoginSignUpTest(browser.SignedInTest):
 
     def test_can_sign_out(self):
         body = self.e_tag('body')
-        self.assertIn('Sign Out', body.text)
+        self.assertIn('Log Out', body.text)
 

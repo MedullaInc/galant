@@ -1,23 +1,28 @@
-<div class="col-lg-6">
-
-    <div class="enclosed welcome_box" ng-if="work.length == 0">
-        <h2 class="chart_title">Send a Brief</h2>
-        <p>
+<section class="widget">
+    <header>
+        <h4>
+            Work Summary
+        </h4>
+        <div class="widget-controls">
+        </div>
+    </header>
+    <div class="widget-body" ng-if="work.length > 0">
+        <canvas tc-chartjs-doughnut chart-options="work_options" chart-data="work_data" auto-legend></canvas>
+        <p class="fs-mini text-muted">
+            Shows status summary of all services from client projects according to status.
+        </p>
+    </div>
+    <div class="widget-body" ng-if="work.length == 0">
+        <h4>
+            Send a Brief
+        </h4>
+        <p class="fs-mini text-muted">
             Briefs help understand client needs. You can customize briefs with questions and save them as templates. Once a brief is sent, we'll notify your client & let you know when they respond.
         </p>
-        <br/>
         <p ng-controller="brPopoverController" ng-init="init(addBriefUrl, language, clientId)">
             <a>
-                <button popover-placement="bottom" uib-popover-template="dynamicPopover.templateUrl" type="button" class="btn btn-default sidebar" popover-trigger="focus click">New Brief</button>
+                <button popover-placement="bottom" uib-popover-template="dynamicPopover.templateUrl" type="button" class="btn btn-success btn-sm mt" popover-trigger="focus click">New Brief</button>
             </a>
         </p>
     </div>
-    <div class="enclosed chart_box" ng-if="work.length > 0">
-        <h2 class="chart_title">
-            Work Summary
-            <span class="pull-right glyphicon glyphicon-question-sign help-tooltip" uib-tooltip="Shows status summary of all services from client projects according to status." tooltip-placement="top-right"></span>
-        </h2>
-        <canvas tc-chartjs-doughnut chart-options="work_options" chart-data="work_data" auto-legend></canvas>
-    </div>
-
-</div>
+</section>

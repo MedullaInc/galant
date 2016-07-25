@@ -6,12 +6,14 @@ var jshint = require('gulp-jshint');
 var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
 var rename = require('gulp-rename');
+var sass = require('gulp-sass');
 var del = require('del');
 var Server = require('karma').Server;
 var watch = require('gulp-watch');
 
 var scripts = ['**/static/**/*.js',
     '!**/static/**/*test*.js', '!static/**', '!venv/**', '!node_modules/**'];
+var sassfiles = ['gallant/static/gallant/sass/*.scss'];
 
 var tests = ['**/static/**/*test*.js',
     '!static/**', '!venv/**', '!node_modules/**'];
@@ -26,6 +28,12 @@ gulp.task('lint', function () {
     return gulp.src(scripts)
         .pipe(jshint())
         .pipe(jshint.reporter('default'));
+});
+
+gulp.task('sass', function () {
+  return gulp.src(sassfiles)
+    .pipe(sass().on('error', sass.logError))
+    .pipe(gulp.dest(cssout));
 });
 
 gulp.task('copy-js-assets', function () {
@@ -86,14 +94,14 @@ gulp.task('clean-coverage', function () {
     return del(['coverage']);
 });
 
-gulp.task('static', ['copy-js-assets', 'copy-css-assets', 'concat-and-min', 'concat-and-min-all']);
+gulp.task('static', ['copy-js-assets', 'sass', 'copy-css-assets', 'concat-and-min', 'concat-and-min-all']);
 
 gulp.task('production', ['copy-css-assets', 'copy-js-assets', 'concat-and-min-all']);
 
 gulp.task('default', ['lint', 'copy-assets', 'test']);
 
 gulp.task('watchStatic', function() {
-    watch(scripts, function() {
+    watch(scripts.concat(sassfiles), function() {
         gulp.start('static');
     });
 });

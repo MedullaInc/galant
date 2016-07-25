@@ -1,33 +1,32 @@
 {% extends "../templates/gallant/client_detail.html" %}
 {% load bootstrap i18n gallant_tags staticfiles static djng_tags %}
 
-{% block section_title %}
-    {% trans "Client Money" %}
+{% block page_title %}
+    {{ object.name }} - <span class="fw-semi-bold">{% trans 'Payments' %}</span>
 {% endblock %}
 
 {% block content %}
 
     {% block client_detail %}
-        {{ block.super }}
     {% endblock %}
 
     {% block main_client_data %}
         <div class="projects" ng-controller="glClientPaymentController" client_id="{{ object.id }}">
             <div class="row">
                 <div class="col-lg-10 col-md-10 col-sm-9 col-xs-9">
-                    <h2 class="section_title">{% trans 'Payments' %}</h2>
-                    <br/>
                 </div>
-                <div class="col-lg-2 col-md-2 col-sm-3 col-xs-3 action_box">
-                    <button class="btn btn-default btn-add pull-right" ng-click="openEditModal()">
+                <div class="col-lg-2 col-md-2 col-sm-3 col-xs-3">
+                    <button class="btn btn-default btn-success pull-right" ng-click="openEditModal()">
                         <span class="glyphicon glyphicon-plus"></span> Add Payment
                     </button>
+                    <br/>
+                    <br/>
+                    <br/>
                 </div>
             </div>
-            <div gl-payments client_id="{{ object.id }}" open-edit-modal="openEditModal" payments="payments">
+            <div gl-payments client_id="{{ object.id }}" open-edit-modal="openEditModal" payments="payments" class="table table-striped">
             </div>
         </div>
-
     {% endblock %}
 
     {% block client_alerts %}

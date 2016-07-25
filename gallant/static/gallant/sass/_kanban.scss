@@ -1,0 +1,56 @@
+@import 'colors';
+
+div.as-sortable-item.col-centered {
+  text-align: center
+}
+
+.spinner-loading {
+  width: 30px;
+}
+
+div.column-title.ng-binding {
+  margin-bottom: 15px;
+  font-size: 18px;
+}
+
+div.kanban-card.ng-scope.as-sortable-item {
+  border-radius: 0px;
+}
+
+div.ng-scope.as-sortable-item-handle {
+  padding: 20px;
+}
+
+div.receiving-element.ng-pristine.ng-untouched.ng-valid.ng-scope.ng-not-empty {
+  min-height: 110px;
+}
+
+button.btn.btn-default.btn-alert {
+  border: none;
+  background: transparent;
+  color: #ff0060;
+  font-size: 18px;
+}
+
+div.kanban-card.ng-scope.as-sortable-item {
+  margin-bottom: 20px;
+  border-radius: 3px;
+  box-shadow: -1px 1px 2px 1px rgba(0, 0, 0, 0.2);
+  padding-bottom: 0px;
+}
+
+.kanban-card-data, .kanban-card-alert {
+  padding: 10px;
+  padding-top: 0px;
+  line-height: 1.2;
+}
+
+.kanban-card-data {
+  width: 65%;
+}
+
+.kanban-card-alert {
+  width: 35%;
+  padding-right: 20px;
+  text-align: right;
+}

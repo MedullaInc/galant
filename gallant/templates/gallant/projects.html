@@ -2,17 +2,15 @@
 {% load i18n staticfiles %}
 {% load djng_tags %}
 
-{% block css %}
+{% block project_css %}
+    {{ block.super }}
     <link rel="stylesheet" href="{% static "css/ng-sortable.style.min.css" %}">
     <link rel="stylesheet" href="{% static "css/ng-sortable.min.css" %}">
 {% endblock %}
 
 {% block scripts %}
     {{ block.super }}
-    <script src="{% static "js/angular.js" %}"></script>
     <script src="{% static "js/angular-animate.js" %}"></script>
-    <script src="{% static "js/angular-resource.min.js" %}"></script>
-    <script src="{% static "js/ui-bootstrap-tpls.js" %}"></script>
     <script src="{% static "djng/js/django-angular.min.js" %}"></script>
     <script src="{% static "js/moment.min.js" %}"></script>
     <script src="{% static "js/fullcalendar.min.js" %}"></script>
@@ -20,28 +18,27 @@
     <script src="{% static "js/calendar.js" %}"></script>
     <script src="{% static "js/smart-table.js" %}"></script>
     <script src="{% static "js/ng-sortable.js" %}"></script>
+{% endblock %}
+
+{% block project_scripts %}
+    {{ block.super }}
     {% if DEBUG %}
-        <script src="{% static "js/gallant.js" %}"></script>
         <script src="{% static "quotes/js/services/qtServices.js" %}"></script>
         <script src="{% static "js/kanban.js" %}"></script>
-    {% else %}
-        <script src="{% static "js/all.min.js" %}"></script>
     {% endif %}
 {% endblock %}
 
 {% block extra_wrapper_attrs %} ng-app="glProjects" {% endblock %}
 
-{% block section_title %}
+{% block page_title %}
     {% trans 'Projects' %}
-{% endblock section_title %}
+{% endblock %}
 
-{% block content_div %}
+{% block content %}
 
-    <div class="container" id="projects_container">
-        <div gl-project-list projects="projects"></div>
-        <h2 class="section_title">Deliverables</h2>
-        <div gl-deliverables-board>
-        </div>
+    <div gl-project-list projects="projects"></div>
+    <h2 class="section_title">Deliverables</h2>
+    <div gl-deliverables-board>
     </div>
 
 {% endblock %}

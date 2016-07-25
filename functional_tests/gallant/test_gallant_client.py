@@ -48,7 +48,7 @@ class GallantClientTest(browser.SignedInTest):
         self.get(self.live_server_url + reverse('client_work_detail', args=[client.id]))
 
         app_title = self.e_class('app_title')
-        self.assertEqual('Client Work', app_title.text)
+        self.assertIn('Projects', app_title.text)
 
         # Validate templatetags javascript
         project_work_data = self.b.execute_script("return project_work_data_%s;" % project.id)
@@ -118,7 +118,7 @@ class GallantClientTest(browser.SignedInTest):
         self.get(self.live_server_url + reverse('client_money_detail', args=[c.id]))
 
         app_title = self.e_class('app_title')
-        self.assertEqual('Client Money', app_title.text)
+        self.assertIn('Payments', app_title.text)
 
     def test_add_client(self):
         self.get(self.live_server_url + reverse('add_client'))
@@ -164,11 +164,11 @@ class GallantClientTest(browser.SignedInTest):
         c = self.create_one('gallant.Client')
         self.get(self.live_server_url + reverse('client_detail', args=[c.id]))
         test_string = '2351tlgkjqlwekjalfkj'
-        self.e_class('welcome_box')
+        self.e_class('fs-mini')
 
         self.e_xpath('//textarea[@name="note.text"]').send_keys(test_string)
 
-        self.submit('submit_note')
+        self.submit('note_add')
 
         notes = self.e_id('notes')
 
@@ -191,7 +191,7 @@ class GallantClientTest(browser.SignedInTest):
         self.get(self.live_server_url + reverse('client_detail', args=[c.id]))
         self.click_xpath('//button[@type="submit"]')
 
-        self.assertTrue('This field is required.' in self.e_id('notes').text)
+        self.assertTrue('This field is required.' in self.e_class('help-block').text)
 
     def test_client_perms(self):
         c = self.create_one('gallant.Client')
@@ -201,7 +201,7 @@ class GallantClientTest(browser.SignedInTest):
         self.get(self.live_server_url + reverse('client_detail', args=[c.id]))
 
         app_title = self.e_class('app_title')
-        self.assertEqual('Client Overview', app_title.text)
+        self.assertIn('Dashboard', app_title.text)
 
         self.get(self.live_server_url + reverse('client_detail', args=[c2.id]))
 

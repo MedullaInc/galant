@@ -3,27 +3,23 @@
 
 {% block scripts %}
     {{ block.super }}
-    <script src="{% static "js/angular.js" %}"></script>
-    <script src="{% static "js/angular-resource.js" %}"></script>
     <script src="{% static "js/angular-animate.js" %}"></script>
     <script src="{% static "js/smart-table.js" %}"></script>
     <script src="{% static "js/ng-country-select.min.js" %}"></script>
     <script src="{% static "djng/js/django-angular.min.js" %}"></script>
-    <script src="{% static "js/ui-bootstrap-tpls.js" %}"></script>
     <script src="{% static "js/ng-sortable.js" %}"></script>
     <script src="{% static "djng/js/django-angular.min.js" %}"></script>
-
-    {% if DEBUG %}
-        <script src="{% static "js/quotes.js" %}"></script>
-        <script src="{% static "js/gallant.js" %}"></script>
-        <script src="{% static "js/kanban.js" %}"></script>
-    {% else %}
-        <script src="{% static "js/all.min.js" %}"></script>
-    {% endif %}
-
 {% endblock %}
 
-{% block css %}
+{% block project_scripts %}
+    {{ block.super }}
+    {% if DEBUG %}
+        <script src="{% static "js/quotes.js" %}"></script>
+        <script src="{% static "js/kanban.js" %}"></script>
+    {% endif %}
+{% endblock %}
+
+{% block project_css %}
     {{ block.super }}
 
     <link rel="stylesheet" href="{% static "css/ng-sortable.style.min.css" %}">
@@ -38,7 +34,7 @@
     {{ block.super }}
 {% endblock %}
 
-{% block section_title %}
+{% block page_title %}
     {% trans "Clients" %}
 {% endblock %}
 
@@ -57,13 +53,13 @@
                 </div>
                 <div class="col-lg-6">
                     <div class="pull-right">
-                        <button class="btn btn-default btn-add" id="show_client_list" ng-click="showList=true">
+                        <button class="btn btn-default button-inline" id="show_client_list" ng-click="showList=true">
                             <span class="glyphicon glyphicon-align-justify"></span>
                         </button>
-                        <button class="btn btn-default btn-add" id="show_client_board" ng-click="showList=false">
+                        <button class="btn btn-default button-inline" id="show_client_board" ng-click="showList=false">
                             <span class="glyphicon glyphicon-th"></span>
                         </button>
-                        <button id="client_add" type="button" class="btn btn-default btn-add action-button pull-right"
+                        <button id="client_add" type="button" class="btn btn-success pull-right"
                                 ng-click="addClient()">
                             <span class="glyphicon glyphicon-plus"></span>
                             {% trans "Add Client" %}
@@ -77,7 +73,7 @@
                 </div>
             </div>
             <div class="row" ng-show="showList">
-                <div class="col-lg-12">
+                <div class="col-lg-12 widget">
                     <br/>
 
                     <table st-table="clients" st-safe-src="clientsSafe"
@@ -120,7 +116,7 @@
 
 {% block extra_body %}
     <script>
-        $('.table > tbody > tr').click(function () {
+        jQuery('.table > tbody > tr').click(function ($) {
             window.location.href = "{% url 'client_detail' %}" + $(this).attr('data-rel')
         });
     </script>

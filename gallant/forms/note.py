@@ -12,5 +12,5 @@ class NoteForm(UserModelNgForm):
         kwargs.update(prefix='note')
         super(NoteForm, self).__init__(*args, **kwargs)
         self.fields['text'].widget = forms.Textarea(attrs={'rows': 3})
-        self.fields['text'].label = 'Notes'
+        self.fields['text'].label = 'Notes are not accessible to clients'
         self.fields['text'].help_text = ''

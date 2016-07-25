@@ -1,44 +1,50 @@
-<div class="row form-group" ng-repeat="service in elements">
-    <div class="col-lg-3">
-        <label>Deliverable</label>
-    </div>
-    <div class="col-lg-7">
-        <hr>
-    </div>
-    <div class="col-lg-2 pull-right">
-        <button type="button" class="multidropdown_button btn btn-default btn-add"
-                ng-click="removeElement($index)">
-            <span class="glyphicon glyphicon-trash"></span>
-        </button>
-    </div>
-    <div class="col-lg-9 pull-right">
-        <div class="row">
-            <div class="col-lg-4">
-                <input type="text" placeholder="Name" class="form-control"
-                       ng-model="service.name[service.language]"
-                       id="id_name" name="name" required>
-            </div>
-            <div class="col-lg-8">
-                <input type="text" placeholder="Description" class="form-control"
-                       ng-model="service.description[service.language]"
-                       id="id_description" name="description">
-            </div>
+<div class="form-group" ng-repeat="service in elements">
+    <div class="row form-group">
+        <div class="col-lg-10">
+            <label><b>Deliverable</b></label>
         </div>
-        <div class="row">
-            <div class="col-lg-2">
-                <label>Cost:</label>
-            </div>
-            <div class="col-lg-3">
-                <input type="text" placeholder="$" class="form-control" ng-model="service.cost.amount"
-                       id="id_cost" name="cost">
-            </div>
-            <div class="col-lg-4">
-                <label>Time Estimate:</label>
-            </div>
-            <div class="col-lg-3">
-                <input type="text" placeholder="# Hours" class="form-control" ng-model="service.time"
-                       id="id_time" name="time">
-            </div>
+        <div class="col-lg-2">
+            <button type="button" class="multidropdown_button btn btn-default btn-add"
+                    ng-click="removeElement($index)">
+                <span class="glyphicon glyphicon-trash"></span>
+            </button>
         </div>
     </div>
+    <div class="row form-group">
+        <div class="col-lg-3">
+            <label class="ng-binding">Name</label>
+        </div>
+        <div class="col-lg-9">
+            <input type="text" placeholder="Name" class="form-control"
+                   ng-model="service.name[service.language]"
+                   id="id_name" name="name" required>
+        </div>
+    </div>
+    <div class="row form-group">
+        <div class="col-lg-3">
+            <label class="ng-binding">Description</label>
+        </div>
+        <div class="col-lg-9">
+            <input type="text" placeholder="Description" class="form-control"
+                   ng-model="service.description[service.language]"
+                   id="id_description" name="description">
+        </div>
+    </div>
+    <div class="row form-group">
+        <div class="col-lg-3">
+            <label>Cost:</label>
+        </div>
+        <div class="col-lg-3">
+            <input type="text" placeholder="$" class="form-control" ng-model="service.cost.amount"
+                   id="id_cost" name="cost">
+        </div>
+        <div class="col-lg-3">
+            <label>Time Estimate:</label>
+        </div>
+        <div class="col-lg-3">
+            <input type="text" placeholder="# Hours" class="form-control" ng-model="service.time"
+                   id="id_time" name="time">
+        </div>
+    </div>
+    <hr>
 </div>

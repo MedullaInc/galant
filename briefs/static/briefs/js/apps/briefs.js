@@ -4,6 +4,7 @@ var app = angular.module('brief', [
     'briefs.directives.brDetail',
     'gallant.controllers.glFormController',
     'gallant.directives.glAlerts',
+    'gallant.directives.glAddModal',
 ]);
 
 /* istanbul ignore next */

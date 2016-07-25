@@ -1,36 +1,31 @@
 {% extends "../templates/gallant/client_detail.html" %}
 {% load bootstrap i18n gallant_tags staticfiles %}
 
-{% block section_title %}
-    {% trans "Client Work" %}
+{% block page_title %}
+    {{ object.name }} - <span class="fw-semi-bold">Projects</span>
 {% endblock %}
 
 {% block content %}
 
     {% block client_detail %}
-        {{ block.super }}
     {% endblock %}
 
     {% block main_client_data %}
-        <div class="projects">
-            <h2 class="section_title">
-                {% trans 'Projects' %}
-                <span class="pull-right glyphicon glyphicon-question-sign help-tooltip" uib-tooltip="Shows project list with status summary of all services from each project according to status." tooltip-placement="top-right"></span>
-            </h2>
+        <div class="row">
             {% if projects|length > 0 %}
                 {% for project in projects %}
-                    {% include "gallant/project.html" %}
+                    <div class="col-lg-4">
+                        {% include "gallant/project.html" %}
+                    </div>
                 {% endfor %}
             {% else %}
-                <div class="project enclosed">
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <p>
-                                {% trans "This client has no active projects." %}
-                            </p>
-                        </div>
+                <section class="widget">
+                    <div class="widget-body">
+                        <p class="mb-lg">
+                            {% trans "This client has no active projects." %}
+                        </p>
                     </div>
-                </div>
+                </section>
             {% endif %}
         </div>
     {% endblock %}

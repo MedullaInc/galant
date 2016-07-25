@@ -1,6 +1,6 @@
-<div class="enclosed" ng-repeat="p in payments | orderBy:['-paid_on','due']"">
+<section class="widget" ng-repeat="p in payments | orderBy:['-paid_on','due']" ng-show="payments.length">
     <div class="row">
-        <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+        <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
             <p class="small">
                 Description
             </p>
@@ -32,13 +32,21 @@
                 {{ p.paid_on === null ? "Not Paid Yet" : p.paid_on | date:"MMM dd, yyyy" }}
             </p>
         </div>
-        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 action_box">
-            <button id="section_edit" type="button" class="btn btn-default edit_button btn-add btn-list" aria-label="Edit" ng-click="openEditModal()(p.id)">
+        <div class="col-lg-1 col-md-1 col-sm-2 col-xs-2 action_box">
+            <button id="section_edit" type="button" class="btn btn-warning edit_button btn-add btn-list" aria-label="Edit" ng-click="openEditModal()(p.id)">
                 <span class="glyphicon glyphicon-edit"/>
             </button>
-            <button id="section_delete" type="button" class="btn btn-default delete_button btn-add btn-list" aria-label="Edit" ng-click="deletePayment(p)" ng-confirm-click="Are you sure?">
+            <button id="section_delete" type="button" class="btn btn-danger delete_button btn-add btn-list" aria-label="Edit" ng-click="deletePayment(p)" ng-confirm-click="Are you sure?">
                 <span class="glyphicon glyphicon-trash"/>
             </button>
         </div>
     </div>
-</div>
+</section>
+
+<section class="widget" ng-hide="payments.length">
+    <div class="widget-body">
+        <p class="mb-lg">
+            This client has no payments.
+        </p>
+    </div>
+</section>

@@ -104,6 +104,7 @@ describe('qtForm', function () {
 
 
   describe('qtQuoteForm', function () {
+      var compStr = '<section';
 
         beforeEach(function () {
             $scope.quote = {type: 'Quote'};
@@ -116,31 +117,31 @@ describe('qtForm', function () {
         it('compiles', function () {
             var element = $compile('<div quote-id="0" quote="quote" qt-quote-form language="language"></div>')($scope);
             $scope.$digest();
-            expect(element.html().substring(0, 8)).toEqual('<div cla');
+            expect(element.html().substring(0, 8)).toEqual(compStr);
         });
  
         it('compiles with quote id and bool-template false', function () {
             var element = $compile('<div qt-quote-form quote="quote" quote-id="0" bool-template="False"></div>')($scope);
             $scope.$digest();
-            expect(element.html().substring(0, 8)).toEqual('<div cla');
+            expect(element.html().substring(0, 8)).toEqual(compStr);
         });
 
         it('compiles with quote id and bool-template true', function () {
             var element = $compile('<div qt-quote-form quote="quote" quote-id="0" bool-template="True"></div>')($scope);
             $scope.$digest();
-            expect(element.html().substring(0, 8)).toEqual('<div cla');
+            expect(element.html().substring(0, 8)).toEqual(compStr);
         });
  
         it('compiles with quote template id and bool-template true', function () {
             var element = $compile('<div qt-quote-form quote="quote" template-id="0" bool-template="True"></div>')($scope);
             $scope.$digest();
-            expect(element.html().substring(0, 8)).toEqual('<div cla');
+            expect(element.html().substring(0, 8)).toEqual(compStr);
         });
 
         it('compiles with quote template id and bool-template false', function () {
             var element = $compile('<div qt-quote-form quote="quote" template-id="0" bool-template="False"></div>')($scope);
             $scope.$digest();
-            expect(element.html().substring(0, 8)).toEqual('<div cla');
+            expect(element.html().substring(0, 8)).toEqual(compStr);
         });
 
         it('adds service (scratch)', function () {
@@ -217,7 +218,7 @@ describe('qtForm', function () {
         it('compiles', function () {
             var element = $compile('<div qt-service-table></div>')($scope);
             $scope.$digest();
-            expect(element.html().substring(0, 4)).toEqual('<div');
+            expect(element.html().substring(0, 4)).toEqual('<h2 ');
         });
 
         it('remove service', function () {

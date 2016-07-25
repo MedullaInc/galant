@@ -40,13 +40,13 @@ urlpatterns = i18n_patterns(
     url(r'^home', market_analysis.views.LandingPage.as_view(),
         name='landing'),
 
-    url(r'^features', TemplateView.as_view(template_name='features.html'),
+    url(r'^features', TemplateView.as_view(template_name='market_analysis/features.html'),
         name='features'),
 
-    url(r'^about', TemplateView.as_view(template_name='about.html'),
+    url(r'^about', TemplateView.as_view(template_name='market_analysis/about.html'),
         name='about'),
 
-    url(r'^contact', TemplateView.as_view(template_name='contact.html'),
+    url(r'^contact', TemplateView.as_view(template_name='market_analysis/contact.html'),
         name='contact'),
 
     url(r'^waiting_list', market_analysis.views.LandingPageSubmit.as_view(),
@@ -108,6 +108,7 @@ urlpatterns = i18n_patterns(
         name='api_client_detail'),
     url(r'^api/note/(?P<pk>[0-9]+)$', login_required(gallant.views.NoteDetailAPI.as_view()), name='api_note_detail'),
     url(r'^api/users/?$', login_required(gallant.views.UsersAPI.as_view()), name='api_users'),
+    url(r'^api/settings/(?P<pk>[0-9]+)$', login_required(gallant.views.UserSettingsAPI.as_view()), name='api_user_settings'),
 
     url(r'^register/(?P<pk>[0-9]+)', gallant.views.Register.as_view(), name='register'),
     url(r'^account/add/', login_required(gallant.views.AccountAdd.as_view()), name='add_account'),

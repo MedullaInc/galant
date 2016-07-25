@@ -190,7 +190,9 @@ app.directive('qtQuoteForm', ['Quote', '$uibModal', function (Quote, $uibModal) 
                 $scope.dragControlListeners = {
                     accept: function (sourceItemHandleScope, destSortableScope) {
                         return sourceItemHandleScope.itemScope.sortableScope.$id === destSortableScope.$id;
-                    }
+                    },
+                    containment: '#services',
+                    containerPositioning: 'relative',
                 };
 
 

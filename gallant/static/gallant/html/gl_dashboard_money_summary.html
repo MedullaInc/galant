@@ -1,16 +1,17 @@
-<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 position-relative">
-    <div class="enclosed chart_box dashboard">
-        <h2 class="chart_title">
-            Income
-            <span class="pull-right glyphicon glyphicon-question-sign help-tooltip" uib-tooltip="Shows amount of money from unpaid, overdue and paid records." tooltip-placement="top-right"></span>
-        </h2>
-        <div class="col-lg-11">
-            <canvas tc-chartjs-doughnut chart-options="money_doughnut_chart_options" chart-data="money_doughnut_chart_data" auto-legend ng-show="paid > 0.0 || overdue > 0.0 || pending > 0.0 || on_hold > 0.0"></canvas>
-            <div ng-hide="paid > 0.0 || overdue > 0.0 || pending > 0.0 || on_hold > 0.0" class="dashbard-chart-msg">
-                <h2 class="section_title">
-                    No pending payments.
-                </h2>
+<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+    <section class="widget">
+        <header>
+            <h4>
+                Income
+            </h4>
+            <div class="widget-controls">
             </div>
+        </header>
+        <div class="widget-body">
+            <canvas tc-chartjs-doughnut chart-options="money_doughnut_chart_options" chart-data="money_doughnut_chart_data" auto-legend ng-show="paid > 0.0 || overdue > 0.0 || pending > 0.0 || on_hold > 0.0"></canvas>
+            <p class="fs-mini text-muted">
+                Shows amount of money resulting from the sum of unpaid records, overdue records and paid records.
+            </p>
         </div>
-    </div>
+    </section>
 </div>

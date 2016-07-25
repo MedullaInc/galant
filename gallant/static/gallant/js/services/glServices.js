@@ -41,6 +41,11 @@ app.factory('User', ['$resource', function ($resource) {
     return $resource('/en/api/users');
 }]);
 
+/* istanbul ignore next  */
+app.factory('UserSettings', ['$resource', function ($resource) {
+    return $resource('/api/settings/:id');
+}]);
+
 app.factory('glValidate', function () {
     return {
         nonEmpty: function ($data) {

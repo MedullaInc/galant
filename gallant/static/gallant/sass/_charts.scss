@@ -1,0 +1,23 @@
+.widget-body canvas {
+    margin: auto;
+}
+
+.tc-chart-js-legend {
+    margin-bottom: 20px;
+    margin-top: 20px;
+    min-height: 60px;
+}
+
+.tc-chart-js-legend li {
+    list-style-type: none;
+    height: 20px;
+    font-size: 13px;
+}
+
+.tc-chart-js-legend li span {
+    height: 20px;
+}
+
+.fs-mini.text-muted {
+    clear: left;
+}

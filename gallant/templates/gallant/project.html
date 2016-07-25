@@ -1,43 +1,41 @@
 {% load i18n gallant_tags %}
-<div class="project enclosed">
-    <div class="row">
 
-        <div class="col-lg-6">
-            <p>
-                <a href="{% url 'project_detail' project.id %}">
-                    {{ project }}
-                </a>
-            </p>
-            <br>
-            <div class="chart">
-                <canvas id="project_chart_{{ project.id }}"></canvas>
-            </div>
+<section class="widget">
 
+    <header>
+        <h4>
+            <a href="{% url 'project_detail' project.id %}">
+                {{ project }}
+            </a>
+        </h4>
+        <div class="widget-controls">
         </div>
+    </header>
 
-        <div class="col-lg-6 profile_alert">
-            <p>
-                Deliverables:
-            </p>
-            <p>
-                {% get_project_services_count request project 0 %} On hold
-            </p>
-            <p>
-                {% get_project_services_count request project 1 %} Unassigned
-            </p>
-            <p>
-                {% get_project_services_count request project 2 %} Active
-            </p>
-            <p>
-                {% get_project_services_count request project 3 %} Overdue
-            </p>
-            <p>
-                {% get_project_services_count request project 4 %} Completed
-            </p>
-        </div>
-
+    <div class="widget-body">
+        <canvas id="project_chart_{{ project.id }}"></canvas>
+        <br/>
+        <br/>
+        <p>
+            <b>Deliverables:</b>
+        </p>
+        <p>
+            {% get_project_services_count request project 0 %} On hold
+        </p>
+        <p>
+            {% get_project_services_count request project 1 %} Unassigned
+        </p>
+        <p>
+            {% get_project_services_count request project 2 %} Active
+        </p>
+        <p>
+            {% get_project_services_count request project 3 %} Overdue
+        </p>
+        <p>
+            {% get_project_services_count request project 4 %} Completed
+        </p>
     </div>
-</div>
+</section>
 
 <script>
 
@@ -83,3 +81,4 @@
     });
 
 </script>
+

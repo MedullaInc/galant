@@ -51,7 +51,7 @@ class Home(View):
             return HttpResponseRedirect(reverse('user_dashboard'))
         else:
             return TemplateResponse(request=request,
-                                    template="index.html",
+                                    template="landing.html",
                                     context={'title': 'Home'})
 
 
@@ -65,15 +65,6 @@ class UserDashboard(View):
 
 class SignUpRequest(View):
     @staticmethod
-    def get(request):
-        request.breadcrumbs([(_('Request Account'), request.path_info)])
-        return render(request, 'gallant/base_form.html', {
-            'form': forms.SignUpRequestForm(),
-            'title': 'Request Account',
-            'submit_text': 'Submit'
-        })
-
-    @staticmethod
     def post(request):
         request.breadcrumbs([(_('Request Account'), request.path_info)])
         form = forms.SignUpRequestForm(request.POST)
@@ -83,7 +74,7 @@ class SignUpRequest(View):
             messages.success(request, 'Request sent. We\'ll contact you soon!')
             return HttpResponseRedirect(reverse('home'))
         else:
-            return render(request, 'gallant/base_form.html', {
+            return render(request, 'gallant/base_index.html', {
                 'form': form,
                 'title': 'Request Account',
                 'submit_text': 'Submit'
@@ -274,6 +265,21 @@ class UsersAPI(generics.ListAPIView):
             return qs.filter(pk__in=assignee_ids)
         else:
             return qs
+
+
+class UserSettingsAPI(generics.RetrieveUpdateAPIView):
+    model = get_user_model()
+    serializer_class = serializers.GallantUserSettingsSerializer
+    permission_classes = [
+        IsAuthenticated,
+    ]
+
+    def get_queryset(self):
+        user = self.request.user
+        if user.is_superuser:
+            return self.model.objects.all()
+        else:
+            return self.model.objects.filter(pk=user.pk)
 
 
 class UserModelViewSet(viewsets.ModelViewSet):

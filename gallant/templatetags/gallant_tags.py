@@ -1,3 +1,6 @@
+import datetime
+
+import pytz
 from analytical.templatetags.clicky import ClickyNode
 from analytical.templatetags.crazy_egg import CrazyEggNode
 from django import template
@@ -65,6 +68,15 @@ def get_project_services_count(request, project, status=None):
 
 
 @register.simple_tag()
+def get_project_advance(request, project):
+    total = get_project_services(request, project).count()
+    if total > 0:
+        return str(float(get_project_services(request, project, 4).count()) / float(total)*100)+"%"
+    else:
+        return "0%"
+
+
+@register.simple_tag()
 def get_client_services_count(request, client, status=None):
     qs = g.Service.objects.all_for(request.user).filter(project__client=client)
 
@@ -72,3 +84,13 @@ def get_client_services_count(request, client, status=None):
         qs = qs.filter(status=status)
 
     return qs.count()
+
+
+@register.simple_tag(takes_context=True)
+def just_logged_in_js(context):
+    user = context.request.user
+    delta = datetime.datetime.now(pytz.utc) - datetime.timedelta(seconds=15)
+    if user.last_login > delta:
+        return 'true'
+    else:
+        return 'false'

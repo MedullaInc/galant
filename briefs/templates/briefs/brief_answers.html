@@ -1,18 +1,35 @@
-{% extends "base_body.html" %}
-{% load bootstrap i18n %}
+{% extends "base.html" %}
+{% load bootstrap i18n static %}
 
-{% block head_title %}
+{% block scripts %}
+    {{ block.super }}
+    <script src="{% static "js/ui-bootstrap-tpls.js" %}"></script>
+
+    {% block project_scripts %}
+        {{ block.super }}
+        {% if DEBUG %}
+            <script src="{% static "js/gallant.js" %}"></script>
+            <script src="{% static "js/briefs.js" %}"></script>
+        {% else %}
+            <script src="{% static "js/all.min.js" %}"></script>
+        {% endif %}
+    {% endblock %}
+{% endblock %}
+
+{% block app_title %}
     {% trans 'Answer Brief' %}
-{% endblock head_title %}
+{% endblock app_title %}
 
-{% block section_title %}
+{% block page_title %}
     {% trans 'Answer Brief' %}
 {% endblock %}
 
 {% block breadcrumbs %}
 {% endblock %}
 
-{% block content %}
+{% block body %}
+
+    <h1 class="page-title app_title"">Answer Brief</h1>
     <p id="title">
         {{ object.title.get_text }}
     </p>

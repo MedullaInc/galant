@@ -1,46 +1,75 @@
 {% extends "base_body.html" %}
-{% load bootstrap i18n gallant_tags %}
+{% load bootstrap i18n gallant_tags staticfiles %}
 
-{% block section_title %}
-    {% trans "Deliverable" %}
+{% block page_title %}
+    Deliverable - <span class="fw-semi-bold">{{ project }}</span>
 {% endblock %}
 
 {% block content %}
 
-    <div class="row">
-        <div class="col-lg-11 col-md-11 col-sm-10 col-xs-10">
-            <h2 class="section_title">{{ object.name.get_text }}</h2>
+    <section class="widget">
+        <div class="widget-body">
+            <div class="widget-top-overflow text-white">
+                <div class="height-100 overflow-hidden">
+                    <img class="img-responsive" src="{% static "img/galant/background.jpg" %}">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-5">
+                    <div class="post-user post-user-profile">
+                        <h4 class="fw-normal">{{ object.name.get_text }}</h4>
+                        <span class="label label-danger"> {{ object.get_status_display }} </span>
+                        <br/>
+                        <br/>
+                        <p>
+                            {{ object.description.get_text|linebreaks }}
+                        </p>
+                    </div>
+                </div>
+                <div class="col-sm-7">
+                    <div class="stats-row stats-row-profile mt text-right">
+                        <div class="stat-item">
+                            <p class="value">{{ object.cost }}</p>
+                            <h5 class="name">{% trans "Cost" %}</h5>
+                        </div>
+                        <div class="stat-item">
+                            <p class="value">{{ object.time }}</p>
+                            <h5 class="name">{% trans "Time Estimate" %}</h5>
+                        </div>
+                        <div class="stat-item">
+                            <p class="value">{{ object.get_type_display }}</p>
+                            <h5 class="name">{% trans "Type" %}</h5>
+                        </div>
+                    </div>
+                    <p class="text-right mt-lg">
+                        <a href="{% url 'edit_service' project.id object.id %}" class="btn btn-warning btn-sm mt" title="{% trans "Edit" %}">
+                            &nbsp;Edit
+                            &nbsp;&nbsp;<i class="glyphicon glyphicon-edit"/></i>&nbsp;
+                        </a>
+                    </p>
+                </div>
+            </div>
         </div>
-        <div class="col-lg-1 col-md-1 col-sm-2 col-xs-2 action_box">
-            <a href="{% url 'edit_service' project.id object.id %}" class="edit_button" title="{% trans "Edit" %}">
-                <button id="section_edit" type="button" class="btn btn-default btn-add" aria-label="Edit">
-                    <span class="glyphicon glyphicon-edit"/>
-                </button>
-            </a>
-        </div>
-    </div>
+    </section>
 
-    <div class="row">
-        <div class="col-lg-12">
-            <p><span class="detail_title">{% trans "Type" %}:</span> {{ object.get_type_display }}</p>
-            <p class="service_description"><span class="detail_title">{% trans "Description" %}:</span> {{ object.description.get_text|linebreaks }}</p>
-            <p><span class="detail_title">{% trans "Cost" %}:</span> {{ object.cost }}</p>
-            <p><span class="detail_title">{% trans "Time Estimate" %}:</span> {{ object.time }}</p>
-            <br/>
-        </div>
-    </div>
+    <section id="notes">
+        <h2>Notes</h2>
 
-    <hr>
-    <div id="notes">
-        <h2 class="section_title">
-            {% trans "Project Deliverable Notes" %}
-        </h2>
         {% objects_for object.notes as notes %}
-        {% for item in notes %}
-            {% include "gallant/note.html" %}
-        {% endfor %}
-        <div>
-            {% include "gallant/add_note.html" %}
-        </div>
-    </div>
+        {% if notes|length > 0 %}
+            {% for item in notes %}
+                {% include "gallant/note.html" %}
+            {% endfor %}
+        {% else %}
+            <section class="event">
+                <p class="fs-mini">
+                    No notes have been added for this client yet.
+                </p>
+                <footer>
+                </footer>
+            </section>
+        {% endif %}
+        {% include "gallant/add_note.html" %}
+    </section>
+
 {% endblock %}

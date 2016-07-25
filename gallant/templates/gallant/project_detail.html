@@ -1,29 +1,26 @@
 {% extends "base_body.html" %}
 {% load bootstrap i18n gallant_tags static %}
 
-{% block section_title %}
-    {% trans "Project" %}
+{% block page_title %}
+    {% trans "Project" %} - <span class="fw-semi-bold">Dashboard</span>
 {% endblock %}
 
 {% block scripts %}
     {{ block.super }}
-    <script src="{% static "js/angular.js" %}"></script>
-    <script src="{% static "js/angular-resource.js" %}"></script>
-    <script src="{% static "js/ui-bootstrap-tpls.js" %}"></script>
     <script src="{% static "djng/js/django-angular.min.js" %}"></script>
     <script src="{% static "js/ng-sortable.js" %}"></script>
     <script src="{% static "js/angular-animate.js" %}"></script>
+{% endblock %}
 
+{% block project_scripts %}
+    {{ block.super }}
     {% if DEBUG %}
-        <script src="{% static "js/gallant.js" %}"></script>
         <script src="{% static "js/quotes.js" %}"></script>
         <script src="{% static "js/kanban.js" %}"></script>
-    {% else %}
-        <script src="{% static "js/all.min.js" %}"></script>
     {% endif %}
 {% endblock %}
 
-{% block css %}
+{% block project_css %}
     {{ block.super }}
 
     <link rel="stylesheet" href="{% static "css/ng-sortable.style.min.css" %}">
@@ -34,104 +31,124 @@
 {% block extra_wrapper_attrs %} ng-app="glProjectDetail" {% endblock %}
 
 {% block content %}
-<div gl-alerts></div>
-<div ng-controller="glProjectDetailController"
-     ng-init="init('{% url 'service_detail' object.id %}', {{ object.id }})">
+    <div gl-alerts></div>
 
-    <div gl-add-modal open-fn="editProject" title="Edit Project" modal-instance="modalInstance">
-        <div gl-project-add on-success="projectSaved" project="projectSafe" language="{% firstof language LANGUAGE_CODE %}"></div>
+    <div ng-controller="glProjectDetailController" ng-init="init('{% url 'service_detail' object.id %}', {{ object.id }})">
+
+        <div class="row">
+            <div class="col-md-12">
+                {% block main_client_data %}
+                    <section class="widget">
+                        <div class="widget-body">
+                            <div class="widget-top-overflow text-white">
+                                <div class="height-100 overflow-hidden">
+                                    <img class="img-responsive" src="{% static "img/galant/background.jpg" %}">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-5 text-center">
+                                    <div class="post-user post-user-profile">
+                                        <h4 class="fw-normal">{{ object.name }}</h4>
+                                        <span class="label label-danger"> {{ object.get_status_display }} </span>
+
+                                        {% if object.client %}
+                                            <ul class="contacts">
+                                                <li>
+                                                    <i class="fa fa-building fa-fw mr-xs"></i><a href="{% url 'client_detail' object.client.id %}"> {{ object.client.name }}</a>
+                                                </li>
+                                            </ul>
+                                        {% endif %}
+
+                                    </div>
+                                </div>
+                                <div class="col-sm-7">
+
+                                    <div gl-add-modal open-fn="editProject" title="Edit Project" modal-instance="modalInstance">
+                                        <div gl-project-add on-success="projectSaved" project="projectSafe" language="{% firstof language LANGUAGE_CODE %}"></div>
+                                    </div>
+
+                                    <div class="stats-row stats-row-profile mt text-right">
+                                        <div class="stat-item">
+                                            <p class="value">{% get_project_services_count request object  %}</p>
+                                            <h5 class="name">Deliverables</h5>
+                                        </div>
+                                        <div class="stat-item">
+                                            <p class="value">{% get_project_advance request object %}</p>
+                                            <h5 class="name">Advance</h5>
+                                        </div>
+                                    </div>
+                                    <p class="text-right mt-lg">
+                                        <button id="section_edit" type="button" class="btn btn-warning btn-sm mt" aria-label="Edit"
+                                                ng-click="editProjectSafe()">
+                                            &nbsp;Edit
+                                            &nbsp;&nbsp;<i class="glyphicon glyphicon-edit"/></i>&nbsp;
+                                        </button>
+                                        <a href="{% url 'delete_project' object.id %}" class="delete_button" title="{% trans "Delete" %}" onclick="return confirm('{% trans "Are you sure? This will also delete all links between the project and its linked quotes." %}')"> 
+                                            <button id="section_delete" type="button" class="btn btn-danger btn-sm mt" aria-label="Delete"> 
+                                                &nbsp;Delete
+                                                &nbsp;&nbsp;<i class="glyphicon glyphicon-trash"/></i>&nbsp;
+                                            </button>
+                                        </a> 
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <span gl-client-work-chart client-id="{{ object.id }}" add-brief-url='{% url 'add_brief' %}' language='{% firstof language LANGUAGE_CODE %}'>
+                    </span>
+                    <span gl-client-money-chart client-id="{{ object.id }}" add-quote-url='{% url 'add_quote' %}' language='{% firstof language LANGUAGE_CODE %}'>
+                    </span>
+                {% endblock %}
+            </div>
+        </div>
+
+        <h2 class="section_title">Deliverables</h2>
+        <br/>
+        <div ng-include src="'{% static "gallant/html/gl_service_board.html" %}'">
+        </div>
+
     </div>
 
-    <div class="row">
-        <div class="col-lg-10 col-md-10 col-sm-9 col-xs-9">
-            <h2 class="section_title">{{ object.name }}</h2>
-        </div>
-        <div class="col-lg-2 col-md-2 col-sm-3 col-xs-3 action_box">
-            <button id="section_edit" type="button" class="btn btn-default edit_button btn-add" aria-label="Edit"
-                    ng-click="editProjectSafe()">
-                <span class="glyphicon glyphicon-edit"/>
-            </button>
-            <a href="{% url 'delete_project' object.id %}" class="delete_button" title="{% trans "Delete" %}" onclick="return confirm('{% trans "Are you sure? This will also delete all links between the project and its linked quotes." %}')"> 
-                <button id="section_delete" type="button" class="btn btn-default delete_button btn-add" aria-label="Delete"> 
-                    <span class="glyphicon glyphicon-trash"/> 
-                </button>
-            </a> 
-        </div>
-    </div>
+    <div>
 
-    <div class="row object_data">
-        <div class="col-lg-6">
-            <span>
-            <p>
-                Client:
-                {% if object.client %}
-                    <a href="{% url 'client_detail' object.client.id %}">{{ object.client.name }}</a>
-                {% else %}
-                    -
-                {% endif %}
-            </p>
-            </span>
-            <br>
-        </div>
-        <div class="col-lg-6">
-        </div>
 
-    </div>
+        {% if brief in briefs %}
 
-    <div class="row object_data">
-        <div class="col-lg-6">
-            <p><span class="label label-default">{{ object.get_status_display }}</span></p>
-            <br>
-        </div>
-        <div class="col-lg-6">
-        </div>
+            <hr>
+            <div id="briefs">
+                <h2 class="section_title">
+                    {% trans "Project Briefs" %}
+                </h2>
 
-    </div>
+                <hr>
 
-    <hr>
+                {% objects_for object.quote.brief_set as briefs %}
+                {% for brief in briefs %}
+                    <div class="brief_link">
+                        <a href="{% url 'brief_detail' brief.id %}?project_id={{ object.id }}">{{ brief }} </a>&mdash;
+                        {{ brief.modified|date:'Y-m-d H:i' }}
+                    </div>
+                {% endfor %}
+            </div>
+            <hr>
 
-    <h2 class="section_title">Deliverables</h2>
-    <div ng-include src="'{% static "gallant/html/gl_service_board.html" %}'">
-    </div>
-    <hr>
+        {% endif %}
 
-    {% if brief in briefs %}
+        <div id="notes">
 
-        <hr>
-        <div id="briefs">
             <h2 class="section_title">
-                {% trans "Project Briefs" %}
+                {% trans "Project Notes" %}
             </h2>
 
             <hr>
 
-            {% objects_for object.quote.brief_set as briefs %}
-            {% for brief in briefs %}
-                <div class="brief_link">
-                    <a href="{% url 'brief_detail' brief.id %}?project_id={{ object.id }}">{{ brief }} </a>&mdash;
-                    {{ brief.modified|date:'Y-m-d H:i' }}
-                </div>
+            {% objects_for object.notes as notes %}
+            {% for item in notes %}
+                {% include "gallant/note.html" %}
             {% endfor %}
-        </div>
-        <hr>
-
-    {% endif %}
-
-    <div id="notes">
-
-        <h2 class="section_title">
-            {% trans "Project Notes" %}
-        </h2>
-
-        <hr>
-
-        {% objects_for object.notes as notes %}
-        {% for item in notes %}
-            {% include "gallant/note.html" %}
-        {% endfor %}
-        <div>
-            {% include "gallant/add_note.html" %}
+            <div>
+                {% include "gallant/add_note.html" %}
+            </div>
         </div>
     </div>
-</div>
 {% endblock %}
