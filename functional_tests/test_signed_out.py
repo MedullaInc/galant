@@ -84,12 +84,10 @@ class SignedOutTest(StaticLiveServerTestCase):
 
     def test_can_request_signup(self):
         b = self.browser
-        b.get(self.live_server_url + reverse('signup'))
-        b.find_element_by_name('name').send_keys('PPPPPPP')
-        b.find_element_by_name('company').send_keys('PPPPPPP')
+        b.get(self.live_server_url + reverse('home'))
         b.find_element_by_name('email').send_keys('PPPP@PPP.com')
 
-        b.find_element_by_xpath('//button[@type="submit"]').click()
+        b.find_element_by_id('signup-button').click()
 
         success_message = b.find_element_by_class_name('alert-success')
         self.assertTrue(u'Request sent.' in success_message.text)
