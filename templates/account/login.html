@@ -38,21 +38,23 @@
 
     {% endif %}
 
-    <form class="login" method="POST" action="{% url 'account_login' %}">
-        {% csrf_token %}
-        {{ form|bootstrap }}
-        {% if redirect_field_value %}
-            <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
-        {% endif %}
+    <form class="form-horizontal login" method="POST" action="{% url 'account_login' %}">
+        <fieldset>
+            {% csrf_token %}
+            {{ form|bootstrap }}
+            {% if redirect_field_value %}
+                <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+            {% endif %}
 
-        <div class="form-actions row">
-            <div class="col-lg-2">
-                <button class="btn btn-default btn-submit" type="submit">{% trans "Sign In" %}</button>
+            <div class="form-actions row">
+                <div class="col-lg-2">
+                    <button class="btn btn-default btn-submit" type="submit">{% trans "Sign In" %}</button>
+                </div>
+                <div class="col-lg-10">
+                    <a class="forgot" href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>
+                </div>
             </div>
-            <div class="col-lg-10">
-                <a class="forgot" href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>
-            </div>
-        </div>
+        </fieldset>
     </form>
 
 {% endblock %}

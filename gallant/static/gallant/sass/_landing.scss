@@ -59,6 +59,12 @@ $break-xl: 1940px;
   }
 }
 
+#landing_main {
+  @media (min-width: $break-lg) {
+    padding-top: 350px;
+  }
+}
+
 #landing_main #main_overlay {
   font-size: 36px;
   font-weight: 800;
@@ -74,6 +80,12 @@ $break-xl: 1940px;
   @media (max-width: $break-small) {
     font-size: 28px;
   }
+
+  @media (min-width: $break-lg) {
+    font-size: 54px;
+    line-height: 1.0;
+  }
+
 }
 
 .landing_section {
@@ -174,6 +186,10 @@ $break-xl: 1940px;
     width: 85%;
     font-size: 18px;
   }
+
+  @media (min-width: $break-lg) {
+    font-size: 26px;
+  }
 }
 
 #landing_blurb p b {
@@ -187,6 +203,9 @@ $break-xl: 1940px;
     font-size: 28px;
   }
 
+  @media (min-width: $break-lg) {
+    font-size: 48px;
+  }
 }
 
 #landing_purpose {
@@ -280,6 +299,11 @@ $break-xl: 1940px;
   font-weight: 800;
   letter-spacing: -1px;
   font-size: 36px;
+
+  @media (min-width: $break-lg) {
+    font-size: 48px;
+  }
+
 }
 
 .landing_section p {
@@ -308,6 +332,11 @@ $break-xl: 1940px;
     padding-left: 25px;
     padding-right: 25px;
   }
+
+  @media (min-width: $break-lg) {
+    font-size: 26px;
+  }
+
 }
 
 #landing_blurb p {
@@ -536,4 +565,16 @@ button#login_open.btn.btn-default, button#signup.button_round, form#landing_sign
 
 button#login_open.btn.btn-default:hover, button#signup.button_round:hover, form#landing_signup button:hover {
   background-color: $color-highlight;
+}
+
+input#signup-form.form-control {
+  max-width: 100%;
+  border-radius: 5px;
+  clear: left;
+}
+
+button#signup-form.btn.btn-default.input-group-btn {
+  max-width: 100%;
+  margin-top: 10px;
+  clear: left;
 }
