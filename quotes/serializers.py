@@ -108,16 +108,19 @@ class QuoteSerializer(QuoteListSerializer):
         return fields
 
     def update(self, instance, validated_data):
-        services_data = validated_data.pop('services')
-        sections_data = validated_data.pop('sections')
 
         if self.context.has_key('request'):
             user = self.context['request'].user
         else:
             user = self.context.get("user")
 
-        self._write_services(user, instance, services_data)
-        self._write_sections(user, instance, sections_data)
+        if 'services' in validated_data:
+            services_data = validated_data.pop('services')
+            self._write_services(user, instance, services_data)
+
+        if 'sections' in validated_data:
+            sections_data = validated_data.pop('sections')
+            self._write_sections(user, instance, sections_data)
 
         return super(QuoteSerializer, self).update(instance, validated_data)
 
