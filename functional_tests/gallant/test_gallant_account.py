@@ -47,7 +47,7 @@ class GallantAccountTest(browser.BrowserTest):
 
         self.e_name('email').send_keys('foo@bar.com')
 
-        self.click_xpath('//button[@type="submit"]')
+        self.submit('create_submit')
 
         success_message = self.e_class('alert-success')
         self.assertTrue(u'Password reset link sent.' in success_message.text)
@@ -72,7 +72,7 @@ class GallantAccountTest(browser.BrowserTest):
         self.e_name('state').send_keys('asdf')
         self.e_name('zip').send_keys('12345')
 
-        self.click_xpath('//button[@type="submit"]')
+        self.submit('create_submit')
 
         success_message = self.e_class('alert-success')
         self.assertTrue(u'Registration successful.' in success_message.text)
@@ -85,7 +85,6 @@ class GallantAccountTest(browser.BrowserTest):
 
         self.get(self.live_server_url + reverse('register', args=[user.id]) + '?token=%s' % token)
 
-        self.click_xpath('//button[@type="submit"]')
+        self.submit('create_submit')
 
-        app_title = self.e_class('app_title')
-        self.assertEqual('Register', app_title.text)
+        self.assertIsNotNone(self.e_name('new_password1'))
