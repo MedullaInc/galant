@@ -167,9 +167,7 @@ class BootstrapRadioFieldRenderer(widgets.RadioFieldRenderer):
         html = ''
         for val, text in self.choices:
             html += '''
-            <div class="radio"><label>
-                <input type="radio" name="%s" value="%d">%s
-            </label></div>''' % (self.name, val, text)
+            <div class="radio"><input type="radio" name="%s" value="%d"><label>%s</label></div>''' % (self.name, val, text)
         return html
 
 
