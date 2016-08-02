@@ -41,11 +41,11 @@ def update_service_card_post(sender, instance, **kwargs):
         project = service.project_set.all_for(service.user)[0]
         project_name = project.name
         title = Truncator(service.name.get_text()).chars(255);
+        card.link = reverse('service_detail', args=[project.id, service.id])
     except IndexError:
         project_name = ''
         title = ''
 
-    card.link = reverse('service_detail', args=[project.id, service.id])
     card.title = title
     card.text = project_name
     card.xindex = int(service.status or 0)
