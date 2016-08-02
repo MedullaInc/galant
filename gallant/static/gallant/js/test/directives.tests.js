@@ -741,7 +741,7 @@ describe('glDeliverablesBoard', function () {
         angular.mock.module('gallant.services.glServices', function ($provide) {
             $provide.factory('Service', function ($q) {
                 var Service = jasmine.createSpyObj('Service', ['query']);
-                card = {yindex:0};
+                card = {yindex:0, link:'this_link'};
                 Service.query.and.returnValue({$promise: $q.when([{status: 0, card: card}, {status: 1, card: card},
                     {status: 2, card: card}, {status: 3, card: card}, {status: 4, card: card}])});
                 return Service;
@@ -777,6 +777,14 @@ describe('glDeliverablesBoard', function () {
             var element = $compile('<div gl-deliverables-board></div>')($scope);
             $scope.$digest();
             expect(element.html().substring(0, 4)).toEqual('<sec');
+        });
+
+        it('redirects', function () {
+            var $window = $injector.get('$window');
+            var element = $compile('<div gl-deliverables-board></div>')($scope);
+            $scope.$digest();
+            element.isolateScope().redirect({status: 0, card: {link:'this_link'}});
+            expect($window.location.href.substring(0, 7)).toEqual('http://');
         });
 
     });

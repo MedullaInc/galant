@@ -45,6 +45,7 @@ def update_service_card_post(sender, instance, **kwargs):
         project_name = ''
         title = ''
 
+    card.link = reverse('service_detail', args=[project.id, service.id])
     card.title = title
     card.text = project_name
     card.xindex = int(service.status or 0)
