@@ -33,6 +33,7 @@ describe('clTaskList', function() {
     });
 
     it('compiles', function () {
+        $scope.$digest();
         expect(element.html().substring(0, 6)).toEqual('<table');
     });
 
