@@ -17,9 +17,8 @@ class BriefAnswersTest(browser.BrowserTest):
         self.brief = brief
 
     def test_can_access_answers(self):
-        self.get(self.live_server_url + reverse('brief_answer', args=[self.brief.token.hex]))
-        app_title = self.e_class('app_title')
-        self.assertIn('Answer Brief', app_title.text)
+        response = self.client.get(self.live_server_url + reverse('brief_answer', args=[self.brief.token.hex]))
+        self.assertContains(response, '<title>', status_code=200)
 
     def test_post_answers(self):
         self.brief.questions.add(bm.MultipleChoiceQuestion.objects.create(user=self.brief.user, question='Huh?',
