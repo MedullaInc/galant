@@ -31,12 +31,7 @@ describe('clTaskList', function() {
         element = $compile('<div cl-task-list="" assignee="0"></div>')($scope);
         $scope.$digest();
     });
-
-    it('compiles', function () {
-        $scope.$digest();
-        expect(element.html().substring(0, 6)).toEqual('<table');
-    });
-
+    
     it('filters by assignee', function () {
         expect(element.isolateScope().byAssignee({assignee: 1})).toEqual(false);
         element.isolateScope().assignee = null;
