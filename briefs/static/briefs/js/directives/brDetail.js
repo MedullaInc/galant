@@ -65,6 +65,7 @@ app.directive('brBriefDetail', ['Question', '$window', function (Question, $wind
                                 id: $attrs.briefId
                             }).$promise.then(function (brief) {
                                 var brief_lang = brief.language ? brief.language : $scope.language;
+                                
                                 // we're creating a template from a saved brief, so delete IDs to create new one
                                 delete brief.id;
                                 angular.forEach(brief.questions, function (q) {
@@ -74,7 +75,6 @@ app.directive('brBriefDetail', ['Question', '$window', function (Question, $wind
                             });
                         } else {
                             loadBriefAndTemplate(new Brief(), new BriefTemplate(), $scope.language);
-
                         }
                     }
                 } else {
@@ -181,6 +181,13 @@ app.directive('brBriefDetail', ['Question', '$window', function (Question, $wind
             };
 
             $scope.setLanguage = function (language) {
+
+                var active_lang_tab = angular.element( document.querySelector( 'li.ng-scope.active' ) );
+                active_lang_tab.removeClass('active');
+
+                var lang_tab = angular.element( document.querySelector( '#' + language + '_tab' ) );
+                lang_tab.addClass('active');
+
                 var initVis = $scope.briefForm.$visible;
                 if (initVis) {
                     submitWithoutOnAfterSave($scope.briefForm);
