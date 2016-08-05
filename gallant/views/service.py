@@ -154,7 +154,7 @@ class ServiceAPI(ModelViewSet):
         elif project_id:
             return qs.filter(project__in=[project_id])
         elif template_only:
-            return qs.filter(quote__client__isnull=True)
+            return qs.filter(quote__isnull=False, quote__client__isnull=True)
         elif project_open:
             return qs.exclude(project=None).exclude(project__status=g.ProjectStatus.Completed)
         else:
