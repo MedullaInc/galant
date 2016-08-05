@@ -147,14 +147,6 @@ describe('glProjectDetailController', function () {
         $scope.projectSaved({});
         expect($window.location.reload).toHaveBeenCalled();
     });
-
-    it('saves deliverable', function () {
-        $scope.modalInstance = { dismiss: function () {} };
-        spyOn($scope.modalInstance, 'dismiss');
-        $scope.saveDeliverable({});
-        $scope.$apply();
-        expect($scope.modalInstance.dismiss).toHaveBeenCalled();
-    });
 });
 
 describe('glFormController', function () {

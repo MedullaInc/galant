@@ -4,7 +4,7 @@ app = angular.module('gallant.directives.glDeliverableAdd', [
     'gallant.services.glServices',
 ]);
 
-app.directive('glDeliverableAdd', ['$window', 'Service', 'Project', function ($window, Service, Project) {
+app.directive('glDeliverableAdd', ['Service', 'Project', function (Service, Project) {
     return {
         restrict: 'A',
         scope: {
