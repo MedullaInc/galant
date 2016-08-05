@@ -88,12 +88,12 @@
     </div>
     <div class="row form-group">
         <div class="col-lg-12">
+            <button id="submit_task" class="btn btn-default pull-right btn-submit" ng-click="submitForm()">
+                Save
+            </button>
             <button type="button" class="delete btn btn-default pull-right btn-submit"
                     ng-click="deleteTask(task)" ng-hide="!task.id">
                 Delete Task
-            </button>
-            <button id="submit_task" class="btn btn-default pull-right btn-submit" ng-click="submitForm()">
-                Save
             </button>
             <br/>
             <br/>
