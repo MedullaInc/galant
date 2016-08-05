@@ -163,11 +163,11 @@ class QuoteSerializer(QuoteListSerializer):
             service_data['index'] = id
             if service_id:
                 service_instance = g.Service.objects.get_for(user, 'change', pk=service_id)
-                ss = s.ServiceSerializer(data=service_data, instance=service_instance)
+                ss = s.ServiceSerializer(data=service_data, instance=service_instance, context=self.context)
                 service = ss.update(service_instance, service_data)
             else:
                 service_data.update({'user': user})
-                ss = s.ServiceSerializer(data=service_data)
+                ss = s.ServiceSerializer(data=service_data, context=self.context)
 
                 service = ss.create(service_data)
 

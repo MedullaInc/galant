@@ -100,13 +100,18 @@ class ServiceTest(TransactionTestCase):
         self.assertEqual(parser.save(), service)
 
     def test_service_serialize_create(self):
+        factory = APIRequestFactory()
         user = autofixture.create_one(g.GallantUser, generate_fk=True)
         service = autofixture.create_one(g.Service, generate_fk=True, field_values={'user': user})
 
-        serializer = serializers.ServiceSerializer(service)
+        request = factory.get(reverse('home'))
+        request.user = user
+        force_authenticate(request, user=user)
+
+        serializer = serializers.ServiceSerializer(service, context={'request': request})
         self.assertIsNotNone(serializer.data)
 
-        parser = serializers.ServiceSerializer(data=serializer.data)
+        parser = serializers.ServiceSerializer(data=serializer.data, context={'request': request})
         self.assertTrue(parser.is_valid())
 
         self.assertNotEqual(parser.save(user=user).id, service.id)
