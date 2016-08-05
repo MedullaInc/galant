@@ -25,6 +25,7 @@ app.directive('glProjectList', ['$window', '$uibModal', 'Project', function ($wi
             $scope.projectSaved = function (project) {
                 $scope.projects.push(project);
                 $scope.modalInstance.dismiss('cancel');
+                $window.location.href = project.link;
             };
 
             $scope.redirect = function (project) {

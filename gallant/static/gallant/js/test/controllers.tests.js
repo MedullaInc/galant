@@ -86,14 +86,10 @@ describe('glProjectDetailController', function () {
                                 id: 0, services: [{id: 0, name: {}, description: {}, language: 'en'}]
                             })
                         };
-                    }
-                };
-            });
-            $provide.factory('Service', function ($q) {
-                return {
-                    query: function () {
+                    },
+                    update: function (id, project) {
                         return {
-                            $promise: $q.when([{id: 0, name: {}, description: {}, language: 'en'}])
+                            $promise: $q.when(project)
                         };
                     }
                 };
@@ -150,6 +146,14 @@ describe('glProjectDetailController', function () {
         $scope.modalInstance = { dismiss: function () {} };
         $scope.projectSaved({});
         expect($window.location.reload).toHaveBeenCalled();
+    });
+
+    it('saves deliverable', function () {
+        $scope.modalInstance = { dismiss: function () {} };
+        spyOn($scope.modalInstance, 'dismiss');
+        $scope.saveDeliverable({});
+        $scope.$apply();
+        expect($scope.modalInstance.dismiss).toHaveBeenCalled();
     });
 });
 

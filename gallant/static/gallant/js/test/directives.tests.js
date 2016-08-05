@@ -595,7 +595,7 @@ describe('glFormElements', function () {
     });
 
     it('compiles', function () {
-        expect(element.html().substring(0, 6)).toEqual('<!-- n');
+        expect(element.html().substring(0, 6)).toEqual('<div c');
     });
 
     it('adds element', function () {

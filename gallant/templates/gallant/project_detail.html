@@ -33,7 +33,7 @@
 {% block content %}
     <div gl-alerts></div>
 
-    <div ng-controller="glProjectDetailController" ng-init="init('{% url 'service_detail' object.id %}', {{ object.id }})">
+    <div ng-controller="glProjectDetailController" ng-init="init('{% url 'service_detail' object.id %}', {{ object.id }}, '{% firstof language LANGUAGE_CODE %}')">
 
         <div class="row">
             <div class="col-md-12">
@@ -102,7 +102,21 @@
             </div>
         </div>
 
-        <h2 class="section_title">Deliverables</h2>
+        <div class="row">
+            <div class="col-sm-6">
+                <h2 class="section_title">Deliverables</h2>
+            </div>
+            <div class="col-sm-6">
+                <div gl-add-modal open-fn="addDeliverable" title="Add Deliverable" modal-instance="modalInstance">
+                    <ng-include src="'/static/gallant/html/gl_deliverable_form.html'"></ng-include>
+                </div>
+                <button type="button" class="btn btn-success pull-right" ng-click="addDeliverable()">
+                    <span class="glyphicon glyphicon-plus"></span>
+                    Add Deliverable
+                </button>
+            </div>
+        </div>
+
         <br/>
         <div ng-include src="'{% static "gallant/html/gl_service_board.html" %}'">
         </div>
