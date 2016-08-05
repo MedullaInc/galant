@@ -590,12 +590,12 @@ describe('glFormElements', function () {
 
     beforeEach(function () {
         $scope.el = [];
-        element = $compile('<div gl-form-elements elements="el" template-url="/static/gallant/html/gl_deliverable_form.html"></div>')($scope);
+        element = $compile('<div gl-form-elements elements="el" template-url="/static/calendr/html/cl_task_board.html"></div>')($scope);
         $scope.$digest();
     });
 
     it('compiles', function () {
-        expect(element.html().substring(0, 6)).toEqual('<div c');
+        expect(element.html().substring(0, 6)).toEqual('<secti');
     });
 
     it('adds element', function () {
