@@ -1,0 +1,51 @@
+<form ng-controller="glFormController" ng-init="init('', null, projectSaved)" novalidate>
+    <div class="row form-group">
+        <div class="col-lg-3">
+            <label class="ng-binding">Name</label>
+        </div>
+        <div class="col-lg-9">
+            <input type="text" placeholder="Name" class="form-control"
+                   ng-model="deliverable.name[language]"
+                   id="id_name" name="name" required>
+        </div>
+    </div>
+    <div class="row form-group">
+        <div class="col-lg-3">
+            <label class="ng-binding">Description</label>
+        </div>
+        <div class="col-lg-9">
+            <input type="text" placeholder="Description" class="form-control"
+                   ng-model="deliverable.description[language]"
+                   id="id_description" name="description">
+        </div>
+    </div>
+    <div class="row form-group">
+        <div class="col-lg-3">
+            <label>Cost:</label>
+        </div>
+        <div class="col-lg-3">
+            <input type="text" placeholder="$" class="form-control" ng-model="deliverable.cost.amount"
+                   id="id_cost" name="cost">
+        </div>
+        <div class="col-lg-3">
+            <label>Time Estimate:</label>
+        </div>
+        <div class="col-lg-3">
+            <input type="text" placeholder="# Hours" class="form-control" ng-model="deliverable.time"
+                   id="id_time" name="time">
+        </div>
+    </div>
+    <div class="row form-group">
+        <div class="col-lg-12">
+            <br/>
+            <button class="btn btn-default btn-submit pull-right button-inline" ng-click="saveDeliverable(); submitForm()">
+                Save
+            </button>
+            <button type="button" class="delete btn btn-default pull-right btn-submit"
+                    ng-click="deleteDeliverable(deliverable)" ng-hide="!deliverable.id">
+                Delete
+            </button>
+            <br/>
+        </div>
+    </div>
+</form>

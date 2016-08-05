@@ -108,7 +108,7 @@
             </div>
             <div class="col-sm-6">
                 <div gl-add-modal open-fn="addDeliverable" title="Add Deliverable" modal-instance="modalInstance">
-                    <ng-include src="'/static/gallant/html/gl_deliverable_form.html'"></ng-include>
+                    <div gl-deliverable-add deliverable="object" project="project" on-success="projectSaved"></div>
                 </div>
                 <button type="button" class="btn btn-success pull-right" ng-click="addDeliverable()">
                     <span class="glyphicon glyphicon-plus"></span>

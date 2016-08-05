@@ -2,6 +2,7 @@ from django.utils.translation import get_language
 from gallant.serializers.misc import ULTextField
 from rest_framework import serializers
 from gallant.models import Service
+from gallant import models as g
 from kanban.serializers import KanbanCardSerializer
 from gallant.serializers.misc import MoneyField
 
@@ -10,6 +11,7 @@ class ServiceSerializer(serializers.ModelSerializer):
     name = ULTextField()
     description = ULTextField(required=False)
     language = serializers.SerializerMethodField()
+    project = serializers.IntegerField(write_only=True, required=False)
     cost = MoneyField(required=False, allow_null=True)
     notes = serializers.CharField(read_only=True)
     views = serializers.IntegerField(required=False, allow_null=True)
@@ -19,7 +21,7 @@ class ServiceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Service
         fields = ('id', 'user', 'name', 'description', 'cost', 'quantity', 'type', 'card',
-                  'parent', 'notes', 'views', 'index', 'status', 'language', 'time')
+                  'parent', 'notes', 'views', 'index', 'status', 'language', 'time', 'project')
         extra_kwargs = {
             'id': {'read_only': False, 'required': False},
             'user': {'required': False}
@@ -34,8 +36,21 @@ class ServiceSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         validated_data.pop('id', None)
+        project_id = validated_data.pop('project', None)
 
-        return super(ServiceSerializer, self).create(validated_data)
+        if self.context.has_key('request'):
+            user = self.context['request'].user
+        else:
+            user = self.context.get("user")
+
+        validated_data.update({'user': user})
+
+        service = super(ServiceSerializer, self).create(validated_data)
+        if project_id:
+            project = g.Project.objects.get_for(user, pk=project_id)
+            project.services.add(service)
+            service.refresh_from_db()
+        return service
 
     def update(self, instance, validated_data):
         return super(ServiceSerializer, self).update(instance, validated_data)
