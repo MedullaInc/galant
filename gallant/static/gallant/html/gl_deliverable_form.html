@@ -40,6 +40,10 @@
         <button class="btn btn-default btn-submit pull-right button-inline" ng-click="saveDeliverable(service)">
             Save
         </button>
+        <button type="button" class="delete btn btn-default pull-right btn-submit"
+                ng-click="deleteDeliverable(service)" ng-hide="!service.id">
+            Delete
+        </button>
         <br/>
     </div>
 </div>
