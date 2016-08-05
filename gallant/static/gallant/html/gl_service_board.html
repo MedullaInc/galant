@@ -1,15 +1,15 @@
 <section class="widget">
     <div class="kanban fit">
         <div class="row" ng-show="services && services.length > 0">
-            <div class="kanban-column" kb-board-column title="Unassigned" click-fn="redirect"
+            <div class="kanban-column" kb-board-column title="Unassigned" click-fn="editDeliverable"
                  items="services" status-index="{{ glConstants.ServiceStatus.PendingAssignment }}"></div>
-            <div class="kanban-column" kb-board-column title="In Progress" click-fn="redirect"
+            <div class="kanban-column" kb-board-column title="In Progress" click-fn="editDeliverable"
                  items="services" status-index="{{ glConstants.ServiceStatus.Active }}"></div>
-            <div class="kanban-column" kb-board-column title="Awaiting Client" click-fn="redirect"
+            <div class="kanban-column" kb-board-column title="Awaiting Client" click-fn="editDeliverable"
                  items="services" status-index="{{ glConstants.ServiceStatus.OnHold }}"></div>
-            <div class="kanban-column" kb-board-column title="Overdue" click-fn="redirect"
+            <div class="kanban-column" kb-board-column title="Overdue" click-fn="editDeliverable"
                  items="services" status-index="{{ glConstants.ServiceStatus.Overdue }}"></div>
-            <div class="kanban-column" kb-board-column title="Done" click-fn="redirect"
+            <div class="kanban-column" kb-board-column title="Done" click-fn="editDeliverable"
                  items="services" status-index="{{ glConstants.ServiceStatus.Completed }}"></div>
         </div>
         <div class="row" ng-show="!services">

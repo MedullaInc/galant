@@ -10,6 +10,7 @@ app.directive('glDeliverableAdd', ['$window', 'Service', 'Project', function ($w
         scope: {
             deliverable: '=?',
             project: '=?',
+            language: '@',
             onSuccess: '&',
             onDeleted: '&',
         },
@@ -27,6 +28,11 @@ app.directive('glDeliverableAdd', ['$window', 'Service', 'Project', function ($w
 
             $scope.saveDeliverable = function() {
                 $scope.project.services.push($scope.deliverable);
+            };
+
+            $scope.deleteDeliverable = function() {
+                var idx = $scope.project.services.findIndex(function (e) { return $scope.deliverable.id == e.id; });
+                $scope.project.services.splice(idx, 1);
             };
 
             $scope.projectSaved = $scope.onSuccess();

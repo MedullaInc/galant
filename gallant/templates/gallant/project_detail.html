@@ -107,8 +107,9 @@
                 <h2 class="section_title">Deliverables</h2>
             </div>
             <div class="col-sm-6">
-                <div gl-add-modal open-fn="addDeliverable" title="Add Deliverable" modal-instance="modalInstance">
-                    <div gl-deliverable-add deliverable="object" project="project" on-success="projectSaved"></div>
+                <div gl-add-modal open-fn="editDeliverable" title="Edit Deliverable" modal-instance="modalInstance">
+                    <div gl-deliverable-add deliverable="object" project="project"
+                         on-success="projectSaved" language="{% firstof language LANGUAGE_CODE %}"></div>
                 </div>
                 <button type="button" class="btn btn-success pull-right" ng-click="addDeliverable()">
                     <span class="glyphicon glyphicon-plus"></span>
