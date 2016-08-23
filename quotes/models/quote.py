@@ -69,9 +69,14 @@ class Quote(g.UserModel):
         return sections
 
     def get_total_cost(self):
-        total = Money(0, "USD")
+        total = None
         for service in self.services.all_for(self.user):
+            if total is None:
+                total = Money(0, service.get_total_cost().currency)
             total += service.get_total_cost()
+
+        if total is None:
+            total = Money(0, 'USD')
 
         return total
 
