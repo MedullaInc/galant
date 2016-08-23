@@ -92,7 +92,7 @@
                         Brief Templates
                     </button>
                 </a>
-                <button popover-placement="bottom" uib-popover-template="dynamicPopover.templateUrl" id="add_brief" type="button" class="btn btn-success pull-right button-inline" ng-controller="brPopoverController" ng-init="init('{% url "add_brief" %}', language, {% if client %}{{ client.id }}{% else %}clientId{% endif %})" popover-trigger="focus click">
+                <button popover-placement="bottom" uib-popover-template="dynamicPopover.templateUrl" id="add_brief" type="button" class="btn btn-success pull-right button-inline" ng-controller="brPopoverController" ng-init="init('{% url "add_brief" %}', language, {% if client %}{{ client.id }}{% else %}clientId{% endif %})" popover-trigger="outsideClick">
                     <span class="glyphicon glyphicon-plus"></span>
                     Add Brief
                 </button>
