@@ -5,6 +5,7 @@ from gallant import fields as gf
 from gallant.enums import ServiceStatus, ServiceType
 from gallant_user import UserModel, UserModelManager
 from misc import Note
+from moneyed.classes import Money
 
 
 class Service(UserModel):
@@ -35,11 +36,16 @@ class Service(UserModel):
         if self.cost:
             total = self.cost * self.quantity
         else:
-            total = 0
+            total = None
         for sub in self.sub_services.all_for(self.user):
+            if total is None:
+                total = Money(0, sub.get_total_cost().currency)
             total += sub.get_total_cost()
 
-        return total
+        if total is None:
+            return Money(0, 'USD')
+        else:
+            return total
 
     def get_quote_template_services(self):
         return self.services.all_for(self.user)
